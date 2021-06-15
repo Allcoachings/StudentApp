@@ -18,6 +18,7 @@ import ResultAnalysis from '../ResultAnalysis/ResultAnalysis'
 import SubscriptionNew from '../SubscriptionNew/SubscriptionNew'
 import Feed from '../Feed/Feed'
 import  {DrawerContent}  from './DrawerContent';
+import MockTest from '../MockTest/MockTest';
 
 // import ReviewAndRatings from '../ReviewAndRatings/ReviewAndRatings';
 const Drawer = createDrawerNavigator();
@@ -44,6 +45,7 @@ class index extends React.Component {
                         <Drawer.Screen name="SingleTestSeries" component={TestSeriesView} />
                         <Drawer.Screen name="ViewInsTestSeriesList" component={InsTestSeriesList} /> 
                         <Drawer.Screen name="SeriesList" component={SeriesList} />
+                        <Drawer.Screen name="MockTest" component={MockTest} />
                         {/* <Drawer.Screen 
                             name="Home" 
                             component={Home} 

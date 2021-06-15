@@ -89,7 +89,7 @@ class Solutions extends React.Component {
                     ({backgroundColor:theme.accentColor+"4D", borderColor: theme.primaryColor}):({borderColor: theme.accentColor, backgroundColor: theme.primaryColor})
             ):(item.type=='Incorrect'?
                 (this.state.activeTab==item.type?
-                    ({backgroundColor:theme.redColor, borderColor: theme.primaryColor}):({borderColor: theme.redColor, backgroundColor: theme.primaryColor})
+                    ({backgroundColor:theme.redColor+'4D', borderColor: theme.primaryColor}):({borderColor: theme.redColor, backgroundColor: theme.primaryColor})
             ):(item.type=='Unattempted'?
                 (this.state.activeTab==item.type?
                     ({backgroundColor:theme.labelOrInactiveColor, borderColor: theme.primaryColor}):({borderColor: theme.greyColor, backgroundColor: theme.primaryColor})
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
             },
                 reasoningText:
                 {
-                    fontSize: 20,
+                    fontSize: 17,
                     fontWeight: '700',
                     padding: 10
                 },

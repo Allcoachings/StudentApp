@@ -144,6 +144,18 @@ export function DrawerContent(props){
                             onPress={()=>{props.navigation.navigate("Feed")}}
                             style={styles.drawerItem}
                         />
+                        <DrawerItem
+                            icon={({color, size}) => (
+                                <Icon
+                                    name="home-outline"
+                                    color={color}
+                                    size={size}
+                                />
+                            )}
+                            label="Mock Test"
+                            onPress={()=>{props.navigation.navigate("MockTest")}}
+                            style={styles.drawerItem}
+                        />
                     </Drawer.Section> 
                 </View>
             </DrawerContentScrollView>
@@ -189,9 +201,10 @@ const styles = StyleSheet.create({
             },
     bottomDrawer:
     {
+        marginTop:'auto',
         backgroundColor: theme.greyColor,
         color: theme.primaryColor,
-        marginBottom: '20%'
+        marginBottom:-5
     }
 
 })

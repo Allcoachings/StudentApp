@@ -27,7 +27,7 @@ class ResultAnalysis extends React.Component {
 
     renderBoxView=({item})=>{
         return(
-            <View style={[styles.boxView, {width: this.props.screenWidth/3.5},
+            <View style={[styles.boxView, {width: this.props.screenWidth/3.4},
                 item.type=='CORRECT'?
                 ({backgroundColor: theme.accentColor+"0D"}):(
                     item.type=='WRONG'?({backgroundColor: theme.redColor+"0D"}):(
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
         },
             boxView:
             {
-                padding: 20,
+                padding:20,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
             },
                 typeText:
                 {
-                    fontSize: 18
+                    fontSize: 15
                 },
             quesNoView:
             {

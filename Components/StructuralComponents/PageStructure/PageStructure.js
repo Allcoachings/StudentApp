@@ -20,7 +20,7 @@ class PageStructure extends React.Component {
                            
 
                     </View>
-                    <View style={[styles.pageLayout,this.props.screenWidth<=screenMobileWidth?({   margin:'2%'}):(null)]}> 
+                    <View style={[styles.pageLayout,this.props.screenWidth<=screenMobileWidth?({   margin:'0%'}):(null)]}> 
                         {this.props.screenWidth>screenMobileWidth?(
                             <View style={styles.leftNavContainer}> 
                                     <Text>Left Navbar</Text>

@@ -10,7 +10,7 @@ import { Feather } from '@expo/vector-icons';
 import {connect} from 'react-redux'
 import { List } from 'react-native-paper';
 import Review from '../ReviewAndRatings/Review'
-
+import Accordian from '../Utils/Accordian'
 class InsHome extends React.Component {
     state = { 
         activeTab: 'videos',
@@ -124,26 +124,42 @@ class InsHome extends React.Component {
 
     itemList=({item})=>{
         return(
-            <List.Accordion
-                title={item.subject}
-                left={props => <List.Icon {...props} icon="folder" />}>
-                    <FlatList 
+            <Accordian
+                header={this.accordianHeader("folder",item.subject,"chevron-down")}
+            >
+                 <FlatList 
                         data={item.date} 
                         renderItem={this.timeTableView}
                         keyExtractor={(item)=>item.id} 
                         horizontal={false}
                         showsHorizontalScrollIndicator={false}
                     />
-            </List.Accordion>
+        </Accordian>  
         )
     }
 
+    accordianHeader = (leftIcon,title,rightIcon) =>
+    {
+        return(
+            <View style={styles.accordianHeader}>
+                        <View style={styles.accordianLeft}>
+                            <Feather name={leftIcon} size={20}/>
+                        </View>
+                        <View style={styles.accordianMiddle}>
+                            <Text>{title}</Text>
+                        </View>
+                        <View style={styles.accordianRight}>
+                            <Feather name={rightIcon} size={20}/>
+                        </View> 
+            </View>
+        )
+    }
     renderTimeTable=({item})=>{
         return(
-            <List.Section title="Accordions">
-                <List.Accordion
-                    title={item.title}
-                    left={props => <List.Icon {...props} icon="folder" />}>
+
+            <Accordian
+                header={this.accordianHeader("folder",item.title,"chevron-down")}
+            >
                     <FlatList 
                         data={item.data} 
                         renderItem={this.itemList}
@@ -151,8 +167,7 @@ class InsHome extends React.Component {
                         horizontal={false}
                         showsHorizontalScrollIndicator={false}
                     />
-                </List.Accordion>
-            </List.Section>
+            </Accordian> 
            
         )
     }
@@ -631,6 +646,34 @@ const styles = StyleSheet.create({
                     flexDirection: 'row',
                     justifyContent: 'space-between'
                 },
+                    accordianHeader:
+                    {
+                        // flex:1,
+                        flexDirection: 'row',
+                        width: '100%', 
+                        // justifyContent: 'space-between'
+                        
+                    },
+                        accordianLeft:
+                        {
+                            
+                            justifyContent: 'flex-start',
+                            margin:5
+                        },
+                        accordianMiddle:
+                        { 
+                            
+                            margin:5,
+                            alignSelf: 'flex-end',
+                        },
+                        accordianRight:
+                        {
+                             
+                            // alignSelf: 'flex-end',
+                            marginLeft:'auto', 
+                            padding:5
+
+                        },
                     liveClassOuter:
                     {
                         borderColor: 'red',
