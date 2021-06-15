@@ -48,7 +48,8 @@ class PageStructure extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'column'
+        flexDirection: 'column',
+        backgroundColor: theme.appBackgroundColor
     },
     containerMain:
     {

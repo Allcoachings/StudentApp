@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {homeFeaturesData} from '../../FakeDataService/FakeData'
 import { theme } from '../config';
@@ -60,6 +60,11 @@ class CategoryList extends React.Component {
 
     render() {
         return(
+            <PageStructure
+                iconName={"menu"}
+                btnHandler={() => {this.props.navigation.toggleDrawer()}}
+            >
+            <ScrollView>
             <View style={styles.container}>
                 <View style={styles.headerView}>
                     <Text style={styles.headText}>UPSC Coaching</Text>
@@ -72,6 +77,8 @@ class CategoryList extends React.Component {
                     keyExtractor={item => item.id}
                 />
             </View>
+            </ScrollView>
+            </PageStructure>
         )
     }
 }
@@ -81,7 +88,6 @@ const styles = StyleSheet.create({
     {
         flex: 1,
         flexDirection: 'column',
-        marginTop: '10%'
     },
         headerView:
         {

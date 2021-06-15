@@ -16,7 +16,7 @@ class index extends React.Component {
     {
         return (
             <TouchableOpacity style={[styles.courseItemContainer,this.state.activeTab==item.id?({borderBottomColor:theme.accentColor,borderBottomWidth:2}):(null)]} onPress={()=>this.setState({activeTab:item.id})}> 
-                    <Text style={[styles.courseTitle,this.state.activeTab==item.id?({color:theme.accentColor}):({color:theme.labelOrInactiveColor})]}>{item.name}</Text>
+                    <Text style={[styles.courseTitle,this.state.activeTab==item.id?({color:theme.accentColor}):({color:theme.greyColor})]}>{item.name}</Text>
             </TouchableOpacity>
         );
     }
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
                 courseTitle:
                 {
                     fontSize:15, 
-                    color:theme.labelOrInactiveColor
+                    color:theme.greyColor
                 },
 })
 const mapStateToProps = (state)=>

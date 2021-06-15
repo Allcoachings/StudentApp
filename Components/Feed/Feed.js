@@ -30,104 +30,137 @@ class Feed extends React.Component {
         )
     }
 
-    selectType=({item})=>{
-        console.log(item)
-        switch(item.type)
-        {
-            case 'imagePost':
-                return(
-                    CardView(
-                        <View style={styles.boxView}>
-                            <View style={styles.rowView}>
-                                <View style={styles.circleView} />
-                                <Text style={styles.coaching}>{item.insName}</Text>
-                                <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
+    renderImagePost=() => {
+        return(
+            CardView(
+                <View style={styles.boxView}>
+                    <View style={styles.rowView}>
+                        <View style={styles.circleView} />
+                        <Text style={styles.coaching}>Saket IAS Allahabad</Text>
+                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
+                    </View>
+                    <View style={styles.timeDateView}>
+                        <Text style={styles.timeDateText}>4:00 AM</Text>
+                        <Text style={styles.timeDateText}>28/05/2021</Text>
+                    </View>
+                    <View style={styles.innerBoxView}>
+                        <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.img}/>
+                        <View style={styles.bottomRowContainer}>
+                            <View style={styles.likeView}>
+                                <Feather name="thumbs-up" size={18} />
+                                <Text style={styles.text}>Like</Text>
                             </View>
-                            <View style={styles.timeDateView}>
-                                <Text style={styles.timeDateText}>{item.time}</Text>
-                                <Text style={styles.timeDateText}>{item.date}</Text>
+                            <View style={styles.likeView}>
+                                <Feather name="message-square" size={18} />
+                                <Text style={styles.text}>Comment</Text>
                             </View>
-                            <View style={styles.innerBoxView}>
-                                <Image source={item.image} style={styles.img}/>
-                                <View style={styles.bottomRowContainer}>
-                                    <View style={styles.likeView}>
-                                        <Feather name="thumbs-up" size={18} />
-                                        <Text style={styles.text}>Like</Text>
-                                    </View>
-                                    <View style={styles.likeView}>
-                                        <Feather name="message-square" size={18} />
-                                        <Text style={styles.text}>Comment</Text>
-                                    </View>
-                                    <View style={styles.likeView}>
-                                        <Feather name="send" size={18} />
-                                        <Text style={styles.text}>Share</Text>
-                                    </View>
-                                </View>
+                            <View style={styles.likeView}>
+                                <Feather name="send" size={18} />
+                                <Text style={styles.text}>Share</Text>
                             </View>
-                        </View>,{width: '100%', padding: 6, marginBottom: 10}
-                    )
-                ) 
-            case 'quiz':
-                return(
-                    CardView(
-                        <View style={styles.boxView}>
-                            <View style={styles.rowView}>
-                                <View style={styles.circleView} />
-                                <Text style={styles.coaching}>{item.insName}</Text>
-                                <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
+                        </View>
+                    </View>
+                </View>,{width: '100%', padding: 6, marginBottom: 10}
+            )
+        )
+    }
+
+    renderQuizPost=() => {
+        return(
+            CardView(
+                <View style={styles.boxView}>
+                    <View style={styles.rowView}>
+                        <View style={styles.circleView} />
+                        <Text style={styles.coaching}>Chandra Institute Allahabad</Text>
+                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
+                    </View>
+                    <View style={styles.timeDateView}>
+                        <Text style={styles.timeDateText}>4:00 AM</Text>
+                        <Text style={styles.timeDateText}>28/05/2021</Text>
+                    </View>
+                    <View style={styles.innerBoxView}>
+                        <Text style={{fontSize: 18, marginBottom: 10}}>In 1768, Captain James Cook set out to explore which ocean?</Text>
+                        <View Style={{display: 'flex', flexDirection: 'column'}}>
+                            <Text style={{fontSize: 16, marginTop: 3}}>Pacific Ocean</Text>
+                            <Text style={{fontSize: 16, marginTop: 3}}>Atlantic Ocean</Text>
+                            <Text style={{fontSize: 16, marginTop: 3}}>Indian Ocean</Text>
+                            <Text style={{fontSize: 16, marginTop: 3}}>Arctic Ocean</Text>
+                        </View>
+
+                        <View style={styles.bottomRowContainer}>
+                            <View style={styles.likeView}>
+                                <Feather name="thumbs-up" size={18} />
+                                <Text style={styles.text}>Like</Text>
                             </View>
-                            <View style={styles.timeDateView}>
-                                <Text style={styles.timeDateText}>{item.time}</Text>
-                                <Text style={styles.timeDateText}>{item.date}</Text>
+                            <View style={styles.likeView}>
+                                <Feather name="message-square" size={18} />
+                                <Text style={styles.text}>Comment</Text>
                             </View>
-                            <View style={[styles.innerBoxView, {display: 'flex', flexDirection: 'column'}]}>
-                                <Text>{item.que}</Text>
-                                <Text>{item.opt1}</Text>
-                                <Text>{item.opt2}</Text>
-                                <Text>{item.opt3}</Text>
-                                <Text>{item.opt4}</Text>
+                            <View style={styles.likeView}>
+                                <Feather name="send" size={18} />
+                                <Text style={styles.text}>Share</Text>
                             </View>
-                        </View>,{width: '100%', padding: 6, marginBottom: 10}
-                    )
-                )
-            case 'text':
-                return(
-                    CardView(
-                        <View style={styles.boxView}>
-                            <View style={styles.rowView}>
-                                <View style={styles.circleView} />
-                                <Text style={styles.coaching}>{item.insName}</Text>
-                                <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
+                        </View>
+                    </View>
+                </View>,{width: '100%', padding: 6, marginBottom: 10}
+            )
+        )
+    }
+
+
+    renderTextPost=() => {
+        return(
+            CardView(
+                <View style={styles.boxView}>
+                    <View style={styles.rowView}>
+                        <View style={styles.circleView} />
+                        <Text style={styles.coaching}>Test Coachings</Text>
+                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
+                    </View>
+                    <View style={styles.timeDateView}>
+                        <Text style={styles.timeDateText}>4:00 AM</Text>
+                        <Text style={styles.timeDateText}>28/05/2021</Text>
+                    </View>
+                    <View style={styles.innerBoxView}>
+                        <Text style={{fontSize: 18, marginBottom: 5}}>Covid Live News Updates: AstraZeneca shots should be halted for over-60s too, says European Medicines Agency</Text>
+                        <View style={styles.bottomRowContainer}>
+                            <View style={styles.likeView}>
+                                <Feather name="thumbs-up" size={18} />
+                                <Text style={styles.text}>Like</Text>
                             </View>
-                            <View style={styles.timeDateView}>
-                                <Text style={styles.timeDateText}>{item.time}</Text>
-                                <Text style={styles.timeDateText}>{item.date}</Text>
+                            <View style={styles.likeView}>
+                                <Feather name="message-square" size={18} />
+                                <Text style={styles.text}>Comment</Text>
                             </View>
-                            <View style={styles.innerBoxView}>
-                                <Text>{item.text}</Text>
+                            <View style={styles.likeView}>
+                                <Feather name="send" size={18} />
+                                <Text style={styles.text}>Share</Text>
                             </View>
-                        </View>,{width: '100%', padding: 6, marginBottom: 10}
-                    )
-                )
-        }
+                        </View>
+                    </View>
+                </View>,{width: '100%', padding: 6, marginBottom: 10}
+            )
+        )
     }
 
     render() {
         return(
-            <ScrollView>
-                <View style={styles.container}>
-                    <View style={styles.headView}>
-                        <Text style={styles.headText}>Feed</Text>
+            <PageStructure
+                iconName={"menu"}
+                btnHandler={() => {this.props.navigation.toggleDrawer()}}
+            >
+                <ScrollView>
+                    <View style={styles.container}>
+                        <View style={styles.headView}>
+                            <Feather name="chevron-left" size={30} />
+                            <Text style={styles.headText}>Feed</Text>
+                        </View>
+                        { this.renderImagePost()}
+                        { this.renderQuizPost()}
+                        { this.renderTextPost()}
                     </View>
-                    <FlatList 
-                        data={feedData} 
-                        renderItem={this.selectType} 
-                        keyExtractor={(item)=>item.id}
-                        horizontal={true} 
-                        showsHorizontalScrollIndicator={false}
-                    />
-                </View>
-            </ScrollView>
+                </ScrollView>
+            </PageStructure>
         )
     }
 }
@@ -138,13 +171,13 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         padding:15,
-        marginTop: '10%'
     },
         headView:
         {
-            marginBottom: '6%',
-            justifyContent: 'center',
-            alignItems: 'center'
+            flexDirection: 'row',
+            // justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: 10
         },
             headText:
             {
@@ -176,20 +209,22 @@ const styles = StyleSheet.create({
                 },
                 coaching:
                 {
-                    fontSize: 22,
+                    fontSize: 20,
                     fontWeight: 'bold',
-                    color: theme.redColor
+                    color: theme.accentColor
                 },
                 timeDateView:
                 {
                     display: 'flex',
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    marginTop: 10
+                    marginTop: 10,
+                    paddingLeft: 10,
+                    paddingRight: 10,
                 },
                     timeDateText:
                     {
-                        fontSize: 18,
+                        fontSize: 16,
                         color: theme.secondaryColor
                     },
             innerBoxView:
@@ -217,6 +252,7 @@ const styles = StyleSheet.create({
                         display: 'flex',
                         flexDirection: 'row',
                         justifyContent: 'space-evenly',
+                        alignItems: 'center'
                     },
                         text:
                         {

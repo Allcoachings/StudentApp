@@ -40,7 +40,7 @@ class AddPdf extends React.Component {
         return(
             CardView(
                 <TextInput 
-                    placeholderTextColor={theme.labelOrInactiveColor} 
+                    placeholderTextColor={theme.greyColor} 
                     placeholder="Add Document" 
                     defaultValue={this.props.description} 
                     onChangeText={(text)=>this.setState({document: text})} 
@@ -64,7 +64,7 @@ class AddPdf extends React.Component {
                             <Text style={styles.labelText}>Document Title</Text>
                             {CardView(
                                 <TextInput 
-                                    placeholderTextColor={theme.labelOrInactiveColor} 
+                                    placeholderTextColor={theme.greyColor} 
                                     placeholder="Title" 
                                     defaultValue={this.props.description} 
                                     onChangeText={(text)=>this.setState({title: text})} 

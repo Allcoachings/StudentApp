@@ -7,6 +7,7 @@ import {connect } from 'react-redux'
 import {subscriptionNew} from '../../FakeDataService/FakeData'
 import CardView from '../Utils/CardView'
 import { Rating } from 'react-native-ratings';
+import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 
 class SubscriptionNew extends React.Component {
     
@@ -16,6 +17,7 @@ class SubscriptionNew extends React.Component {
 
     singleRow=({item})=>{
         return(
+            
             <View style={{marginBottom: '5%'}}>
                 <View style={styles.instituteheader}>
                     {CardView(
@@ -35,7 +37,7 @@ class SubscriptionNew extends React.Component {
                                 startingValue={item.rating}
                                 imageSize={15} 
                                 unSelectedColor={'yellow'} 
-                                tintColor={theme.greyColor}
+                                tintColor={theme.appBackgroundColor}
                                 style={styles.instituteRating}
                                 readOnly={true} 
                             />
@@ -48,33 +50,39 @@ class SubscriptionNew extends React.Component {
                     <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
                 </View>
             </View>
+            
         )
     }
 
     render() {
         return(
-            <ScrollView>
-                <View style={styles.container}>
-                    <View style={styles.headView}>
-                        <TouchableOpacity onPress={null}>
-                            <Feather name="chevron-left" size={26} />
-                        </TouchableOpacity>
-                        <Text style={styles.headText}>
-                            Subscription
-                        </Text>
-                        <TouchableOpacity onPress={null}>
-                            <Feather name="share-2" size={22} />
-                        </TouchableOpacity>
+            <PageStructure
+                iconName={"menu"}
+                btnHandler={() => {this.props.navigation.toggleDrawer()}}
+            >
+                <ScrollView>
+                    <View style={styles.container}>
+                        <View style={styles.headView}>
+                            <TouchableOpacity onPress={null}>
+                                <Feather name="chevron-left" size={26} />
+                            </TouchableOpacity>
+                            <Text style={styles.headText}>
+                                Subscription
+                            </Text>
+                            <TouchableOpacity onPress={null}>
+                                <Feather name="share-2" size={22} />
+                            </TouchableOpacity>
+                        </View>
+                        <FlatList 
+                            data={subscriptionNew} 
+                            renderItem={this.singleRow} 
+                            keyExtractor={(item)=>item.id}
+                            horizontal={false} 
+                            showsHorizontalScrollIndicator={false}
+                        />
                     </View>
-                    <FlatList 
-                        data={subscriptionNew} 
-                        renderItem={this.singleRow} 
-                        keyExtractor={(item)=>item.id}
-                        horizontal={false} 
-                        showsHorizontalScrollIndicator={false}
-                    />
-                </View>
-            </ScrollView>
+                </ScrollView>
+            </PageStructure>
         )
     }
 }
@@ -85,7 +93,6 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         padding:10,
-        marginTop: '10%'
     },
         headView:
         {

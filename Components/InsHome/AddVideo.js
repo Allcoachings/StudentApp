@@ -25,7 +25,7 @@ class AddVideo extends React.Component {
                             <Text style={styles.labelText}>Video Title</Text>
                             {CardView(
                                 <TextInput 
-                                    placeholderTextColor={theme.labelOrInactiveColor} 
+                                    placeholderTextColor={theme.greyColor} 
                                     placeholder="Title" 
                                     defaultValue={this.props.description} 
                                     onChangeText={(text)=>this.setState({title: text})} 
@@ -37,7 +37,7 @@ class AddVideo extends React.Component {
                             <Text style={styles.labelText}>Video Description</Text>
                             {CardView(
                                 <TextInput 
-                                    placeholderTextColor={theme.labelOrInactiveColor} 
+                                    placeholderTextColor={theme.greyColor} 
                                     placeholder="Description" 
                                     onChangeText={(text)=>this.setState({description: text})} 
                                     multiline={true} 
@@ -50,7 +50,7 @@ class AddVideo extends React.Component {
                             <Text style={styles.labelText}>Video</Text>
                             {CardView(
                                 <TextInput 
-                                    placeholderTextColor={theme.labelOrInactiveColor} 
+                                    placeholderTextColor={theme.greyColor} 
                                     placeholder="Add Video" 
                                     onChangeText={(text)=>this.setState({video: text})} 
                                     multiline={true} 

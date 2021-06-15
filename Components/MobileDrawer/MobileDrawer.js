@@ -17,6 +17,7 @@ import Solutions from '../Solutions/Solutions'
 import ResultAnalysis from '../ResultAnalysis/ResultAnalysis'
 import SubscriptionNew from '../SubscriptionNew/SubscriptionNew'
 import Feed from '../Feed/Feed'
+import  {DrawerContent}  from './DrawerContent';
 
 // import ReviewAndRatings from '../ReviewAndRatings/ReviewAndRatings';
 const Drawer = createDrawerNavigator();
@@ -27,12 +28,27 @@ class index extends React.Component {
         return (
                 <NavigationContainer>
                 
-                    <Drawer.Navigator initialRouteName="Home"  sceneContainerStyle={{backgroundColor:theme.appBackgroundColor}}>  
-                        <Drawer.Screen 
+                    {/* <Drawer.Navigator  >
+                    </Drawer.Navigator> */}
+                    <Drawer.Navigator drawerContent={props => <DrawerContent {...props} /> } > 
+                        <Drawer.Screen name="Home" component={Home} /> 
+                        <Drawer.Screen name="Auth" component={Auth}  /> 
+                        <Drawer.Screen name="Institute"  component={InstituteView} />
+                        <Drawer.Screen name="TestSeries" component={TestSeriesIns}  /> 
+                        <Drawer.Screen name="Subscription" component={SubscriptionNew}  /> 
+                        <Drawer.Screen name="Feed" component={Feed}  /> 
+                        <Drawer.Screen name="Solution" component={Solutions}  /> 
+                        <Drawer.Screen name="ResultAnalysis" component={ResultAnalysis}  /> 
+                        <Drawer.Screen name="CategoryList" component={CategoryList} /> 
+                        {/* <Drawer.Screen name="SingleTestSeries" component={SingleTestSeries} /> */}
+                        <Drawer.Screen name="SingleTestSeries" component={TestSeriesView} />
+                        <Drawer.Screen name="ViewInsTestSeriesList" component={InsTestSeriesList} /> 
+                        <Drawer.Screen name="SeriesList" component={SeriesList} />
+                        {/* <Drawer.Screen 
                             name="Home" 
                             component={Home} 
-                            options={{cardStyle:{backgroundColor:theme.appBackgroundColor} }}/>
-                        <Drawer.Screen 
+                            */}
+                      {/*   <Drawer.Screen 
                             name="Auth" 
                             component={Auth} 
                             options={{cardStyle:{backgroundColor:theme.appBackgroundColor}}}/>
@@ -43,12 +59,12 @@ class index extends React.Component {
                         <Drawer.Screen 
                             name="Test Series" 
                             component={TestSeriesIns} 
-                            options={{cardStyle:{backgroundColor:theme.appBackgroundColor} }}/>
+                            options={{cardStyle:{backgroundColor:theme.appBackgroundColor} }}/> */}
                         {/* <Drawer.Screen
                             name="SingleTestSeries" 
                             component={SingleTestSeries} 
                             options={{ cardStyle:{backgroundColor:theme.appBackgroundColor} }} sceneContainerStyle={{backgroundColor:theme.appBackgroundColor}}/>   */}
-                        <Drawer.Screen
+                        {/* <Drawer.Screen
                             name="Subscription" 
                             component={Subscription} 
                             options={{ cardStyle:{backgroundColor:theme.appBackgroundColor} }} sceneContainerStyle={{backgroundColor:theme.appBackgroundColor}}/>  
@@ -83,7 +99,7 @@ class index extends React.Component {
                         <Drawer.Screen 
                             name="Feed" 
                             component={Feed} 
-                            options={{cardStyle:{backgroundColor:theme.appBackgroundColor} }}/>
+                            options={{cardStyle:{backgroundColor:theme.appBackgroundColor} }}/> */}
                     </Drawer.Navigator>
                 </NavigationContainer>
         );

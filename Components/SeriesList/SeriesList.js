@@ -33,10 +33,10 @@ class SeriesList extends React.Component {
                          </View>
                          <View style={styles.bottomRow}>
                              <Text style={styles.titleText}>{item.title}</Text>
-                             <View style={styles.btnView}>
+                             <TouchableOpacity onPress={()=> {this.props.navigation.navigate("SingleTestSeries")}} style={styles.btnView}>
                                  <Feather name="play" size={12} style={{color: theme.primaryColor, marginRight: 3}}/>
                                  <Text style={styles.btnText}>Start</Text>
-                             </View>
+                             </TouchableOpacity>
                          </View>
                      </View>,{margin: 10, borderWidth: 1, borderRadius: 10, borderColor: theme.labelOrInactiveColor}
              )
@@ -53,8 +53,9 @@ class SeriesList extends React.Component {
                <ScrollView>
                     <View style={styles.main}>
                         <View style={styles.headTitleView}>
+                            <Text></Text>
                             <Text style={styles.title}>UPSC CSE</Text>
-                            <Feather name="share" size={16}/>
+                            <Feather name="share-2" size={18} style={{marginRight: 10}}/>
                         </View>
                         <View style={styles.rowContainer}>
                             <FlatList 
@@ -91,7 +92,7 @@ const styles = StyleSheet.create({
         {
             flex: 1,
             flexDirection: 'row',
-            justifyContent: 'center',
+            justifyContent: 'space-between',
             alignItems: 'center',
             marginBottom: 10
         },

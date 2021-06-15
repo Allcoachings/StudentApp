@@ -56,7 +56,9 @@ class InsTestSeriesList extends React.Component {
             >
                 <ScrollView>
                     <View style={styles.headTitleView}>
+                        <Text></Text>
                         <Text style={styles.title}>UPSC CSE</Text>
+                        <Feather name="share-2" size={18} style={{marginRight: 10}}/>
                     </View>
                     <View style={styles.rowContainer}>
                         <FlatList 
@@ -85,8 +87,8 @@ class InsTestSeriesList extends React.Component {
 const styles = StyleSheet.create({
     headTitleView:{
         flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center'
     },
         title:{

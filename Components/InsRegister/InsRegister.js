@@ -3,6 +3,8 @@ import {Text, View,StyleSheet, TextInput, TouchableOpacity, Image, ScrollView, C
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {theme,screenMobileWidth} from '../config'
 import CardView from '../Utils/CardView';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 class InsRegister extends React.Component {
     state = {
@@ -22,7 +24,9 @@ class InsRegister extends React.Component {
     renderTextInput=(icon, placeholder)=>{
         return(
             CardView(
-                <TextInput style={styles.inputField} placeholder={placeholder} />,{marginTop: 10, padding: 12}
+                // <View style={{flex: 1, flexDirection: 'row'}}>
+                    <TextInput style={styles.inputField} placeholder={placeholder} />
+               ,{marginTop: 10, padding: 12}
             )
         )
     }
@@ -73,6 +77,16 @@ class InsRegister extends React.Component {
                         <View style={styles.inputView}>
                             {this.renderTextInput('', 'About this Coaching')}
                         </View>
+                        
+                        {CardView(
+                            <View style={styles.dropdownView}>
+                                <DropDownPicker
+                                    placeholder="Select Category"
+                                    placeholderTextColor={theme.greyColor}
+                                    containerStyle={{borderColor: theme.greyColor}}
+                                />
+                            </View>, {marginTop: 10, padding: 12})}
+
 
                         {CardView(<View style={styles.checkboxContainer}>
                             <CheckBox
@@ -82,6 +96,12 @@ class InsRegister extends React.Component {
                             />
                             <Text style={styles.label}>By pressing 'Signup' you agree to our Terms & Conditions</Text>
                         </View>, {marginTop: 10, padding: 12})}
+
+                        <View style={styles.regBtnView}>
+                            <TouchableOpacity style={styles.regBtn}>
+                                <Text style={styles.regBtnText}>Register</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </ScrollView>
            </PageStructure>
@@ -144,7 +164,24 @@ const styles = StyleSheet.create({
                 color: theme.greyColor,
                 marginLeft: 5
             },
-
+        regBtnView:
+        {
+            marginTop: 10
+        },
+            regBtn:
+            {
+                marginTop: 10,
+                backgroundColor: theme.accentColor,
+                padding: 10,
+                borderRadius: 10
+            },
+                regBtnText:
+                {
+                    marginLeft: 15,
+                    marginRight: 15,
+                    fontSize: 18,
+                    color: theme.primaryColor
+                }
     
 })
 

@@ -8,6 +8,8 @@ import AddPdf from '../InsHome/AddPdf'
 import AddVideo from '../InsHome/AddVideo'
 import InsRegister from '../InsRegister/InsRegister'
 import {theme} from '../config'
+import  {DrawerContent}  from './DrawerContent';
+
 const Drawer = createDrawerNavigator();
 class indexIns extends React.Component {
     state = {  }
@@ -17,27 +19,12 @@ class indexIns extends React.Component {
             <>
                 <NavigationContainer>
                 
-                    <Drawer.Navigator initialRouteName="Home"  sceneContainerStyle={{backgroundColor:theme.appBackgroundColor}}>  
-                       <Drawer.Screen 
-                            name="Home" 
-                            component={InsHome} 
-                            options={{cardStyle:{backgroundColor:theme.appBackgroundColor} }}/>
-                       <Drawer.Screen 
-                            name="Register" 
-                            component={InsRegister} 
-                            options={{cardStyle:{backgroundColor:theme.appBackgroundColor} }}/>
-                       <Drawer.Screen 
-                            name="AddVideos" 
-                            component={AddVideo} 
-                            options={{cardStyle:{backgroundColor:theme.appBackgroundColor} }}/>
-                       <Drawer.Screen 
-                            name="AddTestSeries" 
-                            component={AddTest} 
-                            options={{cardStyle:{backgroundColor:theme.appBackgroundColor} }}/>
-                       <Drawer.Screen 
-                            name="AddDocument" 
-                            component={AddPdf} 
-                            options={{cardStyle:{backgroundColor:theme.appBackgroundColor} }}/>
+                <Drawer.Navigator drawerContent={props => <DrawerContent {...props} /> } > 
+                        <Drawer.Screen name="Home" component={InsHome} /> 
+                        <Drawer.Screen name="Register" component={InsRegister}  />  
+                        <Drawer.Screen name="AddVideos" component={AddVideo}  /> 
+                        <Drawer.Screen name="AddDocument" component={AddPdf}  /> 
+                        <Drawer.Screen name="AddTestSeries" component={AddTest}  /> 
                        
                         {/* <Drawer.Screen 
                             name="Auth" 

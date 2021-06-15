@@ -131,48 +131,53 @@ class Solutions extends React.Component {
 
     render() {
         return(
-            <ScrollView>
-                <View style={styles.container}>
-                    <View style={{padding: 10}}>
-                        <View style={styles.headView}>
-                            <Feather name="chevron-left" size={26} style={{color: theme.greyColor}}/>
-                            <Text style={styles.headText}>
-                                Solutions
-                            </Text>
-                        </View>
-                        
-                        <View style={{borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}/>
-                        
-                        <View style={styles.chooseSectionView}>
-                            <Text style={styles.sectionText}>Choose section</Text>
-                            <View style={styles.chooseSection}>
-                                <Text style={styles.reasoningText}>Reasoning</Text>
+            <PageStructure
+                iconName={"menu"}
+                btnHandler={() => {this.props.navigation.toggleDrawer()}}
+            >
+                <ScrollView>
+                    <View style={styles.container}>
+                        <View style={{padding: 10}}>
+                            <View style={styles.headView}>
+                                <Feather name="chevron-left" size={26} style={{color: theme.greyColor}}/>
+                                <Text style={styles.headText}>
+                                    Solutions
+                                </Text>
+                            </View>
+                            
+                            <View style={{borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}/>
+                            
+                            <View style={styles.chooseSectionView}>
+                                <Text style={styles.sectionText}>Choose section</Text>
+                                <View style={styles.chooseSection}>
+                                    <Text style={styles.reasoningText}>Reasoning</Text>
+                                </View>
+                            </View>
+
+                            <View style={{borderBottomWidth: 4, borderColor: theme.labelOrInactiveColor, marginTop:10}}/>
+
+                            <View style={styles.categoryView}>
+                                <FlatList 
+                                    data={this.state.type} 
+                                    renderItem={this.renderCategory}
+                                    keyExtractor={(item)=>item.id} 
+                                    horizontal={true}
+                                    showsHorizontalScrollIndicator={true}
+                                />
                             </View>
                         </View>
-
-                        <View style={{borderBottomWidth: 4, borderColor: theme.labelOrInactiveColor, marginTop:10}}/>
-
-                        <View style={styles.categoryView}>
-                            <FlatList 
-                                data={this.state.type} 
-                                renderItem={this.renderCategory}
-                                keyExtractor={(item)=>item.id} 
-                                horizontal={true}
-                                showsHorizontalScrollIndicator={true}
-                            />
-                        </View>
+                        <FlatList 
+                            data={this.state.solution} 
+                            renderItem={this.renderSolution}
+                            keyExtractor={(item)=>item.id} 
+                            horizontal={false}
+                            showsHorizontalScrollIndicator={false}
+                        />
+                        
+                        
                     </View>
-                    <FlatList 
-                        data={this.state.solution} 
-                        renderItem={this.renderSolution}
-                        keyExtractor={(item)=>item.id} 
-                        horizontal={false}
-                        showsHorizontalScrollIndicator={false}
-                    />
-                    
-                    
-                </View>
-            </ScrollView>
+                </ScrollView>
+            </PageStructure>
         )
     }
 }
@@ -187,8 +192,7 @@ const styles = StyleSheet.create({
         headView:
         {
             flexDirection: 'row',
-            alignItems: 'center',
-            marginTop: '6%'
+            alignItems: 'center'
         },
             headText:
             {

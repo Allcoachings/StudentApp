@@ -69,14 +69,18 @@ class ResultAnalysis extends React.Component {
 
     render() {
         return(
-            <ScrollView>
+            <PageStructure
+                iconName={"menu"}
+                btnHandler={() => {this.props.navigation.toggleDrawer()}}
+            >
+                <ScrollView>
                 <View style={styles.container}>
                     <View style={styles.headView}>
-                        <Feather name="chevron-left" size={20} />
+                        <Feather name="chevron-left" size={26} />
                         <Text style={styles.headText}>
                             All Coachings
                         </Text>
-                        <Feather name="share-2" size={20} />
+                        <Feather name="share-2" size={24} />
                     </View>
 
                     <View style={styles.resultAnalysisView}>
@@ -148,6 +152,7 @@ class ResultAnalysis extends React.Component {
 
                 </View>
             </ScrollView>
+            </PageStructure>
         )
     }
 }
@@ -158,7 +163,6 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         padding:10,
-        marginTop: '10%'
     },
         headView:
         {
@@ -168,7 +172,7 @@ const styles = StyleSheet.create({
         },
             headText:
             {
-                fontSize: 20,
+                fontSize: 24,
                 fontWeight: '700',
                 color: theme.greyColor
             },

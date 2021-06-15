@@ -20,7 +20,7 @@ class AddTest extends React.Component {
                 </View>
                 {CardView(
                     <TextInput 
-                        placeholderTextColor={theme.labelOrInactiveColor} 
+                        placeholderTextColor={theme.greyColor} 
                         placeholder={placeholder} 
                         onChangeText={(text)=>this.setState({document: text})} 
                         multiline={true} 
@@ -46,7 +46,7 @@ class AddTest extends React.Component {
                             <Text style={styles.labelText}>Title</Text>
                             {CardView(
                                 <TextInput 
-                                    placeholderTextColor={theme.labelOrInactiveColor} 
+                                    placeholderTextColor={theme.greyColor} 
                                     placeholder="Title" 
                                     onChangeText={(text)=>this.setState({title: text})} 
                                     style={styles.inputField}
@@ -57,7 +57,7 @@ class AddTest extends React.Component {
                             <Text style={styles.labelText}>Question</Text>
                             {CardView(
                                 <TextInput 
-                                    placeholderTextColor={theme.labelOrInactiveColor} 
+                                    placeholderTextColor={theme.greyColor} 
                                     placeholder="Add Question" 
                                     onChangeText={(text)=>this.setState({document: text})} 
                                     multiline={true} 
