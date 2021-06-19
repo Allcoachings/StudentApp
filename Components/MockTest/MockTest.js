@@ -88,6 +88,11 @@ class ResultAnalysis extends React.Component {
                         keyExtractor={(item)=>item.id}
                         renderItem={({item})=>this.renderMockTestWeekItem(item)} 
                     />
+                    <View style={styles.enrollBtnView}>
+                        <TouchableOpacity style={styles.enrollBtn}>
+                            <Text style={styles.enrollText}>Enroll</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View> 
             </PageStructure>
         )
@@ -164,12 +169,12 @@ const styles = StyleSheet.create({
                             testItemMonth:
                             {
                                 fontWeight:'bold',
-                                fontSize:13         
+                                fontSize:16         
                             },
                             testItemDay:
                             {
                                 fontWeight:'bold',
-                                fontSize:13 ,
+                                fontSize:16 ,
                                 textAlign: 'center' ,
                                 marginTop:5      
                             },
@@ -188,16 +193,37 @@ const styles = StyleSheet.create({
                             testItemName:
                             {
                                 fontWeight:'700',
-                                fontSize:13        
+                                fontSize:16        
                             },
                             testItemTestTime:
                             {
                                 
-                                fontSize:12,
+                                fontSize:14,
                                 marginTop:5,
-                                color:theme.labelOrInactiveColor      
+                                color:theme.greyColor      
                             },
-                        
+        enrollBtnView:
+        {
+            marginTop: 'auto'
+        },
+            enrollBtn:
+            {
+                backgroundColor: theme.accentColor,
+                borderRadius: 5,
+                justifyContent: 'center',
+                alignItems: 'center'
+            },
+                enrollText:
+                {
+                    fontSize: 24,
+                    color: theme.primaryColor,
+                    fontWeight: 'bold',
+                    paddingTop: 10,
+                    paddingBottom: 10,
+                    paddingLeft: 30,
+                    paddingRight: 30
+                },
+                                        
 
                             
 })

@@ -14,5 +14,6 @@ export const theme={
     addMoreButtonColor: '#00CED1',
     textColor: '#404040',
     redColor: '#FF0000',
-    yellowColor: 'yellow'
+    yellowColor: '#FFFF00',
+    blueColor: '#1E90FF'
 }

@@ -6,7 +6,9 @@ import InsHome from '../InsHome/InsHome'
 import AddTest from '../InsHome/AddTest'
 import AddPdf from '../InsHome/AddPdf'
 import AddVideo from '../InsHome/AddVideo'
+import AddTimeTable from '../InsHome/AddTimeTable'
 import InsRegister from '../InsRegister/InsRegister'
+import Leads from '../Leads/Leads'
 import {theme} from '../config'
 import  {DrawerContent}  from './DrawerContent';
 
@@ -24,7 +26,9 @@ class indexIns extends React.Component {
                         <Drawer.Screen name="Register" component={InsRegister}  />  
                         <Drawer.Screen name="AddVideos" component={AddVideo}  /> 
                         <Drawer.Screen name="AddDocument" component={AddPdf}  /> 
+                        <Drawer.Screen name="AddTimeTable" component={AddTimeTable}  /> 
                         <Drawer.Screen name="AddTestSeries" component={AddTest}  /> 
+                        <Drawer.Screen name="Leads" component={Leads}  /> 
                        
                         {/* <Drawer.Screen 
                             name="Auth" 

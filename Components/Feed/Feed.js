@@ -143,18 +143,27 @@ class Feed extends React.Component {
         )
     }
 
+    header=() => {
+        return(
+            <View style={styles.headView}>
+                <Feather name="chevron-left" size={30} />
+                <Text style={styles.headText}>Feed</Text>
+            </View>
+        )
+    }
+
     render() {
         return(
             <PageStructure
                 iconName={"menu"}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
+                headerComponent={this.header()}
+                replaceHeader={true}
+                headerStyle={{flex:0.11, padding: 5}}
             >
                 <ScrollView>
                     <View style={styles.container}>
-                        <View style={styles.headView}>
-                            <Feather name="chevron-left" size={30} />
-                            <Text style={styles.headText}>Feed</Text>
-                        </View>
+                        
                         { this.renderImagePost()}
                         { this.renderQuizPost()}
                         { this.renderTextPost()}
@@ -175,14 +184,16 @@ const styles = StyleSheet.create({
         headView:
         {
             flexDirection: 'row',
-            // justifyContent: 'center',
+            justifyContent: 'center',
             alignItems: 'center',
-            marginBottom: 10
+            marginBottom: 10,
+            marginTop: 5,
         },
             headText:
             {
-                fontSize: 30,
+                fontSize: 24,
                 fontWeight: 'bold',
+                marginLeft: '10%'
             },
         boxView:
         {

@@ -154,23 +154,6 @@ class InsHome extends React.Component {
             </View>
         )
     }
-    renderTimeTable=({item})=>{
-        return(
-
-            <Accordian
-                header={this.accordianHeader("folder",item.title,"chevron-down")}
-            >
-                    <FlatList 
-                        data={item.data} 
-                        renderItem={this.itemList}
-                        keyExtractor={(item)=>item.id} 
-                        horizontal={false}
-                        showsHorizontalScrollIndicator={false}
-                    />
-            </Accordian> 
-           
-        )
-    }
 
     renderTestSeries=({item})=>{
         return( 
@@ -236,6 +219,91 @@ class InsHome extends React.Component {
             </View>
         )
     }
+
+
+    renderItem=(item)=>{
+        return(
+           
+            <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin:5}}>
+                <Text style={{fontSize: 16}}>{item.date}</Text>
+                <Text style={{fontSize: 16}}>{item.time}</Text>
+                <Text style={{fontSize: 16}}>{item.teacher}</Text>
+            </View>
+        )
+    }
+
+    accordianHeader = (title,testCount,rightIcon) =>
+    {
+        return(
+            CardView(<View style={styles.accordianHeader}>
+                        <View style={styles.accordianLeft}>
+                            <Text style={styles.accordianTitle}>{title}</Text>
+                            <Text style={styles.accordianTestCount}>{testCount}</Text> 
+                        </View>
+                        <View style={styles.accordianMiddle}>
+                           
+                        </View>
+                        <View style={styles.accordianRight}>
+                            <Feather name={rightIcon} size={20}/>
+                        </View> 
+            </View>,
+            {
+                width:'95%', 
+                padding:5,
+                margin:5
+            }
+            )
+        )
+    }
+
+    renderTestItem=(item)=>{
+        return(
+            <Accordian
+                header={this.accordianHeader(item.subject," ","chevron-down")}
+            > 
+                <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin:5, paddingLeft:20, paddingRight:20}}>
+                    <Text style={{fontSize: 16, fontWeight: 'bold'}}>Date</Text>
+                    <Text style={{fontSize: 16, fontWeight: 'bold'}}>Time</Text>
+                    <Text style={{fontSize: 16, fontWeight: 'bold'}}>Teacher</Text>
+                </View>
+                {CardView(
+                    <FlatList 
+                        data={item.date} 
+                        renderItem={({item}) =>this.renderItem(item)}
+                        keyExtractor={(item)=>item.id} 
+                        horizontal={false}
+                        showsHorizontalScrollIndicator={false}
+                    />,{width:'95%', padding:10, margin:5}
+                )}
+            </Accordian>
+        )
+    }
+
+    renderTimeTable=({item})=>{
+        return(
+            <Accordian
+                header={this.accordianHeader(item.title, " ", "chevron-down")}
+            >
+                <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', marginTop: '5%'}} onPress={()=>this.props.navigation.navigate("AddTimeTable")}>
+                    <Text style={{fontSize: 18, fontWeight: 'bold'}}>Add Time Table+</Text>
+                </TouchableOpacity>
+                <View style={styles.weekView}> 
+                    <FlatList 
+                        data={item.data} 
+                        renderItem={({item}) =>this.renderTestItem(item)}
+                        keyExtractor={(item)=>item.id} 
+                        horizontal={false}
+                        showsHorizontalScrollIndicator={false}
+                    />
+                </View>
+            </Accordian>
+
+
+        )
+    }
+
+
+
 
     redirect=(value)=>{
         this.setState({activeFilter: value});
@@ -893,6 +961,49 @@ const styles = StyleSheet.create({
                         {
                             color: theme.secondaryColor,
                         },
+                    accordianHeader:
+                    {
+                        // flex:1,
+                        flexDirection: 'row',
+                        width: '100%', 
+                        // justifyContent: 'space-between'
+                        
+                    },
+                        accordianLeft:
+                        {
+                            
+                            justifyContent: 'flex-start',
+                            margin:5
+                        },
+                            accordianTitle:
+                            {
+                                fontSize:14,
+                                fontWeight:'bold',
+                            },
+                            accordianTestCount:
+                            {
+                                fontSize:12,
+                                color:theme.labelOrInactiveColor,
+                                
+                            },
+                        accordianMiddle:
+                        { 
+                            
+                            margin:5,
+                            alignSelf: 'flex-end',
+                        },
+                        accordianRight:
+                        {
+                            marginLeft:'auto', 
+                            padding:5
+                        },
+                            weekView:
+                            {
+                                marginVertical:10, 
+                                borderBottomWidth:1, 
+                                borderBottomColor:theme.labelOrInactiveColor,
+                                alignSelf: 'center',
+                            },
     RatingText:
     {
         fontSize: 20, 

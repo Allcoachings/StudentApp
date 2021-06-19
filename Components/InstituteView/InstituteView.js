@@ -10,6 +10,7 @@ import { Feather } from '@expo/vector-icons';
 import {connect} from 'react-redux'
 import { List } from 'react-native-paper';
 import Review from '../ReviewAndRatings/Review'
+import Accordian from '../Utils/Accordian'
 
 class InstituteView extends React.Component {
     state = { 
@@ -94,16 +95,81 @@ class InstituteView extends React.Component {
         )
     }
 
-    renderTimeTable=()=>{
+    renderItem=(item)=>{
         return(
-            <List.Section title="Accordions">
-                <List.Accordion
-                    title="Uncontrolled Accordion"
-                    left={props => <List.Icon {...props} icon="folder" />}>
-                    <List.Item title="First item" />
-                    <List.Item title="Second item" />
-                </List.Accordion>
-            </List.Section>
+           
+            <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin:5}}>
+                <Text style={{fontSize: 16}}>{item.date}</Text>
+                <Text style={{fontSize: 16}}>{item.time}</Text>
+                <Text style={{fontSize: 16}}>{item.teacher}</Text>
+            </View>
+        )
+    }
+
+    accordianHeader = (title,testCount,rightIcon) =>
+    {
+        return(
+            CardView(<View style={styles.accordianHeader}>
+                        <View style={styles.accordianLeft}>
+                            <Text style={styles.accordianTitle}>{title}</Text>
+                            <Text style={styles.accordianTestCount}>{testCount}</Text> 
+                        </View>
+                        <View style={styles.accordianMiddle}>
+                           
+                        </View>
+                        <View style={styles.accordianRight}>
+                            <Feather name={rightIcon} size={20}/>
+                        </View> 
+            </View>,
+            {
+                width:'95%', 
+                padding:5,
+                margin:5
+            }
+            )
+        )
+    }
+
+    renderTestItem=(item)=>{
+        return(
+            <Accordian
+                header={this.accordianHeader(item.subject," ","chevron-down")}
+            > 
+                <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin:5, paddingLeft:20, paddingRight:20}}>
+                    <Text style={{fontSize: 16, fontWeight: 'bold'}}>Date</Text>
+                    <Text style={{fontSize: 16, fontWeight: 'bold'}}>Time</Text>
+                    <Text style={{fontSize: 16, fontWeight: 'bold'}}>Teacher</Text>
+                </View>
+                {CardView(
+                    <FlatList 
+                        data={item.date} 
+                        renderItem={({item}) =>this.renderItem(item)}
+                        keyExtractor={(item)=>item.id} 
+                        horizontal={false}
+                        showsHorizontalScrollIndicator={false}
+                    />,{width:'95%', padding:10, margin:5}
+                )}
+            </Accordian>
+        )
+    }
+
+    renderTimeTable=({item})=>{
+        return(
+            <Accordian
+                header={this.accordianHeader(item.title, " ", "chevron-down")}
+            >
+                <View style={styles.weekView}> 
+                    <FlatList 
+                        data={item.data} 
+                        renderItem={({item}) =>this.renderTestItem(item)}
+                        keyExtractor={(item)=>item.id} 
+                        horizontal={false}
+                        showsHorizontalScrollIndicator={false}
+                    />
+                </View>
+            </Accordian>
+
+
         )
     }
 
@@ -246,8 +312,8 @@ class InstituteView extends React.Component {
                                     />)
             case 'timeTable':    return(
                                     <FlatList 
-                                        data={instituteData.document} 
-                                        renderItem={this.renderDocument}
+                                        data={instituteData.timeTable} 
+                                        renderItem={this.renderTimeTable}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
@@ -731,6 +797,54 @@ const styles = StyleSheet.create({
                                 fontSize: 14,
                                 color: theme.primaryColor   
                             },
+
+                accordianHeader:
+                {
+                    // flex:1,
+                    flexDirection: 'row',
+                    width: '100%', 
+                    // justifyContent: 'space-between'
+                    
+                },
+                    accordianLeft:
+                    {
+                        
+                        justifyContent: 'flex-start',
+                        margin:5
+                    },
+                        accordianTitle:
+                        {
+                            fontSize:14,
+                            fontWeight:'bold',
+                        },
+                        accordianTestCount:
+                        {
+                            fontSize:12,
+                            color:theme.labelOrInactiveColor,
+                            
+                        },
+                    accordianMiddle:
+                    { 
+                        
+                        margin:5,
+                        alignSelf: 'flex-end',
+                    },
+                    accordianRight:
+                    {
+                        
+                        // alignSelf: 'flex-end',
+                        marginLeft:'auto', 
+                        padding:5
+    
+                    },
+                        weekView:
+                        {
+                            marginVertical:10, 
+                            borderBottomWidth:1, 
+                            borderBottomColor:theme.labelOrInactiveColor,
+                            alignSelf: 'center',
+                            // height:height
+                        },
         RatingText:
         {
             fontSize: 20, 

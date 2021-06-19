@@ -65,6 +65,17 @@ export function DrawerContent(props){
                             label="Subscription"
                             onPress={()=>{props.navigation.navigate("Subscription")}}
                         />
+                        <DrawerItem
+                            icon={({color, size}) => (
+                                <Icon
+                                    name="home-outline"
+                                    color={color}
+                                    size={size}
+                                />
+                            )}
+                            label="Profile"
+                            onPress={()=>{props.navigation.navigate("Profile")}}
+                        />
                         {/*<DrawerItem
                             icon={({color, size}) => (
                                 <Icon

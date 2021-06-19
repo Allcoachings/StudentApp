@@ -61,7 +61,7 @@ export function DrawerContent(props){
                                 />
                             )}
                             label="Lead"
-                            onPress={()=>{}}
+                            onPress={()=>{props.navigation.navigate("Leads")}}
                         />
                          <DrawerItem
                             icon={({color, size}) => (
