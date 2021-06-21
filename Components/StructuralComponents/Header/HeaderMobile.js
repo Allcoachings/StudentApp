@@ -4,9 +4,10 @@ import { Feather } from '@expo/vector-icons'
 import { theme ,appLogo} from '../../config';
 // import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 class HeaderMobile extends React.Component {
-    state = {  }
-    render() {
-        console.log(this.props.replaceHeader)
+    state = {   
+        search:false
+    }
+    render() { 
         return (
             // <KeyboardAwareScrollView>
             <View style={styles.container}>
@@ -14,23 +15,40 @@ class HeaderMobile extends React.Component {
                 this.props.headerComponent
             ):(
                 <>
-                    <TouchableOpacity style={{margin:"1%"}} onPress={this.props.btnHandler}>
+                    <TouchableOpacity style={{margin:"1%",marginRight:'auto'}} onPress={this.props.btnHandler}>
                         <Feather name={this.props.iconName} size={25} color={theme.secondaryColor}/>
                     </TouchableOpacity>
-                    <View style={styles.headerSearch}>
+                    
+                    
+                    {this.state.search?(
+                        <View style={styles.headerSearch}>
                             <TextInput 
                                 placeholder="Search Institute"
                                 style={styles.searchInput}
                                 onChangeText={(value)=>this.setState({search:value})}
                             />
-                            <Feather name="search" size={20} color={theme.secondaryColor} style={styles.searchIcon}/>
-                    </View>
-                    <View style={{flex:0.2}}>
-                        <Image
-                            source={appLogo}
-                            style={styles.headerLogo}
-                        />  
-                    </View>
+                            <TouchableOpacity  onPress={()=>this.setState({search:false})}>
+                                <Feather name="x" size={20} color={theme.secondaryColor} style={styles.searchIcon}/>
+                            </TouchableOpacity>
+                    </View> 
+                    ):(
+                        <>
+                            <View style={{flex:0.2,alignSelf: 'center',}}>
+                                <Image
+                                    source={appLogo}
+                                    style={styles.headerLogo}
+                                />  
+                            </View>
+                            <TouchableOpacity  style={{marginLeft:'auto'}} onPress={()=>this.setState({search:true})}>
+                                <Feather name="search" size={20} color={theme.secondaryColor} style={styles.searchIcon}/>
+                            </TouchableOpacity>
+                        </>
+                    )}
+                    <TouchableOpacity   onPress={()=>this.setState({search:true})}>
+                                <Feather name="bell" size={20} color={theme.secondaryColor} style={styles.notiIcon}/>
+                    </TouchableOpacity>
+                     
+                   
                 </>
                 
             )}
@@ -46,7 +64,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         backgroundColor:theme.primaryColor,
-        // justifyContent: 'center',
+        // justifyContent: 'space-between',
         alignItems: 'center'
     },
         headerSearch:
@@ -59,7 +77,8 @@ const styles = StyleSheet.create({
             borderRadius:10,
             flexDirection:"row",
             justifyContent:"space-between",
-            alignItems: 'center'
+            alignItems: 'center',
+            marginLeft:'auto'
         },
             searchInput:
             {
@@ -71,6 +90,10 @@ const styles = StyleSheet.create({
                 {
                     margin:15
                 },
+            notiIcon:
+            {
+                margin:5
+            },
             headerLogo:
             {
                 width:35,

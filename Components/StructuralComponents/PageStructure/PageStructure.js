@@ -8,17 +8,14 @@ import BottomTab from '../../BottomTab'
 import CardView from '../../Utils/CardView'
 class PageStructure extends React.Component {
     state = {  }
-    render() {
-        return (
+
+    renderHeader=() =>
+    {
+        return(
             <View style={styles.container}>
                 <View style={styles.containerMain}> 
-                    <View style={[styles.containerHeader,{flex:this.props.catInHeader?0.2:0.1},this.props.headerStyle]}>
-                        {CardView(
-                             <Header iconName={this.props.iconName} btnHandler={this.props.btnHandler} catInHeader={this.props.catInHeader} replaceHeader={this.props.replaceHeader} headerComponent={this.props.headerComponent}/> ,
-                             {width:'100%',paddingLeft:5,paddingRight:5}
-                        )}
-                           
-
+                    <View style={[styles.containerHeader,{flex:this.props.catInHeader?0.2:0.1},this.props.headerStyle]}> 
+                        <Header iconName={this.props.iconName} btnHandler={this.props.btnHandler} catInHeader={this.props.catInHeader} replaceHeader={this.props.replaceHeader} headerComponent={this.props.headerComponent}/>  
                     </View>
                     <View style={[styles.pageLayout,this.props.screenWidth<=screenMobileWidth?({   margin:'2%'}):(null)]}> 
                         {this.props.screenWidth>screenMobileWidth?(
@@ -42,9 +39,34 @@ class PageStructure extends React.Component {
                   
                 </View>
             </View>
-        );
+ 
+        )
+    }
+
+
+    switchRender=(scrollMode)=>{
+            switch(scrollMode)
+            {
+                case 'scroll':    
+                    return(
+                        <ScrollView>
+                            {this.renderHeader()}
+                        </ScrollView>
+                    )
+                default: 
+                        return this.renderHeader()
+            }
+
+    }
+    render() {
+        return (
+            this.switchRender(this.props.scrollMode)
+            );
     }
 }
+
+
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -58,7 +80,8 @@ const styles = StyleSheet.create({
     },
         containerHeader:
         {
-            flex:0.1
+            flex:0.1,
+            borderBottomWidth:0.2,
         },
         pageLayout:
         {

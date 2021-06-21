@@ -96,6 +96,7 @@ class Home extends React.Component {
                 iconName={"menu"}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
                 catInHeader={true}
+                scrollMode={'scroll'}
             >
                 <View style={styles.container}> 
                     <View style={styles.mainContent}> 

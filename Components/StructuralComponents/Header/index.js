@@ -15,7 +15,7 @@ class index extends React.Component {
     renderTabItems=({item})=>
     {
         return (
-            <TouchableOpacity style={[styles.courseItemContainer,this.state.activeTab==item.id?({borderBottomColor:theme.accentColor,borderBottomWidth:2}):(null)]} onPress={()=>this.setState({activeTab:item.id})}> 
+            <TouchableOpacity style={[styles.courseItemContainer]} onPress={()=>this.setState({activeTab:item.id})}> 
                     <Text style={[styles.courseTitle,this.state.activeTab==item.id?({color:theme.accentColor}):({color:theme.greyColor})]}>{item.name}</Text>
             </TouchableOpacity>
         );
@@ -23,7 +23,7 @@ class index extends React.Component {
     render() {
         return (
             <ScrollView>
-                {CardView(
+            
                     <View style={styles.container}>
                         <View style={styles.headerRow}>
                             {this.props.screenWidth<=screenMobileWidth?
@@ -47,9 +47,7 @@ class index extends React.Component {
                             </View>
                         ):(null)} 
                     </View> 
-                    ,
-                    [{width:'100%'}]
-                )}
+                   
             </ScrollView>
         );
     }
@@ -61,7 +59,7 @@ const styles = StyleSheet.create({
     {
         flex:1,
         flexDirection: 'column',
-        margin:3
+        margin:3, 
     },
         headerRow:
         {
@@ -69,7 +67,7 @@ const styles = StyleSheet.create({
             
         },
         catRow:{
-            // borderBottomWidth:0.2,
+            borderTopWidth:0.2,
             // borderBottomColor:theme.labelOrInactiveColor
         },
             courseItemContainer:
@@ -78,7 +76,9 @@ const styles = StyleSheet.create({
                 paddingRight:10, 
                 marginRight:10,
                 padding:5,
-                marginTop:5 
+                marginTop:5 ,
+                borderWidth:1, 
+                borderRadius:15
             },
                 courseTitle:
                 {
