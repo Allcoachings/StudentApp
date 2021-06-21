@@ -18,10 +18,10 @@ class UserProfile extends React.Component {
 
     closeModal = () => {
         this.setState({ isModalVisible: false});
-      }
-      openModal = () => {
+    }
+    openModal = () => {
         this.setState({ isModalVisible: true });
-      }
+    }
 
       header=() => {
           return(
