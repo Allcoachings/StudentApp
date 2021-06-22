@@ -15,7 +15,15 @@ class PageStructure extends React.Component {
             <View style={styles.container}>
                 <View style={styles.containerMain}> 
                     <View style={[styles.containerHeader,{flex:this.props.catInHeader?0.2:0.1},this.props.headerStyle]}> 
-                        <Header iconName={this.props.iconName} btnHandler={this.props.btnHandler} catInHeader={this.props.catInHeader} replaceHeader={this.props.replaceHeader} headerComponent={this.props.headerComponent}/>  
+                        <Header 
+                        iconName={this.props.iconName}
+                        btnHandler={this.props.btnHandler}
+                        catInHeader={this.props.catInHeader}
+                        replaceHeader={this.props.replaceHeader}
+                        headerComponent={this.props.headerComponent}
+                        titleonheader={this.props.titleonheader}
+                        notificationreplaceshare={this.props.notificationreplaceshare}
+                        />  
                     </View>
                     <View style={[styles.pageLayout,this.props.screenWidth<=screenMobileWidth?({   margin:'2%'}):(null)]}> 
                         {this.props.screenWidth>screenMobileWidth?(

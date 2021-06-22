@@ -59,10 +59,12 @@ class SubscriptionNew extends React.Component {
             <PageStructure
                 iconName={"menu"}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
+                titleonheader={"Subscription"}
+                notificationreplaceshare={"share-2"}
             >
                 <ScrollView>
                     <View style={styles.container}>
-                        <View style={styles.headView}>
+                        {/* <View style={styles.headView}>
                             <TouchableOpacity onPress={null}>
                                 <Feather name="chevron-left" size={26} />
                             </TouchableOpacity>
@@ -72,7 +74,7 @@ class SubscriptionNew extends React.Component {
                             <TouchableOpacity onPress={null}>
                                 <Feather name="share-2" size={22} />
                             </TouchableOpacity>
-                        </View>
+                        </View> */}
                         <FlatList 
                             data={subscriptionNew} 
                             renderItem={this.singleRow} 

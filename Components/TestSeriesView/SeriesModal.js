@@ -24,7 +24,7 @@ class SeriesModal extends React.Component {
     const { isModalVisible,closeModal } = this.props;
     return (
           CardView(<Modal
-            animationType="slide"
+            animationType="fade"
             transparent={true}
             visible={isModalVisible}
             onRequestClose={closeModal}>

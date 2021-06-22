@@ -61,14 +61,15 @@ class CategoryList extends React.Component {
     render() {
         return(
             <PageStructure
-                iconName={"menu"}
+                iconName={"arrow-left"}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
+                titleonheader={"UPSC Coaching"}
             >
             <ScrollView>
             <View style={styles.container}>
-                <View style={styles.headerView}>
+                {/* <View style={styles.headerView}>
                     <Text style={styles.headText}>UPSC Coaching</Text>
-                </View>
+                </View> */}
 
                 <FlatList 
                     data={homeFeaturesData}  
@@ -111,14 +112,14 @@ const styles = StyleSheet.create({
                 instituteItemContainer:
                 {
                     flexDirection:'column',
-                    width:120,
+                    width:102,
                     height:180,
                     marginLeft:10,
                     marginTop:10
                 },
                     instituteItemImage:
                     {
-                        width:120,
+                        width:102,
                         height:100,
                         borderRadius:15
                     },
@@ -131,7 +132,7 @@ const styles = StyleSheet.create({
                         {
                             flexWrap:'wrap',
                             width:'100%', 
-                            fontSize:12
+                            fontSize:8
                         },
                         instituteRating:
                         {

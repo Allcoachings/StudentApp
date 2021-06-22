@@ -88,9 +88,11 @@ const styles = StyleSheet.create({
                 flexDirection: 'row', 
                 alignItems: 'center', 
                 marginLeft: 10,
+                borderTopWidth:0.2,
             },
                 rowHeadText:
                 {
+                    
                     fontSize: 16, 
                     fontWeight:'700'
                 },

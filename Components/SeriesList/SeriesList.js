@@ -46,17 +46,19 @@ class SeriesList extends React.Component {
     render(){
         return(
             <PageStructure
-                iconName={"menu"}
+                iconName={"arrow-left"}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
                 catInHeader={true}
+                titleonheader={"UPSC CSE"}
+                notificationreplaceshare={"share-2"}
             >
                <ScrollView>
                     <View style={styles.main}>
-                        <View style={styles.headTitleView}>
+                        {/* <View style={styles.headTitleView}>
                             <Text></Text>
                             <Text style={styles.title}>UPSC CSE</Text>
                             <Feather name="share-2" size={18} style={{marginRight: 10}}/>
-                        </View>
+                        </View> */}
                         <View style={styles.rowContainer}>
                             <FlatList 
                                 data={this.props.route.params.banner} 

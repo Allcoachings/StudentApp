@@ -21,9 +21,9 @@ class TestSeriesView extends React.Component {
             // CardView(
                 <View style={styles.headerSection}>
                     <View style={styles.headerRowSection}>
-                        <View style={styles.timer}>
+                        {/* <View style={styles.timer}>
                             <Text style={styles.timerText}>11:20:22</Text>
-                        </View>
+                        </View> */}
                         <View style={styles.quizNameView}>
                             <Text style={styles.quizName}>IBPS PO Prelims Mock Test 1</Text>
                         </View>
@@ -222,7 +222,8 @@ const styles = StyleSheet.create({
                     },
                 quizNameView:
                 {
-                    marginRight: 5
+                    marginRight: 5,
+                    marginLeft: 30,
                 },
                     quizName:
                     {
@@ -340,16 +341,18 @@ const styles = StyleSheet.create({
             },
             optionRow:{
                 flex: 1,
-                flexDirection: 'row',
+                // flexDirection: 'row',
                 justifyContent: 'space-evenly',
-                marginTop: 10
+                // marginTop: 10
             },
                 singleOptionView:{
                     backgroundColor: theme.labelOrInactiveColor,
                     padding: 10,
                     borderRadius: 5,
                     flexDirection: 'row',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    marginTop: 20,
+                    marginHorizontal: 20,
                 },
                     optionAns:{
                         height: 25,

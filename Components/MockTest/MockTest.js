@@ -78,10 +78,10 @@ class ResultAnalysis extends React.Component {
      }
     render() {
         return( 
-            <PageStructure
-                iconName={"menu"}
-                btnHandler={() => {this.props.navigation.toggleDrawer()}}
-            >
+            // <PageStructure
+            //     iconName={"menu"}
+            //     btnHandler={() => {this.props.navigation.toggleDrawer()}}
+            // >
                 <View style={styles.container}>
                     <FlatList
                         data={MockTest}
@@ -94,7 +94,7 @@ class ResultAnalysis extends React.Component {
                         </TouchableOpacity>
                     </View>
                 </View> 
-            </PageStructure>
+            // </PageStructure>
         )
     }
 }

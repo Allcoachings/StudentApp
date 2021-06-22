@@ -137,7 +137,8 @@ const styles = StyleSheet.create({
                     marginLeft: 10
                 },
                     rowHeaderTitle:
-                    {
+                    {   
+                        color: theme.greyColor,
                         fontSize:18,
                         fontWeight:'bold'
                     },
@@ -148,15 +149,15 @@ const styles = StyleSheet.create({
                     instituteItemContainer:
                     {
                         flexDirection:'column',
-                        width:120,
+                        width:85,
                         height:180,
                         marginLeft:10,
                         marginTop:10
                     },
                         instituteItemImage:
                         {
-                            width:120,
-                            height:100,
+                            width:80,
+                            height:85,
                             borderRadius:15
                         },
                         instituteMetaContainer:
@@ -168,7 +169,7 @@ const styles = StyleSheet.create({
                             {
                                 flexWrap:'wrap',
                                 width:'100%', 
-                                fontSize:12
+                                fontSize:8
                             },
                             instituteRating:
                             {

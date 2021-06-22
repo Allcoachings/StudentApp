@@ -819,6 +819,32 @@ export const instituteData =
     ]
 }
 
+
+export const insBanners= [
+    {
+        id: '1',
+        image: { uri: 'https://static.thenounproject.com/png/187803-200.png' },
+        clickHandler: () => { },
+    }, {
+        id: '2',
+        image: { uri: 'https://picsum.photos/200/300' },
+        clickHandler: () => { },
+    }, {
+        id: '3',
+        image: { uri: 'https://picsum.photos/200/300' },
+        clickHandler: () => { },
+    }, {
+        id: '4',
+        image: { uri: 'https://picsum.photos/200/300' },
+        clickHandler: () => { },
+    }, {
+        id: '5',
+        image: { uri: 'https://picsum.photos/200/300' },
+        clickHandler: () => { },
+    },
+]
+
+
 export const testSeriesData =[
 {
     id: '1',

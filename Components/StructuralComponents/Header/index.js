@@ -28,7 +28,12 @@ class index extends React.Component {
                         <View style={styles.headerRow}>
                             {this.props.screenWidth<=screenMobileWidth?
                             (
-                                <HeaderMobile iconName={this.props.iconName} replaceHeader={this.props.replaceHeader} headerComponent={this.props.headerComponent} btnHandler={this.props.btnHandler}/>
+                                <HeaderMobile iconName={this.props.iconName}
+                                titleonheader={this.props.titleonheader} 
+                                replaceHeader={this.props.replaceHeader} 
+                                headerComponent={this.props.headerComponent} 
+                                btnHandler={this.props.btnHandler} 
+                                notificationreplaceshare={this.props.notificationreplaceshare} />
                             )
                             :
                             (

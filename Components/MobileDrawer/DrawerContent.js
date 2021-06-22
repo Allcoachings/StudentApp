@@ -10,13 +10,16 @@ export function DrawerContent(props){
         <View style={{flex: 1, width: '100%'}}>
             <DrawerContentScrollView {...props}>
                 <View style={styles.drawerContent}>
+                    <View>
+                        <Text style={{color: theme.greyColor, textAlign: 'right', marginRight: 20,}}>Manage Category</Text>
+                    </View>
                     <View style={styles.userInfoSection}>
-                        <View style={{marginTop: '5%'}}>
+                        <View>
                             <Avatar.Image source={{ uri: 'https://picsum.photos/200' }}  size={80}/>
                         </View>
                         <View style={styles.userNameSec}>
                             <Title>Amit Kumar</Title>
-                            <Caption>Manage Category</Caption>
+                            <Text style={{color: theme.greyColor}}>@amit_kumar87</Text>
                         </View>
                     </View>
                     <Drawer.Section>
@@ -30,6 +33,7 @@ export function DrawerContent(props){
                             )}
                             label="Home"
                             onPress={()=>{props.navigation.navigate("Home")}}
+                            style={{borderBottomWidth: 0.2, borderColor: theme.greyColor}}
                         />
                         <DrawerItem
                             icon={({color, size}) => (
@@ -41,6 +45,7 @@ export function DrawerContent(props){
                             )}
                             label="Auth"
                             onPress={()=>{props.navigation.navigate("Auth")}}
+                            style={{borderBottomWidth: 0.2, borderColor: theme.greyColor}}
                         />
                          <DrawerItem
                             icon={({color, size}) => (
@@ -52,6 +57,7 @@ export function DrawerContent(props){
                             )}
                             label="Test Series"
                             onPress={()=>{props.navigation.navigate("TestSeries")}}
+                            style={{borderBottomWidth: 0.2, borderColor: theme.greyColor}}
                         />
 
                         <DrawerItem
@@ -64,6 +70,7 @@ export function DrawerContent(props){
                             )}
                             label="Subscription"
                             onPress={()=>{props.navigation.navigate("Subscription")}}
+                            style={{borderBottomWidth: 0.2, borderColor: theme.greyColor}}
                         />
                         <DrawerItem
                             icon={({color, size}) => (
@@ -75,6 +82,7 @@ export function DrawerContent(props){
                             )}
                             label="Profile"
                             onPress={()=>{props.navigation.navigate("Profile")}}
+                            style={{borderBottomWidth: 0.2, borderColor: theme.greyColor}}
                         />
                         {/*<DrawerItem
                             icon={({color, size}) => (
@@ -131,6 +139,7 @@ export function DrawerContent(props){
                             )}
                             label="Solutions"
                             onPress={()=>{props.navigation.navigate("Solution")}}
+                            style={{borderBottomWidth: 0.2, borderColor: theme.greyColor}}
                         />
                         <DrawerItem
                             icon={({color, size}) => (
@@ -142,6 +151,7 @@ export function DrawerContent(props){
                             )}
                             label="Result Analysis"
                             onPress={()=>{props.navigation.navigate("ResultAnalysis")}}
+                            style={{borderBottomWidth: 0.2, borderColor: theme.greyColor}}
                         />
                         <DrawerItem
                             icon={({color, size}) => (
@@ -154,6 +164,7 @@ export function DrawerContent(props){
                             label="Feed"
                             onPress={()=>{props.navigation.navigate("Feed")}}
                             style={styles.drawerItem}
+                            style={{borderBottomWidth: 0.2, borderColor: theme.greyColor}}
                         />
                         <DrawerItem
                             icon={({color, size}) => (
@@ -198,13 +209,16 @@ const styles = StyleSheet.create({
     },
         userInfoSection:
         {
-            justifyContent: 'center',
-            alignItems: 'center'
+            flexDirection: 'row',
+            // justifyContent: 'center',
+            // alignItems: 'center'
+            marginHorizontal: 10,
         },
             userNameSec:
             {
                 justifyContent: 'center',
-                alignItems: 'center'
+                // alignItems: 'center'
+                marginLeft: 10,
             },
             drawerItem:
             {

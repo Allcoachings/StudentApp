@@ -33,11 +33,19 @@ class HeaderMobile extends React.Component {
                     </View> 
                     ):(
                         <>
-                            <View style={{flex:0.2,alignSelf: 'center',}}>
-                                <Image
+                            <View>
+                                {this.props.titleonheader?(
+                                   
+                                    <Text style={{fontSize: 18, fontWeight: 'bold', marginLeft: -60,}}>{this.props.titleonheader}</Text>
+                                  
+                                ):(
+                                    <Image
                                     source={appLogo}
                                     style={styles.headerLogo}
-                                />  
+                                />
+                                )}
+                                
+                                
                             </View>
                             <TouchableOpacity  style={{marginLeft:'auto'}} onPress={()=>this.setState({search:true})}>
                                 <Feather name="search" size={20} color={theme.secondaryColor} style={styles.searchIcon}/>
@@ -45,7 +53,11 @@ class HeaderMobile extends React.Component {
                         </>
                     )}
                     <TouchableOpacity   onPress={()=>this.setState({search:true})}>
+                               {this.props.notificationreplaceshare?(
+                                <Feather name={this.props.notificationreplaceshare} size={20} color={theme.secondaryColor} style={styles.notiIcon}/>
+                               ):(
                                 <Feather name="bell" size={20} color={theme.secondaryColor} style={styles.notiIcon}/>
+                               )}
                     </TouchableOpacity>
                      
                    

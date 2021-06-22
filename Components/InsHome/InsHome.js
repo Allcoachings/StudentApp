@@ -1,7 +1,7 @@
 import React from 'react';
-import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity } from 'react-native';
+import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity, Modal, TextInput } from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import {instituteData} from '../../FakeDataService/FakeData'
+import {instituteData, insBanners} from '../../FakeDataService/FakeData'
 import { Rating } from 'react-native-ratings';
 import {theme,screenMobileWidth} from '../config'
 import CardView from '../Utils/CardView';
@@ -19,7 +19,9 @@ class InsHome extends React.Component {
         addVideo: false,
         addPdf: false,
         addTest: false,
-        activeSections: []
+        activeSections: [],
+        isAddCourseModalVisible: false,
+        
      }
 
     renderCourseItems=({item})=>
@@ -323,6 +325,7 @@ class InsHome extends React.Component {
         {
             this.props.navigation.navigate("AddDocument")
         }
+        
     }
 
     showFilters=(tab)=>{
@@ -439,6 +442,16 @@ class InsHome extends React.Component {
         }
     }
 
+
+    openAddCourseModal = ()=>{
+        this.setState({ isAddCourseModalVisible: true});
+    }
+    closeAddCourseModal = ()=>{
+        this.setState({ isAddCourseModalVisible: false});
+    }
+
+
+
     render() {
         console.log(this.state.activeTab)
         return (
@@ -447,6 +460,7 @@ class InsHome extends React.Component {
             iconName={"menu"}
             btnHandler={() => {this.props.navigation.toggleDrawer()}}
             catInHeader={true}
+            titleonheader={"Dashboard"}
         > 
             <ScrollView>
                 <View style={styles.container}>
@@ -493,7 +507,73 @@ class InsHome extends React.Component {
                                     <Text style={styles.btnText}>Feed</Text>
                                 </View>
                             </View>
+
+
+                            <Modal animationType = {"fade"} transparent = {false}
+                            visible = {this.state.isAddCourseModalVisible}
+                            onRequestClose = {() => { console.log("Modal has been closed.") } }>
+                            
+                            <ScrollView>
+                            <View style={styles.headView}>
+                                <Text style={styles.headText}>Add Course</Text>
+                            </View>
+                            <View style={styles.inputView}>
+                                    <Text style={styles.labelText}>Course Title</Text>
+                                    {CardView(
+                                        <TextInput 
+                                            placeholderTextColor={theme.greyColor} 
+                                            placeholder="Title" 
+                                            defaultValue={this.props.description} 
+                                            onChangeText={(text)=>this.setState({title: text})} 
+                                            style={styles.inputField}
+                                        />, {borderRadius: 10}
+                                    )}
+                            </View>
+                            <View style={styles.inputView}>
+                                    <Text style={styles.labelText}>Course Description</Text>
+                                    {CardView(
+                                        <TextInput 
+                                            placeholderTextColor={theme.greyColor} 
+                                            placeholder="Description" 
+                                            onChangeText={(text)=>this.setState({description: text})} 
+                                            multiline={true} 
+                                            numberOfLines={3} 
+                                            style={styles.inputField}
+                                        />, {borderRadius: 10}
+                                    )}
+                            </View>
+                            <View style={styles.inputView}>
+                                    <Text style={styles.labelText}>Course</Text>
+                                    {CardView(
+                                        <TextInput 
+                                            placeholderTextColor={theme.greyColor} 
+                                            placeholder="Add Video" 
+                                            onChangeText={(text)=>this.setState({fees: text})} 
+                                            multiline={true} 
+                                            numberOfLines={4} 
+                                            style={styles.inputField}
+                                        />, {borderRadius: 10}
+                                    )}
+                            </View>
+                            <View style={styles.btnView}>
+                                <TouchableOpacity style={styles.submitButton}>
+                                        <Text style={styles.submitButtonText}>Submit</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.addMoreButton}>
+                                        <Text style={styles.addMoreButtonText}>Add More+</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </ScrollView>
+                           
+
+                            </Modal>
+
+
                             <View style={styles.InstituteCourseListView}>
+                                <TouchableOpacity style={{marginTop: 20, borderWidth: 1, borderColor: theme.secondaryColor, marginRight: 10, borderRadius:10, paddingHorizontal: 10,}} onPress={()=>this.openAddCourseModal()}>
+                                    <Text>Add Course</Text>
+                                </TouchableOpacity>
+
                                 <FlatList 
                                     data={instituteData.courses} 
                                     renderItem={this.renderCourseItems}
@@ -504,7 +584,7 @@ class InsHome extends React.Component {
                             </View>
                             <View style={styles.rowContainer}>
                                 <FlatList 
-                                    data={instituteData.banners} 
+                                    data={insBanners} 
                                     renderItem={this.renderBannerList} 
                                     keyExtractor={(item)=>item.id}
                                     horizontal={true} 
@@ -567,10 +647,12 @@ const styles = StyleSheet.create({
                 logoCard:
                 { 
                     flexWrap:'wrap',
+                    borderRadius: 10,
                  
                 }, 
                     instituteheaderLogo:
-                    {
+                    {   
+                        borderRadius: 10,
                         width:"100%",
                         height:"100%",
                     },  
@@ -647,7 +729,7 @@ const styles = StyleSheet.create({
                         paddingRight: 10,
                         paddingTop: 5,
                         paddingBottom: 5,
-                        backgroundColor:theme.accentColor,
+                        backgroundColor:theme.greyColor,
                         borderRadius: 5,
                         margin: 2,
                         justifyContent:'center',
@@ -660,7 +742,7 @@ const styles = StyleSheet.create({
                         paddingRight: 10,
                         paddingTop: 5,
                         paddingBottom: 5,
-                        backgroundColor:theme.accentColor,
+                        backgroundColor:theme.greyColor,
                         borderRadius: 5,
                         margin: 2,
                         justifyContent:'center',
@@ -671,6 +753,11 @@ const styles = StyleSheet.create({
                             fontSize: 16,
                             color: theme.primaryColor
                         },
+                
+                InstituteCourseListView:{
+                    flexDirection: 'row'
+                },
+
                 courseItemContainer:
                 {
                     borderColor:theme.secondaryColor,
@@ -1008,7 +1095,73 @@ const styles = StyleSheet.create({
     {
         fontSize: 20, 
         marginTop: 10
-    }
+    },
+
+
+    // add course css
+
+    headView:
+    {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
+        headText:
+        {
+            marginTop:10,
+            fontSize: 24,
+            fontWeight: 'bold',
+            color: theme.secondaryColor
+        },
+    inputView: {
+        marginTop:'5%',
+        display: 'flex',
+        flexDirection: 'column',
+        marginLeft: 10
+    },
+        labelText: {
+            fontSize: 18,
+            fontWeight: '700',
+            color: theme.secondaryColor,
+            marginBottom: 10,
+        },
+        inputField:
+        {
+            padding:10,
+            fontSize: 16
+        },
+    btnView:
+    {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: 10
+    },
+        submitButton:
+        {
+            borderRadius: 10,
+            backgroundColor:theme.accentColor,
+            padding: 10,
+            marginRight:10
+        },
+            submitButtonText:
+            {
+                color: theme.primaryColor
+            },
+        addMoreButton:
+        {
+            borderRadius: 10,
+            backgroundColor:theme.addMoreButtonColor,
+            padding: 10,
+            marginLeft: 10
+        },
+            addMoreButtonText:
+            {
+                color: theme.primaryColor
+            },
+
+
+    // add course css end
 
 });
 
