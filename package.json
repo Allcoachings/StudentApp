@@ -25,20 +25,25 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-41.0.0.tar.gz",
+    "react-native-app-intro-slider": "^4.0.4",
     "react-native-collapsible": "^1.6.0",
     "react-native-document-picker": "^5.0.4",
     "react-native-dropdown-picker": "^5.1.21",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-keyboard-aware-scrollview": "^2.1.0",
     "react-native-marquee": "^0.3.2",
+    "react-native-onboarding-swiper": "^1.1.4",
     "react-native-pager-view": "^5.1.9",
     "react-native-paper": "^4.8.1",
+    "react-native-phone-input": "^1.0.10",
+    "react-native-phone-number-input": "^2.1.0",
     "react-native-progress": "^4.1.2",
     "react-native-ratings": "^8.0.4",
     "react-native-reanimated": "~2.1.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.0.0",
     "react-native-shadow-cards": "^1.0.2",
+    "react-native-slider-intro": "^1.0.21",
     "react-native-svg": "12.1.0",
     "react-native-svg-transformer": "^0.14.3",
     "react-native-swipe-gestures": "^1.0.5",
@@ -50,7 +55,9 @@
     "redux": "^4.0.5"
   },
   "devDependencies": {
-    "@babel/core": "~7.9.0"
+    "@babel/core": "~7.9.0",
+    "@types/react-native": "~0.63.2",
+    "typescript": "~4.0.0"
   },
   "private": true
 }

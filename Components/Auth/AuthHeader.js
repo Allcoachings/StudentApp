@@ -1,17 +1,19 @@
 import React from 'react';
 import { StyleSheet,View,Text,Image} from 'react-native';
-import {appName,appLogo} from '../config'
+import {appName,appLogo,logoName} from '../config'
+import CardView from '../Utils/CardView'
 class AuthHeader extends React.Component {
     state = {  }
     render() {
+    
         return (
             <View style={styles.container}>
+            {CardView
+            (
                 <View style={styles.headerBranding}>
-                    <Image source={appLogo} style={styles.brandingImage} />
-                    <Text style={styles.brandingText}>
-                        {appName}
-                    </Text>
+                    <Image source={logoName} style={styles.brandingImage} />
                 </View>
+            ,{borderRadius:40,width:220,height:60})}
             </View>
         );
     }
@@ -35,8 +37,8 @@ const styles = StyleSheet.create({
         },
             brandingImage: 
             {
-                width:50,
-                height:50
+                width:200,
+                height:70
             },
             brandingText:
             {
