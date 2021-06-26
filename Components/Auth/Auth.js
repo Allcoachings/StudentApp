@@ -1,16 +1,23 @@
 import React from 'react';
-import { Text,StyleSheet,View,TouchableOpacity,ScrollView,Platform} from 'react-native';
+import { Text,StyleSheet,View,TouchableOpacity,ScrollView,Platform,Image,Dimensions} from 'react-native';
 import {connect} from 'react-redux'
 import {screenMobileWidth} from '../config'
 import AuthHeader from './AuthHeader';
 import Login from './Login';
 import Signup from './Signup';
 import {theme} from '../config'
+import Card from './Card';
+import InfoModal from './InfoModal';
 // import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import SocialAuth from './SocialAuth';
+// import Onboarding from 'react-native-onboarding-swiper';
+import Splash from  './Splash';
+const width = Dimensions.get('window').width
+const height = Dimensions.get('screen').height
 class Auth extends React.Component {
     state = { 
-        auth_mode: 0
+        auth_mode: 0,
+        isModalVisible: false,
       } 
 
 
@@ -31,7 +38,10 @@ class Auth extends React.Component {
                 )
         }
     }
-
+    openModal = ()=> 
+    {
+        this.setState({isModalVisible:true})
+    }
     authModeButton=(label, changeHandler_param)=>
     {
         return (
@@ -44,26 +54,29 @@ class Auth extends React.Component {
     render() { 
         return (
             
-            <ScrollView>
+            <ScrollView >
                     <View style={styles.container}> 
                         <View style={[styles.authContainer,{flex:this.props.screenWidth<=screenMobileWidth?1:0.5}]}>
                                 <View>
                                     <AuthHeader/>
                                 </View>
-                                <View style={styles.authSection}>
+                                {/* <View style={styles.authSection}>
                                     <View style={styles.authModes}> 
-                                      
                                             {this.authModeButton("Login",0)}
                                        
-                                            {this.authModeButton("Sign up",1)}
+                                            {this.authModeButton("Sign up",1)} 
                                        
                                     </View>
                                     <View style={{paddingBottom:Platform.OS=='web'?10:2}}>
-                                        {this.renderAuthView(this.state.auth_mode)}
+                                         {this.renderAuthView(this.state.auth_mode)} 
                                     </View>
+                                </View> */}
+                                <View style={{marginTop:5}}>
+                                    <Splash />
                                 </View>
-                                <View style={{marginTop:'auto',marginBottom:10}}>
-                                    <SocialAuth/>
+                                
+                                <View style={{marginTop:-(height*0.38),marginBottom:10,}}>
+                                    <Card openModal={this.openModal}/>
                                 </View>
         
                         </View>
@@ -73,6 +86,7 @@ class Auth extends React.Component {
                         </View>
                     )} 
                     </View>
+                    <InfoModal isModalVisible={this.state.isModalVisible} />
             </ScrollView>
         );
     }
@@ -82,11 +96,13 @@ const styles = StyleSheet.create({
     container: {
         flex:1,
         flexDirection: 'row',
-        backgroundColor:theme.appBackgroundColor
+        backgroundColor:'#ffe6ff',
+        // paddingTop:-10
     },
         authContainer:
         {   
-            flexDirection:'column'
+            flexDirection:'column',
+            backgroundColor: '#ffe6ff'
         },
         authSection:
         {
