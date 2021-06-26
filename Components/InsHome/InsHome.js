@@ -1,7 +1,7 @@
 import React from 'react';
-import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity } from 'react-native';
+import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity, Modal, TextInput } from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import {instituteData} from '../../FakeDataService/FakeData'
+import {instituteData, insBanners} from '../../FakeDataService/FakeData'
 import { Rating } from 'react-native-ratings';
 import {theme,screenMobileWidth} from '../config'
 import CardView from '../Utils/CardView';
@@ -11,17 +11,135 @@ import {connect} from 'react-redux'
 import { List } from 'react-native-paper';
 import Review from '../ReviewAndRatings/Review'
 import Accordian from '../Utils/Accordian'
+import MockTest from '../MockTest/MockTest'
+
 class InsHome extends React.Component {
+    
     state = { 
+        tabtoshow: 1,
         activeTab: 'videos',
         activeCourse:'1',
         activeFilter: '',
         addVideo: false,
         addPdf: false,
         addTest: false,
-        activeSections: []
+        activeSections: [],
+        isAddCourseModalVisible: false,
+        
      }
 
+     renderImagePost=() => {
+        return(
+            CardView(
+                <View style={styles.boxView}>
+                    <View style={styles.rowView}>
+                        <View style={styles.circleView} />
+                        <Text style={styles.coaching}>Saket IAS Allahabad</Text>
+                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
+                    </View>
+                    <View style={styles.timeDateView}>
+                        <Text style={styles.timeDateText}>4:00 AM</Text>
+                        <Text style={styles.timeDateText}>28/05/2021</Text>
+                    </View>
+                    <View style={styles.innerBoxView}>
+                        <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.img}/>
+                        <View style={styles.bottomRowContainer}>
+                            <View style={styles.likeView}>
+                                <Feather name="thumbs-up" size={18} />
+                                <Text style={styles.text}>Like</Text>
+                            </View>
+                            <View style={styles.likeView}>
+                                <Feather name="message-square" size={18} />
+                                <Text style={styles.text}>Comment</Text>
+                            </View>
+                            <View style={styles.likeView}>
+                                <Feather name="send" size={18} />
+                                <Text style={styles.text}>Share</Text>
+                            </View>
+                        </View>
+                    </View>
+                </View>,{width: '100%', padding: 6, marginBottom: 10}
+            )
+        )
+    }
+
+    renderQuizPost=() => {
+        return(
+            CardView(
+                <View style={styles.boxView}>
+                    <View style={styles.rowView}>
+                        <View style={styles.circleView} />
+                        <Text style={styles.coaching}>Chandra Institute Allahabad</Text>
+                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
+                    </View>
+                    <View style={styles.timeDateView}>
+                        <Text style={styles.timeDateText}>4:00 AM</Text>
+                        <Text style={styles.timeDateText}>28/05/2021</Text>
+                    </View>
+                    <View style={styles.innerBoxView}>
+                        <Text style={{fontSize: 18, marginBottom: 10}}>In 1768, Captain James Cook set out to explore which ocean?</Text>
+                        <View Style={{display: 'flex', flexDirection: 'column'}}>
+                            <Text style={{fontSize: 16, marginTop: 3}}>Pacific Ocean</Text>
+                            <Text style={{fontSize: 16, marginTop: 3}}>Atlantic Ocean</Text>
+                            <Text style={{fontSize: 16, marginTop: 3}}>Indian Ocean</Text>
+                            <Text style={{fontSize: 16, marginTop: 3}}>Arctic Ocean</Text>
+                        </View>
+
+                        <View style={styles.bottomRowContainer}>
+                            <View style={styles.likeView}>
+                                <Feather name="thumbs-up" size={18} />
+                                <Text style={styles.text}>Like</Text>
+                            </View>
+                            <View style={styles.likeView}>
+                                <Feather name="message-square" size={18} />
+                                <Text style={styles.text}>Comment</Text>
+                            </View>
+                            <View style={styles.likeView}>
+                                <Feather name="send" size={18} />
+                                <Text style={styles.text}>Share</Text>
+                            </View>
+                        </View>
+                    </View>
+                </View>,{width: '100%', padding: 6, marginBottom: 10}
+            )
+        )
+    }
+
+
+    renderTextPost=() => {
+        return(
+            CardView(
+                <View style={styles.boxView}>
+                    <View style={styles.rowView}>
+                        <View style={styles.circleView} />
+                        <Text style={styles.coaching}>Test Coachings</Text>
+                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
+                    </View>
+                    <View style={styles.timeDateView}>
+                        <Text style={styles.timeDateText}>4:00 AM</Text>
+                        <Text style={styles.timeDateText}>28/05/2021</Text>
+                    </View>
+                    <View style={styles.innerBoxView}>
+                        <Text style={{fontSize: 18, marginBottom: 5}}>Covid Live News Updates: AstraZeneca shots should be halted for over-60s too, says European Medicines Agency</Text>
+                        <View style={styles.bottomRowContainer}>
+                            <View style={styles.likeView}>
+                                <Feather name="thumbs-up" size={18} />
+                                <Text style={styles.text}>Like</Text>
+                            </View>
+                            <View style={styles.likeView}>
+                                <Feather name="message-square" size={18} />
+                                <Text style={styles.text}>Comment</Text>
+                            </View>
+                            <View style={styles.likeView}>
+                                <Feather name="send" size={18} />
+                                <Text style={styles.text}>Share</Text>
+                            </View>
+                        </View>
+                    </View>
+                </View>,{width: '100%', padding: 6, marginBottom: 10}
+            )
+        )
+    }
     renderCourseItems=({item})=>
     {
         return (
@@ -261,12 +379,13 @@ class InsHome extends React.Component {
             <Accordian
                 header={this.accordianHeader(item.subject," ","chevron-down")}
             > 
-                <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin:5, paddingLeft:20, paddingRight:20}}>
+                {/* <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin:5, paddingLeft:20, paddingRight:20}}>
                     <Text style={{fontSize: 16, fontWeight: 'bold'}}>Date</Text>
                     <Text style={{fontSize: 16, fontWeight: 'bold'}}>Time</Text>
                     <Text style={{fontSize: 16, fontWeight: 'bold'}}>Teacher</Text>
-                </View>
-                {CardView(
+                </View> */}
+                <MockTest />
+                {/* {CardView(
                     <FlatList 
                         data={item.date} 
                         renderItem={({item}) =>this.renderItem(item)}
@@ -274,20 +393,20 @@ class InsHome extends React.Component {
                         horizontal={false}
                         showsHorizontalScrollIndicator={false}
                     />,{width:'95%', padding:10, margin:5}
-                )}
+                )} */}
             </Accordian>
         )
     }
-
-    renderTimeTable=({item})=>{
+    renderTimeTable=(item)=>{
         return(
-            <Accordian
-                header={this.accordianHeader(item.title, " ", "chevron-down")}
-            >
+            // <Accordian
+            //     header={this.accordianHeader(item.title, " ", "chevron-down")}
+            // >
+            <>
                 <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', marginTop: '5%'}} onPress={()=>this.props.navigation.navigate("AddTimeTable")}>
                     <Text style={{fontSize: 18, fontWeight: 'bold'}}>Add Time Table+</Text>
                 </TouchableOpacity>
-                <View style={styles.weekView}> 
+                  <View style={styles.weekView}> 
                     <FlatList 
                         data={item.data} 
                         renderItem={({item}) =>this.renderTestItem(item)}
@@ -295,8 +414,9 @@ class InsHome extends React.Component {
                         horizontal={false}
                         showsHorizontalScrollIndicator={false}
                     />
-                </View>
-            </Accordian>
+                 </View>
+         
+            </>
 
 
         )
@@ -323,6 +443,7 @@ class InsHome extends React.Component {
         {
             this.props.navigation.navigate("AddDocument")
         }
+        
     }
 
     showFilters=(tab)=>{
@@ -429,71 +550,38 @@ class InsHome extends React.Component {
                                         showsHorizontalScrollIndicator={false}
                                     />)
             case 'timeTable':    return(
-                                    <FlatList 
-                                        data={instituteData.timeTable} 
-                                        renderItem={this.renderTimeTable}
-                                        keyExtractor={(item)=>item.id} 
-                                        horizontal={false}
-                                        showsHorizontalScrollIndicator={false}
-                                    />)
+                                     
+                                        this.renderTimeTable(instituteData.timeTable[0])
+                                        // keyExtractor={(item)=>item.id} 
+                                        // horizontal={false}
+                                        // showsHorizontalScrollIndicator={false}
+                                    )
         }
     }
 
-    render() {
-        console.log(this.state.activeTab)
-        return (
-        
-        <PageStructure 
-            iconName={"menu"}
-            btnHandler={() => {this.props.navigation.toggleDrawer()}}
-            catInHeader={true}
-        > 
-            <ScrollView>
-                <View style={styles.container}>
-                        <View style={styles.instituteheader}>
-                            {CardView(
-                                <Image source={instituteData.logo} style={styles.instituteheaderLogo}/>
-                            ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:100}):({width:200,height:150})])
-                            } 
-                            <View style={styles.instituteheaderMeta}>
-                                <View style={{display: 'flex', flexDirection: 'row'}}>
-                                    <Text style={styles.instituteheaderText}>{instituteData.title}</Text>
-                                    <TouchableOpacity>
-                                        <Feather name="edit-3" size={18} color={theme.secondaryColor} />
-                                    </TouchableOpacity>
-                                </View>
-                                <Text style={styles.instituteDirector}>{instituteData.directoy_name}</Text>
-                                <View style={styles.instituteRatingView}>
-                                    <Text style={{alignSelf:'flex-start', color: theme.labelOrInactiveColor}}>{instituteData.rating}</Text>
-                                    <Rating
-                                        type='star'
-                                        ratingCount={5}
-                                        startingValue={instituteData.rating}
-                                        imageSize={15} 
-                                        unSelectedColor={'yellow'} 
-                                        tintColor={theme.appBackgroundColor}
-                                        style={styles.instituteRating}
-                                        readOnly={true} 
-                                    />
-                                    <Text style={styles.voteCount}>{instituteData.voteCount} Votes</Text>
-                                </View>
-                                
-                            </View>
-                            <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
-                        </View>
-                        <View style={styles.body}>
-                            <View style={styles.btnRow}>
-                                <View style={styles.btnView1}>
-                                    <Text style={styles.btnText}>Courses</Text>
-                                </View>
-                                <View style={styles.btnView2}>
-                                    <Text style={styles.btnText}>35K Follower</Text>
-                                </View>
-                                <View style={styles.btnView3}>
-                                    <Text style={styles.btnText}>Feed</Text>
-                                </View>
-                            </View>
-                            <View style={styles.InstituteCourseListView}>
+
+    openAddCourseModal = ()=>{
+        this.setState({ isAddCourseModalVisible: true});
+    }
+    closeAddCourseModal = ()=>{
+        this.setState({ isAddCourseModalVisible: false});
+    }
+
+
+    tabtoshow=(tabValue)=>{
+        this.setState({tabtoshow:tabValue});
+    }
+    switchTabRender=(tabtoshow)=>{
+        switch (tabtoshow) {
+            case 1:
+                return(
+                   <>
+                   
+                   <View style={styles.InstituteCourseListView}>
+                                <TouchableOpacity style={{marginTop: 20, borderWidth: 1, borderColor: theme.secondaryColor, marginRight: 10, borderRadius:10, paddingHorizontal: 10,}} onPress={()=>this.openAddCourseModal()}>
+                                    <Text> + Add Course</Text>
+                                </TouchableOpacity>
+
                                 <FlatList 
                                     data={instituteData.courses} 
                                     renderItem={this.renderCourseItems}
@@ -504,7 +592,7 @@ class InsHome extends React.Component {
                             </View>
                             <View style={styles.rowContainer}>
                                 <FlatList 
-                                    data={instituteData.banners} 
+                                    data={insBanners} 
                                     renderItem={this.renderBannerList} 
                                     keyExtractor={(item)=>item.id}
                                     horizontal={true} 
@@ -542,10 +630,149 @@ class InsHome extends React.Component {
                             <View style={styles.dataContainer}>
                                 {this.showContent(this.state.activeTab)}
                             </View>
+                            <View style={[styles.loadMoreView]}>
+                                <View style={{}}><Feather name="chevron-down" size={20}/></View>
+                                <Text style={{margin:5}}>Load More</Text>
+                            </View> 
+
+                   </>
+    
+                )
+            
+            case 3:
+                return(
+                    <View style={styles.container}>
+                        { this.renderImagePost()}
+                        { this.renderQuizPost()}
+                        { this.renderTextPost()}
+                    </View>
+                )
+                
+            }
+    }
+    render() {
+        console.log(this.state.activeTab)
+        return (
+        
+        <PageStructure 
+            iconName={"menu"}
+            btnHandler={() => {this.props.navigation.toggleDrawer()}}
+            catInHeader={false}
+            titleonheader={"Dashboard"}
+            notificationreplaceshare={"more-vertical"}
+                rightIconOnPress={()=>{this.setState({modalVisible:true})}} 
+        > 
+            <ScrollView>
+                <View style={styles.container}>
+                        <View style={styles.instituteheader}>
+                            {CardView(
+                                <Image source={instituteData.logo} style={styles.instituteheaderLogo}/>
+                            ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:100}):({width:200,height:150})])
+                            } 
+                            <View style={styles.instituteheaderMeta}>
+                                <View style={{display: 'flex', flexDirection: 'row'}}>
+                                    <Text style={styles.instituteheaderText} numberOfLines={3}>{instituteData.title}</Text>
+                                    <TouchableOpacity>
+                                        <Feather name="edit-3" size={18} color={theme.secondaryColor} />
+                                    </TouchableOpacity>
+                                </View>
+                                <Text style={styles.instituteDirector} >{instituteData.directoy_name}</Text>
+                                <View style={styles.instituteRatingView}>
+                                    <Text style={{ color: theme.greyColor}}>{instituteData.rating+' • '}</Text>
+                                    <Rating
+                                        type='star'
+                                        ratingCount={5}
+                                        startingValue={instituteData.rating}
+                                        imageSize={15} 
+                                        unSelectedColor={'yellow'} 
+                                        // tintColor={theme.appBackgroundColor}
+                                        style={styles.instituteRating}
+                                        readOnly={true} 
+                                    />
+                                    <Text style={styles.voteCount}>{instituteData.voteCount} Votes</Text>
+                                </View>
+                                
+                            </View>
+                            {/* <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/> */}
+                        </View>
+                        <View style={styles.body}>
+                        <View style={styles.btnRow}>
+                                    <View style={[styles.btnView3,this.state.tabtoshow==1?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor,borderWidth:1})]}>
+                                        <Text style={[styles.btnText,{color:this.state.tabtoshow==1?theme.primaryColor:theme.greyColor}]} onPress={()=>{this.tabtoshow(1)}}>Courses</Text>
+                                    </View>
+                                     
+                                    <View style={[styles.btnView2,this.state.tabtoshow==2?({backgroundColor:theme.accentColor+'4D',borderColor:theme.accentColor+'4D'}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor,borderWidth: 1})]}>
+                                        <Text style={[styles.btnText,{color:theme.blueColor,fontWeight: 'bold'}]}>35K Follower</Text>
+                                    </View>
+                                    <View style={[styles.btnView3,this.state.tabtoshow==3?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor,borderWidth:1})]}>
+                                        <Text style={[styles.btnText,{color:this.state.tabtoshow==3?theme.primaryColor:theme.greyColor}]} onPress={()=>{this.tabtoshow(3)}}>Feed</Text>
+                                    </View>
+                            </View>
+                                {this.switchTabRender(this.state.tabtoshow)}
+
+                            <Modal animationType = {"fade"} transparent = {false}
+                            visible = {this.state.isAddCourseModalVisible}
+                            onRequestClose = {() => { console.log("Modal has been closed.") } }>
+                            
+                            <ScrollView>
+                            <View style={styles.headView}>
+                                <Text style={styles.headText}>Add Course</Text>
+                            </View>
+                            <View style={styles.inputView}>
+                                    <Text style={styles.labelText}>Course Title</Text>
+                                    {CardView(
+                                        <TextInput 
+                                            placeholderTextColor={theme.greyColor} 
+                                            placeholder="Title" 
+                                            defaultValue={this.props.description} 
+                                            onChangeText={(text)=>this.setState({title: text})} 
+                                            style={styles.inputField}
+                                        />, {borderRadius: 10}
+                                    )}
+                            </View>
+                            <View style={styles.inputView}>
+                                    <Text style={styles.labelText}>Course Description</Text>
+                                    {CardView(
+                                        <TextInput 
+                                            placeholderTextColor={theme.greyColor} 
+                                            placeholder="Description" 
+                                            onChangeText={(text)=>this.setState({description: text})} 
+                                            multiline={true} 
+                                            numberOfLines={3} 
+                                            style={styles.inputField}
+                                        />, {borderRadius: 10}
+                                    )}
+                            </View>
+                            <View style={styles.inputView}>
+                                    <Text style={styles.labelText}>Course</Text>
+                                    {CardView(
+                                        <TextInput 
+                                            placeholderTextColor={theme.greyColor} 
+                                            placeholder="Add Video" 
+                                            onChangeText={(text)=>this.setState({fees: text})} 
+                                            multiline={true} 
+                                            numberOfLines={4} 
+                                            style={styles.inputField}
+                                        />, {borderRadius: 10}
+                                    )}
+                            </View>
+                            <View style={styles.btnView}>
+                                <TouchableOpacity style={styles.submitButton}>
+                                        <Text style={styles.submitButtonText}>Submit</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.addMoreButton}>
+                                        <Text style={styles.addMoreButtonText}>Add More+</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </ScrollView>
+                           
+
+                            </Modal>
+
                         </View>
                     </View>
                     <Text style={styles.RatingText}>Rating & Reviews</Text>
-                    <Review />
+                    <Review replyMode />
                 </ScrollView>
                 
             </PageStructure>
@@ -567,10 +794,12 @@ const styles = StyleSheet.create({
                 logoCard:
                 { 
                     flexWrap:'wrap',
+                    borderRadius: 10,
                  
                 }, 
                     instituteheaderLogo:
-                    {
+                    {   
+                        borderRadius: 10,
                         width:"100%",
                         height:"100%",
                     },  
@@ -599,18 +828,99 @@ const styles = StyleSheet.create({
                     {
                         flex:1,
                         flexDirection:'row',
-                        // alignItems: 'center'    
+                        alignItems: 'center'    
                     },
                         instituteRating:
                         {
+                             
                             alignSelf:'flex-start',
                             marginRight:10,
+                            marginTop:3
                         },
                         voteCount:
                         {
                             fontWeight:'bold',
 
                         },
+                        boxView:
+                        {
+                            display: 'flex',
+                            flexDirection: 'column',
+                            // borderWidth: 1,
+                            borderColor: theme.labelOrInactiveColor,
+                            padding: 2
+                        },
+                            rowView:
+                            {
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                marginTop: 10
+                            },
+                                circleView:
+                                {
+                                    // height: 15,
+                                    // width: 15,
+                                    // borderRadius: 7,
+                                    // backgroundColor: theme.redColor
+                                },
+                                coaching:
+                                {
+                                    fontSize: 20,
+                                    fontWeight: 'bold',
+                                    color: theme.accentColor
+                                },
+                                timeDateView:
+                                {
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    marginTop: 10,
+                                    paddingLeft: 10,
+                                    paddingRight: 10,
+                                },
+                                    timeDateText:
+                                    {
+                                        fontSize: 16,
+                                        color: theme.secondaryColor
+                                    },
+                            innerBoxView:
+                            {
+                                // borderWidth: 1,
+                                borderColor: theme.labelOrInactiveColor,
+                                borderRadius: 2,
+                                marginTop: 10,
+                                padding: 10,
+                            },
+                                img:
+                                {
+                                    height: 150,
+                                    width: '100%',
+                                },
+                                bottomRowContainer:
+                                {
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    marginTop: 10
+                                },
+                                    likeView:
+                                    {
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-evenly',
+                                        alignItems: 'center'
+                                    },
+                                        text:
+                                        {
+                                            fontSize: 18,
+                                            color: theme.greyColor
+                                        },
+                                // feed wala end
+                            
+                
+                 
                    
             body:
             {
@@ -647,7 +957,7 @@ const styles = StyleSheet.create({
                         paddingRight: 10,
                         paddingTop: 5,
                         paddingBottom: 5,
-                        backgroundColor:theme.accentColor,
+                        backgroundColor:theme.greyColor,
                         borderRadius: 5,
                         margin: 2,
                         justifyContent:'center',
@@ -660,7 +970,7 @@ const styles = StyleSheet.create({
                         paddingRight: 10,
                         paddingTop: 5,
                         paddingBottom: 5,
-                        backgroundColor:theme.accentColor,
+                        backgroundColor:theme.greyColor,
                         borderRadius: 5,
                         margin: 2,
                         justifyContent:'center',
@@ -671,6 +981,13 @@ const styles = StyleSheet.create({
                             fontSize: 16,
                             color: theme.primaryColor
                         },
+                
+                InstituteCourseListView:{
+                    flexDirection: 'row',
+                    borderTopWidth:1,
+                    borderTopColor: theme.labelOrInactiveColor
+                },
+
                 courseItemContainer:
                 {
                     borderColor:theme.secondaryColor,
@@ -706,6 +1023,9 @@ const styles = StyleSheet.create({
                     marginTop: 10,
                     flexDirection: 'row',
                     justifyContent: 'space-between',
+                    borderBottomWidth:1,
+                    paddingBottom:10,
+                     borderColor: theme.labelOrInactiveColor
                 },
                 content: 
                 {
@@ -1004,11 +1324,92 @@ const styles = StyleSheet.create({
                                 borderBottomColor:theme.labelOrInactiveColor,
                                 alignSelf: 'center',
                             },
+            loadMoreView:
+            {
+                
+                flexDirection: 'row',
+                justifyContent: 'center',
+                margin:5, 
+                borderRadius:15,
+
+                alignSelf:'center',
+                backgroundColor:theme.accentColor+'4D',
+                padding:5,
+                alignItems: 'center', 
+                
+                flexWrap: 'wrap'
+            },
     RatingText:
     {
         fontSize: 20, 
         marginTop: 10
-    }
+    },
+
+
+    // add course css
+
+    headView:
+    {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
+        headText:
+        {
+            marginTop:10,
+            fontSize: 24,
+            fontWeight: 'bold',
+            color: theme.secondaryColor
+        },
+    inputView: {
+        marginTop:'5%',
+        display: 'flex',
+        flexDirection: 'column',
+        marginLeft: 10
+    },
+        labelText: {
+            fontSize: 18,
+            fontWeight: '700',
+            color: theme.secondaryColor,
+            marginBottom: 10,
+        },
+        inputField:
+        {
+            padding:10,
+            fontSize: 16
+        },
+    btnView:
+    {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: 10
+    },
+        submitButton:
+        {
+            borderRadius: 10,
+            backgroundColor:theme.accentColor,
+            padding: 10,
+            marginRight:10
+        },
+            submitButtonText:
+            {
+                color: theme.primaryColor
+            },
+        addMoreButton:
+        {
+            borderRadius: 10,
+            backgroundColor:theme.addMoreButtonColor,
+            padding: 10,
+            marginLeft: 10
+        },
+            addMoreButtonText:
+            {
+                color: theme.primaryColor
+            },
+
+
+    // add course css end
 
 });
 

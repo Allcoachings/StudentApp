@@ -61,10 +61,10 @@ class ResultAnalysis extends React.Component {
 
     renderMockTestWeekItem =(item) => {
         return(
-            <Accordian
-                header={this.accordianHeader(item.title,item.testCount,"chevron-down")}
-            >
-                <View style={styles.weekView}> 
+            // <Accordian
+            //     header={this.accordianHeader(item.title,item.testCount,"chevron-down")}
+            // >
+            //     <View style={styles.weekView}> 
                     <FlatList 
                             data={item.data} 
                             renderItem={({item}) =>this.renderTestItem(item)}
@@ -72,29 +72,29 @@ class ResultAnalysis extends React.Component {
                             horizontal={false}
                             showsHorizontalScrollIndicator={false}
                         />
-                </View>
-            </Accordian> 
+            //     </View>
+            // </Accordian> 
         )
      }
     render() {
         return( 
-            <PageStructure
-                iconName={"menu"}
-                btnHandler={() => {this.props.navigation.toggleDrawer()}}
-            >
+            // <PageStructure
+            //     iconName={"menu"}
+            //     btnHandler={() => {this.props.navigation.toggleDrawer()}}
+            // >
                 <View style={styles.container}>
                     <FlatList
                         data={MockTest}
                         keyExtractor={(item)=>item.id}
                         renderItem={({item})=>this.renderMockTestWeekItem(item)} 
                     />
-                    <View style={styles.enrollBtnView}>
+                    {/* <View style={styles.enrollBtnView}>
                         <TouchableOpacity style={styles.enrollBtn}>
                             <Text style={styles.enrollText}>Enroll</Text>
                         </TouchableOpacity>
-                    </View>
+                    </View> */}
                 </View> 
-            </PageStructure>
+            // </PageStructure>
         )
     }
 }

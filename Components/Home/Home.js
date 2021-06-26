@@ -1,11 +1,13 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform,Dimensions} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {storyLine,homeFeaturesData} from '../../FakeDataService/FakeData'
 import { theme } from '../config';
 import { Feather } from '@expo/vector-icons';
-import { Rating } from 'react-native-ratings';
+import { AirbnbRating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
+import CardView from '../Utils/CardView';
+const windowWidth = Dimensions.get('window').width;
 
 class Home extends React.Component {
     state = {  }
@@ -55,27 +57,32 @@ class Home extends React.Component {
         }
         
     }
-
+ 
     renderInstituteList=({item})=>{
         return (
             <TouchableOpacity style={styles.instituteItemContainer} onPress={()=>this.redirectTo()}>
                 <View style={styles.instituteItemImageView}>
-                    <Image source={item.image} style={styles.instituteItemImage}/> 
+                    {CardView(
+                        <Image source={item.image} style={styles.instituteItemImage}/> 
+                        ,{width:'100%',borderRadius:15}
+                    )}
+                    
                 </View>
                 <View style={styles.instituteMetaContainer}>
                     <View style={{display:'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginLeft: 2}}>
-                        <Text style={styles.instituteTitle}>{item.title}</Text>
+                        <Text style={styles.instituteTitle} numberOfLines={2}>{item.title}</Text>
                     </View>
                     <View style={{display:'flex', flexDirection: 'row', alignItems: 'center'}}>
-                        <Text style={{alignSelf:'flex-start', color: theme.greyColor}}>{item.rating}</Text> 
-                        <Rating
-                            type='star'
-                            ratingCount={5}
-                            startingValue={item.rating}
-                            imageSize={15}  
-                            tintColor={theme.appBackgroundColor}
-                            style={styles.instituteRating}
-                            readOnly={true} 
+                        <Text style={{alignSelf:'flex-start', color: theme.greyColor,fontSize:12}}>{item.rating+' • '}</Text> 
+                        <AirbnbRating 
+                            starContainerStyle={styles.instituteRating} 
+                            count={5}
+                            reviews={[]} 
+                            isDisabled={true}
+                            defaultRating={item.rating}
+                            size={12}
+                            selectedColor={theme.blueColor}
+                            showRating={false}
                         />
                     </View>
                 </View>
@@ -126,7 +133,9 @@ const styles = StyleSheet.create({
         },
             rowContainer:
             {
-                marginTop:10
+                // marginTop:5,
+                // borderBottomWidth:0.2
+
             },
                 rowHeader:
                 {
@@ -137,7 +146,8 @@ const styles = StyleSheet.create({
                     marginLeft: 10
                 },
                     rowHeaderTitle:
-                    {
+                    {   
+                        // color: theme.greyColor,
                         fontSize:18,
                         fontWeight:'bold'
                     },
@@ -148,15 +158,15 @@ const styles = StyleSheet.create({
                     instituteItemContainer:
                     {
                         flexDirection:'column',
-                        width:120,
+                        width:(windowWidth/3)-20,
                         height:180,
                         marginLeft:10,
                         marginTop:10
                     },
                         instituteItemImage:
                         {
-                            width:120,
-                            height:100,
+                            width:'100%', 
+                            height: 90,
                             borderRadius:15
                         },
                         instituteMetaContainer:
@@ -172,7 +182,8 @@ const styles = StyleSheet.create({
                             },
                             instituteRating:
                             {
-                                alignSelf:'flex-start'
+                                alignSelf:'flex-start',
+                                width:'80%'
                             },
                     bannerItemContainer:
                     {
@@ -181,7 +192,7 @@ const styles = StyleSheet.create({
                     },
                         bannerImage:
                         {
-                            width:300,
+                            width:(windowWidth/1.1)-10,
                             height:150,
                             borderRadius:10,
                             marginLeft:10

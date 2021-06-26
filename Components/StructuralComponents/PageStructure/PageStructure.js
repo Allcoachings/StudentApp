@@ -9,30 +9,14 @@ import CardView from '../../Utils/CardView'
 class PageStructure extends React.Component {
     state = {  }
 
-    renderHeader=() =>
+    renderContent=() =>
     {
         return(
             <View style={styles.container}>
                 <View style={styles.containerMain}> 
-                    <View style={[styles.containerHeader,{flex:this.props.catInHeader?0.2:0.1},this.props.headerStyle]}> 
-                        <Header iconName={this.props.iconName} btnHandler={this.props.btnHandler} catInHeader={this.props.catInHeader} replaceHeader={this.props.replaceHeader} headerComponent={this.props.headerComponent}/>  
-                    </View>
-                    <View style={[styles.pageLayout,this.props.screenWidth<=screenMobileWidth?({   margin:'2%'}):(null)]}> 
-                        {this.props.screenWidth>screenMobileWidth?(
-                            <View style={styles.leftNavContainer}> 
-                                    <Text>Left Navbar</Text>
-                            </View> 
-                        ):(
-                            null
-                        )} 
-                        <View style={styles.pageContent}>
-                             
-                                {this.props.children}
-                            
-                        </View>
-                    </View> 
+                     {this.switchRender(this.props.scrollMode)}
                     {this.props.screenWidth<=screenMobileWidth?(
-                        <View style={[styles.pageBottomTab,{flex:this.props.catInHeader?0.11:0.1}]}>
+                        <View style={[styles.pageBottomTab,{flex:this.props.catInHeader?0.097:0.102}]}>
                                 <BottomTab replacBottomTab={this.props.replaceBottomTab} bottomComponentStyle={this.props.bottomComponentStyle}  bottomComponent={this.props.bottomComponent}/>
                         </View>
                     ):(null)}
@@ -44,23 +28,92 @@ class PageStructure extends React.Component {
     }
 
 
+    // handleScroll=(event)=> {
+    //     console.log(event.nativeEvent.contentOffset.y);
+    //     // if(event.nativeEvent.contentOffset.y>40)
+    //     // {
+    //     //     this.setState({catStyle:{position: 'absolute',top:0}})
+    //     // }
+        
+    // } 
+  
     switchRender=(scrollMode)=>{
             switch(scrollMode)
             {
                 case 'scroll':    
                     return(
-                        <ScrollView>
-                            {this.renderHeader()}
+                        <ScrollView style={{flex:this.props.catInHeader?0.2:0.08}} >
+                            <View style={[styles.containerHeader,this.props.headerStyle]}> 
+                                <Header 
+                                iconName={this.props.iconName}
+                                btnHandler={this.props.btnHandler}
+                                catInHeader={this.props.catInHeader}
+                                replaceHeader={this.props.replaceHeader}
+                                headerComponent={this.props.headerComponent}
+                                titleonheader={this.props.titleonheader}
+                                notificationreplaceshare={this.props.notificationreplaceshare}
+                                rightIconOnPress={this.props.rightIconOnPress}
+                                catStyle={this.state.catStyle}
+                                nosearchIcon={this.props.nosearchIcon}
+                                noNotificationIcon={this.props.noNotificationIcon}
+                                />  
+                            </View>
+                            <View style={[styles.pageLayout,this.props.screenWidth<=screenMobileWidth?({   margin:'2%'}):(null)]}> 
+                                {this.props.screenWidth>screenMobileWidth?(
+                                    <View style={styles.leftNavContainer}> 
+                                            <Text>Left Navbar</Text>
+                                    </View> 
+                                ):(
+                                    null
+                                )} 
+                                <View style={styles.pageContent}>
+                                    
+                                        {this.props.children}
+                                    
+                                </View>
+                            </View>
                         </ScrollView>
                     )
                 default: 
-                        return this.renderHeader()
+                        return (
+                            
+                            <>
+                                <View style={[styles.containerHeader,{flex:this.props.catInHeader?0.2:0.1},this.props.headerStyle]}> 
+                                        <Header 
+                                        iconName={this.props.iconName}
+                                        btnHandler={this.props.btnHandler}
+                                        catInHeader={this.props.catInHeader}
+                                        replaceHeader={this.props.replaceHeader}
+                                        headerComponent={this.props.headerComponent}
+                                        titleonheader={this.props.titleonheader}
+                                        rightIconOnPress={this.props.rightIconOnPress}
+                                        notificationreplaceshare={this.props.notificationreplaceshare} 
+                                        nosearchIcon={this.props.nosearchIcon}
+                                        noNotificationIcon={this.props.noNotificationIcon}
+                                        />  
+                                    </View>
+                                    <View style={[styles.pageLayout,this.props.screenWidth<=screenMobileWidth?({   margin:'2%'}):(null)]}> 
+                                        {this.props.screenWidth>screenMobileWidth?(
+                                            <View style={styles.leftNavContainer}> 
+                                                    <Text>Left Navbar</Text>
+                                            </View> 
+                                        ):(
+                                            null
+                                        )} 
+                                        <View style={styles.pageContent}>
+                                            
+                                                {this.props.children}
+                                            
+                                        </View>
+                                </View>
+                            </>
+                        )
             }
 
     }
     render() {
         return (
-            this.switchRender(this.props.scrollMode)
+            this.renderContent()
             );
     }
 }
@@ -80,14 +133,17 @@ const styles = StyleSheet.create({
     },
         containerHeader:
         {
-            flex:0.1,
-            borderBottomWidth:0.2,
+            overflow: 'hidden',
+            borderBottomWidth:1,
+            marginBottom:-7,
+            borderBottomColor:theme.labelOrInactiveColor
         },
         pageLayout:
         {
+
             flex:1,
             flexDirection: 'row',
-         
+            marginBottom:-5
         },
             leftNavContainer:
             {
@@ -101,8 +157,9 @@ const styles = StyleSheet.create({
             },
         pageBottomTab:
         {
-            flex:0.1,
-            
+            flex:0.1, 
+            borderTopWidth:1, 
+            borderTopColor:theme.labelOrInactiveColor,
             marginTop:'auto'
         }
 })

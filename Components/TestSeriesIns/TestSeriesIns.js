@@ -27,7 +27,7 @@ class TestSeriesIns extends React.Component {
                         <TouchableOpacity onPress={()=>this.props.navigation.navigate("ViewInsTestSeriesList", {banner: item.banner, series: item.list})} style={styles.btnView}>
                             <Text style={styles.cardButton}>{item.text}</Text>
                         </TouchableOpacity>
-                    </View>, { margin:10,width:((this.props.screenWidth/3.5)) }
+                    </View>, { margin:10,width:((this.props.screenWidth/3.5)),borderWidth:1,borderColor:theme.labelOrInactiveColor,borderRadius:15 }
             )
        )
     }
@@ -53,8 +53,8 @@ class TestSeriesIns extends React.Component {
     render() {
         return (
             <PageStructure
-                iconName={"menu"}
-                btnHandler={() => {this.props.navigation.toggleDrawer()}}
+                iconName={"arrow-left"}
+                btnHandler={() => {this.props.navigation.goBack()}}
                 catInHeader={true}
             >
                 <ScrollView>
@@ -80,23 +80,25 @@ const styles = StyleSheet.create({
     },
         singleRow:
         {
-            marginBottom:'10%'
+            marginBottom:15 ,
+            borderBottomWidth: 1, 
+            borderBottomColor: theme.labelOrInactiveColor
         },
             rowHeader:
             {
                 display:'flex', 
-                flexDirection: 'row', 
-                alignItems: 'center', 
+                flexDirection: 'row',  
                 marginLeft: 10,
             },
                 rowHeadText:
                 {
+                    
                     fontSize: 16, 
                     fontWeight:'700'
                 },
             rowBody:
             {
-                marginTop: '5%'
+                marginTop: 10
             },  
                 singleItem:
                 {
@@ -108,13 +110,13 @@ const styles = StyleSheet.create({
                 }, 
                     imageView:
                     {
-                        borderWidth: 1
+                        
                     } ,
                         itemImage:
                         {
                             height: 45,
                             width:60, 
-                            borderColor: theme.secondaryColor
+                            borderRadius:5
                         },
                     titleView:
                     {
@@ -134,7 +136,7 @@ const styles = StyleSheet.create({
                         itemCount: 
                         {
                             fontSize: 10,
-                            padding: 4, 
+                            // padding: 4, 
                             color: theme.secondaryColor
                         },
                     btnView:

@@ -40,26 +40,30 @@ class InsTestSeriesList extends React.Component {
                     <TouchableOpacity onPress={()=>this.props.navigation.navigate("SeriesList", {list: item.seriesList, banner: item.banner})} style={styles.btnView}>
                             <Text style={styles.cardButton}>{item.text}</Text>
                     </TouchableOpacity>
-                </View>, { margin:7, width:((this.props.screenWidth/3.5)) }
+                </View>, { margin:7,width:((this.props.screenWidth/3.5)),borderWidth:1,borderColor:theme.labelOrInactiveColor,borderRadius:15 }
         )
         )
     }
 
     render() {
-        console.log(this.props.route.params.banner)
-        console.log(this.props.route.params.list)
+    
         return(
             <PageStructure
-                iconName={"menu"}
-                btnHandler={() => {this.props.navigation.toggleDrawer()}}
-                catInHeader={true}
+                iconName={"arrow-left"}
+                btnHandler={() => {this.props.navigation.goBack()}} 
+                titleonheader={"UPSC CSE"}
+                notificationreplaceshare={"share-2"}
+                nosearchIcon={true}
+                // catInHeader={false}
+                
+                noNotificationIcon={true} 
             >
                 <ScrollView>
-                    <View style={styles.headTitleView}>
+                    {/* <View style={styles.headTitleView}>
                         <Text></Text>
                         <Text style={styles.title}>UPSC CSE</Text>
                         <Feather name="share-2" size={18} style={{marginRight: 10}}/>
-                    </View>
+                    </View> */}
                     <View style={styles.rowContainer}>
                         <FlatList 
                             data={this.props.route.params.banner} 
@@ -101,7 +105,7 @@ const styles = StyleSheet.create({
         bannerItemContainer:
         {
             height:140,
-            marginTop:30,
+            marginTop:10,
         },
             bannerImage:
             {
@@ -124,13 +128,13 @@ const styles = StyleSheet.create({
         }, 
             imageView:
             {
-                borderWidth: 1
+              
             } ,
                 itemImage:
                 {
                     height: 45,
                     width:60, 
-                    borderColor: theme.secondaryColor
+                     
                 },
             titleView:
             {
@@ -150,7 +154,7 @@ const styles = StyleSheet.create({
                 itemCount: 
                 {
                     fontSize: 10,
-                    padding: 4, 
+                    // padding: 4, 
                     color: theme.secondaryColor
                 },
             btnView:

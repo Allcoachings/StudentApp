@@ -44,7 +44,7 @@ class Review extends React.Component {
                          
                             <FlatList
                                 data={review}
-                                renderItem={({item})=><RenderReview  item={item}/>}
+                                renderItem={({item})=><RenderReview  replyMode={this.props.replyMode} item={item}/>}
                                 keyExtractor={(item)=>item.id}   
                             />
                        

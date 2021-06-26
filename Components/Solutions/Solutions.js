@@ -131,15 +131,15 @@ class Solutions extends React.Component {
 
     render() {
         return(
-            <PageStructure
-                iconName={"menu"}
-                btnHandler={() => {this.props.navigation.toggleDrawer()}}
-            >
-                <ScrollView>
+            // <PageStructure
+            //     iconName={"menu"}
+            //     btnHandler={() => {this.props.navigation.toggleDrawer()}}
+            // >
+            //     <ScrollView>
                     <View style={styles.container}>
                         <View style={{padding: 10}}>
                             <View style={styles.headView}>
-                                <Feather name="chevron-left" size={26} style={{color: theme.greyColor}}/>
+                                {/* <Feather name="chevron-left" size={26} style={{color: theme.greyColor}}/> */}
                                 <Text style={styles.headText}>
                                     Solutions
                                 </Text>
@@ -176,8 +176,8 @@ class Solutions extends React.Component {
                         
                         
                     </View>
-                </ScrollView>
-            </PageStructure>
+            //     </ScrollView>
+            // </PageStructure>
         )
     }
 }
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
             {
                 fontSize: 24,
                 fontWeight: '700',
-                marginLeft: 15
+                // marginLeft: 15
             },
         chooseSectionView:
         {

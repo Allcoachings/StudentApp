@@ -22,7 +22,7 @@ class SubscriptionNew extends React.Component {
                 <View style={styles.instituteheader}>
                     {CardView(
                         <Image source={item.logo} style={styles.instituteheaderLogo}/>
-                        ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:120}):({width:200,height:150})])
+                        ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:120,borderRadius:15}):({width:200,height:150})])
                     } 
                     <View style={styles.instituteheaderMeta}>
                         <View style={{display: 'flex', flexDirection: 'row'}}>
@@ -59,10 +59,12 @@ class SubscriptionNew extends React.Component {
             <PageStructure
                 iconName={"menu"}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
+                titleonheader={"Subscription"}
+                notificationreplaceshare={"share-2"}
             >
                 <ScrollView>
                     <View style={styles.container}>
-                        <View style={styles.headView}>
+                        {/* <View style={styles.headView}>
                             <TouchableOpacity onPress={null}>
                                 <Feather name="chevron-left" size={26} />
                             </TouchableOpacity>
@@ -72,7 +74,7 @@ class SubscriptionNew extends React.Component {
                             <TouchableOpacity onPress={null}>
                                 <Feather name="share-2" size={22} />
                             </TouchableOpacity>
-                        </View>
+                        </View> */}
                         <FlatList 
                             data={subscriptionNew} 
                             renderItem={this.singleRow} 
@@ -119,6 +121,7 @@ const styles = StyleSheet.create({
                 {
                     width:"100%",
                     height:"100%",
+                    borderRadius:15,
                 },  
             instituteheaderMeta:
             {

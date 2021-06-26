@@ -15,8 +15,8 @@ class index extends React.Component {
     renderTabItems=({item})=>
     {
         return (
-            <TouchableOpacity style={[styles.courseItemContainer]} onPress={()=>this.setState({activeTab:item.id})}> 
-                    <Text style={[styles.courseTitle,this.state.activeTab==item.id?({color:theme.accentColor}):({color:theme.greyColor})]}>{item.name}</Text>
+            <TouchableOpacity style={[styles.courseItemContainer,this.state.activeTab==item.id?({backgroundColor:theme.secondaryColor,borderColor:theme.accentColor+'4D'}):({backgroundColor:theme.labelOrInactiveColor+'4D',borderColor:theme.labelOrInactiveColor})]} onPress={()=>this.setState({activeTab:item.id})}> 
+                    <Text style={[styles.courseTitle,this.state.activeTab==item.id?({color:theme.primaryColor}):({color:theme.greyColor})]}>{item.name}</Text>
             </TouchableOpacity>
         );
     }
@@ -28,7 +28,17 @@ class index extends React.Component {
                         <View style={styles.headerRow}>
                             {this.props.screenWidth<=screenMobileWidth?
                             (
-                                <HeaderMobile iconName={this.props.iconName} replaceHeader={this.props.replaceHeader} headerComponent={this.props.headerComponent} btnHandler={this.props.btnHandler}/>
+                                <HeaderMobile iconName={this.props.iconName}
+                                titleonheader={this.props.titleonheader} 
+                                replaceHeader={this.props.replaceHeader} 
+                                headerComponent={this.props.headerComponent} 
+                                btnHandler={this.props.btnHandler} 
+                                notificationreplaceshare={this.props.notificationreplaceshare} 
+                                rightIconOnPress={this.props.rightIconOnPress}
+                                nosearchIcon={this.props.nosearchIcon}
+                                noNotificationIcon={this.props.noNotificationIcon}
+
+                                />
                             )
                             :
                             (
@@ -36,7 +46,7 @@ class index extends React.Component {
                             )}
                         </View>
                         {this.props.catInHeader?( 
-                            <View style={styles.catRow}> 
+                            <View style={[styles.catRow, this.props.catStyle]}> 
                                 <FlatList 
                                     data={tabListInstitute} 
                                     renderItem={this.renderTabItems}
@@ -59,7 +69,7 @@ const styles = StyleSheet.create({
     {
         flex:1,
         flexDirection: 'column',
-        margin:3, 
+        // margin:3, 
     },
         headerRow:
         {
@@ -67,17 +77,21 @@ const styles = StyleSheet.create({
             
         },
         catRow:{
-            borderTopWidth:0.2,
-            // borderBottomColor:theme.labelOrInactiveColor
+            
+            paddingTop:5,
+            paddingBottom:10,
+            borderTopWidth:1,
+            borderTopColor:theme.labelOrInactiveColor
         },
             courseItemContainer:
             {  
                 paddingLeft:10,
                 paddingRight:10, 
                 marginRight:10,
-                padding:5,
+                padding:2,
                 marginTop:5 ,
                 borderWidth:1, 
+                borderColor:theme.labelOrInactiveColor,
                 borderRadius:15
             },
                 courseTitle:

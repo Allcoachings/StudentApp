@@ -4,7 +4,7 @@ import {Platform,View,StyleSheet} from 'react-native'
 
 import {Card} from 'react-native-shadow-cards';
 
-const CardView =(code,style)=> {
+const CardView =(code,style,elevation=10)=> {
 
     if(Platform.OS=='web')
     {
@@ -17,7 +17,7 @@ const CardView =(code,style)=> {
     else
     {
             return(
-                <Card style={[style]} elevation={10}>
+                <Card style={[style]} elevation={elevation}>
                     {code}
                 </Card>
                 )

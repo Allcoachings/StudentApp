@@ -55,8 +55,8 @@ class TestSeries extends React.Component {
     render() {
         return (
             <PageStructure
-                iconName={"menu"}
-                btnHandler={() => {this.props.navigation.toggleDrawer()}}
+                iconName={"arrow-left"}
+                btnHandler={() => {this.props.navigation.goBack()}}
                 catInHeader={true}
             >
                 <View style={styles.container}> 

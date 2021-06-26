@@ -841,6 +841,7 @@ export const insBanners= [
         clickHandler: () => { },
     },
 ]
+
 export const testSeriesData =[
 {
     id: '1',

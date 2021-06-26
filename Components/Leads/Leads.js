@@ -15,15 +15,16 @@ class Leads extends React.Component {
             <PageStructure
                 iconName={"menu"}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
+                titleonheader={"Leads"}
             >
                 <ScrollView>
                     <View style={styles.container}>
-                        {CardView(
+                        {/* {CardView(
                             <View style={styles.headView}>
                                 <Feather name="chevron-left" size={28} />
                                 <Text style={styles.headText}>Leads</Text>
                             </View>,{paddingTop: 5,justifyContent: 'center'}
-                        )}
+                        )} */}
 
                         <View style={styles.helloView}>
                             <Text style={styles.helloText}>Hello, Coaching</Text>

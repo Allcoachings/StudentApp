@@ -25,16 +25,16 @@ class BottomTab extends React.Component {
       pressColor: 'rgba(255, 255, 255, 0.16)'
     },
     {
-      key: 'subscription',
+      key: 'following',
       icon: 'youtube',
-      label: 'Subscription',
+      label: 'Following',
       barColor: theme.primaryColor,
       pressColor: 'rgba(255, 255, 255, 0.16)'
     },
     {
-      key: 'notification',
+      key: 'feed',
       icon: 'bell',
-      label: 'Notification',
+      label: 'Feed',
       barColor: theme.primaryColor,
       pressColor: 'rgba(255, 255, 255, 0.16)'
     }
