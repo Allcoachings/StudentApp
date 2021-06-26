@@ -11,7 +11,7 @@ const height = Dimensions.get('screen').height
 const phoneInput = useRef<PhoneInput>(null);
 
 class SocialAuth extends React.Component {
-    state = {  }
+    state = { padding:75 }
     
     // componentDidMount(){
     //     this.setState({
@@ -30,11 +30,11 @@ class SocialAuth extends React.Component {
         if(text.length>=10){
             var checkValid = phoneInput.current?.isValidNumber(value);
             console.log(checkValid);
-            this.setState({number:text,continue:true});
+            this.setState({number:text,continue:true,padding:10});
         }
         else if(text.length < 10)
         {
-            this.setState({continue:false})
+            this.setState({continue:false,padding:75})
         }
     }
     renderCard =() => {
@@ -92,7 +92,7 @@ class SocialAuth extends React.Component {
                             </TouchableOpacity> */}
                             
                  </View>
-            </View>,[styles.authCard]
+            </View>,[styles.authCard,{paddingBottom:this.state.padding}]
             ))
      }
      render() {
@@ -133,12 +133,13 @@ const styles = StyleSheet.create({
             borderTopLeftRadius:40,
             borderTopRightRadius:40,
             width:width,
-            height:height*0.3,
+            // height:width*0.58,
             padding:10,
             backgroundColor:theme.primaryColor,
             borderColor:theme.primaryColor,
             justifyContent: 'center',
             alignItems: 'center',
+            
             
         },
         email:{
@@ -154,7 +155,7 @@ const styles = StyleSheet.create({
                 marginTop:'3%', 
                 width:'100%',
                 marginTop:25,
-                height:'50%',
+                height:height*0.05,
                 borderRadius:5,
                 justifyContent: 'center',
                 alignItems: 'center',

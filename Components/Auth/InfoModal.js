@@ -36,7 +36,7 @@ class InfoModal extends React.Component {
                             
                         </View>
                         
-                        <View style={{marginTop:15}}>
+                        <View style={{marginTop:height*0.04}}>
                             <Text style={{marginLeft:15}}>Full Name</Text>
                         </View>
                         <View style={styles.queDescView}>
@@ -62,7 +62,7 @@ class InfoModal extends React.Component {
                             </View>
                             
                         
-                    </View>,{width: width*0.65, height: height*0.45, marginLeft: 'auto', marginRight:'auto', borderRadius: 20, marginTop:height*0.15}
+                    </View>,{width: width*0.65, height: height*0.6, marginLeft: 'auto', marginRight:'auto', borderRadius: 20, marginTop:height*0.15}
                 )}
                 </View>
             </Modal>
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
         },
             postQueText:
             {
-               fontSize: 24,
+               fontSize: width*0.06,
                marginLeft: '5%',
                marginTop: '2%'
             },
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
                 marginTop:'3%', 
                 width:'100%',
                 marginTop:25,
-                height:'50%',
+                height:height*0.05,
                 borderRadius:5,
                 justifyContent: 'center',
                 alignItems: 'center',

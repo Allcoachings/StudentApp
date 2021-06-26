@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   },
   paginationWrapper: {
     position: 'absolute',
-    bottom: 410,
+    bottom: height*0.42,
     left: 0,
     right: 0,
     justifyContent: 'center',

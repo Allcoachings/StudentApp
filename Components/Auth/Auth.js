@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,StyleSheet,View,TouchableOpacity,ScrollView,Platform,Image} from 'react-native';
+import { Text,StyleSheet,View,TouchableOpacity,ScrollView,Platform,Image,Dimensions} from 'react-native';
 import {connect} from 'react-redux'
 import {screenMobileWidth} from '../config'
 import AuthHeader from './AuthHeader';
@@ -12,6 +12,8 @@ import InfoModal from './InfoModal';
 import SocialAuth from './SocialAuth';
 // import Onboarding from 'react-native-onboarding-swiper';
 import Splash from  './Splash';
+const width = Dimensions.get('window').width
+const height = Dimensions.get('screen').height
 class Auth extends React.Component {
     state = { 
         auth_mode: 0,
@@ -52,7 +54,7 @@ class Auth extends React.Component {
     render() { 
         return (
             
-            <ScrollView style={{backgroundColor:'#ffe6ff',paddingTop:-20}}>
+            <ScrollView >
                     <View style={styles.container}> 
                         <View style={[styles.authContainer,{flex:this.props.screenWidth<=screenMobileWidth?1:0.5}]}>
                                 <View>
@@ -73,7 +75,7 @@ class Auth extends React.Component {
                                     <Splash />
                                 </View>
                                 
-                                <View style={{marginTop:-370,marginBottom:10}}>
+                                <View style={{marginTop:-(height*0.38),marginBottom:10,}}>
                                     <Card openModal={this.openModal}/>
                                 </View>
         
