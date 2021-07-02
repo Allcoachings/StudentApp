@@ -49,7 +49,7 @@ class OtpVerification extends React.Component {
                             <View style={{marginTop:15,marginLeft:20}}>
                                 <TextInput style={styles.queDesc} onChangeText={(text)=>this.setState({Otp: text})}  placeholder="Enter OTP" placeholderTextColor={theme.labelOrInactiveColor}/>
                             </View>
-                            <OTPInputView
+                            {/* <OTPInputView
                                 style={{width: '80%', height: 200}}
                                 pinCount={6}
                                 code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
@@ -60,7 +60,7 @@ class OtpVerification extends React.Component {
                                 onCodeFilled = {(code => {
                                     console.log(`Code is ${code}, you are good to go!`)
                                 })}
-                            />
+                            /> */}
                              {/* <OtpInputs getOtp={(otp) => this.getOtp(otp)} /> */}
                             <View style={{flexDirection:'row',justifyContent:'center',marginTop:20,marginLeft:'30%',}}>
                                 <View>
