@@ -8,6 +8,7 @@ import Signup from './Signup';
 import {theme} from '../config'
 import Card from './Card';
 import InfoModal from './InfoModal';
+import OtpVerification from './OtpVerification';
 // import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import SocialAuth from './SocialAuth';
 // import Onboarding from 'react-native-onboarding-swiper';
@@ -18,6 +19,8 @@ class Auth extends React.Component {
     state = { 
         auth_mode: 0,
         isModalVisible: false,
+        isOtpModal : true,
+        mobile:8449129069
       } 
 
 
@@ -37,6 +40,9 @@ class Auth extends React.Component {
                     <Signup changeAuthMode={this.changeAuthMode}/>
                 )
         }
+    }
+    phoneNumberEntered = (value) => {
+        this.setState({mobile : value})
     }
     openModal = ()=> 
     {
@@ -76,7 +82,7 @@ class Auth extends React.Component {
                                 </View>
                                 
                                 <View style={{marginTop:-(height*0.38),marginBottom:10,}}>
-                                    <Card openModal={this.openModal}/>
+                                    <Card phoneNumberEntered={this.phoneNumberEntered} openModal={this.openModal}/>
                                 </View>
         
                         </View>
@@ -86,6 +92,7 @@ class Auth extends React.Component {
                         </View>
                     )} 
                     </View>
+                    <OtpVerification mobile={this.state.mobile} isOtpModal = {this.state.isOtpModal}/>
                     <InfoModal isModalVisible={this.state.isModalVisible} />
             </ScrollView>
         );

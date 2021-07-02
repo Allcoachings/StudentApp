@@ -28,6 +28,7 @@ class SocialAuth extends React.Component {
     // }
     checkNumber=(text)=>{
         if(text.length>=10){
+            this.props.phoneNumberEntered(text)
             var checkValid = phoneInput.current?.isValidNumber(value);
             console.log(checkValid);
             this.setState({number:text,continue:true,padding:10});
@@ -148,27 +149,27 @@ const styles = StyleSheet.create({
             textDecorationStyle: 'solid',
             marginLeft:5
         },
-        authModeBtn :
-            {
-                backgroundColor:theme.accentColor,
-                padding:"5%",
-                marginTop:'3%', 
-                width:'100%',
-                marginTop:25,
-                height:height*0.05,
-                borderRadius:5,
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection:'row',
-                flex:1
-            },
-                btnText:
+            authModeBtn :
                 {
-                    color:theme.primaryColor,
-                    fontSize:16,
-                    fontWeight:'bold',
-                    marginRight:10
-                }
+                    backgroundColor:theme.accentColor,
+                    padding:"5%",
+                    marginTop:'3%', 
+                    width:'100%',
+                    marginTop:25,
+                    height:height*0.05,
+                    borderRadius:5,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection:'row',
+                    flex:1
+                },
+                    btnText:
+                    {
+                        color:theme.primaryColor,
+                        fontSize:16,
+                        fontWeight:'bold',
+                        marginRight:10
+                    }
 
 })
 export default SocialAuth;
