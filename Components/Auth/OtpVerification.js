@@ -7,6 +7,7 @@ import {theme, Assets} from '../config'
 import { StackActions, ThemeProvider } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import { Rating, AirbnbRating } from 'react-native-ratings';
+import Clipboard from '@react-native-community/clipboard'
 import OTPInputView from '@twotalltotems/react-native-otp-input'
 import OtpInputs from '../OtpInputs';
 const width = Dimensions.get('window').width
@@ -46,21 +47,23 @@ class OtpVerification extends React.Component {
                                     </TouchableOpacity>
                                 </Text>
                             </View>
-                            <View style={{marginTop:15,marginLeft:20}}>
+                            {/* <View style={{marginTop:15,marginLeft:20}}>
                                 <TextInput style={styles.queDesc} onChangeText={(text)=>this.setState({Otp: text})}  placeholder="Enter OTP" placeholderTextColor={theme.labelOrInactiveColor}/>
+                            </View> */}
+                            <View style={{marginTop:15,marginBottom:20,marginLeft:width*0.15,paddingLeft:10,paddingRight:10,borderWidth:2,borderColor:theme.accentColor,borderRadius:5}}>
+                                <OTPInputView
+                                    style={{width: '80%', height: 80,marginLeft:10}}
+                                    pinCount={6}
+                                    code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
+                                    onCodeChanged = {code => { this.setState({code})}}
+                                    autoFocusOnLoad
+                                    codeInputFieldStyle={styles.underlineStyleBase}
+                                    codeInputHighlightStyle={styles.underlineStyleHighLighted}
+                                    onCodeFilled = {(code => {
+                                        console.log(`Code is ${code}, you are good to go!`)
+                                    })}
+                                />
                             </View>
-                            {/* <OTPInputView
-                                style={{width: '80%', height: 200}}
-                                pinCount={6}
-                                code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
-                                onCodeChanged = {code => { this.setState({code})}}
-                                autoFocusOnLoad
-                                codeInputFieldStyle={styles.underlineStyleBase}
-                                codeInputHighlightStyle={styles.underlineStyleHighLighted}
-                                onCodeFilled = {(code => {
-                                    console.log(`Code is ${code}, you are good to go!`)
-                                })}
-                            /> */}
                              {/* <OtpInputs getOtp={(otp) => this.getOtp(otp)} /> */}
                             <View style={{flexDirection:'row',justifyContent:'center',marginTop:20,marginLeft:'30%',}}>
                                 <View>
@@ -75,7 +78,7 @@ class OtpVerification extends React.Component {
                                 </View>
                                 
                             </View>
-                            <View style={{flexDirection:'row',justifyContent:'center',marginLeft:width*0.25,marginTop:height*0.40,marginBottom:20}}>
+                            <View style={{flexDirection:'row',justifyContent:'center',marginLeft:width*0.25,marginTop:height*0.35,marginBottom:20}}>
                                 <TouchableOpacity  style={styles.authModeBtn}>
                                     <Feather name="arrow-right" size={20} color={theme.primaryColor} style={{marginTop:Platform.OS=='web'?5:0}}/> 
                                 </TouchableOpacity>
@@ -134,18 +137,19 @@ const styles = StyleSheet.create({
           },
          
           borderStyleHighLighted: {
-            borderColor: "#03DAC6",
+            borderColor: theme.accentColor,
           },
          
           underlineStyleBase: {
             width: 30,
-            height: 45,
+            height: 60,
             borderWidth: 0,
+            color:'black',
             borderBottomWidth: 1,
           },
          
           underlineStyleHighLighted: {
-            borderColor: "#03DAC6",
+            borderColor: theme.accentColor,
           },
           authModeBtn :
           {
