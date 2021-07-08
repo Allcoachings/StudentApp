@@ -21,21 +21,24 @@ class TestSeriesView extends React.Component {
             // CardView(
                 <View style={styles.headerSection}>
                     <View style={styles.headerRowSection}>
-                        {/* <View style={styles.timer}>
-                            <Text style={styles.timerText}>11:20:22</Text>
-                        </View> */}
+                        <View style={{marginLeft:10}}>
+                            <Feather name="arrow-left" size={20} onPress={()=>this.props.navigation.goBack()}/>
+                        </View>
                         <View style={styles.quizNameView}>
                             <Text style={styles.quizName}>IBPS PO Prelims Mock Test 1</Text>
                         </View>
-                        <View style={styles.pauseBtnView}>
+                        {/* <View style={styles.pauseBtnView}>
                             <Feather name="pause-circle" size={13} color={theme.redColor}/>
                             <Text style={styles.pauseBtnText}>Pause</Text>
-                        </View>
+                        </View> */}
                         <TouchableOpacity style={styles.menuIcon} onPress={()=>this.openModal()}>
-                            <Feather name="menu" size={25} color={theme.secondaryColor}/>
+                            <Feather name="grid" size={25} color={theme.labelOrInactiveColor}/>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{marginLeft:5,marginRight:5}} >
+                            <Feather name="more-vertical" size={25} color={theme.labelOrInactiveColor}/>
                         </TouchableOpacity>
                     </View>
-                    <View style={styles.headerRowSection2}>
+                    {/* <View style={styles.headerRowSection2}>
                         <View style={styles.sectionView}>
                             <Text style={styles.sectionText}>SECTIONS</Text>
                         </View>
@@ -48,7 +51,7 @@ class TestSeriesView extends React.Component {
                         <View style={styles.optView}>
                             <Text style={styles.optText}>Quantitative</Text>
                         </View>
-                    </View>
+                    </View> */}
                 </View>
                 // ,{width: '100%', padding: 4, borderColor: theme.labelOrInactiveColor, borderWidth: 0.5}
             // )
@@ -57,36 +60,37 @@ class TestSeriesView extends React.Component {
 
     queSection=()=>{
         return(
-            CardView(
+            // CardView(
                 <View style={styles.quesRowSection}>
                     <View style={styles.queView}>
                         <Text style={styles.queNum}>
-                            Ques no. 1
+                            Q. 1
                         </Text>
                     </View>
                     <View style={styles.quesRow2}>
-                        <View style={styles.marksView}>
-                            <Text style={styles.marksText}>Marks</Text>
+                        {/* <View style={styles.marksView}> */}
+                            {/* <Text style={styles.marksText}>Marks</Text> */}
                             <View style={styles.marksCol}>
                                 <View style={styles.posMarksView}>
                                     <Text style={styles.tolMarksView}>+2</Text>
                                 </View>
                                 <View style={styles.negMarksView}>
-                                    <Text style={styles.tolMarksView}>0.5</Text>
+                                    <Text style={styles.tolMarksView}>-0.5</Text>
                                 </View>
                             </View>
-                        </View>
-                        <View style={styles.timeColSection}>
+                        {/* </View> */}
+                        {/* <View style={styles.timeColSection}>
                             <Text style={styles.timeText}>Time</Text>
                             <Text style={styles.timeText}>00:00</Text>
-                        </View>
+                        </View> */}
                         <View style={styles.alertView}>
-                            <Feather name="alert-circle" size={24} color={theme.secondaryColor}/>
+                            <Feather name="bookmark" size={24} color={theme.labelOrInactiveColor}/>
                         </View>
                     </View>
-                </View>,{width: '100%', padding: 4, borderColor: theme.labelOrInactiveColor, borderWidth: 0.5}
+                </View>
+                // ,{width: '100%', padding: 4, borderColor: theme.labelOrInactiveColor, borderWidth: 0.5}
                 
-            )
+            // )
         )
     }
 
@@ -97,24 +101,47 @@ class TestSeriesView extends React.Component {
             <View style={styles.optionView}>
                 <View style={styles.optionRow}>
                     <View style={styles.singleOptionView}>
-                        <TouchableOpacity style={styles.optionAns}></TouchableOpacity>
-                        <Text style={styles.optionText}>Stumbled</Text>
+                        <TouchableOpacity style={styles.optionAns}>
+                            <View style={{marginRight:10,borderRadius:15,paddingHorizontal:10,padding:5,borderWidth:1,borderColor: theme.labelOrInactiveColor}}>
+                                <Text>A</Text>
+                            </View>
+                       
+                            <Text style={styles.optionText}>Stumbled</Text>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.singleOptionView}>
-                        <TouchableOpacity style={styles.optionAns}></TouchableOpacity>
-                        <Text style={styles.optionText}>Littered</Text>
+                        <TouchableOpacity style={styles.optionAns}>
+                            <View style={{marginRight:10,borderRadius:15,paddingHorizontal:10,padding:5,borderWidth:1,borderColor: theme.labelOrInactiveColor}}>
+                                <Text>B</Text>
+                            </View>
+                       
+                            <Text style={styles.optionText}>Littered</Text>
+                        </TouchableOpacity>
                     </View>
+                   
                 </View >
                 <View style={styles.optionRow}>
                     <View style={styles.singleOptionView}>
-                        <TouchableOpacity style={styles.optionAns}></TouchableOpacity>
-                        <Text style={styles.optionText}>Stumbled</Text>
+                        <TouchableOpacity style={styles.optionAns}>
+                            <View style={{marginRight:10,borderRadius:15,paddingHorizontal:10,padding:5,borderWidth:1,borderColor: theme.labelOrInactiveColor}}>
+                                <Text>C</Text>
+                            </View>
+                       
+                            <Text style={styles.optionText}>Stumbled</Text>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.singleOptionView}>
-                        <TouchableOpacity style={styles.optionAns}></TouchableOpacity>
-                        <Text style={styles.optionText}>Littered</Text>
+                        <TouchableOpacity style={styles.optionAns}>
+                            <View style={{marginRight:10,borderRadius:15,paddingHorizontal:10,padding:5,borderWidth:1,borderColor: theme.labelOrInactiveColor}}>
+                                <Text>D</Text>
+                            </View>
+                       
+                            <Text style={styles.optionText}>Littered</Text>
+                        </TouchableOpacity>
                     </View>
-                </View>
+                   
+                </View >
+                
             </View>
         </View>
     )}
@@ -151,13 +178,14 @@ class TestSeriesView extends React.Component {
     render(){
         return (
             <PageStructure
-                iconName={"menu"}
-                btnHandler={() => {this.props.navigation.toggleDrawer()}}
+                iconName={"arrow-left"}
+                btnHandler={() => {this.props.navigation.goBack()}}
                 headerComponent={this.header()}
                 replaceHeader={true}
                 replaceBottomTab={true}
                 bottomComponent={this.renderFooter()}
-                headerStyle={{flex:0.123}}
+                headerStyle={{flex:0.0623}}
+                noBottomTab={true}
                 bottomComponentStyle={{paddingLeft:0,paddingRight:0,paddingBottom:0}}
             >
                 
@@ -196,17 +224,19 @@ const styles = StyleSheet.create({
     {
         flex: 1,
         flexDirection: 'column',
+        paddingBottom:10
     },
         headerSection:
         {
-            flexDirection: 'column'
+            flexDirection: 'column',
         },
             headerRowSection:
             {
-                flex: 1,
+                flex: 0.1,
+                width:'100%',
                 flexDirection: 'row',
                alignItems: 'center',
-               justifyContent: 'space-between',
+            //    justifyContent: 'space-between',
             },
                 timer:
                 { 
@@ -240,7 +270,7 @@ const styles = StyleSheet.create({
                     flexDirection: 'row',
                 },
                 menuIcon:{ 
-                        marginLeft:10,
+                        marginLeft:'auto',
                         alignSelf: 'flex-end'
                 },
             headerRowSection2:{
@@ -267,7 +297,8 @@ const styles = StyleSheet.create({
                     },
         quesRowSection:{
             flexDirection: 'row',
-            justifyContent: 'center'
+            alignItems: 'center',
+            justifyContent: 'space-between'
         },
             queView:
             {
@@ -280,8 +311,11 @@ const styles = StyleSheet.create({
                 },
             quesRow2:
             {
-                flex: 0.7,
+                flex: 0.3,
+                // paddingTop:10?,
+                alignItems: 'center',
                 flexDirection: 'row',
+                alignSelf: 'flex-end',
                 justifyContent: 'space-evenly',
                 // backgroundColor:'#000'
             },
@@ -297,24 +331,29 @@ const styles = StyleSheet.create({
                     marksCol:{
                         flex: 1,
                         flexDirection: 'row',
-                        justifyContent: 'space-evenly'
+                        marginLeft:'auto',
+                        alignSelf:'flex-end'
+                        
+                        // justifyContent: 'space-evenly'
                     },
                         posMarksView:{
-                            backgroundColor: 'green',
-                            borderRadius: 7,
-                            paddingRight: 17,
-                            paddingLeft: 17,
-                            marginRight: 3
+                            // backgroundColor: 'green',
+                            // borderRadius: 7,
+                            // paddingRight: 17,
+                            // paddingLeft: 17,
+
+                            marginRight: 10
                         },
                             tolMarksView:{
-                                fontSize: 12,
-                                color: theme.secondaryColor
+                                fontSize: 14,
+                                color: theme.greyColor
+
                             },
                         negMarksView:{
-                            backgroundColor: 'red',
-                            borderRadius: 7,
-                            paddingRight: 17,
-                            paddingLeft: 17
+                            // backgroundColor: 'red',
+                            // borderRadius: 7,
+                            // paddingRight: 17,
+                            // paddingLeft: 17
                         },
                     timeColSection:{
                         flex: 0.3,
@@ -325,7 +364,8 @@ const styles = StyleSheet.create({
                             fontSize: 14
                         },
                     alertView:{
-                        justifyContent: 'center'
+                        justifyContent: 'center',
+                        marginRight:10, 
                     },
         quizQuestionView:{
             flexDirection: 'column',
@@ -347,8 +387,8 @@ const styles = StyleSheet.create({
                 // marginTop: 10
             },
                 singleOptionView:{
-                    backgroundColor: theme.labelOrInactiveColor,
-                    padding: 10,
+                    // backgroundColor: theme.labelOrInactiveColor,
+                    // padding: 10,
                     borderRadius: 5,
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -356,11 +396,9 @@ const styles = StyleSheet.create({
                     marginHorizontal: 20,
                 },
                     optionAns:{
-                        height: 25,
-                        width: 25,
-                        borderRadius: 13,
-                        backgroundColor: theme.greyColor,
-                        marginRight: 10,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    
                     },
                     optionText:{
                         fontSize: 16,

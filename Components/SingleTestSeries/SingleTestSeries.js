@@ -40,7 +40,7 @@ class SingleTestSeries extends React.Component {
             <PageStructure
                 iconName={"menu"}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
-                catInHeader={true}
+                catInHeader={false}
             >
                 <View style={styles.container}>
                     <View style={styles.headerSection}>

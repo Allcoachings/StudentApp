@@ -681,7 +681,7 @@ class InstituteView extends React.Component {
                                 <View style={{flexDirection: 'row',alignItems: 'center',paddingBottom:10,borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}>
                                     <View style={{marginLeft:10}}>
                                         <TouchableOpacity onPress={()=>this.setState({ReviewmodalVisible:false})}>
-                                            <Feather name={'x'} size={20}/>
+                                            <Feather name={'arrow-left'} size={20}/>
                                         </TouchableOpacity>
                                     </View>
                                     <View style={{marginHorizontal:10,flex:0.8,flexWrap:'wrap'}}>
@@ -697,16 +697,27 @@ class InstituteView extends React.Component {
                                     <View style={styles.modalHeaderRight}></View>
                                 </View>
                                 <View style={{ paddingHorizontal: 6,marginVertical:20,backgroundColor: 'white'}}>
-                                    <Rating
+                                    {/* <Rating
                                         type='star'
                                         ratingCount={5}
                                         startingValue={0}
                                         imageSize={30} 
                                         unSelectedColor={theme.appBackgroundColor} 
                                         // tintColor={theme.appBackgroundColor}
+                                        ratingColor={theme.blueColor}
                                         style={styles.instituteRating}
                                         readOnly={true}
                                         style={{textAlign: 'center', marginBottom: 10}} 
+                                    /> */}
+                                    <AirbnbRating 
+                                        starContainerStyle={[styles.instituteRating,{alignSelf:"center"}]} 
+                                        count={5}
+                                        reviews={[]} 
+                                        isDisabled={false}
+                                        defaultRating={0}
+                                        size={30}
+                                        selectedColor={theme.blueColor}
+                                        showRating={false}
                                     />
                                     <TextInput style={{borderWidth: 1, borderColor: 'black', borderRadius:10, paddingLeft: 6, paddingBottom:30,}} placeholder="Write a Review" placeholderTextColor='grey'></TextInput>
                                     <TouchableOpacity style={styles.reviewbutton}>
@@ -1148,86 +1159,7 @@ const styles = StyleSheet.create({
                     display: 'flex',
                     flexDirection: 'column'
                 },
-                    videoContainer:
-                    {
-                        marginTop: 10,
-                        display: 'flex',
-                        flexDirection: 'row'
-                    },
-                        videoImage:
-                        {
-                            height: 100,
-                            width:  130,
-                            borderRadius: 10,
-                        },
-                        videoColumn:
-                        {
-                            marginLeft: 5,
-                            display: 'flex', 
-                            flexDirection: 'column'
-                        },
-                        videoText:
-                        {
-                            marginBottom: 5,
-                        },
-                    classContainer:
-                    {
-                        marginTop: 10,
-                        marginLeft: 10,
-                        display: 'flex',
-                        flexDirection: 'row',
-                        // justifyContent: 'center',
-                        // alignItems: 'center'
-                    },
-                        classImage:
-                        {
-                            height: 90,
-                            width:  100,
-                            borderRadius: 10,
-                            marginRight: 10
-                        },
-                        classTitle:
-                        {
-                            // flex: 1, 
-                            // flexWrap: 'wrap',
-                            flexShrink: 1,
-                            fontWeight: '700',
-                            
-                        },
-                        classText:
-                        {
-                            color: theme.secondaryColor,
-                        },
-                    documentContainer:
-                    {
-                        marginTop: 10,
-                        display: 'flex',
-                        flexDirection: 'row',
-                        // overflow: 'hidden'
-                        // justifyContent: 'center',
-                        // alignItems: 'center'
-                    },
-                        documentImage:
-                        {
-                            height: 100,
-                            width:  90,
-                            borderRadius: 10,
-                            marginRight: 10,
-                            borderColor: 'green', 
-                            // overflow: 'hidden'
-                        },
-                        documentTitle:
-                        {
-                            // flex: 1, 
-                            // flexWrap: 'wrap',
-                            flexShrink: 1,
-                            fontWeight: '700',
-                            
-                        },
-                        documentText:
-                        {
-                            color: theme.secondaryColor,
-                        },
+                       
                     list:
                     {
                         flex: 1,

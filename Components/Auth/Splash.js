@@ -21,7 +21,7 @@ const Splash = () => {
 
   return (
     <View style={{backgroundColor : '#ffe6ff',height:height*0.975}}>
-      <StatusBar barStyle="dark-content" />
+      {/* <StatusBar barStyle="dark-content" /> */}
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView
           style={{ flex: 1 ,backgroundColor : '#ffe6ff'}}

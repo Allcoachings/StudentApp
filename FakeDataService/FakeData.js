@@ -14981,6 +14981,70 @@ export const singlequedata =
               id: '16',
               queno: '16'
             },
+            {
+              id: '17',
+              queno: '17'
+            },
+            {
+              id: '18',
+              queno: '18'
+            },
+            {
+              id: '19',
+              queno: '19'
+            },
+            {
+              id: '20',
+              queno: '20'
+            },
+            {
+              id: '21',
+              queno: '21'
+            },
+            {
+              id: '22',
+              queno: '22'
+            },
+            {
+              id: '23',
+              queno: '23'
+            },
+            {
+              id: '24',
+              queno: '24'
+            },
+            {
+              id: '25',
+              queno: '25'
+            },
+            {
+              id: '26',
+              queno: '26'
+            },
+            {
+              id: '27',
+              queno: '27'
+            },
+            {
+              id: '28',
+              queno: '28'
+            },
+            {
+              id: '29',
+              queno: '29'
+            },
+            {
+              id: '30',
+              queno: '30'
+            },
+            {
+              id: '31',
+              queno: '31'
+            },
+            {
+              id: '32',
+              queno: '32'
+            },
         ]
     }
 

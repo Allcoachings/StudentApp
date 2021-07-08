@@ -48,7 +48,7 @@ class SeriesList extends React.Component {
             <PageStructure
                 iconName={"arrow-left"}
                 btnHandler={() => {this.props.navigation.goBack()}}
-                catInHeader={true}
+                catInHeader={false}
                 titleonheader={"UPSC CSE"}
                 notificationreplaceshare={"share-2"}
             >

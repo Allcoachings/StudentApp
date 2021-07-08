@@ -68,6 +68,7 @@ export function DrawerContent(props){
                         {renderDrawerItem('Result Analysis','user',()=>props.navigation.navigate("ResultAnalysis"))}
                         {renderDrawerItem('Feed','user',()=>props.navigation.navigate("Feed"))}
                         {renderDrawerItem('Settings','user',()=>props.navigation.navigate("Settings"))}
+                        {renderDrawerItem('Downloads','user',()=>props.navigation.navigate("Downloads"))}
                         {/* <Drawer.Item
                             icon={({color, size}) => (
                                 <Icon

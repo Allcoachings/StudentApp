@@ -42,3 +42,15 @@ export const screenWidthConfigChange=(width)=>
 }
 
 //screen reducer actions ends
+
+//institute reducer
+
+export const setInstituteDetails=(obj)=>
+{
+    return{
+        type:actionTypes.SET_INSTITUTE_DETAILS, //this type will be used to match
+        payload:{
+            details:obj
+        }       
+    }
+}

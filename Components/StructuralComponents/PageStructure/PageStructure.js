@@ -15,8 +15,9 @@ class PageStructure extends React.Component {
             <View style={styles.container}>
                 <View style={styles.containerMain}> 
                      {this.switchRender(this.props.scrollMode)}
-                    {this.props.screenWidth<=screenMobileWidth?(
-                        <View style={[styles.pageBottomTab,{flex:this.props.catInHeader?0.097:0.102}]}>
+                     
+                    {!this.props.noBottomTab&&this.props.screenWidth<=screenMobileWidth?(
+                        <View style={[styles.pageBottomTab,{flex:this.props.catInHeader?0.11:0.102}]}>
                                 <BottomTab replacBottomTab={this.props.replaceBottomTab} bottomComponentStyle={this.props.bottomComponentStyle}  bottomComponent={this.props.bottomComponent}/>
                         </View>
                     ):(null)}
@@ -130,6 +131,7 @@ const styles = StyleSheet.create({
     {
         flexDirection:'column',
         flex: 1,
+        
     },
         containerHeader:
         {
@@ -157,9 +159,8 @@ const styles = StyleSheet.create({
             },
         pageBottomTab:
         {
-            flex:0.1, 
-            borderTopWidth:1, 
-            borderTopColor:theme.labelOrInactiveColor,
+            flex:0.089, 
+            
             marginTop:'auto'
         }
 })

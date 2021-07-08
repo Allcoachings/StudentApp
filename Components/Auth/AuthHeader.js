@@ -13,7 +13,8 @@ class AuthHeader extends React.Component {
                 <View style={styles.headerBranding}>
                     <Image source={logoName} style={styles.brandingImage} />
                 </View>
-            ,{borderRadius:40,width:220,height:60})}
+            ,{borderRadius:40,width:220,height:60}
+            )}
             </View>
         );
     }

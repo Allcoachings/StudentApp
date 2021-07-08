@@ -157,8 +157,8 @@ class Feed extends React.Component {
             <PageStructure
                 iconName={"menu"}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
-                headerComponent={this.header()}
-                replaceHeader={true}
+                // headerComponent={this.header()}
+                // replaceHeader={true}
                 headerStyle={{flex:0.11, padding: 5}}
             >
                 <ScrollView>

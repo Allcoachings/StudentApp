@@ -1,17 +1,60 @@
 import React from 'react';
 import {Text, View,StyleSheet, TextInput, TouchableOpacity, ScrollView} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import {theme,screenMobileWidth} from '../config'
+import {theme,screenMobileWidth, serverBaseUrl, videoDefaultThumbnail} from '../config'
 import CardView from '../Utils/CardView';
+import * as DocumentPicker from 'expo-document-picker';
+import {addCourseVideo} from '../Utils/DataHelper/Course'
 
+import {Picker} from '@react-native-picker/picker';
+import { Feather } from '@expo/vector-icons';
+import AddVideoPlaylist from './AddVideoPlaylist';
 class AddVideo extends React.Component {
     state = {
         title: "",
         description: "",
         video: "",
     }
+    handleAddVideoClick=()=>
+    {
+        DocumentPicker.getDocumentAsync({type:"video/*",copyToCacheDirectory:true,multiple:false}).then(response=>
+            {
+                
+                if(response.type=="success")
+                {
+                    this.setState({video:response})
+                }
+            })
+    }
+    handleAddVideoCallBack=(response)=>
+    {
+            if(response.status==201)
+            {
+                 
+                let details = response.headers.map.location.split("*");
+                this.props.route.params.appendVideo({id:details[0],videoLocation:serverBaseUrl+details[1],name:this.state.title,description:this.state.description,isDemo:false,courseId:this.props.route.params.courseId,videoThumb:videoDefaultThumbnail})
+                this.props.navigation.goBack();
+            }
+    }
+    handleSubmitButtonClick=()=>
+    {
+            if(this.verify(this.state))
+            {
+                addCourseVideo(this.state.video,this.state.title,this.state.description,false,'0',this.props.route.params.courseId,this.handleAddVideoCallBack)
+            }
+    }
 
+    verify=({title,description,video})=>title&&description&&video.type=='success'
+    openModal=()=>
+    {
+        this.setState({isModalVisible: true})
+    }
+    closeModal=()=>
+    {
+        this.setState({isModalVisible: false})
+    }
     render() {
+         
         return(
             <PageStructure
                 iconName={"menu"}
@@ -34,7 +77,10 @@ class AddVideo extends React.Component {
                             )}
                     </View>
                     <View style={styles.inputView}>
-                            <Text style={styles.labelText}>Video Description</Text>
+                            <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
+                                <Text style={styles.labelText}>Video Playlist</Text>
+                                <Feather name="plus" onPress={()=>this.openModal()} size={20}/>
+                            </View> 
                             {CardView(
                                 <TextInput 
                                     placeholderTextColor={theme.greyColor} 
@@ -46,21 +92,46 @@ class AddVideo extends React.Component {
                                 />, {borderRadius: 10}
                             )}
                     </View>
+                    {!this.state.loadingCategory?(
+                            <View style={styles.inputView}>
+                                <Text style={styles.labelText}>Video Description</Text>
+                                {CardView(
+                                    <View style={styles.dropdownView}>
+                                        <Picker
+                                            style={{height:30}}
+                                            selectedValue={this.state.selectedCategory}
+                                            onValueChange={(itemValue, itemIndex) =>
+                                                this.setSelectedCategory(itemValue)
+                                            }>
+                                                {/* <Picker.Item label="Java" value="java" />
+                                                <Picker.Item label="JavaScript" value="js" /> */}
+                                            {this.state.categories&&this.state.categories.map((item)=>this.renderPickerItem(item))}
+                                        </Picker>
+                                        {/* <DropDownPicker
+                                            placeholder="Select Category"
+                                            placeholderTextColor={theme.greyColor}
+                                            containerStyle={{borderColor: theme.greyColor}}
+                                            items={this.state.categories}
+                                            open={this.state.open}
+                                            setOpen={this.open}
+                                            value={this.state.selectedCategory}
+                                            setValue={this.setValue}
+                                            dropdownContainerStyle={{
+                                                zIndex:1000,
+                                                elevation:100
+                                            }}
+                                        /> */}
+                                    </View> ,{marginTop: 10, padding: 12})}
+                                </View>
+                        ):(null)}
                     <View style={styles.inputView}>
                             <Text style={styles.labelText}>Video</Text>
-                            {CardView(
-                                <TextInput 
-                                    placeholderTextColor={theme.greyColor} 
-                                    placeholder="Add Video" 
-                                    onChangeText={(text)=>this.setState({video: text})} 
-                                    multiline={true} 
-                                    numberOfLines={4} 
-                                    style={styles.inputField}
-                                />, {borderRadius: 10}
-                            )}
+                            <TouchableOpacity style={styles.submitButton} onPress={this.handleAddVideoClick}>
+                                <Text style={styles.submitButtonText}>Choose Video</Text>
+                            </TouchableOpacity>
                     </View>
                     <View style={styles.btnView}>
-                        <TouchableOpacity style={styles.submitButton}>
+                        <TouchableOpacity style={styles.submitButton} onPress={this.handleSubmitButtonClick}>
                                 <Text style={styles.submitButtonText}>Submit</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.addMoreButton}>
@@ -68,6 +139,11 @@ class AddVideo extends React.Component {
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
+                {this.state.isModalVisible?(
+                            <AddVideoPlaylist isModalVisible={this.state.isModalVisible} closeModal={this.closeModal}/>
+                ):(
+                    null
+                )}
            </PageStructure>
         )}
     }
@@ -90,7 +166,8 @@ const styles = StyleSheet.create({
         marginTop:'5%',
         display: 'flex',
         flexDirection: 'column',
-        marginLeft: 10
+        marginLeft: 10,
+        alignItems: 'flex-start'
     },
         labelText: {
             fontSize: 18,

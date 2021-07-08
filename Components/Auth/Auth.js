@@ -55,6 +55,7 @@ class Auth extends React.Component {
         return (
             
             <ScrollView >
+            <>
                     <View style={styles.container}> 
                         <View style={[styles.authContainer,{flex:this.props.screenWidth<=screenMobileWidth?1:0.5}]}>
                                 <View>
@@ -71,7 +72,7 @@ class Auth extends React.Component {
                                          {this.renderAuthView(this.state.auth_mode)} 
                                     </View>
                                 </View> */}
-                                <View style={{marginTop:5}}>
+                                <View>
                                     <Splash />
                                 </View>
                                 
@@ -87,6 +88,7 @@ class Auth extends React.Component {
                     )} 
                     </View>
                     <InfoModal isModalVisible={this.state.isModalVisible} />
+                    </>
             </ScrollView>
         );
     }

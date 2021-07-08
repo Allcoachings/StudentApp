@@ -53,8 +53,8 @@ class TestSeriesIns extends React.Component {
     render() {
         return (
             <PageStructure
-                iconName={"arrow-left"}
-                btnHandler={() => {this.props.navigation.goBack()}}
+                iconName={"menu"}
+                btnHandler={() => {this.props.navigation.toggleDrawer()}}
                 catInHeader={true}
             >
                 <ScrollView>

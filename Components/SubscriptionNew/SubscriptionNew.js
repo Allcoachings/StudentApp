@@ -6,7 +6,7 @@ import { Feather } from '@expo/vector-icons';
 import {connect } from 'react-redux'
 import {subscriptionNew} from '../../FakeDataService/FakeData'
 import CardView from '../Utils/CardView'
-import { Rating } from 'react-native-ratings';
+import { AirbnbRating } from 'react-native-ratings';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 
 class SubscriptionNew extends React.Component {
@@ -31,7 +31,7 @@ class SubscriptionNew extends React.Component {
                         <Text style={styles.instituteDirector}>{item.directoy_name}</Text>
                         <View style={styles.instituteRatingView}>
                             <Text style={{alignSelf:'flex-start', color: theme.greyColor}}>{item.rating}</Text>
-                            <Rating
+                            {/* <Rating
                                 type='star'
                                 ratingCount={5}
                                 startingValue={item.rating}
@@ -40,7 +40,17 @@ class SubscriptionNew extends React.Component {
                                 tintColor={theme.appBackgroundColor}
                                 style={styles.instituteRating}
                                 readOnly={true} 
-                            />
+                            /> */}
+                            <AirbnbRating 
+                                        starContainerStyle={styles.instituteRating} 
+                                        count={5}
+                                        reviews={[]} 
+                                        isDisabled={true}
+                                        defaultRating={item.rating}
+                                        size={12}
+                                        selectedColor={theme.blueColor}
+                                        showRating={false}
+                                    />
                             <Text style={styles.voteCount}>{item.count}</Text>
                         </View>
                         <View style={styles.followerView}>
@@ -59,8 +69,8 @@ class SubscriptionNew extends React.Component {
             <PageStructure
                 iconName={"menu"}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
-                titleonheader={"Subscription"}
-                notificationreplaceshare={"share-2"}
+                // titleonheader={"Subscription"}
+                // notificationreplaceshare={"share-2"}
             >
                 <ScrollView>
                     <View style={styles.container}>
@@ -163,7 +173,9 @@ const styles = StyleSheet.create({
                     },
                 followerView:
                 {
-                    backgroundColor: theme.accentColor,
+                    backgroundColor: theme.primaryColor,
+                    borderColor: theme.labelOrInactiveColor, 
+                    borderWidth:1,
                     padding: 5,
                     borderRadius: 5,
                     justifyContent: 'center',
@@ -171,7 +183,8 @@ const styles = StyleSheet.create({
                 },
                     follower:
                     {
-                        color: theme.primaryColor,
+                        color: theme.blueColor, 
+                        fontWeight: 'bold',
                         fontSize: 16
                     }
 

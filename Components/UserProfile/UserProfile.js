@@ -347,9 +347,9 @@ const styles = StyleSheet.create({
             },
                 image:
                 {
-                    height: 100,
-                    width: 100,
-                    borderRadius: 50
+                    height: 80,
+                    width: 80,
+                    borderRadius: 40
                 },
             nameView:
             {

@@ -21,6 +21,7 @@ import  {DrawerContent}  from './DrawerContent';
 import MockTest from '../MockTest/MockTest';
 import UserProfile from '../UserProfile/UserProfile';
 import Settings from '../Settings/Settings';
+import Downloads from '../Downloads/Downloads';
 
 // import ReviewAndRatings from '../ReviewAndRatings/ReviewAndRatings';
 const Drawer = createDrawerNavigator();
@@ -50,6 +51,7 @@ class index extends React.Component {
                         <Drawer.Screen name="MockTest" component={MockTest} />
                         <Drawer.Screen name="Profile" component={UserProfile} />
                         <Drawer.Screen name="Settings" component={Settings} />
+                        <Drawer.Screen name="Downloads" component={Downloads} />
                         {/* <Drawer.Screen 
                             name="Home" 
                             component={Home} 

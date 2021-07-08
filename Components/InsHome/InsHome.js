@@ -3,7 +3,7 @@ import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity, Moda
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {instituteData, insBanners} from '../../FakeDataService/FakeData'
 import { Rating } from 'react-native-ratings';
-import {theme,screenMobileWidth} from '../config'
+import {theme,screenMobileWidth, serverBaseUrl} from '../config'
 import CardView from '../Utils/CardView';
 import MarqueeText from 'react-native-marquee';
 import { Feather } from '@expo/vector-icons';
@@ -12,12 +12,15 @@ import { List } from 'react-native-paper';
 import Review from '../ReviewAndRatings/Review'
 import Accordian from '../Utils/Accordian'
 import MockTest from '../MockTest/MockTest'
+import AddCourseModal from './AddCourseModal';
+import {fetch_institute_courses,fetch_courses_banners,addCourseBanner,fetch_courses_videos} from '../Utils/DataHelper/Course'
 
+import * as DocumentPicker from 'expo-document-picker';
 class InsHome extends React.Component {
     
     state = { 
         tabtoshow: 1,
-        activeTab: 'videos',
+        activeTab: 'liveClass',
         activeCourse:'1',
         activeFilter: '',
         addVideo: false,
@@ -28,6 +31,21 @@ class InsHome extends React.Component {
         
      }
 
+     coursesCallBack=(response)=>
+     {
+            if(response.status==200)
+            {
+                response.json().then((data)=>
+                {
+                    console.log("courses",data)
+                    this.setState({courses:data})
+                })
+            }
+     }
+     componentDidMount() {
+         console.log(this.props.institute)
+        fetch_institute_courses(this.props.institute.details.id,this.coursesCallBack)
+     }
      renderImagePost=() => {
         return(
             CardView(
@@ -140,19 +158,70 @@ class InsHome extends React.Component {
             )
         )
     }
+    courseBannerCallback=(response)=>
+    {
+        console.log(response.status)
+        if(response.status==200)
+        {
+            response.json().then(data=>
+                {
+                    
+
+                    data.push({type:'add',bannerImageLink:'https://picsum.photos/200/300'})
+                    console.log('course',data)
+                    this.setState({courseBanners:data});
+                })
+        }
+    }
+    handleCourseItemClick=(item)=>
+    {
+        this.setState({activeCourse:item.id,activeCourseDetail:item})
+        
+        fetch_courses_banners(item.id,this.courseBannerCallback)
+    }
     renderCourseItems=({item})=>
     {
         return (
-            <TouchableOpacity style={[styles.courseItemContainer,this.state.activeCourse==item.id?({backgroundColor:theme.secondaryColor}):(null)]} onPress={()=>this.setState({activeCourse:item.id})}> 
-                    <Text style={[styles.courseTitle,this.state.activeCourse==item.id?({color:theme.primaryColor}):({color:theme.secondaryColor})]}>{item.name}</Text>
+            <TouchableOpacity style={[styles.courseItemContainer,this.state.activeCourse==item.id?({backgroundColor:theme.secondaryColor}):(null)]} onPress={()=>this.handleCourseItemClick(item)}> 
+                    <Text style={[styles.courseTitle,this.state.activeCourse==item.id?({color:theme.primaryColor}):({color:theme.secondaryColor})]}>{item.title}</Text>
             </TouchableOpacity>
         );
     }
+    bannerCallback=(response)=>
+    {
+        if(response.status==201)
+        {
+            let courseBanners = this.state.courseBanners;
+            let details = response.headers.map.location.split("*");
+            console.log(serverBaseUrl+details[1])
+            courseBanners.unshift({id:details[0],bannerImageLink:serverBaseUrl+details[1],courseId:this.state.activeCourse})
+
+        }
+    }
+    addCourseBanner=()=>
+    {
+        DocumentPicker.getDocumentAsync({type:"image/*",copyToCacheDirectory:true,multiple:false}).then(response=>
+            {
+                console.log(response)
+                if(response.type=="success")
+                {
+                    addCourseBanner(response,this.state.activeCourse,this.bannerCallback)
+                }
+            })
+    }
     renderBannerList=({item})=>
     {
+        if(item.type=='add')
+        {
+            return(
+                <TouchableOpacity style={styles.bannerItemContainer} onPress={()=>this.addCourseBanner()}>
+                    <Image source={{uri:item.bannerImageLink}} style={styles.bannerImage}/>
+                </TouchableOpacity  >
+            )
+        }
         return(
-            <TouchableOpacity style={styles.bannerItemContainer}>
-                    <Image source={item.image} style={styles.bannerImage}/>
+            <TouchableOpacity style={styles.bannerItemContainer} >
+                    <Image source={{uri:serverBaseUrl+item.bannerImageLink}} style={styles.bannerImage}/>
             </TouchableOpacity  >
         )
     }
@@ -201,11 +270,11 @@ class InsHome extends React.Component {
         return(
             <View style={styles.videoContainer}>
                 <View>
-                    <Image source={item.image} style={styles.videoImage}/>
+                    <Image source={{uri:item.videoThumb}} style={styles.videoImage}/>
                 </View>
                 <View style={styles.videoColumn}>
                     <View>
-                        <Text style={styles.videoText}>{item.title}</Text>
+                        <Text style={styles.videoText}>{item.name}</Text>
                     </View>
                     <View>
                         <Text style={styles.videoText}>{item.description}</Text>
@@ -437,13 +506,36 @@ class InsHome extends React.Component {
         }
         else if(value=='VideoAdd')
         {
-            this.props.navigation.navigate("AddVideos")
+            this.props.navigation.navigate("AddVideos",{courseId:this.state.activeCourse,appendVideo:this.appendCourseVideo})
         }
         else if(value=='PdfAdd')
         {
             this.props.navigation.navigate("AddDocument")
         }
         
+    }
+    appendCourseVideo=(obj)=>
+    {
+        let courseVideos = this.state.courseVideos;
+        courseVideos.push(obj);
+        this.setState({courseVideos})
+        
+    }
+    courseVideoCallback=(response)=>{
+        console.log(response.status)
+            if(response.status==200)
+            {
+                response.json().then(data=>
+                {
+                    console.log(data);
+                    this.setState({courseVideos:data,courseVideoLoaded:true,isCourseVideoLoading:false});                   
+                })
+            }
+    }
+    handleCourseVideoCallback=()=>
+    {
+        
+        fetch_courses_videos(this.state.activeCourse,this.courseVideoCallback)
     }
 
     showFilters=(tab)=>{
@@ -465,7 +557,19 @@ class InsHome extends React.Component {
                                         />
                                     </View>)
 
-            case 'videos':      return(
+            case 'videos':      
+                    if(!this.state.courseVideoLoaded&&!this.state.isCourseVideoLoading)
+                    {
+                        this.setState({isCourseVideoLoading:true})
+                        fetch_courses_videos(this.state.activeCourseId,this.handleCourseVideoCallback);
+                    }
+            
+                         return(
+                             this.isCourseVideoLoading?
+                             (
+                                 <ActivityIndicator color={theme.accentColor} style={"large"}/>
+                             ):
+                             (
                                 <View style={styles.AddFilter}>
                                     <TouchableOpacity 
                                         style={[styles.singleSubject,this.state.activeFilter=='VideoAdd'?({backgroundColor:theme.secondaryColor, color: theme.primaryColor}):(null)]} 
@@ -479,7 +583,9 @@ class InsHome extends React.Component {
                                         horizontal={true}
                                         showsHorizontalScrollIndicator={false}
                                     />
-                                </View>)
+                                </View>
+                            )
+                        )
             case 'testSeries':  return(
                                 <View style={styles.AddFilter}>
                                     <TouchableOpacity 
@@ -527,7 +633,7 @@ class InsHome extends React.Component {
                                     />)
             case 'videos':      return(
                                     <FlatList 
-                                        data={instituteData.videos} 
+                                        data={this.state.courseVideos} 
                                         renderItem={this.renderVideos}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
@@ -567,6 +673,11 @@ class InsHome extends React.Component {
         this.setState({ isAddCourseModalVisible: false});
     }
 
+    appendCourses=(course)=>{
+        let courses = this.state.courses
+        courses.push(course)
+        this.setState({courses})
+    }
 
     tabtoshow=(tabValue)=>{
         this.setState({tabtoshow:tabValue});
@@ -574,16 +685,18 @@ class InsHome extends React.Component {
     switchTabRender=(tabtoshow)=>{
         switch (tabtoshow) {
             case 1:
+
+
                 return(
                    <>
                    
-                   <View style={styles.InstituteCourseListView}>
+                            <View style={styles.InstituteCourseListView}>
                                 <TouchableOpacity style={{marginTop: 20, borderWidth: 1, borderColor: theme.secondaryColor, marginRight: 10, borderRadius:10, paddingHorizontal: 10,}} onPress={()=>this.openAddCourseModal()}>
                                     <Text> + Add Course</Text>
                                 </TouchableOpacity>
 
                                 <FlatList 
-                                    data={instituteData.courses} 
+                                    data={this.state.courses} 
                                     renderItem={this.renderCourseItems}
                                     keyExtractor={(item)=>item.id} 
                                     horizontal={true}
@@ -592,7 +705,7 @@ class InsHome extends React.Component {
                             </View>
                             <View style={styles.rowContainer}>
                                 <FlatList 
-                                    data={insBanners} 
+                                    data={this.state.courseBanners} 
                                     renderItem={this.renderBannerList} 
                                     keyExtractor={(item)=>item.id}
                                     horizontal={true} 
@@ -607,7 +720,7 @@ class InsHome extends React.Component {
                                 </TouchableOpacity>
                                 <TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10}}>
                                     <Text style={{fontSize:10,color:theme.primaryColor}}>
-                                       Fees - 1000
+                                       Fees - {this.state.activeCourseDetail&&this.state.activeCourseDetail.fees}
                                     </Text>
                                 </TouchableOpacity>
                             </View>
@@ -651,8 +764,8 @@ class InsHome extends React.Component {
             }
     }
     render() {
-        console.log(this.state.activeTab)
-        return (
+       const institute = this.props.institute.details
+         return (
         
         <PageStructure 
             iconName={"menu"}
@@ -666,30 +779,30 @@ class InsHome extends React.Component {
                 <View style={styles.container}>
                         <View style={styles.instituteheader}>
                             {CardView(
-                                <Image source={instituteData.logo} style={styles.instituteheaderLogo}/>
+                                <Image source={{uri:institute.logo}} style={styles.instituteheaderLogo}/>
                             ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:100}):({width:200,height:150})])
                             } 
                             <View style={styles.instituteheaderMeta}>
                                 <View style={{display: 'flex', flexDirection: 'row'}}>
-                                    <Text style={styles.instituteheaderText} numberOfLines={3}>{instituteData.title}</Text>
+                                    <Text style={styles.instituteheaderText} numberOfLines={3}>{institute.name}</Text>
                                     <TouchableOpacity>
                                         <Feather name="edit-3" size={18} color={theme.secondaryColor} />
                                     </TouchableOpacity>
                                 </View>
-                                <Text style={styles.instituteDirector} >{instituteData.directoy_name}</Text>
+                                <Text style={styles.instituteDirector} >{institute.directorName}</Text>
                                 <View style={styles.instituteRatingView}>
-                                    <Text style={{ color: theme.greyColor}}>{instituteData.rating+' • '}</Text>
+                                    <Text style={{ color: theme.greyColor}}>{institute.totalRatingCount?(institute.totalRating/institute.totalRatingCount):(0)+' • '}</Text>
                                     <Rating
                                         type='star'
                                         ratingCount={5}
-                                        startingValue={instituteData.rating}
+                                        startingValue={institute.totalRatingCount?(institute.totalRating/institute.totalRatingCount):(0)}
                                         imageSize={15} 
-                                        unSelectedColor={'yellow'} 
+                                        unSelectedColor={'yellow'}
                                         // tintColor={theme.appBackgroundColor}
                                         style={styles.instituteRating}
                                         readOnly={true} 
                                     />
-                                    <Text style={styles.voteCount}>{instituteData.voteCount} Votes</Text>
+                                    <Text style={styles.voteCount}>{institute.totalRatingCount?(institute.totalRatingCount):(0)} Votes</Text>
                                 </View>
                                 
                             </View>
@@ -702,7 +815,7 @@ class InsHome extends React.Component {
                                     </View>
                                      
                                     <View style={[styles.btnView2,this.state.tabtoshow==2?({backgroundColor:theme.accentColor+'4D',borderColor:theme.accentColor+'4D'}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor,borderWidth: 1})]}>
-                                        <Text style={[styles.btnText,{color:theme.blueColor,fontWeight: 'bold'}]}>35K Follower</Text>
+                                        <Text style={[styles.btnText,{color:theme.blueColor,fontWeight: 'bold'}]}>{institute.follower?institute.follower:0} Follower</Text>
                                     </View>
                                     <View style={[styles.btnView3,this.state.tabtoshow==3?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor,borderWidth:1})]}>
                                         <Text style={[styles.btnText,{color:this.state.tabtoshow==3?theme.primaryColor:theme.greyColor}]} onPress={()=>{this.tabtoshow(3)}}>Feed</Text>
@@ -710,71 +823,23 @@ class InsHome extends React.Component {
                             </View>
                                 {this.switchTabRender(this.state.tabtoshow)}
 
-                            <Modal animationType = {"fade"} transparent = {false}
-                            visible = {this.state.isAddCourseModalVisible}
-                            onRequestClose = {() => { console.log("Modal has been closed.") } }>
                             
-                            <ScrollView>
-                            <View style={styles.headView}>
-                                <Text style={styles.headText}>Add Course</Text>
-                            </View>
-                            <View style={styles.inputView}>
-                                    <Text style={styles.labelText}>Course Title</Text>
-                                    {CardView(
-                                        <TextInput 
-                                            placeholderTextColor={theme.greyColor} 
-                                            placeholder="Title" 
-                                            defaultValue={this.props.description} 
-                                            onChangeText={(text)=>this.setState({title: text})} 
-                                            style={styles.inputField}
-                                        />, {borderRadius: 10}
-                                    )}
-                            </View>
-                            <View style={styles.inputView}>
-                                    <Text style={styles.labelText}>Course Description</Text>
-                                    {CardView(
-                                        <TextInput 
-                                            placeholderTextColor={theme.greyColor} 
-                                            placeholder="Description" 
-                                            onChangeText={(text)=>this.setState({description: text})} 
-                                            multiline={true} 
-                                            numberOfLines={3} 
-                                            style={styles.inputField}
-                                        />, {borderRadius: 10}
-                                    )}
-                            </View>
-                            <View style={styles.inputView}>
-                                    <Text style={styles.labelText}>Course</Text>
-                                    {CardView(
-                                        <TextInput 
-                                            placeholderTextColor={theme.greyColor} 
-                                            placeholder="Add Video" 
-                                            onChangeText={(text)=>this.setState({fees: text})} 
-                                            multiline={true} 
-                                            numberOfLines={4} 
-                                            style={styles.inputField}
-                                        />, {borderRadius: 10}
-                                    )}
-                            </View>
-                            <View style={styles.btnView}>
-                                <TouchableOpacity style={styles.submitButton}>
-                                        <Text style={styles.submitButtonText}>Submit</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={styles.addMoreButton}>
-                                        <Text style={styles.addMoreButtonText}>Add More+</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </ScrollView>
-                           
-
-                            </Modal>
-
                         </View>
                     </View>
                     <Text style={styles.RatingText}>Rating & Reviews</Text>
                     <Review replyMode />
                 </ScrollView>
-                
+                {this.state.isAddCourseModalVisible?(
+                        <AddCourseModal 
+                            appendCourses={this.appendCourses}
+                            isAddCourseModalVisible={this.state.isAddCourseModalVisible} 
+                            closeModal={this.closeAddCourseModal}
+                            instId={this.props.institute.details.id}
+                            setInstituteDetails={this.props.setInstituteDetails}
+                        />
+                ):(
+                    null
+                )} 
             </PageStructure>
         );
     }
@@ -1416,7 +1481,8 @@ const styles = StyleSheet.create({
 const  mapStateToProps = (state)=>
 {
     return {
-        screenWidth: state.screen.screenWidth
+        screenWidth: state.screen.screenWidth,
+        institute:state.institute
     }
 }
 export default connect(mapStateToProps)(InsHome);

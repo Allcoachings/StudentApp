@@ -3,7 +3,6 @@ export const appName="All Coachings";
 export const appName_Caps = "ALL COACHINGS";
 export const logoName = require('../assets/logoName.png')
 export const appLogo = require("../assets/Slide_icons/logo.png");
-
 export const theme={
     primaryColor: "#fff",
     secondaryColor: "#000",
@@ -15,5 +14,11 @@ export const theme={
     textColor: '#404040',
     redColor: '#FF0000',
     yellowColor: '#FFFF00',
-    blueColor: '#1E90FF'
+    blueColor: '#1E90FF',
+    featureYesColor:"#07BD80",
+    featureNoColor:'#FF0000',   
 }
+
+export const serverBaseUrl="http://192.168.43.160:8080/"
+export const serverApiUrl=serverBaseUrl+"api/v1/" 
+export const videoDefaultThumbnail="https://i.stack.imgur.com/PtbGQ.png";

@@ -6,12 +6,14 @@ import { theme } from '../config';
 import PhoneInput from "react-native-phone-number-input";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import CardView from '../Utils/CardView'
+import { generateOtp } from '../Utils/DataHelper/Otp';
+import { ActivityIndicator } from 'react-native-paper';
 const width = Dimensions.get('window').width
 const height = Dimensions.get('screen').height
 const phoneInput = useRef<PhoneInput>(null);
 
 class SocialAuth extends React.Component {
-    state = { padding:75 }
+    state = { padding:75,loader:false }
     
     // componentDidMount(){
     //     this.setState({
@@ -37,18 +39,42 @@ class SocialAuth extends React.Component {
             this.setState({continue:false,padding:75})
         }
     }
+
+    handleOtpGenerateCallBack=(response)=>
+    {
+        if(response.status==200)
+        {
+            response.json().then(data=>
+            {
+                this.setState({loader:false})
+                this.props.openModal()
+            })
+        }
+    }
+    handleContinueBtnClick=()=>
+    {
+        if(!this.state.loader)
+        {
+            this.setState({loader:true})
+            generateOtp(this.state.number,this.handleOtpGenerateCallBack)
+        }
+        
+        // this.props.openModal()
+    }
     renderCard =() => {
         // phoneInput = useRef<PhoneInput>(null);
         return (
         CardView(
             <View style={styles.container}>
                 <Text style={styles.label}>Get Started</Text>
-                <Text style={{marginLeft:-10,marginBottom:20,fontSize:18}}>
-                    Enter Your mobile or   
-                        <TouchableOpacity>
-                                <Text style={styles.email}> continue with email</Text>
-                        </TouchableOpacity>
-                    </Text>
+                <View style={{alignItems: 'center'}}>
+                        <Text style={{marginLeft:-10,marginBottom:20,fontSize:18,alignItems: 'center',textAlign: 'center',justifyContent: 'center'}}>
+                            Enter Your mobile or   
+                                <TouchableOpacity style={{}}>
+                                        <Text style={styles.email}> continue with email</Text>
+                                </TouchableOpacity>
+                        </Text>
+                </View>
                 <View style={styles.social_authBtnContainer}>
                     <SafeAreaView style={styles.wrapper}>
                         <PhoneInput
@@ -71,10 +97,18 @@ class SocialAuth extends React.Component {
                                 />
                                 {this.state.continue?(
                                     <View style={{flex:1,flexDirection:'row',justifyContent:'center',marginLeft:'10%',marginRight:'10%'}}>
-                                        <TouchableOpacity onPress={this.props.openModal} style={styles.authModeBtn}>
-                                            <Text style={styles.btnText}>Continue</Text>
-                                            <Feather name="log-in" size={20} color={theme.primaryColor} style={{marginTop:Platform.OS=='web'?5:0}}/> 
+                                       
+                                        <TouchableOpacity onPress={this.handleContinueBtnClick} style={styles.authModeBtn}>
+                                        {this.state.loader?(
+                                            <ActivityIndicator/>
+                                        ):( 
+                                            <>
+                                                <Text style={styles.btnText}>Continue</Text>
+                                                <Feather name="log-in" size={20} color={theme.primaryColor} style={{marginTop:Platform.OS=='web'?5:0}}/> 
+                                            </>
+                                        )}
                                         </TouchableOpacity>
+                                       
                                     </View>
                                 ):(null)}
                                 
@@ -92,7 +126,7 @@ class SocialAuth extends React.Component {
                             </TouchableOpacity> */}
                             
                  </View>
-            </View>,[styles.authCard,{paddingBottom:this.state.padding}]
+            </View>,[styles.authCard,{paddingBottom:'auto'}]
             ))
      }
      render() {
@@ -111,6 +145,7 @@ const styles = StyleSheet.create({
     container: {
         flex:1,
         flexDirection: 'column',
+        
         // justifyContent: 'center', 
         
     },
@@ -133,7 +168,7 @@ const styles = StyleSheet.create({
             borderTopLeftRadius:40,
             borderTopRightRadius:40,
             width:width,
-            // height:width*0.58,
+            height:height*0.38,
             padding:10,
             backgroundColor:theme.primaryColor,
             borderColor:theme.primaryColor,
@@ -146,7 +181,9 @@ const styles = StyleSheet.create({
             color:theme.accentColor,
             textDecorationLine: 'underline',
             textDecorationStyle: 'solid',
-            marginLeft:5
+            marginLeft:5,
+            fontSize:15, 
+            
         },
         authModeBtn :
             {

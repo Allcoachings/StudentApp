@@ -22,8 +22,9 @@ class indexIns extends React.Component {
                 <NavigationContainer>
                 
                 <Drawer.Navigator drawerContent={props => <DrawerContent {...props} /> } > 
+                       
                         <Drawer.Screen name="Home" component={InsHome} /> 
-                        <Drawer.Screen name="Register" component={InsRegister}  />  
+                        <Drawer.Screen name="Register" component={InsRegister}  />   
                         <Drawer.Screen name="AddVideos" component={AddVideo}  /> 
                         <Drawer.Screen name="AddDocument" component={AddPdf}  /> 
                         <Drawer.Screen name="AddTimeTable" component={AddTimeTable}  /> 

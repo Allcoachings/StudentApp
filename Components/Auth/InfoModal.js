@@ -19,7 +19,7 @@ class InfoModal extends React.Component {
     render() {
         return(
             <Modal
-            animationType="slide"
+            animationType="fade"
             transparent={true}
             // style={{height:500,width:5001}}
             visible={this.props.isModalVisible}
@@ -32,8 +32,7 @@ class InfoModal extends React.Component {
                             {/* <TouchableOpacity onPress={()=>this.props.closeModal()}>
                                 <Image source={Assets.discussions.closeIcon} style={styles.closeIcon}/>
                             </TouchableOpacity> */}
-                            
-                            
+                             
                         </View>
                         
                         <View style={{marginTop:height*0.04}}>
@@ -62,7 +61,7 @@ class InfoModal extends React.Component {
                             </View>
                             
                         
-                    </View>,{width: width*0.65, height: height*0.6, marginLeft: 'auto', marginRight:'auto', borderRadius: 20, marginTop:height*0.15}
+                    </View>,{width: width, height: height, marginLeft: 'auto', marginRight:'auto',}
                 )}
                 </View>
             </Modal>
@@ -75,8 +74,8 @@ const styles = StyleSheet.create({
     {
         flex: 1,
         flexDirection: 'column',
-        width:width*0.65,
-        height: height*0.6,
+        // width:width*0.65,
+        // height: height*0.6,
         margin:'auto'
         // borderWidth: 1
     },

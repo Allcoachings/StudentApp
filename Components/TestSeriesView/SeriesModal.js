@@ -31,8 +31,8 @@ class SeriesModal extends React.Component {
             onRequestClose={closeModal}>
             <TouchableOpacity onPress={()=>closeModal()} style={{width: this.props.screenWidth,height:'100%'}}>
               <TouchableWithoutFeedback>
-              <View style={[styles.centeredView, {width: this.props.screenWidth/1.5, marginLeft: this.props.screenWidth/3}]}>
-                <View style={styles.imageView}>
+              <View style={[styles.centeredView, {}]}>
+                {/* <View style={styles.imageView}>
                   <Image source={singlequedata.image} style={styles.itemImage}/>
                   <Text style={styles.userName}>{singlequedata.name}</Text>
                 </View>
@@ -96,14 +96,14 @@ class SeriesModal extends React.Component {
                     <Feather name="alert-circle" size={18} style={{color: theme.greyColor}}/>
                     <Feather name="chevron-up" size={18} style={{color: theme.greyColor}}/>
                   </View>
-                </View>
+                </View> */}
 
 
                 <View
                   style={{
-                    borderBottomColor: theme.greyColor,
-                    borderBottomWidth: 2,
-                    marginTop: 10,
+                    // borderBottomColor: theme.greyColor,
+                    // borderBottomWidth: 2,
+                    // marginTop: 10,
                   }}
                 />
 
@@ -111,21 +111,18 @@ class SeriesModal extends React.Component {
 
                 <View style={styles.numRow}>
                   <View style={styles.rowElement}>
-                    <Feather name="star" size={15} style={{color: 'pink'}} />
-                    <Text style={{fontSize: 16}}>00</Text>
+                    <Text style={{fontSize:30,color: theme.featureYesColor}}> • </Text>
+                    <Text style={{fontSize: 12,color: theme.greyColor}}>Correct (2)</Text>
                   </View>
                   <View style={styles.rowElement}>
-                    <Feather name="star" size={15} style={{color: 'blue'}} />
-                    <Text style={{fontSize: 16}}>00</Text>
+                  <Text style={{fontSize:30,color: theme.featureNoColor}}> • </Text>
+                    <Text style={{fontSize: 12,color: theme.greyColor}}>Wrong (2)</Text>
                   </View>
                   <View style={styles.rowElement}>
-                    <Feather name="star" size={15} style={{color: theme.greyColor}} />
-                    <Text style={{fontSize: 16}}>02</Text>
+                   <Text style={{fontSize:30,color:theme.labelOrInactiveColor}}> • </Text> 
+                    <Text style={{fontSize: 12,color: theme.greyColor}}>Unattempted (2)</Text>
                   </View>
-                  <View style={styles.rowElement}>
-                    <Feather name="star" size={15} style={{color: theme.greyColor}} />
-                    <Text style={{fontSize: 16}}>12</Text>
-                  </View>
+                   
                 </View>
 
 
@@ -133,8 +130,8 @@ class SeriesModal extends React.Component {
                 <View style={styles.questions}>
                   <FlatList
                       data={singlequedata.data}
-                      renderItem={this.renderQuestion}
-                      numColumns={5}
+                      renderItem={this.renderQuestion} 
+                      numColumns={7}
                       keyExtractor={(item) => item.id}
                   />
                 </View>
@@ -239,8 +236,11 @@ const styles = StyleSheet.create({
     {
       display: 'flex',
       flexDirection: 'row',
-      marginTop: '10%',
+      // marginTop: '10%',
       alignItems: 'center',
+      borderBottomWidth:1,
+      borderBottomColor:theme.labelOrInactiveColor
+      ,
       justifyContent: 'space-evenly'
     },
         rowElement:
@@ -252,38 +252,41 @@ const styles = StyleSheet.create({
         },
     questions:
     {
-      flexDirection: 'column',
+      flex:1,
+      flexDirection: 'row',
+
       marginTop: '5%',
-      justifyContent: 'center',
-      alignItems: 'center'
+      justifyContent: 'space-between',
+      // alignItems: 'center'
     },
       queView: 
       {
-        height: 30,
-        width: 30,
-        borderRadius: 15,
+        height: 40,
+        width:40,
+        borderRadius: 20,
         margin: 5,
-        backgroundColor: theme.labelOrInactiveColor,
+        borderWidth:1,
+        borderColor: theme.labelOrInactiveColor,
         justifyContent: 'center',
         alignItems: 'center'
       },
         queno:
         {
-          fontSize: 14,
+          fontSize: 16,
           padding: 2,
-          color: theme.secondaryColor,
+          color: theme.greyColor,
         },
     submitBtn:
     {
-      backgroundColor: theme.greyColor,
-      borderRadius: 3,
+      backgroundColor: theme.accentColor,
+      // borderRadius: 3,
       marginTop: 'auto',
       justifyContent: 'center',
       alignItems: 'center',
-      marginBottom: 10,
+      // marginBottom: 10,
       padding: 10,
-      marginLeft: 4,
-      marginRight: 4,
+      // marginLeft: 4,
+      // marginRight: 4,
     },
       btntext:
       {
