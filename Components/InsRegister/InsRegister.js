@@ -79,7 +79,7 @@ class InsRegister extends React.Component {
     renderPickerItem=(item)=>
     {
         return(
-            <PickerSelect.Item label={item.label} value={item.key} />
+            <Picker.Item label={item.label} value={item.key} />
         )
     }
     setSelectedCategory=(selectedCategory)=>
@@ -186,7 +186,8 @@ class InsRegister extends React.Component {
                             
                             CardView(
                                 <View style={styles.dropdownView}>
-                                    <PickerSelect
+                                    <Picker
+
                                         style={{height:30}}
                                         selectedValue={this.state.selectedCategory}
                                         onValueChange={(itemValue, itemIndex) =>
@@ -195,7 +196,7 @@ class InsRegister extends React.Component {
                                             {/* <Picker.Item label="Java" value="java" />
                                             <Picker.Item label="JavaScript" value="js" /> */}
                                         {this.state.categories&&this.state.categories.map((item)=>this.renderPickerItem(item))}
-                                    </PickerSelect>
+                                    </Picker>
                                     {/* <DropDownPicker
                                         placeholder="Select Category"
                                         placeholderTextColor={theme.greyColor}

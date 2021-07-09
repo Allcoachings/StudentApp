@@ -28,9 +28,6 @@ export   const addCourse=(title,description,fees,instId,callback)=>
             })
             .then((response)=>callback(response)) 
             .catch((error)=>{console.log(error)})
-
-       
-   
         
 } 
 

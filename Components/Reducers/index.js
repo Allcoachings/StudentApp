@@ -83,13 +83,19 @@ const initial_institute_state = {
     "city": "Jj",
     "directorName": "Test",
     "email": "Test",
-    "id": "2",
+    "id": "1",
     "logo": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540cyberflow%252Fallcoaching/DocumentPicker/4d36e69f-b79e-45ba-9e4e-ea704dec2a70.jpg",
     "name": "Test",
     "password": "",
     "phone": "Test",
     "state": "Jj",
     "status": 1,
+    "total_rating_count":15,
+    "one_star_count":1,
+    "two_star_count":2,
+    "three_star_count":3,
+    "four_star_count":4,
+    "five_star_count":5,
     }
 
 }

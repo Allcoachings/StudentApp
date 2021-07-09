@@ -19,6 +19,7 @@ public class Student {
     private String name;
     private String stateOfResidence;
     private String mobileNumber;
+    private String studentImage;
     private boolean blocked;
 
     public Student() {
