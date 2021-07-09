@@ -6,7 +6,7 @@ import CardView from '../Utils/CardView';
 import * as DocumentPicker from 'expo-document-picker';
 import {addCourseVideo} from '../Utils/DataHelper/Course'
 
-import {Picker as PickerSelect} from '@react-native-picker/picker';
+import { Picker } from 'native-base';
 import { Feather } from '@expo/vector-icons';
 import AddVideoPlaylist from './AddVideoPlaylist';
 class AddVideo extends React.Component {

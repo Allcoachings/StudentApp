@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {fetch_categories} from '../Utils/DataHelper/Categories'
 import {registerCoaching} from '../Utils/DataHelper/Coaching'
-import {Picker as PickerSelect} from '@react-native-picker/picker';
+import { Picker } from 'native-base';
 import * as DocumentPicker from 'expo-document-picker';
 
 import {setInstituteDetails} from '../Actions'
