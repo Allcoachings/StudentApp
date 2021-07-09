@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {fetch_categories} from '../Utils/DataHelper/Categories'
 import {registerCoaching} from '../Utils/DataHelper/Coaching'
-import {Picker} from '@react-native-picker/picker';
+import {Picker as PickerSelect} from '@react-native-picker/picker';
 import * as DocumentPicker from 'expo-document-picker';
 
 import {setInstituteDetails} from '../Actions'
@@ -79,7 +79,7 @@ class InsRegister extends React.Component {
     renderPickerItem=(item)=>
     {
         return(
-            <Picker.Item label={item.label} value={item.key} />
+            <PickerSelect.Item label={item.label} value={item.key} />
         )
     }
     setSelectedCategory=(selectedCategory)=>
@@ -186,7 +186,7 @@ class InsRegister extends React.Component {
                             
                             CardView(
                                 <View style={styles.dropdownView}>
-                                    <Picker
+                                    <PickerSelect
                                         style={{height:30}}
                                         selectedValue={this.state.selectedCategory}
                                         onValueChange={(itemValue, itemIndex) =>
@@ -195,7 +195,7 @@ class InsRegister extends React.Component {
                                             {/* <Picker.Item label="Java" value="java" />
                                             <Picker.Item label="JavaScript" value="js" /> */}
                                         {this.state.categories&&this.state.categories.map((item)=>this.renderPickerItem(item))}
-                                    </Picker>
+                                    </PickerSelect>
                                     {/* <DropDownPicker
                                         placeholder="Select Category"
                                         placeholderTextColor={theme.greyColor}

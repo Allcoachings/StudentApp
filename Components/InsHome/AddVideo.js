@@ -6,7 +6,7 @@ import CardView from '../Utils/CardView';
 import * as DocumentPicker from 'expo-document-picker';
 import {addCourseVideo} from '../Utils/DataHelper/Course'
 
-import {Picker} from '@react-native-picker/picker';
+import {Picker as PickerSelect} from '@react-native-picker/picker';
 import { Feather } from '@expo/vector-icons';
 import AddVideoPlaylist from './AddVideoPlaylist';
 class AddVideo extends React.Component {
@@ -97,7 +97,7 @@ class AddVideo extends React.Component {
                                 <Text style={styles.labelText}>Video Description</Text>
                                 {CardView(
                                     <View style={styles.dropdownView}>
-                                        <Picker
+                                        <PickerSelect
                                             style={{height:30}}
                                             selectedValue={this.state.selectedCategory}
                                             onValueChange={(itemValue, itemIndex) =>
@@ -106,7 +106,7 @@ class AddVideo extends React.Component {
                                                 {/* <Picker.Item label="Java" value="java" />
                                                 <Picker.Item label="JavaScript" value="js" /> */}
                                             {this.state.categories&&this.state.categories.map((item)=>this.renderPickerItem(item))}
-                                        </Picker>
+                                        </PickerSelect>
                                         {/* <DropDownPicker
                                             placeholder="Select Category"
                                             placeholderTextColor={theme.greyColor}

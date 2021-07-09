@@ -17,12 +17,14 @@ public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
+
     @CrossOrigin(origins = "*")
     @GetMapping("/")
     public Iterable<Category>  findAll()
     {
         return categoryService.findAll();
     }
+
     @CrossOrigin(origins = "*")
     @PostMapping("/")
     public ResponseEntity<Object> save(@RequestBody Category category)
@@ -36,7 +38,6 @@ public class CategoryController {
     @GetMapping("/{id}")
     public Optional<Category> findById(@PathVariable long id)
     {
-
         return categoryService.findById(id);
     }
 
@@ -46,7 +47,5 @@ public class CategoryController {
     {
         return categoryService.findByAllForDropdown();
     }
-
-
 
 }
