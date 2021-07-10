@@ -187,6 +187,7 @@ class InsRegister extends React.Component {
                             CardView(
                                 <View style={styles.dropdownView}>
                                     <Picker
+
                                         style={{height:30}}
                                         selectedValue={this.state.selectedCategory}
                                         onValueChange={(itemValue, itemIndex) =>

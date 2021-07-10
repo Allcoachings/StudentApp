@@ -4,20 +4,40 @@ import {connect} from 'react-redux'
 import {theme,screenMobileWidth} from '../config'
 import { AirbnbRating } from 'react-native-ratings';
 import { Feather } from '@expo/vector-icons';
+import {reply} from '../Utils/DataHelper/Reviews'
 
 class RenderReview extends React.Component {
     state = {
-        ReviewmodalVisible:false
+        ReviewmodalVisible:false,
+        reply:this.props.item.insReview.reply||'',
+        reviews: this.props.item,
+        editReply:''
       }
+
+
+    sendReply=(id)=>{
+        console.log(id)
+        console.log(this.state.reply)
+        if(this.state.reply!='')
+        {
+            reply(id, this.state.reply, this.replyCallBack)
+        }
+    }
+
+    replyCallBack=(response)=>{
+        if(response.status==200)
+        {
+            this.setState({ReviewmodalVisible: false, editReply:''})
+        }
+    }
 
     renderReviews=(item)=>
     {
-        console.log(item)
         return (
         <View style={styles.ratingContainer}>
                 <View style={styles.userMetaContainer}>
-                    <Image source={item.user_pic} style={styles.ratingUserImage}/> 
-                    <Text style={styles.ratingUserName}>{item.name}</Text>
+                    <Image source={item.studentImage} style={styles.ratingUserImage}/> 
+                    <Text style={styles.ratingUserName}>{item.studentName}</Text>
                 </View>
                 <View style={styles.ratingMetaView}>
                     {/* <View style={styles.ratingUserMeta}>
@@ -31,7 +51,7 @@ class RenderReview extends React.Component {
                                 count={5}
                                 reviews={[]} 
                                 isDisabled={true}
-                                defaultRating={item.review}
+                                defaultRating={item.rating}
                                 size={12}
                                 selectedColor={theme.blueColor}
                                 showRating={false}
@@ -40,26 +60,26 @@ class RenderReview extends React.Component {
                         </View>
                         <Text 
                             style={[styles.ratingText,{width:this.props.screenWidth<=screenMobileWidth?(this.props.screenWidth-50):(((this.props.screenWidth)/2)-30)}]}>
-                            {item.review_des}
+                            {item.insReview.review}
                         </Text>
-                        {this.props.replyMode?(
+                        {this.props.replyMode&&(this.state.reply==null||this.state.reply=='')?(
                             <TouchableOpacity style={{alignSelf:'flex-end',marginRight:20}} onPress={()=>this.setState({ReviewmodalVisible:true})}>
                                 <Text style={{color:theme.greyColor}}>Reply</Text>
                             </TouchableOpacity>
                             
                         ):(null)}
+                        {this.state.reply!=null&&this.state.reply!=''?(
+                            <View style={{padding: 10, backgroundColor:theme.labelOrInactiveColor}}>
+                                <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                                    <Text style={{fontSize: 14, fontWeight: 'bold', marginBottom: 10}}>{item.insName}</Text>
+                                    <TouchableOpacity onPress={()=>this.setState({ReviewmodalVisible: true, editReply: this.state.reply})}>
+                                        <Feather name="edit-3" size={18} color={theme.secondaryColor} />
+                                    </TouchableOpacity>
+                                </View>
+                                <Text>{this.state.reply}</Text>
+                            </View>
+                        ):(null)}
                     </View>
-                    {/* <View style={styles.ratingTrendView}>
-                        <View>
-                            {this.renderDiscussionTrendItem('message-circle','18',()=>{})}
-                        </View>
-                        <View>
-                            {this.renderDiscussionTrendItem('heart','12',()=>{})}
-                        </View>
-                        <View>
-                            {this.renderDiscussionTrendItem('share-2',null,()=>{})}
-                        </View>
-                    </View> */}
                 </View> 
                 <Modal animationType = {"fade"} transparent = {false}
                         visible = {this.state.ReviewmodalVisible}
@@ -85,8 +105,14 @@ class RenderReview extends React.Component {
                                 </View>
                                 <View style={{ paddingHorizontal: 6,marginVertical:20,backgroundColor: 'white'}}>
                                     
-                                    <TextInput style={{borderWidth: 1, borderColor: 'black', borderRadius:10, paddingLeft: 6, paddingBottom:30,}} placeholder="Write a Review" placeholderTextColor='grey'></TextInput>
-                                    <TouchableOpacity style={styles.reviewbutton}>
+                                    <TextInput 
+                                        style={{borderWidth: 1, borderColor: 'black', borderRadius:10, paddingLeft: 6, paddingBottom:30,}} 
+                                        defaultValue={this.state.editReply!=''?(
+                                            this.state.editReply):(null)} 
+                                        onChangeText={(text) =>this.setState({reply: text})} 
+                                        placeholder="Write a Review" placeholderTextColor='grey'>
+                                    </TextInput>
+                                    <TouchableOpacity style={styles.reviewbutton} onPress={()=>this.sendReply(item.insReview.id)}>
                                         <Text style={styles.reviewbutton_text}>Submit</Text>
                                     </TouchableOpacity>
                                 </View>
@@ -100,7 +126,7 @@ class RenderReview extends React.Component {
     }
     render() {
         return (
-           this.renderReviews(this.props.item)
+           this.renderReviews(this.state.reviews)
         );
     }
 }

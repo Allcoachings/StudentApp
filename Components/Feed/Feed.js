@@ -14,18 +14,18 @@ class Feed extends React.Component {
     renderLikeShareRow=()=>{
         return(
             <View style={styles.bottomRowContainer}>
-                <View style={styles.likeView}>
+                <TouchableOpacity style={styles.likeView}>
                     <Feather name="thumbs-up" size={18} />
                     <Text style={styles.text}>Like</Text>
-                </View>
-                <View style={styles.likeView}>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.likeView}>
                     <Feather name="message-square" size={18} />
                     <Text style={styles.text}>Comment</Text>
-                </View>
-                <View style={styles.likeView}>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.likeView}>
                     <Feather name="send" size={18} />
                     <Text style={styles.text}>Share</Text>
-                </View>
+                </TouchableOpacity>
             </View>
         )
     }
@@ -45,20 +45,7 @@ class Feed extends React.Component {
                     </View>
                     <View style={styles.innerBoxView}>
                         <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.img}/>
-                        <View style={styles.bottomRowContainer}>
-                            <View style={styles.likeView}>
-                                <Feather name="thumbs-up" size={18} />
-                                <Text style={styles.text}>Like</Text>
-                            </View>
-                            <View style={styles.likeView}>
-                                <Feather name="message-square" size={18} />
-                                <Text style={styles.text}>Comment</Text>
-                            </View>
-                            <View style={styles.likeView}>
-                                <Feather name="send" size={18} />
-                                <Text style={styles.text}>Share</Text>
-                            </View>
-                        </View>
+                        {this.renderLikeShareRow()}
                     </View>
                 </View>,{width: '100%', padding: 6, marginBottom: 10}
             )
@@ -87,20 +74,7 @@ class Feed extends React.Component {
                             <Text style={{fontSize: 16, marginTop: 3}}>Arctic Ocean</Text>
                         </View>
 
-                        <View style={styles.bottomRowContainer}>
-                            <View style={styles.likeView}>
-                                <Feather name="thumbs-up" size={18} />
-                                <Text style={styles.text}>Like</Text>
-                            </View>
-                            <View style={styles.likeView}>
-                                <Feather name="message-square" size={18} />
-                                <Text style={styles.text}>Comment</Text>
-                            </View>
-                            <View style={styles.likeView}>
-                                <Feather name="send" size={18} />
-                                <Text style={styles.text}>Share</Text>
-                            </View>
-                        </View>
+                        {this.renderLikeShareRow()}
                     </View>
                 </View>,{width: '100%', padding: 6, marginBottom: 10}
             )
@@ -123,20 +97,7 @@ class Feed extends React.Component {
                     </View>
                     <View style={styles.innerBoxView}>
                         <Text style={{fontSize: 18, marginBottom: 5}}>Covid Live News Updates: AstraZeneca shots should be halted for over-60s too, says European Medicines Agency</Text>
-                        <View style={styles.bottomRowContainer}>
-                            <View style={styles.likeView}>
-                                <Feather name="thumbs-up" size={18} />
-                                <Text style={styles.text}>Like</Text>
-                            </View>
-                            <View style={styles.likeView}>
-                                <Feather name="message-square" size={18} />
-                                <Text style={styles.text}>Comment</Text>
-                            </View>
-                            <View style={styles.likeView}>
-                                <Feather name="send" size={18} />
-                                <Text style={styles.text}>Share</Text>
-                            </View>
-                        </View>
+                        {this.renderLikeShareRow()}
                     </View>
                 </View>,{width: '100%', padding: 6, marginBottom: 10}
             )

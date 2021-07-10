@@ -21,7 +21,6 @@ class InstituteView extends React.Component {
         tabtoshow: 1,
         modalVisible: false,
         ReviewmodalVisible: false,
-        
      }
 
      renderTabItems=({item})=>
@@ -524,7 +523,7 @@ class InstituteView extends React.Component {
                                                 Upsc Cse- optional Subscription
                                             </Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10}}>
+                                        <TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10}} onPress={()=>this.props.naviagtion.navigate("Payment")}>
                                             <Text style={{fontSize:10,color:theme.primaryColor}}>
                                                 Buy Pass : ₹10,000
                                             </Text>

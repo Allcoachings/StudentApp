@@ -3,17 +3,26 @@ import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity, Moda
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {instituteData, insBanners} from '../../FakeDataService/FakeData'
 import { Rating } from 'react-native-ratings';
+<<<<<<< HEAD
 import {theme,screenMobileWidth, serverBaseUrl,documentPlaceholder} from '../config'
+=======
+import {theme,screenMobileWidth, serverBaseUrl, dataLimit} from '../config'
+>>>>>>> a696e82926d1eb4c6cfe8e0382cb57b09eee2348
 import CardView from '../Utils/CardView';
 import MarqueeText from 'react-native-marquee';
 import { Feather } from '@expo/vector-icons';
 import {connect} from 'react-redux'
 import { List } from 'react-native-paper';
-import Review from '../ReviewAndRatings/Review'
 import Accordian from '../Utils/Accordian'
 import MockTest from '../MockTest/MockTest'
 import AddCourseModal from './AddCourseModal';
+<<<<<<< HEAD
 import {fetch_institute_courses,fetch_courses_banners,addCourseBanner,fetch_courses_videos,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents} from '../Utils/DataHelper/Course'
+=======
+import {fetch_institute_courses,fetch_courses_banners,addCourseBanner,fetch_courses_videos} from '../Utils/DataHelper/Course'
+import {fetch_institute_reviews} from '../Utils/DataHelper/Reviews'
+import InsReviews from './InsReviews'
+>>>>>>> a696e82926d1eb4c6cfe8e0382cb57b09eee2348
 
 import * as DocumentPicker from 'expo-document-picker';
 class InsHome extends React.Component {
@@ -28,10 +37,14 @@ class InsHome extends React.Component {
         addTest: false,
         activeSections: [],
         isAddCourseModalVisible: false,
+<<<<<<< HEAD
         courseDocumentPlaylist:[],
         courseDocuments:[],
         courseVideos:[],
         courseVideosPlaylist:[]
+=======
+       
+>>>>>>> a696e82926d1eb4c6cfe8e0382cb57b09eee2348
      }
 
      coursesCallBack=(response)=>
@@ -40,15 +53,16 @@ class InsHome extends React.Component {
             {
                 response.json().then((data)=>
                 {
-                    console.log("courses",data)
                     this.setState({courses:data})
                 })
             }
      }
      componentDidMount() {
-         console.log(this.props.institute)
         fetch_institute_courses(this.props.institute.details.id,this.coursesCallBack)
      }
+
+    
+
      renderImagePost=() => {
         return(
             CardView(
@@ -163,7 +177,6 @@ class InsHome extends React.Component {
     }
     courseBannerCallback=(response)=>
     {
-        console.log(response.status)
         if(response.status==200)
         {
             response.json().then(data=>
@@ -171,7 +184,6 @@ class InsHome extends React.Component {
                     
 
                     data.push({type:'add',bannerImageLink:'https://picsum.photos/200/300'})
-                    console.log('course',data)
                     this.setState({courseBanners:data});
                 })
         }
@@ -196,7 +208,6 @@ class InsHome extends React.Component {
         {
             let courseBanners = this.state.courseBanners;
             let details = response.headers.map.location.split("*");
-            console.log(serverBaseUrl+details[1])
             courseBanners.unshift({id:details[0],bannerImageLink:serverBaseUrl+details[1],courseId:this.state.activeCourse})
 
         }
@@ -205,7 +216,6 @@ class InsHome extends React.Component {
     {
         DocumentPicker.getDocumentAsync({type:"image/*",copyToCacheDirectory:true,multiple:false}).then(response=>
             {
-                console.log(response)
                 if(response.type=="success")
                 {
                     addCourseBanner(response,this.state.activeCourse,this.bannerCallback)
@@ -311,14 +321,6 @@ class InsHome extends React.Component {
             </View>
         )
     }
-    // renderTimeTableSubject=(item)=>{
-    //     return(
-            
-    //             <ListItem >
-    //                 <Text>{item}</Text>
-    //             </ListItem>
-    //     )
-    // }
 
     setExpanded = (expanded)=>{
         this.setState({expanded: expanded})
@@ -560,12 +562,10 @@ class InsHome extends React.Component {
         
     }
     courseVideoCallback=(response)=>{
-        console.log(response.status)
             if(response.status==200)
             {
                 response.json().then(data=>
                 {
-                    console.log(data);
                     this.setState({courseVideos:data,courseVideoLoaded:true,isCourseVideoLoading:false});                   
                 })
             }
@@ -921,8 +921,8 @@ class InsHome extends React.Component {
                             
                         </View>
                     </View>
-                    <Text style={styles.RatingText}>Rating & Reviews</Text>
-                    <Review replyMode />
+                    <InsReviews />  
+                    {/* use different component */}
                 </ScrollView>
                 {this.state.isAddCourseModalVisible?(
                         <AddCourseModal 
@@ -1499,11 +1499,7 @@ const styles = StyleSheet.create({
                 
                 flexWrap: 'wrap'
             },
-    RatingText:
-    {
-        fontSize: 20, 
-        marginTop: 10
-    },
+    
 
 
     // add course css

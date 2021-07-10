@@ -4,7 +4,6 @@ import PageStructure from '../StructuralComponents/PageStructure/PageStructure';
 import RatingOverView from './RatingOverView';
 import RenderReview from './RenderReview';
 import {connect} from 'react-redux'
-import {review} from '../../FakeDataService/FakeData' 
 import { screenMobileWidth} from '../config' 
 
 class Review extends React.Component {
@@ -19,31 +18,29 @@ class Review extends React.Component {
         
     }
      
-     
-    startPercent = (s5,s4,s3,s2,s1,sx)=>(parseInt(sx)*100)/(parseInt(s5)+parseInt(s4)+parseInt(s3)+parseInt(s2)+parseInt(s1))
+    // startPercent = (s5,s4,s3,s2,s1,sx)=>(parseInt(sx)*100)/(parseInt(s5)+parseInt(s4)+parseInt(s3)+parseInt(s2)+parseInt(s1))
+
     render() {
+        const rating=((parseInt(this.props.one_star)*1)+(parseInt(this.props.two_star)*2)+(parseInt(this.props.three_star)*3)+(parseInt(this.props.four_star)*4)+(parseInt(this.props.five_star*5)))/(parseInt(this.props.five_star)+parseInt(this.props.four_star)+parseInt(this.props.three_star)+parseInt(this.props.two_star)+parseInt(this.props.one_star))
         return (
             
                 <ScrollView>
                 <View style={styles.container}> 
                      <View style={styles.overView}>
-                         
                             <RatingOverView
-                                rating={4.3}
-                                ratingCount={2125}
-                                progress5={50}
-                                progress4={50}
-                                progress3={50}
-                                progress2={50}
-                                progress1={50}
-                            />
-                         
-                         
+                                rating={rating.toFixed(1)}
+                                ratingCount={this.props.total_rating}
+                                progress5={(this.props.five_star/this.props.total_rating)*100}
+                                progress4={(this.props.four_star/this.props.total_rating)*100}
+                                progress3={(this.props.three_star/this.props.total_rating)*100}
+                                progress2={(this.props.two_star/this.props.total_rating)*100}
+                                progress1={(this.props.one_star/this.props.total_rating)*100}
+                            /> 
                      </View>
                      <View style={{flex: 1}}>
                          
                             <FlatList
-                                data={review}
+                                data={this.props.review}
                                 renderItem={({item})=><RenderReview  replyMode={this.props.replyMode} item={item}/>}
                                 keyExtractor={(item)=>item.id}   
                             />
