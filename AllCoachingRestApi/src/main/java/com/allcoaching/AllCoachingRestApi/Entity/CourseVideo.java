@@ -42,13 +42,14 @@ public class CourseVideo {
 //    @JoinColumn(name = "playlistId")
 //    private VideoPlaylist videoPlaylist;
 
-    public CourseVideo(String videoLocation, String name, String description, boolean isDemo, String demoLenght, long courseId) {
+    public CourseVideo(String videoLocation, String name, String description, boolean isDemo, String demoLenght, long courseId,long playlistId) {
         this.videoLocation = videoLocation;
         this.name = name;
         this.description = description;
         this.isDemo = isDemo;
         this.demoLenght = demoLenght;
         this.courseId = courseId;
+        this.playlistId = playlistId;
     }
 
 

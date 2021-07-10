@@ -29,9 +29,9 @@ public class CourseVideoService {
     }
 
     //fetching videos by playlist
-    public Optional<VideoPlaylist> findByPlaylist(long id)
+    public Iterable<CourseVideo> findByPlaylist(long id)
     {
-        return courseVideoPLayListRepo.findById(id);
+        return courseVideoPLayListRepo.playListContent(id);
     }
 
     //fetching video by course Id
@@ -44,5 +44,11 @@ public class CourseVideoService {
     public Optional<CourseVideo> findById(long id)
     {
         return courseVideoRepo.findById(id);
+    }
+
+    //fetching all playlists
+    public Iterable<VideoPlaylist> findPlaylists(long id)
+    {
+        return courseVideoPLayListRepo.findByCourseId(id);
     }
 }

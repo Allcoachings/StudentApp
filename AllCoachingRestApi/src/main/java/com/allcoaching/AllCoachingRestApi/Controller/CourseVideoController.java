@@ -1,5 +1,6 @@
 package com.allcoaching.AllCoachingRestApi.Controller;
 
+import com.allcoaching.AllCoachingRestApi.Entity.Course;
 import com.allcoaching.AllCoachingRestApi.Entity.CourseBanners;
 import com.allcoaching.AllCoachingRestApi.Entity.CourseVideo;
 import com.allcoaching.AllCoachingRestApi.Entity.VideoPlaylist;
@@ -30,12 +31,12 @@ public class CourseVideoController {
                                             @RequestParam("isDemo") boolean isDemo,
                                             @RequestParam("demoLength") String demoLength,
                                             @RequestParam("courseId") long courseId,
-                                            @RequestParam("courseId") long playlistId)
+                                            @RequestParam("playlistId") long playlistId)
 
     {
         String courseVideoLink = "files/";
         courseVideoLink += fileUploadService.storeFile(video);
-        CourseVideo courseVideo =courseVideoService.saveCourseVideo( new CourseVideo(courseVideoLink,name,descriptions,isDemo,demoLength,courseId));
+        CourseVideo courseVideo =courseVideoService.saveCourseVideo( new CourseVideo(courseVideoLink,name,descriptions,isDemo,demoLength,courseId,playlistId));
         URI location = ServletUriComponentsBuilder.fromPath("{id}*{addr}").buildAndExpand(courseVideo.getId(),courseVideoLink).toUri();
 
         return ResponseEntity.created(location).build();
@@ -64,13 +65,21 @@ public class CourseVideoController {
     public ResponseEntity<Object> createPlaylist(@RequestBody VideoPlaylist videoPlaylist)
     {
         VideoPlaylist videoPlaylist_saved = courseVideoService.createPlaylist(videoPlaylist);
-        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/v1/course/video/playlist/{id}").buildAndExpand(videoPlaylist_saved.getId()).toUri();
+        URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(videoPlaylist_saved.getId()).toUri();
         return ResponseEntity.created(location).build();
 
     }
 
+    //mapping for fetching video playlists
+    @GetMapping("/playlists/{id}")
+    public Iterable<VideoPlaylist> findVideoPlaylist(@PathVariable long id)
+    {
+        return courseVideoService.findPlaylists(id);
+    }
+
+    //mapping for fetching videos of a playlist
     @GetMapping("/playlist/{id}")
-    public  Optional<VideoPlaylist> findPlaylistById(@PathVariable long id)
+    public  Iterable<CourseVideo> findPlaylistById(@PathVariable long id)
     {
         return courseVideoService.findByPlaylist(id);
     }

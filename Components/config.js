@@ -22,3 +22,5 @@ export const theme={
 export const serverBaseUrl="http://192.168.43.160:8080/"
 export const serverApiUrl=serverBaseUrl+"api/v1/" 
 export const videoDefaultThumbnail="https://i.stack.imgur.com/PtbGQ.png";
+
+export const documentPlaceholder="https://i.stack.imgur.com/PtbGQ.png";

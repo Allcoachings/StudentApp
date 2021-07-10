@@ -20,7 +20,6 @@ public class CourseDocument {
     @GeneratedValue
     private long id;
 
-    private  String category;
     private  String fileAddress;
     private String name;
     private long courseId;
@@ -34,10 +33,10 @@ public class CourseDocument {
     @Temporal(TemporalType.TIMESTAMP)
     private Date time_stamp;
 
-    public CourseDocument(String category, String fileAddress, String name, long courseId) {
-        this.category = category;
+    public CourseDocument( String fileAddress, String name, long courseId,long playlistId) {
         this.fileAddress = fileAddress;
         this.name = name;
+        this.playlistId = playlistId;
         this.courseId = courseId;
     }
 }

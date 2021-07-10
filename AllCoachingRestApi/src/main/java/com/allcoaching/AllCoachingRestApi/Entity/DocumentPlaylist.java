@@ -17,13 +17,15 @@ public class DocumentPlaylist {
     @GeneratedValue
      private  long id;
 
-     private String Name;
-
+     private String name;
+     private long courseId;
 //     @OneToMany(targetEntity = CourseDocument.class)
 //     @JoinColumn(name="playlistId",referencedColumnName = "id")
 //    private List<CourseDocument> courseDocuments;
 
-    public DocumentPlaylist(String name) {
-        Name = name;
+
+    public DocumentPlaylist(String name, long courseId) {
+        this.name = name;
+        this.courseId = courseId;
     }
 }
