@@ -1,18 +1,58 @@
 import React from 'react';
-import {Text, View,StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import {Text, View,StyleSheet, TextInput, TouchableOpacity, ScrollView, FlatList,ActivityIndicator } from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {theme,screenMobileWidth} from '../config'
 import CardView from '../Utils/CardView';
 import { Feather } from '@expo/vector-icons';
 import {connect} from 'react-redux'
+import {addTestSeries} from '../Utils/DataHelper/Course'
 
+import { Picker } from 'native-base';
 class AddTest extends React.Component {
     state = {
         title: '',
-        document: ''
+        document: '',
+        questionCount: 1,
+        questionData:{
+            0:{
+                question:'',
+                optionA:'',
+                optionB:'',
+                optionC:'',
+                optionD:'',
+                correctOpt:'',
+                explanation:'',
+                testSeriesId:1
+            }
+        },
+        addSeriesLoading:false
     }
 
-    renderOptions=(opt, placeholder)=>{
+    addQuestions=()=>
+    {
+         
+        let question = {
+            question:'',
+            optionA:'',
+            optionB:'',
+            optionC:'',
+            optionD:'',
+            correctOpt:'',
+            explanation:'',
+            testSeriesId:1
+        };
+        let questionCount = this.state.questionCount;
+        this.setState({questionData:{...this.state.questionData,[questionCount]:question},questionCount:questionCount+1})
+    }
+
+    onTypeHandler=(key,indx,text)=>
+    {
+            let questionData = this.state.questionData;
+            questionData[indx][key]=text;
+            this.setState({questionData})
+    }
+
+    renderOptions=(opt, placeholder,onChangeText)=>{
         return(
             <View style={[styles.optionInputView,{width:this.props.screenWidth<=screenMobileWidth?(this.props.screenWidth-10):((this.props.screenWidth/2)-20)}]}>
                 <View style={styles.options}>
@@ -22,7 +62,7 @@ class AddTest extends React.Component {
                     <TextInput 
                         placeholderTextColor={theme.greyColor} 
                         placeholder={placeholder} 
-                        onChangeText={(text)=>this.setState({document: text})} 
+                        onChangeText={onChangeText} 
                         multiline={true} 
                         numberOfLines={4} 
                         style={styles.optionInputField}
@@ -31,8 +71,88 @@ class AddTest extends React.Component {
             </View>
         )
     }
+    renderQuestionView=(item,idx)=>
+    {
+        return (
+            <>
+                <View style={styles.inputView}>
+                    <Text style={styles.labelText}>Question</Text>
+                        {CardView(
+                            <TextInput 
+                                placeholderTextColor={theme.greyColor} 
+                                placeholder="Add Question" 
+                                onChangeText={(text)=>this.onTypeHandler('question',idx,text)} 
+                                multiline={true} 
+                                numberOfLines={6} 
+                                style={styles.inputField}
+                            />, {borderRadius: 10}
+                        )}
+                </View>
+                <View style={styles.inputView}>
+                    <Text style={styles.labelText}>Options</Text>
+                    <View style={styles.OptionsView}>
+                        <View>
+                            {this.renderOptions('A', 'Option 1',(text)=>this.onTypeHandler('optionA',idx,text))}
+                        </View>
+                        {this.renderOptions('B', 'Option 2',(text)=>this.onTypeHandler('optionB',idx,text))}
+                        {this.renderOptions('C', 'Option 3',(text)=>this.onTypeHandler('optionC',idx,text))}
+                        {this.renderOptions('D', 'Option 4',(text)=>this.onTypeHandler('optionD',idx,text))}
+                    </View>
+                </View>
+                <View style={styles.inputView}>
+                    <Text style={styles.labelText}>Correct Option</Text>
+                {CardView(
+                    <View style={styles.dropdownView}>
+                        <Picker 
+                            style={{ height:30 }}
+                            selectedValue={this.state.selectedPlaylist}
+                            onValueChange={(itemValue, itemIndex) =>this.onTypeHandler('correctOpt',idx,itemValue)}> 
+                                <Picker.Item label={'A'} value={'A'} />
+                                <Picker.Item label={'B'} value={'B'} />
+                                <Picker.Item label={'C'} value={'C'} />
+                                <Picker.Item label={'D'} value={'D'} />
+                            </Picker> 
+                    </View> ,{marginTop: 10, padding: 12})}    
+                </View>                            
+                <View style={styles.inputView}>
+                    <Text style={styles.labelText}>Explanation</Text>
+                        {CardView(
+                            <TextInput 
+                                placeholderTextColor={theme.greyColor} 
+                                placeholder="Add Question" 
+                                onChangeText={(text)=>this.onTypeHandler('explanation',idx,text)} 
+                                multiline={true} 
+                                numberOfLines={6} 
+                                style={styles.inputField}
+                            />, {borderRadius: 10}
+                        )}
+                </View>
+            </>
+        )
+    }
+    handleAddSeriesCallback=(response) => 
+    {
+         
+        if(response.status==201)
+        {
+            this.setState({addSeriesLoading:false})
+            this.props.route.params.appendCourseTestSeries({title:this.state.title,questionCount:this.state.questionCount,timeDuration:this.state.timeDuration,isPractice:false,courseId:this.props.route.params.courseId})
+            this.props.navigation.goBack()
+        }
+    }
+    handleSubmitBtn=()=>
+    {
+        if(!this.state.addSeriesLoading)
+        {
+            this.setState({addSeriesLoading:true})
+            let series = {title:this.state.title,questionCount:this.state.questionCount,timeDuration:this.state.timeDuration,isPractice:false,courseId:this.props.route.params.courseId}
+            addTestSeries(series,this.state.questionData,this.handleAddSeriesCallback)
+        }
+        
+    }
 
     render() {
+        console.log(this.state.questionData)
         return(
             <PageStructure
                 iconName={"menu"}
@@ -54,34 +174,32 @@ class AddTest extends React.Component {
                             )}
                     </View>
                     <View style={styles.inputView}>
-                            <Text style={styles.labelText}>Question</Text>
+                            <Text style={styles.labelText}>Duration(mins)</Text>
                             {CardView(
                                 <TextInput 
                                     placeholderTextColor={theme.greyColor} 
-                                    placeholder="Add Question" 
-                                    onChangeText={(text)=>this.setState({document: text})} 
-                                    multiline={true} 
-                                    numberOfLines={6} 
+                                    placeholder="Duration" 
+                                    onChangeText={(text)=>this.setState({timeDuration: text})} 
                                     style={styles.inputField}
                                 />, {borderRadius: 10}
                             )}
                     </View>
-                    <View style={styles.inputView}>
-                        <Text style={styles.labelText}>Options</Text>
-                        <View style={styles.OptionsView}>
-                            <View>
-                                {this.renderOptions('A', 'Option 1')}
-                            </View>
-                            {this.renderOptions('B', 'Option 2')}
-                            {this.renderOptions('C', 'Option 3')}
-                            {this.renderOptions('D', 'Option 4')}
-                        </View>
-                    </View>
+                    <FlatList 
+                            data={Object.values(this.state.questionData)}
+                            renderItem={({item,index})=>this.renderQuestionView(item,index)}
+                            keyExtractor={(item,index)=>index.toString()}
+                    />
+                    
                     <View style={styles.btnView}>
-                        <TouchableOpacity style={styles.submitButton}>
-                                <Text style={styles.submitButtonText}>Submit</Text>
+                        <TouchableOpacity style={styles.submitButton} onPress={()=>this.handleSubmitBtn()}>
+                                {this.state.addSeriesLoading?(
+                                    <ActivityIndicator color={theme.accentColor} size={"large"}/>
+                                ):(
+                                    <Text style={styles.submitButtonText}>Submit</Text>
+                                )}
+                                
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.addMoreButton}>
+                        <TouchableOpacity style={styles.addMoreButton} onPress={this.addQuestions}>
                                 <Text style={styles.addMoreButtonText}>Add More+</Text>
                         </TouchableOpacity>
                     </View>

@@ -137,7 +137,6 @@ class AddVideo extends React.Component {
                     </View>
                     {!this.state.loadingPlaylist?(
                             <View style={styles.inputView}>
-<<<<<<< HEAD
                                 
                             <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
                                     <Text style={styles.labelText}>Video Playlist</Text>
@@ -170,38 +169,6 @@ class AddVideo extends React.Component {
                                 </View> ,{marginTop: 10, padding: 12})}
                             </View>
                             ):(null)}
-=======
-                                <Text style={styles.labelText}>Video Description</Text>
-                                {CardView(
-                                    <View style={styles.dropdownView}>
-                                        <PickerSelect
-                                            style={{height:30}}
-                                            selectedValue={this.state.selectedCategory}
-                                            onValueChange={(itemValue, itemIndex) =>
-                                                this.setSelectedCategory(itemValue)
-                                            }>
-                                                {/* <Picker.Item label="Java" value="java" />
-                                                <Picker.Item label="JavaScript" value="js" /> */}
-                                            {this.state.categories&&this.state.categories.map((item)=>this.renderPickerItem(item))}
-                                        </PickerSelect>
-                                        {/* <DropDownPicker
-                                            placeholder="Select Category"
-                                            placeholderTextColor={theme.greyColor}
-                                            containerStyle={{borderColor: theme.greyColor}}
-                                            items={this.state.categories}
-                                            open={this.state.open}
-                                            setOpen={this.open}
-                                            value={this.state.selectedCategory}
-                                            setValue={this.setValue}
-                                            dropdownContainerStyle={{
-                                                zIndex:1000,
-                                                elevation:100
-                                            }}
-                                        /> */}
-                                    </View> ,{marginTop: 10, padding: 12})}
-                                </View>
-                        ):(null)}
->>>>>>> a696e82926d1eb4c6cfe8e0382cb57b09eee2348
                     <View style={styles.inputView}>
                             <Text style={styles.labelText}>Video</Text>
                             <TouchableOpacity style={styles.submitButton} onPress={this.handleAddVideoClick}>

@@ -7,10 +7,14 @@ import {connect } from 'react-redux'
 import {MockTest} from '../../FakeDataService/FakeData'
 import Accordian from '../Utils/Accordian'
 import CardView from '../Utils/CardView';
+import moment from 'moment';
+import AddItemModal from './AddItemModal';
 const height = Dimensions.get('screen').height
 class ResultAnalysis extends React.Component {
     state={
+        data:this.props.data
     }
+
 
 
 
@@ -40,16 +44,20 @@ class ResultAnalysis extends React.Component {
 
     renderTestItem=(item)=>
     {
+        console.log("test data",item)
+        let date  = moment(item.date, 'DD/MM/YYYY');
+        let month = date.format('MMM')
+        let day = date.format('DD')
         return(
             <>
                 <View style={styles.testItemContainer}>
                     <View style={styles.testItemLeft}>
-                        <Text style={styles.testItemMonth}>{item.month}</Text>
-                        <Text style={styles.testItemDay}>{item.day}</Text>
+                        <Text style={styles.testItemMonth}>{month}</Text>
+                        <Text style={styles.testItemDay}>{day}</Text>
                         <View style={styles.testItemEmptySpace}></View>  
                     </View>
                     <View style={styles.testItemMiddle}>
-                        <Text style={styles.testItemName}>{item.name}</Text>
+                        <Text style={styles.testItemName}>{item.title}</Text>
                         <Text style={styles.testItemTestTime}>Test {item.test} • {item.time}</Text>
                     </View>
                 </View>
@@ -60,39 +68,69 @@ class ResultAnalysis extends React.Component {
     }
 
     renderMockTestWeekItem =(item) => {
+        console.log("test data",item)
         return(
             // <Accordian
             //     header={this.accordianHeader(item.title,item.testCount,"chevron-down")}
             // >
             //     <View style={styles.weekView}> 
+            <>
+               
                     <FlatList 
-                            data={item.data} 
+                            data={item} 
                             renderItem={({item}) =>this.renderTestItem(item)}
                             keyExtractor={(item)=>item.id} 
                             horizontal={false}
                             showsHorizontalScrollIndicator={false}
                         />
+            </>
             //     </View>
+
             // </Accordian> 
         )
      }
+     openModal=()=>
+     {
+         this.setState({isModalVisible: true})
+     }
+     closeModal=()=>
+     {
+         this.setState({isModalVisible: false})
+     }
+     appendItems=(obj)=>
+    {
+        let data = this.state.data;
+        data.push(obj)
+        this.setState({data})  
+    }
     render() {
+        console.log("data item", this.props.subjectId)
         return( 
             // <PageStructure
             //     iconName={"menu"}
             //     btnHandler={() => {this.props.navigation.toggleDrawer()}}
             // >
                 <View style={styles.container}>
-                    <FlatList
-                        data={MockTest}
-                        keyExtractor={(item)=>item.id}
-                        renderItem={({item})=>this.renderMockTestWeekItem(item)} 
-                    />
+                    <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', marginTop: '5%'}} onPress={()=>this.openModal()}>
+                        <Text style={{fontSize: 18, fontWeight: 'bold'}}>Add  +</Text>
+                    </TouchableOpacity>
+                     <FlatList 
+                            data={this.state.data} 
+                            renderItem={({item}) =>this.renderTestItem(item)}
+                            keyExtractor={(item)=>item.id} 
+                            horizontal={false}
+                            showsHorizontalScrollIndicator={false}
+                        />
                     {/* <View style={styles.enrollBtnView}>
                         <TouchableOpacity style={styles.enrollBtn}>
                             <Text style={styles.enrollText}>Enroll</Text>
                         </TouchableOpacity>
                     </View> */}
+                    {this.state.isModalVisible?(
+                        <AddItemModal    appendItems={this.appendItems} isModalVisible={this.state.isModalVisible} closeModal={this.closeModal} subjectId={this.props.subjectId}/>
+                ):(
+                    null
+                )}
                 </View> 
             // </PageStructure>
         )

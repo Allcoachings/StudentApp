@@ -7,15 +7,37 @@ import { Feather } from '@expo/vector-icons';
 import { AirbnbRating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
 import CardView from '../Utils/CardView';
+import {fetch_institute_courses,fetch_courses_banners,fetch_courses_videos,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents,fetch_courses_timetable,fetch_testSeries} from '../Utils/DataHelper/Course'
+import {fetch_instituteDetails} from '../Utils/DataHelper/Coaching'
+
 const windowWidth = Dimensions.get('window').width;
 
 class Home extends React.Component {
-    state = {  }
+    state = {  
+        instituteId:1
+    }
 
+    instituteCallback=(response) =>
+    {
+        console.log(response.status);
+        if(response.status==200)
+        {
+            response.json().then(data=>
+                {
+                    this.setState({institute:data})
+                })
+            
+        }
+    }
+    
+    componentDidMount() {
+        fetch_instituteDetails(this.state.instituteId,this.instituteCallback)
+    }
     redirectTo =()=>
     {
         this.props.navigation.navigate('Institute') 
     }
+
 
     renderMainContetnRow=({item})=>{
 

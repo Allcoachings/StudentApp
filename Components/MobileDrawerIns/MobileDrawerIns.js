@@ -11,7 +11,8 @@ import InsRegister from '../InsRegister/InsRegister'
 import Leads from '../Leads/Leads'
 import {theme} from '../config'
 import  {DrawerContent}  from './DrawerContent';
-
+import PdfViewer from '../PdfViewer/PdfViewer'
+import VideoPlayerCustom from '../VideoPLayer/VideoPlayerCustom';
 const Drawer = createDrawerNavigator();
 class indexIns extends React.Component {
     state = {  }
@@ -29,7 +30,9 @@ class indexIns extends React.Component {
                         <Drawer.Screen name="AddDocument" component={AddPdf}  /> 
                         <Drawer.Screen name="AddTimeTable" component={AddTimeTable}  /> 
                         <Drawer.Screen name="AddTestSeries" component={AddTest}  /> 
-                        <Drawer.Screen name="Leads" component={Leads}  /> 
+                        <Drawer.Screen name="Leads" component={Leads}  />
+                        <Drawer.Screen name="pdfViewer" component={PdfViewer} /> 
+                        <Drawer.Screen name="videoplayer" component={VideoPlayerCustom} />
                        
                         {/* <Drawer.Screen 
                             name="Auth" 

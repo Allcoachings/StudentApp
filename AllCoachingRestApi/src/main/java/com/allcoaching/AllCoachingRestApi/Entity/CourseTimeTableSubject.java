@@ -21,7 +21,8 @@ public class CourseTimeTableSubject {
     private String name;
     private long courseId;
 
-
-
-
+    public CourseTimeTableSubject(String name, long courseId) {
+        this.name = name;
+        this.courseId = courseId;
+    }
 }

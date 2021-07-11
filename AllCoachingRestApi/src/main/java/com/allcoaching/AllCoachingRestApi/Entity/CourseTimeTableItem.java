@@ -20,13 +20,13 @@ public class CourseTimeTableItem {
     private String title;
     private String subTitle;
     private String time;
-   private long subject_id;
+   private long subjectId;
 
-    public CourseTimeTableItem(String date, String title, String subTitle, String time,long subject_id) {
+    public CourseTimeTableItem(String date, String title, String subTitle, String time,long subjectId) {
         this.date = date;
         this.title = title;
         this.subTitle = subTitle;
         this.time = time;
-        this.subject_id=subject_id;
+        this.subjectId=subjectId;
     }
 }
