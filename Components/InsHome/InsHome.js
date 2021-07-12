@@ -3,7 +3,11 @@ import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity, Moda
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {instituteData, insBanners} from '../../FakeDataService/FakeData'
 import { Rating } from 'react-native-ratings';
+<<<<<<< HEAD
+import {theme,screenMobileWidth, serverBaseUrl,documentPlaceholder} from '../config'
+=======
 import {theme,screenMobileWidth, serverBaseUrl, dataLimit} from '../config'
+>>>>>>> a696e82926d1eb4c6cfe8e0382cb57b09eee2348
 import CardView from '../Utils/CardView';
 import MarqueeText from 'react-native-marquee';
 import { Feather } from '@expo/vector-icons';
@@ -12,9 +16,13 @@ import { List } from 'react-native-paper';
 import Accordian from '../Utils/Accordian'
 import MockTest from '../MockTest/MockTest'
 import AddCourseModal from './AddCourseModal';
+<<<<<<< HEAD
+import {fetch_institute_courses,fetch_courses_banners,addCourseBanner,fetch_courses_videos,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents} from '../Utils/DataHelper/Course'
+=======
 import {fetch_institute_courses,fetch_courses_banners,addCourseBanner,fetch_courses_videos} from '../Utils/DataHelper/Course'
 import {fetch_institute_reviews} from '../Utils/DataHelper/Reviews'
 import InsReviews from './InsReviews'
+>>>>>>> a696e82926d1eb4c6cfe8e0382cb57b09eee2348
 
 import * as DocumentPicker from 'expo-document-picker';
 class InsHome extends React.Component {
@@ -29,7 +37,14 @@ class InsHome extends React.Component {
         addTest: false,
         activeSections: [],
         isAddCourseModalVisible: false,
+<<<<<<< HEAD
+        courseDocumentPlaylist:[],
+        courseDocuments:[],
+        courseVideos:[],
+        courseVideosPlaylist:[]
+=======
        
+>>>>>>> a696e82926d1eb4c6cfe8e0382cb57b09eee2348
      }
 
      coursesCallBack=(response)=>
@@ -216,7 +231,7 @@ class InsHome extends React.Component {
                     <Image source={{uri:item.bannerImageLink}} style={styles.bannerImage}/>
                 </TouchableOpacity  >
             )
-        }
+        } 
         return(
             <TouchableOpacity style={styles.bannerItemContainer} >
                     <Image source={{uri:serverBaseUrl+item.bannerImageLink}} style={styles.bannerImage}/>
@@ -255,15 +270,37 @@ class InsHome extends React.Component {
 
     renderSubjectOptions=({item})=>
     {
+        console.log(item.name)
         return(
             <TouchableOpacity 
-                onPress={()=>{this.setState({activeFilter: item.title})}} 
-                style={[styles.singleSubject,this.state.activeFilter==item.title?({backgroundColor:theme.secondaryColor}):(null)]}>
-                <Text style={[styles.singleSubjectText,this.state.activeFilter==item.title?({color:theme.primaryColor}):(null)]}>{item.title}</Text>
+                onPress={()=>{this.filterItemClick(item)}} 
+                style={[styles.singleSubject,this.state.activeFilter==item.name?({backgroundColor:theme.secondaryColor}):(null)]}>
+                <Text style={[styles.singleSubjectText,this.state.activeFilter==item.name?({color:theme.primaryColor}):(null)]}>{item.name}</Text>
             </TouchableOpacity>
         )
     }
+    filterItemClick=(item)=>
+    {
+        switch(this.state.activeTab)
+        {
+          case 'videos':  
+                this.setState({activeFilter: item.name,isCourseVideoLoading:true,isCourseVideoLoaded:false},()=>
+                {
+                    fetch_courses_videos(null,this.courseVideoCallback,item.id);
+                }) 
+                break;
+           case 'document':
+                this.setState({activeFilter: item.name,isCourseDocumentLoading:true,isCourseDocumentLoaded:false},()=>
+                {
+                    fetch_courses_documents(null,this.courseDocumentCallback,item.id);
+                }) 
+                break;
 
+        }
+       
+      
+        
+    }
     renderVideos=({item})=>{
         return(
             <View style={styles.videoContainer}>
@@ -356,18 +393,18 @@ class InsHome extends React.Component {
         return(
             <View style={styles.documentContainer}>
                 <View>
-                    <Image source={item.image} style={styles.documentImage}/>
+                    <Image source={{uri:documentPlaceholder}} style={styles.documentImage}/>
                 </View>
                 <View style={{flexShrink: 1}}>
                     <View style={{ display: 'flex', flexDirection: 'row'}}>
-                        <Text style={styles.documentTitle}>{item.title}</Text>
+                        <Text style={styles.documentTitle}>{item.name}</Text>
                     </View>
                     <View>
-                        <Text style={styles.documentText}>{item.institute}</Text>
+                        <Text style={styles.documentText}>{this.props.institute.details.name}</Text>
                     </View>
-                    <View>
+                    {/* <View>
                         <Text style={styles.documentText}>{item.Views} {item.date}</Text>
-                    </View>
+                    </View> */}
                 </View>
             </View>
         )
@@ -496,13 +533,26 @@ class InsHome extends React.Component {
         }
         else if(value=='VideoAdd')
         {
-            this.props.navigation.navigate("AddVideos",{courseId:this.state.activeCourse,appendVideo:this.appendCourseVideo})
+            this.props.navigation.navigate("AddVideos",{courseId:this.state.activeCourse,appendVideo:this.appendCourseVideo,appendCourseVideoPlaylist:this.appendCourseVideoPlaylist})
         }
         else if(value=='PdfAdd')
         {
-            this.props.navigation.navigate("AddDocument")
+            this.props.navigation.navigate("AddDocument",{courseId:this.state.activeCourse,appendDocument:this.appendCourseDocument,appendCourseDocumentPlaylist:this.appendCourseDocumentPlaylist})
         }
         
+    }
+
+    appendCourseDocumentPlaylist=(obj)=>
+    {
+        let courseDocumentPlaylist = this.state.courseDocumentPlaylist;
+        courseDocumentPlaylist.push(obj)
+        this.setState({courseDocumentPlaylist})
+    }
+    appendCourseDocument=(obj)=>
+    {
+        let courseDocuments = this.state.courseDocuments;
+        courseDocuments.push(obj);
+        this.setState({courseDocuments})
     }
     appendCourseVideo=(obj)=>
     {
@@ -520,11 +570,47 @@ class InsHome extends React.Component {
                 })
             }
     }
-    handleCourseVideoCallback=()=>
-    {
-        
-        fetch_courses_videos(this.state.activeCourse,this.courseVideoCallback)
+    courseVideoPlaylistCallback=(response)=>{
+        console.log(response.status)
+            if(response.status==200)
+            {
+                response.json().then(data=>
+                {
+                    console.log(data);
+                    this.setState({courseVideosPlaylist:data,courseVideoPlaylistLoaded:true,isCourseVideoPlaylistLoading:false});                   
+                })
+            }
     }
+    courseDocumentCallback=(response)=>
+    {
+        console.log(response.status)
+            if(response.status==200)
+            {
+                response.json().then(data=>
+                {
+                    console.log(data);
+                    this.setState({courseDocuments:data,courseDocumentLoaded:true,isCourseDocumentLoading:false});                   
+                })
+            }
+    }
+    courseDocumentPlaylistCallback=(response)=>{
+        console.log(response.status)
+            if(response.status==200)
+            {
+                response.json().then(data=>
+                {
+                    console.log(data);
+                    this.setState({courseDocumentPlaylist:data,courseDocumentPlaylistLoaded:true,isCourseDocumentPlaylistLoading:false});                   
+                })
+            }
+    }
+    appendCourseVideoPlaylist =(obj)=>
+    {
+        let courseVideosPlaylist = this.state.courseVideosPlaylist;
+        courseVideosPlaylist.push(obj)
+        this.setState({courseVideosPlaylist})
+    }
+     
 
     showFilters=(tab)=>{
         switch(tab)
@@ -548,8 +634,14 @@ class InsHome extends React.Component {
             case 'videos':      
                     if(!this.state.courseVideoLoaded&&!this.state.isCourseVideoLoading)
                     {
+                        console.log("active course id",this.state.activeCourseId)
                         this.setState({isCourseVideoLoading:true})
-                        fetch_courses_videos(this.state.activeCourseId,this.handleCourseVideoCallback);
+                        fetch_courses_videos(this.state.activeCourseDetail.id,this.courseVideoCallback);
+                    }
+                    if(!this.state.courseVideoPlaylistLoaded&&!this.state.isCourseVideoPlaylistLoading)
+                    {
+                        this.setState({isCourseVideoPlaylistLoading:true})
+                        fetch_video_playlist(this.state.activeCourseDetail.id,this.courseVideoPlaylistCallback);
                     }
             
                          return(
@@ -558,6 +650,7 @@ class InsHome extends React.Component {
                                  <ActivityIndicator color={theme.accentColor} style={"large"}/>
                              ):
                              (
+                                 <ScrollView>
                                 <View style={styles.AddFilter}>
                                     <TouchableOpacity 
                                         style={[styles.singleSubject,this.state.activeFilter=='VideoAdd'?({backgroundColor:theme.secondaryColor, color: theme.primaryColor}):(null)]} 
@@ -565,13 +658,14 @@ class InsHome extends React.Component {
                                                 <Text style={[styles.singleSubjectText,this.state.activeFilter=='VideoAdd'?({color:theme.primaryColor}):(null)]}>Add Videos +</Text>
                                     </TouchableOpacity>
                                     <FlatList 
-                                        data={instituteData.videoFilters} 
+                                        data={this.state.courseVideosPlaylist} 
                                         renderItem={this.renderSubjectOptions}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={true}
                                         showsHorizontalScrollIndicator={false}
                                     />
                                 </View>
+                                </ScrollView>
                             )
                         )
             case 'testSeries':  return(
@@ -590,7 +684,20 @@ class InsHome extends React.Component {
                                     />
                                 </View>)
 
-            case 'document':    return(
+            case 'document':    
+            
+                        if(!this.state.courseDocumentLoaded&&!this.state.isCourseDocumentLoading)
+                        {
+                            console.log("active course id",this.state.activeCourseId)
+                            this.setState({isCourseDocumentLoading:true})
+                            fetch_courses_documents(this.state.activeCourseDetail.id,this.courseDocumentCallback);
+                        }
+                        if(!this.state.courseDocumentPlaylistLoaded&&!this.state.isCourseDocumentPlaylistLoading)
+                        {
+                            this.setState({isCourseDocumentPlaylistLoading:true})
+                            fetch_document_playlist(this.state.activeCourseDetail.id,this.courseDocumentPlaylistCallback);
+                        }
+                            return(
                                 <View style={styles.AddFilter}>
                                     <TouchableOpacity 
                                         style={[styles.singleSubject,this.state.activeFilter=='PdfAdd'?({backgroundColor:theme.secondaryColor, color: theme.primaryColor}):(null)]} 
@@ -598,7 +705,7 @@ class InsHome extends React.Component {
                                             <Text style={[styles.singleSubjectText,this.state.activeFilter=='PdfAdd'?({color:theme.primaryColor}):(null)]}>Pdf +</Text>
                                     </TouchableOpacity>
                                     <FlatList 
-                                        data={instituteData.documentFilters} 
+                                        data={this.state.courseDocumentPlaylist} 
                                         renderItem={this.renderSubjectOptions}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={true}
@@ -637,7 +744,7 @@ class InsHome extends React.Component {
                                     />)
             case 'document':    return(
                                     <FlatList 
-                                        data={instituteData.document} 
+                                        data={this.state.courseDocuments} 
                                         renderItem={this.renderDocument}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}

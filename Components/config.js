@@ -22,7 +22,12 @@ export const theme={
 export const serverBaseUrl="http://192.168.43.134:8080/"
 export const serverApiUrl=serverBaseUrl+"api/v1/" 
 export const videoDefaultThumbnail="https://i.stack.imgur.com/PtbGQ.png";
+<<<<<<< HEAD
+
+export const documentPlaceholder="https://i.stack.imgur.com/PtbGQ.png";
+=======
 export const dataLimit=30;
 //   201- create update     
 //   200 - success (fetch)
 //   400-bad request 404-notfound  500-hota hai
+>>>>>>> a696e82926d1eb4c6cfe8e0382cb57b09eee2348

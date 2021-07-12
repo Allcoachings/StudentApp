@@ -119,7 +119,9 @@ export   const addCourseBanner=(banner,courseId,callback)=>
         
 }
 
-export const fetch_courses_videos=(courseId,callback)=>
+
+//video section starts 
+export const fetch_courses_videos=(courseId=-1,callback,playlistId=-1)=>
 {
 
     
@@ -134,8 +136,16 @@ export const fetch_courses_videos=(courseId,callback)=>
             headers.append('Access-Control-Allow-Credentials', 'true');
 
             headers.append('GET', 'POST', 'OPTIONS'); 
-
-             fetch(serverApiUrl+'/institute/course/video/all/'+courseId,
+            let apiUrl;
+            if(playlistId == -1)
+            {
+                apiUrl = serverApiUrl+'/institute/course/video/all/'+courseId
+            }else
+            {
+                apiUrl = serverApiUrl+'/institute/course/video/playlist/'+playlistId
+            }
+                
+             fetch(apiUrl,
             {
                 method: 'GET',  
                 headers,
@@ -145,6 +155,7 @@ export const fetch_courses_videos=(courseId,callback)=>
             .catch((error)=>{console.log(error)})
 }
 
+//add video
 export   const addCourseVideo=(video,name,description,isDemo,demoLength,courseId,callback,playlistId=-1)=>
 {
 
@@ -186,7 +197,7 @@ export   const addCourseVideo=(video,name,description,isDemo,demoLength,courseId
 }
 
 
-
+// create playlist
 export   const addCourseVideoPlaylist=(name,courseId,callback)=>
 {
 
@@ -208,7 +219,7 @@ export   const addCourseVideoPlaylist=(name,courseId,callback)=>
             //  formData.append("playlistId",playlistId)
              
             let headers = new Headers(); 
-            headers.append('Content-Type', 'multipart/form-data');
+            headers.append('Content-Type', 'application/json');
             headers.append('Access-Control-Allow-Origin', serverApiUrl);
             headers.append('Access-Control-Allow-Credentials', 'true');
 
@@ -226,6 +237,7 @@ export   const addCourseVideoPlaylist=(name,courseId,callback)=>
    
         
 }
+//fetch video playlist
 export const fetch_video_playlist=(courseId,callback)=>
 {
     let headers = new Headers(); 
@@ -236,7 +248,7 @@ export const fetch_video_playlist=(courseId,callback)=>
 
     headers.append('GET', 'POST', 'OPTIONS'); 
 
-     fetch(serverApiUrl+'/institute/course/banners/all/'+courseId,
+     fetch(serverApiUrl+'/institute/course/video/playlists/'+courseId,
     {
         method: 'GET',  
         headers,
@@ -245,4 +257,142 @@ export const fetch_video_playlist=(courseId,callback)=>
     .then((response)=>callback(response)) 
     .catch((error)=>{console.log(error)})
 }
+
+//video section ends here
+
+//document section starts 
+export const fetch_courses_documents=(courseId=-1,callback,playlistId=-1)=>
+{
+
+    
+            // var formData   = new FormData(); 
+            // formData.append("fetch_banners",'true') 
+            // formData.append("offset",offset) 
+            // formData.append("data_limit",limit)  
+            let headers = new Headers(); 
+            headers.append('Content-Type', 'application/json'); 
+
+            headers.append('Access-Control-Allow-Origin', serverApiUrl);
+            headers.append('Access-Control-Allow-Credentials', 'true');
+
+            headers.append('GET', 'POST', 'OPTIONS'); 
+            let apiUrl;
+            if(playlistId == -1)
+            {
+                apiUrl = serverApiUrl+'/institute/course/document/all/'+courseId
+            }else
+            {
+                apiUrl = serverApiUrl+'/institute/course/document/playlist/'+playlistId
+            }
+                
+             fetch(apiUrl,
+            {
+                method: 'GET',  
+                headers,
+                // body:JSON.stringify({title,description,fees,instId})
+            })
+            .then((response)=>callback(response)) 
+            .catch((error)=>{console.log(error)})
+}
+
+//add document
+export   const addCourseDocument =(document,name,courseId,callback,playlistId=-1)=>
+{
+
+    const newImageUri =  "file:///" + document.uri.split("file:/").join("");
+            var formData   = new FormData();  
+            formData.append("file",{ 
+                uri : newImageUri,
+                type: mime.getType(newImageUri),
+                name: document.name
+            }) 
+             console.log("courseId",courseId)
+             formData.append("name",name) 
+              
+             formData.append("playlistId",playlistId)
+             formData.append("courseId",courseId)
+             
+            let headers = new Headers(); 
+            headers.append('Content-Type', 'multipart/form-data');  
+            headers.append('Access-Control-Allow-Origin', serverApiUrl);
+            headers.append('Access-Control-Allow-Credentials', 'true');
+
+            headers.append('GET', 'POST', 'OPTIONS');  
+             fetch(serverApiUrl+'/institute/course/document/',
+            {
+                method: 'POST',  
+                headers,
+                body:formData
+            })
+            .then((response)=>callback(response)) 
+            .catch((error)=>{console.log(error)})
+
+       
+   
+        
+}
+
+
+// create document playlist
+export   const addCourseDocumentPlaylist=(name,courseId,callback)=>
+{
+
+    // const newImageUri =  "file:///" + video.uri.split("file:/").join("");
+            // var formData   = new FormData();  
+            // formData.append("file",{ 
+            //     uri : newImageUri,
+            //     type: mime.getType(newImageUri),
+            //     name: video.name
+            // }) 
+            //  console.log("courseId",courseId)
+            //  formData.append("name",name)
+            //  formData.append("description",description)
+
+            //  formData.append("isDemo",isDemo)
+            //  formData.append("demoLength",demoLength)
+             
+            //  formData.append("courseId",courseId)
+            //  formData.append("playlistId",playlistId)
+             
+            let headers = new Headers(); 
+            headers.append('Content-Type', 'application/json');
+            headers.append('Access-Control-Allow-Origin', serverApiUrl);
+            headers.append('Access-Control-Allow-Credentials', 'true');
+
+            headers.append('GET', 'POST', 'OPTIONS');  
+             fetch(serverApiUrl+'/institute/course/document/createPlaylist',
+            {
+                method: 'POST',  
+                headers,
+                body:JSON.stringify({name,courseId})
+            })
+            .then((response)=>callback(response)) 
+            .catch((error)=>{console.log(error)})
+
+       
+   
+        
+}
+//fetch document playlist
+export const fetch_document_playlist=(courseId,callback)=>
+{
+    let headers = new Headers(); 
+    headers.append('Content-Type', 'application/json'); 
+
+    headers.append('Access-Control-Allow-Origin', serverApiUrl);
+    headers.append('Access-Control-Allow-Credentials', 'true');
+
+    headers.append('GET', 'POST', 'OPTIONS'); 
+
+     fetch(serverApiUrl+'/institute/course/document/playlists/'+courseId,
+    {
+        method: 'GET',  
+        headers,
+        // body:JSON.stringify({title,description,fees,instId})
+    })
+    .then((response)=>callback(response)) 
+    .catch((error)=>{console.log(error)})
+}
+
+//document section ends here
 

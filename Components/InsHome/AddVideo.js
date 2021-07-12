@@ -4,8 +4,7 @@ import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {theme,screenMobileWidth, serverBaseUrl, videoDefaultThumbnail} from '../config'
 import CardView from '../Utils/CardView';
 import * as DocumentPicker from 'expo-document-picker';
-import {addCourseVideo} from '../Utils/DataHelper/Course'
-
+import {addCourseVideo,fetch_video_playlist} from '../Utils/DataHelper/Course'
 import { Picker } from 'native-base';
 import { Feather } from '@expo/vector-icons';
 import AddVideoPlaylist from './AddVideoPlaylist';
@@ -14,23 +13,25 @@ class AddVideo extends React.Component {
         title: "",
         description: "",
         video: "",
+        loadingPlaylist:true,
+        selectedPlaylist:-1,
+        playlist:[]
     }
     handleAddVideoClick=()=>
     {
         DocumentPicker.getDocumentAsync({type:"video/*",copyToCacheDirectory:true,multiple:false}).then(response=>
+        {
+            
+            if(response.type=="success")
             {
-                
-                if(response.type=="success")
-                {
-                    this.setState({video:response})
-                }
-            })
+                this.setState({video:response})
+            }
+        })
     }
     handleAddVideoCallBack=(response)=>
     {
             if(response.status==201)
-            {
-                 
+            {     
                 let details = response.headers.map.location.split("*");
                 this.props.route.params.appendVideo({id:details[0],videoLocation:serverBaseUrl+details[1],name:this.state.title,description:this.state.description,isDemo:false,courseId:this.props.route.params.courseId,videoThumb:videoDefaultThumbnail})
                 this.props.navigation.goBack();
@@ -40,7 +41,7 @@ class AddVideo extends React.Component {
     {
             if(this.verify(this.state))
             {
-                addCourseVideo(this.state.video,this.state.title,this.state.description,false,'0',this.props.route.params.courseId,this.handleAddVideoCallBack)
+                addCourseVideo(this.state.video,this.state.title,this.state.description,false,'0',this.props.route.params.courseId,this.handleAddVideoCallBack,this.state.selectedPlaylist)
             }
     }
 
@@ -52,6 +53,51 @@ class AddVideo extends React.Component {
     closeModal=()=>
     {
         this.setState({isModalVisible: false})
+    }
+
+    handlePlaylistCallback=(response)=>
+    {
+        console.log("response playlist",response.status)
+        if(response.status == 200)
+        {
+            response.json().then(response=>
+            { 
+                console.log("response",response)
+                response.unshift({id:-1,name:"Select Playlist"})
+                this.setState({playlist: response,loadingPlaylist:false})
+            })
+                
+        }else
+        {
+            console.log("something went wrong")
+        }
+        
+    }
+
+    componentDidMount () 
+    {
+        fetch_video_playlist(this.props.route.params.courseId,this.handlePlaylistCallback)
+    }
+    renderPickerItem=(item)=>
+    {
+        console.log(item)
+        return( 
+           
+            <Picker.Item label={item.name} value={item.id} />
+        )
+    }
+    setSelectedPlaylist=(selectedPlaylist)=>
+    {
+    
+            this.setState({selectedPlaylist})
+    }
+    appendPlaylist=(obj)=>
+    {
+        let playlist = this.state.playlist;
+        playlist.push(obj)
+        this.setState({playlist})
+        this.props.route.params.appendCourseVideoPlaylist(obj);
+
     }
     render() {
          
@@ -77,10 +123,7 @@ class AddVideo extends React.Component {
                             )}
                     </View>
                     <View style={styles.inputView}>
-                            <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
-                                <Text style={styles.labelText}>Video Playlist</Text>
-                                <Feather name="plus" onPress={()=>this.openModal()} size={20}/>
-                            </View> 
+                    <Text style={styles.labelText}>Video Description</Text>
                             {CardView(
                                 <TextInput 
                                     placeholderTextColor={theme.greyColor} 
@@ -92,8 +135,42 @@ class AddVideo extends React.Component {
                                 />, {borderRadius: 10}
                             )}
                     </View>
-                    {!this.state.loadingCategory?(
+                    {!this.state.loadingPlaylist?(
                             <View style={styles.inputView}>
+<<<<<<< HEAD
+                                
+                            <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
+                                    <Text style={styles.labelText}>Video Playlist</Text>
+                                    <Feather name="plus" onPress={()=>this.openModal()} size={20}/>
+                            </View> 
+                            {CardView(
+                                <View style={styles.dropdownView}>
+                                    <Picker 
+                                        style={{ height:30 }}
+                                        selectedValue={this.state.selectedPlaylist}
+                                        onValueChange={(itemValue, itemIndex) =>
+                                            this.setSelectedPlaylist(itemValue)
+                                        }> 
+                                        {this.state.playlist&&this.state.playlist.map((item)=>this.renderPickerItem(item))}
+                                        </Picker>
+                                    {/* <DropDownPicker
+                                        placeholder="Select Category"
+                                        placeholderTextColor={theme.greyColor}
+                                        containerStyle={{borderColor: theme.greyColor}}
+                                        items={this.state.categories}
+                                        open={this.state.open}
+                                        setOpen={this.open}
+                                        value={this.state.selectedPlaylist}
+                                        setValue={this.setValue}
+                                        dropdownContainerStyle={{
+                                            zIndex:1000,
+                                            elevation:100
+                                        }}
+                                    /> */}
+                                </View> ,{marginTop: 10, padding: 12})}
+                            </View>
+                            ):(null)}
+=======
                                 <Text style={styles.labelText}>Video Description</Text>
                                 {CardView(
                                     <View style={styles.dropdownView}>
@@ -124,6 +201,7 @@ class AddVideo extends React.Component {
                                     </View> ,{marginTop: 10, padding: 12})}
                                 </View>
                         ):(null)}
+>>>>>>> a696e82926d1eb4c6cfe8e0382cb57b09eee2348
                     <View style={styles.inputView}>
                             <Text style={styles.labelText}>Video</Text>
                             <TouchableOpacity style={styles.submitButton} onPress={this.handleAddVideoClick}>
@@ -140,7 +218,7 @@ class AddVideo extends React.Component {
                     </View>
                 </ScrollView>
                 {this.state.isModalVisible?(
-                            <AddVideoPlaylist isModalVisible={this.state.isModalVisible} closeModal={this.closeModal}/>
+                            <AddVideoPlaylist    appendPlaylist={this.appendPlaylist} isModalVisible={this.state.isModalVisible} closeModal={this.closeModal} courseId={this.props.route.params.courseId}/>
                 ):(
                     null
                 )}

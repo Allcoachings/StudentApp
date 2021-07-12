@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { View, Text,Modal,ScrollView,TouchableOpacity,ActivityIndicator,StyleSheet,TextInput } from 'react-native';
 import {theme} from '../config'
 import CardView from '../Utils/CardView';
-import {addCourseVideoPlaylist} from '../Utils/DataHelper/Course'
-class AddVideoPlaylist extends Component { 
+import {addCourseDocumentPlaylist} from '../Utils/DataHelper/Course'
+class AddDocumentPlaylist extends Component { 
     state=
     {
         name:'',
@@ -24,7 +24,7 @@ class AddVideoPlaylist extends Component {
         if(this.verify(this.state))
         {
             this.setState({addPlaylistLoading:true})
-            addCourseVideoPlaylist(this.state.name,this.props.courseId,this.handleAddPlaylistCallBack)
+            addCourseDocumentPlaylist(this.state.name,this.props.courseId,this.handleAddPlaylistCallBack)
         }else
         {
             console.log("empty filds")
@@ -43,7 +43,7 @@ class AddVideoPlaylist extends Component {
     
             <ScrollView>
                 <View style={styles.headView}>
-                    <Text style={styles.headText}>Add Video Playlist</Text>
+                    <Text style={styles.headText}>Add Document Playlist</Text>
                 </View>
                 <View style={styles.inputView}>
                         <Text style={styles.labelText}>Playlist Name</Text>
@@ -140,4 +140,4 @@ const styles = StyleSheet.create({
 
     // add course css end
 })
-export default AddVideoPlaylist;
+export default AddDocumentPlaylist;

@@ -1,15 +1,19 @@
 import React from 'react';
 import {Text, View,StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import {theme,screenMobileWidth} from '../config'
+import {theme,screenMobileWidth, serverBaseUrl} from '../config'
 import CardView from '../Utils/CardView';
 import { Feather } from '@expo/vector-icons';
-import DocumentPicker from "react-native-document-picker";
-
+import * as DocumentPicker from 'expo-document-picker';;
+import {fetch_document_playlist,addCourseDocument} from '../Utils/DataHelper/Course'
+import { Picker } from 'native-base'; 
+import AddDocumentPlaylist from './AddDocumentPlaylist';
 class AddPdf extends React.Component {
     state = {
         title: '',
-        document: ''
+        document: '',
+        playlist:[],
+        selectedPlaylist:-1
     }
     // async docPicker() {
     //         try 
@@ -49,6 +53,86 @@ class AddPdf extends React.Component {
                 />, {borderRadius: 10}
             )
         )}
+        setSelectedPlaylist=(selectedPlaylist)=>
+        {
+        
+                this.setState({selectedPlaylist})
+        }
+        appendPlaylist=(obj)=>
+        {
+            let playlist = this.state.playlist;
+            playlist.push(obj)
+            this.setState({playlist})
+            this.props.route.params.appendCourseDocumentPlaylist(obj);
+    
+        }
+        renderPickerItem=(item)=>
+        {
+            console.log(item)
+            return( 
+               
+                <Picker.Item label={item.name} value={item.id} />
+            )
+        }
+        openModal=()=>
+        {
+            this.setState({isModalVisible: true})
+        }
+        closeModal=()=>
+        {
+            this.setState({isModalVisible: false})
+        }
+        handleAddDocumentCallBack=(response)=>
+        {
+                if(response.status==201)
+                {     
+                    let details = response.headers.map.location.split("*");
+                    this.props.route.params.appendDocument({id:details[0],fileAddr:serverBaseUrl+details[1],name:this.state.title,courseId:this.props.route.params.courseId})
+                    this.props.navigation.goBack();
+                }
+        }
+        handlePlaylistCallback=(response)=>
+        {
+            console.log("response playlist",response.status)
+            if(response.status == 200)
+            {
+                response.json().then(response=>
+                { 
+                    console.log("response",response)
+                    response.unshift({id:-1,name:"Select Playlist"})
+                    this.setState({playlist: response,loadingPlaylist:false})
+                })
+                    
+            }else
+            {
+                console.log("something went wrong")
+            }
+            
+        }
+        handleAddDocumentClick=()=>
+        {
+            DocumentPicker.getDocumentAsync({type:"application/pdf",copyToCacheDirectory:true,multiple:false}).then(response=>
+            {
+                
+                if(response.type=="success")
+                {
+                    this.setState({document:response})
+                }
+            })
+        }
+        handleSubmitButtonClick=()=>
+        {
+                if(this.verify(this.state))
+                {
+                    addCourseDocument(this.state.document,this.state.title,this.props.route.params.courseId,this.handleAddDocumentCallBack,this.state.selectedPlaylist)
+                }
+        }
+
+        verify=({title,selectedPlaylist,document})=>title&&selectedPlaylist!=-1&&document.type=='success'
+
+        componentDidMount() {
+                fetch_document_playlist(this.props.route.params.courseId,this.handlePlaylistCallback)
+        }
 
     render() {
         return(
@@ -72,6 +156,27 @@ class AddPdf extends React.Component {
                                 />, {borderRadius: 10} 
                             )}
                     </View>
+                    {!this.state.loadingPlaylist?(
+                            <View style={styles.inputView}>
+                                
+                            <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
+                                    <Text style={styles.labelText}>Document Playlist</Text>
+                                    <Feather name="plus" onPress={()=>this.openModal()} size={20}/>
+                            </View> 
+                            {CardView(
+                                <View style={styles.dropdownView}>
+                                    <Picker 
+                                        style={{ height:30 }}
+                                        selectedValue={this.state.selectedPlaylist}
+                                        onValueChange={(itemValue, itemIndex) =>
+                                            this.setSelectedPlaylist(itemValue)
+                                        }> 
+                                        {this.state.playlist&&this.state.playlist.map((item)=>this.renderPickerItem(item))}
+                                        </Picker>
+                                  
+                                </View> ,{marginTop: 10, padding: 12})}
+                            </View>
+                            ):(null)}
                     <View style={styles.inputView}>
                             <Text style={styles.labelText}>Document(.pdf)</Text>
                             {/* <TouchableOpacity
@@ -81,11 +186,14 @@ class AddPdf extends React.Component {
                                 <Text style={{fontSize: 20, padding: 20}}>Click Here</Text>
                                 
                             </TouchableOpacity> */}
+                             <TouchableOpacity style={styles.submitButton} onPress={this.handleAddDocumentClick}>
+                                <Text style={styles.submitButtonText}>Choose Document</Text>
+                            </TouchableOpacity>
                             {/* <Feather name="link" size={12} color={theme.secondaryColor}/> */}
-                            {this.renderInputFiled()}
+                            {/* {this.renderInputFiled()} */}
                     </View>
                     <View style={styles.btnView}>
-                        <TouchableOpacity style={styles.submitButton}>
+                        <TouchableOpacity style={styles.submitButton} onPress={()=>this.handleSubmitButtonClick()}>
                                 <Text style={styles.submitButtonText}>Submit</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.addMoreButton}>
@@ -93,6 +201,11 @@ class AddPdf extends React.Component {
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
+                {this.state.isModalVisible?(
+                            <AddDocumentPlaylist    appendPlaylist={this.appendPlaylist} isModalVisible={this.state.isModalVisible} closeModal={this.closeModal} courseId={this.props.route.params.courseId}/>
+                ):(
+                    null
+                )}
            </PageStructure>
         )}
     }
