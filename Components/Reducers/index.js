@@ -34,7 +34,12 @@ import { combineReducers } from "redux";
 //user reducer starts
 const initial_user_state=
 {
-    userAuthStatus:true
+    userAuthStatus:true,
+    "id": "1",
+    "name": "DU BUDDY",
+    "email": "dubuddy@gmail.com",
+    "mobile_number": "7302248204",
+    "user_pic": "{ uri: 'https://picsum.photos/200' }"
 }
 
 const user_reducer=(state=initial_user_state,action)=>
@@ -97,8 +102,8 @@ const initial_institute_state = {
     "four_star_count":4,
     "five_star_count":5,
     }
-
 }
+
 
 const institute_reducer =(state=initial_institute_state,action)=>
 {

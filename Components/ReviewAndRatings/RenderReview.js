@@ -16,8 +16,6 @@ class RenderReview extends React.Component {
 
 
     sendReply=(id)=>{
-        console.log(id)
-        console.log(this.state.reply)
         if(this.state.reply!='')
         {
             reply(id, this.state.reply, this.replyCallBack)
@@ -35,10 +33,21 @@ class RenderReview extends React.Component {
     {
         return (
         <View style={styles.ratingContainer}>
+            {item.insReview.review!=null&&item.insReview.review!=''?(  
+                <View>  
+                
                 <View style={styles.userMetaContainer}>
-                    <Image source={item.studentImage} style={styles.ratingUserImage}/> 
+                    <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.ratingUserImage}/> 
                     <Text style={styles.ratingUserName}>{item.studentName}</Text>
+                    {/* {this.props.replyMode?(null):(
+                        item.insReview.studentId==this.props.userId?(
+                            <TouchableOpacity onPress={null}>
+                                <Feather name="edit-3" size={18} color={theme.secondaryColor} />
+                            </TouchableOpacity>
+                        ):(null)
+                    )} */}
                 </View>
+
                 <View style={styles.ratingMetaView}>
                     {/* <View style={styles.ratingUserMeta}>
                         <Text style={styles.ratingUserName}>{item.userName}</Text>
@@ -80,7 +89,8 @@ class RenderReview extends React.Component {
                             </View>
                         ):(null)}
                     </View>
-                </View> 
+                </View>
+            </View>):(null)}
                 <Modal animationType = {"fade"} transparent = {false}
                         visible = {this.state.ReviewmodalVisible}
                         onRequestClose = {() => { console.log("Modal has been closed.") } }> 

@@ -9,9 +9,12 @@ import MarqueeText from 'react-native-marquee';
 import { Feather } from '@expo/vector-icons';
 import {connect} from 'react-redux'
 import { List } from 'react-native-paper';
+import StudentReview from './StudentReview'
 import Review from '../ReviewAndRatings/Review'
 import Accordian from '../Utils/Accordian'
 import MockTest from '../MockTest/MockTest'
+import { checkUserEnrollment } from '../Utils/DataHelper/EnrollStudent'
+
 
 import {tabListInstitute} from '../../FakeDataService/FakeData'
 class InstituteView extends React.Component {
@@ -21,7 +24,45 @@ class InstituteView extends React.Component {
         tabtoshow: 1,
         modalVisible: false,
         ReviewmodalVisible: false,
+        courseId:1,
+        instituteId: 1,
+        studentId:1,
+        studentEnrolled: false,
+        review: '',
+        rating: 0,
+        totalRatingCount:15 ,
+        oneStarCount:1,
+        twoStarCount:2,
+        threeStarCount:3,
+        fourStarCount:4,
+        fiveStarCount:5,
+        inslogo:'wdsa',
+        institle:'DUBUDDY',
      }
+
+     componentDidMount(){
+        checkUserEnrollment(this.state.courseId, this.state.studentId, this.checkEnrollCallBack)
+     }
+
+     checkEnrollCallBack=(response) =>{
+        if(response.status==200)
+        {
+            response.json().then(data=>
+            {
+                this.setState({studentEnrolled: data});                   
+            })
+        }
+     }
+
+    //  updateComponent=() =>{
+    //      console.log("this.state.studentEnrolled",this.state.studentEnrolled)
+    //      console.log("this.props.studentEnrolled",this.props.route.params.studentEnrolled)
+    //      if(this.state.studentEnrolled!=this.props.route.params.studentEnrolled)
+    //      {
+    //          this.setState({studentEnrolled: this.props.route.params.studentEnrolled})
+    //      }
+    //  }
+
 
      renderTabItems=({item})=>
      {
@@ -34,12 +75,6 @@ class InstituteView extends React.Component {
      toggleModal(visible) {
         this.setState({ modalVisible: visible });
      }
-
-
-     reviewModal(visible) {
-         this.setState({ReviewmodalVisible: visible });
-     }
-
 
 
 
@@ -347,10 +382,6 @@ class InstituteView extends React.Component {
         }
     }
 
-
-
-
-
     //   feed wala
 
     renderLikeShareRow=()=>{
@@ -523,11 +554,11 @@ class InstituteView extends React.Component {
                                                 Upsc Cse- optional Subscription
                                             </Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10}} onPress={()=>this.props.naviagtion.navigate("Payment")}>
+                                        {this.state.studentEnrolled?(null):(<TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10}} onPress={()=>this.props.navigation.navigate("Payment")}>
                                             <Text style={{fontSize:10,color:theme.primaryColor}}>
                                                 Buy Pass : ₹10,000
                                             </Text>
-                                        </TouchableOpacity>
+                                        </TouchableOpacity>)}
                                     </View>
                                     <View style={styles.content}>
                                         <TouchableOpacity 
@@ -572,7 +603,7 @@ class InstituteView extends React.Component {
         
 
     render() {
-        console.log(instituteData.category)
+        // this.updateComponent()
         return (
             <PageStructure 
                 iconName={"arrow-left"}
@@ -661,74 +692,25 @@ class InstituteView extends React.Component {
                             <Text>lorem ipsum dolor sit lorem unkndown printer took a gallery. We need to write here someting about the applicaiton or about the institute</Text>
                         </View>
 
-                    <View style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'space-between'}}>
-                        <View>
-                            <Text style={styles.RatingText}>Rating & Reviews</Text>
-                            {/* <Text style={{fontSize: 16, color: theme.accentColor, fontWeight: 'bold'}}  onPress = {() => {this.reviewModal(true)}}>Write a Review</Text> */}
-                        </View>
-                        <View>
-                            <Feather name="arrow-right" size={26} color={'grey'} style={{marginTop:0, alignSelf: 'flex-end',}} onPress = {() => {this.reviewModal(true)}}/>
-                        </View>
-
-                    </View>
+                    <StudentReview 
+                        studentEnrolled={this.state.studentEnrolled}
+                        instituteId={this.state.instituteId}
+                        courseId={this.state.courseId}
+                        studentId={this.state.studentId}
+                        total_rating_count={this.state.totalRatingCount}
+                        one_star_count={this.state.oneStarCount}
+                        two_star_count={this.state.twoStarCount}
+                        three_star_count={this.state.threeStarCount}
+                        four_star_count={this.state.fourStarCount}
+                        five_star_count={this.state.fiveStarCount}
+                        inslogo={this.state.inslogo}
+                        institle={this.state.institle}
+                    />
                    
 
-                    <Modal animationType = {"fade"} transparent = {false}
-                        visible = {this.state.ReviewmodalVisible}
-                        onRequestClose = {() => { console.log("Modal has been closed.") } }> 
-                            <View>
-                                <View style={{flexDirection: 'row',alignItems: 'center',paddingBottom:10,borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}>
-                                    <View style={{marginLeft:10}}>
-                                        <TouchableOpacity onPress={()=>this.setState({ReviewmodalVisible:false})}>
-                                            <Feather name={'arrow-left'} size={20}/>
-                                        </TouchableOpacity>
-                                    </View>
-                                    <View style={{marginHorizontal:10,flex:0.8,flexWrap:'wrap'}}>
-                                        <View style={{display: 'flex', flexDirection: 'row',}}> 
-                                            <Image source={instituteData.logo} style={{width:35,height:35,borderRadius:5,marginRight:10}}/>
-                                            <View>
-                                                <Text numberOfLines={1} style={{color:theme.secondaryColor,fontSize:15}}>{instituteData.title}</Text>
-                                                <Text style={{color: theme.greyColor}}>Rate this Institute</Text>
-                                            </View>
-                                        </View>
+                    
 
-                                    </View>
-                                    <View style={styles.modalHeaderRight}></View>
-                                </View>
-                                <View style={{ paddingHorizontal: 6,marginVertical:20,backgroundColor: 'white'}}>
-                                    {/* <Rating
-                                        type='star'
-                                        ratingCount={5}
-                                        startingValue={0}
-                                        imageSize={30} 
-                                        unSelectedColor={theme.appBackgroundColor} 
-                                        // tintColor={theme.appBackgroundColor}
-                                        ratingColor={theme.blueColor}
-                                        style={styles.instituteRating}
-                                        readOnly={true}
-                                        style={{textAlign: 'center', marginBottom: 10}} 
-                                    /> */}
-                                    <AirbnbRating 
-                                        starContainerStyle={[styles.instituteRating,{alignSelf:"center"}]} 
-                                        count={5}
-                                        reviews={[]} 
-                                        isDisabled={false}
-                                        defaultRating={0}
-                                        size={30}
-                                        selectedColor={theme.blueColor}
-                                        showRating={false}
-                                    />
-                                    <TextInput style={{borderWidth: 1, borderColor: 'black', borderRadius:10, paddingLeft: 6, paddingBottom:30,}} placeholder="Write a Review" placeholderTextColor='grey'></TextInput>
-                                    <TouchableOpacity style={styles.reviewbutton}>
-                                        <Text style={styles.reviewbutton_text}>Submit</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                
-                            </View>
-
-                        </Modal>
-
-                    <Review />
+                    
 
                 
                     <View style = {styles.container}>

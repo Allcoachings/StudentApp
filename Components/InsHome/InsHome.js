@@ -814,8 +814,9 @@ class InsHome extends React.Component {
                             
                         </View>
                     </View>
+                    
                     <InsReviews />  
-                    {/* use different component */}
+
                 </ScrollView>
                 {this.state.isAddCourseModalVisible?(
                         <AddCourseModal 

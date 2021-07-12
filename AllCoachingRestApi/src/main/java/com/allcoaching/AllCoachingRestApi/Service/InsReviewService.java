@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class InsReviewService {
@@ -19,6 +20,7 @@ public class InsReviewService {
     private InsReviewRepo insReviewRepo;
 
     //fetch all reviews
+
     public  Iterable<InsReviewDto> getAllReviews(Integer pageNo, Integer pageSize, String sortBy,long insId)
     {
 
@@ -31,6 +33,14 @@ public class InsReviewService {
         }
     }
 
+
+    public boolean findByCourseIdStudentId(long courseId, long studentId)
+    {
+        Optional<InsReview> pagedResult = insReviewRepo.findByCourseIdStudentId(courseId, studentId);
+        return pagedResult.isPresent();
+    }
+
+
     //inserting review to repo
     public InsReview save(InsReview insReview)
     {
@@ -38,6 +48,10 @@ public class InsReviewService {
     }
 
     public int setReply(InsReview insReview){
-        return insReviewRepo.setReply(insReview.getInsId(), insReview.getReview());
+        return insReviewRepo.setReply(insReview.getInsId(), insReview.getReply());
+    }
+
+    public int addReview(InsReview insReview){
+        return insReviewRepo.addReview(insReview.getCourseId(), insReview.getStudentId(), insReview.getReview(), insReview.getRating());
     }
 }

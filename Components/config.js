@@ -19,7 +19,7 @@ export const theme={
     featureNoColor:'#FF0000',   
 }
 
-export const serverBaseUrl="http://192.168.1.4:8080/"
+export const serverBaseUrl="http://192.168.43.134:8080/"
 export const serverApiUrl=serverBaseUrl+"api/v1/" 
 export const videoDefaultThumbnail="https://i.stack.imgur.com/PtbGQ.png";
 export const dataLimit=30;

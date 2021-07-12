@@ -7,6 +7,7 @@ import Auth from '../Auth/Auth'
 import Home from '../Home/Home'
 import{theme} from '../config'
 import InstituteView from '../InstituteView/InstituteView';
+import Payment from '../InstituteView/Payment';
 import Subscription from '../Subscription/Subscription';
 import TestSeriesView from '../TestSeriesView/TestSeriesView'
 import SeriesList from '../SeriesList/SeriesList'
@@ -38,6 +39,7 @@ class index extends React.Component {
                         <Drawer.Screen name="Home" component={Home} /> 
                         <Drawer.Screen name="Auth" component={Auth}  /> 
                         <Drawer.Screen name="Institute"  component={InstituteView} />
+                        <Drawer.Screen name="StudentInsView"  component={InstituteView} />
                         <Drawer.Screen name="TestSeries" component={TestSeriesIns}  /> 
                         <Drawer.Screen name="Subscription" component={SubscriptionNew}  /> 
                         <Drawer.Screen name="Feed" component={Feed}  /> 
@@ -52,6 +54,7 @@ class index extends React.Component {
                         <Drawer.Screen name="Profile" component={UserProfile} />
                         <Drawer.Screen name="Settings" component={Settings} />
                         <Drawer.Screen name="Downloads" component={Downloads} />
+                        <Drawer.Screen name="Payment" component={Payment} />
                         {/* <Drawer.Screen 
                             name="Home" 
                             component={Home} 
