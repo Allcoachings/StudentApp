@@ -9,11 +9,17 @@ import MarqueeText from 'react-native-marquee';
 import { Feather } from '@expo/vector-icons';
 import {connect} from 'react-redux'
 import { List } from 'react-native-paper';
+import StudentReview from './StudentReview'
 import Review from '../ReviewAndRatings/Review'
 import Accordian from '../Utils/Accordian'
 import MockTest from '../MockTest/MockTest'
+<<<<<<< HEAD
 import {fetch_instituteDetails} from '../Utils/DataHelper/Coaching'
 import {fetch_institute_courses,fetch_courses_banners,addCourseBanner,fetch_courses_videos,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents,fetch_courses_timetable,fetch_testSeries} from '../Utils/DataHelper/Course'
+=======
+import { checkUserEnrollment } from '../Utils/DataHelper/EnrollStudent'
+
+>>>>>>> 148d4d298763d2b6fdf7103e475eeb83255b2010
 
 import {tabListInstitute} from '../../FakeDataService/FakeData'
 class InstituteView extends React.Component {
@@ -23,6 +29,7 @@ class InstituteView extends React.Component {
         tabtoshow: 1,
         modalVisible: false,
         ReviewmodalVisible: false,
+<<<<<<< HEAD
         instituteId:1,
         loadingInstitute:true
         
@@ -41,6 +48,49 @@ class InstituteView extends React.Component {
          }
      }
      coursesCallBack=(response)=>
+=======
+        courseId:1,
+        instituteId: 1,
+        studentId:1,
+        studentEnrolled: false,
+        review: '',
+        rating: 0,
+        totalRatingCount:15 ,
+        oneStarCount:1,
+        twoStarCount:2,
+        threeStarCount:3,
+        fourStarCount:4,
+        fiveStarCount:5,
+        inslogo:'wdsa',
+        institle:'DUBUDDY',
+     }
+
+     componentDidMount(){
+        checkUserEnrollment(this.state.courseId, this.state.studentId, this.checkEnrollCallBack)
+     }
+
+     checkEnrollCallBack=(response) =>{
+        if(response.status==200)
+        {
+            response.json().then(data=>
+            {
+                this.setState({studentEnrolled: data});                   
+            })
+        }
+     }
+
+    //  updateComponent=() =>{
+    //      console.log("this.state.studentEnrolled",this.state.studentEnrolled)
+    //      console.log("this.props.studentEnrolled",this.props.route.params.studentEnrolled)
+    //      if(this.state.studentEnrolled!=this.props.route.params.studentEnrolled)
+    //      {
+    //          this.setState({studentEnrolled: this.props.route.params.studentEnrolled})
+    //      }
+    //  }
+
+
+     renderTabItems=({item})=>
+>>>>>>> 148d4d298763d2b6fdf7103e475eeb83255b2010
      {
             if(response.status==200)
             {
@@ -87,12 +137,6 @@ class InstituteView extends React.Component {
      toggleModal(visible) {
         this.setState({ modalVisible: visible });
      }
-
-
-     reviewModal(visible) {
-         this.setState({ReviewmodalVisible: visible });
-     }
-
 
 
 
@@ -543,10 +587,6 @@ class InstituteView extends React.Component {
         }
     }
 
-
-
-
-
     //   feed wala
 
     renderLikeShareRow=()=>{
@@ -719,11 +759,15 @@ class InstituteView extends React.Component {
                                                 Upsc Cse- optional Subscription
                                             </Text>
                                         </TouchableOpacity>
+<<<<<<< HEAD
                                         <TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10}} onPress={()=>this.props.navigation.navigate("Payment")}>
+=======
+                                        {this.state.studentEnrolled?(null):(<TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10}} onPress={()=>this.props.navigation.navigate("Payment")}>
+>>>>>>> 148d4d298763d2b6fdf7103e475eeb83255b2010
                                             <Text style={{fontSize:10,color:theme.primaryColor}}>
                                                 Fees:{this.state.institute.fees}
                                             </Text>
-                                        </TouchableOpacity>
+                                        </TouchableOpacity>)}
                                     </View>
                                     <View style={styles.content}>
                                         <TouchableOpacity 
@@ -768,10 +812,14 @@ class InstituteView extends React.Component {
         
 
     render() {
+<<<<<<< HEAD
        
       
         const  {institute,loadingInstitute} = this.state;
         console.log(institute&&serverBaseUrl+institute.logo)
+=======
+        // this.updateComponent()
+>>>>>>> 148d4d298763d2b6fdf7103e475eeb83255b2010
         return (
             <PageStructure 
                 iconName={"arrow-left"}
@@ -864,18 +912,23 @@ class InstituteView extends React.Component {
                             <Text>{this.state.institute.about}</Text>
                         </View>
 
-                    <View style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'space-between'}}>
-                        <View>
-                            <Text style={styles.RatingText}>Rating & Reviews</Text>
-                            {/* <Text style={{fontSize: 16, color: theme.accentColor, fontWeight: 'bold'}}  onPress = {() => {this.reviewModal(true)}}>Write a Review</Text> */}
-                        </View>
-                        <View>
-                            <Feather name="arrow-right" size={26} color={'grey'} style={{marginTop:0, alignSelf: 'flex-end',}} onPress = {() => {this.reviewModal(true)}}/>
-                        </View>
-
-                    </View>
+                    <StudentReview 
+                        studentEnrolled={this.state.studentEnrolled}
+                        instituteId={this.state.instituteId}
+                        courseId={this.state.courseId}
+                        studentId={this.state.studentId}
+                        total_rating_count={this.state.totalRatingCount}
+                        one_star_count={this.state.oneStarCount}
+                        two_star_count={this.state.twoStarCount}
+                        three_star_count={this.state.threeStarCount}
+                        four_star_count={this.state.fourStarCount}
+                        five_star_count={this.state.fiveStarCount}
+                        inslogo={this.state.inslogo}
+                        institle={this.state.institle}
+                    />
                    
 
+<<<<<<< HEAD
                
                     <Review />
 
@@ -971,6 +1024,47 @@ class InstituteView extends React.Component {
                         </Modal>
 
         </PageStructure>
+=======
+                    
+
+                    
+
+                
+                    <View style = {styles.container}>
+                        <Modal animationType = {"fade"} 
+                                transparent = {true}
+                                visible = {this.state.modalVisible}
+                                onRequestClose = {() => { console.log("Modal has been closed.") } }>
+                            <TouchableOpacity  onPress={() =>this.setState({modalVisible:false})} style={{width:'100%',height:'100%'}}>
+                                <TouchableOpacity style={{alignSelf: 'flex-end', width: 200, height: 120, padding: 6, backgroundColor: 'white',postion: 'absolute',top:10}}>
+                                    {CardView(
+                                        <>
+                                            <View style={{flexDirection: 'row',margin:5}}>
+                                                <Feather name="share" size={20}/>
+                                                <Text style={{marginLeft:5}}>Share</Text>
+                                            </View>
+                                            <View style={{flexDirection: 'row',margin:5}}>
+                                                <Feather name="share" size={20}/>
+                                                <Text style={{marginLeft:5}}>Add to wishlist</Text>
+                                            </View>
+                                            <View style={{flexDirection: 'row',margin:5}}>
+                                                <Feather name="share" size={20}/>
+                                                <Text style={{marginLeft:5}}>Flag as inappropriate</Text>
+                                            </View>
+                                        </>,
+                                        {width:'100%',height:'100%'}
+                                    )} 
+                                </TouchableOpacity>
+                            </TouchableOpacity>
+                        </Modal>
+                        
+                        {/* <TouchableOpacity onPress = {() => {this.toggleModal(true)}}>
+                        <Text style = {styles.text}>Open Modal</Text>
+                        </TouchableOpacity> */}
+                    </View> 
+                </ScrollView>
+            </PageStructure>
+>>>>>>> 148d4d298763d2b6fdf7103e475eeb83255b2010
         );
     }
 }

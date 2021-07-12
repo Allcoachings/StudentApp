@@ -40,4 +40,18 @@ public class InsReview {
         this.id = id;
         this.reply = reply;
     }
+
+    public InsReview(long courseId, long insId, long studentId)
+    {
+        this.courseId = courseId;
+        this.insId = insId;
+        this.studentId = studentId;
+    }
+
+    public InsReview(long courseId, long studentId, String review, int rating) {
+        this.courseId = courseId;
+        this.studentId = studentId;
+        this.review = review;
+        this.rating = rating;
+    }
 }

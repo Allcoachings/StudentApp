@@ -5,18 +5,35 @@ import HeaderMobile from './HeaderMobile';
 import HeaderWeb from './HeaderWeb';
 import { ScrollView, View,StyleSheet,FlatList,TouchableOpacity,Text } from 'react-native';
 import CardView from '../../Utils/CardView';
+import {fetch_categories} from '../../Utils/DataHelper/Categories';
 import {theme} from '../../config'
 import {tabListInstitute} from '../../../FakeDataService/FakeData'
 class index extends React.Component {
     state = { 
-        activeTab: 1
+        activeTab: 1,
+        tabListInstitute:[]
      }
+
+    componentDidMount=()=>{
+        console.log("heeeeeeeeeeeeelllllllllllllllooooooooooooo")
+        fetch_categories(this.categoriesCallBack)
+    }
+
+    categoriesCallBack=(response)=>{
+        if(response.status==200)
+        {
+            response.json().then(data=>
+            {
+                this.setState({tabListInstitute:data});                   
+            })
+        }
+    }
 
     renderTabItems=({item})=>
     {
         return (
-            <TouchableOpacity style={[styles.courseItemContainer,this.state.activeTab==item.id?({backgroundColor:theme.secondaryColor,borderColor:theme.accentColor+'4D'}):({backgroundColor:theme.labelOrInactiveColor+'4D',borderColor:theme.labelOrInactiveColor})]} onPress={()=>this.setState({activeTab:item.id})}> 
-                    <Text style={[styles.courseTitle,this.state.activeTab==item.id?({color:theme.primaryColor}):({color:theme.greyColor})]}>{item.name}</Text>
+            <TouchableOpacity style={[styles.courseItemContainer,this.state.activeTab==item.key?({backgroundColor:theme.secondaryColor,borderColor:theme.accentColor+'4D'}):({backgroundColor:theme.labelOrInactiveColor+'4D',borderColor:theme.labelOrInactiveColor})]} onPress={()=>this.setState({activeTab:item.key})}> 
+                    <Text style={[styles.courseTitle,this.state.activeTab==item.key?({color:theme.primaryColor}):({color:theme.greyColor})]}>{item.label}</Text>
             </TouchableOpacity>
         );
     }
@@ -48,7 +65,7 @@ class index extends React.Component {
                         {this.props.catInHeader?( 
                             <View style={[styles.catRow, this.props.catStyle]}> 
                                 <FlatList 
-                                    data={tabListInstitute} 
+                                    data={this.state.tabListInstitute} 
                                     renderItem={this.renderTabItems}
                                     keyExtractor={(item)=>item.id} 
                                     horizontal={true}

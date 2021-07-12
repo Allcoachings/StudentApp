@@ -42,3 +42,24 @@ export const reply=(id,reply,callback)=>
     .then((response)=>callback(response)) 
     .catch((error)=>{console.log(error)})
 }
+
+export const addStudentReview=(studentId,courseId,review,rating,callback)=>
+{
+    let headers = new Headers();
+
+    headers.append('Content-Type', 'application/json'); 
+
+    headers.append('Access-Control-Allow-Origin', serverApiUrl);
+    headers.append('Access-Control-Allow-Credentials', 'true');
+
+    headers.append('GET', 'POST', 'OPTIONS'); 
+
+     fetch(serverApiUrl+'institute/course/reviews/add/',
+    {
+        method: 'PUT',  
+        headers,
+        body:JSON.stringify({courseId,review,studentId,rating})
+    })
+    .then((response)=>callback(response)) 
+    .catch((error)=>{console.log(error)})
+}

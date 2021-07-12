@@ -983,7 +983,7 @@ class InsHome extends React.Component {
                             <Text>{this.props.institute.details.about}</Text>
                         </View>
                     <InsReviews />  
-                    {/* use different component */}
+
                 </ScrollView>
                 {this.state.isAddCourseModalVisible?(
                         <AddCourseModal 

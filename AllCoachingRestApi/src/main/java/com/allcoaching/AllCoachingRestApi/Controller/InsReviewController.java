@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/institute/course/reviews")
@@ -20,7 +21,7 @@ public class InsReviewController {
     private InsReviewService insReviewService;
 
     @PostMapping("/")
-    public ResponseEntity<Object> saveReview(@RequestBody InsReview insReview)
+    public ResponseEntity<Object> save(@RequestBody InsReview insReview)
     {
         InsReview insReview_saved = insReviewService.save(insReview);
         URI location = ServletUriComponentsBuilder
@@ -40,6 +41,13 @@ public class InsReviewController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/add/")
+    public ResponseEntity<Object> addReview(@RequestBody InsReview insReview)
+    {
+        int rowCount= insReviewService.addReview(insReview);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/{offset}/{data_limit}/{sortBy}/{insId}")
     public Iterable<InsReviewDto> getAllReviews(
             @PathVariable(name = "offset") Integer offset,
@@ -48,5 +56,13 @@ public class InsReviewController {
             @PathVariable(name="insId")long insId)
     {
         return  insReviewService.getAllReviews(offset,data_limit,sortBy,insId);
+    }
+
+    @GetMapping("/{courseId}/{studentId}")
+    public boolean findByCourseIdStudentId(
+            @PathVariable(name = "courseId") long courseId,
+            @PathVariable(name = "studentId") long studentId)
+    {
+        return  insReviewService.findByCourseIdStudentId(courseId, studentId);
     }
 }
