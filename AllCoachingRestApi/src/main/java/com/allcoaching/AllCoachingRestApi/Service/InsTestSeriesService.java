@@ -2,8 +2,10 @@ package com.allcoaching.AllCoachingRestApi.Service;
 
 import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeries;
 import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeriesQuestions;
+import com.allcoaching.AllCoachingRestApi.Entity.TestSeriesPlaylist;
 import com.allcoaching.AllCoachingRestApi.Respository.InsTestSeriesQuestionsRepo;
 import com.allcoaching.AllCoachingRestApi.Respository.InsTestSeriesRepo;
+import com.allcoaching.AllCoachingRestApi.Respository.TestSeriesPlaylistRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,20 @@ public class InsTestSeriesService {
 
     @Autowired
     private InsTestSeriesQuestionsRepo insTestSeriesQuestionsRepo;
+
+    @Autowired
+    private TestSeriesPlaylistRepo testSeriesPlaylistRepo;
+
+    public TestSeriesPlaylist createTestSeriesPlaylist(TestSeriesPlaylist testSeriesPlaylist)
+    {
+        return  testSeriesPlaylistRepo.save(testSeriesPlaylist);
+    }
+
+    public Iterable<InsTestSeries> getTestSeriesByPlaylistId(long id)
+    {
+        return testSeriesPlaylistRepo.playListContent(id);
+    }
+
 
     public InsTestSeries createTestSeries(InsTestSeries insTestSeries)
     {

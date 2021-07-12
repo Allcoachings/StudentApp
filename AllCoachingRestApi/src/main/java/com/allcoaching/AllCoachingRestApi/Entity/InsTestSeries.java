@@ -3,10 +3,13 @@ package com.allcoaching.AllCoachingRestApi.Entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.sql.Time;
+import java.util.Date;
 
 @Data
 @ToString
@@ -21,13 +24,31 @@ public class InsTestSeries {
     private int questionCount;
     private int timeDuration;
     private boolean isPractice;
-    private long courseId;
+    private int maxMarks;
+    private boolean isAdmin;
 
-    public InsTestSeries(String title, int questionCount, int timeDuration, boolean isPractice) 
-    {
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private Date date;
+
+    @DateTimeFormat(pattern = "HH:mm")
+    private Time time;
+    private long category;
+    private long courseId;
+    private long playlistId;
+
+    public InsTestSeries(String title, int questionCount, int timeDuration, boolean isPractice, int maxMarks, boolean isAdmin, Date date, Time time, long category, long courseId, long playlistId) {
         this.title = title;
         this.questionCount = questionCount;
         this.timeDuration = timeDuration;
         this.isPractice = isPractice;
+        this.maxMarks = maxMarks;
+        this.isAdmin = isAdmin;
+        this.date = date;
+        this.time = time;
+        this.category = category;
+        this.courseId = courseId;
+        this.playlistId = playlistId;
     }
+
+
 }

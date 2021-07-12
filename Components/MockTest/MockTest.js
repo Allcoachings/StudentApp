@@ -111,9 +111,14 @@ class ResultAnalysis extends React.Component {
             //     btnHandler={() => {this.props.navigation.toggleDrawer()}}
             // >
                 <View style={styles.container}>
-                    <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', marginTop: '5%'}} onPress={()=>this.openModal()}>
-                        <Text style={{fontSize: 18, fontWeight: 'bold'}}>Add  +</Text>
-                    </TouchableOpacity>
+                    {this.props.mode!='readonly'?
+                    (
+                        <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', marginTop: '5%'}} onPress={()=>this.openModal()}>
+                            <Text style={{fontSize: 18, fontWeight: 'bold'}}>Add  +</Text>
+                        </TouchableOpacity>
+                    ):(null)
+                }
+                
                      <FlatList 
                             data={this.state.data} 
                             renderItem={({item}) =>this.renderTestItem(item)}

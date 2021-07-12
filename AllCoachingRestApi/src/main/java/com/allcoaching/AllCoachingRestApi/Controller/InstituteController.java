@@ -38,7 +38,7 @@ public class InstituteController {
 
             )
     {
-            String logo = "file/";
+            String logo = "files/";
             logo += fileUploadService.storeFile(image);
 
             Institute i =  instituteService.save(new Institute(name,directorName,email,phone,password,address,city,state,category,about,logo,status));

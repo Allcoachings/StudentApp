@@ -2,6 +2,7 @@ package com.allcoaching.AllCoachingRestApi.Controller;
 
 import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeries;
 import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeriesQuestions;
+import com.allcoaching.AllCoachingRestApi.Entity.TestSeriesPlaylist;
 import com.allcoaching.AllCoachingRestApi.Service.InsTestSeriesService;
 import com.allcoaching.AllCoachingRestApi.dto.TestSeriesDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,22 @@ public class InsTestSeriesController {
     @Autowired
     private InsTestSeriesService insTestSeriesService;
 
+
+
+    //for creating a playlist
+    @CrossOrigin(origins = "*")
+    @PostMapping("/createplaylist")
+    public ResponseEntity<Object> createTestSeriesPlaylist(@RequestBody TestSeriesPlaylist testSeriesPlaylist)
+    {
+        TestSeriesPlaylist testSeriesPlaylist_saved  = insTestSeriesService.createTestSeriesPlaylist(testSeriesPlaylist);
+        URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(testSeriesPlaylist_saved.getId()).toUri();
+        return ResponseEntity.created(location).build();
+
+    }
+
+
+
+    //for creating a test series TestSeriesDto should be passed
     @CrossOrigin(origins = "*")
     @PostMapping("/createseries")
     public ResponseEntity<Object> createTestSeries(@RequestBody TestSeriesDto testSeriesDto)
@@ -30,6 +47,8 @@ public class InsTestSeriesController {
 
         return ResponseEntity.created(location).build();
     }
+
+    //for saving only questions to a test series array containing questions Object should be passed
     @CrossOrigin(origins = "*")
     @PostMapping("/savequestion")
     public ResponseEntity<Object> saveSeriesQuestions(@RequestBody Iterable<InsTestSeriesQuestions> insTestSeriesQuestions)
@@ -39,18 +58,32 @@ public class InsTestSeriesController {
         return ResponseEntity.created(location).build();
     }
 
+    //fetching all test series of a course by course id
     @CrossOrigin(origins = "*")
-    @GetMapping("/all/{courseId}")
+    @GetMapping("/all/{courseId}/")
     public Iterable<InsTestSeries> findByCourseId(@PathVariable long courseId)
     {
         return insTestSeriesService.getTestSeriesByCourseID(courseId);
     }
 
+
+    //fetching questions by series id
     @CrossOrigin(origins = "*")
     @GetMapping("/questions/{seriesId}")
     public Iterable<InsTestSeriesQuestions> findQuestionsBySeriesId(@PathVariable long seriesId)
     {
         return insTestSeriesService.getSeriesQuestion(seriesId);
     }
+
+
+    //fetch Test Series by playlistId
+    @CrossOrigin(origins = "*")
+    @GetMapping("/playlist/{playListId}/")
+    public Iterable<InsTestSeries> findByPlaylistId(@PathVariable long playListId)
+    {
+        return insTestSeriesService.getTestSeriesByCourseID(playListId);
+    }
+
+
 
 }

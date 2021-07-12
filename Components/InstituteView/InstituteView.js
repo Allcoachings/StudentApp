@@ -1,9 +1,9 @@
 import React from 'react';
-import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity, Modal, TextInput} from 'react-native';
+import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity, Modal, TextInput,ActivityIndicator} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {instituteData} from '../../FakeDataService/FakeData'
 import { AirbnbRating,Rating } from 'react-native-ratings';
-import {theme,screenMobileWidth} from '../config'
+import {theme,screenMobileWidth,serverBaseUrl,documentPlaceholder} from '../config'
 import CardView from '../Utils/CardView';
 import MarqueeText from 'react-native-marquee';
 import { Feather } from '@expo/vector-icons';
@@ -12,23 +12,76 @@ import { List } from 'react-native-paper';
 import Review from '../ReviewAndRatings/Review'
 import Accordian from '../Utils/Accordian'
 import MockTest from '../MockTest/MockTest'
+import {fetch_instituteDetails} from '../Utils/DataHelper/Coaching'
+import {fetch_institute_courses,fetch_courses_banners,addCourseBanner,fetch_courses_videos,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents,fetch_courses_timetable,fetch_testSeries} from '../Utils/DataHelper/Course'
 
 import {tabListInstitute} from '../../FakeDataService/FakeData'
 class InstituteView extends React.Component {
     state = { 
         activeTab: 'videos',
-        activeCourse:1,
+ 
         tabtoshow: 1,
         modalVisible: false,
         ReviewmodalVisible: false,
+        instituteId:1,
+        loadingInstitute:true
+        
      }
-
-     renderTabItems=({item})=>
+     instituteCallback=(response) =>
      {
+         console.log(response.status);
+         if(response.status==200)
+         {
+             response.json().then(data=>
+                 {
+
+                     this.setState({institute:data,loadingInstitute:false})
+                 })
+             
+         }
+     }
+     coursesCallBack=(response)=>
+     {
+            if(response.status==200)
+            {
+                response.json().then((data)=>
+                {
+                    this.setState({courses:data})
+                })
+            }
+     }
+     componentDidMount() {
+         fetch_instituteDetails(this.state.instituteId,this.instituteCallback)
+         fetch_institute_courses(this.state.instituteId,this.coursesCallBack)
+     }
+     courseBannerCallback=(response)=>
+     {
+         if(response.status==200)
+         {
+             response.json().then(data=>
+                 { 
+                     this.setState({courseBanners:data});
+                 })
+         }
+     }
+     handleCourseItemClick=(item)=>
+     {
+         this.setState({activeCourse:item.id,activeCourseDetail:item})
+         
+         fetch_courses_banners(item.id,this.courseBannerCallback)
+     }
+     renderTabItems=({item,index})=>
+     {
+        
+        if(index==0&&!this.state.activeCourse)
+        {
+            this.setState({activeCourse:item.id,activeCourseDetail:item,activeTab: 'videos', })
+            fetch_courses_banners(item.id,this.courseBannerCallback)
+        }
          return (
-             <TouchableOpacity style={[styles.courseItemContainer,this.state.activeCourse==item.id?({backgroundColor:theme.secondaryColor,borderColor:theme.secondaryColor}):({backgroundColor:theme.labelOrInactiveColor+'4D',borderColor:theme.labelOrInactiveColor})]} onPress={()=>this.setState({activeCourse:item.id})}> 
-                     <Text style={[styles.courseTitle,this.state.activeCourse==item.id?({color:theme.primaryColor}):({color:theme.greyColor})]}>{item.name}</Text>
-             </TouchableOpacity>
+            <TouchableOpacity style={[styles.courseItemContainer,this.state.activeCourse==item.id?({backgroundColor:theme.secondaryColor}):(null)]} onPress={()=>this.handleCourseItemClick(item)}> 
+                <Text style={[styles.courseTitle,this.state.activeCourse==item.id?({color:theme.primaryColor}):({color:theme.secondaryColor})]}>{item.title}</Text>
+            </TouchableOpacity>
          );
      }
      toggleModal(visible) {
@@ -46,16 +99,16 @@ class InstituteView extends React.Component {
     renderCourseItems=({item})=>
     {
         return (
-            <TouchableOpacity style={[styles.courseItemContainer,this.state.activeCourse==item.id?({backgroundColor:theme.secondaryColor}):(null)]} onPress={()=>this.setState({activeCourse:item.id})}> 
-                    <Text style={[styles.courseTitle,this.state.activeCourse==item.id?({color:theme.primaryColor}):({color:theme.secondaryColor})]}>{item.name}</Text>
+            <TouchableOpacity style={[styles.courseItemContainer,this.state.activeCourse==item.id?({backgroundColor:theme.secondaryColor}):(null)]} onPress={()=>this.handleCourseItemClick(item)}> 
+                <Text style={[styles.courseTitle,this.state.activeCourse==item.id?({color:theme.primaryColor}):({color:theme.secondaryColor})]}>{item.title}</Text>
             </TouchableOpacity>
         );
     }
     renderBannerList=({item})=>
     {
         return(
-            <TouchableOpacity style={styles.bannerItemContainer}>
-                    <Image source={item.image} style={styles.bannerImage}/>
+            <TouchableOpacity style={styles.bannerItemContainer} >
+                <Image source={{uri:serverBaseUrl+item.bannerImageLink}} style={styles.bannerImage}/>
             </TouchableOpacity  >
         )
     }
@@ -88,35 +141,104 @@ class InstituteView extends React.Component {
             </TouchableOpacity>
         )
     }
+    courseTimeTableCallback=(response)=>
+    {
+        console.log(response.status)
+            if(response.status==200)
+            {
+                response.json().then(data=>
+                {
+                    console.log(data);
+                    this.setState({courseTimeTable:data,courseTimetableLoaded:true,isCourseTimetableLoading:false});                   
+                })
+            }
+    }
+    courseTestseriesCallback=(response)=>
+    {
+        console.log(response.status)
+        if(response.status==200)
+        {
+            response.json().then(data=>
+                {
+                    console.log(data)
+                    this.setState({courseTestSeries:data,courseTestSeriesLoaded:true,isCourseTestSeriesLoading:false});                   
+                })
+        }
+    }
+    courseDocumentCallback=(response)=>
+    {
+        console.log(response.status)
+            if(response.status==200)
+            {
+                response.json().then(data=>
+                {
+                    console.log(data);
+                    this.setState({courseDocuments:data,courseDocumentLoaded:true,isCourseDocumentLoading:false});                   
+                })
+            }
+    }
+    courseVideoCallback=(response)=>{
+        if(response.status==200)
+        {
+            response.json().then(data=>
+            {
+                this.setState({courseVideos:data,courseVideoLoaded:true,isCourseVideoLoading:false});                   
+            })
+        }
+    }
+    courseDocumentPlaylistCallback=(response)=>{
+        console.log(response.status)
+            if(response.status==200)
+            {
+                response.json().then(data=>
+                {
+                    console.log(data);
+                    this.setState({courseDocumentPlaylist:data,courseDocumentPlaylistLoaded:true,isCourseDocumentPlaylistLoading:false});                   
+                })
+            }
+    }
+    courseVideoPlaylistCallback=(response)=>{
+        console.log(response.status)
+            if(response.status==200)
+            {
+                response.json().then(data=>
+                {
+                    console.log(data);
+                    this.setState({courseVideosPlaylist:data,courseVideoPlaylistLoaded:true,isCourseVideoPlaylistLoading:false});                   
+                })
+            }
+    }
 
     renderSubjectOptions=({item})=>
     {
+        
         return(
-            <View 
-                style={styles.singleSubject}>
-                <Text style={styles.singleSubjectText}>{item.title}</Text>
-            </View>
+            <TouchableOpacity 
+            onPress={()=>{this.filterItemClick(item)}} 
+            style={[styles.singleSubject,this.state.activeFilter==item.name?({backgroundColor:theme.secondaryColor}):(null)]}>
+            <Text style={[styles.singleSubjectText,this.state.activeFilter==item.name?({color:theme.primaryColor}):(null)]}>{item.name}</Text>
+        </TouchableOpacity>
         )
     }
 
     renderVideos=({item})=>{
         return(
             <View style={styles.videoContainer}>
+            <TouchableOpacity onPress={()=>this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+item.videoLocation})}>
+                <Image source={{uri:item.videoThumb}} style={styles.videoImage}/>
+            </TouchableOpacity>
+            <View style={styles.videoColumn}>
                 <View>
-                    <Image source={item.image} style={styles.videoImage}/>
+                    <Text style={styles.videoText}>{item.name}</Text>
                 </View>
-                <View style={styles.videoColumn}>
-                    <View>
-                        <Text style={styles.videoText}>{item.title}</Text>
-                    </View>
-                    <View>
-                        <Text style={styles.videoText}>{item.description}</Text>
-                    </View>
-                    <View>
-                        <Text style={styles.videoText}>{item.date}</Text>
-                    </View>
+                <View>
+                    <Text style={styles.videoText}>{item.description}</Text>
+                </View>
+                <View>
+                    <Text style={styles.videoText}>{item.date}</Text>
                 </View>
             </View>
+        </View>
         )
     }
 
@@ -158,35 +280,35 @@ class InstituteView extends React.Component {
     renderTestItem=(item)=>{
         return(
             <Accordian
-                header={this.accordianHeader(item.subject," ","chevron-down")}
-            > 
-                {/* <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin:5, paddingLeft:20, paddingRight:20}}>
-                    <Text style={{fontSize: 16, fontWeight: 'bold'}}>Date</Text>
-                    <Text style={{fontSize: 16, fontWeight: 'bold'}}>Time</Text>
-                    <Text style={{fontSize: 16, fontWeight: 'bold'}}>Teacher</Text>
-                </View> */}
-                <MockTest />
-                {/* {CardView(
-                    <FlatList 
-                        data={item.date} 
-                        renderItem={({item}) =>this.renderItem(item)}
-                        keyExtractor={(item)=>item.id} 
-                        horizontal={false}
-                        showsHorizontalScrollIndicator={false}
-                    />,{width:'95%', padding:10, margin:5}
-                )} */}
-            </Accordian>
+            header={this.accordianHeader(item.name," ","chevron-down")}
+        > 
+            {/* <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin:5, paddingLeft:20, paddingRight:20}}>
+                <Text style={{fontSize: 16, fontWeight: 'bold'}}>Date</Text>
+                <Text style={{fontSize: 16, fontWeight: 'bold'}}>Time</Text>
+                <Text style={{fontSize: 16, fontWeight: 'bold'}}>Teacher</Text>
+            </View> */}
+            <MockTest data={item.courseTimeTableItem} subjectId={item.id} mode="readonly" />
+            {/* {CardView(
+                <FlatList 
+                    data={item.date} 
+                    renderItem={({item}) =>this.renderItem(item)}
+                    keyExtractor={(item)=>item.id} 
+                    horizontal={false}
+                    showsHorizontalScrollIndicator={false}
+                />,{width:'95%', padding:10, margin:5}
+            )} */}
+        </Accordian>
         )
     }
 
-    renderTimeTable=({item})=>{
+    renderTimeTable=(item)=>{
         return(
             // <Accordian
             //     header={this.accordianHeader(item.title, " ", "chevron-down")}
             // >
                 <View style={styles.weekView}> 
                     <FlatList 
-                        data={item.data} 
+                        data={item} 
                         renderItem={({item}) =>this.renderTestItem(item)}
                         keyExtractor={(item)=>item.id} 
                         horizontal={false}
@@ -200,12 +322,12 @@ class InstituteView extends React.Component {
     }
 
     renderTestSeries=({item})=>{
-       return( 
+        return( 
             CardView(
                 <View style={styles.list}>
                     <View style={styles.topRow}>
-                        <Text style={styles.queText}>{item.questions}</Text>
-                        <Text style={styles.timeText}>{item.time}</Text>
+                        <Text style={styles.queText}>{item.questionCount} Questions</Text>
+                        <Text style={styles.timeText}>{item.timeDuration} minutes</Text>
                     </View>
                     <View style={styles.bottomRow}>
                         <Text style={styles.titleText}>{item.title}</Text>
@@ -222,19 +344,19 @@ class InstituteView extends React.Component {
     renderDocument=({item})=>{
         return(
             <View style={styles.documentContainer}>
-                <View>
-                    <Image source={item.image} style={styles.documentImage}/>
-                </View>
+                <TouchableOpacity onPress={()=>this.props.navigation.navigate('pdfViewer',{pdf:serverBaseUrl+item.fileAddress})}>
+                    <Image source={{uri:documentPlaceholder}} style={styles.documentImage}/>
+                </TouchableOpacity>
                 <View style={{flexShrink: 1}}>
                     <View style={{ display: 'flex', flexDirection: 'row'}}>
-                        <Text style={styles.documentTitle}>{item.title}</Text>
+                        <Text style={styles.documentTitle}>{item.name}</Text>
                     </View>
                     <View>
-                        <Text style={styles.documentText}>{item.institute}</Text>
+                        <Text style={styles.documentText}>{this.state.institute.name}</Text>
                     </View>
-                    <View>
+                    {/* <View>
                         <Text style={styles.documentText}>{item.Views} {item.date}</Text>
-                    </View>
+                    </View> */}
                 </View>
             </View>
         )
@@ -260,7 +382,25 @@ class InstituteView extends React.Component {
             </View>
         )
     }
+    filterItemClick=(item)=>
+    {
+        switch(this.state.activeTab)
+        {
+          case 'videos':  
+                this.setState({activeFilter: item.name,isCourseVideoLoading:true,isCourseVideoLoaded:false},()=>
+                {
+                    fetch_courses_videos(null,this.courseVideoCallback,item.id);
+                }) 
+                break;
+           case 'document':
+                this.setState({activeFilter: item.name,isCourseDocumentLoading:true,isCourseDocumentLoaded:false},()=>
+                {
+                    fetch_courses_documents(null,this.courseDocumentCallback,item.id);
+                }) 
+                break;
 
+        } 
+    }
     showFilters=(tab)=>{
         switch(tab)
         {
@@ -273,15 +413,48 @@ class InstituteView extends React.Component {
                                         showsHorizontalScrollIndicator={false}
                                     />)
 
-            case 'videos':      return(
-                                    <FlatList 
-                                        data={instituteData.videoFilters} 
-                                        renderItem={this.renderSubjectOptions}
-                                        keyExtractor={(item)=>item.id} 
-                                        horizontal={true}
-                                        showsHorizontalScrollIndicator={false}
-                                    />)
-            case 'testSeries':  return(
+            case 'videos':    
+            console.log("active course ",this.state.activeCourse,!this.state.courseVideoLoaded,!this.state.isCourseVideoLoading,this.state.activeCourse)  
+                    if(!this.state.courseVideoLoaded&&!this.state.isCourseVideoLoading&&this.state.activeCourse)
+                    {
+                         console.log("active course ",this.state.activeCourse)
+                        this.setState({isCourseVideoLoading:true})
+                        fetch_courses_videos(this.state.activeCourse,this.courseVideoCallback);
+                    }
+                    if(!this.state.courseVideoPlaylistLoaded&&!this.state.isCourseVideoPlaylistLoading&&this.state.activeCourse)
+                    {
+                        this.setState({isCourseVideoPlaylistLoading:true})
+                        fetch_video_playlist(this.state.activeCourse,this.courseVideoPlaylistCallback);
+                    }
+                    return(
+                        this.state.isCourseVideoLoading?
+                        (
+                            null
+                        ):
+                        (
+                            <ScrollView>
+                           <View style={styles.AddFilter}>
+                                
+                               <FlatList 
+                                   data={this.state.courseVideosPlaylist} 
+                                   renderItem={this.renderSubjectOptions}
+                                   keyExtractor={(item)=>item.id} 
+                                   horizontal={true}
+                                   showsHorizontalScrollIndicator={false}
+                               />
+                           </View>
+                           </ScrollView>
+                       )
+                   )
+            case 'testSeries':  
+            
+                        if(!this.state.courseTestseriesLoaded&&!this.state.isCourseTestseriesLoading)
+                        {
+                            console.log("active course id",this.state.activeCourseId)
+                            this.setState({isCourseTestseriesLoading:true})
+                            fetch_testSeries(this.state.activeCourseDetail.id,this.courseTestseriesCallback);
+                        }
+                                return(
                                     <FlatList 
                                         data={instituteData.testSeriesFilters} 
                                         renderItem={this.renderSubjectOptions}
@@ -290,9 +463,21 @@ class InstituteView extends React.Component {
                                         showsHorizontalScrollIndicator={false}
                                     />)
 
-            case 'document':    return(
+            case 'document':                
+                        if(!this.state.courseDocumentLoaded&&!this.state.isCourseDocumentLoading)
+                        {
+                            console.log("active course id",this.state.activeCourseId)
+                            this.setState({isCourseDocumentLoading:true})
+                            fetch_courses_documents(this.state.activeCourse,this.courseDocumentCallback);
+                        }
+                        if(!this.state.courseDocumentPlaylistLoaded&&!this.state.isCourseDocumentPlaylistLoading)
+                        {
+                            this.setState({isCourseDocumentPlaylistLoading:true})
+                            fetch_document_playlist(this.state.activeCourse,this.courseDocumentPlaylistCallback);
+                        }
+                                return(
                                     <FlatList 
-                                        data={instituteData.documentFilters} 
+                                        data={this.state.courseDocumentPlaylist} 
                                         renderItem={this.renderSubjectOptions}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={true}
@@ -314,7 +499,7 @@ class InstituteView extends React.Component {
                                     />)
             case 'videos':      return(
                                     <FlatList 
-                                        data={instituteData.videos} 
+                                        data={this.state.courseVideos} 
                                         renderItem={this.renderVideos}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
@@ -322,7 +507,7 @@ class InstituteView extends React.Component {
                                     />)
             case 'testSeries':  return(
                                     <FlatList 
-                                        data={instituteData.testSeries} 
+                                        data={this.state.courseTestSeries} 
                                         renderItem={this.renderTestSeries}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
@@ -330,20 +515,31 @@ class InstituteView extends React.Component {
                                     />)
             case 'document':    return(
                                     <FlatList 
-                                        data={instituteData.document} 
+                                        data={this.state.courseDocuments} 
                                         renderItem={this.renderDocument}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
                                     />)
-            case 'timeTable':    return(
-                                    <FlatList 
-                                        data={instituteData.timeTable} 
-                                        renderItem={this.renderTimeTable}
-                                        keyExtractor={(item)=>item.id} 
-                                        horizontal={false}
-                                        showsHorizontalScrollIndicator={false}
-                                    />)
+            case 'timeTable':    
+            
+            
+                        if(!this.state.courseTimetableLoaded&&!this.state.isCourseTimeTableLoading)
+                        {
+                           
+                            this.setState({isCourseTimeTableLoading:true})
+                            fetch_courses_timetable(this.state.activeCourseDetail.id,this.courseTimeTableCallback);
+                        }
+                            return(
+                                this.renderTimeTable(this.state.courseTimeTable)
+                                    // <FlatList 
+                                    //     data={this.state.courseTimeTable} 
+                                    //     renderItem={this.renderTimeTable}
+                                    //     keyExtractor={(item)=>item.id} 
+                                    //     horizontal={false}
+                                    //     showsHorizontalScrollIndicator={false}
+                                    // />
+                                    )
         }
     }
 
@@ -502,7 +698,7 @@ class InstituteView extends React.Component {
                         <>
                         <View style={[styles.catRow]}> 
                                     <FlatList 
-                                        data={tabListInstitute} 
+                                        data={this.state.courses} 
                                         renderItem={this.renderTabItems}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={true}
@@ -511,7 +707,7 @@ class InstituteView extends React.Component {
                             </View>
                             <View style={styles.rowContainer}>
                                     <FlatList 
-                                    data={instituteData.banners} 
+                                    data={this.state.courseBanners} 
                                     renderItem={this.renderBannerList} 
                                     keyExtractor={(item)=>item.id}
                                     horizontal={true} 
@@ -523,9 +719,9 @@ class InstituteView extends React.Component {
                                                 Upsc Cse- optional Subscription
                                             </Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10}} onPress={()=>this.props.naviagtion.navigate("Payment")}>
+                                        <TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10}} onPress={()=>this.props.navigation.navigate("Payment")}>
                                             <Text style={{fontSize:10,color:theme.primaryColor}}>
-                                                Buy Pass : ₹10,000
+                                                Fees:{this.state.institute.fees}
                                             </Text>
                                         </TouchableOpacity>
                                     </View>
@@ -572,7 +768,10 @@ class InstituteView extends React.Component {
         
 
     render() {
-        console.log(instituteData.category)
+       
+      
+        const  {institute,loadingInstitute} = this.state;
+        console.log(institute&&serverBaseUrl+institute.logo)
         return (
             <PageStructure 
                 iconName={"arrow-left"}
@@ -582,6 +781,10 @@ class InstituteView extends React.Component {
                 notificationreplaceshare={"more-vertical"}
                 rightIconOnPress={()=>{this.setState({modalVisible:true})}} 
             > 
+            {loadingInstitute?
+            (
+                <ActivityIndicator color={this.accentColor} size={"large"}/>
+            ):(
             <ScrollView>
                 <View style={styles.container}>
 
@@ -590,25 +793,25 @@ class InstituteView extends React.Component {
                         </View> */}
                         <View style={styles.instituteheader}>
                             {CardView(
-                                <Image source={instituteData.logo} style={styles.instituteheaderLogo}/>
+                                <Image source={{uri:serverBaseUrl+institute.logo}} style={styles.instituteheaderLogo}/>
                             ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:100}):({width:200,height:150})])
-                            } 
+                            }
                             <View style={styles.instituteheaderMeta}>
-                                <Text style={styles.instituteheaderText} numberOfLines={3}>{instituteData.title}</Text>
-                                <Text style={styles.instituteDirector}>{instituteData.directoy_name}</Text>
+                                <Text style={styles.instituteheaderText} numberOfLines={3}>{institute.name}</Text>
+                                <Text style={styles.instituteDirector}>{institute.directorName}</Text>
                                 <View style={styles.instituteRatingView}>
-                                    <Text style={{ color: theme.greyColor}}>{instituteData.rating+' • '}</Text>
+                                    <Text style={{ color: theme.greyColor}}>{institute.totalratingCount>0?institute.totalRating/totalRatingCount:0+' • '}</Text>
                                     <AirbnbRating 
                                         starContainerStyle={styles.instituteRating} 
                                         count={5}
                                         reviews={[]} 
                                         isDisabled={true}
-                                        defaultRating={instituteData.rating}
+                                        defaultRating={institute.totalratingCount>0?institute.totalRating/totalRatingCount:0}
                                         size={12}
                                         selectedColor={theme.blueColor}
                                         showRating={false}
                                     />
-                                    <Text style={styles.voteCount}>{instituteData.voteCount} Votes</Text>
+                                    <Text style={styles.voteCount}>{institute.totalRatingCount} Votes</Text>
                                 </View>
                             </View>
                             {/* <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}  onPress = {() => {this.toggleModal(true)}}/> */}
@@ -619,7 +822,7 @@ class InstituteView extends React.Component {
                                         <Text style={[styles.btnText,{color:this.state.tabtoshow==1?theme.primaryColor:theme.greyColor}]} onPress={()=>{this.tabtoshow(1)}}>Courses</Text>
                                     </View>
                                     <View style={[styles.btnView2,this.state.tabtoshow==2?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor})]}>
-                                        <Text style={[styles.btnText,{color:theme.blueColor,fontWeight: 'bold'}]}>35K Follower</Text>
+                                        <Text style={[styles.btnText,{color:theme.blueColor,fontWeight: 'bold'}]}>{institute.followersCount} Follower</Text>
                                     </View>
                                     <View style={[styles.btnView3,this.state.tabtoshow==3?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor})]}>
                                         <Text style={[styles.btnText,{color:this.state.tabtoshow==3?theme.primaryColor:theme.greyColor}]} onPress={()=>{this.tabtoshow(3)}}>Feed</Text>
@@ -658,7 +861,7 @@ class InstituteView extends React.Component {
                     
                         <View style={{marginVertical: 20,}}>
                             <Text style={styles.RatingText}>About Us</Text>
-                            <Text>lorem ipsum dolor sit lorem unkndown printer took a gallery. We need to write here someting about the applicaiton or about the institute</Text>
+                            <Text>{this.state.institute.about}</Text>
                         </View>
 
                     <View style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'space-between'}}>
@@ -673,7 +876,46 @@ class InstituteView extends React.Component {
                     </View>
                    
 
-                    <Modal animationType = {"fade"} transparent = {false}
+               
+                    <Review />
+
+                
+                    <View style = {styles.container}>
+                        <Modal animationType = {"fade"} 
+                                transparent = {true}
+                                visible = {this.state.modalVisible}
+                                onRequestClose = {() => { console.log("Modal has been closed.") } }>
+                            <TouchableOpacity  onPress={() =>this.setState({modalVisible:false})} style={{width:'100%',height:'100%'}}>
+                                <TouchableOpacity style={{alignSelf: 'flex-end', width: 200, height: 120, padding: 6, backgroundColor: 'white',postion: 'absolute',top:10}}>
+                                    {CardView(
+                                        <>
+                                            <View style={{flexDirection: 'row',margin:5}}>
+                                                <Feather name="share" size={20}/>
+                                                <Text style={{marginLeft:5}}>Share</Text>
+                                            </View>
+                                            <View style={{flexDirection: 'row',margin:5}}>
+                                                <Feather name="share" size={20}/>
+                                                <Text style={{marginLeft:5}}>Add to wishlist</Text>
+                                            </View>
+                                            <View style={{flexDirection: 'row',margin:5}}>
+                                                <Feather name="share" size={20}/>
+                                                <Text style={{marginLeft:5}}>Flag as inappropriate</Text>
+                                            </View>
+                                        </>,
+                                        {width:'100%',height:'100%'}
+                                    )} 
+                                </TouchableOpacity>
+                            </TouchableOpacity>
+                        </Modal>
+                        
+                        {/* <TouchableOpacity onPress = {() => {this.toggleModal(true)}}>
+                        <Text style = {styles.text}>Open Modal</Text>
+                        </TouchableOpacity> */}
+                    </View> 
+                </ScrollView>
+
+            )}
+                 <Modal animationType = {"fade"} transparent = {false}
                         visible = {this.state.ReviewmodalVisible}
                         onRequestClose = {() => { console.log("Modal has been closed.") } }> 
                             <View>
@@ -728,43 +970,7 @@ class InstituteView extends React.Component {
 
                         </Modal>
 
-                    <Review />
-
-                
-                    <View style = {styles.container}>
-                        <Modal animationType = {"fade"} 
-                                transparent = {true}
-                                visible = {this.state.modalVisible}
-                                onRequestClose = {() => { console.log("Modal has been closed.") } }>
-                            <TouchableOpacity  onPress={() =>this.setState({modalVisible:false})} style={{width:'100%',height:'100%'}}>
-                                <TouchableOpacity style={{alignSelf: 'flex-end', width: 200, height: 120, padding: 6, backgroundColor: 'white',postion: 'absolute',top:10}}>
-                                    {CardView(
-                                        <>
-                                            <View style={{flexDirection: 'row',margin:5}}>
-                                                <Feather name="share" size={20}/>
-                                                <Text style={{marginLeft:5}}>Share</Text>
-                                            </View>
-                                            <View style={{flexDirection: 'row',margin:5}}>
-                                                <Feather name="share" size={20}/>
-                                                <Text style={{marginLeft:5}}>Add to wishlist</Text>
-                                            </View>
-                                            <View style={{flexDirection: 'row',margin:5}}>
-                                                <Feather name="share" size={20}/>
-                                                <Text style={{marginLeft:5}}>Flag as inappropriate</Text>
-                                            </View>
-                                        </>,
-                                        {width:'100%',height:'100%'}
-                                    )} 
-                                </TouchableOpacity>
-                            </TouchableOpacity>
-                        </Modal>
-                        
-                        {/* <TouchableOpacity onPress = {() => {this.toggleModal(true)}}>
-                        <Text style = {styles.text}>Open Modal</Text>
-                        </TouchableOpacity> */}
-                    </View> 
-                </ScrollView>
-            </PageStructure>
+        </PageStructure>
         );
     }
 }
@@ -1158,7 +1364,28 @@ const styles = StyleSheet.create({
                     display: 'flex',
                     flexDirection: 'column'
                 },
-                       
+                    videoContainer:
+                    {
+                        marginTop: 10,
+                        display: 'flex',
+                        flexDirection: 'row'
+                    },
+                        videoImage:
+                        {
+                            height: 100,
+                            width:  130,
+                            borderRadius: 10,
+                        },
+                        videoColumn:
+                        {
+                            marginLeft: 5,
+                            display: 'flex', 
+                            flexDirection: 'column'
+                        },
+                        videoText:
+                        {
+                            marginBottom: 5,
+                        },
                     list:
                     {
                         flex: 1,
@@ -1184,6 +1411,36 @@ const styles = StyleSheet.create({
                                 fontSize: 16,
                                 color: theme.greyColor
                             },
+                    documentContainer:
+                    {
+                        marginTop: 10,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        // overflow: 'hidden'
+                        // justifyContent: 'center',
+                        // alignItems: 'center'
+                    },
+                        documentImage:
+                        {
+                            height: 100,
+                            width:  90,
+                            borderRadius: 10,
+                            marginRight: 10,
+                            borderColor: 'green', 
+                            // overflow: 'hidden'
+                        },
+                        documentTitle:
+                        {
+                            // flex: 1, 
+                            // flexWrap: 'wrap',
+                            flexShrink: 1,
+                            fontWeight: '700',
+                            
+                        },
+                        documentText:
+                        {
+                            color: theme.secondaryColor,
+                        },
                     bottomRow:
                     {
                         flex: 1,

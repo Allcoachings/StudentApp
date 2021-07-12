@@ -40,6 +40,8 @@ public class FileUploadService {
         long timeStampMillis = instant.toEpochMilli();
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        fileName = fileName.replaceAll("[^A-Za-z0-9]","-");
+        fileName=fileName.replace(" ","-");
         fileName = timeStampMillis+fileName;
 
         try {
