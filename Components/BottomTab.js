@@ -89,7 +89,8 @@ class BottomTab extends React.Component {
                       numColumns={this.tabs.length}
                       columnWrapperStyle={{justifyContent:'space-between',flexDirection:'row'}}
                       />),
-                      [{marginTop:'auto',paddingTop:10,width:'100%',paddingLeft:10,paddingRight:10,paddingBottom:5},this.props.bottomComponentStyle]
+                      [{marginTop:'auto',paddingTop:10,width:'100%',paddingLeft:10,paddingRight:10,paddingBottom:5 ,     borderTopWidth:1, 
+                      borderTopColor:theme.labelOrInactiveColor,},this.props.bottomComponentStyle]
                   )}
         </View>
        
@@ -100,8 +101,7 @@ class BottomTab extends React.Component {
 const styles = StyleSheet.create({
     container: { 
         flex:1,  
-        borderTopWidth:1, 
-        borderTopColor:theme.labelOrInactiveColor,
+  
         
     },
         TabContainer:

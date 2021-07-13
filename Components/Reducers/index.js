@@ -89,26 +89,7 @@ const initial_institute_state = {
     authStatus:false,
     details:
     {
-    
-    "about": "Jj",
-    "address": undefined,
-    "category": undefined,
-    "city": "Jj",
-    "directorName": "Test bansal",
-    "email": "Test",
-    "id": "1",
-    "logo": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540cyberflow%252Fallcoaching/DocumentPicker/1ccab21a-996c-4677-ac0a-6f575e6676a1.png",
-    "name": "Mohan Coaching institute for ssb,rrb bank po other competitive exams",
-    "password": "",
-    "phone": "Test",
-    "state": "Jj",
-    "status": 1,
-    "total_rating_count":15,
-    "one_star_count":1,
-    "two_star_count":2,
-    "three_star_count":3,
-    "four_star_count":4,
-    "five_star_count":5,
+     
     }
 }
 

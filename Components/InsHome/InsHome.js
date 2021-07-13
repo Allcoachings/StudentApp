@@ -198,13 +198,7 @@ class InsHome extends React.Component {
     }
     bannerCallback=(response)=>
     {
-        if(response.status==201)
-        {
-            let courseBanners = this.state.courseBanners;
-            let details = response.headers.map.location.split("*");
-            courseBanners.unshift({id:details[0],bannerImageLink:serverBaseUrl+details[1],courseId:this.state.activeCourse})
-
-        }
+       
     }
     addCourseBanner=()=>
     {
@@ -212,7 +206,17 @@ class InsHome extends React.Component {
             {
                 if(response.type=="success")
                 {
-                    addCourseBanner(response,this.state.activeCourse,this.bannerCallback)
+                    addCourseBanner(response,this.state.activeCourse,(response)=>{
+                        console.log("banner",response.status)
+                        if(response.status==201)
+                        {
+                            let courseBanners = this.state.courseBanners;
+                            let details = response.headers.map.location.split("*");
+                            console.log(details)
+                            courseBanners.unshift({id:details[0],bannerImageLink:serverBaseUrl+details[1],courseId:this.state.activeCourse})
+                
+                        }
+                    })
                 }
             })
     }

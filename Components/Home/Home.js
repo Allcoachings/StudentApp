@@ -29,6 +29,9 @@ class Home extends React.Component {
                             console.log(data)
                             this.setState({loadingData:false,homeMainContent:data});
                         })
+            }else
+            {
+                this.setState({loadingData:false});
             }
     }
     componentDidMount() {

@@ -754,7 +754,7 @@ checkEnrollCallBack=(response) =>{
                                                 Upsc Cse- optional Subscription
                                             </Text>
                                         </TouchableOpacity>
-                                        {this.state.studentEnrolled?(null):(<TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10}} onPress={()=>this.props.navigation.navigate("Payment")}>
+                                        {this.state.studentEnrolled?(null):(<TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10}} onPress={()=>this.props.navigation.navigate("Payment",{insId:this.state.institute.id,courseId:this.state.activeCourse})}>
                                             <Text style={{fontSize:10,color:theme.primaryColor}}>
                                                 Fees:{this.state.activeCourseDetail&&this.state.activeCourseDetail.fees}
                                             </Text>

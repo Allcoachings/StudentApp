@@ -12,9 +12,9 @@ import { Feather } from '@expo/vector-icons';
 
 class Payment extends React.Component {
     state={
-        insId: 1,
+        insId: this.props.route.params.insId,
         studentId: this.props.user.id,
-        courseId: 1
+        courseId: this.props.route.params.courseId,
     }
 
 
@@ -27,7 +27,7 @@ class Payment extends React.Component {
         console.log("callBack")
         if(response.status==201)
         {
-            this.props.navigation.navigate("StudentInsView")
+            this.props.navigation.navigate("StudentInsView",{insId:this.state.insId})
         }
     }
 
@@ -41,7 +41,7 @@ class Payment extends React.Component {
                 <TouchableOpacity onPress={()=>this.enrollStudent()} style={{backgroundColor: theme.featureYesColor, padding:10, justifyContent: 'center', alignItems: 'center', marginVertical: 10}}>
                     <Text>Transaction Successful</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={null} style={{backgroundColor: theme.featureNoColor, padding:10, justifyContent: 'center', alignItems: 'center', marginTop: 10}}>
+                <TouchableOpacity onPress={this.props.navigation.goBack()} style={{backgroundColor: theme.featureNoColor, padding:10, justifyContent: 'center', alignItems: 'center', marginTop: 10}}>
                     <Text>Transaction Failed</Text>
                 </TouchableOpacity>
             </View>
