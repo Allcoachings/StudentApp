@@ -2,38 +2,56 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {homeFeaturesData} from '../../FakeDataService/FakeData'
-import { theme } from '../config';
+import { theme,dataLimit, serverBaseUrl } from '../config';
 import { Feather } from '@expo/vector-icons';
-import { Rating } from 'react-native-ratings';
+import { Rating ,AirbnbRating} from 'react-native-ratings';
 import { Redirect } from 'react-router';
-
+import {fetch_coachingByCategory} from '../Utils/DataHelper/Coaching'
 class CategoryList extends React.Component {
 
     state={
-
+        cat_id:this.props.route.params.id,
+        offset:0,
+        loadingInstitute:true,
+        institute:[]
     }
 
-    renderInstituteList=({item})=>{
-        console.log(item)
+    coachingCallBack=(response) => {
+        console.log(response.status)
+        if(response.status==200)
+        {
+            response.json().then(data=>
+                {
+                    console.log(data);
+                    this.setState({institute:data,loadingInstitute:false})
+                })
+        }
+    }
+    componentDidMount() {
+        fetch_coachingByCategory(this.state.cat_id,this.state.offset,dataLimit,this.coachingCallBack)
+    }
+
+    renderInstituteList=({item})=>{ 
         return (
                 <TouchableOpacity style={styles.instituteItemContainer} onPress={()=> this.props.navigation.navigate('Institute') }>
                     <View style={styles.instituteItemImageView}>
-                        <Image source={item.image} style={styles.instituteItemImage}/> 
+                        <Image source={{uri:serverBaseUrl+item.logo}} style={styles.instituteItemImage}/> 
                     </View>
                     <View style={styles.instituteMetaContainer}>
                         <View style={{display:'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginLeft: 2}}>
-                            <Text style={styles.instituteTitle}>{item.title}</Text>
+                            <Text style={styles.instituteTitle} numberOfLines={2}>{item.name}</Text>
                         </View>
                         <View style={{display:'flex', flexDirection: 'row', alignItems: 'center'}}>
-                            <Text style={{alignSelf:'flex-start', color: theme.greyColor}}>{item.rating}</Text> 
-                            <Rating
-                                type='star'
-                                ratingCount={5}
-                                startingValue={item.rating}
-                                imageSize={15}  
-                                tintColor={theme.appBackgroundColor}
-                                style={styles.instituteRating}
-                                readOnly={true} 
+                            <Text style={{alignSelf:'flex-start', color: theme.greyColor}}>{item.totalRatingCount>0?item.totalRating/item.totalRatingCount:0}</Text>  
+                            <AirbnbRating 
+                                starContainerStyle={styles.instituteRating} 
+                                count={5}
+                                reviews={[]} 
+                                isDisabled={true}
+                                defaultRating={item.totalRatingCount>0?(item.totalRating/item.totalRatingCount):(0)}
+                                size={12}
+                                selectedColor={theme.blueColor}
+                                showRating={false}
                             />
                         </View>
                     </View>
@@ -43,27 +61,28 @@ class CategoryList extends React.Component {
 
     renderMain=({item})=>{
         return(
-            item.type=='listing' && this.props.route.params.type==item.title?(
+                
                 <View style={styles.rowContainer}>
                     <View style={styles.rowBody}>
                         <FlatList 
-                            data={item.data} 
+                            data={item} 
                             renderItem={this.renderInstituteList} 
                             numColumns={3}
                             keyExtractor={(item) => item.id}
                         />
                     </View> 
                 </View>
-            ):(null)
+            
         )
     }
 
     render() {
+    
         return(
             <PageStructure
                 iconName={"arrow-left"}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
-                titleonheader={"UPSC Coaching"}
+                titleonheader={this.props.route.params.type}
             >
             <ScrollView>
             <View style={styles.container}>
@@ -72,9 +91,10 @@ class CategoryList extends React.Component {
                 </View> */}
 
                 <FlatList 
-                    data={homeFeaturesData}  
+                    data={this.state.institute}  
                     showsVerticalScrollIndicator={false} 
-                    renderItem={this.renderMain}
+                    renderItem={this.renderInstituteList}
+                    numColumns={3}
                     keyExtractor={item => item.id}
                 />
             </View>
@@ -132,7 +152,8 @@ const styles = StyleSheet.create({
                         {
                             flexWrap:'wrap',
                             width:'100%', 
-                            fontSize:8
+                            
+                            fontSize:10
                         },
                         instituteRating:
                         {

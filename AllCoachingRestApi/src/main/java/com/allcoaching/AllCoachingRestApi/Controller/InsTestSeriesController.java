@@ -60,7 +60,7 @@ public class InsTestSeriesController {
 
     //fetching all test series of a course by course id
     @CrossOrigin(origins = "*")
-    @GetMapping("/all/{courseId}/")
+    @GetMapping("/all/{courseId}")
     public Iterable<InsTestSeries> findByCourseId(@PathVariable long courseId)
     {
         return insTestSeriesService.getTestSeriesByCourseID(courseId);
@@ -69,10 +69,10 @@ public class InsTestSeriesController {
 
     //fetching questions by series id
     @CrossOrigin(origins = "*")
-    @GetMapping("/questions/{seriesId}")
-    public Iterable<InsTestSeriesQuestions> findQuestionsBySeriesId(@PathVariable long seriesId)
+    @GetMapping("/questions/{seriesId}/{page}/{pagesize}")
+    public Iterable<InsTestSeriesQuestions> findQuestionsBySeriesId(@PathVariable long seriesId,@PathVariable int page,@PathVariable int pagesize)
     {
-        return insTestSeriesService.getSeriesQuestion(seriesId);
+        return insTestSeriesService.getSeriesQuestion(seriesId,page,pagesize);
     }
 
 

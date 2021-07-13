@@ -28,8 +28,9 @@ public class OtpController {
         {
             otpService.deleteOtp(otp);
         }
-        return  isValidOtp;
+//        return  isValidOtp;
 
+        return true;
     }
 
 

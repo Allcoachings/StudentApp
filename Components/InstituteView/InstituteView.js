@@ -13,24 +13,32 @@ import StudentReview from './StudentReview'
 import Review from '../ReviewAndRatings/Review'
 import Accordian from '../Utils/Accordian'
 import MockTest from '../MockTest/MockTest'
-<<<<<<< HEAD
 import {fetch_instituteDetails} from '../Utils/DataHelper/Coaching'
 import {fetch_institute_courses,fetch_courses_banners,addCourseBanner,fetch_courses_videos,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents,fetch_courses_timetable,fetch_testSeries} from '../Utils/DataHelper/Course'
-=======
 import { checkUserEnrollment } from '../Utils/DataHelper/EnrollStudent'
 
->>>>>>> 148d4d298763d2b6fdf7103e475eeb83255b2010
 
 import {tabListInstitute} from '../../FakeDataService/FakeData'
 class InstituteView extends React.Component {
     state = { 
-        activeTab: 'videos',
- 
+        activeTab: 'videos', 
         tabtoshow: 1,
         modalVisible: false,
         ReviewmodalVisible: false,
-<<<<<<< HEAD
-        instituteId:1,
+        courseId:1,
+        instituteId: this.props.route.params.insId,
+        studentId:this.props.userInfo.id,
+        studentEnrolled: false,
+        review: '',
+        // rating: 0,
+        // totalRatingCount:15 ,
+        // oneStarCount:1,
+        // twoStarCount:2,
+        // threeStarCount:3,
+        // fourStarCount:4,
+        // fiveStarCount:5,
+        // inslogo:'wdsa',
+        // institle:'DUBUDDY', 
         loadingInstitute:true
         
      }
@@ -47,62 +55,40 @@ class InstituteView extends React.Component {
              
          }
      }
-     coursesCallBack=(response)=>
-=======
-        courseId:1,
-        instituteId: 1,
-        studentId:1,
-        studentEnrolled: false,
-        review: '',
-        rating: 0,
-        totalRatingCount:15 ,
-        oneStarCount:1,
-        twoStarCount:2,
-        threeStarCount:3,
-        fourStarCount:4,
-        fiveStarCount:5,
-        inslogo:'wdsa',
-        institle:'DUBUDDY',
-     }
-
-     componentDidMount(){
-        checkUserEnrollment(this.state.courseId, this.state.studentId, this.checkEnrollCallBack)
-     }
-
-     checkEnrollCallBack=(response) =>{
+     coursesCallBack=(response)=>   {
         if(response.status==200)
         {
-            response.json().then(data=>
+            response.json().then((data)=>
             {
-                this.setState({studentEnrolled: data});                   
+                this.setState({courses:data})
             })
         }
-     }
-
-    //  updateComponent=() =>{
-    //      console.log("this.state.studentEnrolled",this.state.studentEnrolled)
-    //      console.log("this.props.studentEnrolled",this.props.route.params.studentEnrolled)
-    //      if(this.state.studentEnrolled!=this.props.route.params.studentEnrolled)
-    //      {
-    //          this.setState({studentEnrolled: this.props.route.params.studentEnrolled})
-    //      }
-    //  }
-
-
-     renderTabItems=({item})=>
->>>>>>> 148d4d298763d2b6fdf7103e475eeb83255b2010
-     {
-            if(response.status==200)
-            {
-                response.json().then((data)=>
-                {
-                    this.setState({courses:data})
-                })
-            }
-     }
+ }
+checkEnrollCallBack=(response) =>{
+    if(response.status==200)
+    {
+        response.json().then(data=>
+        {
+            this.setState({studentEnrolled: data});                   
+        })
+    }
+ }
      componentDidMount() {
          fetch_instituteDetails(this.state.instituteId,this.instituteCallback)
          fetch_institute_courses(this.state.instituteId,this.coursesCallBack)
+         checkUserEnrollment(this.state.courseId, this.state.studentId, this.checkEnrollCallBack)
+     }
+     updateComponent=()=>
+     {
+         if(this.props.route.params.insId!=this.state.instituteId)
+         {
+             this.setState({instituteId:this.props.route.params.insId,loadingInstitute:true},()=>
+             {
+                fetch_instituteDetails(this.state.instituteId,this.instituteCallback)
+                fetch_institute_courses(this.state.instituteId,this.coursesCallBack)
+                checkUserEnrollment(this.state.courseId, this.state.studentId, this.checkEnrollCallBack)
+             })
+         }
      }
      courseBannerCallback=(response)=>
      {
@@ -116,7 +102,16 @@ class InstituteView extends React.Component {
      }
      handleCourseItemClick=(item)=>
      {
-         this.setState({activeCourse:item.id,activeCourseDetail:item})
+         console.log(item)
+         this.setState({activeCourse:item.id,activeCourseDetail:item,
+            courseTimetableLoaded:false,isCourseTimetableLoading:true,
+            courseDocumentPlaylistLoaded:false,isCourseDocumentPlaylistLoading:true,
+            courseDocumentLoaded:false,isCourseDocumentLoading:true,
+            courseTestSeriesLoaded:false,isCourseTestSeriesLoading:true,
+            courseVideoPlaylistLoaded:false,isCourseVideoPlaylistLoading:true},()=>
+            {
+                console.log("testsdjsb",this.state)
+            })
          
          fetch_courses_banners(item.id,this.courseBannerCallback)
      }
@@ -351,10 +346,10 @@ class InstituteView extends React.Component {
             //     header={this.accordianHeader(item.title, " ", "chevron-down")}
             // >
                 <View style={styles.weekView}> 
-                    <FlatList 
-                        data={item} 
+                    <FlatList
+                        data={item}
                         renderItem={({item}) =>this.renderTestItem(item)}
-                        keyExtractor={(item)=>item.id} 
+                        keyExtractor={(item)=>item.id}
                         horizontal={false}
                         showsHorizontalScrollIndicator={false}
                     />
@@ -375,7 +370,7 @@ class InstituteView extends React.Component {
                     </View>
                     <View style={styles.bottomRow}>
                         <Text style={styles.titleText}>{item.title}</Text>
-                        <TouchableOpacity style={styles.btnView} onPress={()=>this.props.navigation.navigate("SingleTestSeries")}>
+                        <TouchableOpacity style={styles.btnView} onPress={()=>this.props.navigation.navigate("SingleTestSeries",{item:item})}>
                             <Feather name="play" size={12} style={{color: theme.primaryColor, marginRight: 3}}/>
                             <Text style={styles.btnText}>Start</Text>
                         </TouchableOpacity>
@@ -431,13 +426,13 @@ class InstituteView extends React.Component {
         switch(this.state.activeTab)
         {
           case 'videos':  
-                this.setState({activeFilter: item.name,isCourseVideoLoading:true,isCourseVideoLoaded:false},()=>
+                this.setState({activeFilter: item.name,isCourseVideoLoading:true,courseVideoLoaded:false},()=>
                 {
                     fetch_courses_videos(null,this.courseVideoCallback,item.id);
                 }) 
                 break;
            case 'document':
-                this.setState({activeFilter: item.name,isCourseDocumentLoading:true,isCourseDocumentLoaded:false},()=>
+                this.setState({activeFilter: item.name,isCourseDocumentLoading:true,courseDocumentLoaded:false},()=>
                 {
                     fetch_courses_documents(null,this.courseDocumentCallback,item.id);
                 }) 
@@ -759,13 +754,9 @@ class InstituteView extends React.Component {
                                                 Upsc Cse- optional Subscription
                                             </Text>
                                         </TouchableOpacity>
-<<<<<<< HEAD
-                                        <TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10}} onPress={()=>this.props.navigation.navigate("Payment")}>
-=======
                                         {this.state.studentEnrolled?(null):(<TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10}} onPress={()=>this.props.navigation.navigate("Payment")}>
->>>>>>> 148d4d298763d2b6fdf7103e475eeb83255b2010
                                             <Text style={{fontSize:10,color:theme.primaryColor}}>
-                                                Fees:{this.state.institute.fees}
+                                                Fees:{this.state.activeCourseDetail&&this.state.activeCourseDetail.fees}
                                             </Text>
                                         </TouchableOpacity>)}
                                     </View>
@@ -812,14 +803,11 @@ class InstituteView extends React.Component {
         
 
     render() {
-<<<<<<< HEAD
        
-      
+      this.updateComponent()
         const  {institute,loadingInstitute} = this.state;
         console.log(institute&&serverBaseUrl+institute.logo)
-=======
         // this.updateComponent()
->>>>>>> 148d4d298763d2b6fdf7103e475eeb83255b2010
         return (
             <PageStructure 
                 iconName={"arrow-left"}
@@ -848,13 +836,13 @@ class InstituteView extends React.Component {
                                 <Text style={styles.instituteheaderText} numberOfLines={3}>{institute.name}</Text>
                                 <Text style={styles.instituteDirector}>{institute.directorName}</Text>
                                 <View style={styles.instituteRatingView}>
-                                    <Text style={{ color: theme.greyColor}}>{institute.totalratingCount>0?institute.totalRating/totalRatingCount:0+' • '}</Text>
+                                    <Text style={{ color: theme.greyColor}}>{institute.totalratingCount>0?institute.totalRating/institute.totalRatingCount:0+' • '}</Text>
                                     <AirbnbRating 
                                         starContainerStyle={styles.instituteRating} 
                                         count={5}
                                         reviews={[]} 
                                         isDisabled={true}
-                                        defaultRating={institute.totalratingCount>0?institute.totalRating/totalRatingCount:0}
+                                        defaultRating={institute.totalratingCount>0?institute.totalRating/institute.totalRatingCount:0}
                                         size={12}
                                         selectedColor={theme.blueColor}
                                         showRating={false}
@@ -914,117 +902,20 @@ class InstituteView extends React.Component {
 
                     <StudentReview 
                         studentEnrolled={this.state.studentEnrolled}
-                        instituteId={this.state.instituteId}
+                        instituteId={institute.id}
                         courseId={this.state.courseId}
                         studentId={this.state.studentId}
-                        total_rating_count={this.state.totalRatingCount}
-                        one_star_count={this.state.oneStarCount}
-                        two_star_count={this.state.twoStarCount}
-                        three_star_count={this.state.threeStarCount}
-                        four_star_count={this.state.fourStarCount}
-                        five_star_count={this.state.fiveStarCount}
-                        inslogo={this.state.inslogo}
-                        institle={this.state.institle}
+                        total_rating_count={institute.totalRatingCount}
+                        one_star_count={institute.oneStarCount}
+                        two_star_count={institute.twoStarCount}
+                        three_star_count={institute.threeStarCount}
+                        four_star_count={institute.fourStarCount}
+                        five_star_count={institute.fiveStarCount}
+                        inslogo={serverBaseUrl+institute.logo}
+                        institle={institute.name}
                     />
                    
 
-<<<<<<< HEAD
-               
-                    <Review />
-
-                
-                    <View style = {styles.container}>
-                        <Modal animationType = {"fade"} 
-                                transparent = {true}
-                                visible = {this.state.modalVisible}
-                                onRequestClose = {() => { console.log("Modal has been closed.") } }>
-                            <TouchableOpacity  onPress={() =>this.setState({modalVisible:false})} style={{width:'100%',height:'100%'}}>
-                                <TouchableOpacity style={{alignSelf: 'flex-end', width: 200, height: 120, padding: 6, backgroundColor: 'white',postion: 'absolute',top:10}}>
-                                    {CardView(
-                                        <>
-                                            <View style={{flexDirection: 'row',margin:5}}>
-                                                <Feather name="share" size={20}/>
-                                                <Text style={{marginLeft:5}}>Share</Text>
-                                            </View>
-                                            <View style={{flexDirection: 'row',margin:5}}>
-                                                <Feather name="share" size={20}/>
-                                                <Text style={{marginLeft:5}}>Add to wishlist</Text>
-                                            </View>
-                                            <View style={{flexDirection: 'row',margin:5}}>
-                                                <Feather name="share" size={20}/>
-                                                <Text style={{marginLeft:5}}>Flag as inappropriate</Text>
-                                            </View>
-                                        </>,
-                                        {width:'100%',height:'100%'}
-                                    )} 
-                                </TouchableOpacity>
-                            </TouchableOpacity>
-                        </Modal>
-                        
-                        {/* <TouchableOpacity onPress = {() => {this.toggleModal(true)}}>
-                        <Text style = {styles.text}>Open Modal</Text>
-                        </TouchableOpacity> */}
-                    </View> 
-                </ScrollView>
-
-            )}
-                 <Modal animationType = {"fade"} transparent = {false}
-                        visible = {this.state.ReviewmodalVisible}
-                        onRequestClose = {() => { console.log("Modal has been closed.") } }> 
-                            <View>
-                                <View style={{flexDirection: 'row',alignItems: 'center',paddingBottom:10,borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}>
-                                    <View style={{marginLeft:10}}>
-                                        <TouchableOpacity onPress={()=>this.setState({ReviewmodalVisible:false})}>
-                                            <Feather name={'arrow-left'} size={20}/>
-                                        </TouchableOpacity>
-                                    </View>
-                                    <View style={{marginHorizontal:10,flex:0.8,flexWrap:'wrap'}}>
-                                        <View style={{display: 'flex', flexDirection: 'row',}}> 
-                                            <Image source={instituteData.logo} style={{width:35,height:35,borderRadius:5,marginRight:10}}/>
-                                            <View>
-                                                <Text numberOfLines={1} style={{color:theme.secondaryColor,fontSize:15}}>{instituteData.title}</Text>
-                                                <Text style={{color: theme.greyColor}}>Rate this Institute</Text>
-                                            </View>
-                                        </View>
-
-                                    </View>
-                                    <View style={styles.modalHeaderRight}></View>
-                                </View>
-                                <View style={{ paddingHorizontal: 6,marginVertical:20,backgroundColor: 'white'}}>
-                                    {/* <Rating
-                                        type='star'
-                                        ratingCount={5}
-                                        startingValue={0}
-                                        imageSize={30} 
-                                        unSelectedColor={theme.appBackgroundColor} 
-                                        // tintColor={theme.appBackgroundColor}
-                                        ratingColor={theme.blueColor}
-                                        style={styles.instituteRating}
-                                        readOnly={true}
-                                        style={{textAlign: 'center', marginBottom: 10}} 
-                                    /> */}
-                                    <AirbnbRating 
-                                        starContainerStyle={[styles.instituteRating,{alignSelf:"center"}]} 
-                                        count={5}
-                                        reviews={[]} 
-                                        isDisabled={false}
-                                        defaultRating={0}
-                                        size={30}
-                                        selectedColor={theme.blueColor}
-                                        showRating={false}
-                                    />
-                                    <TextInput style={{borderWidth: 1, borderColor: 'black', borderRadius:10, paddingLeft: 6, paddingBottom:30,}} placeholder="Write a Review" placeholderTextColor='grey'></TextInput>
-                                    <TouchableOpacity style={styles.reviewbutton}>
-                                        <Text style={styles.reviewbutton_text}>Submit</Text>
-                                    </TouchableOpacity>
-                                </View>
-                                
-                            </View>
-
-                        </Modal>
-
-        </PageStructure>
-=======
                     
 
                     
@@ -1063,8 +954,8 @@ class InstituteView extends React.Component {
                         </TouchableOpacity> */}
                     </View> 
                 </ScrollView>
+                )} 
             </PageStructure>
->>>>>>> 148d4d298763d2b6fdf7103e475eeb83255b2010
         );
     }
 }
@@ -1133,7 +1024,7 @@ const styles = StyleSheet.create({
                     },
                         instituteRating:
                         {
-                            alignSelf:'flex-start',
+                            // alignSelf:'flex-start',
                             marginRight:10,
                             marginTop:3
                         },
@@ -1657,8 +1548,10 @@ const styles = StyleSheet.create({
 
 const  mapStateToProps = (state)=>
 {
+    console.log(state)
     return {
-        screenWidth: state.screen.screenWidth
+        screenWidth: state.screen.screenWidth,
+        userInfo:state.user.userInfo,
     }
 }
 export default connect(mapStateToProps)(InstituteView);

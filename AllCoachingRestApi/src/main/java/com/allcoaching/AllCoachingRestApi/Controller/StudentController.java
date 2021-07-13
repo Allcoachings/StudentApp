@@ -11,7 +11,7 @@ import java.net.URI;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("student")
+@RequestMapping("api/v1/student")
 public class StudentController {
 
     @Autowired
@@ -23,8 +23,7 @@ public class StudentController {
     {
         Student s = studentService.createStudent(student);
         URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
+                .fromPath("{id}")
                 .buildAndExpand(s.getId())
                 .toUri();
         return ResponseEntity.created(location).build();
@@ -36,6 +35,13 @@ public class StudentController {
     public Optional<Student> findById(@PathVariable long id)
     {
         return  studentService.findById(id);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/bymobile/{mobileNumber}")
+    public Optional<Student> findByMobileNumber(@PathVariable String mobileNumber)
+    {
+        return  studentService.findByMobileNumber(mobileNumber);
     }
 
 }

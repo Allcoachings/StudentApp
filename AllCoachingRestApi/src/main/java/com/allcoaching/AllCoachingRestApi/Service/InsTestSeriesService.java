@@ -6,9 +6,13 @@ import com.allcoaching.AllCoachingRestApi.Entity.TestSeriesPlaylist;
 import com.allcoaching.AllCoachingRestApi.Respository.InsTestSeriesQuestionsRepo;
 import com.allcoaching.AllCoachingRestApi.Respository.InsTestSeriesRepo;
 import com.allcoaching.AllCoachingRestApi.Respository.TestSeriesPlaylistRepo;
+import com.fasterxml.jackson.databind.util.ArrayIterator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -49,8 +53,13 @@ public class InsTestSeriesService {
         return insTestSeriesRepo.findByCourseId(id);
     }
 
-    public Iterable<InsTestSeriesQuestions> getSeriesQuestion(long id)
+    public Iterable<InsTestSeriesQuestions> getSeriesQuestion(long id,int page,int pageSize)
     {
-        return insTestSeriesQuestionsRepo.findByTestSeriesId(id);
+        Page<InsTestSeriesQuestions> pagesResult = insTestSeriesQuestionsRepo.findByTestSeriesId(id, PageRequest.of(page,pageSize));
+        if(pagesResult.hasContent())
+        {
+            return  pagesResult.getContent();
+        }
+        return new ArrayList<InsTestSeriesQuestions>();
     }
 }

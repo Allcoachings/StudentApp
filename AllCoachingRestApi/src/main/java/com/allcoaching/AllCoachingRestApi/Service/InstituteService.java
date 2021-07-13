@@ -29,6 +29,17 @@ public class InstituteService {
         }
     }
 
+    public  Iterable<Institute> findByCategory(long id,Pageable topTwenty)
+    {
+
+
+        Page<Institute> pagedResult = instituteRepo.findByCategory(id,topTwenty);
+        if(pagedResult.hasContent()) {
+            return pagedResult.getContent();
+        } else {
+            return new ArrayList<Institute>();
+        }
+    }
     public Optional<Institute> findById(long id)
     {
         return instituteRepo.findById(id);

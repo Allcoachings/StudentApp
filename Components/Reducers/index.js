@@ -34,7 +34,8 @@ import { combineReducers } from "redux";
 //user reducer starts
 const initial_user_state=
 {
-    userAuthStatus:true,
+    userAuthStatus:false,
+    userInfo:{},
     "id": "1",
     "name": "DU BUDDY",
     "email": "dubuddy@gmail.com",
@@ -51,6 +52,12 @@ const user_reducer=(state=initial_user_state,action)=>
         return{
                 ...state,
                 userAuthStatus: action.payload.authStatus
+            }
+        case actionTypes.SET_USER_INFO:
+            return{
+                ...state,
+                userInfo: action.payload.info
+
             }
         default :
             return state
@@ -79,6 +86,7 @@ const screen_reducer=(state=initial_screen_state,action)=>
 
 
 const initial_institute_state = {
+    authStatus:false,
     details:
     {
     
@@ -115,6 +123,12 @@ const institute_reducer =(state=initial_institute_state,action)=>
                 ...state,
                 details:action.payload.details,
             }
+        case actionTypes.SET_INSTITUTE_AUTH:
+            return {
+                ...state,
+                authStatus: action.payload.status,
+            }
+          
         default:
             return state
     }

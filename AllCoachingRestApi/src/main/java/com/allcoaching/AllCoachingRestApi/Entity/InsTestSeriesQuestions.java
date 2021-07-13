@@ -24,9 +24,11 @@ public class InsTestSeriesQuestions {
     private String optionD;
     private String correctOpt;
     private String explanation;
+    private int correctMarks;
+    private int wrongMarks;
     private long testSeriesId;
 
-    public InsTestSeriesQuestions(String question, String optionA, String optionB, String optionC, String optionD, String correctOpt, String explanation, long testSeriesId)
+    public InsTestSeriesQuestions(String question, String optionA, String optionB, String optionC, String optionD, String correctOpt, String explanation, int correctMarks,int wrongMarks,long testSeriesId)
     {
         this.question = question;
         this.optionA = optionA;
@@ -36,6 +38,8 @@ public class InsTestSeriesQuestions {
         this.correctOpt = correctOpt;
         this.explanation = explanation;
         this.testSeriesId = testSeriesId;
+        this.correctMarks=correctMarks;
+        this.wrongMarks = wrongMarks;
     }
 
 }

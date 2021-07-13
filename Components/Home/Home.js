@@ -1,38 +1,59 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform,Dimensions} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform,Dimensions,ActivityIndicator} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {storyLine,homeFeaturesData} from '../../FakeDataService/FakeData'
-import { theme } from '../config';
+import { theme ,serverBaseUrl,dataLimit} from '../config';
 import { Feather } from '@expo/vector-icons';
 import { AirbnbRating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
 import CardView from '../Utils/CardView';
 import {fetch_institute_courses,fetch_courses_banners,fetch_courses_videos,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents,fetch_courses_timetable,fetch_testSeries} from '../Utils/DataHelper/Course'
+import {fetch_homeData} from '../Utils/DataHelper/HomeData'
+import {fetch_coachingByCategory} from '../Utils/DataHelper/Coaching'
 
 const windowWidth = Dimensions.get('window').width;
 
 class Home extends React.Component {
     state = {  
-       
+       loadingData:true,
+       homeMainContent:[],
+       offset:0
     }
 
-    
-    redirectTo =()=>
+    handleHomeDataCallBack=(response) => {
+           
+            if(response.status==200)
+            {
+                    response.json().then(data=>
+                        {
+                            console.log(data)
+                            this.setState({loadingData:false,homeMainContent:data});
+                        })
+            }
+    }
+    componentDidMount() {
+        fetch_homeData(this.handleHomeDataCallBack)
+    }
+
+    redirectTo =(item)=>
     {
-        this.props.navigation.navigate('Institute') 
+        this.props.navigation.navigate('Institute',{insId:item.id})
     }
 
-
+   
     renderMainContetnRow=({item})=>{
 
+        if(item.data.length > 0)
+        {
         switch(item.type)
         {
             case 'listing':
                 return (
+                    
                     <View style={styles.rowContainer}>
                         <View style={styles.rowHeader}>
                             <Text style={styles.rowHeaderTitle}>{item.title}</Text>
-                            <TouchableOpacity onPress={()=>this.props.navigation.navigate("CategoryList", {type: item.title})}>
+                            <TouchableOpacity onPress={()=>this.props.navigation.navigate("CategoryList", {type: item.title,id:item.id})}>
                                 <Feather name="arrow-right" size={25} color={theme.secondaryColor}/>
                             </TouchableOpacity>
                         </View>
@@ -61,31 +82,32 @@ class Home extends React.Component {
                         </View>
                 )
         }
+    }
         
     }
  
     renderInstituteList=({item})=>{
         return (
-            <TouchableOpacity style={styles.instituteItemContainer} onPress={()=>this.redirectTo()}>
+            <TouchableOpacity style={styles.instituteItemContainer} onPress={()=>this.redirectTo(item)}>
                 <View style={styles.instituteItemImageView}>
                     {CardView(
-                        <Image source={item.image} style={styles.instituteItemImage}/> 
+                        <Image source={{uri:serverBaseUrl+item.logo}} style={styles.instituteItemImage}/> 
                         ,{width:'100%',borderRadius:15}
                     )}
                     
                 </View>
                 <View style={styles.instituteMetaContainer}>
                     <View style={{display:'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginLeft: 2}}>
-                        <Text style={styles.instituteTitle} numberOfLines={2}>{item.title}</Text>
+                        <Text style={styles.instituteTitle} numberOfLines={2}>{item.name}</Text>
                     </View>
                     <View style={{display:'flex', flexDirection: 'row', alignItems: 'center'}}>
-                        <Text style={{alignSelf:'flex-start', color: theme.greyColor,fontSize:12}}>{item.rating+' • '}</Text> 
+                        <Text style={{alignSelf:'flex-start', color: theme.greyColor,fontSize:12}}>{item.totalRatingCount>0?(item.totalRating/item.totalRatingCount):(0)+' • '}</Text> 
                         <AirbnbRating 
                             starContainerStyle={styles.instituteRating} 
                             count={5}
                             reviews={[]} 
                             isDisabled={true}
-                            defaultRating={item.rating}
+                            defaultRating={item.totalRatingCount>0?(item.totalRating/item.totalRatingCount):(0)}
                             size={12}
                             selectedColor={theme.blueColor}
                             showRating={false}
@@ -97,11 +119,41 @@ class Home extends React.Component {
     }
     renderBannerList=({item})=>
     {
+        
         return(
-            <TouchableOpacity style={styles.bannerItemContainer}>
-                    <Image source={item.image} style={styles.bannerImage}/>
+            <TouchableOpacity style={styles.bannerItemContainer} onPress={()=>this.props.navigation.navigate('webview',{link:item.bannerLink,mode:'defaultAppHeader'})}>
+                    <Image source={{uri:serverBaseUrl+item.bannerImageLink}} style={styles.bannerImage}/>
             </TouchableOpacity  >
         )
+    }
+
+    coachingCallBack=(response)=>
+    {
+        console.log(response.status)
+        if(response.status==200)
+        {
+            response.json().then(data=>
+                {
+                    console.log(data);
+                    this.setState({institute:data,loadingData:false})
+                })
+        }
+    }
+     
+    toggleCatMode=(mode,catid)=>
+    {
+        switch(mode)
+        {
+            case true:
+                this.setState({catMode:mode,catid,loadingData:true,},()=>
+                {
+                    fetch_coachingByCategory(this.state.catid,this.state.offset,dataLimit,this.coachingCallBack)
+                })
+                break;
+            case false:
+            break;
+        }
+        
     }
     render() {
         return (
@@ -109,15 +161,36 @@ class Home extends React.Component {
                 iconName={"menu"}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
                 catInHeader={true}
+                catOnpress={this.toggleCatMode}
                 scrollMode={'scroll'}
             >
                 <View style={styles.container}> 
                     <View style={styles.mainContent}> 
-                        <FlatList 
-                        data={homeFeaturesData}  
-                        showsVerticalScrollIndicator={false} 
-                        renderItem={this.renderMainContetnRow}
-                        keyExtractor={item => item.id}/>
+                    {this.state.loadingData?(
+                        <View style={{margin:10,padding:10}}>
+                            <ActivityIndicator color={theme.accentColor} size={"large"}/>
+                        </View>
+                    ):(
+                        this.state.catMode?(
+                            <View>
+                            <FlatList 
+                            data={this.state.institute}  
+                            showsVerticalScrollIndicator={false} 
+                            renderItem={this.renderInstituteList}
+                            numColumns={3}
+                            keyExtractor={item => item.id}
+                            />
+                            </View>
+                        ):(
+                            <FlatList 
+                            data={this.state.homeMainContent}  
+                            showsVerticalScrollIndicator={false} 
+                            renderItem={this.renderMainContetnRow}
+                            keyExtractor={item => item.id}/>
+                        )
+                    )}
+                    
+                        
                     </View>
                 </View>
                 

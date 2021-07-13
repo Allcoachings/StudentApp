@@ -17,7 +17,7 @@ import * as actionTypes from "./types";
         }
     }
 
-*/
+*/ 
 
 //user reducer actions starts
 export const userAuthStatus=(status)=>{
@@ -25,6 +25,14 @@ export const userAuthStatus=(status)=>{
         type: actionTypes.USER_AUTH_STATUS, //this type will be used to match
         payload:{
             authStatus: status
+        }
+    }
+}
+export const setUserInfo=(info)=>{
+    return{
+        type: actionTypes.SET_USER_INFO, //this type will be used to match the type
+        payload:{
+           info
         }
     }
 }
@@ -52,5 +60,16 @@ export const setInstituteDetails=(obj)=>
         payload:{
             details:obj
         }       
+    }
+}
+
+export const setInstituteAuth=(status)=>
+{
+    return{
+        type:actionTypes.SET_INSTITUTE_AUTH,
+        payload:{
+            status
+        }
+
     }
 }

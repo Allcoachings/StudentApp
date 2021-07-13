@@ -23,5 +23,8 @@ public class StudentService {
         return studentRepo.findById(id);
     }
 
-
+    public Optional<Student> findByMobileNumber(String mobileNumber)
+    {
+        return  studentRepo.findByMobileNumber(mobileNumber);
+    }
 }

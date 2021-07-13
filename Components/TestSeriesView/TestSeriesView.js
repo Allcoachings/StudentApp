@@ -1,19 +1,43 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView,ActivityIndicator} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 
-import { theme } from '../config';
+import { theme,dataLimit } from '../config';
 import { Feather } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import SeriesModal from './SeriesModal';
-
+import {fetch_testSeries_questions} from '../Utils/DataHelper/TestSeries'
 class TestSeriesView extends React.Component {
 
     state={
-        isModalVisible: false
+        testSeries:this.props.route.params.item,
+        testSeriesId:22,
+        isModalVisible: false,
+        loadingQuestions:true,
+        isFirstTimeLoading:true,
+        offset:0,
+        questions:[],
+    }
+
+    questionCallback=(response) => 
+    {
+        console.log("questions",response.status);
+            if(response.status==200)
+            {   
+                    response.json().then(data=>
+                    {
+                        console.log("questions",data);
+                      this.setState({questions:{...this.state.questions,...data},isFirstTimeLoading:false,loadingQuestions:false})
+                    })
+            }
+    }
+
+    componentDidMount() 
+    {  
+        fetch_testSeries_questions(this.state.testSeriesId,this.state.offset,dataLimit,this.questionCallback)
     }
 
     header=()=>{
@@ -23,9 +47,9 @@ class TestSeriesView extends React.Component {
                     <View style={styles.headerRowSection}>
                         <View style={{marginLeft:10}}>
                             <Feather name="arrow-left" size={20} onPress={()=>this.props.navigation.goBack()}/>
-                        </View>
+                        </View> 
                         <View style={styles.quizNameView}>
-                            <Text style={styles.quizName}>IBPS PO Prelims Mock Test 1</Text>
+                            <Text style={styles.quizName}>{this.state.testSeries.title}</Text>
                         </View>
                         {/* <View style={styles.pauseBtnView}>
                             <Feather name="pause-circle" size={13} color={theme.redColor}/>
@@ -58,13 +82,13 @@ class TestSeriesView extends React.Component {
         )
     }
 
-    queSection=()=>{
+    queSection=(index,correctMarks,wrongMarks)=>{
         return(
             // CardView(
                 <View style={styles.quesRowSection}>
                     <View style={styles.queView}>
                         <Text style={styles.queNum}>
-                            Q. 1
+                            Q. {index}
                         </Text>
                     </View>
                     <View style={styles.quesRow2}>
@@ -72,10 +96,10 @@ class TestSeriesView extends React.Component {
                             {/* <Text style={styles.marksText}>Marks</Text> */}
                             <View style={styles.marksCol}>
                                 <View style={styles.posMarksView}>
-                                    <Text style={styles.tolMarksView}>+2</Text>
+                                    <Text style={styles.tolMarksView}>+{correctMarks}</Text>
                                 </View>
                                 <View style={styles.negMarksView}>
-                                    <Text style={styles.tolMarksView}>-0.5</Text>
+                                    <Text style={styles.tolMarksView}>-{wrongMarks}</Text>
                                 </View>
                             </View>
                         {/* </View> */}
@@ -94,10 +118,10 @@ class TestSeriesView extends React.Component {
         )
     }
 
-    renderQuizQuestion=()=>{
+    renderQuizQuestion=(item)=>{
         return(
         <View style={styles.quizQuestionView}>
-            <Text style={styles.quizText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Text>
+            <Text style={styles.quizText}>{item.question}</Text>
             <View style={styles.optionView}>
                 <View style={styles.optionRow}>
                     <View style={styles.singleOptionView}>
@@ -106,7 +130,7 @@ class TestSeriesView extends React.Component {
                                 <Text>A</Text>
                             </View>
                        
-                            <Text style={styles.optionText}>Stumbled</Text>
+                            <Text style={styles.optionText}>{item.optionA}</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.singleOptionView}>
@@ -115,7 +139,7 @@ class TestSeriesView extends React.Component {
                                 <Text>B</Text>
                             </View>
                        
-                            <Text style={styles.optionText}>Littered</Text>
+                            <Text style={styles.optionText}>{item.optionB}</Text>
                         </TouchableOpacity>
                     </View>
                    
@@ -127,7 +151,7 @@ class TestSeriesView extends React.Component {
                                 <Text>C</Text>
                             </View>
                        
-                            <Text style={styles.optionText}>Stumbled</Text>
+                            <Text style={styles.optionText}>{item.optionC}</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.singleOptionView}>
@@ -136,7 +160,7 @@ class TestSeriesView extends React.Component {
                                 <Text>D</Text>
                             </View>
                        
-                            <Text style={styles.optionText}>Littered</Text>
+                            <Text style={styles.optionText}>{item.optionD}</Text>
                         </TouchableOpacity>
                     </View>
                    
@@ -175,7 +199,17 @@ class TestSeriesView extends React.Component {
         this.setState({ isModalVisible: true });
       }
 
+      renderQuestion=(item,index)=>
+      {
+          return (
+              <View style={{marginBottom:10}}>
+                {this.queSection(index+1,item.correctMarks,item.wrongMarks)}
+                {this.renderQuizQuestion(item)}
+              </View>
+          )
+      }
     render(){
+    
         return (
             <PageStructure
                 iconName={"arrow-left"}
@@ -189,29 +223,42 @@ class TestSeriesView extends React.Component {
                 bottomComponentStyle={{paddingLeft:0,paddingRight:0,paddingBottom:0}}
             >
                 
+                {this.state.isFirstTimeLoading?(
+                    <ActivityIndicator color={theme.accentColor} style={"large"}/>
+                ):(
+                    <>
                     <View style={styles.container}>
-                        <ScrollView>
+                        {/* <ScrollView> */}
                             {/* <View style={{flex: 1}}>
                                 {this.header()}
                             </View> */}
-                            <View >
-                                {this.queSection()}
-                            </View> 
-                            <View >
-                                {this.renderQuizQuestion()}
-                            </View>
-                        </ScrollView>
+                              
+                                     
+                                <FlatList 
+                                    data={Object.values(this.state.questions)} 
+                                    renderItem={({item,index}) =>this.renderQuestion(item,index)}
+                                    keyExtractor={(item)=>item.id} 
+                                    horizontal={false}
+                                    showsHorizontalScrollIndicator={false}
+                                />
+                                {/* {this.renderQuizQuestion(this.state.questions[0])} */}
+                            
+                        {/* </ScrollView> */}
                         {/* <View style={{flex: 1,marginTop:'auto'}}>
                             {this.renderFooter()}
                         </View> */}
                     </View>
                     {this.state.isModalVisible ? (
                         <SeriesModal
+                            totalQuestions={this.state.testSeries.questionCount}
+                            questions={this.state.questions}
                             isModalVisible={this.state.isModalVisible}
                             closeModal={this.closeModal}
                         />
                     ) : (null)}
-              
+              </>
+                )}
+                    
                 
             </PageStructure>
         )
@@ -374,7 +421,7 @@ const styles = StyleSheet.create({
             quizText:{
                 fontSize: 16,
                 color: theme.secondaryColor,
-                textAlign: 'center'
+             
             },
             optionView:{
                 flex: 1,

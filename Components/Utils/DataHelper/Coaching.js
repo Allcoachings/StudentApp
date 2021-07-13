@@ -30,14 +30,18 @@ export   const registerCoaching=(name,directorName,email,phone,password,address,
             headers.append('Access-Control-Allow-Credentials', 'true');
 
             headers.append('GET', 'POST', 'OPTIONS'); 
-            console.log("register   working")
+            
              fetch(serverApiUrl+'/institute/',
             {
                 method: 'POST',  
                 headers,
                 body:formData
             })
-            .then((response)=>{console.log("register inside working");return callback(response)}) 
+            .then((response)=>{
+
+                 
+                return callback(response)
+            }) 
             .catch((error)=>{console.log(error)})
 
        
@@ -75,5 +79,24 @@ export   const fetch_instituteDetails=(instId,callback)=>
    
         
 } 
+
+
+export const fetch_coachingByCategory =(category,offset,dataLimit,callback)=>
+{
+            let headers = new Headers(); 
+            headers.append('Content-Type', 'application/json');  
+            headers.append('Access-Control-Allow-Origin', serverApiUrl);
+            headers.append('Access-Control-Allow-Credentials', 'true'); 
+            headers.append('GET', 'POST', 'OPTIONS');  
+            console.log(serverApiUrl+'institute/category/'+category+"/"+offset+"/"+dataLimit)
+             fetch(serverApiUrl+'institute/category/'+category+"/"+offset+"/"+dataLimit,
+            {
+                method: 'GET',  
+                headers,
+                // body:JSON.stringify({title,description,fees,instId})
+            })
+            .then((response)=>callback(response)) 
+            .catch((error)=>{console.log(error)})
+}
 
 

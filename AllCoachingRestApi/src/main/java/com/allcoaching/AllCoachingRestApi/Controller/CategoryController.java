@@ -45,6 +45,7 @@ public class CategoryController {
     @GetMapping("/dropDownMode/")
     public  Iterable<CategoryDropDownDto>  findAllForDropDown()
     {
+
         return categoryService.findByAllForDropdown();
     }
 

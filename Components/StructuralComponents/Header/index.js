@@ -5,7 +5,7 @@ import HeaderMobile from './HeaderMobile';
 import HeaderWeb from './HeaderWeb';
 import { ScrollView, View,StyleSheet,FlatList,TouchableOpacity,Text } from 'react-native';
 import CardView from '../../Utils/CardView';
-import {fetch_categories} from '../../Utils/DataHelper/Categories';
+import {fetch_categories_normalized} from '../../Utils/DataHelper/Categories';
 import {theme} from '../../config'
 import {tabListInstitute} from '../../../FakeDataService/FakeData'
 class index extends React.Component {
@@ -16,7 +16,7 @@ class index extends React.Component {
 
     componentDidMount=()=>{
         console.log("heeeeeeeeeeeeelllllllllllllllooooooooooooo")
-        fetch_categories(this.categoriesCallBack)
+        fetch_categories_normalized(this.categoriesCallBack)
     }
 
     categoriesCallBack=(response)=>{
@@ -28,12 +28,17 @@ class index extends React.Component {
             })
         }
     }
+    handleCatPress=(item)=>
+    {
+        this.setState({activeTab:item.id})
+        this.props.catOnpress(true,item.id)
+    }
 
     renderTabItems=({item})=>
     {
         return (
-            <TouchableOpacity style={[styles.courseItemContainer,this.state.activeTab==item.key?({backgroundColor:theme.secondaryColor,borderColor:theme.accentColor+'4D'}):({backgroundColor:theme.labelOrInactiveColor+'4D',borderColor:theme.labelOrInactiveColor})]} onPress={()=>this.setState({activeTab:item.key})}> 
-                    <Text style={[styles.courseTitle,this.state.activeTab==item.key?({color:theme.primaryColor}):({color:theme.greyColor})]}>{item.label}</Text>
+            <TouchableOpacity style={[styles.courseItemContainer,this.state.activeTab==item.id?({backgroundColor:theme.secondaryColor,borderColor:theme.accentColor+'4D'}):({backgroundColor:theme.labelOrInactiveColor+'4D',borderColor:theme.labelOrInactiveColor})]} onPress={()=>this.handleCatPress(item)}> 
+                    <Text style={[styles.courseTitle,this.state.activeTab==item.id?({color:theme.primaryColor}):({color:theme.greyColor})]}>{item.name}</Text>
             </TouchableOpacity>
         );
     }

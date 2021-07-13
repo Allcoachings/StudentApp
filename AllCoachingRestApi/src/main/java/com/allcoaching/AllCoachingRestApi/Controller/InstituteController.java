@@ -4,6 +4,8 @@ import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
 import com.allcoaching.AllCoachingRestApi.Service.InstituteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -65,7 +67,12 @@ public class InstituteController {
         return instituteService.findById(id);
     }
 
-
+    @GetMapping("/category/{category}/{page}/{offset}")
+    public Iterable<Institute> findInstituteByCategory(@PathVariable long category,@PathVariable int page,@PathVariable  int offset)
+    {
+        Pageable topTwenty = PageRequest.of(page, offset);
+        return instituteService.findByCategory(category,topTwenty);
+    }
 
 
 }

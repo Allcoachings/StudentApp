@@ -5,7 +5,7 @@ class MobileViewControllerIns extends React.Component {
     state = {  }
     render() {
         return (
-            <MobileDrawerIns/>
+            <MobileDrawerIns insAuth={this.props.insAuth}/>
         );
     }
 }

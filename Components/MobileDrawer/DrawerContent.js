@@ -61,7 +61,7 @@ export function DrawerContent(props){
                         /> */}
                      
                         {renderDrawerItem('Home','home',()=>props.navigation.navigate("Home"))}
-                        {renderDrawerItem('Auth','lock',()=>props.navigation.navigate("Auth"))}
+                        {/* {renderDrawerItem('Auth','lock',()=>props.navigation.navigate("Auth"))} */}
                         {renderDrawerItem('Test Series','lock',()=>props.navigation.navigate("TestSeries"))}
                         {renderDrawerItem('Subscription','lock',()=>props.navigation.navigate("Subscription"))} 
                         {renderDrawerItem('Profile','user',()=>props.navigation.navigate("Profile"))}

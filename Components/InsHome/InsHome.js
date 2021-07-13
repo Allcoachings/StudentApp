@@ -864,41 +864,46 @@ class InsHome extends React.Component {
                                     showsHorizontalScrollIndicator={false}
                                 />
                             </View>
-                            <View style={styles.optionalRow}> 
-                                <TouchableOpacity style={{borderColor:theme.borderColor,borderWidth:1,borderRadius:10,padding:10}}>
-                                    <Text style={{fontSize:10,color:theme.secondaryColor,fontWeight:'bold'}}>
-                                        About Course Chats
-                                    </Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10}}>
-                                    <Text style={{fontSize:10,color:theme.primaryColor}}>
-                                       Fees - {this.state.activeCourseDetail&&this.state.activeCourseDetail.fees}
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-                            <View style={styles.content}>
-                                <TouchableOpacity 
-                                    onPress={()=>{this.activeTab('liveClass')}} style={[styles.liveClassOuter,this.state.activeTab=='liveClass'?({backgroundColor:'red'}):({backgroundColor: theme.primaryColor})]}>
-                                    <View style={styles.liveClassInner}>
-                                        <Feather name="disc" size={13} color={theme.primaryColor}/>
-                                        <Text style={styles.liveClassText}>Live Now</Text>
+                            {this.state.activeCourse?(
+                                <>
+                                <View style={styles.optionalRow}> 
+                                    <TouchableOpacity style={{borderColor:theme.borderColor,borderWidth:1,borderRadius:10,padding:10}}>
+                                        <Text style={{fontSize:10,color:theme.secondaryColor,fontWeight:'bold'}}>
+                                            About Course Chats
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10}}>
+                                        <Text style={{fontSize:10,color:theme.primaryColor}}>
+                                            Fees - {this.state.activeCourseDetail&&this.state.activeCourseDetail.fees}
+                                        </Text>
+                                    </TouchableOpacity>
                                     </View>
-                                </TouchableOpacity>
-                                {this.renderList('Videos', 'play-circle', 'videos')}
-                                {this.renderList('Test Series', 'copy', 'testSeries')}
-                                {this.renderList('Document', 'file', 'document')}
-                                {this.renderList('Time Table', 'clock', 'timeTable')}
-                            </View>
-                            <View style={styles.subOptions}>
-                                {this.showFilters(this.state.activeTab)}
-                            </View>
-                            <View style={styles.dataContainer}>
-                                {this.showContent(this.state.activeTab)}
-                            </View>
-                            <View style={[styles.loadMoreView]}>
+                                    <View style={styles.content}>
+                                    <TouchableOpacity 
+                                        onPress={()=>{this.activeTab('liveClass')}} style={[styles.liveClassOuter,this.state.activeTab=='liveClass'?({backgroundColor:'red'}):({backgroundColor: theme.primaryColor})]}>
+                                        <View style={styles.liveClassInner}>
+                                            <Feather name="disc" size={13} color={theme.primaryColor}/>
+                                            <Text style={styles.liveClassText}>Live Now</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    {this.renderList('Videos', 'play-circle', 'videos')}
+                                    {this.renderList('Test Series', 'copy', 'testSeries')}
+                                    {this.renderList('Document', 'file', 'document')}
+                                    {this.renderList('Time Table', 'clock', 'timeTable')}
+                                    </View>
+                                    <View style={styles.subOptions}>
+                                    {this.showFilters(this.state.activeTab)}
+                                    </View>
+                                    <View style={styles.dataContainer}>
+                                    {this.showContent(this.state.activeTab)}
+                                    </View>
+
+                                    </>
+                            ):(null)}
+                            {/* <View style={[styles.loadMoreView]}>
                                 <View style={{}}><Feather name="chevron-down" size={20}/></View>
                                 <Text style={{margin:5}}>Load More</Text>
-                            </View> 
+                            </View>  */}
 
                    </>
     
@@ -1054,9 +1059,9 @@ const styles = StyleSheet.create({
                         instituteRating:
                         {
                              
-                            alignSelf:'flex-start',
+                            // alignSelf:'flex-start',
                             marginRight:10,
-                            marginTop:3
+                            // marginTop:3
                         },
                         voteCount:
                         {

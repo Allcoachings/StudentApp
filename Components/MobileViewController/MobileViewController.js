@@ -5,7 +5,7 @@ class MobileViewController extends React.Component {
     state = {  }
     render() {
         return (
-            <MobileDrawer/>
+            <MobileDrawer userAuth={this.props.userAuth}/>
         );
     }
 }

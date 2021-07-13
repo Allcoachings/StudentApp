@@ -2,10 +2,13 @@ import React, { Component ,useState} from 'react';
 import { Feather } from '@expo/vector-icons';
 import { View, Text,StyleSheet,ScrollView,TouchableOpacity,Dimensions,Image, Modal, TextInput, ImageBackground } from 'react-native';
 import CardView from '../Utils/CardView';
-import {theme, Assets} from '../config'
+import {theme, Assets,defaultStudentImage} from '../config'
 import { StackActions, ThemeProvider } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import { Rating, AirbnbRating } from 'react-native-ratings';
+import {setUserInfo,userAuthStatus} from '../Actions'
+import {registerStudent} from '../Utils/DataHelper/EnrollStudent'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const width = Dimensions.get('window').width
 const height = Dimensions.get('screen').height
 var rate ;
@@ -13,7 +16,25 @@ var rate ;
 class InfoModal extends React.Component {
     state = {
         heading : 'Personal Information',
+        mobileNumber:this.props.mobileNumber,
+        studentImage:defaultStudentImage
         
+    }
+    registerCallBack=(response)=>
+    {
+            console.log(response.status)   
+            if(response.status === 201)
+            {
+                  this.props.setUserInfo({id:response.headers.map.location,email:this.state.email,name:this.state.name,state:this.state.state,mobileNumber:this.state.mobileNumber,userId:this.state.mobileNumber,studentImage:this.state.studentImage})
+                  this.props.userAuthStatus(true);
+                //   this.props.navigation.navigate("Home")
+                AsyncStorage.setItem('userDetails', JSON.stringify({id:response.headers.map.location,email:this.state.email,name:this.state.name,state:this.state.state,mobileNumber:this.state.mobileNumber,userId:this.state.mobileNumber,studentImage:this.state.studentImage,authType:'user'}))
+
+            }
+    }
+
+    handleSubmitButtonClick=() => {
+        registerStudent(this.state.email,this.state.name,this.state.state,this.state.mobileNumber,this.state.studentImage,this.registerCallBack)
     }
     
     render() {
@@ -39,22 +60,22 @@ class InfoModal extends React.Component {
                             <Text style={{marginLeft:15}}>Full Name</Text>
                         </View>
                         <View style={styles.queDescView}>
-                            <TextInput style={styles.queDesc} onChangeText={(text)=>this.setState({review: text})}  placeholder="Full Name" placeholderTextColor={theme.labelOrInactiveColor}/>
+                            <TextInput style={styles.queDesc} onChangeText={(text)=>this.setState({name: text})}  placeholder="Full Name" placeholderTextColor={theme.labelOrInactiveColor}/>
                         </View>
                         <View style={{marginTop:15}}>
                             <Text style={{marginLeft:15}}>Email </Text>
                         </View>
                         <View style={styles.queDescView}>
-                            <TextInput style={styles.queDesc} onChangeText={(text)=>this.setState({review: text})}  placeholder="Email" placeholderTextColor={theme.labelOrInactiveColor}/>
+                            <TextInput style={styles.queDesc} onChangeText={(text)=>this.setState({email: text})}  placeholder="Email" placeholderTextColor={theme.labelOrInactiveColor}/>
                         </View>
                         <View style={{marginTop:15}}>
                             <Text style={{marginLeft:15}}>State</Text>
                         </View>
                         <View style={styles.queDescView}>
-                            <TextInput style={styles.queDesc} onChangeText={(text)=>this.setState({review: text})}  placeholder="State" placeholderTextColor={theme.labelOrInactiveColor}/>
+                            <TextInput style={styles.queDesc} onChangeText={(text)=>this.setState({state: text})}  placeholder="State" placeholderTextColor={theme.labelOrInactiveColor}/>
                         </View>
                             <View style={{flex:1,flexDirection:'row',justifyContent:'center',marginLeft:'10%',marginRight:'10%'}}>
-                                <TouchableOpacity  style={styles.authModeBtn} >
+                                <TouchableOpacity  style={styles.authModeBtn} onPress={this.handleSubmitButtonClick}>
                                     <Text style={styles.btnText}>Submit</Text>
                                     <Feather name="log-in"  size={20} color={theme.primaryColor} style={{marginTop:Platform.OS=='web'?5:0}}/> 
                                 </TouchableOpacity>
@@ -157,4 +178,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default InfoModal;
+export default connect(null,{setUserInfo,userAuthStatus})(InfoModal);

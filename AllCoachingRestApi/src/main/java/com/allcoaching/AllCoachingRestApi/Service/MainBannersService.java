@@ -1,9 +1,14 @@
 package com.allcoaching.AllCoachingRestApi.Service;
 
+import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Entity.MainBanners;
 import com.allcoaching.AllCoachingRestApi.Respository.MainBannersRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service
 public class MainBannersService {
@@ -17,6 +22,16 @@ public class MainBannersService {
         return mainBannersRepo.save(mainBanners);
     }
 
+    public Iterable<MainBanners> fetchPagedBanners(int offset,int pageSize)
+    {
+        Page<MainBanners> pagedResult = mainBannersRepo.findAll(PageRequest.of(offset,pageSize));
+
+        if(pagedResult.hasContent()) {
+            return pagedResult.getContent();
+        } else {
+            return new ArrayList<MainBanners>();
+        }
+    }
     //fetching all the banners from repo
     public Iterable<MainBanners> findAll()
     {

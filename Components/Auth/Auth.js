@@ -19,7 +19,7 @@ class Auth extends React.Component {
     state = { 
         auth_mode: 0,
         isModalVisible: false,
-        isOtpModal : true,
+        isOtpModal : false,
         mobile:8449129069
       } 
 
@@ -44,9 +44,13 @@ class Auth extends React.Component {
     phoneNumberEntered = (value) => {
         this.setState({mobile : value})
     }
-    openModal = ()=> 
+    openModalOTP = ()=> 
     {
-        this.setState({isModalVisible:true})
+        this.setState({isOtpModal:true})
+    }
+    closeModalOTP = ()=> 
+    {
+        this.setState({isOtpModal:false})
     }
     authModeButton=(label, changeHandler_param)=>
     {
@@ -56,7 +60,10 @@ class Auth extends React.Component {
             </TouchableOpacity>
         )
     }
-
+    openInfoModal=()=>
+    {
+        this.setState({isModalVisible:true})   
+    }
     render() { 
         return (
             
@@ -83,7 +90,7 @@ class Auth extends React.Component {
                                 </View>
                                 
                                 <View style={{marginTop:-(height*0.38),marginBottom:10,}}>
-                                    <Card phoneNumberEntered={this.phoneNumberEntered} openModal={this.openModal}/>
+                                    <Card phoneNumberEntered={this.phoneNumberEntered} openModal={this.openModalOTP}/>
                                 </View>
         
                         </View>
@@ -93,8 +100,8 @@ class Auth extends React.Component {
                         </View>
                     )} 
                     </View>
-                    <OtpVerification mobile={this.state.mobile} isOtpModal = {this.state.isOtpModal}/>
-                    <InfoModal isModalVisible={this.state.isModalVisible} />
+                    <OtpVerification mobile={this.state.mobile} isOtpModal = {this.state.isOtpModal} navigation={this.props.navigation} closeModal = {this.closeModalOTP} openInfoModal={this.openInfoModal}/>
+                    <InfoModal isModalVisible={this.state.isModalVisible} mobileNumber={this.state.mobile} navigation={this.props.navigation}/>
                     </>
             </ScrollView>
         );

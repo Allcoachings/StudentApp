@@ -1,11 +1,14 @@
 package com.allcoaching.AllCoachingRestApi.Respository;
 
 import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeriesQuestions;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface InsTestSeriesQuestionsRepo extends CrudRepository<InsTestSeriesQuestions,Long> {
+public interface InsTestSeriesQuestionsRepo extends PagingAndSortingRepository<InsTestSeriesQuestions,Long> {
 
-    Iterable<InsTestSeriesQuestions> findByTestSeriesId(long id);
+    Page<InsTestSeriesQuestions> findByTestSeriesId(long id, Pageable page);
 }

@@ -25,6 +25,7 @@ import Settings from '../Settings/Settings';
 import Downloads from '../Downloads/Downloads';
 import PdfViewer from '../PdfViewer/PdfViewer'
 import VideoPlayerCustom from '../VideoPLayer/VideoPlayerCustom';
+import WebViewCustom from '../WebView/WebViewCustom';
 // import ReviewAndRatings from '../ReviewAndRatings/ReviewAndRatings';
 const Drawer = createDrawerNavigator();
 class index extends React.Component {
@@ -37,8 +38,10 @@ class index extends React.Component {
                     {/* <Drawer.Navigator  >
                     </Drawer.Navigator> */}
                     <Drawer.Navigator drawerContent={props => <DrawerContent {...props} /> } > 
-                        <Drawer.Screen name="Home" component={Home} /> 
-                        <Drawer.Screen name="Auth" component={Auth}  /> 
+
+                    {this.props.userAuth ?(
+                        <>
+                        <Drawer.Screen name="Home" component={Home} />  
                         <Drawer.Screen name="Institute"  component={InstituteView} />
                         <Drawer.Screen name="StudentInsView"  component={InstituteView} />
                         <Drawer.Screen name="TestSeries" component={TestSeriesIns}  /> 
@@ -55,13 +58,16 @@ class index extends React.Component {
                         <Drawer.Screen name="Profile" component={UserProfile} />
                         <Drawer.Screen name="Settings" component={Settings} />
                         <Drawer.Screen name="Downloads" component={Downloads} />
-<<<<<<< HEAD
                         
                         <Drawer.Screen name="pdfViewer" component={PdfViewer} /> 
                         <Drawer.Screen name="videoplayer" component={VideoPlayerCustom} />
-=======
                         <Drawer.Screen name="Payment" component={Payment} />
->>>>>>> 148d4d298763d2b6fdf7103e475eeb83255b2010
+                        <Drawer.Screen name="webview" component={WebViewCustom}/>
+                        </>
+                    ):(
+                        <Drawer.Screen name="Auth" component={Auth}  /> 
+                    )}
+                        
                         {/* <Drawer.Screen 
                             name="Home" 
                             component={Home} 

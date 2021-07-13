@@ -47,6 +47,7 @@ class SocialAuth extends React.Component {
         {
             response.json().then(data=>
             {
+                console.log(data)
                 this.setState({loader:false})
                 this.props.openModal()
             })

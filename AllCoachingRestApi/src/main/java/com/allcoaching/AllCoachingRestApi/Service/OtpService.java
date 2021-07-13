@@ -16,12 +16,11 @@ public class OtpService {
 
     public Otp generateOtp(String mobileNumber)
     {
-
         Random random = new Random();
         int suffix = 100000 + random.nextInt(900000);
         long prefix=otpRepo.count()+1;
         String otp = prefix+""+suffix;
-
+        otp = otp.substring(0,6);
         return otpRepo.save(new Otp(mobileNumber,otp));
     }
 

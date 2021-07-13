@@ -9,19 +9,32 @@ import CardView from '../Utils/CardView'
 class SeriesModal extends React.Component {
   state = {
     modalVisible: true,
+    correctQues:0,
+    wrongQues:0,
+    Unattempted:this.props.totalQuestions,
+    questions:Object.values(this.props.questions)
     
   };
 
-  renderQuestion=({item})=>{
+  componentDidMount() {
+    
+    // let questions;
+    // for(var i = 1;i<=this.props.totalQuestions;i++)
+    // {
+    //   questions = {...questions,[i]:{count:i,status:'unattempted'}}
+    // }
+  }
+  renderQuestion=({item,index})=>{
     return(
       <TouchableOpacity style={styles.queView}>
-        <Text style={styles.queno}>{item.queno}</Text>
+        <Text style={styles.queno}>{index+1}</Text>
       </TouchableOpacity>
     )
   }
    
   render() {
     const { isModalVisible,closeModal } = this.props;
+    console.log(this.state.questions)
     return (
           CardView(<Modal 
             animationIn="slideInLeft"
@@ -112,15 +125,15 @@ class SeriesModal extends React.Component {
                 <View style={styles.numRow}>
                   <View style={styles.rowElement}>
                     <Text style={{fontSize:30,color: theme.featureYesColor}}> • </Text>
-                    <Text style={{fontSize: 12,color: theme.greyColor}}>Correct (2)</Text>
+                    <Text style={{fontSize: 12,color: theme.greyColor}}>Correct ({this.state.correctQues})</Text>
                   </View>
                   <View style={styles.rowElement}>
                   <Text style={{fontSize:30,color: theme.featureNoColor}}> • </Text>
-                    <Text style={{fontSize: 12,color: theme.greyColor}}>Wrong (2)</Text>
+                    <Text style={{fontSize: 12,color: theme.greyColor}}>Wrong ({this.state.wrongQues})</Text>
                   </View>
                   <View style={styles.rowElement}>
                    <Text style={{fontSize:30,color:theme.labelOrInactiveColor}}> • </Text> 
-                    <Text style={{fontSize: 12,color: theme.greyColor}}>Unattempted (2)</Text>
+                    <Text style={{fontSize: 12,color: theme.greyColor}}>Unattempted ({this.state.Unattempted})</Text>
                   </View>
                    
                 </View>
@@ -129,7 +142,7 @@ class SeriesModal extends React.Component {
 
                 <View style={styles.questions}>
                   <FlatList
-                      data={singlequedata.data}
+                      data={this.state.questions}
                       renderItem={this.renderQuestion} 
                       numColumns={7}
                       keyExtractor={(item) => item.id}

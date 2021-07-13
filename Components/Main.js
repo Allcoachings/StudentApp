@@ -7,10 +7,10 @@ import MobileViewController from './MobileViewController/MobileViewController'
 import WebViewController from './WebViewController/WebViewController'
 import MobileViewControllerIns from './MobileViewControllerIns/MobileViewControllerIns' 
 import WebViewControllerIns from './WebViewControllerIns/WebViewControllerIns'
-import {screenWidthConfigChange} from './Actions'
+import {screenWidthConfigChange,setInstituteAuth,userAuthStatus,setUserInfo,setInstituteDetails} from './Actions'
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('screen').height; 
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 class Main extends React.Component {
     state = {
         width:windowWidth,
@@ -21,6 +21,26 @@ class Main extends React.Component {
 
     componentDidMount()
     {
+        
+        AsyncStorage.getItem('authInfo').then(data => {
+            if(data)
+            {
+                data = JSON.parse(data)
+                switch(data.authType)
+                {
+                    case 'ins':
+                            this.props.setInstituteAuth(true);
+                            this.props.setInstituteDetails(data);
+                    break;
+                    case 'user':
+                        this.props.userAuthStatus(true);
+                        this.props.setUserInfo(data)
+                    break;
+                }
+                console.log(data)
+            }
+            console.log("nodata")
+        }) 
         this.props.screenWidthConfigChange(windowWidth)
         Dimensions.addEventListener('change',({ window, screen })=>{
             this.setState({width: window.width, height:screen.height})
@@ -44,13 +64,13 @@ class Main extends React.Component {
     {
         if(screenWidth > screenMobileWidth && Platform.OS === 'web')
         { 
-              return(<WebViewControllerIns  userAuth={this.props.userAuth}/>)
+              return(<WebViewControllerIns  insAuth={this.props.insAuth}/>)
         }
         else  
         {
-              return(<MobileViewControllerIns userAuth={this.props.userAuth}/>)
+              return(<MobileViewControllerIns insAuth={this.props.insAuth}/>)
         }
-        // return(<MobileViewController userAuth={this.props.userAuth}/>)
+         
     }
 
     switchRender=(mode)=>
@@ -91,9 +111,10 @@ class Main extends React.Component {
     }
 
     render() {
+
         return( 
             <SafeAreaProvider  style={styles.safeAreaView}>
-            {this.switchRender(this.state.mode)} 
+                {this.switchRender(this.state.mode)}
             </SafeAreaProvider>
             )
     }
@@ -173,7 +194,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state)=>
 {
     return {
-        userAuth: state.user.userAuthStatus
+        userAuth: state.user.userAuthStatus,
+        insAuth:state.institute.authStatus,
     }
 }
-export default connect(mapStateToProps,{screenWidthConfigChange})(Main);
+export default connect(mapStateToProps,{screenWidthConfigChange,userAuthStatus,setInstituteAuth,setUserInfo,setInstituteDetails})(Main);

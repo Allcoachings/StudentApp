@@ -49,7 +49,7 @@ export const fetch_institute_courses=(instId,callback)=>
 
             headers.append('GET', 'POST', 'OPTIONS'); 
 
-             fetch(serverApiUrl+'/institute/'+instId+"/course",
+             fetch(serverApiUrl+'institute/'+instId+"/course",
             {
                 method: 'GET',  
                 headers,
