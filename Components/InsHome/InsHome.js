@@ -212,8 +212,9 @@ class InsHome extends React.Component {
                         {
                             let courseBanners = this.state.courseBanners;
                             let details = response.headers.map.location.split("*");
-                            console.log(details)
-                            courseBanners.unshift({id:details[0],bannerImageLink:serverBaseUrl+details[1],courseId:this.state.activeCourse})
+                             
+                            courseBanners.unshift({id:details[0],bannerImageLink:details[1],courseId:this.state.activeCourse})
+                            this.setState({courseBanners:courseBanners})
                 
                         }
                     })

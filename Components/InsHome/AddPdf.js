@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View,StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import {Text, View,StyleSheet, TextInput, TouchableOpacity, ScrollView,ActivityIndicator } from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {theme,screenMobileWidth, serverBaseUrl} from '../config'
 import CardView from '../Utils/CardView';
@@ -13,7 +13,8 @@ class AddPdf extends React.Component {
         title: '',
         document: '',
         playlist:[],
-        selectedPlaylist:-1
+        selectedPlaylist:-1,
+        loadingAddDocument:false
     }
     // async docPicker() {
     //         try 
@@ -84,12 +85,14 @@ class AddPdf extends React.Component {
         }
         handleAddDocumentCallBack=(response)=>
         {
+            this.setState({loadingAddDocument:false})
                 if(response.status==201)
                 {     
                     let details = response.headers.map.location.split("*");
                     this.props.route.params.appendDocument({id:details[0],fileAddr:serverBaseUrl+details[1],name:this.state.title,courseId:this.props.route.params.courseId})
                     this.props.navigation.goBack();
                 }
+                
         }
         handlePlaylistCallback=(response)=>
         {
@@ -124,7 +127,12 @@ class AddPdf extends React.Component {
         {
                 if(this.verify(this.state))
                 {
-                    addCourseDocument(this.state.document,this.state.title,this.props.route.params.courseId,this.handleAddDocumentCallBack,this.state.selectedPlaylist)
+                    if(!this.state.loadingAddDocument)
+                    {
+                        this.setState({loadingAddDocument:true})
+                        addCourseDocument(this.state.document,this.state.title,this.props.route.params.courseId,this.handleAddDocumentCallBack,this.state.selectedPlaylist)
+                    }
+                    
                 }
         }
 
@@ -194,7 +202,12 @@ class AddPdf extends React.Component {
                     </View>
                     <View style={styles.btnView}>
                         <TouchableOpacity style={styles.submitButton} onPress={()=>this.handleSubmitButtonClick()}>
+                            {this.state.loadingAddDocument?(
+                                <ActivityIndicator color={theme.primaryColor} size={"large"}/>
+                            ):(
                                 <Text style={styles.submitButtonText}>Submit</Text>
+                            )}
+                                
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.addMoreButton}>
                                 <Text style={styles.addMoreButtonText}>Add More+</Text>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View,StyleSheet, TextInput, TouchableOpacity, ScrollView} from 'react-native';
+import {Text, View,StyleSheet, TextInput, TouchableOpacity, ScrollView,ActivityIndicator} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {theme,screenMobileWidth, serverBaseUrl, videoDefaultThumbnail} from '../config'
 import CardView from '../Utils/CardView';
@@ -15,7 +15,8 @@ class AddVideo extends React.Component {
         video: "",
         loadingPlaylist:true,
         selectedPlaylist:-1,
-        playlist:[]
+        playlist:[],
+        loadingAddVideo:false
     }
     handleAddVideoClick=()=>
     {
@@ -34,14 +35,21 @@ class AddVideo extends React.Component {
             {     
                 let details = response.headers.map.location.split("*");
                 this.props.route.params.appendVideo({id:details[0],videoLocation:serverBaseUrl+details[1],name:this.state.title,description:this.state.description,isDemo:false,courseId:this.props.route.params.courseId,videoThumb:videoDefaultThumbnail})
+            
                 this.props.navigation.goBack();
-            }
+            } 
+            this.setState({loadingAddVideo:false})
     }
     handleSubmitButtonClick=()=>
     {
             if(this.verify(this.state))
             {
+                if(!this.state.loadingAddVideo)
+                {
+
+                this.setState({loadingAddVideo:true});
                 addCourseVideo(this.state.video,this.state.title,this.state.description,false,'0',this.props.route.params.courseId,this.handleAddVideoCallBack,this.state.selectedPlaylist)
+                }
             }
     }
 
@@ -177,7 +185,12 @@ class AddVideo extends React.Component {
                     </View>
                     <View style={styles.btnView}>
                         <TouchableOpacity style={styles.submitButton} onPress={this.handleSubmitButtonClick}>
+                            {this.state.loadingAddVideo?(
+                                <ActivityIndicator color={theme.primaryColor} style={"large"}/>
+                            ):(
                                 <Text style={styles.submitButtonText}>Submit</Text>
+                            )}
+                                
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.addMoreButton}>
                                 <Text style={styles.addMoreButtonText}>Add More+</Text>

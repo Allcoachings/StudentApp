@@ -178,7 +178,8 @@ class AddTest extends React.Component {
                             {CardView(
                                 <TextInput 
                                     placeholderTextColor={theme.greyColor} 
-                                    placeholder="Duration" 
+                                    placeholder="Duration"  
+                                    keyboardType='numeric'
                                     onChangeText={(text)=>this.setState({timeDuration: text})} 
                                     style={styles.inputField}
                                 />, {borderRadius: 10}
@@ -193,7 +194,7 @@ class AddTest extends React.Component {
                     <View style={styles.btnView}>
                         <TouchableOpacity style={styles.submitButton} onPress={()=>this.handleSubmitBtn()}>
                                 {this.state.addSeriesLoading?(
-                                    <ActivityIndicator color={theme.accentColor} size={"large"}/>
+                                    <ActivityIndicator color={theme.primaryColor} size={"large"}/>
                                 ):(
                                     <Text style={styles.submitButtonText}>Submit</Text>
                                 )}

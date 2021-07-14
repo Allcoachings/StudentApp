@@ -318,7 +318,7 @@ export   const addCourseDocument =(document,name,courseId,callback,playlistId=-1
             headers.append('Access-Control-Allow-Credentials', 'true');
 
             headers.append('GET', 'POST', 'OPTIONS');  
-             fetch(serverApiUrl+'/institute/course/document/',
+             fetch(serverApiUrl+'institute/course/document/',
             {
                 method: 'POST',  
                 headers,

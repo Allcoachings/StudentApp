@@ -31,8 +31,7 @@ public class CourseDocumentController {
     {
         DocumentPlaylist documentPlaylist_saved =  courseDocumentService.createPlaylist(documentPlaylist);
         URI location  = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
+                .fromPath("{id}")
                 .buildAndExpand(documentPlaylist_saved.getId())
                 .toUri();
 
