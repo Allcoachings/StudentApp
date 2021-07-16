@@ -21,7 +21,7 @@ export   const fetch_categories=(callback)=>
     .then((response)=>callback(response)) 
     .catch((error)=>{console.log(error)})  
 } 
-export   const fetch_categories_normalized=(callback)=>
+export   const fetch_categories_normalized=(type,callback)=>
 {
     let headers = new Headers();
 

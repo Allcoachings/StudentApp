@@ -118,9 +118,10 @@ class Feed extends React.Component {
             <PageStructure
                 iconName={"menu"}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
-                // headerComponent={this.header()}
-                // replaceHeader={true}
-                headerStyle={{flex:0.11, padding: 5}}
+                catOnpress={this.toggleCatMode}
+                scrollMode={'scroll'}
+                catInHeader={true}
+                type="feed"
             >
                 <ScrollView>
                     <View style={styles.container}>

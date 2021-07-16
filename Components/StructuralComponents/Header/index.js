@@ -11,12 +11,20 @@ import {tabListInstitute} from '../../../FakeDataService/FakeData'
 class index extends React.Component {
     state = { 
         activeTab: 1,
-        tabListInstitute:[]
-     }
+        tabListInstitute:[],
+    }
 
     componentDidMount=()=>{
-        console.log("heeeeeeeeeeeeelllllllllllllllooooooooooooo")
-        fetch_categories_normalized(this.categoriesCallBack)
+        if(this.props.type)
+        {
+            console.log("type")
+            fetch_categories_normalized('feed',this.categoriesCallBack)
+        }  
+        else
+        {
+            console.log("not type")
+            fetch_categories_normalized('main',this.categoriesCallBack)
+        }  
     }
 
     categoriesCallBack=(response)=>{
@@ -28,6 +36,7 @@ class index extends React.Component {
             })
         }
     }
+
     handleCatPress=(item)=>
     {
         this.setState({activeTab:item.id})

@@ -756,7 +756,6 @@ class InsHome extends React.Component {
         switch(item.feed.feed.feedType)
         {
             case 1:
-               
                 return (
                     <FeedImage item={item}/>
                 )
@@ -846,9 +845,13 @@ class InsHome extends React.Component {
                 )
             
             case 3:
+                // console.log(this.state.feeds)
                 return(
                     <View style={styles.container}>
-
+                        <TouchableOpacity style={{backgroundColor:theme.textColor,borderColor:theme.labelOrInactiveColor,borderWidth:1, padding:4, borderRadius:6, marginHorizontal:5, marginBottom:7, justifyContent: 'center', alignItems: 'center'}} onPress={()=>this.openAddFeedModal()}>
+                            <Text style={{color:theme.primaryColor, fontSize:16}}>Add</Text>
+                            
+                        </TouchableOpacity>
                         <FlatList
                             data={this.state.feeds}
                             renderItem={({item}) => this.renderFeedItem(item)}
@@ -908,7 +911,7 @@ class InsHome extends React.Component {
                             <View style={styles.instituteheaderMeta}>
                                 <View style={{display: 'flex', flexDirection: 'row'}}>
                                     <Text style={styles.instituteheaderText} numberOfLines={3}>{institute.name}</Text>
-                                    <TouchableOpacity onPress={()=>this.openAddFeedModal()}>
+                                    <TouchableOpacity onPress={null}>
                                         <Feather name="edit-3" size={18} color={theme.secondaryColor} />
                                     </TouchableOpacity>
                                 </View>
@@ -944,7 +947,7 @@ class InsHome extends React.Component {
                                         <Text style={[styles.btnText,{color:this.state.tabtoshow==3?theme.primaryColor:theme.greyColor}]} >Feed</Text>
                                     </TouchableOpacity>
                             </View>
-                                {this.switchTabRender(this.state.tabtoshow)}
+                            {this.switchTabRender(this.state.tabtoshow)}
 
                             
                         </View>

@@ -1,55 +1,57 @@
 import React, { Component } from 'react';
-import { View, Text,Image,StyleSheet } from 'react-native';
+import { View, Text,Image,StyleSheet, TouchableOpacity } from 'react-native';
 import {serverBaseUrl, theme} from '../config';
-import {Feather} from '@expo/vector-icons';
+import {Feather, AntDesign, FontAwesome} from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
 import moment from 'moment'
 class FeedImage extends Component {
   state={}
 
   render() {
-      const{feed,posterObject} = this.props.item
-console.log(serverBaseUrl+posterObject.logo)
+    const{feed,posterObject} = this.props.item
+    console.log(serverBaseUrl+feed.feed.photoLocation )
     return(
-        CardView(
-            <View style={styles.boxView}>
-                <View style={styles.rowView}>
-                    <View  style={{flexDirection: 'row',alignItems: 'center'}}>
-                        <Image source={{ uri: serverBaseUrl+posterObject.logo}} style={styles.circleView}/>
-                        <Text style={styles.coaching}>{posterObject.name}{' • '}<Text style={styles.timeDateText}>{moment(feed.feed.time_stamp).fromNow()}</Text></Text>
+        // CardView(
+            <View style={{flexDirection: 'column', padding: 5}}>
+                <View style={styles.boxView}>
+                    <View style={{flex: 0.1, padding: 5,}}>
+                        <Image source={{ uri: serverBaseUrl+posterObject.logo}} style={styles.circleView}/> 
                     </View>
-                    
-                    <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
-                </View>
-                 
-                <View style={styles.innerBoxView}>
-                    {feed.feed.description?( 
-                            <View style={{marginVertical:10}}>
-                                <Text style={{color: theme.greyColor}}>
-                                    {feed.feed.description}
-                                </Text>
+                    <View style={styles.innerBoxView}>
+                        <View style={styles.rowView}>
+                            <View  style={{flexDirection: 'row',alignItems: 'center'}}>
+                                <Text style={styles.coaching}>{posterObject.name}{' • '}<Text style={styles.timeDateText}>{moment(feed.feed.time_stamp).fromNow()}</Text></Text>
                             </View>
-                        ):(null)}
-                    <Image source={{ uri: serverBaseUrl+feed.feed.photoLocation }} style={styles.img}/>
-                    
-                    
-                    <View style={styles.bottomRowContainer}>
-                        <View style={styles.likeView}>
-                            <Feather name="thumbs-up" size={18} color={theme.labelOrInactiveColor} />
-                            <Text style={styles.text}>Like</Text>
+                            
+                            <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
                         </View>
-                        <View style={styles.likeView}>
-                            <Feather name="message-square" size={18} color={theme.labelOrInactiveColor} />
-                            <Text style={styles.text}>Comment</Text>
+                        {feed.feed.description?( 
+                                <View style={{marginVertical:10}}>
+                                    <Text style={{color: theme.greyColor}}>
+                                        {feed.feed.description}
+                                    </Text>
+                                </View>
+                            ):(null)}
+                        <Image source={{ uri: serverBaseUrl+feed.feed.photoLocation }} style={styles.img}/>
+                        <View style={styles.bottomRowContainer}>
+                            <TouchableOpacity style={styles.likeView}>
+                                <AntDesign name="hearto" size={22} color={theme.greyColor} />
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.likeView}>
+                                <FontAwesome name="comments" size={22} color={theme.greyColor} />
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.likeView}>
+                                <AntDesign name="sharealt" size={22} color={theme.greyColor} />
+                            </TouchableOpacity>
                         </View>
-                        <View style={styles.likeView}>
-                            <Feather name="send" size={18} color={theme.labelOrInactiveColor} />
-                            <Text style={styles.text}>Share</Text>
-                        </View>
+                        
                     </View>
+                    
                 </View>
-            </View>,{width: '100%', padding: 6, marginBottom: 10}
-        )
+                <View style={{borderTopWidth: 0.8, borderColor: theme.labelOrInactiveColor, marginVertical: 10, width: '100%'}}/>
+            </View>
+            // ,{width: '100%', padding: 6, marginBottom: 10}
+        // )
     )
   }
 }
@@ -57,10 +59,11 @@ const styles = StyleSheet.create({
     boxView:
     {
         display: 'flex',
-        flexDirection: 'column',
-        // borderWidth: 1,
+        flexDirection: 'row',
+        flex: 1,
+        justifyContent: 'space-between',
         borderColor: theme.labelOrInactiveColor,
-        padding: 2
+        // padding: 2
     },
         rowView:
         {
@@ -81,7 +84,7 @@ const styles = StyleSheet.create({
             coaching:
             {
                 fontSize: 15,
-                marginLeft:10,
+                // marginLeft:10,
                 fontWeight: 'bold',
                 color: theme.secondaryColor
             },
@@ -93,11 +96,12 @@ const styles = StyleSheet.create({
                 }, 
         innerBoxView:
         {
-            // borderWidth: 1,
+            flex: 0.85,
+            flexDirection: 'column',
             borderColor: theme.labelOrInactiveColor,
             borderRadius: 2,
-            marginTop: 10,
-            padding: 10,
+            // marginTop: 10,
+            padding: 5,
         },
             img:
             {
@@ -113,10 +117,7 @@ const styles = StyleSheet.create({
             },
                 likeView:
                 {
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-evenly',
-                    alignItems: 'center'
+                    // marginRight: 15
                 },
                     text:
                     {
