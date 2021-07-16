@@ -93,12 +93,58 @@ public class FeedService {
                     return new ArrayList<FeedDto>();
         }
     }
+
     //fetching All Feed items of institute
     public Iterable<FeedDto> getAllFeedIns(int page, int pageSize,long insId)
     {
 
         //fetching data from repo pagination implemented
         Page<Feed> pagedFeeds = feedRepo.findByInsId(insId,PageRequest.of(page,pageSize));
+
+        //created list for returing multiple FeedDtos
+        List<FeedDto> feedDtos = new ArrayList<>();
+
+        if(pagedFeeds.hasContent())
+        {
+            pagedFeeds.forEach(item->{
+
+
+                FeedContentDto feedContentDto = new FeedContentDto(item);
+                FeedDto feedDto = new FeedDto(feedContentDto);
+
+                //detecting poster type is it a institute or a student
+                switch (item.getPostedBy())
+                {
+                    case 1: //it is a institute
+                        feedDto.setPosterObject( instituteRepo.findById(item.getInsId()));
+                        break;
+                    case 2://it is a student
+                        feedDto.setPosterObject( studentRepo.findById(item.getStudentId()));
+                        break;
+                }
+                //checking if it is a poll feed
+                if(item.getFeedType()==2)
+                {
+                    //if yes then fetching poll options for that feed
+                    feedContentDto.setFeedPollOptions(pollOptionsRepo.findByFeedId(item.getId()));
+
+                }
+                //adding to list of feeddtos
+                feedDtos.add(feedDto);
+            });
+
+            return feedDtos;
+        }else
+        {
+                    return new ArrayList<FeedDto>();
+        }
+    }
+    //fetching All Feed items of having a particular tag
+    public Iterable<FeedDto> getAllFeedByTagContaining(int page, int pageSize,String tags)
+    {
+
+        //fetching data from repo pagination implemented
+        Page<Feed> pagedFeeds = feedRepo.findByTagsContaining(tags,PageRequest.of(page,pageSize));
 
         //created list for returing multiple FeedDtos
         List<FeedDto> feedDtos = new ArrayList<>();

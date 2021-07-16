@@ -13,4 +13,6 @@ public interface FeedRepo extends PagingAndSortingRepository<Feed,Long> {
 
 
 Page<Feed> findByInsId(long insId, Pageable page);
+
+Page<Feed> findByTagsContaining(String tags,Pageable page);
 }
