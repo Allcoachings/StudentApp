@@ -46,19 +46,19 @@ class PageStructure extends React.Component {
                         <ScrollView style={{flex:this.props.catInHeader?0.2:0.08}} >
                             <View style={[styles.containerHeader,this.props.headerStyle]}> 
                                 <Header 
-                                iconName={this.props.iconName}
-                                btnHandler={this.props.btnHandler}
-                                catInHeader={this.props.catInHeader}
-                                replaceHeader={this.props.replaceHeader}
-                                headerComponent={this.props.headerComponent}
-                                titleonheader={this.props.titleonheader}
-                                notificationreplaceshare={this.props.notificationreplaceshare}
-                                rightIconOnPress={this.props.rightIconOnPress}
-                                catStyle={this.state.catStyle}
-                                nosearchIcon={this.props.nosearchIcon}
-                                noNotificationIcon={this.props.noNotificationIcon}
-                                catOnpress={this.props.catOnpress}
-                                type={this.props.type}
+                                    iconName={this.props.iconName}
+                                    btnHandler={this.props.btnHandler}
+                                    catInHeader={this.props.catInHeader}
+                                    replaceHeader={this.props.replaceHeader}
+                                    headerComponent={this.props.headerComponent}
+                                    titleonheader={this.props.titleonheader}
+                                    notificationreplaceshare={this.props.notificationreplaceshare}
+                                    rightIconOnPress={this.props.rightIconOnPress}
+                                    catStyle={this.state.catStyle}
+                                    nosearchIcon={this.props.nosearchIcon}
+                                    noNotificationIcon={this.props.noNotificationIcon}
+                                    catOnpress={this.props.catOnpress}
+                                    type={this.props.type}
                                 />  
                             </View>
                             <View style={[styles.pageLayout,this.props.screenWidth<=screenMobileWidth?({   margin:'2%'}):(null)]}> 
@@ -70,9 +70,7 @@ class PageStructure extends React.Component {
                                     null
                                 )} 
                                 <View style={styles.pageContent}>
-                                    
-                                        {this.props.children}
-                                    
+                                    {this.props.children}
                                 </View>
                             </View>
                         </ScrollView>

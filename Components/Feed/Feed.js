@@ -113,6 +113,22 @@ class Feed extends React.Component {
         )
     }
 
+    toggleCatMode=(mode,catid)=>
+    {
+        switch(mode)
+        {
+            case true:
+                this.setState({offset:0,loadingData:true,},()=>
+                {
+                    fetch_feedByCategory(this.state.catid,this.state.offset,dataLimit,this.coachingCallBack)
+                })
+                break;
+            case false:
+            break;
+        }
+        
+    }
+
     render() {
         return(
             <PageStructure
