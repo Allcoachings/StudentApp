@@ -3,6 +3,7 @@ package com.allcoaching.AllCoachingRestApi.Service;
 import com.allcoaching.AllCoachingRestApi.Entity.Category;
 import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Respository.CategoryRepo;
+import com.allcoaching.AllCoachingRestApi.Respository.FeedCategoryRepo;
 import com.allcoaching.AllCoachingRestApi.dto.CategoryDropDownDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -52,6 +53,8 @@ public class CategoryService {
     {
         return categoryRepo.findByAllForDropdown();
     }
+
+
 
 
 }
