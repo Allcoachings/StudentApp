@@ -1,5 +1,6 @@
 import React, {useRef, useState, useEffect} from 'react';
 import { Text, View, StyleSheet, Animated } from 'react-native'; 
+import { theme } from '../config'
 
 function useInterval(callback, delay) {
   const savedCallback = useRef();
@@ -35,7 +36,7 @@ const RatingBar = (props) => {
   useEffect(() => {
     Animated.timing(animation.current, {
       toValue: progress,
-      duration: 100
+      duration: props.duration||100
     }).start();
   },[progress])
 
@@ -46,7 +47,11 @@ const RatingBar = (props) => {
   })
   return (
     <View style={styles.container}> 
-      <View style={[styles.progressBar,{backgroundColor: props.backgroundColor,borderRadius: props.borderRadius, height:  props.height,}]}>
+      <View style={[styles.progressBar,{backgroundColor: props.backgroundColor,borderRadius: props.borderRadius, height:  props.height,},props.style]}>
+        {props.label?( 
+            <Text style={[styles.ratingLabel,props.labelStyle]}>{props.label}</Text>
+        ):(null)}
+      
         <Animated.View style={[StyleSheet.absoluteFill], {backgroundColor: props.progressColor, width ,borderRadius: props.borderRadius}}/>
       </View> 
     </View>
@@ -64,8 +69,22 @@ const styles = StyleSheet.create({
     padding: 2,
   },
   progressBar: {
+    zIndex: 1,
     flexDirection: 'row', 
     width: '100%', 
+    // flexShrink: 1
     
-  }
+  },
+    ratingLabel:
+    {
+      zIndex: 1000,
+      position: 'absolute',
+      left:0,
+      paddingHorizontal:10,
+      top:3,
+      color:theme.greyColor,
+      flexWrap:'wrap',
+      width:'100%'
+    }
+
 });

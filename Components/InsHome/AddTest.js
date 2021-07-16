@@ -7,6 +7,8 @@ import { Feather } from '@expo/vector-icons';
 import {connect} from 'react-redux'
 import {addTestSeries} from '../Utils/DataHelper/Course'
 
+import { RadioButton } from 'react-native-paper';
+
 import { Picker } from 'native-base';
 class AddTest extends React.Component {
     state = {
@@ -25,7 +27,8 @@ class AddTest extends React.Component {
                 testSeriesId:1
             }
         },
-        addSeriesLoading:false
+        addSeriesLoading:false,
+        isPractice:true
     }
 
     addQuestions=()=>
@@ -115,11 +118,37 @@ class AddTest extends React.Component {
                     </View> ,{marginTop: 10, padding: 12})}    
                 </View>                            
                 <View style={styles.inputView}>
+                    <Text style={styles.labelText}>Correct Marks</Text>
+                        {CardView(
+                            <TextInput 
+                                placeholderTextColor={theme.greyColor} 
+                                placeholder="Correct Marks" 
+
+                                keyboardType='numeric'
+                                onChangeText={(text)=>this.onTypeHandler('correctMarks',idx,text)}   
+                                style={styles.inputField}
+                            />, {borderRadius: 10}
+                        )}
+                </View>
+                <View style={styles.inputView}>
+                    <Text style={styles.labelText}>Wrong Marks</Text>
+                        {CardView(
+                            <TextInput 
+                                placeholderTextColor={theme.greyColor} 
+                                placeholder="Wrong Marks" 
+                                
+                                keyboardType='numeric'
+                                onChangeText={(text)=>this.onTypeHandler('wrongMarks',idx,text)}   
+                                style={styles.inputField}
+                            />, {borderRadius: 10}
+                        )}
+                </View>
+                <View style={styles.inputView}>
                     <Text style={styles.labelText}>Explanation</Text>
                         {CardView(
                             <TextInput 
                                 placeholderTextColor={theme.greyColor} 
-                                placeholder="Add Question" 
+                                placeholder="Explanation" 
                                 onChangeText={(text)=>this.onTypeHandler('explanation',idx,text)} 
                                 multiline={true} 
                                 numberOfLines={6} 
@@ -136,7 +165,7 @@ class AddTest extends React.Component {
         if(response.status==201)
         {
             this.setState({addSeriesLoading:false})
-            this.props.route.params.appendCourseTestSeries({title:this.state.title,questionCount:this.state.questionCount,timeDuration:this.state.timeDuration,isPractice:false,courseId:this.props.route.params.courseId})
+            this.props.route.params.appendCourseTestSeries({title:this.state.title,questionCount:this.state.questionCount,timeDuration:this.state.timeDuration,isPractice:this.state.isPractice,courseId:this.props.route.params.courseId,maxMarks:this.state.maxMarks})
             this.props.navigation.goBack()
         }
     }
@@ -145,8 +174,9 @@ class AddTest extends React.Component {
         if(!this.state.addSeriesLoading)
         {
             this.setState({addSeriesLoading:true})
-            let series = {title:this.state.title,questionCount:this.state.questionCount,timeDuration:this.state.timeDuration,isPractice:false,courseId:this.props.route.params.courseId}
+            let series = {isAdmin:true,title:this.state.title,questionCount:this.state.questionCount,timeDuration:this.state.timeDuration,isPractice:this.state.isPractice,courseId:this.props.route.params.courseId,maxMarks:this.state.maxMarks}
             addTestSeries(series,this.state.questionData,this.handleAddSeriesCallback)
+            console.log(series)
         }
         
     }
@@ -174,7 +204,30 @@ class AddTest extends React.Component {
                             )}
                     </View>
                     <View style={styles.inputView}>
-                            <Text style={styles.labelText}>Duration(mins)</Text>
+                            <Text style={styles.labelText}>Test Type</Text>
+
+                            <View style={{flexDirection: 'row',alignItems: 'center'}}>
+                                <RadioButton
+                                    value={true}
+                                    label="Practice"
+                                    status={this.state.isPractice ? 'checked' : 'unchecked'}
+                                    onPress={() => { this.setState({ isPractice: true }); }}
+                                    />
+                                <Text>Practice</Text>
+                            </View>
+                            <View style={{flexDirection: 'row',alignItems: 'center'}}>
+                            <RadioButton
+                                value={false}
+                                label="Exam"
+                                status={!this.state.isPractice ? 'checked' : 'unchecked'}
+                                onPress={() => { this.setState({ isPractice: false }); }}
+                                />
+                                <Text>Exam</Text>
+                            </View>
+                               
+                    </View>
+                    <View style={styles.inputView}>
+                            <Text style={styles.labelText}>Duration(min)</Text>
                             {CardView(
                                 <TextInput 
                                     placeholderTextColor={theme.greyColor} 
@@ -185,6 +238,19 @@ class AddTest extends React.Component {
                                 />, {borderRadius: 10}
                             )}
                     </View>
+                    <View style={styles.inputView}>
+                            <Text style={styles.labelText}>Max Marks</Text>
+                            {CardView(
+                                <TextInput 
+                                    placeholderTextColor={theme.greyColor} 
+                                    placeholder="Max marks"  
+                                    keyboardType='numeric'
+                                    onChangeText={(text)=>this.setState({maxMarks: text})} 
+                                    style={styles.inputField}
+                                />, {borderRadius: 10}
+                            )}
+                    </View>
+                    
                     <FlatList 
                             data={Object.values(this.state.questionData)}
                             renderItem={({item,index})=>this.renderQuestionView(item,index)}

@@ -14,14 +14,18 @@ import MockTest from '../MockTest/MockTest'
 import AddCourseModal from './AddCourseModal';
 import {fetch_institute_courses,fetch_courses_banners,addCourseBanner,fetch_courses_videos,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents,fetch_courses_timetable,fetch_testSeries} from '../Utils/DataHelper/Course'
 import {fetch_institute_reviews} from '../Utils/DataHelper/Reviews'
+import {fetch_institute_feed} from '../Utils/DataHelper/Feed'
 import InsReviews from './InsReviews'
 
 import * as DocumentPicker from 'expo-document-picker';
+import AddFeedModal from './AddFeedModal';
+import FeedText from '../Feed/FeedText';
+import FeedImage from '../Feed/FeedImage';
+import FeedPoll from '../Feed/FeedPoll';
 class InsHome extends React.Component {
     
     state = { 
-        tabtoshow: 1,
-        
+        tabtoshow: 1, 
         activeFilter: '',
         addVideo: false,
         addPdf: false,
@@ -32,7 +36,12 @@ class InsHome extends React.Component {
         courseDocuments:[],
         courseVideos:[],
         courseVideosPlaylist:[],
-        courseTimeTable:[]
+        courseTimeTable:[],
+        feeds:[],
+        isAddFeedModalVisible: false,
+        isFeedLoaded: false,
+        isFeedLoading: false,
+        feedOffset:0,
      }
 
      coursesCallBack=(response)=>
@@ -51,118 +60,7 @@ class InsHome extends React.Component {
 
     
 
-     renderImagePost=() => {
-        return(
-            CardView(
-                <View style={styles.boxView}>
-                    <View style={styles.rowView}>
-                        <View style={styles.circleView} />
-                        <Text style={styles.coaching}>Saket IAS Allahabad</Text>
-                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
-                    </View>
-                    <View style={styles.timeDateView}>
-                        <Text style={styles.timeDateText}>4:00 AM</Text>
-                        <Text style={styles.timeDateText}>28/05/2021</Text>
-                    </View>
-                    <View style={styles.innerBoxView}>
-                        <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.img}/>
-                        <View style={styles.bottomRowContainer}>
-                            <View style={styles.likeView}>
-                                <Feather name="thumbs-up" size={18} />
-                                <Text style={styles.text}>Like</Text>
-                            </View>
-                            <View style={styles.likeView}>
-                                <Feather name="message-square" size={18} />
-                                <Text style={styles.text}>Comment</Text>
-                            </View>
-                            <View style={styles.likeView}>
-                                <Feather name="send" size={18} />
-                                <Text style={styles.text}>Share</Text>
-                            </View>
-                        </View>
-                    </View>
-                </View>,{width: '100%', padding: 6, marginBottom: 10}
-            )
-        )
-    }
-
-    renderQuizPost=() => {
-        return(
-            CardView(
-                <View style={styles.boxView}>
-                    <View style={styles.rowView}>
-                        <View style={styles.circleView} />
-                        <Text style={styles.coaching}>Chandra Institute Allahabad</Text>
-                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
-                    </View>
-                    <View style={styles.timeDateView}>
-                        <Text style={styles.timeDateText}>4:00 AM</Text>
-                        <Text style={styles.timeDateText}>28/05/2021</Text>
-                    </View>
-                    <View style={styles.innerBoxView}>
-                        <Text style={{fontSize: 18, marginBottom: 10}}>In 1768, Captain James Cook set out to explore which ocean?</Text>
-                        <View Style={{display: 'flex', flexDirection: 'column'}}>
-                            <Text style={{fontSize: 16, marginTop: 3}}>Pacific Ocean</Text>
-                            <Text style={{fontSize: 16, marginTop: 3}}>Atlantic Ocean</Text>
-                            <Text style={{fontSize: 16, marginTop: 3}}>Indian Ocean</Text>
-                            <Text style={{fontSize: 16, marginTop: 3}}>Arctic Ocean</Text>
-                        </View>
-
-                        <View style={styles.bottomRowContainer}>
-                            <View style={styles.likeView}>
-                                <Feather name="thumbs-up" size={18} />
-                                <Text style={styles.text}>Like</Text>
-                            </View>
-                            <View style={styles.likeView}>
-                                <Feather name="message-square" size={18} />
-                                <Text style={styles.text}>Comment</Text>
-                            </View>
-                            <View style={styles.likeView}>
-                                <Feather name="send" size={18} />
-                                <Text style={styles.text}>Share</Text>
-                            </View>
-                        </View>
-                    </View>
-                </View>,{width: '100%', padding: 6, marginBottom: 10}
-            )
-        )
-    }
-
-
-    renderTextPost=() => {
-        return(
-            CardView(
-                <View style={styles.boxView}>
-                    <View style={styles.rowView}>
-                        <View style={styles.circleView} />
-                        <Text style={styles.coaching}>Test Coachings</Text>
-                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
-                    </View>
-                    <View style={styles.timeDateView}>
-                        <Text style={styles.timeDateText}>4:00 AM</Text>
-                        <Text style={styles.timeDateText}>28/05/2021</Text>
-                    </View>
-                    <View style={styles.innerBoxView}>
-                        <Text style={{fontSize: 18, marginBottom: 5}}>Covid Live News Updates: AstraZeneca shots should be halted for over-60s too, says European Medicines Agency</Text>
-                        <View style={styles.bottomRowContainer}>
-                            <View style={styles.likeView}>
-                                <Feather name="thumbs-up" size={18} />
-                                <Text style={styles.text}>Like</Text>
-                            </View>
-                            <View style={styles.likeView}>
-                                <Feather name="message-square" size={18} />
-                                <Text style={styles.text}>Comment</Text>
-                            </View>
-                            <View style={styles.likeView}>
-                                <Feather name="send" size={18} />
-                                <Text style={styles.text}>Share</Text>
-                            </View>
-                        </View>
-                    </View>
-                </View>,{width: '100%', padding: 6, marginBottom: 10}
-            )
-        )
-    }
+      
     courseBannerCallback=(response)=>
     {
         if(response.status==200)
@@ -826,10 +724,23 @@ class InsHome extends React.Component {
     openAddCourseModal = ()=>{
         this.setState({ isAddCourseModalVisible: true});
     }
+    
+    openAddFeedModal = ()=>{
+        this.setState({ isAddFeedModalVisible: true});
+    }
     closeAddCourseModal = ()=>{
         this.setState({ isAddCourseModalVisible: false});
     }
 
+    closeAddFeedModal = ()=>{
+        this.setState({ isAddFeedModalVisible: false});
+    }
+
+    appendFeed=(feed)=>{
+        let feeds = this.state.feeds
+        feeds.push(feed)
+        this.setState({feeds})
+    }
     appendCourses=(course)=>{
         let courses = this.state.courses
         courses.push(course)
@@ -838,6 +749,26 @@ class InsHome extends React.Component {
 
     tabtoshow=(tabValue)=>{
         this.setState({tabtoshow:tabValue});
+    }
+    renderFeedItem=(item)=>
+    {
+        
+        switch(item.feed.feed.feedType)
+        {
+            case 1:
+               
+                return (
+                    <FeedImage item={item}/>
+                )
+            case 2:
+                return (
+                    <FeedPoll item={item}/>
+                )
+            case 3:
+                return (
+                    <FeedText item={item}/>
+                )
+        }
     }
     switchTabRender=(tabtoshow)=>{
         switch (tabtoshow) {
@@ -917,13 +848,43 @@ class InsHome extends React.Component {
             case 3:
                 return(
                     <View style={styles.container}>
-                        { this.renderImagePost()}
-                        { this.renderQuizPost()}
-                        { this.renderTextPost()}
+
+                        <FlatList
+                            data={this.state.feeds}
+                            renderItem={({item}) => this.renderFeedItem(item)}
+                            keyExtractor={(item,index)=>index}
+                        />
+                        {/* <FeedImage/> */}
+                        {/* { this.renderImagePost()} */}
+                        {/* { this.renderQuizPost()} */}
+                        {/* <FeedPoll/> */}
+                        {/* { this.renderTextPost()} */}
+                        {/* <FeedText/> */}
                     </View>
                 )
                 
             }
+    }
+    handleFeedCallBack=(response)=>
+    {
+            console.log(response.status)
+            if(response.status==200)
+            {
+                response.json().then(data=>
+                {
+                     
+                    this.setState({feeds: data})
+                })
+            }
+    }
+    handleFeedTabBtnClick=()=>
+    {
+        this.tabtoshow(3)
+        if(!this.state.isFeedLoaded&&!this.state.isFeedLoading)
+        {
+            this.setState({isFeedLoading:true})
+            fetch_institute_feed(this.props.institute.details.id,this.state.feedOffset,dataLimit,this.handleFeedCallBack)
+        }
     }
     render() {
        const institute = this.props.institute.details
@@ -947,7 +908,7 @@ class InsHome extends React.Component {
                             <View style={styles.instituteheaderMeta}>
                                 <View style={{display: 'flex', flexDirection: 'row'}}>
                                     <Text style={styles.instituteheaderText} numberOfLines={3}>{institute.name}</Text>
-                                    <TouchableOpacity>
+                                    <TouchableOpacity onPress={()=>this.openAddFeedModal()}>
                                         <Feather name="edit-3" size={18} color={theme.secondaryColor} />
                                     </TouchableOpacity>
                                 </View>
@@ -979,9 +940,9 @@ class InsHome extends React.Component {
                                     <View style={[styles.btnView2,this.state.tabtoshow==2?({backgroundColor:theme.accentColor+'4D',borderColor:theme.accentColor+'4D'}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor,borderWidth: 1})]}>
                                         <Text style={[styles.btnText,{color:theme.blueColor,fontWeight: 'bold'}]}>{institute.follower?institute.follower:0} Follower</Text>
                                     </View>
-                                    <View style={[styles.btnView3,this.state.tabtoshow==3?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor,borderWidth:1})]}>
-                                        <Text style={[styles.btnText,{color:this.state.tabtoshow==3?theme.primaryColor:theme.greyColor}]} onPress={()=>{this.tabtoshow(3)}}>Feed</Text>
-                                    </View>
+                                    <TouchableOpacity style={[styles.btnView3,this.state.tabtoshow==3?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor,borderWidth:1})]} onPress={this.handleFeedTabBtnClick}>
+                                        <Text style={[styles.btnText,{color:this.state.tabtoshow==3?theme.primaryColor:theme.greyColor}]} >Feed</Text>
+                                    </TouchableOpacity>
                             </View>
                                 {this.switchTabRender(this.state.tabtoshow)}
 
@@ -1002,6 +963,19 @@ class InsHome extends React.Component {
                             closeModal={this.closeAddCourseModal}
                             instId={this.props.institute.details.id}
                             setInstituteDetails={this.props.setInstituteDetails}
+                        />
+                ):(
+                    null
+                )} 
+                
+                {this.state.isAddFeedModalVisible?(
+                        <AddFeedModal 
+                            addFeedCallBack={this.appendFeed}
+                            isAddFeedModalVisible={this.state.isAddFeedModalVisible} 
+                            closeModal={this.closeAddFeedModal}
+                            posterId={this.props.institute.details.id} 
+                            postedBy={1}
+                            instituteDetails={institute}
                         />
                 ):(
                     null

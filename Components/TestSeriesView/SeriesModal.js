@@ -5,16 +5,20 @@ import { Feather } from '@expo/vector-icons';
 import {connect } from 'react-redux'
 import {singlequedata} from '../../FakeDataService/FakeData'
 import CardView from '../Utils/CardView'
-
+import {setTestResultData} from '../Actions'
 class SeriesModal extends React.Component {
   state = {
     modalVisible: true,
-    correctQues:0,
-    wrongQues:0,
-    Unattempted:this.props.totalQuestions,
-    questions:Object.values(this.props.questions)
+    correctQues:this.props.correctQues,
+    wrongQues:this.props.wrongQues,
+    Unattempted:this.props.totalQuestions-(this.props.attempted),
+    attempted:this.props.attempted,
+    questions:Object.values(this.props.questions),
+    testSeriesDetails:this.props.testSeriesDetails
     
   };
+
+  score=0;
 
   componentDidMount() {
     
@@ -24,19 +28,73 @@ class SeriesModal extends React.Component {
     //   questions = {...questions,[i]:{count:i,status:'unattempted'}}
     // }
   }
+  provideQuestionItemStyle=(status)=>
+  {
+    if(this.props.isPractice)
+    {
+      if(status)
+      {
+         switch(status)
+         {
+              case 'correct':           
+                return styles.correctQues
+              case 'wrong':
+                return styles.wrongQues
+              case 'attempted':
+                return styles.attemptedQues
+         }
+      }
+    }else
+    {
+      return styles.attemptedQues
+    }
+      
+  }
+  calculateScore=(status,correctScore,wrongScore) =>
+  {
+    if(status)
+      {
+         switch(status)
+         {
+              case 'correct':           
+                this.score = this.score+correctScore
+               break;
+              case 'wrong':
+                this.score = this.score-wrongScore
+                break;
+              
+         }
+      } 
+  }
   renderQuestion=({item,index})=>{
+
+
+    this.calculateScore(item.status,item.correctMarks,item.wrongMarks)
     return(
-      <TouchableOpacity style={styles.queView}>
+      <TouchableOpacity style={[styles.queView,this.provideQuestionItemStyle(item.status)]}>
         <Text style={styles.queno}>{index+1}</Text>
       </TouchableOpacity>
     )
   }
-   
+  handleSubmitTestButtonClick=()=>
+  {
+     let data  ={ques:this.state.questions,series:this.state.testSeriesDetails,brief:{
+      correctQues:this.state.correctQues,
+      wrongQues:this.state.wrongQues,
+      Unattempted:this.state.Unattempted,
+      attempted:this.state.attempted,
+      score:this.score
+     }}
+     this.props.setTestResultData(data);
+     this.props.navigation.navigate("ResultAnalysis");
+     this.props.closeModal()
+  }
   render() {
-    const { isModalVisible,closeModal } = this.props;
-    console.log(this.state.questions)
+    const { isModalVisible,closeModal,isPractice } = this.props;
+    console.log(isPractice)
     return (
-          CardView(<Modal 
+          CardView(
+          <Modal 
             animationIn="slideInLeft"
             animationOut="slideOutRight"
             transparent={true}
@@ -123,19 +181,27 @@ class SeriesModal extends React.Component {
 
 
                 <View style={styles.numRow}>
-                  <View style={styles.rowElement}>
-                    <Text style={{fontSize:30,color: theme.featureYesColor}}> • </Text>
-                    <Text style={{fontSize: 12,color: theme.greyColor}}>Correct ({this.state.correctQues})</Text>
-                  </View>
-                  <View style={styles.rowElement}>
-                  <Text style={{fontSize:30,color: theme.featureNoColor}}> • </Text>
-                    <Text style={{fontSize: 12,color: theme.greyColor}}>Wrong ({this.state.wrongQues})</Text>
-                  </View>
-                  <View style={styles.rowElement}>
-                   <Text style={{fontSize:30,color:theme.labelOrInactiveColor}}> • </Text> 
-                    <Text style={{fontSize: 12,color: theme.greyColor}}>Unattempted ({this.state.Unattempted})</Text>
-                  </View>
-                   
+                  {isPractice?(
+                    <>
+                      <View style={styles.rowElement}>
+                        <Text style={{fontSize:30,color: theme.featureYesColor}}> • </Text>
+                        <Text style={{fontSize: 12,color: theme.greyColor}}>Correct ({this.state.correctQues})</Text>
+                      </View>
+                      <View style={styles.rowElement}>
+                        <Text style={{fontSize:30,color: theme.featureNoColor}}> • </Text>
+                        <Text style={{fontSize: 12,color: theme.greyColor}}>Wrong ({this.state.wrongQues})</Text>
+                      </View>
+                    </>
+                  ):(
+                    <View style={styles.rowElement}>
+                        <Text style={{fontSize:30,color: theme.secondaryColor}}> • </Text>
+                        <Text style={{fontSize: 12,color: theme.greyColor}}>Attempted ({this.state.attempted})</Text>
+                    </View>
+                  )}
+                    <View style={styles.rowElement}>
+                      <Text style={{fontSize:30,color:theme.labelOrInactiveColor}}> • </Text> 
+                      <Text style={{fontSize: 12,color: theme.greyColor}}>Unattempted ({this.state.Unattempted})</Text>
+                    </View> 
                 </View>
 
 
@@ -147,14 +213,10 @@ class SeriesModal extends React.Component {
                       numColumns={7}
                       keyExtractor={(item) => item.id}
                   />
-                </View>
-                
-
-                <View style={styles.submitBtn}>
+                </View> 
+                <TouchableOpacity style={styles.submitBtn} onPress={this.handleSubmitTestButtonClick}>
                   <Text style={styles.btntext}>Submit Test</Text>
-                </View>
-
-
+                </TouchableOpacity> 
               </View>
               </TouchableWithoutFeedback>              
             </TouchableOpacity>
@@ -306,10 +368,23 @@ const styles = StyleSheet.create({
         color: theme.primaryColor,
         fontSize: 16,
         fontWeight: 'bold'
-      }
+      },
     
 
-    
+correctQues:
+{
+  borderColor:theme.featureYesColor
+},
+wrongQues:
+{
+  borderColor:theme.featureNoColor
+
+},
+attemptedQues:
+{
+  borderColor:theme.secondaryColor
+
+}  
 });
 
 const  mapStateToProps = (state)=>
@@ -318,4 +393,4 @@ const  mapStateToProps = (state)=>
         screenWidth: state.screen.screenWidth
     }
 }
-export default connect(mapStateToProps)(SeriesModal); 
+export default connect(mapStateToProps,{setTestResultData})(SeriesModal); 

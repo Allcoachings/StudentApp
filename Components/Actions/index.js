@@ -73,3 +73,20 @@ export const setInstituteAuth=(status)=>
 
     }
 }
+
+//institute reducer actions ends
+
+
+//test series reducer actions starts
+
+export const setTestResultData=(data)=>
+{
+    return{
+        type:actionTypes.SET_TEST_RESULT_DATA,
+        payload:{
+            data
+        }
+    }
+}
+
+//test series reducer actions ends

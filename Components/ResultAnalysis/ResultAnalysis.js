@@ -11,17 +11,17 @@ class ResultAnalysis extends React.Component {
            {
                id: '1',
                type: 'CORRECT',
-               que: '6'
+               que: this.props.testSeriesData.brief.correctQues
            },
            {
                id: '2',
                type: 'WRONG',
-               que: '15 '
+               que: this.props.testSeriesData.brief.wrongQues
            },
            {
                id: '3',
                type: 'SKIPPED',
-               que: '99'
+               que: this.props.testSeriesData.brief.Unattempted
            },
        ]
     }
@@ -126,6 +126,7 @@ class ResultAnalysis extends React.Component {
     }
 
     render() {
+        const{testSeriesData,userInfo} = this.props; 
         return(
             <PageStructure
                 iconName={"menu"}
@@ -148,7 +149,7 @@ class ResultAnalysis extends React.Component {
                     </View> */}
                     
                     <View style={styles.userNameView}>
-                        <Text style={styles.userNameText}>Hi, User Name</Text>
+                        <Text style={styles.userNameText}>Hi,{userInfo.name}</Text>
                         <Text style={styles.tryHarderText}>Try harder next time!</Text>
                     </View>
 
@@ -160,9 +161,9 @@ class ResultAnalysis extends React.Component {
                         <View style={styles.scoreView}>
                             <Text style={styles.scoreRankText}>SCORE</Text>
                             <View style={styles.marksView}>
-                                <Text style={styles.obtainedMarks}>2.25</Text>
+                                <Text style={styles.obtainedMarks}>{testSeriesData.brief.score}</Text>
                                 <Text> / </Text>
-                                <Text style={styles.totalMarks}>120</Text>
+                                <Text style={styles.totalMarks}>{testSeriesData.series.maxMarks}</Text>
                             </View>
                         </View>
                         <View style={styles.rankView}>
@@ -517,7 +518,9 @@ const styles = StyleSheet.create({
 const  mapStateToProps = (state)=>
 {
     return {
-        screenWidth: state.screen.screenWidth
+        screenWidth: state.screen.screenWidth,
+        testSeriesData: state.testSeries.data,
+        userInfo: state.user.userInfo
     }
 }
 export default connect(mapStateToProps)(ResultAnalysis); 

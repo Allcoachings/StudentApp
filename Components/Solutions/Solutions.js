@@ -1,9 +1,10 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView,Dimensions} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import { theme } from '../config';
 import { Feather } from '@expo/vector-icons';
-
+import { connect } from 'react-redux';
+const windowWidth = Dimensions.get('window').width
 class Solutions extends React.Component {
     state={
         type: [
@@ -13,7 +14,7 @@ class Solutions extends React.Component {
             },
             {
                 id: '2',
-                type: 'Incorrect'
+                type: 'Wrong'
             },
             {
                 id: '3',
@@ -87,7 +88,7 @@ class Solutions extends React.Component {
             item.type=='Correct'?
                 (this.state.activeTab==item.type?
                     ({backgroundColor:theme.accentColor+"4D", borderColor: theme.primaryColor}):({borderColor: theme.accentColor, backgroundColor: theme.primaryColor})
-            ):(item.type=='Incorrect'?
+            ):(item.type=='Wrong'?
                 (this.state.activeTab==item.type?
                     ({backgroundColor:theme.redColor+'4D', borderColor: theme.primaryColor}):({borderColor: theme.redColor, backgroundColor: theme.primaryColor})
             ):(item.type=='Unattempted'?
@@ -103,33 +104,87 @@ class Solutions extends React.Component {
         )
     }
 
-    renderSolution=({item})=>{
-        return(
-            <>
-                <View style={{display: 'flex',flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <View style={{borderLeftWidth: 3, borderColor: theme.accentColor}}></View>
-                    <View style={styles.solutionView}>
-                        <View style={styles.queNoView}>
-                            <View style={styles.queView}>
-                                <Text style={styles.queText}>Q.{item.id}</Text>
-                                <Text style={styles.typeText}>{item.type}</Text>
+
+
+
+    questionStatusTypeProvider=(status)=>
+    {
+        switch(status)
+        {
+            case 'correct':
+                return 'CORRECT'; 
+            case 'wrong':
+                return 'WRONG'; 
+            default:
+                return 'UNATTEMPTED';
+        }
+    }
+
+    questionStatusStyle=(status)=>
+    {
+        console.log(status)
+        switch(status)
+        {
+            case 'correct':
+                return {borderColor:theme.featureYesColor,color:theme.featureYesColor}; 
+            case 'wrong':
+                return {borderColor:theme.featureNoColor,color:theme.featureNoColor}; 
+            default:
+                return   {borderColor:theme.labelOrInactiveColor,color:theme.labelOrInactiveColor}; ;
+        }
+    }
+
+    tabNstatusMatching=(status)=>
+    {
+        if(this.state.activeTab=="Unattempted"&&!status)
+        {
+            return true;
+        }else if(this.state.activeTab.toLocaleLowerCase()==status)
+        {
+            return true;
+        }
+    }
+    renderSolution=({item,index})=>{
+
+        if(this.tabNstatusMatching(item.status))
+        {
+                return(
+                    <>
+                        <View style={{display: 'flex',flexDirection: 'row'}}>
+                            <View style={[{borderLeftWidth: 3},this.questionStatusStyle(item.status)]}></View>
+                            <View style={styles.solutionView}>
+                                <View style={styles.queNoView}>
+                                    <View style={styles.queView}>
+                                        <Text style={styles.queText}>Q.{index+1}</Text>
+                                        <Text style={[styles.typeText,this.questionStatusStyle(item.status)]}>{this.questionStatusTypeProvider(item.status)}</Text>
+                                    </View>
+                                    <Text style={styles.timeText}>Time: {item.time}</Text>
+                                </View>
+                                <View style={styles.ansView}>
+                                    <Text style={styles.ansStatement}>
+                                         {item.question}
+                                    </Text>
+                                    
+                                    <View style={styles.explanationView}>
+                                        <Text style={styles.ansStatement}>
+                                            Correct answer {item["option"+item.correctOpt]}
+                                        </Text>
+                                        <Text style={styles.heading}>Reason</Text>
+                                        <Text style={styles.explanation}>{item.explanation}</Text>
+                                    </View> 
+                                </View>
                             </View>
-                            <Text style={styles.timeText}>Time: {item.time}</Text>
                         </View>
-                        <View style={styles.ansView}>
-                            <Text style={styles.ansStatement}>
-                                Statements: {item.statement}
-                            </Text>
-                        </View>
-                    </View>
-                </View>
-                <View style={{borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor}}/>
-           </>
- 
-        )
+                        <View style={{borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor}}/>
+                </>
+        
+                )
+        }
     }
 
     render() {
+
+      
         return(
             // <PageStructure
             //     iconName={"menu"}
@@ -167,7 +222,7 @@ class Solutions extends React.Component {
                             </View>
                         </View>
                         <FlatList 
-                            data={this.state.solution} 
+                            data={this.props.testSeriesData.ques} 
                             renderItem={this.renderSolution}
                             keyExtractor={(item)=>item.id} 
                             horizontal={false}
@@ -252,7 +307,7 @@ const styles = StyleSheet.create({
             display: 'flex',
             flexDirection: 'column',
             marginTop: 5,
-            marginBottom: 5,
+            marginBottom: 5, 
             padding: 10
         },
             queNoView:
@@ -260,7 +315,10 @@ const styles = StyleSheet.create({
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                marginTop: 10
+                // backgroundColor:theme.secondaryColor,
+                marginTop: 10,
+                 
+
             },
                 queView:
                 {
@@ -283,7 +341,10 @@ const styles = StyleSheet.create({
                     },
                 timeText:
                 {
-                    color: theme.greyColor
+                    // marginLeft: 10,
+                    color: theme.greyColor,
+                    alignSelf:'flex-end'
+
                 },
             ansView:
             {
@@ -295,6 +356,33 @@ const styles = StyleSheet.create({
                     color: theme.textColor,
                     fontWeight: '600'
                 },
+                explanationView:
+                {
+                    backgroundColor:theme.labelOrInactiveColor,
+                    margin:5,
+                    width:windowWidth/1.2,
+                },
+                    heading:
+                    {
+                        color: theme.secondaryColor,
+                        fontWeight:'bold',
+                        margin:10
+                    },
+                    explanation:
+                    {
+                        marginLeft:10,
+                        marginBottom:5
+                    },
+
 })
 
-export default Solutions
+const mapStateToProps = (state)=>
+{
+    return {
+
+        testSeriesData: state.testSeries.data,
+      
+
+    }
+}
+export default connect(mapStateToProps)(Solutions)

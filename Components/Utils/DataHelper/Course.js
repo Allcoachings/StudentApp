@@ -540,7 +540,7 @@ export   const addTestSeries=( testSeries,questions,callback)=>
             headers.append('Content-Type', 'application/json');  
             headers.append('Access-Control-Allow-Origin', serverApiUrl);
             headers.append('Access-Control-Allow-Credentials', 'true');
-
+            console.log(testSeries)
             headers.append('GET', 'POST', 'OPTIONS'); 
              fetch(serverApiUrl+'institute/course/testseries/createseries',
             {

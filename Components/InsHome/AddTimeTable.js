@@ -37,7 +37,7 @@ class AddTimeTable extends React.Component {
         
     }
 
-    verify=({name}) =>name3w
+    verify=({name}) =>name
 
     render() {
         console.log("add timetable course id: ",this.props.route.params.courseId)

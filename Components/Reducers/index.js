@@ -115,10 +115,28 @@ const institute_reducer =(state=initial_institute_state,action)=>
     }
 }
 
+const initial_test_series_state = {
+   data:{}
+}
+const testSeries_reducer=(state=initial_test_series_state,action) => 
+{
+    switch(action.type)
+    {
+        case actionTypes.SET_TEST_RESULT_DATA:
+            return{
+                ...state, 
+                data:action.payload.data
+            }
+        default:
+            return state
+        
+    }
+}
 const rootReducer = combineReducers({
         user:user_reducer,
         screen:screen_reducer,
-        institute:institute_reducer
+        institute:institute_reducer,
+        testSeries:testSeries_reducer,
 })
 
 

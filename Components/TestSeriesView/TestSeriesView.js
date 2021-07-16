@@ -10,16 +10,21 @@ import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import SeriesModal from './SeriesModal';
 import {fetch_testSeries_questions} from '../Utils/DataHelper/TestSeries'
+import Question from './Question';
 class TestSeriesView extends React.Component {
 
     state={
         testSeries:this.props.route.params.item,
-        testSeriesId:22,
+        testSeriesId:this.props.route.params.item.id,
         isModalVisible: false,
         loadingQuestions:true,
         isFirstTimeLoading:true,
         offset:0,
         questions:[],
+        correctQues:0,
+        wrongQues:0,
+        attempted:0,
+        testScore:0
     }
 
     questionCallback=(response) => 
@@ -39,6 +44,8 @@ class TestSeriesView extends React.Component {
     {  
         fetch_testSeries_questions(this.state.testSeriesId,this.state.offset,dataLimit,this.questionCallback)
     }
+
+
 
     header=()=>{
         return(
@@ -82,93 +89,9 @@ class TestSeriesView extends React.Component {
         )
     }
 
-    queSection=(index,correctMarks,wrongMarks)=>{
-        return(
-            // CardView(
-                <View style={styles.quesRowSection}>
-                    <View style={styles.queView}>
-                        <Text style={styles.queNum}>
-                            Q. {index}
-                        </Text>
-                    </View>
-                    <View style={styles.quesRow2}>
-                        {/* <View style={styles.marksView}> */}
-                            {/* <Text style={styles.marksText}>Marks</Text> */}
-                            <View style={styles.marksCol}>
-                                <View style={styles.posMarksView}>
-                                    <Text style={styles.tolMarksView}>+{correctMarks}</Text>
-                                </View>
-                                <View style={styles.negMarksView}>
-                                    <Text style={styles.tolMarksView}>-{wrongMarks}</Text>
-                                </View>
-                            </View>
-                        {/* </View> */}
-                        {/* <View style={styles.timeColSection}>
-                            <Text style={styles.timeText}>Time</Text>
-                            <Text style={styles.timeText}>00:00</Text>
-                        </View> */}
-                        <View style={styles.alertView}>
-                            <Feather name="bookmark" size={24} color={theme.labelOrInactiveColor}/>
-                        </View>
-                    </View>
-                </View>
-                // ,{width: '100%', padding: 4, borderColor: theme.labelOrInactiveColor, borderWidth: 0.5}
-                
-            // )
-        )
-    }
+  
 
-    renderQuizQuestion=(item)=>{
-        return(
-        <View style={styles.quizQuestionView}>
-            <Text style={styles.quizText}>{item.question}</Text>
-            <View style={styles.optionView}>
-                <View style={styles.optionRow}>
-                    <View style={styles.singleOptionView}>
-                        <TouchableOpacity style={styles.optionAns}>
-                            <View style={{marginRight:10,borderRadius:15,paddingHorizontal:10,padding:5,borderWidth:1,borderColor: theme.labelOrInactiveColor}}>
-                                <Text>A</Text>
-                            </View>
-                       
-                            <Text style={styles.optionText}>{item.optionA}</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.singleOptionView}>
-                        <TouchableOpacity style={styles.optionAns}>
-                            <View style={{marginRight:10,borderRadius:15,paddingHorizontal:10,padding:5,borderWidth:1,borderColor: theme.labelOrInactiveColor}}>
-                                <Text>B</Text>
-                            </View>
-                       
-                            <Text style={styles.optionText}>{item.optionB}</Text>
-                        </TouchableOpacity>
-                    </View>
-                   
-                </View >
-                <View style={styles.optionRow}>
-                    <View style={styles.singleOptionView}>
-                        <TouchableOpacity style={styles.optionAns}>
-                            <View style={{marginRight:10,borderRadius:15,paddingHorizontal:10,padding:5,borderWidth:1,borderColor: theme.labelOrInactiveColor}}>
-                                <Text>C</Text>
-                            </View>
-                       
-                            <Text style={styles.optionText}>{item.optionC}</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.singleOptionView}>
-                        <TouchableOpacity style={styles.optionAns}>
-                            <View style={{marginRight:10,borderRadius:15,paddingHorizontal:10,padding:5,borderWidth:1,borderColor: theme.labelOrInactiveColor}}>
-                                <Text>D</Text>
-                            </View>
-                       
-                            <Text style={styles.optionText}>{item.optionD}</Text>
-                        </TouchableOpacity>
-                    </View>
-                   
-                </View >
-                
-            </View>
-        </View>
-    )}
+   
 
     renderFooter=()=>{
         return(
@@ -198,18 +121,45 @@ class TestSeriesView extends React.Component {
       openModal = () => {
         this.setState({ isModalVisible: true });
       }
-
-      renderQuestion=(item,index)=>
+ 
+      updateComponent=()=>
       {
-          return (
-              <View style={{marginBottom:10}}>
-                {this.queSection(index+1,item.correctMarks,item.wrongMarks)}
-                {this.renderQuizQuestion(item)}
-              </View>
-          )
+           
+          if(this.state.testSeriesId!=this.props.route.params.item.id)
+          {
+            this.setState({testSeriesId:this.props.route.params.item.id,testSeries:this.props.route.params.item},()=>
+            {
+                fetch_testSeries_questions(this.state.testSeriesId,this.state.offset,dataLimit,this.questionCallback)
+            })
+          }
+          
+      }
+
+      setQuestionAttemptStatus=(quesIndex,status) => 
+      {
+             let questions = this.state.questions;  
+             let  correctQues  = this.state.correctQues;
+             let wrongQues = this.state.wrongQues;
+             let attempted = this.state.attempted;
+
+             if(status=="correct")
+             {
+                correctQues++; 
+             }else if(status=="wrong")
+             {
+                wrongQues++;
+             } 
+             
+             if(!questions[quesIndex]['isAttempted'])
+             {
+                attempted++;
+                questions[quesIndex]['isAttempted']=true;
+             }
+             questions[quesIndex]['status'] = status;
+             this.setState({questions,correctQues,wrongQues,attempted})
       }
     render(){
-    
+        this.updateComponent() 
         return (
             <PageStructure
                 iconName={"arrow-left"}
@@ -236,7 +186,7 @@ class TestSeriesView extends React.Component {
                                      
                                 <FlatList 
                                     data={Object.values(this.state.questions)} 
-                                    renderItem={({item,index}) =>this.renderQuestion(item,index)}
+                                    renderItem={({item,index}) =><Question item={item} index={index} isPractice={this.state.testSeries.isPractice} setQuestionAttemptStatus={this.setQuestionAttemptStatus}/>}
                                     keyExtractor={(item)=>item.id} 
                                     horizontal={false}
                                     showsHorizontalScrollIndicator={false}
@@ -250,10 +200,16 @@ class TestSeriesView extends React.Component {
                     </View>
                     {this.state.isModalVisible ? (
                         <SeriesModal
+                            navigation={this.props.navigation}
                             totalQuestions={this.state.testSeries.questionCount}
+                            correctQues={this.state.correctQues}
+                            wrongQues={this.state.wrongQues}
                             questions={this.state.questions}
+                            attempted={this.state.attempted}
                             isModalVisible={this.state.isModalVisible}
+                            isPractice={this.state.testSeries.isPractice}
                             closeModal={this.closeModal}
+                            testSeriesDetails={this.state.testSeries}
                         />
                     ) : (null)}
               </>

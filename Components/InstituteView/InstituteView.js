@@ -3,7 +3,7 @@ import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity, Moda
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {instituteData} from '../../FakeDataService/FakeData'
 import { AirbnbRating,Rating } from 'react-native-ratings';
-import {theme,screenMobileWidth,serverBaseUrl,documentPlaceholder} from '../config'
+import {theme,screenMobileWidth,serverBaseUrl,documentPlaceholder,dataLimit} from '../config'
 import CardView from '../Utils/CardView';
 import MarqueeText from 'react-native-marquee';
 import { Feather } from '@expo/vector-icons';
@@ -16,9 +16,12 @@ import MockTest from '../MockTest/MockTest'
 import {fetch_instituteDetails} from '../Utils/DataHelper/Coaching'
 import {fetch_institute_courses,fetch_courses_banners,addCourseBanner,fetch_courses_videos,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents,fetch_courses_timetable,fetch_testSeries} from '../Utils/DataHelper/Course'
 import { checkUserEnrollment } from '../Utils/DataHelper/EnrollStudent'
-
-
+import FeedText from '../Feed/FeedText';
+import FeedImage from '../Feed/FeedImage';
+import FeedPoll from '../Feed/FeedPoll';
 import {tabListInstitute} from '../../FakeDataService/FakeData'
+
+import {fetch_institute_feed} from '../Utils/DataHelper/Feed'
 class InstituteView extends React.Component {
     state = { 
         activeTab: 'videos', 
@@ -30,6 +33,7 @@ class InstituteView extends React.Component {
         studentId:this.props.userInfo.id,
         studentEnrolled: false,
         review: '',
+        feedOffset:0,
         // rating: 0,
         // totalRatingCount:15 ,
         // oneStarCount:1,
@@ -602,125 +606,48 @@ checkEnrollCallBack=(response) =>{
             </View>
         )
     }
-
-    renderImagePost=() => {
-        return(
-            CardView(
-                <View style={styles.boxView}>
-                    <View style={styles.rowView}>
-                        <View style={styles.circleView} />
-                        <Text style={styles.coaching}>Saket IAS Allahabad</Text>
-                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
-                    </View>
-                    <View style={styles.timeDateView}>
-                        <Text style={styles.timeDateText}>4:00 AM</Text>
-                        <Text style={styles.timeDateText}>28/05/2021</Text>
-                    </View>
-                    <View style={styles.innerBoxView}>
-                        <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.img}/>
-                        <View style={styles.bottomRowContainer}>
-                            <View style={styles.likeView}>
-                                <Feather name="thumbs-up" size={18} />
-                                <Text style={styles.text}>Like</Text>
-                            </View>
-                            <View style={styles.likeView}>
-                                <Feather name="message-square" size={18} />
-                                <Text style={styles.text}>Comment</Text>
-                            </View>
-                            <View style={styles.likeView}>
-                                <Feather name="send" size={18} />
-                                <Text style={styles.text}>Share</Text>
-                            </View>
-                        </View>
-                    </View>
-                </View>,{width: '100%', padding: 6, marginBottom: 10}
-            )
-        )
+    handleFeedCallBack=(response)=>
+    {
+            console.log(response.status)
+            if(response.status==200)
+            {
+                response.json().then(data=>
+                {
+                     console.log(data)
+                    this.setState({feeds: data})
+                })
+            }
     }
 
-    renderQuizPost=() => {
-        return(
-            CardView(
-                <View style={styles.boxView}>
-                    <View style={styles.rowView}>
-                        <View style={styles.circleView} />
-                        <Text style={styles.coaching}>Chandra Institute Allahabad</Text>
-                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
-                    </View>
-                    <View style={styles.timeDateView}>
-                        <Text style={styles.timeDateText}>4:00 AM</Text>
-                        <Text style={styles.timeDateText}>28/05/2021</Text>
-                    </View>
-                    <View style={styles.innerBoxView}>
-                        <Text style={{fontSize: 18, marginBottom: 10}}>In 1768, Captain James Cook set out to explore which ocean?</Text>
-                        <View Style={{display: 'flex', flexDirection: 'column'}}>
-                            <Text style={{fontSize: 16, marginTop: 3}}>Pacific Ocean</Text>
-                            <Text style={{fontSize: 16, marginTop: 3}}>Atlantic Ocean</Text>
-                            <Text style={{fontSize: 16, marginTop: 3}}>Indian Ocean</Text>
-                            <Text style={{fontSize: 16, marginTop: 3}}>Arctic Ocean</Text>
-                        </View>
-
-                        <View style={styles.bottomRowContainer}>
-                            <View style={styles.likeView}>
-                                <Feather name="thumbs-up" size={18} />
-                                <Text style={styles.text}>Like</Text>
-                            </View>
-                            <View style={styles.likeView}>
-                                <Feather name="message-square" size={18} />
-                                <Text style={styles.text}>Comment</Text>
-                            </View>
-                            <View style={styles.likeView}>
-                                <Feather name="send" size={18} />
-                                <Text style={styles.text}>Share</Text>
-                            </View>
-                        </View>
-                    </View>
-                </View>,{width: '100%', padding: 6, marginBottom: 10}
-            )
-        )
+    handleFeedTabBtnClick=()=>
+    {
+        this.tabtoshow(3)
+        if(!this.state.isFeedLoaded&&!this.state.isFeedLoading)
+        {
+            this.setState({isFeedLoading:true})
+            fetch_institute_feed(this.state.instituteId,this.state.feedOffset,dataLimit,this.handleFeedCallBack)
+        }
     }
-
-
-    renderTextPost=() => {
-        return(
-            CardView(
-                <View style={styles.boxView}>
-                    <View style={styles.rowView}>
-                        <View style={styles.circleView} />
-                        <Text style={styles.coaching}>Test Coachings</Text>
-                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
-                    </View>
-                    <View style={styles.timeDateView}>
-                        <Text style={styles.timeDateText}>4:00 AM</Text>
-                        <Text style={styles.timeDateText}>28/05/2021</Text>
-                    </View>
-                    <View style={styles.innerBoxView}>
-                        <Text style={{fontSize: 18, marginBottom: 5}}>Covid Live News Updates: AstraZeneca shots should be halted for over-60s too, says European Medicines Agency</Text>
-                        <View style={styles.bottomRowContainer}>
-                            <View style={styles.likeView}>
-                                <Feather name="thumbs-up" size={18} />
-                                <Text style={styles.text}>Like</Text>
-                            </View>
-                            <View style={styles.likeView}>
-                                <Feather name="message-square" size={18} />
-                                <Text style={styles.text}>Comment</Text>
-                            </View>
-                            <View style={styles.likeView}>
-                                <Feather name="send" size={18} />
-                                <Text style={styles.text}>Share</Text>
-                            </View>
-                        </View>
-                    </View>
-                </View>,{width: '100%', padding: 6, marginBottom: 10}
-            )
-        )
+    renderFeedItem=(item)=>
+    {
+        
+        switch(item.feed.feed.feedType)
+        {
+            case 1:
+               
+                return (
+                    <FeedImage item={item}/>
+                )
+            case 2:
+                return (
+                    <FeedPoll item={item}/>
+                )
+            case 3:
+                return (
+                    <FeedText item={item}/>
+                )
+        }
     }
-
-    // feed wala end
-
-
-
-
 
         // tabs handling
         tabtoshow=(tabValue)=>{
@@ -792,9 +719,14 @@ checkEnrollCallBack=(response) =>{
                     case 3:
                         return(
                             <View style={styles.container}>
-                                { this.renderImagePost()}
+                                 <FlatList
+                                    data={this.state.feeds}
+                                    renderItem={({item}) => this.renderFeedItem(item)}
+                                    keyExtractor={(item,index)=>index}
+                                />
+                                {/* { this.renderImagePost()}
                                 { this.renderQuizPost()}
-                                { this.renderTextPost()}
+                                { this.renderTextPost()} */}
                             </View>
                         )
                         
@@ -860,9 +792,9 @@ checkEnrollCallBack=(response) =>{
                                     <View style={[styles.btnView2,this.state.tabtoshow==2?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor})]}>
                                         <Text style={[styles.btnText,{color:theme.blueColor,fontWeight: 'bold'}]}>{institute.followersCount} Follower</Text>
                                     </View>
-                                    <View style={[styles.btnView3,this.state.tabtoshow==3?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor})]}>
-                                        <Text style={[styles.btnText,{color:this.state.tabtoshow==3?theme.primaryColor:theme.greyColor}]} onPress={()=>{this.tabtoshow(3)}}>Feed</Text>
-                                    </View>
+                                    <TouchableOpacity style={[styles.btnView3,this.state.tabtoshow==3?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor})]} onPress={this.handleFeedTabBtnClick}>
+                                        <Text style={[styles.btnText,{color:this.state.tabtoshow==3?theme.primaryColor:theme.greyColor}]} >Feed</Text>
+                                    </TouchableOpacity>
                             </View>
                             {/* <View style={styles.marquee}>
                                 <Text style={styles.updateStyle}>
