@@ -1,8 +1,9 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image, Platform, ScrollView, Modal} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-
+// import {connect} from 'react-redux'
 import { theme } from '../config';
+import AddFeedModal from '../InsHome/AddFeedModal';
 import { Feather } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
@@ -17,6 +18,8 @@ class UserProfile extends React.Component {
         isModalVisible: false,
         activeTab: 1,
         isPurchageModalVisible: false,
+        isAddFeedModalVisible: false,
+        feeds:[]
     }
 
     closeModal = () => {
@@ -31,6 +34,10 @@ class UserProfile extends React.Component {
     }
     closePurchageModal = ()=>{
         this.setState({ isPurchageModalVisible: false});
+    }
+
+    componentDidMount() {
+       
     }
 
       header=() => {
@@ -203,6 +210,12 @@ class UserProfile extends React.Component {
 
     // feed wala end
 
+    openAddFeedModal = ()=>{
+        this.setState({ isAddFeedModalVisible: true});
+    }
+    closeAddFeedModal = ()=>{
+        this.setState({ isAddFeedModalVisible: false});
+    }
 
     // tabs handling
     activeTab=(tabValue)=>{
@@ -252,17 +265,27 @@ class UserProfile extends React.Component {
             case 3:
             return(
                 <View style={styles.container}>
-                            
-                { this.renderImagePost()}
-                { this.renderQuizPost()}
-                { this.renderTextPost()}
-            </View>
+                    <TouchableOpacity  onPress={()=>this.openAddFeedModal()} style={{backgroundColor: theme.textColor, justifyContent: 'center', alignItems: 'center', padding:5, borderRadius:5}}> 
+                        <Text style={{color: theme.primaryColor}}>Add Feed</Text>
+                    </TouchableOpacity>           
+                    { this.renderImagePost()}
+                    { this.renderQuizPost()}
+                    { this.renderTextPost()}
+                </View>
             )
         }
 
     }
 
+    appendFeed=(feed)=>{
+        let feeds = this.state.feeds
+        feeds.push(feed)
+        this.setState({feeds})
+    }
+
     render(){
+        console.log(this.props.userInfo)
+        console.log(this.props.userInfo.studentImage)
         return (
             <PageStructure
                 iconName={"menu"}
@@ -281,11 +304,11 @@ class UserProfile extends React.Component {
                     <View style={styles.container}>
                         <View style={styles.userInfoSecView}>
                             <View style={styles.imageView}>
-                                <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.image}/>
+                                <Image source={{ uri: this.props.userInfo.studentImage }} style={styles.image}/>
                             </View>
                             <View style={styles.nameView}>
-                                <Text style={styles.name}>Amit Kumar</Text>
-                                <Text style={styles.number}>8924969862</Text>
+                                <Text style={styles.name}>{this.props.userInfo.name}</Text>
+                                <Text style={styles.number}>{this.props.userInfo.mobileNumber}</Text>
                             </View>
                         </View>
                         <View style={{borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}/>
@@ -319,6 +342,18 @@ class UserProfile extends React.Component {
                         closeModal={this.closeModal}
                     />
                 ) : (null)}
+                {this.state.isAddFeedModalVisible?(
+                        <AddFeedModal 
+                            addFeedCallBack={this.appendFeed}
+                            isAddFeedModalVisible={this.state.isAddFeedModalVisible} 
+                            closeModal={this.closeAddFeedModal}
+                            posterId={this.props.userInfo.id} 
+                            postedBy={2}
+                            instituteDetails={this.props.userInfo}
+                        />
+                ):(
+                    null
+                )}
             </PageStructure>
             
         )
@@ -545,5 +580,10 @@ const styles = StyleSheet.create({
         },
 })
 
-
-export default UserProfile;
+const  mapStateToProps = (state)=>
+{
+    return {
+        userInfo:state.user.userInfo,
+    }
+}
+export default connect(mapStateToProps)(UserProfile);

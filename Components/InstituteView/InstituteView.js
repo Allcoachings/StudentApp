@@ -7,7 +7,7 @@ import {theme,screenMobileWidth,serverBaseUrl,documentPlaceholder,dataLimit} fro
 import CardView from '../Utils/CardView';
 import MarqueeText from 'react-native-marquee';
 import { Feather } from '@expo/vector-icons';
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import { List } from 'react-native-paper';
 import StudentReview from './StudentReview'
 import Review from '../ReviewAndRatings/Review'
