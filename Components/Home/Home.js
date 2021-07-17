@@ -143,12 +143,12 @@ class Home extends React.Component {
         }
     }
      
-    toggleCatMode=(mode,catid)=>
+    toggleCatMode=(mode,item)=>
     {
         switch(mode)
         {
             case true:
-                this.setState({catMode:mode,catid,loadingData:true,},()=>
+                this.setState({catMode:mode,catid:item.id,loadingData:true,},()=>
                 {
                     fetch_coachingByCategory(this.state.catid,this.state.offset,dataLimit,this.coachingCallBack)
                 })

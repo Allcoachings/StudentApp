@@ -1,15 +1,39 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView,ActivityIndicator} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import { theme } from '../config';
+import { theme,dataLimit } from '../config';
 import { Feather } from '@expo/vector-icons';
 import { feedData } from '../../FakeDataService/FakeData' 
 import {connect } from 'react-redux'
 import CardView from '../Utils/CardView';
+import {fetch_feed_all,fetch_feed_by_category} from '../Utils/DataHelper/Feed'
+import FeedText from '../Feed/FeedText';
+import FeedImage from '../Feed/FeedImage';
+import FeedPoll from '../Feed/FeedPoll';
 class Feed extends React.Component {
     state={
+        offset:0,loadingData:true,
     }
 
+    handleFeedCallBack=(response)=>
+    {
+        console.log(response.status)
+            if(response.status==200){
+                response.json().then(data=>{
+                        console.log(data)
+
+                        this.setState({feeds:data,loadingData:false})
+                })
+            }else
+            {
+                this.setState({loadingData:false})
+            }
+    }
+
+    componentDidMount()
+    {
+        fetch_feed_all(this.state.offset,dataLimit,this.handleFeedCallBack);
+    }
 
     renderLikeShareRow=()=>{
         return(
@@ -113,20 +137,40 @@ class Feed extends React.Component {
         )
     }
 
-    toggleCatMode=(mode,catid)=>
+    toggleCatMode=(mode,item)=>
     {
         switch(mode)
         {
             case true:
                 this.setState({offset:0,loadingData:true,},()=>
                 {
-                    fetch_feedByCategory(this.state.catid,this.state.offset,dataLimit,this.coachingCallBack)
+                    fetch_feed_by_category(item.name,this.state.offset,dataLimit,this.handleFeedCallBack)
                 })
                 break;
             case false:
             break;
         }
         
+    }
+
+    renderFeedItem=(item)=>
+    {
+        
+        switch(item.feed.feed.feedType)
+        {
+            case 1:
+                return (
+                    <FeedImage item={item}/>
+                )
+            case 2:
+                return (
+                    <FeedPoll item={item}/>
+                )
+            case 3:
+                return (
+                    <FeedText item={item}/>
+                )
+        }
     }
 
     render() {
@@ -137,14 +181,21 @@ class Feed extends React.Component {
                 catOnpress={this.toggleCatMode}
                 scrollMode={'scroll'}
                 catInHeader={true}
-                type="feed"
+                catType="feed"
             >
                 <ScrollView>
                     <View style={styles.container}>
-                        
-                        { this.renderImagePost()}
-                        { this.renderQuizPost()}
-                        { this.renderTextPost()}
+
+                    {this.state.loadingData?(
+                            <ActivityIndicator color={theme.accentColor} size={"large"}/>
+                    ):(
+                        <FlatList
+                            data={this.state.feeds}
+                            renderItem={({item}) => this.renderFeedItem(item)}
+                            keyExtractor={(item,index)=>index}
+                        />
+                    )}
+                    
                     </View>
                 </ScrollView>
             </PageStructure>

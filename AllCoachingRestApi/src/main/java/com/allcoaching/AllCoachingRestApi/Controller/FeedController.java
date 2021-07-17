@@ -34,9 +34,9 @@ public class FeedController {
     //for fetching feed by tags (the feed categories are special tags saved by admin)
     @CrossOrigin(origins = "*")
     @GetMapping("/bytag/{page}/{pageSize}/{tag}")
-    public Iterable<FeedDto> getAllFeedByTagContaining(@PathVariable int page,@PathVariable int pageSize,String tag)
+    public Iterable<FeedDto> getAllFeedByTagContaining(@PathVariable int page,@PathVariable int pageSize,@PathVariable String tag)
     {
-        return feedService.getAllFeedByTagContaining(page, pageSize,tag);
+        return feedService.getAllFeedByTagContaining(page, pageSize,"#"+tag);
     }
 
     //for fetching institute paged feed

@@ -58,7 +58,7 @@ class PageStructure extends React.Component {
                                     nosearchIcon={this.props.nosearchIcon}
                                     noNotificationIcon={this.props.noNotificationIcon}
                                     catOnpress={this.props.catOnpress}
-                                    type={this.props.type}
+                                    catType={this.props.catType}
                                 />  
                             </View>
                             <View style={[styles.pageLayout,this.props.screenWidth<=screenMobileWidth?({   margin:'2%'}):(null)]}> 
@@ -92,7 +92,7 @@ class PageStructure extends React.Component {
                                         nosearchIcon={this.props.nosearchIcon}
                                         noNotificationIcon={this.props.noNotificationIcon}
                                         catOnpress={this.props.catOnpress}
-                                        type={this.props.type}
+                                        catType={this.props.catType}
                                         />  
                                     </View>
                                     <View style={[styles.pageLayout,this.props.screenWidth<=screenMobileWidth?({   margin:'2%'}):(null)]}> 

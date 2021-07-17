@@ -15,10 +15,10 @@ class index extends React.Component {
     }
 
     componentDidMount=()=>{
-        if(this.props.type)
+        if(this.props.catType)
         {
-            console.log("type")
-            fetch_categories_normalized('feed',this.categoriesCallBack)
+            console.log("catType")
+            fetch_categories_normalized(this.props.catType,this.categoriesCallBack)
         }  
         else
         {
@@ -40,7 +40,7 @@ class index extends React.Component {
     handleCatPress=(item)=>
     {
         this.setState({activeTab:item.id})
-        this.props.catOnpress(true,item.id)
+        this.props.catOnpress(true,item)
     }
 
     renderTabItems=({item})=>
