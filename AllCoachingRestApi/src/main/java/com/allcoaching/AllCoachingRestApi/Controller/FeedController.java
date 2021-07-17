@@ -47,6 +47,14 @@ public class FeedController {
         return feedService.getAllFeedIns(page, pageSize,insId);
     }
 
+    //for fetching student paged feed
+    @CrossOrigin(origins = "*")
+    @GetMapping("/student/{studentId}/{page}/{pageSize}")
+    public Iterable<FeedDto> getAllFeedStudent(@PathVariable long studentId,@PathVariable int page,@PathVariable int pageSize)
+    {
+        return feedService.getAllFeedStudent(page, pageSize,studentId);
+    }
+
 
     //for adding feed to database
     @CrossOrigin(origins = "*")
@@ -71,4 +79,34 @@ public class FeedController {
         URI location = ServletUriComponentsBuilder.fromPath("{location}").buildAndExpand(imageLocation).toUri();
         return ResponseEntity.created(location).build();
     }
+
+
+
+    //to like feed //likerType will tell it is an institute or a student
+    @CrossOrigin(origins = "*")
+    @GetMapping("/like/feed/{feedId}/{likerType}/{likerId}")
+    public ResponseEntity<Object> likeFeed(@PathVariable long feedId,@PathVariable int likerType,@PathVariable long likerId)
+    {
+
+         feedService.likeFeed(feedId,likerType,likerId);
+         return ResponseEntity.ok().build();
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/vote/feed/{feedId}/{optionId}/{voterType}/{voterId}")
+    public ResponseEntity<Object> pollVote(@PathVariable long feedId,@PathVariable long optionId,@PathVariable int voterType,@PathVariable long voterId)
+    {
+
+         feedService.votePoll(feedId,voterType,voterId,optionId);
+         return ResponseEntity.ok().build();
+    }
+    //to unlike feed
+//    @CrossOrigin(origins = "*")
+//    @GetMapping("/unlike/feed/{feedId}/{likerType}/{likerId}")
+//    public ResponseEntity<Object> unlikeFeed(@PathVariable long feedId,@PathVariable int likerType,@PathVariable long likerId)
+//    {
+//
+//         feedService.unlikeFeed(feedId,likerType,likerId);
+//         return ResponseEntity.ok().build();
+//    }
 }

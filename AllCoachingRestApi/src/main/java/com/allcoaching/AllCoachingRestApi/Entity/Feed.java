@@ -29,6 +29,8 @@ public class Feed {
     private String pollVotedStudents=",";
     private String pollVotedInstitutes=",";
 
+    private String feedLikerIns=",";
+    private String feedLikerStudent=",";
     private int likes;
 
     @CreationTimestamp
@@ -127,7 +129,7 @@ public class Feed {
     }
 
     public void setPollVotedInstitutes(String pollVotedInstitutes) {
-        this.pollVotedInstitutes = this.pollVotedInstitutes+""+pollVotedInstitutes+",";;
+        this.pollVotedInstitutes = this.pollVotedInstitutes+""+pollVotedInstitutes+",";
     }
 
     public int getLikes() {
@@ -200,7 +202,23 @@ public class Feed {
         }
     }
 
-//    public void setPostedBy(long posterId) {
+    public String getFeedLikerIns() {
+        return feedLikerIns;
+    }
+
+    public void setFeedLikerIns(String feedLikerIns) {
+        this.feedLikerIns = this.feedLikerIns+""+feedLikerIns+",";
+    }
+
+    public String getFeedLikerStudent() {
+        return feedLikerStudent;
+    }
+
+    public void setFeedLikerStudent(String feedLikerStudent) {
+        this.feedLikerStudent = this.feedLikerStudent+""+feedLikerStudent+",";
+    }
+
+    //    public void setPostedBy(long posterId) {
 //        switch (this.postedBy)
 //        {
 //            case 1:

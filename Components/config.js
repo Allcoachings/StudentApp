@@ -20,9 +20,9 @@ export const theme={
 }
 
 //online serverBaseUrl
-// export const serverBaseUrl="http://198.12.248.18:8080/"
+export const serverBaseUrl="http://198.12.248.18:8080/"
 //local server base url
- export const serverBaseUrl="http://192.168.43.160:8080/" 
+//  export const serverBaseUrl="http://192.168.43.160:8080/" 
 
 export const serverApiUrl=serverBaseUrl+"api/v1/" 
 export const videoDefaultThumbnail="https://i.stack.imgur.com/PtbGQ.png";
