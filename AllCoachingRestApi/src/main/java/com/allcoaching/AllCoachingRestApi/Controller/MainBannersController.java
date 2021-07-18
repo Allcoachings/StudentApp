@@ -25,6 +25,7 @@ public class MainBannersController {
     @Autowired
     private MainBannersService mainBannersService;
 
+    @CrossOrigin(origins = "*")
     @PostMapping("/upload/")
     public ResponseEntity<Object> uploadBanner(
             @RequestParam("file") MultipartFile image,
@@ -39,6 +40,7 @@ public class MainBannersController {
         return ResponseEntity.created(location).build();
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/")
     public Iterable<MainBanners> findAll() {
         return mainBannersService.findAll();

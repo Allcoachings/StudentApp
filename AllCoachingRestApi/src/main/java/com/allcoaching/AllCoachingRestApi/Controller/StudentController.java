@@ -44,4 +44,13 @@ public class StudentController {
         return  studentService.findByMobileNumber(mobileNumber);
     }
 
+    @CrossOrigin(origins = "*")
+    @GetMapping("/all/{offset}/{data_limit}")
+    public Iterable<Student> findAll(@PathVariable(name = "offset") int offset,
+                                     @PathVariable(name = "data_limit") int data_limit
+                                     )
+    {
+        return studentService.findAll(offset,data_limit);
+    }
+
 }

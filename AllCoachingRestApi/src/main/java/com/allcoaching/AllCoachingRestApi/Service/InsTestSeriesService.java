@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class InsTestSeriesService {
@@ -61,5 +62,11 @@ public class InsTestSeriesService {
             return  pagesResult.getContent();
         }
         return new ArrayList<InsTestSeriesQuestions>();
+    }
+
+
+    public Optional<InsTestSeries> findById(long id)
+    {
+        return insTestSeriesRepo.findById(id);
     }
 }
