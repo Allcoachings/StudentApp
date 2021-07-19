@@ -23,6 +23,7 @@ public class InstituteController {
     @Autowired
     private InstituteService instituteService;
 
+    @CrossOrigin(origins = "*")
     @PostMapping("/")
     public ResponseEntity<Object> createInstitute(
             @RequestParam("file" ) MultipartFile image,
@@ -52,21 +53,24 @@ public class InstituteController {
 
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/{offset}/{data_limit}/{sortBy}")
     public Iterable<Institute> findAll(
-                                @RequestParam(defaultValue = "0",name = "offset") Integer offset,
-                                @RequestParam(defaultValue = "10",name = "data_limit") Integer data_limit,
-                                @RequestParam(defaultValue = "id",name = "sortBy") String sortBy)
+                                @PathVariable(name = "offset") Integer offset,
+                                @PathVariable(name = "data_limit") Integer data_limit,
+                                @PathVariable(name = "sortBy") String sortBy)
     {
         return  instituteService.getAllInstitute(offset,data_limit,sortBy);
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/{id}")
     public Optional<Institute> findById(@PathVariable long id)
     {
         return instituteService.findById(id);
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/category/{category}/{page}/{offset}")
     public Iterable<Institute> findInstituteByCategory(@PathVariable long category,@PathVariable int page,@PathVariable  int offset)
     {
