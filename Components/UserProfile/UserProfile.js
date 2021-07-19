@@ -2,7 +2,7 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image, Platform, ScrollView, Modal, ActivityIndicator} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 // import {connect} from 'react-redux'
-import { theme,dataLimit } from '../config';
+import { theme,dataLimit,screenMobileWidth,serverBaseUrl,documentPlaceholder } from '../config';
 import AddFeedModal from '../InsHome/AddFeedModal';
 import { Feather } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
@@ -15,6 +15,7 @@ import {fetch_student_feed} from "../Utils/DataHelper/Feed"
 import FeedText from '../Feed/FeedText';
 import FeedImage from '../Feed/FeedImage';
 import FeedPoll from '../Feed/FeedPoll';
+import {fetch_student_history} from '../Utils/DataHelper/StudentHistory';
 
 // import {Feed} from "../Feed/Feed"
 
@@ -28,6 +29,8 @@ class UserProfile extends React.Component {
         feeds:[],
         offset: 0,
         loadingData: false,
+        history:[],
+        subActiveTab: "video"
     }
 
     closeModal = () => {
@@ -72,7 +75,7 @@ class UserProfile extends React.Component {
     {
         return(
             <TouchableOpacity 
-                onPress={()=>{this.activeTab(link)}} 
+                onPress={()=>{this.setState({subActiveTab: link})}} 
                 style={[styles.setList,this.state.activeTab==link?({backgroundColor:theme.secondaryColor}):(null)]}
             >
                     <Feather name={icon} size={12} color={this.state.activeTab==link?(theme.primaryColor):(theme.secondaryColor)}/>
@@ -250,6 +253,90 @@ class UserProfile extends React.Component {
         }
     }
 
+    displayItems=(item)=>{
+        if(this.state.subActiveTab==item.type)
+        {
+            switch(item.type)
+            {
+                case 'video': return this.renderVideos(item.data)
+                                break;
+                case 'document': return this.renderDocument(item.data)
+                                break;
+                case 'testSeries': return this.renderTestSeries(item.data)
+                                break;
+            }
+        }    
+    }
+
+    renderVideos=(item)=>{
+        return(
+            <View style={styles.videoContainer}>
+            <TouchableOpacity onPress={()=>{
+                this.addToHistory("video", item.id)
+                this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+item.videoLocation})}
+            }>
+                <Image source={{uri:item.videoThumb}} style={styles.videoImage}/>
+            </TouchableOpacity>
+            <View style={styles.videoColumn}>
+                <View>
+                    <Text style={styles.videoText}>{item.name}</Text>
+                </View>
+                <View>
+                    <Text style={styles.videoText}>{item.description}</Text>
+                </View>
+                <View>
+                    <Text style={styles.videoText}>{item.date}</Text>
+                </View>
+            </View>
+        </View>
+        )
+    }
+
+    renderTestSeries=(item)=>{
+        return( 
+            CardView(
+                <View style={styles.list}>
+                    <View style={styles.topRow}>
+                        <Text style={styles.queText}>{item.questionCount} Questions</Text>
+                        <Text style={styles.timeText}>{item.timeDuration} minutes</Text>
+                    </View>
+                    <View style={styles.bottomRow}>
+                        <Text style={styles.titleText}>{item.title}</Text>
+                        <TouchableOpacity style={styles.btnView} onPress={()=>{
+                            this.addToHistory("testSeries", item.id)
+                            this.props.navigation.navigate("SingleTestSeries",{item:item})}}>
+                            <Feather name="play" size={12} style={{color: theme.primaryColor, marginRight: 3}}/>
+                            <Text style={styles.btnText}>Start</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>,{margin: 10, borderWidth: 1, borderRadius: 10, borderColor: theme.labelOrInactiveColor}
+            )
+        )
+    }
+
+    renderDocument=(item)=>{
+        return(
+            <View style={styles.documentContainer}>
+                <TouchableOpacity onPress={()=>{
+                    this.addToHistory("document", item.id)
+                    this.props.navigation.navigate('pdfViewer',{pdf:serverBaseUrl+item.fileAddress})}}>
+                    <Image source={{uri:documentPlaceholder}} style={styles.documentImage}/>
+                </TouchableOpacity>
+                <View style={{flexShrink: 1}}>
+                    <View style={{ display: 'flex', flexDirection: 'row'}}>
+                        <Text style={styles.documentTitle}>{item.name}</Text>
+                    </View>
+                    {/* <View>
+                        <Text style={styles.documentText}>{this.state.institute.name}</Text>
+                    </View> */}
+                    <View>
+                        <Text style={styles.documentText}>{item.Views} {item.date}</Text>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
     switchTabRender=(activeTab)=>{
         switch (activeTab) {
             case 1:
@@ -272,13 +359,23 @@ class UserProfile extends React.Component {
                                         <Text style={styles.liveClassText}>Live Now</Text>
                                     </View>
                                 </TouchableOpacity> */}
-                                {this.renderList('Videos', 'play-circle', 'videos')}
+                                {this.renderList('Videos', 'play-circle', 'video')}
                                 {this.renderList('Test Series', 'copy', 'testSeries')}
                                 {this.renderList('Document', 'file', 'document')}
-                                {this.renderList('Time Table', 'clock', 'timeTable')}
+                            </View>
+                            <View style={styles.dataContainer}>
+                                {this.state.loadingData?(
+                                    <ActivityIndicator color={theme.accentColor} size={"large"}/>
+                                ):(
+                                    <FlatList
+                                        data={this.state.history}
+                                        renderItem={({item}) => this.displayItems(item)}
+                                        keyExtractor={(item,index)=>index}
+                                    />
+                                )}
                             </View>
                             
-                            <View style={styles.purchage_coursewrapper}>
+                            {/* <View style={styles.purchage_coursewrapper}>
                             <View>
                                 <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.curvedimage}/>
                             </View>
@@ -288,7 +385,7 @@ class UserProfile extends React.Component {
                                     <Text>Chapter two realease</Text>
                                     <Text>Module-3</Text>
                                 </View>
-                            </View>
+                            </View> */}
                     </View>
                 )
             case 3:
@@ -334,9 +431,24 @@ class UserProfile extends React.Component {
         }
     }
 
+    studentHistoryCallBack=(response)=>{
+        this.setState({loadingData:false})
+        if(response.status==200)
+        {
+            response.json().then(data=>
+            {
+                this.setState({history: data})
+            })
+        }
+        else
+        {
+            console.log("something went wrong")
+        }
+    }
+
     render(){
         // console.log(this.props.userInfo)
-        console.log(this.state.feeds)
+        // console.log(this.state.history)
         return (
             <PageStructure
                 iconName={"menu"}
@@ -369,13 +481,15 @@ class UserProfile extends React.Component {
                                     <Text style={[styles.navlink,{color:this.state.activeTab==1?theme.accentColor:theme.labelOrInactiveColor}]} onPress={()=>{this.activeTab(1)}}>Purchase</Text>
                                 </View>
                                 <View>
-                                    <Text style={[styles.navlink,{color:this.state.activeTab==2?theme.accentColor:theme.labelOrInactiveColor}]} onPress={()=>{this.activeTab(2)}}>History</Text>
+                                    <Text style={[styles.navlink,{color:this.state.activeTab==2?theme.accentColor:theme.labelOrInactiveColor}]} onPress={()=>{
+                                        this.activeTab(2)
+                                        this.setState({loadingData: true, offset: 0},()=>fetch_student_history(this.props.userInfo.id, this.state.offset, dataLimit, this.studentHistoryCallBack))
+                                    }}>History</Text>
                                 </View>
                                 <View>
                                     <Text style={[styles.navlink,{color:this.state.activeTab==3?theme.accentColor:theme.labelOrInactiveColor}]} onPress={()=>{
                                         this.activeTab(3),
-                                        this.setState({loadingData:true},()=>
-                                        fetch_student_feed(this.props.userInfo.id,this.state.offset,dataLimit, this.fetchFeedCallback))
+                                        this.setState({loadingData:true, offset: 0},()=>fetch_student_feed(this.props.userInfo.id,this.state.offset,dataLimit, this.fetchFeedCallback))
                                     }}>Feed</Text>
                                 </View>
                         </View>
@@ -585,7 +699,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
-    liveClassOuter:
+                    liveClassOuter:
                     {
                         borderColor: 'red',
                         borderWidth:1,   
@@ -614,6 +728,7 @@ const styles = StyleSheet.create({
                                 fontWeight: '700',
                                 color:theme.primaryColor
                             },
+    
     setList:
     {
         display: 'flex',
@@ -633,6 +748,90 @@ const styles = StyleSheet.create({
             paddingTop: 3,
             paddingBottom: 3,
         },
+    dataContainer:
+    {
+        marginTop: 10,
+        display: 'flex',
+        flexDirection: 'column'
+    },
+        videoContainer:
+        {
+            marginTop: 10,
+            display: 'flex',
+            flexDirection: 'row'
+        },
+            videoImage:
+            {
+                height: 100,
+                width:  130,
+                borderRadius: 10,
+            },
+            videoColumn:
+            {
+                marginLeft: 5,
+                display: 'flex', 
+                flexDirection: 'column'
+            },
+            videoText:
+            {
+                marginBottom: 5,
+            },
+        list:
+        {
+            flex: 1,
+            flexDirection: 'column',
+            paddingLeft: 10,
+            paddingRight: 10,
+            paddingTop: 5,
+            paddingBottom: 5,
+        },
+            topRow:
+            {
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+            },
+                queText:
+                {
+                    fontSize: 16,
+                    color: theme.greyColor
+                },
+                timeText:
+                { 
+                    fontSize: 16,
+                    color: theme.greyColor
+                },
+        documentContainer:
+        {
+            marginTop: 10,
+            display: 'flex',
+            flexDirection: 'row',
+            // overflow: 'hidden'
+            // justifyContent: 'center',
+            // alignItems: 'center'
+        },
+            documentImage:
+            {
+                height: 100,
+                width:  90,
+                borderRadius: 10,
+                marginRight: 10,
+                borderColor: 'green', 
+                // overflow: 'hidden'
+            },
+            documentTitle:
+            {
+                // flex: 1, 
+                // flexWrap: 'wrap',
+                flexShrink: 1,
+                fontWeight: '700',
+                
+            },
+            documentText:
+            {
+                color: theme.secondaryColor,
+            },
+
 })
 
 const  mapStateToProps = (state)=>

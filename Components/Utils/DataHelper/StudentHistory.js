@@ -2,10 +2,9 @@
 import {serverApiUrl} from '../../config'
 // import {Base64} from '../../Base64' 
  
-export const fetch_student_history=(studentId,offset,dataLimit,callback)=>
-{
+    export const fetch_student_history=(studentId,offset,dataLimit,callback)=>
+    {
 
-    
             // var formData   = new FormData(); 
             // formData.append("fetch_banners",'true') 
             // formData.append("offset",offset) 
@@ -24,4 +23,26 @@ export const fetch_student_history=(studentId,offset,dataLimit,callback)=>
             })
             .then((response)=>callback(response)) 
             .catch((error)=>{console.log(error)})
-}
+    }
+
+    export const saveStudentHistory=(type,itemId,studentId,callback)=>
+    {
+            let headers = new Headers();
+
+            headers.append('Content-Type', 'application/json'); 
+
+            headers.append('Access-Control-Allow-Origin', serverApiUrl);
+            headers.append('Access-Control-Allow-Credentials', 'true');
+
+            headers.append('GET', 'POST', 'OPTIONS'); 
+
+                fetch(serverApiUrl+'student/history//save',
+            {
+                method: 'POST',  
+                headers,
+                body:JSON.stringify({type, itemId, studentId})
+            })
+            .then((response)=>callback(response)) 
+            .catch((error)=>{console.log(error)})    
+
+    }

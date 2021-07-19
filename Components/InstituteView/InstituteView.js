@@ -16,6 +16,7 @@ import MockTest from '../MockTest/MockTest'
 import {fetch_instituteDetails} from '../Utils/DataHelper/Coaching'
 import {fetch_institute_courses,fetch_courses_banners,addCourseBanner,fetch_courses_videos,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents,fetch_courses_timetable,fetch_testSeries} from '../Utils/DataHelper/Course'
 import { checkUserEnrollment } from '../Utils/DataHelper/EnrollStudent'
+import { saveStudentHistory } from '../Utils/DataHelper/StudentHistory'
 import FeedText from '../Feed/FeedText';
 import FeedImage from '../Feed/FeedImage';
 import FeedPoll from '../Feed/FeedPoll';
@@ -67,16 +68,16 @@ class InstituteView extends React.Component {
                 this.setState({courses:data})
             })
         }
- }
-checkEnrollCallBack=(response) =>{
-    if(response.status==200)
-    {
-        response.json().then(data=>
-        {
-            this.setState({studentEnrolled: data});                   
-        })
     }
- }
+    checkEnrollCallBack=(response) =>{
+        if(response.status==200)
+        {
+            response.json().then(data=>
+            {
+                this.setState({studentEnrolled: data});                   
+            })
+        }
+    }
      componentDidMount() {
          fetch_instituteDetails(this.state.instituteId,this.instituteCallback)
          fetch_institute_courses(this.state.instituteId,this.coursesCallBack)
@@ -94,6 +95,23 @@ checkEnrollCallBack=(response) =>{
              })
          }
      }
+
+     addToHistory=(type, id)=>{
+        saveStudentHistory(type,id,this.props.userInfo.id,this.addToHistoryCallBack)
+     }
+
+     addToHistoryCallBack=(response)=>{
+         console.log(response.status)
+        if(response.status==201)
+        {
+            console.log("hello done")
+        }
+        else
+        {
+             console.log("error")
+        }
+     }
+
      courseBannerCallback=(response)=>
      {
          if(response.status==200)
@@ -267,7 +285,10 @@ checkEnrollCallBack=(response) =>{
     renderVideos=({item})=>{
         return(
             <View style={styles.videoContainer}>
-            <TouchableOpacity onPress={()=>this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+item.videoLocation})}>
+            <TouchableOpacity onPress={()=>{
+                this.addToHistory("video", item.id)
+                this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+item.videoLocation})}
+            }>
                 <Image source={{uri:item.videoThumb}} style={styles.videoImage}/>
             </TouchableOpacity>
             <View style={styles.videoColumn}>
@@ -374,7 +395,9 @@ checkEnrollCallBack=(response) =>{
                     </View>
                     <View style={styles.bottomRow}>
                         <Text style={styles.titleText}>{item.title}</Text>
-                        <TouchableOpacity style={styles.btnView} onPress={()=>this.props.navigation.navigate("SingleTestSeries",{item:item})}>
+                        <TouchableOpacity style={styles.btnView} onPress={()=>{
+                            this.addToHistory("testSeries", item.id)
+                            this.props.navigation.navigate("SingleTestSeries",{item:item})}}>
                             <Feather name="play" size={12} style={{color: theme.primaryColor, marginRight: 3}}/>
                             <Text style={styles.btnText}>Start</Text>
                         </TouchableOpacity>
@@ -387,7 +410,9 @@ checkEnrollCallBack=(response) =>{
     renderDocument=({item})=>{
         return(
             <View style={styles.documentContainer}>
-                <TouchableOpacity onPress={()=>this.props.navigation.navigate('pdfViewer',{pdf:serverBaseUrl+item.fileAddress})}>
+                <TouchableOpacity onPress={()=>{
+                    this.addToHistory("document", item.id)
+                    this.props.navigation.navigate('pdfViewer',{pdf:serverBaseUrl+item.fileAddress})}}>
                     <Image source={{uri:documentPlaceholder}} style={styles.documentImage}/>
                 </TouchableOpacity>
                 <View style={{flexShrink: 1}}>
@@ -565,8 +590,6 @@ checkEnrollCallBack=(response) =>{
                                         showsHorizontalScrollIndicator={false}
                                     />)
             case 'timeTable':    
-            
-            
                         if(!this.state.courseTimetableLoaded&&!this.state.isCourseTimeTableLoading)
                         {
                            
