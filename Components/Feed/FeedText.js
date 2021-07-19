@@ -3,10 +3,30 @@ import { View, Text,StyleSheet,FlatList,Image, TouchableOpacity } from 'react-na
 import {Feather, AntDesign, FontAwesome} from '@expo/vector-icons';
 import {theme,serverBaseUrl} from '../config'
 import CardView from '../Utils/CardView'
+import { connect } from 'react-redux'
+import {like_feed} from "../Utils/DataHelper/Feed"
 
 import moment from 'moment'
 class FeedText extends Component {
-  state = {}
+  state = {
+    canUserLike: this.props.type==1?(this.props.item.feed.feed.feedLikerIns.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.feedLikerStudent.includes(`,${this.props.userInfo.id},`)?(false):(true)):(true)),
+  }
+
+    likeFeed=(feedId)=>{
+        this.setState({canUserLike: !this.state.canUserLike},()=>{
+            like_feed(feedId,this.props.type,this.props.type==1?(this.props.institute.details.id):(this.props.userInfo.id),this.likeFeedCallBack)
+        })
+    }
+
+    likeFeedCallBack=(response)=>{
+        if(response.status==200)
+        {
+            console.log("ok")
+        }
+        else{
+            console.log("failed")
+        }
+    }
 
   render() {
     const{feed,posterObject} = this.props.item
@@ -21,16 +41,22 @@ class FeedText extends Component {
                         <View style={styles.rowView}>
                             <View  style={{flexDirection: 'row',alignItems: 'center'}}>
                                 
-                                <Text style={styles.coaching}>{posterObject.name}{' • '}<Text style={styles.timeDateText}>{moment(feed.feed.time_stamp).fromNow()}</Text></Text>
+                                <Text style={styles.coaching}>{posterObject.name}{' • '}<Text style={styles.timeDateText}>{moment(feed.feed.creationTime).fromNow()}</Text></Text>
                             </View>
                             
                             <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
                         </View>
                         <Text style={{fontSize: 18, marginVertical: 10}}>{feed.feed.description}</Text>
                         <View style={styles.bottomRowContainer}>
-                            <TouchableOpacity style={styles.likeView}>
-                                <AntDesign name="hearto" size={22} color={theme.greyColor} />
-                            </TouchableOpacity>
+                            {this.state.canUserLike?(
+                                <TouchableOpacity style={styles.likeView}  onPress={()=>this.likeFeed(feed.feed.id)}>
+                                    <AntDesign name="hearto" size={22} color={theme.greyColor} />
+                                </TouchableOpacity>
+                            ):(
+                                <TouchableOpacity style={styles.likeView}>
+                                    <AntDesign name="heart" size={22} color={theme.greyColor}/>
+                                </TouchableOpacity>
+                            )}
                             <TouchableOpacity style={styles.likeView}>
                                 <FontAwesome name="comments" size={22} color={theme.greyColor} />
                             </TouchableOpacity>
@@ -122,4 +148,13 @@ const styles = StyleSheet.create({
                 
 });
 
-export default FeedText;
+const  mapStateToProps = (state)=>
+{
+    return {
+        screenWidth: state.screen.screenWidth,
+        userInfo:state.user.userInfo,
+        institute:state.institute
+    }
+}
+export default connect(mapStateToProps)(FeedText);
+

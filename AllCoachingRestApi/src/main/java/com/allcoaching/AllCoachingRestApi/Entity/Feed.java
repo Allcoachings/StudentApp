@@ -29,11 +29,13 @@ public class Feed {
     private String pollVotedStudents=",";
     private String pollVotedInstitutes=",";
 
+    private String feedLikerIns=",";
+    private String feedLikerStudent=",";
     private int likes;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    private Date time_stamp;
+    private Date creationTime;
 
     private int postedBy;//1-institute , 2-student
     private long studentId;
@@ -41,7 +43,7 @@ public class Feed {
     private String tags="#all";
 
 
-    public Feed(int feedType, String photoLocation, String description, String pollQuestion, int totalPollVotes, int voterType, String pollVotedStudents, String pollVotedInstitutes, int likes, Date time_stamp, int postedBy, long studentId, long insId,String tags) {
+    public Feed(int feedType, String photoLocation, String description, String pollQuestion, int totalPollVotes, int voterType, String pollVotedStudents, String pollVotedInstitutes, int likes, Date creationTime, int postedBy, long studentId, long insId,String tags) {
         this.feedType = feedType;
         this.photoLocation = photoLocation;
         this.description = description;
@@ -51,7 +53,7 @@ public class Feed {
         this.pollVotedStudents =this.pollVotedStudents+""+pollVotedStudents+",";
         this.pollVotedInstitutes =this.pollVotedInstitutes +""+ pollVotedInstitutes+",";
         this.likes = likes;
-        this.time_stamp = time_stamp;
+        this.creationTime = creationTime;
         this.postedBy = postedBy;
         this.studentId = studentId;
         this.insId = insId;
@@ -127,7 +129,7 @@ public class Feed {
     }
 
     public void setPollVotedInstitutes(String pollVotedInstitutes) {
-        this.pollVotedInstitutes = this.pollVotedInstitutes+""+pollVotedInstitutes+",";;
+        this.pollVotedInstitutes = this.pollVotedInstitutes+""+pollVotedInstitutes+",";
     }
 
     public int getLikes() {
@@ -138,12 +140,12 @@ public class Feed {
         this.likes = likes;
     }
 
-    public Date getTime_stamp() {
-        return time_stamp;
+    public Date getCreationTime() {
+        return creationTime;
     }
 
-    public void setTime_stamp(Date time_stamp) {
-        this.time_stamp = time_stamp;
+    public void setCreationTime(Date creationTime) {
+        this.creationTime = creationTime;
     }
 
     public int getPostedBy() {
@@ -200,7 +202,23 @@ public class Feed {
         }
     }
 
-//    public void setPostedBy(long posterId) {
+    public String getFeedLikerIns() {
+        return feedLikerIns;
+    }
+
+    public void setFeedLikerIns(String feedLikerIns) {
+        this.feedLikerIns = this.feedLikerIns+""+feedLikerIns+",";
+    }
+
+    public String getFeedLikerStudent() {
+        return feedLikerStudent;
+    }
+
+    public void setFeedLikerStudent(String feedLikerStudent) {
+        this.feedLikerStudent = this.feedLikerStudent+""+feedLikerStudent+",";
+    }
+
+    //    public void setPostedBy(long posterId) {
 //        switch (this.postedBy)
 //        {
 //            case 1:

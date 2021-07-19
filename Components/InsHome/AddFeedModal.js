@@ -33,7 +33,7 @@ class AddFeedModal extends Component {
       if(response.status==201)
       {
           this.setState({addFeedLoading:false})
-        //   console.log()
+        
         let feedItem = {feed:this.state.feedItem};
         feedItem['posterObject']=this.props.instituteDetails
         console.log(feedItem)
@@ -57,7 +57,13 @@ class AddFeedModal extends Component {
                     pollQuestion:this.state.pollQuestion,
                     postedBy:this.props.postedBy,
                     ...posterId,
-                    tags:this.state.tags,    
+                    tags:this.state.tags,
+                    pollVotedInstitutes: ",",
+                    pollVotedStudents: ",",
+                    pollVoterList: ",",
+                    feedLikerIns: ",",
+                    feedLikerStudent: ",",
+
                 },
                 feedPollOptions:this.state.pollOptions
             }
@@ -87,7 +93,12 @@ class AddFeedModal extends Component {
                     description:this.state.description,
                     postedBy:this.props.postedBy,
                     ...posterId,
-                    tags:this.state.tags,    
+                    tags:this.state.tags, 
+                    pollVotedInstitutes: ",",
+                    pollVotedStudents: ",",
+                    pollVoterList: ",",
+                    feedLikerIns: ",",
+                    feedLikerStudent: ",",   
                 },
                 feedPollOptions:null
             }
@@ -113,7 +124,12 @@ class AddFeedModal extends Component {
                     description:this.state.description,
                     postedBy:this.props.postedBy,
                     ...posterId,
-                    tags:this.state.tags,    
+                    tags:this.state.tags,  
+                    pollVotedInstitutes: ",",
+                    pollVotedStudents: ",",
+                    pollVoterList: ",",
+                    feedLikerIns: ",",
+                    feedLikerStudent: ",",  
                 },
                 feedPollOptions:null
             }

@@ -166,6 +166,7 @@ class Home extends React.Component {
                 catInHeader={true}
                 catOnpress={this.toggleCatMode}
                 scrollMode={'scroll'}
+                navigation={this.props.navigation}
             >
                 <View style={styles.container}> 
                     <View style={styles.mainContent}> 

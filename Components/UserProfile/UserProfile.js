@@ -1,8 +1,8 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image, Platform, ScrollView, Modal} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image, Platform, ScrollView, Modal, ActivityIndicator} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 // import {connect} from 'react-redux'
-import { theme } from '../config';
+import { theme,dataLimit } from '../config';
 import AddFeedModal from '../InsHome/AddFeedModal';
 import { Feather } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
@@ -11,6 +11,12 @@ import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import EditModal from './EditModal'
 import PurchageListRow from './PurchageListRow';
+import {fetch_student_feed} from "../Utils/DataHelper/Feed"
+import FeedText from '../Feed/FeedText';
+import FeedImage from '../Feed/FeedImage';
+import FeedPoll from '../Feed/FeedPoll';
+
+// import {Feed} from "../Feed/Feed"
 
 class UserProfile extends React.Component {
 
@@ -19,7 +25,9 @@ class UserProfile extends React.Component {
         activeTab: 1,
         isPurchageModalVisible: false,
         isAddFeedModalVisible: false,
-        feeds:[]
+        feeds:[],
+        offset: 0,
+        loadingData: false,
     }
 
     closeModal = () => {
@@ -221,6 +229,27 @@ class UserProfile extends React.Component {
     activeTab=(tabValue)=>{
         this.setState({activeTab:tabValue});
     }
+
+    renderFeedItem=(item)=>
+    {
+        
+        switch(item.feed.feed.feedType)
+        {
+            case 1:
+                return (
+                    <FeedImage item={item} type={2}/>
+                )
+            case 2:
+                return (
+                    <FeedPoll item={item} type={2}/>
+                )
+            case 3:
+                return (
+                    <FeedText item={item} type={2}/>
+                )
+        }
+    }
+
     switchTabRender=(activeTab)=>{
         switch (activeTab) {
             case 1:
@@ -268,9 +297,15 @@ class UserProfile extends React.Component {
                     <TouchableOpacity  onPress={()=>this.openAddFeedModal()} style={{backgroundColor: theme.textColor, justifyContent: 'center', alignItems: 'center', padding:5, borderRadius:5}}> 
                         <Text style={{color: theme.primaryColor}}>Add Feed</Text>
                     </TouchableOpacity>           
-                    { this.renderImagePost()}
-                    { this.renderQuizPost()}
-                    { this.renderTextPost()}
+                    {this.state.loadingData?(
+                            <ActivityIndicator color={theme.accentColor} size={"large"}/>
+                    ):(
+                        <FlatList
+                            data={this.state.feeds}
+                            renderItem={({item}) => this.renderFeedItem(item)}
+                            keyExtractor={(item,index)=>index}
+                        />
+                    )}
                 </View>
             )
         }
@@ -283,9 +318,25 @@ class UserProfile extends React.Component {
         this.setState({feeds})
     }
 
+    fetchFeedCallback=(response)=>{
+        this.setState({loadingData:false})
+        if(response.status==200)
+        {
+            response.json().then(data=>
+            {
+
+                this.setState({feeds: data})
+            })
+        }
+        else
+        {
+            console.log("something went wrong")
+        }
+    }
+
     render(){
-        console.log(this.props.userInfo)
-        console.log(this.props.userInfo.studentImage)
+        // console.log(this.props.userInfo)
+        console.log(this.state.feeds)
         return (
             <PageStructure
                 iconName={"menu"}
@@ -321,7 +372,11 @@ class UserProfile extends React.Component {
                                     <Text style={[styles.navlink,{color:this.state.activeTab==2?theme.accentColor:theme.labelOrInactiveColor}]} onPress={()=>{this.activeTab(2)}}>History</Text>
                                 </View>
                                 <View>
-                                    <Text style={[styles.navlink,{color:this.state.activeTab==3?theme.accentColor:theme.labelOrInactiveColor}]} onPress={()=>{this.activeTab(3)}}>Feed</Text>
+                                    <Text style={[styles.navlink,{color:this.state.activeTab==3?theme.accentColor:theme.labelOrInactiveColor}]} onPress={()=>{
+                                        this.activeTab(3),
+                                        this.setState({loadingData:true},()=>
+                                        fetch_student_feed(this.props.userInfo.id,this.state.offset,dataLimit, this.fetchFeedCallback))
+                                    }}>Feed</Text>
                                 </View>
                         </View>
 

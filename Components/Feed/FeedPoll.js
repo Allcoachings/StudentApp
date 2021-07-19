@@ -4,13 +4,56 @@ import {Feather, AntDesign, FontAwesome} from '@expo/vector-icons';
 import CardView from '../Utils/CardView'; 
 import {theme,serverBaseUrl} from '../config'
 import RenderPollOption from './RenderPollOption'
+import {like_feed} from "../Utils/DataHelper/Feed"
 import moment from 'moment' 
+import { connect } from 'react-redux'
+
+
 class FeedPoll extends Component {
-  state = {}
+    state = {
+        canUserVote: this.props.type==1?(this.props.item.feed.feed.pollVotedInstitutes.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.pollVotedStudents.includes(`,${this.props.userInfo.id},`)?(false):(true)):(null)),
+        optionData: this.props.item.feed.feedPollOptions,
+        totalPollVotes: this.props.item.feed.feed.totalPollVotes,
+        canUserLike: this.props.type==1?(this.props.item.feed.feed.feedLikerIns.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.feedLikerStudent.includes(`,${this.props.userInfo.id},`)?(false):(true)):(null)),
+    }
+
+    updateVote=(option_id)=>
+    {
+        let optionData = this.props.item.feed.feedPollOptions.map((item)=>{
+            if(item.id==option_id)
+            {
+                return {...item,upVotes:parseInt(item.upVotes)+1}
+            }
+            else
+            {
+                return item
+            }
+        })
+        this.setState({totalPollVotes:parseInt(this.state.totalPollVotes)+1,optionData,canUserVote:false})
+    }
+
+    likeFeed=(feedId)=>{
+        this.setState({canUserLike: !this.state.canUserLike},()=>{
+            like_feed(feedId,this.props.type,this.props.type==1?(this.props.institute.details.id):(this.props.userInfo.id),this.likeFeedCallBack)
+        })
+    }
+
+    likeFeedCallBack=(response)=>{
+        if(response.status==200)
+        {
+            console.log("ok")
+        }
+        else{
+            console.log("failed")
+        }
+    }
 
 
-  render() {
+    render() {
     const{feed,posterObject} = this.props.item
+    console.log(this.state.canUserLike)
+    console.log(this.props.item.feed.feed.feedLikerIns)
+    console.log(this.props.item.feed.feed.feedLikerStudent)
     return(
         // CardView(
             <View style={{flexDirection: 'column', padding: 5}}>
@@ -24,15 +67,15 @@ class FeedPoll extends Component {
                         <View style={styles.rowView}>
                             <View  style={{flexDirection: 'row',alignItems: 'center'}}>
                                 
-                                <Text style={styles.coaching}>{posterObject.name}{' • '}<Text style={styles.timeDateText}>{moment(feed.feed.time_stamp).fromNow()}</Text></Text>
+                                <Text style={styles.coaching}>{posterObject.name}{' • '}<Text style={styles.timeDateText}>{moment(feed.feed.creationTime).fromNow()}</Text></Text>
                             </View>
                             
                             <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
                         </View>
                         <Text style={{fontSize: 18, marginTop: 10}}>{feed.feed.pollQuestion}</Text>
                         <FlatList
-                            data={feed.feedPollOptions}
-                            renderItem={({item})=><RenderPollOption item={item} canUserVote={true}/>}
+                            data={this.state.optionData}
+                            renderItem={({item})=><RenderPollOption updateVote={this.updateVote} item={item} canUserVote={this.state.canUserVote} totalVote={this.state.totalPollVotes} userType={this.props.type}/>}
                             keyExtractor={(item)=>item.id}
                         />
                         {/* <View Style={{display: 'flex', flexDirection: 'column'}}>
@@ -43,9 +86,15 @@ class FeedPoll extends Component {
                         </View> */}
 
                         <View style={styles.bottomRowContainer}>
-                            <TouchableOpacity style={styles.likeView}>
+                            {this.state.canUserLike?(
+                                <TouchableOpacity style={styles.likeView}  onPress={()=>this.likeFeed(feed.feed.id)}>
                                 <AntDesign name="hearto" size={22} color={theme.greyColor} />
                             </TouchableOpacity>
+                            ):(
+                                <TouchableOpacity style={styles.likeView}>
+                                    <AntDesign name="heart" size={22} color={theme.greyColor}/>
+                                </TouchableOpacity>
+                            )}
                             <TouchableOpacity style={styles.likeView}>
                                 <FontAwesome name="comments" size={22} color={theme.greyColor} />
                             </TouchableOpacity>
@@ -136,4 +185,12 @@ const styles = StyleSheet.create({
                 
 });
 
-export default FeedPoll;
+const  mapStateToProps = (state)=>
+{
+    return {
+        screenWidth: state.screen.screenWidth,
+        userInfo:state.user.userInfo,
+        institute:state.institute
+    }
+}
+export default connect(mapStateToProps)(FeedPoll);

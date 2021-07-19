@@ -23,6 +23,7 @@ import MockTest from '../MockTest/MockTest';
 import UserProfile from '../UserProfile/UserProfile';
 import Settings from '../Settings/Settings';
 import Downloads from '../Downloads/Downloads';
+import BottomTab from '../BottomTab';
 import PdfViewer from '../PdfViewer/PdfViewer'
 import VideoPlayerCustom from '../VideoPLayer/VideoPlayerCustom';
 import WebViewCustom from '../WebView/WebViewCustom';
@@ -50,7 +51,9 @@ class index extends React.Component {
                         <Drawer.Screen name="Solution" component={Solutions}  /> 
                         <Drawer.Screen name="ResultAnalysis" component={ResultAnalysis}  /> 
                         <Drawer.Screen name="CategoryList" component={CategoryList} /> 
+
                         {/* <Drawer.Screen name="SingleTestSeries" component={SingleTestSeries} /> */}
+
                         <Drawer.Screen name="SingleTestSeries" component={TestSeriesView} />
                         <Drawer.Screen name="ViewInsTestSeriesList" component={InsTestSeriesList} /> 
                         <Drawer.Screen name="SeriesList" component={SeriesList} />
