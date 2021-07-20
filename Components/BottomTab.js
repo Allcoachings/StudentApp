@@ -8,6 +8,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Text, View,StyleSheet,TouchableOpacity, FlatList} from 'react-native';
 import CardView from './Utils/CardView'
+import { connect } from 'react-redux'
 class BottomTab extends React.Component {
     tabs = [
     {
@@ -61,7 +62,7 @@ class BottomTab extends React.Component {
 
     clickHandler=(key)=>{
       this.setState({activeTab:key})
-      this.props.navigation.navigate("feed")
+      this.props.navigation.navigate("ViewInsTestSeriesList")
     }
  
     renderTab=(tab,isActive)=>
@@ -117,4 +118,10 @@ const styles = StyleSheet.create({
         },
 
 })
-export default BottomTab;
+const mapStateToProps =(state) =>
+{
+    return {
+       stackNavigation:state.layout.stackNavigation
+    }
+}
+export default connect(mapStateToProps)(BottomTab);

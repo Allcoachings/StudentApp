@@ -42,30 +42,29 @@ class index extends React.Component {
 
                     {this.props.userAuth ?(
                         <>
-                        <Drawer.Screen name="Home" component={Home} />  
-                        <Drawer.Screen name="Institute"  component={InstituteView} />
-                        <Drawer.Screen name="StudentInsView"  component={InstituteView} />
-                        <Drawer.Screen name="TestSeries" component={TestSeriesIns}  /> 
-                        <Drawer.Screen name="Subscription" component={SubscriptionNew}  /> 
-                        <Drawer.Screen name="Feed" component={Feed}  /> 
-                        <Drawer.Screen name="Solution" component={Solutions}  /> 
-                        <Drawer.Screen name="ResultAnalysis" component={ResultAnalysis}  /> 
-                        <Drawer.Screen name="CategoryList" component={CategoryList} /> 
+                            <Drawer.Screen name="Home" component={Home} />  
+                            <Drawer.Screen name="Institute"  component={InstituteView} />
+                            <Drawer.Screen name="StudentInsView"  component={InstituteView} />
+                            <Drawer.Screen name="TestSeries" component={TestSeriesIns}  /> 
+                            <Drawer.Screen name="Subscription" component={SubscriptionNew}  /> 
+                            <Drawer.Screen name="Feed" component={Feed}  /> 
+                            <Drawer.Screen name="Solution" component={Solutions}  /> 
+                            <Drawer.Screen name="ResultAnalysis" component={ResultAnalysis}  /> 
+                            <Drawer.Screen name="CategoryList" component={CategoryList} /> 
 
-                        {/* <Drawer.Screen name="SingleTestSeries" component={SingleTestSeries} /> */}
+                            {/* <Drawer.Screen name="SingleTestSeries" component={SingleTestSeries} /> */}
 
-                        <Drawer.Screen name="SingleTestSeries" component={TestSeriesView} />
-                        <Drawer.Screen name="ViewInsTestSeriesList" component={InsTestSeriesList} /> 
-                        <Drawer.Screen name="SeriesList" component={SeriesList} />
-                        <Drawer.Screen name="MockTest" component={MockTest} />
-                        <Drawer.Screen name="Profile" component={UserProfile} />
-                        <Drawer.Screen name="Settings" component={Settings} />
-                        <Drawer.Screen name="Downloads" component={Downloads} />
-                        
-                        <Drawer.Screen name="pdfViewer" component={PdfViewer} /> 
-                        <Drawer.Screen name="videoplayer" component={VideoPlayerCustom} />
-                        <Drawer.Screen name="Payment" component={Payment} />
-                        <Drawer.Screen name="webview" component={WebViewCustom}/>
+                            <Drawer.Screen name="SingleTestSeries" component={TestSeriesView} />
+                            <Drawer.Screen name="ViewInsTestSeriesList" component={InsTestSeriesList} /> 
+                            <Drawer.Screen name="SeriesList" component={SeriesList} />
+                            <Drawer.Screen name="MockTest" component={MockTest} />
+                            <Drawer.Screen name="Profile" component={UserProfile} />
+                            <Drawer.Screen name="Settings" component={Settings} />
+                            <Drawer.Screen name="Downloads" component={Downloads} />
+                            <Drawer.Screen name="pdfViewer" component={PdfViewer} /> 
+                            <Drawer.Screen name="videoplayer" component={VideoPlayerCustom} />
+                            <Drawer.Screen name="Payment" component={Payment} />
+                            <Drawer.Screen name="webview" component={WebViewCustom}/>
                         </>
                     ):(
                         <Drawer.Screen name="Auth" component={Auth}  /> 
