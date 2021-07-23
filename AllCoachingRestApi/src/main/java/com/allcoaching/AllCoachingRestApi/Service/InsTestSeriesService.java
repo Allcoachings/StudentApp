@@ -33,7 +33,7 @@ public class InsTestSeriesService {
 
     public Iterable<InsTestSeries> getTestSeriesByPlaylistId(long id)
     {
-        return testSeriesPlaylistRepo.playListContent(id);
+        return testSeriesPlaylistRepo.playListContent(id,false);
     }
 
 
@@ -49,7 +49,7 @@ public class InsTestSeriesService {
 
     public Iterable<InsTestSeries> getTestSeriesByCourseID(long id)
     {
-        return insTestSeriesRepo.findByCourseId(id);
+        return insTestSeriesRepo.findByCourseIdAndIsAdmin(id,false);
     }
 
     public Iterable<InsTestSeriesQuestions> getSeriesQuestion(long id,int page,int pageSize)
@@ -68,9 +68,9 @@ public class InsTestSeriesService {
         return insTestSeriesRepo.findById(id);
     }
 
-    public Iterable<InsTestSeries> findByCategoryAndIsAdmin(long category,boolean isAdmin,int page,int pageSize)
+    public Iterable<InsTestSeries> findByCategoryAndIsAdmin(long category,int page,int pageSize)
     {
-        Page<InsTestSeries> pagedResult =insTestSeriesRepo.findByCategoryAndIsAdmin(category,isAdmin,PageRequest.of(page,pageSize));
+        Page<InsTestSeries> pagedResult =insTestSeriesRepo.findByCategoryAndIsAdmin(category,true,PageRequest.of(page,pageSize));
         if(pagedResult.hasContent())
         {
             return  pagedResult.getContent();
