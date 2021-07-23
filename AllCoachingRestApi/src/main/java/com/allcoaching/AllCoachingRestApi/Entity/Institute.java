@@ -37,6 +37,7 @@ public class Institute {
     private int oneStarCount =0 ;
     private int totalRatingCount=0;
     private int totalRating=0;
+    private long leads=0;
 
     public Institute(String name, String directorName, String email, String phone, String password, String address, String city, String state, long category, String about, String logo, int status) {
 
