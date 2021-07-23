@@ -13,7 +13,8 @@ import { fetch_testSeries_category } from '../Utils/DataHelper/TestSeries'
 class TestSeriesIns extends React.Component {
     state = { 
         offset: 0,
-        testSeries: []
+        testSeries: [],
+        category:''
      }
 
     componentDidMount() {
@@ -25,7 +26,7 @@ class TestSeriesIns extends React.Component {
         {
             response.json().then(data=>
             {
-                this.setState({testSeries: data})
+                this.setState({testSeries: data, category: data[0].categoryName})
             })
         }
         else
@@ -35,6 +36,7 @@ class TestSeriesIns extends React.Component {
     }
 
     singleItem=({item})=>{
+        
        return(
             CardView(
                     <View  style={styles.singleItem}>
@@ -47,7 +49,7 @@ class TestSeriesIns extends React.Component {
                         <View style={styles.countView}>
                             <Text style={styles.itemCount}>{item.count}</Text>
                         </View>
-                        <TouchableOpacity onPress={()=>this.props.navigation.navigate("ViewInsTestSeriesList", {id: item.id})} style={styles.btnView}>
+                        <TouchableOpacity onPress={()=>this.props.navigation.navigate("ViewInsTestSeriesList", {id: item.id, catName: this.state.category})} style={styles.btnView}>
                             <Text style={styles.cardButton}>View Test Series</Text>
                         </TouchableOpacity>
                     </View>, { margin:10,width:((this.props.screenWidth/3.5)),borderWidth:1,borderColor:theme.labelOrInactiveColor,borderRadius:15 }
@@ -78,7 +80,6 @@ class TestSeriesIns extends React.Component {
             <PageStructure
                 iconName={"menu"}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
-                catInHeader={true}
             >
                 <ScrollView>
                     <View style={styles.container}> 
@@ -103,6 +104,7 @@ const styles = StyleSheet.create({
     },
         singleRow:
         {
+            marginTop:15 ,
             marginBottom:15 ,
             borderBottomWidth: 1, 
             borderBottomColor: theme.labelOrInactiveColor

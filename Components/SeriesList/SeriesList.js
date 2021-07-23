@@ -2,16 +2,66 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {insTestSeries} from '../../FakeDataService/FakeData'
-import { theme } from '../config';
+import { theme, dataLimit } from '../config';
 import { Feather } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
+import {seriesList} from '../Utils/DataHelper/TestSeries'
 
 class SeriesList extends React.Component {
     state = {
+        id: this.props.route.params.id,
+        offset:0,
+        seriesList: [],
+        banner:[
+            {
+                id: '1',
+                image: { uri: 'https://picsum.photos/200/300' },
+                clickHandler: () => { },
 
+            },
+            {
+                id: '3',
+                image: { uri: 'https://picsum.photos/200/300' },
+                clickHandler: () => { },
+            },
+            {
+                id: '4',
+                image: { uri: 'https://picsum.photos/200/300' },
+                clickHandler: () => { },
+            },
+            {
+                id: '5',
+                image: { uri: 'https://picsum.photos/200/300' },
+                clickHandler: () => { },
+            },
+            {
+                id: '6',
+                image: { uri: 'https://picsum.photos/200/300' },
+                clickHandler: () => { },
+            },
+        ],
+    }
+
+    componentDidMount(){
+        seriesList(this.state.id,this.state.offset,dataLimit,this.seriesListCallBack)
+    }
+
+    seriesListCallBack=(response)=>{
+        if(response.status==200)
+        {
+            console.log("success series list")
+            response.json().then(data=>
+            {
+                this.setState({seriesList: data})
+            })
+        }
+        else
+        {
+            console.log("something went wrong")
+        }
     }
 
     renderBannerList=({item})=>
@@ -24,12 +74,13 @@ class SeriesList extends React.Component {
     }
 
     renderList=({item})=>{
+        console.log("item",item)
         return( 
              CardView(
                      <View style={styles.list}>
                          <View style={styles.topRow}>
-                            <Text style={styles.queText}>{item.questions}</Text>
-                            <Text style={styles.timeText}>{item.time}</Text>
+                            <Text style={styles.queText}>{item.questionCount} Questions</Text>
+                            <Text style={styles.timeText}>{item.timeDuration} Minutes</Text>
                          </View>
                          <View style={styles.bottomRow}>
                              <Text style={styles.titleText}>{item.title}</Text>
@@ -49,7 +100,7 @@ class SeriesList extends React.Component {
                 iconName={"arrow-left"}
                 btnHandler={() => {this.props.navigation.goBack()}}
                 catInHeader={false}
-                titleonheader={"UPSC CSE"}
+                titleonheader={this.props.route.params.catName}
                 notificationreplaceshare={"share-2"}
             >
                <ScrollView>
@@ -61,7 +112,7 @@ class SeriesList extends React.Component {
                         </View> */}
                         <View style={styles.rowContainer}>
                             <FlatList 
-                                data={this.props.route.params.banner} 
+                                data={this.state.banner} 
                                 renderItem={this.renderBannerList} 
                                 keyExtractor={(item)=>item.id}
                                 horizontal={true} 
@@ -70,7 +121,7 @@ class SeriesList extends React.Component {
                         </View>
                         <View style={styles.container}>
                             <FlatList 
-                                data={this.props.route.params.list} 
+                                data={this.state.seriesList} 
                                 renderItem={this.renderList}
                                 keyExtractor={(item)=>item.id} 
                                 horizontal={false}

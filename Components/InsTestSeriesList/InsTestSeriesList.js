@@ -15,7 +15,35 @@ class InsTestSeriesList extends React.Component {
     state={
         id: this.props.route.params.id,
         subCat: [],
-        offset: 0
+        offset: 0,
+        banner:[
+            {
+                id: '1',
+                image: { uri: 'https://picsum.photos/200/300' },
+                clickHandler: () => { },
+
+            },
+            {
+                id: '3',
+                image: { uri: 'https://picsum.photos/200/300' },
+                clickHandler: () => { },
+            },
+            {
+                id: '4',
+                image: { uri: 'https://picsum.photos/200/300' },
+                clickHandler: () => { },
+            },
+            {
+                id: '5',
+                image: { uri: 'https://picsum.photos/200/300' },
+                clickHandler: () => { },
+            },
+            {
+                id: '6',
+                image: { uri: 'https://picsum.photos/200/300' },
+                clickHandler: () => { },
+            },
+        ],
     }
 
     componentDidMount(){
@@ -58,7 +86,7 @@ class InsTestSeriesList extends React.Component {
                     <View style={styles.countView}>
                         <Text style={styles.itemCount}>{item.count}</Text>
                     </View>
-                    <TouchableOpacity onPress={()=>this.props.navigation.navigate("SeriesList", {list: item.seriesList, banner: item.banner})} style={styles.btnView}>
+                    <TouchableOpacity onPress={()=>this.props.navigation.navigate("SeriesList", {id: item.id, catName: this.props.route.params.catName})} style={styles.btnView}>
                             <Text style={styles.cardButton}>View Test Series</Text>
                     </TouchableOpacity>
                 </View>, { margin:7,width:((this.props.screenWidth/3.5)),borderWidth:1,borderColor:theme.labelOrInactiveColor,borderRadius:15 }
@@ -71,7 +99,7 @@ class InsTestSeriesList extends React.Component {
             <PageStructure
                 iconName={"arrow-left"}
                 btnHandler={() => {this.props.navigation.goBack()}} 
-                titleonheader={"UPSC CSE"}
+                titleonheader={this.props.route.params.catName}
                 notificationreplaceshare={"share-2"}
                 nosearchIcon={true}
                 // catInHeader={false}
@@ -86,7 +114,7 @@ class InsTestSeriesList extends React.Component {
                     </View> */}
                     <View style={styles.rowContainer}>
                         <FlatList 
-                            data={this.props.route.params.banner} 
+                            data={this.state.banner} 
                             renderItem={this.renderBannerList} 
                             keyExtractor={(item)=>item.id}
                             horizontal={true} 
