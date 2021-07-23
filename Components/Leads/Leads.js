@@ -10,6 +10,7 @@ import RenderCourseList from './RenderCourseList';
 
 class Leads extends React.Component {
     state={
+        leads:[],
         courseList: [
                         {
                             id: '1',
@@ -58,6 +59,25 @@ class Leads extends React.Component {
         return(
             <RenderCourseList item={item}/>
         )
+    }
+
+    componentDidMount(){
+        fetchLeads(this.fetchLeadsCallback)
+    }
+
+    fetchLeadsCallback=(response)=>{
+        if(response.status==200)
+        {
+            console.log("success leads")
+            response.json().then(data=>
+            {
+                this.setState({leads: data})
+            })
+        }
+        else
+        {
+            console.log("something went wrong")
+        }
     }
 
     render() {

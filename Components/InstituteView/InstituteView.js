@@ -36,15 +36,6 @@ class InstituteView extends React.Component {
         studentEnrolled: false,
         review: '',
         feedOffset:0,
-        // rating: 0,
-        // totalRatingCount:15 ,
-        // oneStarCount:1,
-        // twoStarCount:2,
-        // threeStarCount:3,
-        // fourStarCount:4,
-        // fiveStarCount:5,
-        // inslogo:'wdsa',
-        // institle:'DUBUDDY', 
         loadingInstitute:true
         
      }
@@ -123,9 +114,21 @@ class InstituteView extends React.Component {
                  })
          }
      }
+
+     addLeadCallback=(response)=>{
+         console.log(response.status)
+         if(response.status==201)
+         {
+             console.log("done")
+         }
+         else
+         {
+             console.log("something went wrong")
+         }
+     }
+
      handleCourseItemClick=(item)=>
      {
-         console.log(item)
          this.setState({activeCourse:item.id,activeCourseDetail:item,
             courseTimetableLoaded:false,isCourseTimetableLoading:true,
             courseDocumentPlaylistLoaded:false,isCourseDocumentPlaylistLoading:true,
@@ -135,8 +138,9 @@ class InstituteView extends React.Component {
             {
                 console.log("testsdjsb",this.state)
             })
-         
-         fetch_courses_banners(item.id,this.courseBannerCallback)
+            console.log("item.id",item.id)
+            addLead(item.id, this.state.instituteId, this.state.studentId, this.addLeadCallback)
+            fetch_courses_banners(item.id,this.courseBannerCallback)
      }
 
      renderTabItems=({item,index})=>
@@ -146,7 +150,7 @@ class InstituteView extends React.Component {
         {
             this.setState({activeCourse:item.id,activeCourseDetail:item,activeTab: 'videos', })
             fetch_courses_banners(item.id,this.courseBannerCallback)
-            //add lead
+            addLead(item.id,this.state.instituteId, this.state.studentId, this.addLeadCallback)
         }
          return (
             <TouchableOpacity style={[styles.courseItemContainer,this.state.activeCourse==item.id?({backgroundColor:theme.secondaryColor}):(null)]} onPress={()=>this.handleCourseItemClick(item)}> 
