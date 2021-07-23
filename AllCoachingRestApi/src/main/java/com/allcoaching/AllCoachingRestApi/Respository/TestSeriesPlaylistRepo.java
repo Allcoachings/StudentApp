@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TestSeriesPlaylistRepo extends CrudRepository<InsTestSeriesPlaylist,Long>{
 
-    @Query("SELECT ts from InsTestSeriesPlaylist tsp , InsTestSeries ts where tsp.id=ts.playlistId and tsp.id = :id")
-    Iterable<InsTestSeries> playListContent(long id);
+    @Query("SELECT ts from InsTestSeriesPlaylist tsp , InsTestSeries ts where tsp.id=ts.playlistId and tsp.id = :id and ts.isAdmin=:isAdmin")
+    Iterable<InsTestSeries> playListContent(long id,boolean isAdmin);
 
 }

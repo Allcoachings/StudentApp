@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface InsTestSeriesRepo extends PagingAndSortingRepository<InsTestSeries,Long> {
-    Iterable<InsTestSeries> findByCourseId(long id);
+    Iterable<InsTestSeries> findByCourseIdAndIsAdmin(long id,boolean isAdmin);
     Page<InsTestSeries> findByCategoryAndIsAdmin(long id, boolean isAdmin, Pageable pageable);
     Page<InsTestSeries> findByIsAdmin(boolean isAdmin,Pageable pageable);
 

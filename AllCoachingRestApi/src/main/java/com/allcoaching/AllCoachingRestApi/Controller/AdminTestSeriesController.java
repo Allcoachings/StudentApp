@@ -4,9 +4,11 @@ package com.allcoaching.AllCoachingRestApi.Controller;
 import com.allcoaching.AllCoachingRestApi.Entity.AdminTestSeriesCategory;
 import com.allcoaching.AllCoachingRestApi.Entity.AdminTestSeriesSubCategoryContent;
 import com.allcoaching.AllCoachingRestApi.Entity.AdminTestSubCategories;
+import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeries;
 import com.allcoaching.AllCoachingRestApi.Service.AdminTestSeriesCategoryService;
 import com.allcoaching.AllCoachingRestApi.Service.AdminTestSeriesSubCategoryContentService;
 import com.allcoaching.AllCoachingRestApi.Service.AdminTestSubCategoriesService;
+import com.allcoaching.AllCoachingRestApi.Service.InsTestSeriesService;
 import com.allcoaching.AllCoachingRestApi.dto.AdminTestCategoriesDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,9 @@ public class AdminTestSeriesController {
 
     @Autowired
     private AdminTestSeriesSubCategoryContentService adminTestSeriesSubCategoryContentService;
+
+    @Autowired
+    private InsTestSeriesService insTestSeriesService;
 
     @CrossOrigin(origins = "*")
     @PostMapping("/addCategory")
@@ -73,5 +78,15 @@ public class AdminTestSeriesController {
     {
         return adminTestSeriesSubCategoryContentService.findAllContentBySubCategory(offset,dataLimit,subId);
     }
+
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/subcategory/content/testseries/{offset}/{dataLimit}/{subId}")
+    public Iterable<InsTestSeries> fetchAllTestSeriesOfASubCategoryContent(@PathVariable int offset,@PathVariable int dataLimit,@PathVariable long subId)
+    {
+        return insTestSeriesService.findByCategoryAndIsAdmin(subId,offset,dataLimit);
+    }
+
+
 
 }

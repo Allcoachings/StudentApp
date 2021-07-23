@@ -44,7 +44,6 @@ public class InsTestSeriesController {
         insTestSeriesQuestions.forEach(question->question.setTestSeriesId(insTestSeries_saved.getId()));
         insTestSeriesService.saveSeriesQuestions(insTestSeriesQuestions);
         URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(insTestSeries_saved.getId()).toUri();
-
         return ResponseEntity.created(location).build();
     }
 
