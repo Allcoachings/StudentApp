@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions, ActivityIndicator} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import { theme } from '../config';
 import { Feather } from '@expo/vector-icons';
@@ -11,6 +11,7 @@ const width = Dimensions.get('window').width
 
 class RenderCourseList extends React.Component {
     state={
+        loading: false,
         studentList:[
             {
                 id: '1',
@@ -45,13 +46,29 @@ class RenderCourseList extends React.Component {
         ]
     }
 
+    studentListCallBack=(response)=>{
+        if(response.status==200)
+        {
+            console.log("success student list")
+            response.json().then(data=>
+            {
+                console.log(data)
+                this.setState({studentList: data, loading: false})
+            })
+        }
+        else
+        {
+            console.log("something went wrong")
+        }
+    }
+
     accordianHeader = () =>
     {
         return(
-            <View style={styles.corsePriceView}>
-                <Text style={styles.courseText}>{this.props.item.name}</Text>
-                <Text style={styles.coursePriceText}>{this.props.item.price}</Text>
-            </View>
+            <TouchableOpacity style={styles.corsePriceView} onPress={()=>this.setState({loading: true},()=>fetchStudentList(this.props.item.courseId, this.studentListCallBack))}>
+                <Text style={styles.courseText}>{this.props.item.courseName}</Text>
+                <Text style={styles.coursePriceText}>{this.props.item.leads}</Text>
+            </TouchableOpacity>
         )
     }
 
@@ -74,13 +91,17 @@ class RenderCourseList extends React.Component {
     render() {
         return(    
             <Accordian header={this.accordianHeader()}>
-                <FlatList 
-                    data={this.state.studentList} 
-                    renderItem={this.studentList}
-                    keyExtractor={(item)=>item.id} 
-                    horizontal={false}
-                    showsHorizontalScrollIndicator={false}
-                />
+                {this.state.loading?(
+                    <ActivityIndicator color={theme.secondaryColor} size={"large"}/>
+                ):(
+                    <FlatList 
+                        data={this.state.studentList} 
+                        renderItem={this.studentList}
+                        keyExtractor={(item)=>item.id} 
+                        horizontal={false}
+                        showsHorizontalScrollIndicator={false}
+                    />
+                )}
             </Accordian>
         )
     }

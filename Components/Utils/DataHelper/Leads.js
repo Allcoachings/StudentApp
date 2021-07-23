@@ -31,7 +31,7 @@ import mime from "mime";
         
     } 
 
-    export const fetchLeads=(subId,offset,dataLimit,callback)=>
+    export const fetchLeads=(insId,offset,dataLimit,callback)=>
     {
             let headers = new Headers(); 
             headers.append('Content-Type', 'application/json');  
@@ -39,7 +39,7 @@ import mime from "mime";
             headers.append('Access-Control-Allow-Credentials', 'true'); 
             headers.append('GET', 'POST', 'OPTIONS'); 
 
-            fetch(serverApiUrl+"admintestseries/subcategory/content/testseries/"+offset+"/"+dataLimit+"/"+subId,
+            fetch(serverApiUrl+"institute/leads/"+insId+"/"+offset+"/"+dataLimit,
             {
                 method: 'GET', 
                 headers,

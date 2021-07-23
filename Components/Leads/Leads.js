@@ -1,16 +1,18 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import { theme } from '../config';
+import { theme, dataLimit } from '../config';
 import { Feather } from '@expo/vector-icons';
 import { feedData } from '../../FakeDataService/FakeData' 
 import {connect } from 'react-redux'
 import CardView from '../Utils/CardView';
 import RenderCourseList from './RenderCourseList';
+import { fetchLeads } from '../Utils/DataHelper/Leads'
 
 class Leads extends React.Component {
     state={
         leads:[],
+        offset: 0,
         courseList: [
                         {
                             id: '1',
@@ -62,7 +64,7 @@ class Leads extends React.Component {
     }
 
     componentDidMount(){
-        fetchLeads(this.fetchLeadsCallback)
+        fetchLeads(this.props.institute.details.id,this.state.offset, dataLimit,this.fetchLeadsCallback)
     }
 
     fetchLeadsCallback=(response)=>{
@@ -71,6 +73,7 @@ class Leads extends React.Component {
             console.log("success leads")
             response.json().then(data=>
             {
+                console.log(data)
                 this.setState({leads: data})
             })
         }
@@ -113,7 +116,7 @@ class Leads extends React.Component {
 
                         <View style={styles.courseCol}>
                             <FlatList 
-                                data={this.state.courseList} 
+                                data={this.state.leads} 
                                 renderItem={this.courses}
                                 keyExtractor={(item)=>item.id} 
                                 horizontal={false}
@@ -219,7 +222,8 @@ const styles = StyleSheet.create({
 const  mapStateToProps = (state)=>
 {
     return {
-        screenWidth: state.screen.screenWidth
+        screenWidth: state.screen.screenWidth,
+        institute:state.institute
     }
 }
 export default connect(mapStateToProps)(Leads); 
