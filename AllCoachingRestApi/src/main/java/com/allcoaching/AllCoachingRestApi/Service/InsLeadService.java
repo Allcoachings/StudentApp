@@ -4,6 +4,7 @@ package com.allcoaching.AllCoachingRestApi.Service;
 import com.allcoaching.AllCoachingRestApi.Entity.InsLeads;
 import com.allcoaching.AllCoachingRestApi.Respository.InsLeadsRepo;
 import com.allcoaching.AllCoachingRestApi.dto.InsLeadsDto;
+import com.allcoaching.AllCoachingRestApi.dto.InsLeadsStudentDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,6 +38,11 @@ public class InsLeadService {
             return  new ArrayList<>();
         }
     }
+
+//    public Iterable<InsLeadsStudentDto> InsCourseLeadList(long courseId)
+//    {
+//
+//    }
 
 
 

@@ -15,8 +15,6 @@ import java.net.URI;
 @RestController
 @RequestMapping("/api/v1/institute/leads")
 public class InsLeadsController {
-
-
     @Autowired
     private InsLeadService insLeadService;
 
@@ -28,7 +26,6 @@ public class InsLeadsController {
         InsLeads insLeads_saved = insLeadService.addLead(insLeads);
         URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(insLeads_saved.getId()).toUri();
         return ResponseEntity.created(location).build();
-
     }
 
     @CrossOrigin(origins = "*")
