@@ -18,7 +18,12 @@ class PageStructure extends React.Component {
                      
                     {!this.props.noBottomTab&&this.props.screenWidth<=screenMobileWidth?(
                         <View style={[styles.pageBottomTab,{flex:this.props.catInHeader?0.11:0.102}]}>
-                                <BottomTab replacBottomTab={this.props.replaceBottomTab} bottomComponentStyle={this.props.bottomComponentStyle}  bottomComponent={this.props.bottomComponent}/>
+                                <BottomTab 
+                                    replacBottomTab={this.props.replaceBottomTab} 
+                                    bottomComponentStyle={this.props.bottomComponentStyle}  
+                                    bottomComponent={this.props.bottomComponent}
+                                    navigation={this.props.navigation}
+                                />
                         </View>
                     ):(null)}
                   

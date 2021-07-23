@@ -30,6 +30,26 @@ import { combineReducers } from "redux";
         }
 */
 
+//app reducer
+const initialState = {
+    stackNavigation:{}
+}
+
+const app_redux = (state=initialState,action)=>
+{
+    switch(action.type)
+    {
+        case actionTypes.SET_NAVIGATION:
+            return {
+                ...state,
+                stackNavigation:action.payload.navigation
+            }
+
+        default:
+            return state
+    }
+}
+
 
 //user reducer starts
 const initial_user_state=
@@ -137,6 +157,7 @@ const rootReducer = combineReducers({
         screen:screen_reducer,
         institute:institute_reducer,
         testSeries:testSeries_reducer,
+        layout:app_redux,
 })
 
 

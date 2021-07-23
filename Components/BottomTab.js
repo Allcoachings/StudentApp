@@ -8,6 +8,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Text, View,StyleSheet,TouchableOpacity, FlatList} from 'react-native';
 import CardView from './Utils/CardView'
+import { connect } from 'react-redux'
 class BottomTab extends React.Component {
     tabs = [
     {
@@ -15,7 +16,8 @@ class BottomTab extends React.Component {
       icon: 'compass',
       label: 'Explore',
       barColor: theme.primaryColor,
-      pressColor: 'rgba(255, 255, 255, 0.16)'
+      pressColor: 'rgba(255, 255, 255, 0.16)',
+      onPress: "() =>"
     },
     {
       key: 'test-series',
@@ -57,13 +59,18 @@ class BottomTab extends React.Component {
 //       renderIcon={this.renderIcon(tab.icon)}
 //     />
 //   )
+
+    clickHandler=(key)=>{
+      this.setState({activeTab:key})
+      this.props.navigation.navigate("ViewInsTestSeriesList")
+    }
  
     renderTab=(tab,isActive)=>
     {
          
         return (
                 
-                <TouchableOpacity style={styles.TabContainer} onPress={()=>(this.setState({activeTab:tab.key}))}>
+                <TouchableOpacity style={styles.TabContainer} onPress={()=>(this.clickHandler(tab.key))}>
                         <Feather size={24} color={isActive?theme.accentColor:theme.secondaryColor} name={tab.icon} />
                     <Text style={{color: isActive?theme.accentColor:theme.secondaryColor,fontSize:12}}>{tab.label}</Text>
                 </TouchableOpacity>
@@ -72,8 +79,7 @@ class BottomTab extends React.Component {
         )
     }
 
-  render() {  
-    console.log(this.props.bottomComponentStyle)      
+  render() {       
     return ( 
      
         <View style={styles.container}>
@@ -112,4 +118,10 @@ const styles = StyleSheet.create({
         },
 
 })
-export default BottomTab;
+const mapStateToProps =(state) =>
+{
+    return {
+       stackNavigation:state.layout.stackNavigation
+    }
+}
+export default connect(mapStateToProps)(BottomTab);

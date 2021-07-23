@@ -6,7 +6,10 @@ import { theme ,serverBaseUrl,dataLimit} from '../config';
 import { Feather } from '@expo/vector-icons';
 import { AirbnbRating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
+import { connect } from 'react-redux'
 import CardView from '../Utils/CardView';
+import {setNavigation} from '../Actions'
+
 import {fetch_institute_courses,fetch_courses_banners,fetch_courses_videos,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents,fetch_courses_timetable,fetch_testSeries} from '../Utils/DataHelper/Course'
 import {fetch_homeData} from '../Utils/DataHelper/HomeData'
 import {fetch_coachingByCategory} from '../Utils/DataHelper/Coaching'
@@ -35,6 +38,7 @@ class Home extends React.Component {
             }
     }
     componentDidMount() {
+        this.props.setNavigation(this.props.navigation);
         fetch_homeData(this.handleHomeDataCallBack)
     }
 
@@ -166,6 +170,7 @@ class Home extends React.Component {
                 catInHeader={true}
                 catOnpress={this.toggleCatMode}
                 scrollMode={'scroll'}
+                navigation={this.props.navigation}
             >
                 <View style={styles.container}> 
                     <View style={styles.mainContent}> 
@@ -282,4 +287,12 @@ const styles = StyleSheet.create({
 
 
 })
-export default Home;
+const  mapStateToProps = (state)=>
+{
+    console.log(state)
+    return {
+        screenWidth: state.screen.screenWidth,
+        userInfo:state.user.userInfo,
+    }
+}
+export default connect(mapStateToProps,{setNavigation})(Home);

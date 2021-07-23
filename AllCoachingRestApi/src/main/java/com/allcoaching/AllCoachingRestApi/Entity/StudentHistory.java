@@ -17,7 +17,6 @@ public class StudentHistory {
     @Id
     @GeneratedValue
     private long id;
-
     private String type;
     private  long itemId;
     private long studentId;

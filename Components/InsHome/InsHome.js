@@ -757,15 +757,15 @@ class InsHome extends React.Component {
         {
             case 1:
                 return (
-                    <FeedImage item={item}/>
+                    <FeedImage item={item} type={1}/>
                 )
             case 2:
                 return (
-                    <FeedPoll item={item}/>
+                    <FeedPoll item={item} type={1}/>
                 )
             case 3:
                 return (
-                    <FeedText item={item}/>
+                    <FeedText item={item} type={1}/>
                 )
         }
     }
@@ -899,7 +899,8 @@ class InsHome extends React.Component {
             catInHeader={false}
             titleonheader={"Dashboard"}
             notificationreplaceshare={"more-vertical"}
-                rightIconOnPress={()=>{this.setState({modalVisible:true})}} 
+            rightIconOnPress={()=>{this.setState({modalVisible:true})}} 
+            navigation={this.props.navigation}
         > 
             <ScrollView>
                 <View style={styles.container}>

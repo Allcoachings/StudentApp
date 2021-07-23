@@ -54,7 +54,7 @@ public class FeedService {
     {
 
         //fetching data from repo pagination implemented
-        Page<Feed> pagedFeeds = feedRepo.findAll(PageRequest.of(page,pageSize,Sort.by(Sort.Direction.DESC,"time_stamp")));
+        Page<Feed> pagedFeeds = feedRepo.findAll(PageRequest.of(page,pageSize,Sort.by(Sort.Direction.DESC,"creationTime")));
 
         //created list for returing multiple FeedDtos
         List<FeedDto> feedDtos = new ArrayList<>();
@@ -100,7 +100,7 @@ public class FeedService {
     {
 
         //fetching data from repo pagination implemented
-        Page<Feed> pagedFeeds = feedRepo.findByInsId(insId,PageRequest.of(page,pageSize,   Sort.by(Sort.Direction.DESC,"time_stamp")));
+        Page<Feed> pagedFeeds = feedRepo.findByInsId(insId,PageRequest.of(page,pageSize,   Sort.by(Sort.Direction.DESC,"creationTime")));
 
         //created list for returing multiple FeedDtos
         List<FeedDto> feedDtos = new ArrayList<>();
@@ -145,7 +145,7 @@ public class FeedService {
     {
 
         //fetching data from repo pagination implemented
-        Page<Feed> pagedFeeds = feedRepo.findByStudentId(stuId,PageRequest.of(page,pageSize,   Sort.by(Sort.Direction.DESC,"time_stamp")));
+        Page<Feed> pagedFeeds = feedRepo.findByStudentId(stuId,PageRequest.of(page,pageSize,   Sort.by(Sort.Direction.DESC,"creationTime")));
 
         //created list for returing multiple FeedDtos
         List<FeedDto> feedDtos = new ArrayList<>();
@@ -190,7 +190,7 @@ public class FeedService {
     {
 
         //fetching data from repo pagination implemented
-        Page<Feed> pagedFeeds = feedRepo.findByTagsContaining(tags,PageRequest.of(page,pageSize,Sort.by(Sort.Direction.DESC,"time_stamp")));
+        Page<Feed> pagedFeeds = feedRepo.findByTagsContaining(tags,PageRequest.of(page,pageSize,Sort.by(Sort.Direction.DESC,"creationTime")));
 
         //created list for returing multiple FeedDtos
         List<FeedDto> feedDtos = new ArrayList<>();

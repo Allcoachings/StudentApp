@@ -66,7 +66,7 @@ export function DrawerContent(props){
                         {renderDrawerItem('Subscription','lock',()=>props.navigation.navigate("Subscription"))} 
                         {renderDrawerItem('Profile','user',()=>props.navigation.navigate("Profile"))}
                         {renderDrawerItem('Result Analysis','user',()=>props.navigation.navigate("ResultAnalysis"))}
-                        {renderDrawerItem('Feed','user',()=>props.navigation.navigate("Feed"))}
+                        {renderDrawerItem('Feed','user',()=>props.navigation.navigate("Feed",{item: false}))}
                         {renderDrawerItem('Settings','user',()=>props.navigation.navigate("Settings"))}
                         {renderDrawerItem('Downloads','user',()=>props.navigation.navigate("Downloads"))}
                         {/* <Drawer.Item

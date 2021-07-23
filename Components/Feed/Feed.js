@@ -12,7 +12,8 @@ import FeedImage from '../Feed/FeedImage';
 import FeedPoll from '../Feed/FeedPoll';
 class Feed extends React.Component {
     state={
-        offset:0,loadingData:true,
+        offset:0,
+        loadingData:true,
     }
 
     handleFeedCallBack=(response)=>
@@ -54,80 +55,6 @@ class Feed extends React.Component {
         )
     }
 
-    renderImagePost=() => {
-        return(
-            CardView(
-                <View style={styles.boxView}>
-                    <View style={styles.rowView}>
-                        <View style={styles.circleView} />
-                        <Text style={styles.coaching}>Saket IAS Allahabad</Text>
-                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
-                    </View>
-                    <View style={styles.timeDateView}>
-                        <Text style={styles.timeDateText}>4:00 AM</Text>
-                        <Text style={styles.timeDateText}>28/05/2021</Text>
-                    </View>
-                    <View style={styles.innerBoxView}>
-                        <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.img}/>
-                        {this.renderLikeShareRow()}
-                    </View>
-                </View>,{width: '100%', padding: 6, marginBottom: 10}
-            )
-        )
-    }
-
-    renderQuizPost=() => {
-        return(
-            CardView(
-                <View style={styles.boxView}>
-                    <View style={styles.rowView}>
-                        <View style={styles.circleView} />
-                        <Text style={styles.coaching}>Chandra Institute Allahabad</Text>
-                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
-                    </View>
-                    <View style={styles.timeDateView}>
-                        <Text style={styles.timeDateText}>4:00 AM</Text>
-                        <Text style={styles.timeDateText}>28/05/2021</Text>
-                    </View>
-                    <View style={styles.innerBoxView}>
-                        <Text style={{fontSize: 18, marginBottom: 10}}>In 1768, Captain James Cook set out to explore which ocean?</Text>
-                        <View Style={{display: 'flex', flexDirection: 'column'}}>
-                            <Text style={{fontSize: 16, marginTop: 3}}>Pacific Ocean</Text>
-                            <Text style={{fontSize: 16, marginTop: 3}}>Atlantic Ocean</Text>
-                            <Text style={{fontSize: 16, marginTop: 3}}>Indian Ocean</Text>
-                            <Text style={{fontSize: 16, marginTop: 3}}>Arctic Ocean</Text>
-                        </View>
-
-                        {this.renderLikeShareRow()}
-                    </View>
-                </View>,{width: '100%', padding: 6, marginBottom: 10}
-            )
-        )
-    }
-
-
-    renderTextPost=() => {
-        return(
-            CardView(
-                <View style={styles.boxView}>
-                    <View style={styles.rowView}>
-                        <View style={styles.circleView} />
-                        <Text style={styles.coaching}>Test Coachings</Text>
-                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
-                    </View>
-                    <View style={styles.timeDateView}>
-                        <Text style={styles.timeDateText}>4:00 AM</Text>
-                        <Text style={styles.timeDateText}>28/05/2021</Text>
-                    </View>
-                    <View style={styles.innerBoxView}>
-                        <Text style={{fontSize: 18, marginBottom: 5}}>Covid Live News Updates: AstraZeneca shots should be halted for over-60s too, says European Medicines Agency</Text>
-                        {this.renderLikeShareRow()}
-                    </View>
-                </View>,{width: '100%', padding: 6, marginBottom: 10}
-            )
-        )
-    }
-
     header=() => {
         return(
             <View style={styles.headView}>
@@ -160,15 +87,15 @@ class Feed extends React.Component {
         {
             case 1:
                 return (
-                    <FeedImage item={item}/>
+                    <FeedImage item={item} type={2}/>
                 )
             case 2:
                 return (
-                    <FeedPoll item={item}/>
+                    <FeedPoll item={item} type={2}/>
                 )
             case 3:
                 return (
-                    <FeedText item={item}/>
+                    <FeedText item={item} type={2}/>
                 )
         }
     }

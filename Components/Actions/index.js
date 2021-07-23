@@ -90,3 +90,18 @@ export const setTestResultData=(data)=>
 }
 
 //test series reducer actions ends
+
+
+//stacknavigation reducer actions starts
+
+export const setNavigation = (navigation)=>
+{
+    return{
+        type: actionTypes.SET_NAVIGATION,
+        payload:{
+            navigation : navigation
+        }
+    }
+}
+
+//stacknavigation reducer actions ends
