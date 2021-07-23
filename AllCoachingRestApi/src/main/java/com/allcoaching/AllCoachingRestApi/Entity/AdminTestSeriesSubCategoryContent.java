@@ -20,6 +20,7 @@ public class AdminTestSeriesSubCategoryContent {
 
     private String name;
     private String image;
+    private int sortOrder;
     private long testSeriesSubCategoryId;
 
 
