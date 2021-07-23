@@ -2,30 +2,54 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {insTestSeries} from '../../FakeDataService/FakeData'
-import { theme } from '../config';
+import { theme, dataLimit } from '../config';
 import { Feather } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
+import { fetch_testSeries_category } from '../Utils/DataHelper/TestSeries'
+
 class TestSeriesIns extends React.Component {
-    state = {  }
+    state = { 
+        offset: 0,
+        testSeries: []
+     }
+
+    componentDidMount() {
+        fetch_testSeries_category(this.state.offset, dataLimit, this.testSeriesCallBack)
+    }
+
+    testSeriesCallBack=(response)=>{
+        if(response.status==200)
+        {
+            console.log("success")
+            response.json().then(data=>
+            {
+                this.setState({testSeries: data})
+            })
+        }
+        else
+        {
+            console.log("something went wrong")
+        }
+    }
 
     singleItem=({item})=>{
        return(
             CardView(
                     <View  style={styles.singleItem}>
                         <View style={styles.imageView}>
-                            <Image source={item.image} style={styles.itemImage}/>
+                            <Image source={{uri: item.image}} style={styles.itemImage}/>
                         </View>
                         <View style={styles.titleView}>
-                            <Text style={styles.itemTitle}>{item.title}</Text>
+                            <Text style={styles.itemTitle}>{item.name}</Text>
                         </View>
                         <View style={styles.countView}>
                             <Text style={styles.itemCount}>{item.count}</Text>
                         </View>
-                        <TouchableOpacity onPress={()=>this.props.navigation.navigate("ViewInsTestSeriesList", {banner: item.banner, series: item.list})} style={styles.btnView}>
-                            <Text style={styles.cardButton}>{item.text}</Text>
+                        <TouchableOpacity onPress={()=>this.props.navigation.navigate("ViewInsTestSeriesList", {id: categoryId,banner: item.banner, series: item.list})} style={styles.btnView}>
+                            <Text style={styles.cardButton}>View Test Series</Text>
                         </TouchableOpacity>
                     </View>, { margin:10,width:((this.props.screenWidth/3.5)),borderWidth:1,borderColor:theme.labelOrInactiveColor,borderRadius:15 }
             )
@@ -37,11 +61,11 @@ class TestSeriesIns extends React.Component {
         return(
         <View style={styles.singleRow}>
             <View style={styles.rowHeader}>
-               <Text style={styles.rowHeadText}>{item.name}</Text> 
+               <Text style={styles.rowHeadText}>{item.categoryName}</Text> 
             </View>
             <View style={styles.rowBody}>
                 <FlatList 
-                    data={item.data} 
+                    data={item.subCategories} 
                     renderItem={this.singleItem} 
                     keyExtractor={(item)=>item.id}
                     horizontal={true} 
@@ -51,6 +75,7 @@ class TestSeriesIns extends React.Component {
         </View>)
     }
     render() {
+        console.log(this.state.testSeries)
         return (
             <PageStructure
                 iconName={"menu"}
@@ -60,7 +85,7 @@ class TestSeriesIns extends React.Component {
                 <ScrollView>
                     <View style={styles.container}> 
                         <FlatList 
-                            data={insTestSeries} 
+                            data={this.state.testSeries} 
                             renderItem={this.singleRow} 
                             keyExtractor={(item)=>item.id}
                             showsVerticalScrollIndicator={false} 

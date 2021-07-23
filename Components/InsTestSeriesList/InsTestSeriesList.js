@@ -12,7 +12,27 @@ import {connect } from 'react-redux'
 class InsTestSeriesList extends React.Component {
 
     state={
+        id: this.props.id,
+        subCat: []
+    }
 
+    componentDidMount(){
+        fetchSubCatTestSeries(this.state.id, this.state.offset, dataLimit,this.SubCatTestSeriesCallback)
+    }
+
+    SubCatTestSeriesCallback=(response)=>{
+        if(response.status==200)
+        {
+            console.log("success")
+            response.json().then(data=>
+            {
+                this.setState({subCat: data})
+            })
+        }
+        else
+        {
+            console.log("something went wrong")
+        }
     }
 
     renderBannerList=({item})=>
@@ -46,7 +66,7 @@ class InsTestSeriesList extends React.Component {
     }
 
     render() {
-    
+        console.log(this.state.subCat)
         return(
             <PageStructure
                 iconName={"arrow-left"}
