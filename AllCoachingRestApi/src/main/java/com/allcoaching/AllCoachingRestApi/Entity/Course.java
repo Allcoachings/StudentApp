@@ -1,12 +1,14 @@
 package com.allcoaching.AllCoachingRestApi.Entity;
 
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
+
+
 
 @Data
 @NoArgsConstructor
@@ -15,7 +17,7 @@ import java.util.List;
 public class Course {
 
     @Id
-        @GeneratedValue
+    @GeneratedValue
     private long id;
     private String title;
     private String description;

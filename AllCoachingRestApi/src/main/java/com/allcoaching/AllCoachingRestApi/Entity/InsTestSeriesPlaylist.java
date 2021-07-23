@@ -12,7 +12,7 @@ import javax.persistence.Id;
 @ToString
 @NoArgsConstructor
 @Entity
-public class TestSeriesPlaylist {
+public class InsTestSeriesPlaylist {
     @Id
     @GeneratedValue
     private long id;
@@ -21,7 +21,7 @@ public class TestSeriesPlaylist {
 
     private long courseId;
 
-    public TestSeriesPlaylist(String name, long courseId) {
+    public InsTestSeriesPlaylist(String name, long courseId) {
         this.name = name;
         this.courseId = courseId;
     }

@@ -2,18 +2,16 @@ package com.allcoaching.AllCoachingRestApi.Service;
 
 import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeries;
 import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeriesQuestions;
-import com.allcoaching.AllCoachingRestApi.Entity.TestSeriesPlaylist;
+import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeriesPlaylist;
 import com.allcoaching.AllCoachingRestApi.Respository.InsTestSeriesQuestionsRepo;
 import com.allcoaching.AllCoachingRestApi.Respository.InsTestSeriesRepo;
 import com.allcoaching.AllCoachingRestApi.Respository.TestSeriesPlaylistRepo;
-import com.fasterxml.jackson.databind.util.ArrayIterator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,9 +26,9 @@ public class InsTestSeriesService {
     @Autowired
     private TestSeriesPlaylistRepo testSeriesPlaylistRepo;
 
-    public TestSeriesPlaylist createTestSeriesPlaylist(TestSeriesPlaylist testSeriesPlaylist)
+    public InsTestSeriesPlaylist createTestSeriesPlaylist(InsTestSeriesPlaylist insTestSeriesPlaylist)
     {
-        return  testSeriesPlaylistRepo.save(testSeriesPlaylist);
+        return  testSeriesPlaylistRepo.save(insTestSeriesPlaylist);
     }
 
     public Iterable<InsTestSeries> getTestSeriesByPlaylistId(long id)
@@ -68,5 +66,30 @@ public class InsTestSeriesService {
     public Optional<InsTestSeries> findById(long id)
     {
         return insTestSeriesRepo.findById(id);
+    }
+
+    public Iterable<InsTestSeries> findByCategoryAndIsAdmin(long category,boolean isAdmin,int page,int pageSize)
+    {
+        Page<InsTestSeries> pagedResult =insTestSeriesRepo.findByCategoryAndIsAdmin(category,isAdmin,PageRequest.of(page,pageSize));
+        if(pagedResult.hasContent())
+        {
+            return  pagedResult.getContent();
+        }
+        else
+        {
+            return new ArrayList<InsTestSeries>();
+        }
+    }
+    public Iterable<InsTestSeries> findByIsAdmin(boolean isAdmin,int page,int pageSize)
+    {
+        Page<InsTestSeries> pagedResult =insTestSeriesRepo.findByIsAdmin(isAdmin,PageRequest.of(page,pageSize));
+        if(pagedResult.hasContent())
+        {
+            return  pagedResult.getContent();
+        }
+        else
+        {
+            return new ArrayList<InsTestSeries>();
+        }
     }
 }

@@ -2,7 +2,7 @@ package com.allcoaching.AllCoachingRestApi.Controller;
 
 import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeries;
 import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeriesQuestions;
-import com.allcoaching.AllCoachingRestApi.Entity.TestSeriesPlaylist;
+import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeriesPlaylist;
 import com.allcoaching.AllCoachingRestApi.Service.InsTestSeriesService;
 import com.allcoaching.AllCoachingRestApi.dto.TestSeriesDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +24,10 @@ public class InsTestSeriesController {
     //for creating a playlist
     @CrossOrigin(origins = "*")
     @PostMapping("/createplaylist")
-    public ResponseEntity<Object> createTestSeriesPlaylist(@RequestBody TestSeriesPlaylist testSeriesPlaylist)
+    public ResponseEntity<Object> createTestSeriesPlaylist(@RequestBody InsTestSeriesPlaylist insTestSeriesPlaylist)
     {
-        TestSeriesPlaylist testSeriesPlaylist_saved  = insTestSeriesService.createTestSeriesPlaylist(testSeriesPlaylist);
-        URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(testSeriesPlaylist_saved.getId()).toUri();
+        InsTestSeriesPlaylist insTestSeriesPlaylist_saved = insTestSeriesService.createTestSeriesPlaylist(insTestSeriesPlaylist);
+        URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(insTestSeriesPlaylist_saved.getId()).toUri();
         return ResponseEntity.created(location).build();
 
     }

@@ -1,4 +1,4 @@
-package com.allcoaching.AllCoachingRestApi.Utils;
+package com.allcoaching.AllCoachingRestApi;
 
 
 import org.springframework.context.annotation.Bean;
@@ -18,11 +18,8 @@ public class SpringFoxConfig {
 
     @Bean
     public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.allcoaching.AllCoachingRestApi.Controller"))
-                .paths(PathSelectors.any())
-                .build();
+        return new Docket(DocumentationType.SWAGGER_2);
+
     }
 
 
