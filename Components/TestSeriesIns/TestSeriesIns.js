@@ -23,7 +23,6 @@ class TestSeriesIns extends React.Component {
     testSeriesCallBack=(response)=>{
         if(response.status==200)
         {
-            console.log("success")
             response.json().then(data=>
             {
                 this.setState({testSeries: data})
@@ -48,7 +47,7 @@ class TestSeriesIns extends React.Component {
                         <View style={styles.countView}>
                             <Text style={styles.itemCount}>{item.count}</Text>
                         </View>
-                        <TouchableOpacity onPress={()=>this.props.navigation.navigate("ViewInsTestSeriesList", {id: categoryId,banner: item.banner, series: item.list})} style={styles.btnView}>
+                        <TouchableOpacity onPress={()=>this.props.navigation.navigate("ViewInsTestSeriesList", {id: item.id})} style={styles.btnView}>
                             <Text style={styles.cardButton}>View Test Series</Text>
                         </TouchableOpacity>
                     </View>, { margin:10,width:((this.props.screenWidth/3.5)),borderWidth:1,borderColor:theme.labelOrInactiveColor,borderRadius:15 }
@@ -75,7 +74,6 @@ class TestSeriesIns extends React.Component {
         </View>)
     }
     render() {
-        console.log(this.state.testSeries)
         return (
             <PageStructure
                 iconName={"menu"}

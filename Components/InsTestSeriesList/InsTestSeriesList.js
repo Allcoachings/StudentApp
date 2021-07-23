@@ -2,28 +2,29 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {insTestSeries} from '../../FakeDataService/FakeData'
-import { theme } from '../config';
+import { theme, dataLimit } from '../config';
 import { Feather } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
+import { fetchTestSeriesBySubCategory } from '../Utils/DataHelper/TestSeries'
 
 class InsTestSeriesList extends React.Component {
 
     state={
-        id: this.props.id,
-        subCat: []
+        id: this.props.route.params.id,
+        subCat: [],
+        offset: 0
     }
 
     componentDidMount(){
-        fetchSubCatTestSeries(this.state.id, this.state.offset, dataLimit,this.SubCatTestSeriesCallback)
+        fetchTestSeriesBySubCategory(this.state.id, this.state.offset, dataLimit,this.SubCatTestSeriesCallback)
     }
 
     SubCatTestSeriesCallback=(response)=>{
         if(response.status==200)
         {
-            console.log("success")
             response.json().then(data=>
             {
                 this.setState({subCat: data})
@@ -49,16 +50,16 @@ class InsTestSeriesList extends React.Component {
             CardView(
                 <View  style={styles.singleItem}>
                     <View style={styles.imageView}>
-                        <Image source={item.image} style={styles.itemImage}/>
+                        <Image source={{uri: item.image}} style={styles.itemImage}/>
                     </View>
                     <View style={styles.titleView}>
-                        <Text style={styles.itemTitle}>{item.title}</Text>
+                        <Text style={styles.itemTitle}>{item.name}</Text>
                     </View>
                     <View style={styles.countView}>
                         <Text style={styles.itemCount}>{item.count}</Text>
                     </View>
                     <TouchableOpacity onPress={()=>this.props.navigation.navigate("SeriesList", {list: item.seriesList, banner: item.banner})} style={styles.btnView}>
-                            <Text style={styles.cardButton}>{item.text}</Text>
+                            <Text style={styles.cardButton}>View Test Series</Text>
                     </TouchableOpacity>
                 </View>, { margin:7,width:((this.props.screenWidth/3.5)),borderWidth:1,borderColor:theme.labelOrInactiveColor,borderRadius:15 }
         )
@@ -66,7 +67,6 @@ class InsTestSeriesList extends React.Component {
     }
 
     render() {
-        console.log(this.state.subCat)
         return(
             <PageStructure
                 iconName={"arrow-left"}
@@ -96,7 +96,7 @@ class InsTestSeriesList extends React.Component {
                     
                     <View style={styles.seriesView}>
                         <FlatList
-                            data={this.props.route.params.series}
+                            data={this.state.subCat}
                             renderItem={this.renderSeries}
                             numColumns={3}
                             keyExtractor={(item) => item.id}
