@@ -39,10 +39,19 @@ public class InsLeadService {
         }
     }
 
-//    public Iterable<InsLeadsStudentDto> InsCourseLeadList(long courseId)
-//    {
-//
-//    }
+    public Iterable<InsLeadsStudentDto> InsCourseLeadList(long courseId,int page,int pageSize)
+    {
+
+          Page<InsLeadsStudentDto> pagedResult = insLeadsRepo.findAllByCourseId(courseId,PageRequest.of(page,pageSize));
+          if(pagedResult.hasContent())
+          {
+                return  pagedResult.getContent();
+          }else
+          {
+              return  new ArrayList<>();
+          }
+
+    }
 
 
 

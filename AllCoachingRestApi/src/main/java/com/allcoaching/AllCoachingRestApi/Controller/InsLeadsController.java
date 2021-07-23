@@ -5,6 +5,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.InsLeads;
 import com.allcoaching.AllCoachingRestApi.Respository.InsLeadsRepo;
 import com.allcoaching.AllCoachingRestApi.Service.InsLeadService;
 import com.allcoaching.AllCoachingRestApi.dto.InsLeadsDto;
+import com.allcoaching.AllCoachingRestApi.dto.InsLeadsStudentDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,4 +35,13 @@ public class InsLeadsController {
     {
         return insLeadService.InsLeadsInfo(insId,offset,dataLimit);
     }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/course/{courseId}/{offset}/{dataLimit}")
+    public  Iterable<InsLeadsStudentDto> fetchInsCourseLeadsInfo(@PathVariable long courseId, @PathVariable int offset, @PathVariable int dataLimit)
+    {
+        return insLeadService.InsCourseLeadList(courseId,offset,dataLimit);
+    }
+
+
 }
