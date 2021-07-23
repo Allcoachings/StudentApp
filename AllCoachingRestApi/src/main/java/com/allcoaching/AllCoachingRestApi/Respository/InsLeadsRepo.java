@@ -2,6 +2,7 @@ package com.allcoaching.AllCoachingRestApi.Respository;
 
 import com.allcoaching.AllCoachingRestApi.Entity.InsLeads;
 import com.allcoaching.AllCoachingRestApi.dto.InsLeadsDto;
+import com.allcoaching.AllCoachingRestApi.dto.InsLeadsStudentDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +20,6 @@ public interface InsLeadsRepo extends PagingAndSortingRepository<InsLeads,Long> 
 
     @Query("Select new com.allcoaching.AllCoachingRestApi.dto.InsLeadsDto(c.id,c.title,c.leads) from Course c , InsLeads il where c.id = il.courseId and il.insId=:id")
     Page<InsLeadsDto> findAllByInsId(long id, Pageable pageable);
+
+
 }
