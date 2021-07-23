@@ -23,6 +23,7 @@ public class Course {
     private String description;
     private float fees;
     private long instId;
+    private long leads=0;
 
     public Course(String title, String description, float fees, long instId) {
         this.title = title;
