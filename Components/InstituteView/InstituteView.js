@@ -21,6 +21,7 @@ import FeedText from '../Feed/FeedText';
 import FeedImage from '../Feed/FeedImage';
 import FeedPoll from '../Feed/FeedPoll';
 import {tabListInstitute} from '../../FakeDataService/FakeData'
+import {addLead} from '../Utils/DataHelper/Leads'
 
 import {fetch_institute_feed} from '../Utils/DataHelper/Feed'
 class InstituteView extends React.Component {
@@ -137,6 +138,7 @@ class InstituteView extends React.Component {
          
          fetch_courses_banners(item.id,this.courseBannerCallback)
      }
+
      renderTabItems=({item,index})=>
      {
         
@@ -144,6 +146,7 @@ class InstituteView extends React.Component {
         {
             this.setState({activeCourse:item.id,activeCourseDetail:item,activeTab: 'videos', })
             fetch_courses_banners(item.id,this.courseBannerCallback)
+            //add lead
         }
          return (
             <TouchableOpacity style={[styles.courseItemContainer,this.state.activeCourse==item.id?({backgroundColor:theme.secondaryColor}):(null)]} onPress={()=>this.handleCourseItemClick(item)}> 

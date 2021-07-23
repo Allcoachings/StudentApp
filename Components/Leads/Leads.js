@@ -6,8 +6,58 @@ import { Feather } from '@expo/vector-icons';
 import { feedData } from '../../FakeDataService/FakeData' 
 import {connect } from 'react-redux'
 import CardView from '../Utils/CardView';
+import RenderCourseList from './RenderCourseList';
+
 class Leads extends React.Component {
     state={
+        courseList: [
+                        {
+                            id: '1',
+                            name: 'Course 1',
+                            price: 5000
+                        },
+                        {
+                            id: '2',
+                            name: 'Course 1',
+                            price: 5000
+                        },
+                        {
+                            id: '3',
+                            name: 'Course 1',
+                            price: 5000
+                        },
+                        {
+                            id: '4',
+                            name: 'Course 1',
+                            price: 5000
+                        },
+                        {
+                            id: '5',
+                            name: 'Course 1',
+                            price: 5000
+                        },
+                        {
+                            id: '6',
+                            name: 'Course 1',
+                            price: 5000
+                        },
+                        {
+                            id: '7',
+                            name: 'Course 1',
+                            price: 5000
+                        },
+                        {
+                            id: '8',
+                            name: 'Course 1',
+                            price: 5000
+                        },
+                ]
+    }
+
+    courses=({item})=>{
+        return(
+            <RenderCourseList item={item}/>
+        )
     }
 
     render() {
@@ -42,46 +92,13 @@ class Leads extends React.Component {
                         </View>
 
                         <View style={styles.courseCol}>
-                            <View style={styles.corsePriceView}>
-                                <Text style={styles.courseText}>Course 1</Text>
-                                <Text style={styles.coursePriceText}>5000</Text>
-                            </View>
-                            <View style={styles.corsePriceView}>
-                                <Text style={styles.courseText}>Course 1</Text>
-                                <Text style={styles.coursePriceText}>5000</Text>
-                            </View>
-                            <View style={styles.corsePriceView}>
-                                <Text style={styles.courseText}>Course 1</Text>
-                                <Text style={styles.coursePriceText}>5000</Text>
-                            </View>
-                            <View style={styles.corsePriceView}>
-                                <Text style={styles.courseText}>Course 1</Text>
-                                <Text style={styles.coursePriceText}>5000</Text>
-                            </View>
-                            <View style={styles.corsePriceView}>
-                                <Text style={styles.courseText}>Course 1</Text>
-                                <Text style={styles.coursePriceText}>5000</Text>
-                            </View>
-                            <View style={styles.corsePriceView}>
-                                <Text style={styles.courseText}>Course 1</Text>
-                                <Text style={styles.coursePriceText}>5000</Text>
-                            </View>
-                            <View style={styles.corsePriceView}>
-                                <Text style={styles.courseText}>Course 1</Text>
-                                <Text style={styles.coursePriceText}>5000</Text>
-                            </View>
-                            <View style={styles.corsePriceView}>
-                                <Text style={styles.courseText}>Course 1</Text>
-                                <Text style={styles.coursePriceText}>5000</Text>
-                            </View>
-                            <View style={styles.corsePriceView}>
-                                <Text style={styles.courseText}>Course 1</Text>
-                                <Text style={styles.coursePriceText}>5000</Text>
-                            </View>
-                            <View style={styles.corsePriceView}>
-                                <Text style={styles.courseText}>Course 1</Text>
-                                <Text style={styles.coursePriceText}>5000</Text>
-                            </View>
+                            <FlatList 
+                                data={this.state.courseList} 
+                                renderItem={this.courses}
+                                keyExtractor={(item)=>item.id} 
+                                horizontal={false}
+                                showsHorizontalScrollIndicator={false}
+                            />
                         </View>
                         
                     </View>

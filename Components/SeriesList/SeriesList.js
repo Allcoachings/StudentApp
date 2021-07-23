@@ -74,7 +74,6 @@ class SeriesList extends React.Component {
     }
 
     renderList=({item})=>{
-        console.log("item",item)
         return( 
              CardView(
                      <View style={styles.list}>
@@ -84,7 +83,7 @@ class SeriesList extends React.Component {
                          </View>
                          <View style={styles.bottomRow}>
                              <Text style={styles.titleText}>{item.title}</Text>
-                             <TouchableOpacity onPress={()=> {this.props.navigation.navigate("SingleTestSeries")}} style={styles.btnView}>
+                             <TouchableOpacity onPress={()=> {this.props.navigation.navigate("SingleTestSeries",{item:item})}} style={styles.btnView}>
                                  <Feather name="play" size={12} style={{color: theme.primaryColor, marginRight: 3}}/>
                                  <Text style={styles.btnText}>Start</Text>
                              </TouchableOpacity>
