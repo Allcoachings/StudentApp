@@ -18,7 +18,6 @@ class indexIns extends React.Component {
     state = {  }
    
     render() {
-        console.log(this.props.insAuth)
         return (
             <>
                 <NavigationContainer>

@@ -48,18 +48,17 @@ class SubscriptionNew extends React.Component {
                         </View>
                         <Text style={styles.instituteDirector}>{item.directorName}</Text>
                         <View style={styles.instituteRatingView}>
-                            <Text style={{alignSelf:'flex-start', color: theme.greyColor}}>{item.totalRating}</Text>
                             <AirbnbRating 
                                         starContainerStyle={styles.instituteRating} 
                                         count={5}
                                         reviews={[]} 
                                         isDisabled={true}
-                                        defaultRating={item.totalRating}
+                                        defaultRating={item.totalRatingCount>0?(item.totalRating/item.totalRatingCount):(0)}
                                         size={12}
                                         selectedColor={theme.blueColor}
                                         showRating={false}
                                     />
-                            <Text style={styles.voteCount}>{item.totalRatingCount}</Text>
+                            <Text style={styles.voteCount}>{item.totalRatingCount>0?(item.totalRating/item.totalRatingCount):(0)}</Text>
                         </View>
                         <View style={styles.followerView}>
                             <Text style={styles.follower}>{item.followersCount} Followers</Text>
