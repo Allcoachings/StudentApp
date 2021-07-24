@@ -49,4 +49,16 @@ public class InstituteService {
     {
         return  instituteRepo.save(institute);
     }
+
+    public Iterable<Institute> searchInstitute(String word,int page,int pageLimit)
+    {
+         Page<Institute> pagedResult = instituteRepo.findByNameContaining(word,PageRequest.of(page,pageLimit));
+         if(pagedResult.hasContent())
+         {
+             return pagedResult.getContent();
+         }else
+         {
+             return new ArrayList<>();
+         }
+    }
 }

@@ -1,6 +1,7 @@
 package com.allcoaching.AllCoachingRestApi.Respository;
 
 import com.allcoaching.AllCoachingRestApi.Entity.AdminTestSeriesSubCategoryContent;
+import com.allcoaching.AllCoachingRestApi.Entity.AdminTestSubCategories;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -12,4 +13,7 @@ public interface AdminTestSeriesSubCategoryContentRepo extends PagingAndSortingR
 
 
     Page<AdminTestSeriesSubCategoryContent> findAllByTestSeriesSubCategoryId(long id, Pageable page);
+
+
+
 }
