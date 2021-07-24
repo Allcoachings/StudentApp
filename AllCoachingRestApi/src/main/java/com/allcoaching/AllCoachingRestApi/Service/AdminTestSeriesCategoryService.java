@@ -6,6 +6,7 @@ import com.allcoaching.AllCoachingRestApi.Respository.AdminTestSeriesCategoryRep
 import com.allcoaching.AllCoachingRestApi.Respository.AdminTestSubCategoriesRepo;
 import com.allcoaching.AllCoachingRestApi.dto.AdminTestCategoriesDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,25 @@ public class AdminTestSeriesCategoryService {
                     adminTestCategoriesDtos.add(new AdminTestCategoriesDto(item.getId(),item.getName(),adminTestSubCategories));
                 });
                 return adminTestCategoriesDtos;
+
+    }
+
+    public  Iterable<AdminTestCategoriesDto> searchTestCategoryData(String word,int page,int pageSize)
+    {
+                Page<AdminTestSeriesCategory> pagedResult = adminTestSeriesCategoryRepo.searchTestCategoryData(word,PageRequest.of(page,pageSize));
+                if(pagedResult.hasContent()) {
+                    Iterable<AdminTestSeriesCategory> adminTestSeriesCategories = pagedResult.getContent();
+                    List<AdminTestCategoriesDto> adminTestCategoriesDtos = new ArrayList<>();
+                    adminTestSeriesCategories.forEach(item -> {
+                        Iterable<AdminTestSubCategories> adminTestSubCategories = testSubCategoriesRepo.findByCategoryId(item.getId());
+                        adminTestCategoriesDtos.add(new AdminTestCategoriesDto(item.getId(), item.getName(), adminTestSubCategories));
+                    });
+                    return adminTestCategoriesDtos;
+                }else
+                {
+                    return  new ArrayList<>();
+                }
+
 
     }
 

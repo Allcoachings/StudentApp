@@ -22,11 +22,11 @@ public class SearchController {
     }
 
 
-//    @CrossOrigin(origins = "*")
-//    @GetMapping("/testSeries/{searchword}/{offset}/{dataLimit}")
-//    public   Iterable<AdminTestCategoriesDto> seacrhTestSeries(@PathVariable String searchword, @PathVariable int offset, @PathVariable int dataLimit)
-//    {
-//        return searchService.searchTestSeries(searchword,offset,dataLimit);
-//    }
+    @CrossOrigin(origins = "*")
+    @GetMapping("/testSeries/{searchword}/{offset}/{dataLimit}")
+    public   Iterable<AdminTestCategoriesDto> seacrhTestSeries(@PathVariable String searchword, @PathVariable int offset, @PathVariable int dataLimit)
+    {
+        return searchService.searchTestSeries(searchword,offset,dataLimit);
+    }
 
 }
