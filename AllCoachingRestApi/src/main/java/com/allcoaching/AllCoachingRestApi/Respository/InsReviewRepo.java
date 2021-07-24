@@ -1,7 +1,10 @@
 package com.allcoaching.AllCoachingRestApi.Respository;
 
 import com.allcoaching.AllCoachingRestApi.Entity.InsReview;
+import com.allcoaching.AllCoachingRestApi.dto.InsLeadsDto;
+import com.allcoaching.AllCoachingRestApi.dto.InsLeadsStudentDto;
 import com.allcoaching.AllCoachingRestApi.dto.InsReviewDto;
+import com.allcoaching.AllCoachingRestApi.dto.StudentPurchaseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
@@ -24,6 +27,10 @@ public interface InsReviewRepo extends PagingAndSortingRepository<InsReview,Long
     Page<InsReviewDto> findByInsId(long id, Pageable pageable);
 
 
+    @Query("SELECT new com.allcoaching.AllCoachingRestApi.dto.StudentPurchaseDto(i.id,i.name, i.logo, c.title) from Institute i, InsReview r,Course c where r.insId=i.id and r.courseId=c.id and r.studentId=:id")
+    Page<StudentPurchaseDto> findByStudentId(long id, Pageable pageable);
+
+
     @Modifying
     @Query("UPDATE InsReview set reply=:reply where id=:id")
      int setReply(long id, String reply);
@@ -31,5 +38,12 @@ public interface InsReviewRepo extends PagingAndSortingRepository<InsReview,Long
     @Modifying
     @Query("UPDATE InsReview set review=:review, rating=:rating where courseId=:courseId and studentId=:studentId")
     int addReview(long courseId, long studentId, String review, int rating);
+
+    @Query("Select new com.allcoaching.AllCoachingRestApi.dto.InsLeadsDto(c.id,c.title,c.leads) from Course c , InsReview ir where c.id = ir.courseId and ir.insId=:id")
+    Page<InsLeadsDto> findAllByInsId(long id, Pageable pageable);
+
+    @Query("Select new com.allcoaching.AllCoachingRestApi.dto.InsLeadsStudentDto(s.id,s.name,s.studentImage,s.userId) from Student s , InsReview ir where s.id = ir.studentId and ir.courseId=:id")
+    Page<InsLeadsStudentDto> findAllByCourseId(long id, Pageable pageable);
+
 
 }

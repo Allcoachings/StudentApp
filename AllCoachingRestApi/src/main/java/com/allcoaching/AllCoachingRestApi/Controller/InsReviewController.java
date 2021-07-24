@@ -5,6 +5,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.InsReview;
 import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Service.InsReviewService;
 import com.allcoaching.AllCoachingRestApi.dto.InsReviewDto;
+import com.allcoaching.AllCoachingRestApi.dto.StudentPurchaseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -64,5 +65,14 @@ public class InsReviewController {
             @PathVariable(name = "studentId") long studentId)
     {
         return  insReviewService.findByCourseIdStudentId(courseId, studentId);
+    }
+
+    @GetMapping("/purchaseList/{studentId}/{offset}/{dataLimit}")
+    public Iterable<StudentPurchaseDto> findByStudentId(
+            @PathVariable(name = "studentId") long studentId,
+            @PathVariable(name = "offset") int offset,
+            @PathVariable(name = "dataLimit") int dataLimit)
+    {
+        return  insReviewService.findByStudentId(studentId,offset,dataLimit);
     }
 }
