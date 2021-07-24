@@ -1,49 +1,20 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions, ActivityIndicator} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import { theme } from '../config';
+import { theme, dataLimit } from '../config';
 import { Feather } from '@expo/vector-icons';
 import { feedData } from '../../FakeDataService/FakeData' 
 import {connect } from 'react-redux'
 import CardView from '../Utils/CardView';
 import Accordian from '../Utils/Accordian'
+import { fetchStudentList } from '../Utils/DataHelper/Leads'
 const width = Dimensions.get('window').width
 
 class RenderCourseList extends React.Component {
     state={
         loading: false,
-        studentList:[
-            {
-                id: '1',
-                name: 'Rashika Khatri',
-                username: '@rashi',
-                image: 'https://dubuddy.in/userAvatar'
-            },
-            {
-                id: '2',
-                name: 'Rashika Khatri',
-                username: '@rashi',
-                image: 'https://dubuddy.in/userAvatar'
-            },
-            {
-                id: '3',
-                name: 'Rashika Khatri',
-                username: '@rashi',
-                image: 'https://dubuddy.in/userAvatar'
-            },
-            {
-                id: '4',
-                name: 'Rashika Khatri',
-                username: '@rashi',
-                image: 'https://dubuddy.in/userAvatar'
-            },
-            {
-                id: '5',
-                name: 'Rashika Khatri',
-                username: '@rashi',
-                image: 'https://dubuddy.in/userAvatar'
-            },
-        ]
+        offset: 0,
+        studentList:[]
     }
 
     studentListCallBack=(response)=>{
@@ -52,7 +23,6 @@ class RenderCourseList extends React.Component {
             console.log("success student list")
             response.json().then(data=>
             {
-                console.log(data)
                 this.setState({studentList: data, loading: false})
             })
         }
@@ -65,42 +35,47 @@ class RenderCourseList extends React.Component {
     accordianHeader = () =>
     {
         return(
-            <TouchableOpacity style={styles.corsePriceView} onPress={()=>this.setState({loading: true},()=>fetchStudentList(this.props.item.courseId, this.studentListCallBack))}>
+            <View style={styles.corsePriceView}>
                 <Text style={styles.courseText}>{this.props.item.courseName}</Text>
                 <Text style={styles.coursePriceText}>{this.props.item.leads}</Text>
-            </TouchableOpacity>
+            </View>
         )
     }
 
     studentList=({item})=>{
-        
+        console.log("item")
         return(
-            CardView(<View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+            CardView(
+            <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                 <View style={{marginHorizontal: 10}}>
-                    <Image source={{uri: item.image}} style={{height: 50, width:50, borderRadius: 25}} />
+                    <Image source={{uri: item.studentImage}} style={{height: 50, width:50, borderRadius: 25}} />
                 </View>
                 <View style={{display: 'flex', flexDirection: 'column', marginHorizontal: 10}}>
-                    <Text>{item.name}</Text>
-                    <Text>{item.username}</Text>
+                    <Text>{item.studentName}</Text>
+                    <Text>{item.studentUniqueId}</Text>
                 </View>
             </View>, {marginVertical: 10, padding:5}
             )
         )
     }
 
+    fetchCourseStudent=()=>{
+        this.setState({loading: true},()=>fetchStudentList(this.props.item.courseId, this.state.offset, dataLimit, this.studentListCallBack))
+    }
+
     render() {
         return(    
-            <Accordian header={this.accordianHeader()}>
+            <Accordian header={this.accordianHeader()} onPress={this.fetchCourseStudent}>
                 {this.state.loading?(
                     <ActivityIndicator color={theme.secondaryColor} size={"large"}/>
                 ):(
                     <FlatList 
                         data={this.state.studentList} 
-                        renderItem={this.studentList}
+                        renderItem={(item)=>{console.log(item);return this.studentList(item)}}
                         keyExtractor={(item)=>item.id} 
                         horizontal={false}
                         showsHorizontalScrollIndicator={false}
-                    />
+                    /> 
                 )}
             </Accordian>
         )

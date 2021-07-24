@@ -6,13 +6,20 @@ import { View, StyleSheet,TouchableOpacity } from 'react-native';
    state = {
        isContentVisible: false
     };
- 
+    
+    accordionOnPress=()=>{
+      this.setState({ isContentVisible:!this.state.isContentVisible})
+      if(this.props.onPress)
+      {
+        this.props.onPress();
+      }
+    }
 
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.accordianHeader}>
-            <TouchableOpacity   onPress={()=>this.setState({ isContentVisible:!this.state.isContentVisible})}> 
+            <TouchableOpacity   onPress={()=>this.accordionOnPress()}> 
                 {this.props.header}
             </TouchableOpacity>
         </View>

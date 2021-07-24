@@ -13,48 +13,7 @@ class Leads extends React.Component {
     state={
         leads:[],
         offset: 0,
-        courseList: [
-                        {
-                            id: '1',
-                            name: 'Course 1',
-                            price: 5000
-                        },
-                        {
-                            id: '2',
-                            name: 'Course 1',
-                            price: 5000
-                        },
-                        {
-                            id: '3',
-                            name: 'Course 1',
-                            price: 5000
-                        },
-                        {
-                            id: '4',
-                            name: 'Course 1',
-                            price: 5000
-                        },
-                        {
-                            id: '5',
-                            name: 'Course 1',
-                            price: 5000
-                        },
-                        {
-                            id: '6',
-                            name: 'Course 1',
-                            price: 5000
-                        },
-                        {
-                            id: '7',
-                            name: 'Course 1',
-                            price: 5000
-                        },
-                        {
-                            id: '8',
-                            name: 'Course 1',
-                            price: 5000
-                        },
-                ]
+        courseList: []
     }
 
     courses=({item})=>{
