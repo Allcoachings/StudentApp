@@ -2,8 +2,8 @@
 import {serverApiUrl} from '../../config'
 // import {Base64} from '../../Base64' 
  
-export const fetch_student_history=(studentId,offset,dataLimit,callback)=>
-{
+    export const fetch_student_history=(studentId,offset,dataLimit,callback)=>
+    {
 
     
             // var formData   = new FormData(); 
@@ -24,4 +24,24 @@ export const fetch_student_history=(studentId,offset,dataLimit,callback)=>
             })
             .then((response)=>callback(response)) 
             .catch((error)=>{console.log(error)})
-}
+    }
+
+    export const fetch_student_purchase=(studentId,offset,dataLimit,callback)=>
+    { 
+
+        let headers = new Headers(); 
+        headers.append('Content-Type', 'application/json');  
+        headers.append('Access-Control-Allow-Origin', serverApiUrl);
+        headers.append('Access-Control-Allow-Credentials', 'true'); 
+        headers.append('GET', 'POST', 'OPTIONS'); 
+
+            fetch(serverApiUrl+"institute/course/reviews/purchaseList/"+studentId+"/"+offset+"/"+dataLimit,
+        {
+            method: 'GET',  
+            headers,
+            // body:JSON.stringify({title,description,fees,instId})
+        })
+        .then((response)=>callback(response)) 
+        .catch((error)=>{console.log(error)})
+        
+    }

@@ -16,6 +16,7 @@ import FeedText from '../Feed/FeedText';
 import FeedImage from '../Feed/FeedImage';
 import FeedPoll from '../Feed/FeedPoll';
 import {fetch_student_history} from '../Utils/DataHelper/StudentHistory';
+import {fetch_student_purchase} from '../Utils/DataHelper/UserProfile';
 
 // import {Feed} from "../Feed/Feed"
 
@@ -30,7 +31,8 @@ class UserProfile extends React.Component {
         offset: 0,
         loadingData: false,
         history:[],
-        subActiveTab: "video"
+        subActiveTab: "video", 
+        purchase:[]
     }
 
     closeModal = () => {
@@ -48,7 +50,25 @@ class UserProfile extends React.Component {
     }
 
     componentDidMount() {
-       
+        this.setState({loadingData: true});
+        fetch_student_purchase(this.props.userInfo.id, this.state.offset, dataLimit,this.purchaseCallback)
+    }
+
+    purchaseCallback=(response)=>{
+        this.setState({loadingData:false})
+        console.log(response.status)
+        if(response.status==200)
+        {   console.log("purchase success")
+            response.json().then(data=>
+            {
+                console.log(data)
+                this.setState({purchase: data})
+            })
+        }
+        else
+        {
+            console.log("something went wrong")
+        }
     }
 
       header=() => {
@@ -63,9 +83,10 @@ class UserProfile extends React.Component {
           )
       }
 
-      renderPurchageCourse=(institute_name)=>{
+      renderPurchageCourse=(item)=>{
+          console.log("item",item)
           return(
-            <PurchageListRow institute_name={institute_name} />
+            <PurchageListRow item={item} />
           )
       }
 
@@ -343,8 +364,11 @@ class UserProfile extends React.Component {
                 return(
                    
                     <View style={{marginBottom: 50}}>
-                    {this.renderPurchageCourse('Chandan Institiute for ssc,bank,Coaching')}
-                    {this.renderPurchageCourse('Chandan Institiute for ssc,bank,Coaching')}
+                    <FlatList
+                        data={this.state.purchase}
+                        renderItem={({item}) => this.renderPurchageCourse(item)}
+                        keyExtractor={(item,index)=>index}
+                    />
                     </View>
 
                 )

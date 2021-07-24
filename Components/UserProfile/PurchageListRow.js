@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, StyleSheet, View, Modal,TouchableOpacity, Image,Dimensions} from 'react-native'
-import { theme } from '../config';
+import { theme,serverBaseUrl } from '../config';
 import { Feather } from '@expo/vector-icons';
 import CardView from '../Utils/CardView';
 const windowWidth = Dimensions.get('window').width
@@ -22,13 +22,13 @@ export default class PurchageListRow extends Component {
         return (
             <View style={styles.purchage_coursewrapper}>
             <View>
-                <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.curvedimage}/>
+                <Image source={{ uri: serverBaseUrl+this.props.item.insImage }} style={styles.curvedimage}/>
             </View>
             <View style={{width:'60%',}}>
-                <Text style={styles.intitute_name} numberOfLines={2}>{this.props.institute_name}</Text>
+                <Text style={styles.intitute_name} numberOfLines={2}>{this.props.item.insName}</Text>
                 <View style={styles.purchage_coursebtn}>
-                    <TouchableOpacity style={styles.purchagebtn}>
-                        <Text style={styles.purchageText} >Purchage Course</Text>
+                    <TouchableOpacity style={styles.purchagebtn} onPress={()=>}>
+                        <Text style={styles.purchageText} >{this.props.item.courseName}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
