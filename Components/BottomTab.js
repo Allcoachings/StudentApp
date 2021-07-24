@@ -12,33 +12,36 @@ import { connect } from 'react-redux'
 class BottomTab extends React.Component {
     tabs = [
     {
-      key: 'explore',
+      key: 'Home',
       icon: 'compass',
       label: 'Explore',
       barColor: theme.primaryColor,
       pressColor: 'rgba(255, 255, 255, 0.16)',
-      onPress: "() =>"
+      params:{}
     },
     {
-      key: 'test-series',
+      key: "TestSeries",
       icon: 'file-text',
       label: 'Test Series',
       barColor: theme.primaryColor,
-      pressColor: 'rgba(255, 255, 255, 0.16)'
+      pressColor: 'rgba(255, 255, 255, 0.16)',
+      params:{}
     },
     {
-      key: 'following',
+      key: "Subscription",
       icon: 'youtube',
       label: 'Following',
       barColor: theme.primaryColor,
-      pressColor: 'rgba(255, 255, 255, 0.16)'
+      pressColor: 'rgba(255, 255, 255, 0.16)',
+      params:{}
     },
     {
-      key: 'feed',
+      key: "Feed",
       icon: 'bell',
       label: 'Feed',
       barColor: theme.primaryColor,
-      pressColor: 'rgba(255, 255, 255, 0.16)'
+      pressColor: 'rgba(255, 255, 255, 0.16)',
+      params:{item: false}
     }
   ]
  
@@ -60,9 +63,9 @@ class BottomTab extends React.Component {
 //     />
 //   )
 
-    clickHandler=(key)=>{
+    clickHandler=(key, params)=>{
       this.setState({activeTab:key})
-      this.props.navigation.navigate("ViewInsTestSeriesList")
+      this.props.stackNavigation.navigate(key, params)
     }
  
     renderTab=(tab,isActive)=>
@@ -70,7 +73,7 @@ class BottomTab extends React.Component {
          
         return (
                 
-                <TouchableOpacity style={styles.TabContainer} onPress={()=>(this.clickHandler(tab.key))}>
+                <TouchableOpacity style={styles.TabContainer} onPress={()=>(this.clickHandler(tab.key, tab.params))}>
                         <Feather size={24} color={isActive?theme.accentColor:theme.secondaryColor} name={tab.icon} />
                     <Text style={{color: isActive?theme.accentColor:theme.secondaryColor,fontSize:12}}>{tab.label}</Text>
                 </TouchableOpacity>

@@ -9,7 +9,7 @@ import { Redirect } from 'react-router';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import { fetch_testSeries_category } from '../Utils/DataHelper/TestSeries'
-import {searchTestSeries} from '../Utils/DataHelper/Search'
+import {SearchTestSeries} from '../Utils/DataHelper/Search'
 
 class TestSeriesIns extends React.Component {
     state = { 
@@ -37,7 +37,7 @@ class TestSeriesIns extends React.Component {
     }
 
     search=(offset, search, callback)=>{
-        searchTestSeries(search, offset, dataLimit, callback)
+        SearchTestSeries(search, offset, dataLimit, callback)
     }
 
     singleItem=({item})=>{
@@ -87,7 +87,7 @@ class TestSeriesIns extends React.Component {
                 iconName={"menu"}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
                 searchFun={this.search}
-                singleItem={this.singleItem}
+                singleItem={this.singleRow}
             >
                 <ScrollView>
                     <View style={styles.container}> 

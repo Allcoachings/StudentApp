@@ -38,7 +38,7 @@ class Settings extends Component {
                     {this.renderSettingItem('Account','user',()=>{})}
                     {this.renderSettingItem('Help & Support','help-circle',()=>{})}
                     {this.renderSettingItem('Rate us on Play Store','disc',()=>{})}
-                    {this.renderSettingItem('Refer n earn','gift',()=>{})}
+                    {/* {this.renderSettingItem('Refer n earn','gift',()=>{})} */}
                     {this.renderSettingItem('Privacy Policy','lock',()=>{})}
                     {this.renderSettingItem('Terms and Conditions','calendar',()=>{})}
                     {this.renderSettingItem('FeedBack','refresh-cw',()=>{})}

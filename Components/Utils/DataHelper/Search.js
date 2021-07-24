@@ -28,7 +28,7 @@ import {serverApiUrl} from '../../config'
             headers.append('Access-Control-Allow-Credentials', 'true'); 
             headers.append('GET', 'POST', 'OPTIONS'); 
 
-            fetch(serverApiUrl+"search/ins/"+searchword+"/"+offset+"/"+dataLimit,
+            fetch(serverApiUrl+"search/testSeries/"+searchword+"/"+offset+"/"+dataLimit,
             {
                 method: 'GET', 
                 headers,

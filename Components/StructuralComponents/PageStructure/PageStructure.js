@@ -56,6 +56,8 @@ class PageStructure extends React.Component {
                                     catInHeader={this.props.catInHeader}
                                     replaceHeader={this.props.replaceHeader}
                                     headerComponent={this.props.headerComponent}
+                                    searchFun={this.props.searchFun}
+                                    singleItem={this.props.singleItem}
                                     titleonheader={this.props.titleonheader}
                                     notificationreplaceshare={this.props.notificationreplaceshare}
                                     rightIconOnPress={this.props.rightIconOnPress}
@@ -86,18 +88,20 @@ class PageStructure extends React.Component {
                             <>
                                 <View style={[styles.containerHeader,{flex:this.props.catInHeader?0.2:0.1},this.props.headerStyle]}> 
                                         <Header 
-                                        iconName={this.props.iconName}
-                                        btnHandler={this.props.btnHandler}
-                                        catInHeader={this.props.catInHeader}
-                                        replaceHeader={this.props.replaceHeader}
-                                        headerComponent={this.props.headerComponent}
-                                        titleonheader={this.props.titleonheader}
-                                        rightIconOnPress={this.props.rightIconOnPress}
-                                        notificationreplaceshare={this.props.notificationreplaceshare} 
-                                        nosearchIcon={this.props.nosearchIcon}
-                                        noNotificationIcon={this.props.noNotificationIcon}
-                                        catOnpress={this.props.catOnpress}
-                                        catType={this.props.catType}
+                                            iconName={this.props.iconName}
+                                            searchFun={this.props.searchFun}
+                                            singleItem={this.props.singleItem}
+                                            btnHandler={this.props.btnHandler}
+                                            catInHeader={this.props.catInHeader}
+                                            replaceHeader={this.props.replaceHeader}
+                                            headerComponent={this.props.headerComponent}
+                                            titleonheader={this.props.titleonheader}
+                                            rightIconOnPress={this.props.rightIconOnPress}
+                                            notificationreplaceshare={this.props.notificationreplaceshare} 
+                                            nosearchIcon={this.props.nosearchIcon}
+                                            noNotificationIcon={this.props.noNotificationIcon}
+                                            catOnpress={this.props.catOnpress}
+                                            catType={this.props.catType}
                                         />  
                                     </View>
                                     <View style={[styles.pageLayout,this.props.screenWidth<=screenMobileWidth?({   margin:'2%'}):(null)]}> 

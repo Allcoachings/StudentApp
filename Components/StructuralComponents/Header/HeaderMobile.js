@@ -8,6 +8,7 @@ import {
   TextInput,
   Modal,
   ScrollView,
+  FlatList
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { theme, appLogo } from "../../config";
@@ -16,7 +17,24 @@ import CardView from "../../Utils/CardView";
 class HeaderMobile extends React.Component {
   state = {
     search: false,
+    filterData: false,
+    searchWord:'',
+    offset: 0,
+    searchData:[],
+    showResult: false
   };
+
+  searchCallback=(response)=>{
+    if(response.status==200)
+    {
+        response.json().then(data=>
+        {
+            console.log("data",data)
+            this.setState({searchData:data, showResult: true})
+        })
+    }
+  }
+
   closeModal=()=> this.setState({search:false})
   render() {
     console.log(this.props.nosearchIcon);
@@ -121,9 +139,8 @@ class HeaderMobile extends React.Component {
             )}
           </>
         )}
+
 {this.state.search?(
-
-
 
         <Modal
             animationType="slide"
@@ -135,26 +152,55 @@ class HeaderMobile extends React.Component {
                 {CardView(
                     <View style={{flex: 1,flexDirection: 'row',alignItems: 'center'}}>
                         <TextInput
-                        placeholder="Search Institute"
-                        ref={ (input) => { this.textInput = input; }}
-                        autoFocus={true}
-                        style={styles.searchInput}
-                        onChangeText={(value) => this.setState({ search: value })}
+                            placeholder="Search"
+                            ref={ (input) => { this.textInput = input; }}
+                            // autoFocus={true}
+                            style={styles.searchInput}
+                            onChangeText={(value) => this.setState({ searchWord: value })}
                         />
-                        <TouchableOpacity
-                          onPress={() => this.setState({ search: false })}
-                        >
-                        <Feather
-                            name="x"
-                            size={20}
+                        {this.state.searchWord!=''?(
+                            this.state.filterData?(
+                                <TouchableOpacity onPress={() => this.setState({ searchWord: '', offset: 0, filterData: false, showResult: false, searchData: [] },() =>this.textInput.clear())}>
+                                    <Feather
+                                      name="x"
+                                      size={20}
 
-                            color={theme.secondaryColor}
-                            style={styles.searchIcon}
-                        />
-                        </TouchableOpacity>
+                                      color={theme.secondaryColor}
+                                      style={styles.searchIcon}
+                                    />
+                                </TouchableOpacity>
+                            ):(
+                                <TouchableOpacity onPress={()=>this.setState({filterData: true},()=>this.props.searchFun(this.state.offset, this.state.searchWord, this.searchCallback))}>
+                                    <Feather 
+                                      name={'arrow-right'} 
+                                      size={15} 
+                                      color={theme.labelOrInactiveColor} 
+                                      style={styles.searchIcon}
+                                    />
+                                </TouchableOpacity>
+                            )):(
+                                <Feather 
+                                  name={'search'} 
+                                  size={15} 
+                                  color={theme.labelOrInactiveColor} 
+                                  style={styles.searchIcon}
+                                />
+                        )} 
                     </View>,
                     {width:'95%', height:40,margin:10},2
                 )}
+                {this.state.showResult?(
+                  <FlatList 
+                    data={this.state.searchData}  
+                    showsVerticalScrollIndicator={false} 
+                    renderItem={this.props.singleItem}
+                    // numColumns={3}
+                    keyExtractor={item => item.id}
+                  />
+                ):(
+                  null
+                )}
+                
                  
           </Modal>
           ):(null)}

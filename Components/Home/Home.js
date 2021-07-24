@@ -13,7 +13,7 @@ import {setNavigation} from '../Actions'
 import {fetch_institute_courses,fetch_courses_banners,fetch_courses_videos,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents,fetch_courses_timetable,fetch_testSeries} from '../Utils/DataHelper/Course'
 import {fetch_homeData} from '../Utils/DataHelper/HomeData'
 import {fetch_coachingByCategory} from '../Utils/DataHelper/Coaching'
-import {searchInstitute} from '../Utils/DataHelper/Search'
+import {SearchInstitute} from '../Utils/DataHelper/Search'
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -146,7 +146,7 @@ class Home extends React.Component {
     }
 
     search=(offset, search, callback)=>{
-        searchInstitute(search, offset, dataLimit, callback)
+        SearchInstitute(search, offset, dataLimit, callback)
     }
      
     toggleCatMode=(mode,item)=>

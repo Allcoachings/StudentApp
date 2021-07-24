@@ -68,7 +68,8 @@ class index extends React.Component {
                                 rightIconOnPress={this.props.rightIconOnPress}
                                 nosearchIcon={this.props.nosearchIcon}
                                 noNotificationIcon={this.props.noNotificationIcon}
-
+                                searchFun={this.props.searchFun}
+                                singleItem={this.props.singleItem}
                                 />
                             )
                             :

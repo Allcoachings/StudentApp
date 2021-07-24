@@ -9,6 +9,7 @@ import CardView from '../Utils/CardView'
 import { AirbnbRating } from 'react-native-ratings';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import { fetchSubscribedInstituteList } from '../Utils/DataHelper/Subscription'
+import RenderSingleSubsInstitute from './RenderSingleSubsInstitute'
 
 class SubscriptionNew extends React.Component {
     
@@ -49,15 +50,16 @@ class SubscriptionNew extends React.Component {
                         <Text style={styles.instituteDirector}>{item.directorName}</Text>
                         <View style={styles.instituteRatingView}>
                             <AirbnbRating 
-                                        starContainerStyle={styles.instituteRating} 
-                                        count={5}
-                                        reviews={[]} 
-                                        isDisabled={true}
-                                        defaultRating={item.totalRatingCount>0?(item.totalRating/item.totalRatingCount):(0)}
-                                        size={12}
-                                        selectedColor={theme.blueColor}
-                                        showRating={false}
-                                    />
+                                starContainerStyle={styles.instituteRating} 
+                                count={5}
+                                reviews={[]} 
+                                isDisabled={true}
+                                defaultRating={item.totalRatingCount>0?(item.totalRating/item.totalRatingCount):(0)}
+                                size={12}
+                                selectedColor={theme.blueColor}
+                                showRating={false}
+                            />
+
                             <Text style={styles.voteCount}>{item.totalRatingCount>0?(item.totalRating/item.totalRatingCount):(0)}</Text>
                         </View>
                         <View style={styles.followerView}>
@@ -94,7 +96,7 @@ class SubscriptionNew extends React.Component {
                         </View> */}
                         <FlatList 
                             data={this.state.subscription} 
-                            renderItem={this.singleRow} 
+                            renderItem={({item})=><RenderSingleSubsInstitute item={item} />} 
                             keyExtractor={(item)=>item.id}
                             horizontal={false} 
                             showsHorizontalScrollIndicator={false}
