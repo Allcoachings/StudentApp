@@ -29,7 +29,7 @@ public interface InstituteRepo extends PagingAndSortingRepository<Institute,Long
     @Query("UPDATE Institute set totalRevenue=totalRevenue+:amount where id=:id")
     void updateInstituteRevenue(long amount,long id);
 
-    Page<Institute> findByNameContaining(String name,Pageable pageable);
+    Page<Institute> findByNameContainingIgnoreCase(String name,Pageable pageable);
 
 
 }

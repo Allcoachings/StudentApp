@@ -14,15 +14,15 @@ public class SearchService {
     private InstituteService instituteService;
 
     @Autowired
-    private AdminTestSubCategoriesService adminTestSubCategoriesService;
+    private AdminTestSeriesCategoryService adminTestSeriesCategoryService;
 
     public Iterable<Institute> searchInstitute(String searchWord,int offset,int dataLimit)
     {
         return instituteService.searchInstitute(searchWord,offset,dataLimit);
     }
 
-//    public Iterable<AdminTestCategoriesDto> searchTestSeries(String searchWord, int offset, int dataLimit)
-//    {
-//        return adminTestSubCategoriesService.searchTestCategoryData(searchWord,offset,dataLimit);
-//    }
+    public Iterable<AdminTestCategoriesDto> searchTestSeries(String searchWord, int offset, int dataLimit)
+    {
+        return adminTestSeriesCategoryService.searchTestCategoryData(searchWord,offset,dataLimit);
+    }
 }

@@ -16,6 +16,8 @@ public interface AdminTestSeriesCategoryRepo extends PagingAndSortingRepository<
 
     Page<AdminTestSeriesCategory> findAllByNameContaining(String name, Pageable page);
 
+    @Query("SELECT tsc  from AdminTestSeriesCategory tsc,AdminTestSubCategories scs where tsc.id=scs.categoryId and  scs.name LIKE %:word%")
+        Page<AdminTestSeriesCategory> searchTestCategoryData(String word,Pageable page);
 
 
 
