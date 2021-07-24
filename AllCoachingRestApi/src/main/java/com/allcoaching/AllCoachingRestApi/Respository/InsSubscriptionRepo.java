@@ -26,12 +26,12 @@ public interface InsSubscriptionRepo extends PagingAndSortingRepository<InsSubsc
   Page<Student> findInsSubscriptionList(long id, Pageable pageable);
 
    @Modifying
-    @Query("UPDATE Institute set followers = followers+1 where id=:id")
+    @Query("UPDATE Institute set followersCount = followersCount+1 where id=:id")
     void increaseInstituteFollowers(long id);
 
 
    @Modifying
-   @Query("UPDATE Institute set followers = followers-1 where id=:id")
+   @Query("UPDATE Institute set followersCount = followersCount-1 where id=:id")
     void decreaseInstituteFollowers(long id);
 
    void deleteByStudentIdAndInsId(long studentId,long insId);

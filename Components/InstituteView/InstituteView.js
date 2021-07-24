@@ -22,6 +22,7 @@ import FeedImage from '../Feed/FeedImage';
 import FeedPoll from '../Feed/FeedPoll';
 import {tabListInstitute} from '../../FakeDataService/FakeData'
 import {addLead} from '../Utils/DataHelper/Leads'
+import { checkSubscription, subscribe, unsubscribe }  from '../Utils/DataHelper/Subscription'
 
 import {fetch_institute_feed} from '../Utils/DataHelper/Feed'
 class InstituteView extends React.Component {
@@ -36,12 +37,12 @@ class InstituteView extends React.Component {
         studentEnrolled: false,
         review: '',
         feedOffset:0,
-        loadingInstitute:true
+        loadingInstitute:true,
+        subscribe: ''
         
      }
      instituteCallback=(response) =>
      {
-         console.log(response.status);
          if(response.status==200)
          {
              response.json().then(data=>
@@ -70,30 +71,46 @@ class InstituteView extends React.Component {
             })
         }
     }
-     componentDidMount() {
+    
+    componentDidMount() {
          fetch_instituteDetails(this.state.instituteId,this.instituteCallback)
          fetch_institute_courses(this.state.instituteId,this.coursesCallBack)
          checkUserEnrollment(this.state.courseId, this.state.studentId, this.checkEnrollCallBack)
-     }
-     updateComponent=()=>
-     {
-         if(this.props.route.params.insId!=this.state.instituteId)
-         {
-             this.setState({instituteId:this.props.route.params.insId,loadingInstitute:true},()=>
-             {
-                fetch_instituteDetails(this.state.instituteId,this.instituteCallback)
-                fetch_institute_courses(this.state.instituteId,this.coursesCallBack)
-                checkUserEnrollment(this.state.courseId, this.state.studentId, this.checkEnrollCallBack)
-             })
-         }
-     }
+         checkSubscription(this.state.studentId,this.state.instituteId,this.checkSubscriptionCallback)
+    }
+
+    checkSubscriptionCallback=(response)=>{
+        if(response.status==200)
+        {
+            response.json().then(data=>
+            {
+                this.setState({subscribe: data})            
+            })
+        }
+        else
+        {
+            console.log("something went wrong")
+        }
+    }
+
+    updateComponent=()=>
+    {
+        if(this.props.route.params.insId!=this.state.instituteId)
+        {
+            this.setState({instituteId:this.props.route.params.insId,loadingInstitute:true},()=>
+            {
+            fetch_instituteDetails(this.state.instituteId,this.instituteCallback)
+            fetch_institute_courses(this.state.instituteId,this.coursesCallBack)
+            checkUserEnrollment(this.state.courseId, this.state.studentId, this.checkEnrollCallBack)
+            })
+        }
+    }
 
      addToHistory=(type, id)=>{
         saveStudentHistory(type,id,this.props.userInfo.id,this.addToHistoryCallBack)
      }
 
      addToHistoryCallBack=(response)=>{
-         console.log(response.status)
         if(response.status==201)
         {
             console.log("hello done")
@@ -116,7 +133,6 @@ class InstituteView extends React.Component {
      }
 
      addLeadCallback=(response)=>{
-         console.log(response.status)
          if(response.status==201)
          {
              console.log("done")
@@ -136,9 +152,8 @@ class InstituteView extends React.Component {
             courseTestSeriesLoaded:false,isCourseTestSeriesLoading:true,
             courseVideoPlaylistLoaded:false,isCourseVideoPlaylistLoading:true},()=>
             {
-                console.log("testsdjsb",this.state)
+                console.log("testsdjsb")
             })
-            console.log("item.id",item.id)
             addLead(item.id, this.state.instituteId, this.state.studentId, this.addLeadCallback)
             fetch_courses_banners(item.id,this.courseBannerCallback)
      }
@@ -211,36 +226,30 @@ class InstituteView extends React.Component {
     }
     courseTimeTableCallback=(response)=>
     {
-        console.log(response.status)
             if(response.status==200)
             {
                 response.json().then(data=>
                 {
-                    console.log(data);
                     this.setState({courseTimeTable:data,courseTimetableLoaded:true,isCourseTimetableLoading:false});                   
                 })
             }
     }
     courseTestseriesCallback=(response)=>
     {
-        console.log(response.status)
         if(response.status==200)
         {
             response.json().then(data=>
                 {
-                    console.log(data)
                     this.setState({courseTestSeries:data,courseTestSeriesLoaded:true,isCourseTestSeriesLoading:false});                   
                 })
         }
     }
     courseDocumentCallback=(response)=>
     {
-        console.log(response.status)
             if(response.status==200)
             {
                 response.json().then(data=>
                 {
-                    console.log(data);
                     this.setState({courseDocuments:data,courseDocumentLoaded:true,isCourseDocumentLoading:false});                   
                 })
             }
@@ -255,23 +264,19 @@ class InstituteView extends React.Component {
         }
     }
     courseDocumentPlaylistCallback=(response)=>{
-        console.log(response.status)
             if(response.status==200)
             {
                 response.json().then(data=>
                 {
-                    console.log(data);
                     this.setState({courseDocumentPlaylist:data,courseDocumentPlaylistLoaded:true,isCourseDocumentPlaylistLoading:false});                   
                 })
             }
     }
     courseVideoPlaylistCallback=(response)=>{
-        console.log(response.status)
             if(response.status==200)
             {
                 response.json().then(data=>
                 {
-                    console.log(data);
                     this.setState({courseVideosPlaylist:data,courseVideoPlaylistLoaded:true,isCourseVideoPlaylistLoading:false});                   
                 })
             }
@@ -489,10 +494,9 @@ class InstituteView extends React.Component {
                                     />)
 
             case 'videos':    
-            console.log("active course ",this.state.activeCourse,!this.state.courseVideoLoaded,!this.state.isCourseVideoLoading,this.state.activeCourse)  
+           
                     if(!this.state.courseVideoLoaded&&!this.state.isCourseVideoLoading&&this.state.activeCourse)
                     {
-                         console.log("active course ",this.state.activeCourse)
                         this.setState({isCourseVideoLoading:true})
                         fetch_courses_videos(this.state.activeCourse,this.courseVideoCallback);
                     }
@@ -525,7 +529,6 @@ class InstituteView extends React.Component {
             
                         if(!this.state.courseTestseriesLoaded&&!this.state.isCourseTestseriesLoading)
                         {
-                            console.log("active course id",this.state.activeCourseId)
                             this.setState({isCourseTestseriesLoading:true})
                             fetch_testSeries(this.state.activeCourseDetail.id,this.courseTestseriesCallback);
                         }
@@ -541,7 +544,6 @@ class InstituteView extends React.Component {
             case 'document':                
                         if(!this.state.courseDocumentLoaded&&!this.state.isCourseDocumentLoading)
                         {
-                            console.log("active course id",this.state.activeCourseId)
                             this.setState({isCourseDocumentLoading:true})
                             fetch_courses_documents(this.state.activeCourse,this.courseDocumentCallback);
                         }
@@ -638,12 +640,10 @@ class InstituteView extends React.Component {
     }
     handleFeedCallBack=(response)=>
     {
-            console.log(response.status)
             if(response.status==200)
             {
                 response.json().then(data=>
                 {
-                     console.log(data)
                     this.setState({feeds: data})
                 })
             }
@@ -679,96 +679,110 @@ class InstituteView extends React.Component {
         }
     }
 
-        // tabs handling
-        tabtoshow=(tabValue)=>{
-            this.setState({tabtoshow:tabValue});
-        }
-            switchTabRender=(tabtoshow)=>{
-                switch (tabtoshow) {
-                    case 1:
-                        return(
-                        <>
-                        <View style={[styles.catRow]}> 
-                                    <FlatList 
-                                        data={this.state.courses} 
-                                        renderItem={this.renderTabItems}
-                                        keyExtractor={(item)=>item.id} 
-                                        horizontal={true}
-                                        showsHorizontalScrollIndicator={false}
-                                    /> 
-                            </View>
-                            <View style={styles.rowContainer}>
-                                    <FlatList 
-                                    data={this.state.courseBanners} 
-                                    renderItem={this.renderBannerList} 
-                                    keyExtractor={(item)=>item.id}
-                                    horizontal={true} 
-                                    showsHorizontalScrollIndicator={false}
-                                    />
-                                    <View style={styles.optionalRow}> 
-                                        <TouchableOpacity style={{borderColor:theme.borderColor,borderWidth:1,borderRadius:10,padding:10}}>
-                                            <Text style={{fontSize:10,color:theme.secondaryColor,fontWeight:'bold'}}>
-                                                Upsc Cse- optional Subscription
-                                            </Text>
-                                        </TouchableOpacity>
-                                        {this.state.studentEnrolled?(null):(<TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10}} onPress={()=>this.props.navigation.navigate("Payment", {insId:this.state.institute.id,courseId:this.state.activeCourse})}>
-                                            <Text style={{fontSize:10,color:theme.primaryColor}}>
-                                                Fees:{this.state.activeCourseDetail&&this.state.activeCourseDetail.fees}
-                                            </Text>
-                                        </TouchableOpacity>)}
-                                    </View>
-                                    <View style={styles.content}>
-                                        <TouchableOpacity 
-                                            onPress={()=>{this.activeTab('liveClass')}} style={[styles.liveClassOuter,this.state.activeTab=='liveClass'?({backgroundColor:'red'}):({backgroundColor: theme.primaryColor})]}>
-                                            <View style={styles.liveClassInner}>
-                                                <Feather name="disc" size={13} color={theme.primaryColor}/>
-                                                <Text style={styles.liveClassText}>Live Now</Text>
-                                            </View>
-                                        </TouchableOpacity>
-                                        {this.renderList('Videos', 'play-circle', 'videos')}
-                                        {this.renderList('Test Series', 'copy', 'testSeries')}
-                                        {this.renderList('Document', 'file', 'document')}
-                                        {this.renderList('Time Table', 'clock', 'timeTable')}
-                                    </View>
-                                    <View style={styles.subOptions}>
-                                        {this.showFilters(this.state.activeTab)}
-                                    </View>
-                                    <View style={styles.dataContainer}>
-                                        {this.showContent(this.state.activeTab)}
-                                    </View> 
-                                    <View style={[styles.loadMoreView]}>
-                                            <View style={{}}><Feather name="chevron-down" size={20}/></View>
-                                            <Text style={{margin:5}}>Load More</Text>
-                                    </View>
+    // tabs handling
+    tabtoshow=(tabValue)=>{
+        this.setState({tabtoshow:tabValue});
+    }
 
-                                </View>
-                                </>
-            
-                        )
-                    
-                    case 3:
-                        return(
-                            <View style={styles.container}>
-                                 <FlatList
-                                    data={this.state.feeds}
-                                    renderItem={({item}) => this.renderFeedItem(item)}
-                                    keyExtractor={(item,index)=>index}
-                                />
-                                {/* { this.renderImagePost()}
-                                { this.renderQuizPost()}
-                                { this.renderTextPost()} */}
+    switchTabRender=(tabtoshow)=>{
+        switch (tabtoshow) {
+            case 1:
+                return(
+                <>
+                <View style={[styles.catRow]}> 
+                            <FlatList 
+                                data={this.state.courses} 
+                                renderItem={this.renderTabItems}
+                                keyExtractor={(item)=>item.id} 
+                                horizontal={true}
+                                showsHorizontalScrollIndicator={false}
+                            /> 
+                    </View>
+                    <View style={styles.rowContainer}>
+                            <FlatList 
+                            data={this.state.courseBanners} 
+                            renderItem={this.renderBannerList} 
+                            keyExtractor={(item)=>item.id}
+                            horizontal={true} 
+                            showsHorizontalScrollIndicator={false}
+                            />
+                            <View style={styles.optionalRow}> 
+                                <TouchableOpacity style={{borderColor:theme.borderColor,borderWidth:1,borderRadius:10,padding:10}}>
+                                    <Text style={{fontSize:10,color:theme.secondaryColor,fontWeight:'bold'}}>
+                                        Upsc Cse- optional Subscription
+                                    </Text>
+                                </TouchableOpacity>
+                                {this.state.studentEnrolled?(null):(<TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10}} onPress={()=>this.props.navigation.navigate("Payment", {insId:this.state.institute.id,courseId:this.state.activeCourse})}>
+                                    <Text style={{fontSize:10,color:theme.primaryColor}}>
+                                        Fees:{this.state.activeCourseDetail&&this.state.activeCourseDetail.fees}
+                                    </Text>
+                                </TouchableOpacity>)}
                             </View>
-                        )
-                        
-                    }
+                            <View style={styles.content}>
+                                <TouchableOpacity 
+                                    onPress={()=>{this.activeTab('liveClass')}} style={[styles.liveClassOuter,this.state.activeTab=='liveClass'?({backgroundColor:'red'}):({backgroundColor: theme.primaryColor})]}>
+                                    <View style={styles.liveClassInner}>
+                                        <Feather name="disc" size={13} color={theme.primaryColor}/>
+                                        <Text style={styles.liveClassText}>Live Now</Text>
+                                    </View>
+                                </TouchableOpacity>
+                                {this.renderList('Videos', 'play-circle', 'videos')}
+                                {this.renderList('Test Series', 'copy', 'testSeries')}
+                                {this.renderList('Document', 'file', 'document')}
+                                {this.renderList('Time Table', 'clock', 'timeTable')}
+                            </View>
+                            <View style={styles.subOptions}>
+                                {this.showFilters(this.state.activeTab)}
+                            </View>
+                            <View style={styles.dataContainer}>
+                                {this.showContent(this.state.activeTab)}
+                            </View> 
+                            <View style={[styles.loadMoreView]}>
+                                    <View style={{}}><Feather name="chevron-down" size={20}/></View>
+                                    <Text style={{margin:5}}>Load More</Text>
+                            </View>
+
+                        </View>
+                        </>
+    
+                )
+            
+            case 3:
+                return(
+                    <View style={styles.container}>
+                            <FlatList
+                            data={this.state.feeds}
+                            renderItem={({item}) => this.renderFeedItem(item)}
+                            keyExtractor={(item,index)=>index}
+                        />
+                        {/* { this.renderImagePost()}
+                        { this.renderQuizPost()}
+                        { this.renderTextPost()} */}
+                    </View>
+                )
+                
             }
+    }
+
+    unsubscribeCallback=(response)=>{
+        if(response.status==200)
+        {
+            this.setState({subscribe: false})
+        }
+    }
+
+    subscribeCallback=(response)=>{
+        if(response.status==201)
+        {
+            this.setState({subscribe: true})
+        }
+    }
         
 
     render() {
        
       this.updateComponent()
         const  {institute,loadingInstitute} = this.state;
-        console.log(institute&&serverBaseUrl+institute.logo)
         // this.updateComponent()
         return (
             <PageStructure 
@@ -892,10 +906,16 @@ class InstituteView extends React.Component {
                                 <TouchableOpacity style={{alignSelf: 'flex-end', width: 200, height: 120, padding: 6, backgroundColor: 'white',postion: 'absolute',top:10}}>
                                     {CardView(
                                         <>
-                                            <View style={{flexDirection: 'row',margin:5}}>
+                                            {this.state.subscribe?(
+                                                <TouchableOpacity onPress={() =>unsubscribe(this.state.studentId,this.state.instituteId,this.unsubscribeCallback)} style={{flexDirection: 'row',margin:5}}>
+                                                    <Feather name="share" size={20}/>
+                                                    <Text style={{marginLeft:5}}>Unfollow</Text>
+                                                </TouchableOpacity>
+                                            ):(
+                                            <TouchableOpacity onPress={() =>subscribe(this.state.studentId,this.state.instituteId,this.subscribeCallback)} style={{flexDirection: 'row',margin:5}}>
                                                 <Feather name="share" size={20}/>
-                                                <Text style={{marginLeft:5}}>Share</Text>
-                                            </View>
+                                                <Text style={{marginLeft:5}}>Follow</Text>
+                                            </TouchableOpacity>)}
                                             <View style={{flexDirection: 'row',margin:5}}>
                                                 <Feather name="share" size={20}/>
                                                 <Text style={{marginLeft:5}}>Add to wishlist</Text>
@@ -1510,7 +1530,6 @@ const styles = StyleSheet.create({
 
 const  mapStateToProps = (state)=>
 {
-    console.log(state)
     return {
         screenWidth: state.screen.screenWidth,
         userInfo:state.user.userInfo,

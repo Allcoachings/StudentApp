@@ -27,7 +27,7 @@ export default class PurchageListRow extends Component {
             <View style={{width:'60%',}}>
                 <Text style={styles.intitute_name} numberOfLines={2}>{this.props.item.insName}</Text>
                 <View style={styles.purchage_coursebtn}>
-                    <TouchableOpacity style={styles.purchagebtn} onPress={()=>}>
+                    <TouchableOpacity style={styles.purchagebtn} onPress={()=>this.props.navigation.navigate('Institute',{insId:this.props.item.insId})}>
                         <Text style={styles.purchageText} >{this.props.item.courseName}</Text>
                     </TouchableOpacity>
                 </View>

@@ -1,18 +1,36 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
 // import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import {theme,screenMobileWidth} from '../config'
+import {theme,screenMobileWidth, dataLimit,serverBaseUrl} from '../config'
 import { Feather } from '@expo/vector-icons';
 import {connect } from 'react-redux'
 import {subscriptionNew} from '../../FakeDataService/FakeData'
 import CardView from '../Utils/CardView'
 import { AirbnbRating } from 'react-native-ratings';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
+import { fetchSubscribedInstituteList } from '../Utils/DataHelper/Subscription'
 
 class SubscriptionNew extends React.Component {
     
     state = {
-        
+        subscription: [],
+        offset: 0,
+    }
+
+    componentDidMount(){
+        fetchSubscribedInstituteList(this.props.userInfo.id, this.state.offset, dataLimit, this.subscriptionCallBack)
+    }
+
+    subscriptionCallBack=(response)=>{
+        console.log("subscription success")
+        if(response.status==200)
+        {
+            response.json().then(data=>
+            {
+                console.log(data)
+                this.setState({subscription:data});                   
+            })
+        }
     }
 
     singleRow=({item})=>{
@@ -21,40 +39,30 @@ class SubscriptionNew extends React.Component {
             <View style={{marginBottom: '5%'}}>
                 <View style={styles.instituteheader}>
                     {CardView(
-                        <Image source={item.logo} style={styles.instituteheaderLogo}/>
+                        <Image source={{uri:serverBaseUrl+item.logo}} style={styles.instituteheaderLogo}/>
                         ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:120,borderRadius:15}):({width:200,height:150})])
                     } 
                     <View style={styles.instituteheaderMeta}>
                         <View style={{display: 'flex', flexDirection: 'row'}}>
-                            <Text style={styles.instituteheaderText}>{item.title}</Text>
+                            <Text style={styles.instituteheaderText}>{item.name}</Text>
                         </View>
-                        <Text style={styles.instituteDirector}>{item.directoy_name}</Text>
+                        <Text style={styles.instituteDirector}>{item.directorName}</Text>
                         <View style={styles.instituteRatingView}>
-                            <Text style={{alignSelf:'flex-start', color: theme.greyColor}}>{item.rating}</Text>
-                            {/* <Rating
-                                type='star'
-                                ratingCount={5}
-                                startingValue={item.rating}
-                                imageSize={15} 
-                                unSelectedColor={'yellow'} 
-                                tintColor={theme.appBackgroundColor}
-                                style={styles.instituteRating}
-                                readOnly={true} 
-                            /> */}
+                            <Text style={{alignSelf:'flex-start', color: theme.greyColor}}>{item.totalRating}</Text>
                             <AirbnbRating 
                                         starContainerStyle={styles.instituteRating} 
                                         count={5}
                                         reviews={[]} 
                                         isDisabled={true}
-                                        defaultRating={item.rating}
+                                        defaultRating={item.totalRating}
                                         size={12}
                                         selectedColor={theme.blueColor}
                                         showRating={false}
                                     />
-                            <Text style={styles.voteCount}>{item.count}</Text>
+                            <Text style={styles.voteCount}>{item.totalRatingCount}</Text>
                         </View>
                         <View style={styles.followerView}>
-                            <Text style={styles.follower}>{item.follower} Followers</Text>
+                            <Text style={styles.follower}>{item.followersCount} Followers</Text>
                         </View>
                     </View>
                     <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
@@ -86,7 +94,7 @@ class SubscriptionNew extends React.Component {
                             </TouchableOpacity>
                         </View> */}
                         <FlatList 
-                            data={subscriptionNew} 
+                            data={this.state.subscription} 
                             renderItem={this.singleRow} 
                             keyExtractor={(item)=>item.id}
                             horizontal={false} 
@@ -193,7 +201,8 @@ const styles = StyleSheet.create({
 const  mapStateToProps = (state)=>
 {
     return {
-        screenWidth: state.screen.screenWidth
+        screenWidth: state.screen.screenWidth,
+        userInfo:state.user.userInfo,
     }
 }
 export default connect(mapStateToProps)(SubscriptionNew); 

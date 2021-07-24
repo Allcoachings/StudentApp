@@ -86,7 +86,7 @@ class UserProfile extends React.Component {
       renderPurchageCourse=(item)=>{
           console.log("item",item)
           return(
-            <PurchageListRow item={item} />
+            <PurchageListRow item={item} navigation={this.props.navigation}/>
           )
       }
 

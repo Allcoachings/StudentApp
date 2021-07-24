@@ -29,7 +29,6 @@ class Home extends React.Component {
             {
                     response.json().then(data=>
                         {
-                            console.log(data)
                             this.setState({loadingData:false,homeMainContent:data});
                         })
             }else
@@ -136,12 +135,10 @@ class Home extends React.Component {
 
     coachingCallBack=(response)=>
     {
-        console.log(response.status)
         if(response.status==200)
         {
             response.json().then(data=>
                 {
-                    console.log(data);
                     this.setState({institute:data,loadingData:false})
                 })
         }
@@ -289,7 +286,6 @@ const styles = StyleSheet.create({
 })
 const  mapStateToProps = (state)=>
 {
-    console.log(state)
     return {
         screenWidth: state.screen.screenWidth,
         userInfo:state.user.userInfo,
