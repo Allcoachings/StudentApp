@@ -25,5 +25,9 @@ public interface InstituteRepo extends PagingAndSortingRepository<Institute,Long
     @Query("UPDATE Institute set leads=leads+1 where id=:id")
     void updateInstituteLeads(long id);
 
+    @Modifying
+    @Query("UPDATE Institute set totalRevenue=totalRevenue+:amount where id=:id")
+    void updateInstituteRevenue(long amount,long id);
+
 
 }

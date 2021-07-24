@@ -3,6 +3,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.InsReview;
 import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Respository.InsReviewRepo;
 import com.allcoaching.AllCoachingRestApi.dto.InsReviewDto;
+import com.allcoaching.AllCoachingRestApi.dto.StudentPurchaseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,7 +41,17 @@ public class InsReviewService {
         return pagedResult.isPresent();
     }
 
+    public Iterable<StudentPurchaseDto> findByStudentId(long id,int page,int pageSize)
+    {
+        Page<StudentPurchaseDto> pagedResult =  insReviewRepo.findByStudentId(id,PageRequest.of(page,pageSize));
+        if(pagedResult.hasContent())
+        {
+            return pagedResult.getContent();
+        }else{
+            return new ArrayList<>();
+        }
 
+    }
     //inserting review to repo
     public InsReview save(InsReview insReview)
     {
@@ -54,4 +65,6 @@ public class InsReviewService {
     public int addReview(InsReview insReview){
         return insReviewRepo.addReview(insReview.getCourseId(), insReview.getStudentId(), insReview.getReview(), insReview.getRating());
     }
+
+
 }
