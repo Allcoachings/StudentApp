@@ -2,7 +2,7 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {insTestSeries} from '../../FakeDataService/FakeData'
-import { theme, dataLimit } from '../config';
+import { theme, dataLimit,serverBaseUrl } from '../config';
 import { Feather } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
@@ -41,12 +41,11 @@ class TestSeriesIns extends React.Component {
     }
 
     singleItem=({item})=>{
-        
        return(
             CardView(
                     <View  style={styles.singleItem}>
                         <View style={styles.imageView}>
-                            <Image source={{uri: item.image}} style={styles.itemImage}/>
+                            <Image source={{uri: serverBaseUrl+item.image}} style={styles.itemImage}/>
                         </View>
                         <View style={styles.titleView}>
                             <Text style={styles.itemTitle}>{item.name}</Text>
@@ -54,8 +53,8 @@ class TestSeriesIns extends React.Component {
                         <View style={styles.countView}>
                             <Text style={styles.itemCount}>{item.count}</Text>
                         </View>
-                        <TouchableOpacity onPress={()=>this.props.navigation.navigate("ViewInsTestSeriesList", {id: item.id, catName: this.state.category})} style={styles.btnView}>
-                            <Text style={styles.cardButton}>View Test Series</Text>
+                        <TouchableOpacity onPress={()=>this.props.navigation.navigate("ViewInsTestSeriesList", {id: item.id, catName: this.state.category, image: item.image})} style={styles.btnView}>
+                            <Text style={styles.cardButton}>Open Exam</Text>
                         </TouchableOpacity>
                     </View>, { margin:10,width:((this.props.screenWidth/3.5)),borderWidth:1,borderColor:theme.labelOrInactiveColor,borderRadius:15 }
             )

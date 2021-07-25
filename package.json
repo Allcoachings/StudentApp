@@ -54,6 +54,7 @@
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.0.0",
     "react-native-shadow-cards": "^1.0.2",
+    "react-native-single-image-zoom-viewer": "^1.0.7",
     "react-native-slider-intro": "^1.0.21",
     "react-native-svg": "12.1.0",
     "react-native-svg-transformer": "^0.14.3",

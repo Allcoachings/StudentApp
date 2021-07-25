@@ -285,19 +285,19 @@ class InsHome extends React.Component {
      }
 
     renderDocument=({item})=>{
-        console.log(item)
+        // console.log(item)
         return(
             <View style={styles.documentContainer}>
                 <TouchableOpacity onPress={()=>this.props.navigation.navigate('pdfViewer',{pdf:serverBaseUrl+item.fileAddress})}>
                     <Image source={{uri:documentPlaceholder}} style={styles.documentImage}/>
                 </TouchableOpacity>
-                <View style={{flexShrink: 1}}>
+                <View style={{flexShrink: 1, justifyContent: 'center', alignItems: 'center'}}>
                     <View style={{ display: 'flex', flexDirection: 'row'}}>
                         <Text style={styles.documentTitle}>{item.name}</Text>
                     </View>
-                    <View>
+                    {/* <View>
                         <Text style={styles.documentText}>{this.props.institute.details.name}</Text>
-                    </View>
+                    </View> */}
                     {/* <View>
                         <Text style={styles.documentText}>{item.Views} {item.date}</Text>
                     </View> */}
@@ -954,7 +954,7 @@ class InsHome extends React.Component {
                         </View>
                     </View>
                     <View style={{marginVertical: 20,}}>
-                            <Text style={styles.RatingText}>About Us</Text>
+                            <Text style={styles.RatingText}>About Institute</Text>
                             <Text>{this.props.institute.details.about}</Text>
                         </View>
                     <InsReviews />  
@@ -1412,6 +1412,7 @@ const styles = StyleSheet.create({
                         },
                             titleText:
                             {
+                                flex:0.95,
                                 fontSize: 18,
                                 color: theme.secondaryColor
                             },

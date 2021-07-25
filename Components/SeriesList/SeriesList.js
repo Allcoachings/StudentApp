@@ -2,7 +2,7 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {insTestSeries} from '../../FakeDataService/FakeData'
-import { theme, dataLimit } from '../config';
+import { theme, dataLimit, serverBaseUrl } from '../config';
 import { Feather } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
@@ -109,6 +109,13 @@ class SeriesList extends React.Component {
                             <Text style={styles.title}>UPSC CSE</Text>
                             <Feather name="share-2" size={18} style={{marginRight: 10}}/>
                         </View> */}
+                        <View 
+                            style={{justifyContent: 'center', alignItems: 'center', marginTop: 10, marginBottom: 10}}>
+                            <Image 
+                                source={{uri: serverBaseUrl+this.props.route.params.image}} 
+                                style={{height: 60, width: 60, borderRadius: 30}}
+                            />
+                        </View>
                         <View style={styles.rowContainer}>
                             <FlatList 
                                 data={this.state.banner} 

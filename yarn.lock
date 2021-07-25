@@ -6185,6 +6185,11 @@ react-native-shadow-cards@^1.0.2:
   resolved "https://registry.yarnpkg.com/react-native-shadow-cards/-/react-native-shadow-cards-1.0.2.tgz#7c0f899ffa2f9143cee48d646ef87fd5c1384357"
   integrity sha512-cUk9+4T8XTwWPKJzLxmnFia9i0m5PWdLPrtGiShVH5vVH48TZ/8JLBzsUe50tfzTxvMWPvQM1vZE8Sytfj1mjw==
 
+react-native-single-image-zoom-viewer@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/react-native-single-image-zoom-viewer/-/react-native-single-image-zoom-viewer-1.0.7.tgz#96bad769c803441c40d01047acef8bf0f3d50893"
+  integrity sha1-lrrXacgDRBxA0BBHrO+L8PPVCJM=
+
 react-native-slider-intro@^1.0.21:
   version "1.0.21"
   resolved "https://registry.yarnpkg.com/react-native-slider-intro/-/react-native-slider-intro-1.0.21.tgz#87aac8b37852e56f1a358f9e38d72f96f871ef12"

@@ -2,7 +2,7 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {insTestSeries} from '../../FakeDataService/FakeData'
-import { theme, dataLimit } from '../config';
+import { theme, dataLimit,serverBaseUrl } from '../config';
 import { Feather } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
@@ -78,7 +78,7 @@ class InsTestSeriesList extends React.Component {
             CardView(
                 <View  style={styles.singleItem}>
                     <View style={styles.imageView}>
-                        <Image source={{uri: item.image}} style={styles.itemImage}/>
+                        <Image source={{uri: serverBaseUrl+item.image}} style={styles.itemImage}/>
                     </View>
                     <View style={styles.titleView}>
                         <Text style={styles.itemTitle}>{item.name}</Text>
@@ -86,7 +86,7 @@ class InsTestSeriesList extends React.Component {
                     <View style={styles.countView}>
                         <Text style={styles.itemCount}>{item.count}</Text>
                     </View>
-                    <TouchableOpacity onPress={()=>this.props.navigation.navigate("SeriesList", {id: item.id, catName: this.props.route.params.catName})} style={styles.btnView}>
+                    <TouchableOpacity onPress={()=>this.props.navigation.navigate("SeriesList", {id: item.id, catName: this.props.route.params.catName, image: item.image})} style={styles.btnView}>
                             <Text style={styles.cardButton}>View Test Series</Text>
                     </TouchableOpacity>
                 </View>, { margin:7,width:((this.props.screenWidth/3.5)),borderWidth:1,borderColor:theme.labelOrInactiveColor,borderRadius:15 }
@@ -112,6 +112,12 @@ class InsTestSeriesList extends React.Component {
                         <Text style={styles.title}>UPSC CSE</Text>
                         <Feather name="share-2" size={18} style={{marginRight: 10}}/>
                     </View> */}
+                    <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 10, marginBottom: 10}}>
+                        <Image 
+                            source={{uri: serverBaseUrl+this.props.route.params.image}} 
+                            style={{height: 60, width: 60, borderRadius: 30}}
+                        />
+                    </View>
                     <View style={styles.rowContainer}>
                         <FlatList 
                             data={this.state.banner} 

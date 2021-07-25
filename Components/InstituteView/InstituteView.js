@@ -22,6 +22,7 @@ import FeedImage from '../Feed/FeedImage';
 import FeedPoll from '../Feed/FeedPoll';
 import {tabListInstitute} from '../../FakeDataService/FakeData'
 import {addLead} from '../Utils/DataHelper/Leads'
+import ImageZoomModal from './ImageZoomModal';
 import { checkSubscription, subscribe, unsubscribe }  from '../Utils/DataHelper/Subscription'
 
 import {fetch_institute_feed} from '../Utils/DataHelper/Feed'
@@ -38,7 +39,9 @@ class InstituteView extends React.Component {
         review: '',
         feedOffset:0,
         loadingInstitute:true,
-        subscribe: ''
+        subscribe: '',
+        zoomModal: false,
+        zimage:''
         
      }
      instituteCallback=(response) =>
@@ -190,11 +193,16 @@ class InstituteView extends React.Component {
     renderBannerList=({item})=>
     {
         return(
-            <TouchableOpacity style={styles.bannerItemContainer} >
+            <TouchableOpacity style={styles.bannerItemContainer} onPress={()=>this.openZoomModal(serverBaseUrl+item.bannerImageLink)}>
                 <Image source={{uri:serverBaseUrl+item.bannerImageLink}} style={styles.bannerImage}/>
             </TouchableOpacity  >
         )
     }
+
+    openZoomModal = (image) => {
+        console.log("image",image)
+        this.setState({ zimage: image, zoomModal: true});
+      }
 
     activeTab=(item)=>{
         switch(item)
@@ -427,13 +435,13 @@ class InstituteView extends React.Component {
                     this.props.navigation.navigate('pdfViewer',{pdf:serverBaseUrl+item.fileAddress})}}>
                     <Image source={{uri:documentPlaceholder}} style={styles.documentImage}/>
                 </TouchableOpacity>
-                <View style={{flexShrink: 1}}>
+                <View style={{flexShrink: 1, justifyContent: 'center', alignItems: 'center'}}>
                     <View style={{ display: 'flex', flexDirection: 'row'}}>
                         <Text style={styles.documentTitle}>{item.name}</Text>
                     </View>
-                    <View>
+                    {/* <View>
                         <Text style={styles.documentText}>{this.state.institute.name}</Text>
-                    </View>
+                    </View> */}
                     {/* <View>
                         <Text style={styles.documentText}>{item.Views} {item.date}</Text>
                     </View> */}
@@ -462,6 +470,7 @@ class InstituteView extends React.Component {
             </View>
         )
     }
+
     filterItemClick=(item)=>
     {
         switch(this.state.activeTab)
@@ -481,6 +490,7 @@ class InstituteView extends React.Component {
 
         } 
     }
+
     showFilters=(tab)=>{
         switch(tab)
         {
@@ -777,6 +787,10 @@ class InstituteView extends React.Component {
             this.setState({subscribe: true})
         }
     }
+
+    closeModal = () => {
+        this.setState({ zoomModal: false });
+      }
         
 
     render() {
@@ -797,7 +811,7 @@ class InstituteView extends React.Component {
             (
                 <ActivityIndicator color={this.accentColor} size={"large"}/>
             ):(
-            <ScrollView>
+            <ScrollView onScroll={()=>console.log("scrolling")}  onScrollToTop={()=>console.log("Hello To To")}>
                 <View style={styles.container}>
 
                         {/* <View style={styles.headerView}>
@@ -872,7 +886,7 @@ class InstituteView extends React.Component {
                     </View>
                     
                         <View style={{marginVertical: 20,}}>
-                            <Text style={styles.RatingText}>About Us</Text>
+                            <Text style={styles.RatingText}>About Institute</Text>
                             <Text>{this.state.institute.about}</Text>
                         </View>
 
@@ -937,6 +951,14 @@ class InstituteView extends React.Component {
                     </View> 
                 </ScrollView>
                 )} 
+                {this.state.zoomModal?(
+                    <ImageZoomModal 
+                        zoomModal={this.state.zoomModal}
+                        closeModal={this.closeModal}
+                        image={this.state.zimage}
+                        index={this.state.index}
+                    />
+                ):(null)}
             </PageStructure>
         );
     }
@@ -1418,6 +1440,7 @@ const styles = StyleSheet.create({
                     },
                         titleText:
                         {
+                            flex:0.95,
                             fontSize: 18,
                             color: theme.secondaryColor
                         },
