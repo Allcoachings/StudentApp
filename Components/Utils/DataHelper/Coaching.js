@@ -85,7 +85,7 @@ export const fetch_coachingByCategory =(category,offset,dataLimit,callback)=>
 {
             let headers = new Headers(); 
             headers.append('Content-Type', 'application/json');  
-            headers.append('Access-Control-Allow-Origin', serverApiUrl);
+            headers.append('Access-Control-Allow-Origin', "*");
             headers.append('Access-Control-Allow-Credentials', 'true'); 
             headers.append('GET', 'POST', 'OPTIONS');  
             console.log(serverApiUrl+'institute/category/'+category+"/"+offset+"/"+dataLimit)

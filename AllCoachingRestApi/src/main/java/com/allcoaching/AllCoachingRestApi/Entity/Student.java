@@ -39,4 +39,15 @@ public class Student {
         this.studentImage = studentImage;
         this.blocked = blocked;
     }
+
+    public Student(long id, String userId, String email, String name, String stateOfResidence, String mobileNumber, String studentImage, boolean blocked) {
+        this.id = id;
+        this.userId = userId;
+        this.email = email;
+        this.name = name;
+        this.stateOfResidence = stateOfResidence;
+        this.mobileNumber = mobileNumber;
+        this.studentImage = studentImage;
+        this.blocked = blocked;
+    }
 }

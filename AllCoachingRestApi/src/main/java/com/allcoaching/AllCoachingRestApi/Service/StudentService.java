@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -17,6 +18,12 @@ public class StudentService {
     @Autowired
     private StudentRepo studentRepo;
 
+
+    public  void updateProfilePic(String image,long id)
+    {
+
+        studentRepo.updateProfilePic(image, id);
+    }
     public Student createStudent(Student student)
     {
         return studentRepo.save(student);
