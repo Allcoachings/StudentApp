@@ -190,6 +190,7 @@ class InstituteView extends React.Component {
             </TouchableOpacity>
         );
     }
+    
     renderBannerList=({item})=>
     {
         return(
@@ -202,7 +203,7 @@ class InstituteView extends React.Component {
     openZoomModal = (image) => {
         console.log("image",image)
         this.setState({ zimage: image, zoomModal: true});
-      }
+    }
 
     activeTab=(item)=>{
         switch(item)
