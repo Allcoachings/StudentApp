@@ -52,11 +52,11 @@ class Main extends React.Component {
     {
         if(screenWidth > screenMobileWidth && Platform.OS === 'web')
         { 
-              return(<WebViewController  userAuth={this.props.userAuth}/>)
+              return(<WebViewController  userAuth={this.props.userAuth} userInfo={this.props.userInfo}/>)
         }
         else  
         {
-              return(<MobileViewController userAuth={this.props.userAuth}/>)
+              return(<MobileViewController userAuth={this.props.userAuth} userInfo={this.props.userInfo}/>)
         }
         // return(<MobileViewController userAuth={this.props.userAuth}/>)
     }
@@ -68,7 +68,7 @@ class Main extends React.Component {
         }
         else  
         {
-              return(<MobileViewControllerIns insAuth={this.props.insAuth}/>)
+              return(<MobileViewControllerIns insAuth={this.props.insAuth} />)
         }
          
     }
@@ -196,6 +196,7 @@ const mapStateToProps = (state)=>
     return {
         userAuth: state.user.userAuthStatus,
         insAuth:state.institute.authStatus,
+        userInfo:state.user.userInfo,
     }
 }
 export default connect(mapStateToProps,{screenWidthConfigChange,userAuthStatus,setInstituteAuth,setUserInfo,setInstituteDetails})(Main);

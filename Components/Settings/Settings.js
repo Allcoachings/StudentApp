@@ -35,7 +35,7 @@ class Settings extends Component {
             nosearchIcon={true}
         >
                 <View style={styles.container}>
-                    {this.renderSettingItem('Account','user',()=>{})}
+                    {this.renderSettingItem('Account','user',()=>{this.props.navigation.navigate("EditProfile")})}
                     {this.renderSettingItem('Help & Support','help-circle',()=>{})}
                     {this.renderSettingItem('Rate us on Play Store','disc',()=>{})}
                     {/* {this.renderSettingItem('Refer n earn','gift',()=>{})} */}

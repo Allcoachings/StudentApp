@@ -17,6 +17,7 @@ import FeedImage from '../Feed/FeedImage';
 import FeedPoll from '../Feed/FeedPoll';
 import {fetch_student_history} from '../Utils/DataHelper/StudentHistory';
 import {fetch_student_purchase} from '../Utils/DataHelper/UserProfile';
+import Instructions from '../SeriesList/Instructions';
 
 // import {Feed} from "../Feed/Feed"
 
@@ -32,7 +33,9 @@ class UserProfile extends React.Component {
         loadingData: false,
         history:[],
         subActiveTab: "video", 
-        purchase:[]
+        purchase:[],
+        modalVisible: false,
+        item:{}
     }
 
     closeModal = () => {
@@ -71,24 +74,24 @@ class UserProfile extends React.Component {
         }
     }
 
-      header=() => {
-          return(
-              <View style={{display: 'flex', flexDirection: 'row',  alignItems: 'center', padding: 10, width: '100%', justifyContent: 'space-between'}}>
-                  <Feather name="chevron-left" size={22} />
-                  <Text style={{fontSize: 24, color: theme.secondaryColor, fontWeight: '700'}}>Profile</Text>
-                  <TouchableOpacity onPress={()=>this.openModal()}>
-                    <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
-                  </TouchableOpacity>
-              </View>
-          )
-      }
+    header=() => {
+        return(
+            <View style={{display: 'flex', flexDirection: 'row',  alignItems: 'center', padding: 10, width: '100%', justifyContent: 'space-between'}}>
+                <Feather name="chevron-left" size={22} />
+                <Text style={{fontSize: 24, color: theme.secondaryColor, fontWeight: '700'}}>Profile</Text>
+                <TouchableOpacity onPress={()=>this.openModal()}>
+                <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
+                </TouchableOpacity>
+            </View>
+        )
+    }
 
-      renderPurchageCourse=(item)=>{
-          console.log("item",item)
-          return(
-            <PurchageListRow item={item} navigation={this.props.navigation}/>
-          )
-      }
+    renderPurchageCourse=(item)=>{
+        console.log("item",item)
+        return(
+        <PurchageListRow item={item} navigation={this.props.navigation}/>
+        )
+    }
 
 
     //   hadle history wala
@@ -289,11 +292,11 @@ class UserProfile extends React.Component {
         }    
     }
 
+
     renderVideos=(item)=>{
         return(
             <View style={styles.videoContainer}>
             <TouchableOpacity onPress={()=>{
-                this.addToHistory("video", item.id)
                 this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+item.videoLocation})}
             }>
                 <Image source={{uri:item.videoThumb}} style={styles.videoImage}/>
@@ -324,8 +327,7 @@ class UserProfile extends React.Component {
                     <View style={styles.bottomRow}>
                         <Text style={styles.titleText}>{item.title}</Text>
                         <TouchableOpacity style={styles.btnView} onPress={()=>{
-                            this.addToHistory("testSeries", item.id)
-                            this.props.navigation.navigate("SingleTestSeries",{item:item})}}>
+                            this.setState({modalVisible: true, item: item})}}>
                             <Feather name="play" size={12} style={{color: theme.primaryColor, marginRight: 3}}/>
                             <Text style={styles.btnText}>Start</Text>
                         </TouchableOpacity>
@@ -339,7 +341,6 @@ class UserProfile extends React.Component {
         return(
             <View style={styles.documentContainer}>
                 <TouchableOpacity onPress={()=>{
-                    this.addToHistory("document", item.id)
                     this.props.navigation.navigate('pdfViewer',{pdf:serverBaseUrl+item.fileAddress})}}>
                     <Image source={{uri:documentPlaceholder}} style={styles.documentImage}/>
                 </TouchableOpacity>
@@ -491,7 +492,7 @@ class UserProfile extends React.Component {
                     <View style={styles.container}>
                         <View style={styles.userInfoSecView}>
                             <View style={styles.imageView}>
-                                <Image source={{ uri: this.props.userInfo.studentImage }} style={styles.image}/>
+                                <Image source={{ uri: serverBaseUrl+this.props.userInfo.studentImage }} style={styles.image}/>
                             </View>
                             <View style={styles.nameView}>
                                 <Text style={styles.name}>{this.props.userInfo.name}</Text>
@@ -544,6 +545,17 @@ class UserProfile extends React.Component {
                             postedBy={2}
                             instituteDetails={this.props.userInfo}
                         />
+                ):(
+                    null
+                )}
+                {this.state.modalVisible?(
+                    <Instructions 
+                        closeModal={this.closeModal} 
+                        modalVisible={this.state.modalVisible}
+                        item={this.state.item}
+                        navigation={this.props.navigation}
+                    />
+                    
                 ):(
                     null
                 )}
@@ -825,6 +837,37 @@ const styles = StyleSheet.create({
                     fontSize: 16,
                     color: theme.greyColor
                 },
+            bottomRow:
+            {
+                flex: 1,
+                flexDirection: 'row',
+                marginTop: 10,
+                justifyContent: 'space-between',
+                alignItems: 'center'
+            },
+                titleText:
+                {
+                    flex:0.95,
+                    fontSize: 18,
+                    color: theme.secondaryColor
+                },
+                btnView:
+                {
+                    flexDirection: 'row',
+                    backgroundColor: theme.accentColor,
+                    paddingLeft: 5,
+                    paddingRight: 5,
+                    paddingTop: 2,
+                    paddingBottom: 2,
+                    borderRadius: 3,
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
+                },
+                    btnText:
+                    {
+                        fontSize: 14,
+                        color: theme.primaryColor   
+                    },
         documentContainer:
         {
             marginTop: 10,

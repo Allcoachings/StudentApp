@@ -26,23 +26,10 @@ class Profile extends React.Component {
     {
         DocumentPicker.getDocumentAsync({type:"image/*",copyToCacheDirectory:true,multiple:false}).then(response=>
         {
-            console.log(response.uri)
+            console.log(response)
             if(response.type=="success")
             {
                 this.setState({studentImage: response.uri})
-                var obj={
-                    name: this.state.name, 
-                    email: this.state.email, 
-                    mobileNumber: this.state.mobileNumber, 
-                    studentImage: this.state.studentImage, 
-                    authType: this.props.userInfo.authType, 
-                    blocked: this.props.userInfo.blocked, 
-                    stateOfResidence: this.state.stateOfResidence, 
-                    userId: this.props.userInfo.userId,
-                    id: this.props.userInfo.id,
-                }
-                
-                this.props.setUserInfo(obj)
             }
         })
     }
@@ -60,7 +47,19 @@ class Profile extends React.Component {
         if(response.status=="201")
         {
             
-            console.log("done")
+            var obj={
+                name: this.state.name, 
+                email: this.state.email, 
+                mobileNumber: this.state.mobileNumber, 
+                studentImage: this.state.studentImage, 
+                authType: this.props.userInfo.authType, 
+                blocked: this.props.userInfo.blocked, 
+                stateOfResidence: this.state.stateOfResidence, 
+                userId: this.props.userInfo.userId,
+                id: this.props.userInfo.id,
+            }
+            
+            this.props.setUserInfo(obj)
         }
         else
         {

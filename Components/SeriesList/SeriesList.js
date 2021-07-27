@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {insTestSeries} from '../../FakeDataService/FakeData'
 import { theme, dataLimit, serverBaseUrl } from '../config';
@@ -9,12 +9,17 @@ import { Redirect } from 'react-router';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import {seriesList} from '../Utils/DataHelper/TestSeries'
+import Instructions from './Instructions'
+const width = Dimensions.get('window').width
+const height = Dimensions.get('window').height;
 
 class SeriesList extends React.Component {
     state = {
         id: this.props.route.params.id,
         offset:0,
         seriesList: [],
+        modalVisible: false,
+        item:{},
         banner:[
             {
                 id: '1',
@@ -64,6 +69,10 @@ class SeriesList extends React.Component {
         }
     }
 
+    closeModal = () =>{
+        this.setState({modalVisible: false})
+    }
+
     renderBannerList=({item})=>
     {
         return(
@@ -83,7 +92,7 @@ class SeriesList extends React.Component {
                          </View>
                          <View style={styles.bottomRow}>
                              <Text style={styles.titleText}>{item.title}</Text>
-                             <TouchableOpacity onPress={()=> {this.props.navigation.navigate("SingleTestSeries",{item:item})}} style={styles.btnView}>
+                             <TouchableOpacity style={styles.btnView} onPress={()=>this.setState({modalVisible: true, item: item})}>
                                  <Feather name="play" size={12} style={{color: theme.primaryColor, marginRight: 3}}/>
                                  <Text style={styles.btnText}>Start</Text>
                              </TouchableOpacity>
@@ -135,7 +144,21 @@ class SeriesList extends React.Component {
                             />
                         </View>
                     </View>
-                </ScrollView> 
+                    
+                </ScrollView>
+                
+                {this.state.modalVisible?(
+                    <Instructions 
+                        closeModal={this.closeModal} 
+                        modalVisible={this.state.modalVisible}
+                        item={this.state.item}
+                        navigation={this.props.navigation}
+                    />
+                    
+                ):(
+                    null
+                )}
+
             </PageStructure>
         )
     }
@@ -215,11 +238,13 @@ const styles = StyleSheet.create({
             },
                 titleText:
                 {
+                    flex:0.95,
                     fontSize: 18,
                     color: theme.secondaryColor
                 },
                 btnView:
                 {
+                    // borderWidth:1,
                     flexDirection: 'row',
                     backgroundColor: theme.accentColor,
                     paddingLeft: 5,

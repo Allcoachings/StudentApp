@@ -24,14 +24,13 @@ export function DrawerContent(props){
             <DrawerContentScrollView {...props}>
                 <View style={styles.drawerContent}>
                     <View style={{display: 'flex',justifyContent: 'space-between',borderBottomWidth:1,borderBottomColor: theme.labelOrInactiveColor, flexDirection: 'row',paddingBottom:5}}>
-                        
                         <View style={styles.userInfoSection}>
                             <View>
                                 <Avatar.Image source={{ uri: 'https://picsum.photos/200' }}  size={80}/>
                             </View>
                             <View style={styles.userNameSec}>
-                                <Title>Amit Kumar</Title>
-                                <Text style={{color: theme.greyColor}}>@amit_kumar87</Text>
+                                <Title>{props.userInfo.name}</Title>
+                                <Text style={{color: theme.greyColor}}>{props.userInfo.userId}</Text>
                             </View>
                         </View>
                         <View style={{height:"20%",justifyContent: 'center',borderWidth:1,borderColor: theme.labelOrInactiveColor,marginRight:10,paddingHorizontal:5}}>
@@ -46,7 +45,6 @@ export function DrawerContent(props){
                         {renderDrawerItem('Enrollments','lock',()=>props.navigation.navigate("Enrollments"))}
                         {renderDrawerItem('Downloads','user',()=>props.navigation.navigate("Downloads"))}
                         {renderDrawerItem('Test Series','lock',()=>props.navigation.navigate("TestSeries"))}
-                        {renderDrawerItem('Edit p','lock',()=>props.navigation.navigate("EditProfile"))}
                         
                         {/* {renderDrawerItem('Subscription','lock',()=>props.navigation.navigate("Subscription"))} 
                         
@@ -98,7 +96,7 @@ const styles = StyleSheet.create({
             userNameSec:
             {
                 justifyContent: 'center',
-                // alignItems: 'center'
+                flexDirection: 'column',
                 marginLeft: 10,
             },
             drawerItem:
