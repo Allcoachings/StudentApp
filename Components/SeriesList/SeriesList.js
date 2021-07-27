@@ -10,6 +10,8 @@ import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import {seriesList} from '../Utils/DataHelper/TestSeries'
 import Instructions from './Instructions'
+import RenderSingleTestSeries from './RenderSingleTestSeries'
+import EmptyList from '../Utils/EmptyList'
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height;
 
@@ -82,25 +84,6 @@ class SeriesList extends React.Component {
         )
     }
 
-    renderList=({item})=>{
-        return( 
-             CardView(
-                     <View style={styles.list}>
-                         <View style={styles.topRow}>
-                            <Text style={styles.queText}>{item.questionCount} Questions</Text>
-                            <Text style={styles.timeText}>{item.timeDuration} Minutes</Text>
-                         </View>
-                         <View style={styles.bottomRow}>
-                             <Text style={styles.titleText}>{item.title}</Text>
-                             <TouchableOpacity style={styles.btnView} onPress={()=>this.setState({modalVisible: true, item: item})}>
-                                 <Feather name="play" size={12} style={{color: theme.primaryColor, marginRight: 3}}/>
-                                 <Text style={styles.btnText}>Start</Text>
-                             </TouchableOpacity>
-                         </View>
-                     </View>,{margin: 10, borderWidth: 1, borderRadius: 10, borderColor: theme.labelOrInactiveColor}
-             )
-         )
-     }
 
     render(){
         return(
@@ -137,10 +120,11 @@ class SeriesList extends React.Component {
                         <View style={styles.container}>
                             <FlatList 
                                 data={this.state.seriesList} 
-                                renderItem={this.renderList}
+                                renderItem={({item})=><RenderSingleTestSeries item={item} navigation={this.props.navigation}/>}
                                 keyExtractor={(item)=>item.id} 
                                 horizontal={false}
                                 showsHorizontalScrollIndicator={false}
+                                ListEmptyComponent={<EmptyList />}
                             />
                         </View>
                     </View>

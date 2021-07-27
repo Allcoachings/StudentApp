@@ -18,6 +18,8 @@ import FeedPoll from '../Feed/FeedPoll';
 import {fetch_student_history} from '../Utils/DataHelper/StudentHistory';
 import {fetch_student_purchase} from '../Utils/DataHelper/UserProfile';
 import Instructions from '../SeriesList/Instructions';
+import RenderSingleTestSeries from '../SeriesList/RenderSingleTestSeries';
+import EmptyList from '../Utils/EmptyList'
 
 // import {Feed} from "../Feed/Feed"
 
@@ -35,7 +37,7 @@ class UserProfile extends React.Component {
         subActiveTab: "video", 
         purchase:[],
         modalVisible: false,
-        item:{}
+        item:{},
     }
 
     closeModal = () => {
@@ -109,142 +111,6 @@ class UserProfile extends React.Component {
     }
 
 
-    //   feed wala
-
-    renderLikeShareRow=()=>{
-        return(
-            <View style={styles.bottomRowContainer}>
-                <View style={styles.likeView}>
-                    <Feather name="thumbs-up" size={18} />
-                    <Text style={styles.text}>Like</Text>
-                </View>
-                <View style={styles.likeView}>
-                    <Feather name="message-square" size={18} />
-                    <Text style={styles.text}>Comment</Text>
-                </View>
-                <View style={styles.likeView}>
-                    <Feather name="send" size={18} />
-                    <Text style={styles.text}>Share</Text>
-                </View>
-            </View>
-        )
-    }
-
-    renderImagePost=() => {
-        return(
-            CardView(
-                <View style={styles.boxView}>
-                    <View style={styles.rowView}>
-                        <View style={styles.circleView} />
-                        <Text style={styles.coaching}>Saket IAS Allahabad</Text>
-                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
-                    </View>
-                    <View style={styles.timeDateView}>
-                        <Text style={styles.timeDateText}>4:00 AM</Text>
-                        <Text style={styles.timeDateText}>28/05/2021</Text>
-                    </View>
-                    <View style={styles.innerBoxView}>
-                        <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.img}/>
-                        <View style={styles.bottomRowContainer}>
-                            <View style={styles.likeView}>
-                                <Feather name="thumbs-up" size={18} />
-                                <Text style={styles.text}>Like</Text>
-                            </View>
-                            <View style={styles.likeView}>
-                                <Feather name="message-square" size={18} />
-                                <Text style={styles.text}>Comment</Text>
-                            </View>
-                            <View style={styles.likeView}>
-                                <Feather name="send" size={18} />
-                                <Text style={styles.text}>Share</Text>
-                            </View>
-                        </View>
-                    </View>
-                </View>,{width: '100%', padding: 6, marginBottom: 10}
-            )
-        )
-    }
-
-    renderQuizPost=() => {
-        return(
-            CardView(
-                <View style={styles.boxView}>
-                    <View style={styles.rowView}>
-                        <View style={styles.circleView} />
-                        <Text style={styles.coaching}>Chandra Institute Allahabad</Text>
-                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
-                    </View>
-                    <View style={styles.timeDateView}>
-                        <Text style={styles.timeDateText}>4:00 AM</Text>
-                        <Text style={styles.timeDateText}>28/05/2021</Text>
-                    </View>
-                    <View style={styles.innerBoxView}>
-                        <Text style={{fontSize: 18, marginBottom: 10}}>In 1768, Captain James Cook set out to explore which ocean?</Text>
-                        <View Style={{display: 'flex', flexDirection: 'column'}}>
-                            <Text style={{fontSize: 16, marginTop: 3}}>Pacific Ocean</Text>
-                            <Text style={{fontSize: 16, marginTop: 3}}>Atlantic Ocean</Text>
-                            <Text style={{fontSize: 16, marginTop: 3}}>Indian Ocean</Text>
-                            <Text style={{fontSize: 16, marginTop: 3}}>Arctic Ocean</Text>
-                        </View>
-
-                        <View style={styles.bottomRowContainer}>
-                            <View style={styles.likeView}>
-                                <Feather name="thumbs-up" size={18} />
-                                <Text style={styles.text}>Like</Text>
-                            </View>
-                            <View style={styles.likeView}>
-                                <Feather name="message-square" size={18} />
-                                <Text style={styles.text}>Comment</Text>
-                            </View>
-                            <View style={styles.likeView}>
-                                <Feather name="send" size={18} />
-                                <Text style={styles.text}>Share</Text>
-                            </View>
-                        </View>
-                    </View>
-                </View>,{width: '100%', padding: 6, marginBottom: 10}
-            )
-        )
-    }
-
-
-    renderTextPost=() => {
-        return(
-            CardView(
-                <View style={styles.boxView}>
-                    <View style={styles.rowView}>
-                        <View style={styles.circleView} />
-                        <Text style={styles.coaching}>Test Coachings</Text>
-                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
-                    </View>
-                    <View style={styles.timeDateView}>
-                        <Text style={styles.timeDateText}>4:00 AM</Text>
-                        <Text style={styles.timeDateText}>28/05/2021</Text>
-                    </View>
-                    <View style={styles.innerBoxView}>
-                        <Text style={{fontSize: 18, marginBottom: 5}}>Covid Live News Updates: AstraZeneca shots should be halted for over-60s too, says European Medicines Agency</Text>
-                        <View style={styles.bottomRowContainer}>
-                            <View style={styles.likeView}>
-                                <Feather name="thumbs-up" size={18} />
-                                <Text style={styles.text}>Like</Text>
-                            </View>
-                            <View style={styles.likeView}>
-                                <Feather name="message-square" size={18} />
-                                <Text style={styles.text}>Comment</Text>
-                            </View>
-                            <View style={styles.likeView}>
-                                <Feather name="send" size={18} />
-                                <Text style={styles.text}>Share</Text>
-                            </View>
-                        </View>
-                    </View>
-                </View>,{width: '100%', padding: 6, marginBottom: 10}
-            )
-        )
-    }
-
-    // feed wala end
-
     openAddFeedModal = ()=>{
         this.setState({ isAddFeedModalVisible: true});
     }
@@ -286,7 +152,7 @@ class UserProfile extends React.Component {
                                 break;
                 case 'document': return this.renderDocument(item.data)
                                 break;
-                case 'testSeries': return this.renderTestSeries(item.data)
+                case 'testSeries': return <RenderSingleTestSeries item={item.data} />
                                 break;
             }
         }    
@@ -316,26 +182,6 @@ class UserProfile extends React.Component {
         )
     }
 
-    renderTestSeries=(item)=>{
-        return( 
-            CardView(
-                <View style={styles.list}>
-                    <View style={styles.topRow}>
-                        <Text style={styles.queText}>{item.questionCount} Questions</Text>
-                        <Text style={styles.timeText}>{item.timeDuration} minutes</Text>
-                    </View>
-                    <View style={styles.bottomRow}>
-                        <Text style={styles.titleText}>{item.title}</Text>
-                        <TouchableOpacity style={styles.btnView} onPress={()=>{
-                            this.setState({modalVisible: true, item: item})}}>
-                            <Feather name="play" size={12} style={{color: theme.primaryColor, marginRight: 3}}/>
-                            <Text style={styles.btnText}>Start</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>,{margin: 10, borderWidth: 1, borderRadius: 10, borderColor: theme.labelOrInactiveColor}
-            )
-        )
-    }
 
     renderDocument=(item)=>{
         return(
@@ -369,6 +215,7 @@ class UserProfile extends React.Component {
                         data={this.state.purchase}
                         renderItem={({item}) => this.renderPurchageCourse(item)}
                         keyExtractor={(item,index)=>index}
+                        ListEmptyComponent={<EmptyList />}
                     />
                     </View>
 
@@ -396,6 +243,7 @@ class UserProfile extends React.Component {
                                         data={this.state.history}
                                         renderItem={({item}) => this.displayItems(item)}
                                         keyExtractor={(item,index)=>index}
+                                        ListEmptyComponent={<EmptyList />}
                                     />
                                 )}
                             </View>
@@ -426,6 +274,7 @@ class UserProfile extends React.Component {
                             data={this.state.feeds}
                             renderItem={({item}) => this.renderFeedItem(item)}
                             keyExtractor={(item,index)=>index}
+                            ListEmptyComponent={<EmptyList />}
                         />
                     )}
                 </View>
