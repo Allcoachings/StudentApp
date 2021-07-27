@@ -45,3 +45,24 @@ import {serverApiUrl} from '../../config'
         .catch((error)=>{console.log(error)})
         
     }
+
+
+    export const updateStudent=(id, userId, email, name, stateOfResidence, mobileNumber, studentImage, blocked,callback)=>
+    { 
+
+        let headers = new Headers(); 
+        headers.append('Content-Type', 'application/json');  
+        headers.append('Access-Control-Allow-Origin', serverApiUrl);
+        headers.append('Access-Control-Allow-Credentials', 'true'); 
+        headers.append('GET', 'POST', 'OPTIONS'); 
+
+            fetch(serverApiUrl+"student/",
+        {
+            method: 'POST',  
+            headers,
+            body:JSON.stringify({id, userId, email, name, stateOfResidence, mobileNumber, studentImage, blocked})
+        })
+        .then((response)=>callback(response)) 
+        .catch((error)=>{console.log(error)})
+        
+    }

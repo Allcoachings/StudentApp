@@ -39,7 +39,7 @@ class index extends React.Component {
                 
                     {/* <Drawer.Navigator  >
                     </Drawer.Navigator> */}
-                    <Drawer.Navigator drawerContent={props => <DrawerContent {...props} /> } > 
+                    <Drawer.Navigator drawerContent={props => <DrawerContent {...props} userInfo={this.props.userInfo}/> } > 
 
                     {this.props.userAuth ?(
                         <>
