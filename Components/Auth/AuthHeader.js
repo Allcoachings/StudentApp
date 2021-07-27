@@ -8,13 +8,13 @@ class AuthHeader extends React.Component {
     
         return (
             <View style={styles.container}>
-            {CardView
-            (
+            {/* {CardView
+            ( */}
                 <View style={styles.headerBranding}>
                     <Image source={logoName} style={styles.brandingImage} />
                 </View>
-            ,{borderRadius:40,width:220,height:60}
-            )}
+            {/* ,{borderRadius:40,width:220,height:60}
+            )} */}
             </View>
         );
     }
@@ -34,12 +34,13 @@ const styles = StyleSheet.create({
             flex: 1,
             flexDirection: 'row',
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
+            height:70,
         },
             brandingImage: 
             {
-                width:200,
-                height:70
+                width:150,
+                height:50
             },
             brandingText:
             {

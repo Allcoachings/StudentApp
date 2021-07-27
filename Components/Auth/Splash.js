@@ -1,5 +1,7 @@
 import React ,{useState} from 'react';
 import { Text,StyleSheet,View,TouchableOpacity,ScrollView,Platform,Image,Dimensions,StatusBar,SafeAreaView,PixelRatio} from 'react-native';
+import { theme } from '../config';
+
 const height = Dimensions.get('screen').height
 const Splash = () => {
   const [sliderState, setSliderState] = useState({ currentPage: 0 });
@@ -20,25 +22,25 @@ const Splash = () => {
   const { currentPage: pageIndex } = sliderState;
 
   return (
-    <View style={{backgroundColor : '#ffe6ff',height:height*0.975}}>
+    < View style={{height:height*0.975}}>
       {/* <StatusBar barStyle="dark-content" /> */}
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView
-          style={{ flex: 1 ,backgroundColor : '#ffe6ff'}}
+          style={{ flex: 1 ,}}
           horizontal={true}
           scrollEventThrottle={16}
           pagingEnabled={true}
           showsHorizontalScrollIndicator={false}
-          style={{backgroundColor : '#ffe6ff'}}
+          style={{}}
           // onScroll={(event: any) => {
           //   setSliderPage(event);
           // }}
         >
-          <View style={{ width, height,backgroundColor:'#ffe6ff' }}>
+          <View style={{ width, height }}>
             <Image source={require('../../assets/hired.png')} style={styles.imageStyle} />
             <View style={styles.wrapper}>
-              <Text style={styles.header}>Nature Imitates Art</Text>
-              <Text style={styles.paragraph}>....something like that</Text>
+              <Text style={styles.header}>Daily interactive live classes</Text>
+              <Text style={styles.paragraph}>chat with your educator,ask your doubts and participate in polls</Text>
             </View>
           </View>
           <View style={{ width, height }}>
@@ -57,8 +59,8 @@ const Splash = () => {
               style={styles.imageStyle}
             />
             <View style={styles.wrapper}>
-              <Text style={styles.header}>Top Notch Artists</Text>
-              <Text style={styles.paragraph}>... all in one place</Text>
+              <Text style={styles.header}>Daily interactive live classes</Text>
+              <Text style={styles.paragraph}>chat with your educator,ask your doubts and participate in polls</Text>
             </View>
           </View>
           <View style={{ width, height }}>
@@ -94,9 +96,9 @@ const Splash = () => {
 
 const styles = StyleSheet.create({
   imageStyle: {
-    height: PixelRatio.getPixelSizeForLayoutSize(135),
-    width: '90%',
-    backgroundColor: '#ffe6ff',
+    height: PixelRatio.getPixelSizeForLayoutSize(10),
+    width: '80%',
+    backgroundColor: theme.transparent,
     flex: 0.35,
     marginLeft:20,
     flexDirection:'row',
@@ -108,12 +110,15 @@ const styles = StyleSheet.create({
     marginVertical: 30,
   },
   header: {
-    fontSize: 30,
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
   },
   paragraph: {
-    fontSize: 17,
+    fontSize: 15,
+    color: theme.greyColor,
+    textAlign: 'center',
+    fontWeight: '400'
   },
   paginationWrapper: {
     position: 'absolute',
@@ -128,7 +133,7 @@ const styles = StyleSheet.create({
     height: 10,
     width: 10,
     borderRadius: 10 / 2,
-    backgroundColor: '#0898A0',
+    backgroundColor: 'orange',
     marginLeft: 10,
   },
 });

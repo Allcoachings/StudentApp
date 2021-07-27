@@ -83,11 +83,13 @@ class SeriesModal extends React.Component {
       wrongQues:this.state.wrongQues,
       Unattempted:this.state.Unattempted,
       attempted:this.state.attempted,
-      score:this.score
+      score:this.score,
+      timeLeft:this.props.timeLeft
      }}
      this.props.setTestResultData(data);
      this.props.navigation.navigate("ResultAnalysis");
      this.props.closeModal()
+     window.clearInterval(this.props.intervalRef)
   }
   render() {
     const { isModalVisible,closeModal,isPractice } = this.props;
@@ -99,7 +101,7 @@ class SeriesModal extends React.Component {
             animationOut="slideOutRight"
             transparent={true}
             visible={isModalVisible}
-            onRequestClose={closeModal}>
+            onRequestClose={this.props.timeOver?null:closeModal}>
             <TouchableOpacity onPress={()=>closeModal()} style={{width: this.props.screenWidth,height:'100%'}}>
               <TouchableWithoutFeedback>
               <View style={[styles.centeredView, {}]}>

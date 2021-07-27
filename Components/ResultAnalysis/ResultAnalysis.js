@@ -124,8 +124,30 @@ class ResultAnalysis extends React.Component {
             </View>
         )
     }
+    formatTimer =(seconds)=>
+    {
+        let duration = seconds;
+        let hours = duration/3600;
+        duration = duration % (3600);
 
+        let min = parseInt(duration/60);
+        duration = duration % (60);
+
+        let sec = parseInt(duration);
+
+        if (sec < 10) {
+        sec = `0${sec}`;
+        }
+        if (min < 10) {
+        min = `0${min}`;
+        }
+        if (parseInt(hours, 10) > 0) {
+        return (`${parseInt(hours, 10)}:${min}:${sec}`)
+        }
+        return (`${min}:${sec}`)
+    }
     render() {
+         
         const{testSeriesData,userInfo} = this.props; 
         return(
             <PageStructure
@@ -153,9 +175,9 @@ class ResultAnalysis extends React.Component {
                         <Text style={styles.tryHarderText}>Try harder next time!</Text>
                     </View>
 
-                    <View style={styles.imageView}>
+                    {/* <View style={styles.imageView}>
                         <Image style={styles.img} source={{uri: 'https://picsum.photos/200'}}/>
-                    </View>
+                    </View> */}
                     
                     <View style={styles.rowContainer}>
                         <View style={styles.scoreView}>
@@ -200,14 +222,14 @@ class ResultAnalysis extends React.Component {
                                 <Feather name="crosshair" size={20} style={{color: theme.accentColor}}/>
                                 <Text style={styles.titleText}>ACCURACY</Text>
                             </View>
-                            <Text style={styles.moreText}>28.0%</Text>
+                            <Text style={styles.moreText}>{(testSeriesData.brief.score/testSeriesData.series.maxMarks)*100}%</Text>
                         </View>
                         <View style={styles.rowView}>
                             <View style={styles.percentileView}>
                                 <Feather name="clock" size={20} style={{color: theme.yellowColor}}/>
                                 <Text style={styles.titleText}>TIME TAKEN</Text>
                             </View>
-                            <Text style={styles.moreText}>00hr 01mins</Text>
+                            <Text style={styles.moreText}>{this.formatTimer(this.props.testSeriesData.series.timeDuration-this.props.testSeriesData.brief.timeLeft)}</Text>
                         </View>
                     </View>
 

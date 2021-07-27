@@ -13,6 +13,9 @@ import OtpVerification from './OtpVerification';
 import SocialAuth from './SocialAuth';
 // import Onboarding from 'react-native-onboarding-swiper';
 import Splash from  './Splash';
+
+import { LinearGradient } from 'expo-linear-gradient';
+
 const width = Dimensions.get('window').width
 const height = Dimensions.get('screen').height
 class Auth extends React.Component {
@@ -71,6 +74,11 @@ class Auth extends React.Component {
             <>
                     <View style={styles.container}> 
                         <View style={[styles.authContainer,{flex:this.props.screenWidth<=screenMobileWidth?1:0.5}]}>
+                            
+                            <LinearGradient
+                                // Button Linear Gradient
+                                colors={[theme.primaryColor, '#AFeeee']}
+                                style={styles.button}>
                                 <View>
                                     <AuthHeader/>
                                 </View>
@@ -92,6 +100,7 @@ class Auth extends React.Component {
                                 <View style={{marginTop:-(height*0.38),marginBottom:10,}}>
                                     <Card phoneNumberEntered={this.phoneNumberEntered} openModal={this.openModalOTP}/>
                                 </View>
+                            </LinearGradient>
         
                         </View>
                     {this.props.screenWidth<=screenMobileWidth?(null):(

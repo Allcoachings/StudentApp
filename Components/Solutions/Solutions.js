@@ -202,14 +202,14 @@ class Solutions extends React.Component {
                             
                             <View style={{borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}/>
                             
-                            <View style={styles.chooseSectionView}>
+                            {/* <View style={styles.chooseSectionView}>
                                 <Text style={styles.sectionText}>Choose section</Text>
                                 <View style={styles.chooseSection}>
                                     <Text style={styles.reasoningText}>Reasoning</Text>
                                 </View>
-                            </View>
+                            </View> */}
 
-                            <View style={{borderBottomWidth: 4, borderColor: theme.labelOrInactiveColor, marginTop:10}}/>
+                            <View style={{  borderColor: theme.labelOrInactiveColor, marginTop:10}}/>
 
                             <View style={styles.categoryView}>
                                 <FlatList 
