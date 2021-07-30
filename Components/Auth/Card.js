@@ -1,6 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import React , { useState, useRef }  from 'react';
-import { StyleSheet,Text, View ,TouchableOpacity,Dimensions,StatusBar,SafeAreaView} from 'react-native';
+import { StyleSheet,Text, View ,TouchableOpacity,Dimensions,StatusBar,SafeAreaView, TouchableWithoutFeedback} from 'react-native';
 import { theme } from '../config';
 // import PhoneInput from 'react-native-phone-input'
 import PhoneInput from "react-native-phone-number-input";
@@ -10,16 +10,11 @@ import { generateOtp } from '../Utils/DataHelper/Otp';
 import { ActivityIndicator } from 'react-native-paper';
 const width = Dimensions.get('window').width
 const height = Dimensions.get('screen').height
-const phoneInput = useRef<PhoneInput>(null);
+ const phoneInput = useRef<PhoneInput>(null);
 
 class SocialAuth extends React.Component {
-    state = { padding:75,loader:false }
-    
-    // componentDidMount(){
-    //     this.setState({
-    //         pickerData: this.phone.getPickerData()
-    //     })
-    // }
+    state = { padding:75,loader:false } 
+     
     
     // onPressFlag(){
     //     this.myCountryPicker.open()
@@ -55,7 +50,8 @@ class SocialAuth extends React.Component {
     }
     handleContinueBtnClick=()=>
     {
-        if(!this.state.loader)
+        
+        if(this.state.continue&&!this.state.loader)
         {
             this.setState({loader:true})
             generateOtp(this.state.number,this.handleOtpGenerateCallBack)
@@ -64,17 +60,17 @@ class SocialAuth extends React.Component {
         // this.props.openModal()
     }
     renderCard =() => {
-        // phoneInput = useRef<PhoneInput>(null);
+        // 
         return (
         CardView(
             <View style={styles.container}>
                 <Text style={styles.label}>Get Started</Text>
-                <View style={{alignItems: 'center'}}>
-                        <Text style={{marginLeft:-10,marginBottom:20,fontSize:18,alignItems: 'center',textAlign: 'center',justifyContent: 'center'}}>
-                            Enter Your mobile or   
-                                <TouchableOpacity style={{}}>
+                <View>
+                        <Text style={{ marginBottom:20,fontSize:15,color:theme.labelOrInactiveColor,justifyContent: 'center'}}>
+                            Enter Your mobile  Number  
+                                {/* <TouchableOpacity style={{}}>
                                         <Text style={styles.email}> continue with email</Text>
-                                </TouchableOpacity>
+                                </TouchableOpacity> */}
                         </Text>
                 </View>
                 <View style={styles.social_authBtnContainer}>
@@ -93,26 +89,27 @@ class SocialAuth extends React.Component {
                                 }}
                                 withDarkTheme
                                 defaultCode='IN'
-                                withShadow
+                                withShadow 
                                 // autoFocus
                                 // style={{height:100}}
                                 />
-                                {this.state.continue?(
+                                
                                     <View style={{flex:1,flexDirection:'row',justifyContent:'center',marginLeft:'10%',marginRight:'10%'}}>
                                        
-                                        <TouchableOpacity onPress={this.handleContinueBtnClick} style={styles.authModeBtn}>
-                                        {this.state.loader?(
-                                            <ActivityIndicator/>
-                                        ):( 
-                                            <>
-                                                <Text style={styles.btnText}>Continue</Text>
-                                                <Feather name="log-in" size={20} color={theme.primaryColor} style={{marginTop:Platform.OS=='web'?5:0}}/> 
-                                            </>
-                                        )}
-                                        </TouchableOpacity>
+                                        <TouchableWithoutFeedback onPress={this.handleContinueBtnClick}  >
+                                            <View style={[styles.authModeBtn,{backgroundColor:this.state.continue?(theme.accentColor):(theme.greyColor)}]} >
+                                                {this.state.loader?(
+                                                    <ActivityIndicator/>
+                                                ):( 
+                                                    <>
+                                                        <Text style={styles.btnText}>Continue</Text>
+                                                        <Feather name="log-in" size={20} color={theme.primaryColor} style={{marginTop:Platform.OS=='web'?5:0}}/> 
+                                                    </>
+                                                )}
+                                            </View>
+                                        </TouchableWithoutFeedback>
                                        
                                     </View>
-                                ):(null)}
                                 
                     </SafeAreaView>
                         
@@ -134,7 +131,7 @@ class SocialAuth extends React.Component {
      render() {
          return (
              <View>
-             <View style={{backgroundColor : '#ffe6ff'}}>
+             <View style={{backgroundColor : theme.transparent}}>
                  {this.renderCard()}
              </View>
              </View>
@@ -153,11 +150,11 @@ const styles = StyleSheet.create({
     },
     label:
     {
-        marginLeft:-10,
+        
         color:'black',
         fontWeight: 'bold',
-        fontSize:25,
-        margin:15
+        fontSize:20, 
+        marginTop:15
     },
     social_authBtnContainer:
     {
@@ -167,10 +164,10 @@ const styles = StyleSheet.create({
     },
         authCard:
         {
-            borderTopLeftRadius:40,
-            borderTopRightRadius:40,
+            borderTopLeftRadius:30,
+            borderTopRightRadius:30,
             width:width,
-            height:height*0.38,
+            height:height*0.3,
             padding:10,
             backgroundColor:theme.primaryColor,
             borderColor:theme.primaryColor,
@@ -183,7 +180,7 @@ const styles = StyleSheet.create({
             color:theme.accentColor,
             textDecorationLine: 'underline',
             textDecorationStyle: 'solid',
-            marginLeft:5,
+            marginLeft:5, 
             fontSize:15, 
             
         },
@@ -194,7 +191,7 @@ const styles = StyleSheet.create({
                     marginTop:'3%', 
                     width:'100%',
                     marginTop:25,
-                    height:height*0.05,
+                    height:height*0.07,
                     borderRadius:5,
                     justifyContent: 'center',
                     alignItems: 'center',

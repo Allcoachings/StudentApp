@@ -73,12 +73,47 @@ class Question extends Component {
        
             
   }
+  
+  provideOptionIndexResponseStyle=(selectedIndex,currentIndex)=>
+  {
+       
+      if(this.props.isPractice)
+      {
+        
+        if(!this.state.isResponded)
+        {
+         
+            return ""
+        }else if(this.state.isCorrect||this.state.correctIndex==currentIndex)
+        {
+          if(selectedIndex==currentIndex||this.state.correctIndex==currentIndex)
+          {
+            return styles.correctAnsIndex
+          }
+            
+        }else
+        {
+           
+            if(selectedIndex==currentIndex)
+            {
+              return styles.wrongAnsIndex
+            }
+        }
+
+
+      }else if(this.state.isResponded && selectedIndex==currentIndex)
+      {
+            return styles.attemptedAnsIndex
+      }
+       
+            
+  }
   renderOption=(index, text,onPress)=>
   {
       return(
             <View style={[styles.singleOptionView,this.provideOptionResponseStyle(this.state.userOptionIndex,index)]}>
                 <TouchableOpacity style={styles.optionAns} onPress={onPress}>
-                    <View style={{marginRight:10,borderRadius:15,paddingHorizontal:10,padding:5,borderWidth:1,borderColor: theme.labelOrInactiveColor}}>
+                    <View style={[{marginRight:10,borderRadius:15,paddingHorizontal:10,padding:5,borderWidth:1,borderColor: theme.labelOrInactiveColor},this.provideOptionIndexResponseStyle(this.state.userOptionIndex,index)]}>
                         <Text>{index}</Text>
                     </View> 
                     <Text style={styles.optionText}>{text}</Text>
@@ -240,7 +275,7 @@ const styles = StyleSheet.create({
         },
             singleOptionView:{
                 // backgroundColor: theme.labelOrInactiveColor,
-                // padding: 10,
+                padding: 5,
                 borderRadius: 5,
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -275,15 +310,39 @@ const styles = StyleSheet.create({
 
 correctAns:
 {
-    backgroundColor:theme.featureYesColor
+    backgroundColor:theme.featureYesColor+'4D',
+     
+     
+
 },
 wrongAns:
 {
-    backgroundColor:theme.featureNoColor
+    backgroundColor:theme.featureNoColor+'4D',  
+
 },
 attemptedAns:
 {
-    backgroundColor:theme.labelOrInactiveColor
+    borderColor:theme.labelOrInactiveColor,
+    borderWidth:1,
+     
+
+},
+correctAnsIndex:
+{
+    backgroundColor:theme.featureYesColor+'4D',
+
+},
+wrongAnsIndex:
+{
+    backgroundColor:theme.featureNoColor+'4D',
+     
+
+},
+attemptedAnsIndex:
+{
+     backgroundColor:theme.labelOrInactiveColor,
+     
+
 }
 });
 export default Question;

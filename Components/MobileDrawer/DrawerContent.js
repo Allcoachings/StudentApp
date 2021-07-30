@@ -1,10 +1,11 @@
-import React from 'react';
-import { View, StyleSheet,TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet,TouchableOpacity,TouchableWithoutFeedback } from 'react-native';
 import { theme } from '../config';
 import {Text, Switch, Avatar, Title, Caption, Paragraph, Drawer, TouchableRipple} from 'react-native-paper'
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import  Icon  from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Feather } from '@expo/vector-icons';
+import ChangeCatModal from './ChangeCatModal';
 
 const renderDrawerItem=(label,icon,onPress)=>
 {
@@ -18,7 +19,15 @@ const renderDrawerItem=(label,icon,onPress)=>
         </TouchableOpacity>
     )
 }
+
+
+ 
 export function DrawerContent(props){
+
+
+
+
+    const [isCatModalOpen,setCatModalOpen] = useState(false);
     return(
         <View style={{flex: 1, width: '100%'}}>
             <DrawerContentScrollView {...props}>
@@ -33,9 +42,13 @@ export function DrawerContent(props){
                                 <Text style={{color: theme.greyColor}}>{props.userInfo.mobileNumber}</Text>
                             </View>
                         </View>
-                        <View style={{height:"20%",justifyContent: 'center',borderWidth:1,borderColor: theme.labelOrInactiveColor,marginRight:10,paddingHorizontal:5}}>
-                            <Text style={{color: theme.greyColor,   textAlign: 'center'}}>Manage Category</Text>
-                        </View>
+                        <TouchableWithoutFeedback style={{height:"20%",justifyContent: 'center',borderWidth:1,borderColor: theme.labelOrInactiveColor,marginRight:10,paddingHorizontal:5}}
+                            onPress={()=>setCatModalOpen(true)}
+                        >
+                            <View style={{height:"20%",justifyContent: 'center',borderWidth:1,borderColor: theme.labelOrInactiveColor,marginRight:10,paddingHorizontal:5}}>
+                                <Text style={{color: theme.greyColor,   textAlign: 'center'}}>Manage Category</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
                     </View>
                     <Drawer.Section>
                      
@@ -74,6 +87,13 @@ export function DrawerContent(props){
             </Drawer.Section>
             <Drawer.Section>
             </Drawer.Section>
+
+            {isCatModalOpen?(
+
+                    <ChangeCatModal isModalVisible={isCatModalOpen} closeModal={()=>setCatModalOpen(false)} navigation={props.navigation}/>
+
+            ):(null)}
+            
         </View>
     )
 }

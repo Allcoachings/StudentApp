@@ -20,7 +20,7 @@ class ImageZoomModal extends React.Component {
           visible={zoomModal}
           onRequestClose={closeModal}>
           <View style={styles.centeredView}>
-            <Image source={{uri: this.props.image}} style={{height:'100%', width: '100%'}}/>
+            <Image source={{uri: this.props.image}} style={{height:'100%', width: '100%',resizeMode:'contain'}}/>
           </View>
         </Modal>
     );

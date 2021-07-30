@@ -37,9 +37,6 @@ public class StudentController {
     @PostMapping("/update/profile")
     public ResponseEntity<Object> updateProfilePic(@RequestParam("image") MultipartFile image,@RequestParam("id") long id)
     {
-
-
-
         Optional<Student> s = studentService.findById(id);
         String filename = "files/";
         if (s.isPresent()) {

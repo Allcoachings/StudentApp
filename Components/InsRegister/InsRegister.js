@@ -13,6 +13,8 @@ import * as DocumentPicker from 'expo-document-picker';
 import {setInstituteDetails,setInstituteAuth} from '../Actions'
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-simple-toast';
+
 class InsRegister extends React.Component {
     state = {
         insName: '',
@@ -94,13 +96,17 @@ class InsRegister extends React.Component {
             console.log("callback",response.status)
             if(response.status==201)
             {
-                 
+                Toast.show('Institute Added Successfully.');
                 this.setState({registerLoader:false})
                 this.props.setInstituteDetails({id:response.headers.map.location,name:this.state.insName,directorName:this.state.dirName,email:this.state.email,phone:this.state.phone,password:this.state.password,address:this.state.address,city:this.state.city,state:this.state.state,category:this.state.category,about:this.state.about,logo:this.state.logo.uri,status:1})
                 this.props.setInstituteAuth(true);
                 AsyncStorage.setItem('authInfo', JSON.stringify({id:response.headers.map.location,name:this.state.insName,directorName:this.state.dirName,email:this.state.email,phone:this.state.phone,password:this.state.password,address:this.state.address,city:this.state.city,state:this.state.state,category:this.state.category,about:this.state.about,logo:this.state.logo.uri,status:1,authType:'ins'}))
                 // this.props.navigation.navigate("Home")
 
+            }
+            else
+            {
+                Toast.show('Something Went Wrong. Please Try Again Later.');
             }
 
     }
@@ -120,7 +126,7 @@ class InsRegister extends React.Component {
             }else
             {
                  
-                this.setState({error:"Please Fill All the Fields"});
+                Toast.show('Please Fill All The Fields.');
             }
     }
     

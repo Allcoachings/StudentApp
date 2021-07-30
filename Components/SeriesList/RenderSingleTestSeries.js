@@ -28,7 +28,9 @@ class RenderSingleTestSeries extends React.Component {
                         </View>
                         <View style={styles.bottomRow}>
                             <Text style={styles.titleText}>{this.props.item.title}</Text>
-                            <TouchableOpacity style={styles.btnView} onPress={()=>this.setState({modalVisible: true})}>
+                            <TouchableOpacity style={styles.btnView} onPress={()=>{
+                               this.props.mode=="institute"?(this.props.addToHistory("testSeries", this.props.item.id)):(null),
+                                this.setState({modalVisible: true})}}>
                                 <Feather name="play" size={12} style={{color: theme.primaryColor, marginRight: 3}}/>
                                 <Text style={styles.btnText}>Start</Text>
                             </TouchableOpacity>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView,ActivityIndicator} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView,ActivityIndicator,Alert} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 
 import { theme,dataLimit } from '../config';
@@ -11,10 +11,12 @@ import {connect } from 'react-redux'
 import SeriesModal from './SeriesModal';
 import {fetch_testSeries_questions} from '../Utils/DataHelper/TestSeries'
 import Question from './Question';
+import moment from 'moment'
 class TestSeriesView extends React.Component {
 
     state={
         testSeries:this.props.route.params.item,
+        time:this.props.route.params.item.timeDuration*60,
         testSeriesId:this.props.route.params.item.id,
         isModalVisible: false,
         loadingQuestions:true,
@@ -29,7 +31,7 @@ class TestSeriesView extends React.Component {
 
     questionCallback=(response) => 
     {
-        console.log("questions",response.status);
+            
             if(response.status==200)
             {   
                     response.json().then(data=>
@@ -43,10 +45,59 @@ class TestSeriesView extends React.Component {
     componentDidMount() 
     {  
         fetch_testSeries_questions(this.state.testSeriesId,this.state.offset,dataLimit,this.questionCallback)
+        this.timer();
     }
 
 
+        timer=()=>
+        {
+          
+            
+           let interval =  window.setInterval(()=>{
+                
+                if(this.state.time<=0)
+                {
+                    window.clearInterval(interval);
+                    //alert lagna hai 
+                    // const button1 = {
+                    //     text: "Cancel",
+                    //     onPress: () => { notificationReceivedEvent.complete(); },
+                    //     style: "cancel"
+                    //  };
+                    const button2 = { text: "Submit Test", onPress: () => { this.setState({timeOver:true,isModalVisible:true    })}};
+                    Alert.alert("Alert ", "Time Up", [ button2], { cancelable: false });
+                }else
+                {
+                    this.setState({time:this.state.time-1}) 
+                }
 
+            },1000)
+
+         this.setState({interval})  
+        }
+
+        formatTimer =(seconds)=>
+        {
+            let duration = seconds;
+            let hours = duration/3600;
+            duration = duration % (3600);
+
+            let min = parseInt(duration/60);
+            duration = duration % (60);
+
+            let sec = parseInt(duration);
+
+            if (sec < 10) {
+            sec = `0${sec}`;
+            }
+            if (min < 10) {
+            min = `0${min}`;
+            }
+            if (parseInt(hours, 10) > 0) {
+            return (`${parseInt(hours, 10)}:${min}:${sec}`)
+            }
+            return (`${min}:${sec}`)
+        }
     header=()=>{
         return(
             // CardView(
@@ -58,10 +109,10 @@ class TestSeriesView extends React.Component {
                         <View style={styles.quizNameView}>
                             <Text style={styles.quizName}>{this.state.testSeries.title}</Text>
                         </View>
-                        {/* <View style={styles.pauseBtnView}>
-                            <Feather name="pause-circle" size={13} color={theme.redColor}/>
-                            <Text style={styles.pauseBtnText}>Pause</Text>
-                        </View> */}
+                        <View style={styles.pauseBtnView}>
+                            <Feather name="pause-circle" size={13} color={theme.greyColor}/>
+                                <Text style={styles.pauseBtnText}> {this.formatTimer(this.state.time)}</Text>
+                        </View>
                         <TouchableOpacity style={styles.menuIcon} onPress={()=>this.openModal()}>
                             <Feather name="grid" size={25} color={theme.labelOrInactiveColor}/>
                         </TouchableOpacity>
@@ -186,7 +237,7 @@ class TestSeriesView extends React.Component {
                                      
                                 <FlatList 
                                     data={Object.values(this.state.questions)} 
-                                    renderItem={({item,index}) =><Question item={item} index={index} isPractice={this.state.testSeries.isPractice} setQuestionAttemptStatus={this.setQuestionAttemptStatus}/>}
+                                    renderItem={({item,index}) =><Question item={item} index={index} isPractice={true} setQuestionAttemptStatus={this.setQuestionAttemptStatus}/>}
                                     keyExtractor={(item)=>item.id} 
                                     horizontal={false}
                                     showsHorizontalScrollIndicator={false}
@@ -210,6 +261,9 @@ class TestSeriesView extends React.Component {
                             isPractice={this.state.testSeries.isPractice}
                             closeModal={this.closeModal}
                             testSeriesDetails={this.state.testSeries}
+                            timeOver ={this.state.timeOver}
+                            timeLeft ={this.state.time}
+                            intervalRef={this.state.interval}
                         />
                     ) : (null)}
               </>
@@ -264,14 +318,18 @@ const styles = StyleSheet.create({
                       fontWeight: '700' 
                     },
                 pauseBtnView:
-                {
-                    backgroundColor: 'pink',
+                { 
                     borderRadius: 3,
                     justifyContent: 'center',
                     alignItems: 'center',
                     paddingRight:3,
                     flexDirection: 'row',
                 },
+                    pauseBtnText:
+                    {
+                        fontWeight:'bold',
+                        color: theme.greyColor
+                    },
                 menuIcon:{ 
                         marginLeft:'auto',
                         alignSelf: 'flex-end'

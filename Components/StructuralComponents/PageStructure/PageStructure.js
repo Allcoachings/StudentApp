@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: theme.appBackgroundColor
+        backgroundColor: theme.appBackgroundColor,
     },
     containerMain:
     {
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
         pageLayout:
         {
 
-            flex:1,
+            flex:0.99,
             flexDirection: 'row',
             marginBottom:-5
         },
@@ -170,8 +170,6 @@ const styles = StyleSheet.create({
             },
         pageBottomTab:
         {
-            flex:0.089, 
-            
             marginTop:'auto'
         }
 })

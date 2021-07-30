@@ -19,6 +19,8 @@ import {fetch_student_history} from '../Utils/DataHelper/StudentHistory';
 import {fetch_student_purchase} from '../Utils/DataHelper/UserProfile';
 import Instructions from '../SeriesList/Instructions';
 import RenderSingleTestSeries from '../SeriesList/RenderSingleTestSeries';
+import RenderDocument from '../InstituteView/RenderDocument';
+import RenderVideo from '../InstituteView/RenderVideo';
 import EmptyList from '../Utils/EmptyList'
 
 // import {Feed} from "../Feed/Feed"
@@ -148,61 +150,14 @@ class UserProfile extends React.Component {
         {
             switch(item.type)
             {
-                case 'video': return this.renderVideos(item.data)
+                case 'video': return <RenderVideo item={item.data} mode="Profile" navigation={this.props.navigation}/>
                                 break;
-                case 'document': return this.renderDocument(item.data)
+                case 'document': return <RenderDocument item={item.data} mode="Profile" navigation={this.props.navigation}/>
                                 break;
-                case 'testSeries': return <RenderSingleTestSeries item={item.data} />
+                case 'testSeries': return <RenderSingleTestSeries item={item.data} mode="Profile" navigation={this.props.navigation}/>
                                 break;
             }
         }    
-    }
-
-
-    renderVideos=(item)=>{
-        return(
-            <View style={styles.videoContainer}>
-            <TouchableOpacity onPress={()=>{
-                this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+item.videoLocation})}
-            }>
-                <Image source={{uri:item.videoThumb}} style={styles.videoImage}/>
-            </TouchableOpacity>
-            <View style={styles.videoColumn}>
-                <View>
-                    <Text style={styles.videoText}>{item.name}</Text>
-                </View>
-                <View>
-                    <Text style={styles.videoText}>{item.description}</Text>
-                </View>
-                <View>
-                    <Text style={styles.videoText}>{item.date}</Text>
-                </View>
-            </View>
-        </View>
-        )
-    }
-
-
-    renderDocument=(item)=>{
-        return(
-            <View style={styles.documentContainer}>
-                <TouchableOpacity onPress={()=>{
-                    this.props.navigation.navigate('pdfViewer',{pdf:serverBaseUrl+item.fileAddress})}}>
-                    <Image source={{uri:documentPlaceholder}} style={styles.documentImage}/>
-                </TouchableOpacity>
-                <View style={{flexShrink: 1}}>
-                    <View style={{ display: 'flex', flexDirection: 'row'}}>
-                        <Text style={styles.documentTitle}>{item.name}</Text>
-                    </View>
-                    {/* <View>
-                        <Text style={styles.documentText}>{this.state.institute.name}</Text>
-                    </View> */}
-                    <View>
-                        <Text style={styles.documentText}>{item.Views} {item.date}</Text>
-                    </View>
-                </View>
-            </View>
-        )
     }
 
     switchTabRender=(activeTab)=>{

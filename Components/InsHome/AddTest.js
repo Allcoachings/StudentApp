@@ -6,6 +6,7 @@ import CardView from '../Utils/CardView';
 import { Feather } from '@expo/vector-icons';
 import {connect} from 'react-redux'
 import {addTestSeries} from '../Utils/DataHelper/Course'
+import Toast from 'react-native-simple-toast';
 
 import { RadioButton } from 'react-native-paper';
 
@@ -50,9 +51,9 @@ class AddTest extends React.Component {
 
     onTypeHandler=(key,indx,text)=>
     {
-            let questionData = this.state.questionData;
-            questionData[indx][key]=text;
-            this.setState({questionData})
+        let questionData = this.state.questionData;
+        questionData[indx][key]=text;
+        this.setState({questionData})
     }
 
     renderOptions=(opt, placeholder,onChangeText)=>{
@@ -164,22 +165,39 @@ class AddTest extends React.Component {
          
         if(response.status==201)
         {
+            Toast.show('Test Series Added Successfully.');
             this.setState({addSeriesLoading:false})
             this.props.route.params.appendCourseTestSeries({title:this.state.title,questionCount:this.state.questionCount,timeDuration:this.state.timeDuration,isPractice:this.state.isPractice,courseId:this.props.route.params.courseId,maxMarks:this.state.maxMarks})
             this.props.navigation.goBack()
         }
+        else
+        {
+            Toast.show('Something Went Wrong. Please Try Again Later.');
+        }
     }
     handleSubmitBtn=()=>
     {
-        if(!this.state.addSeriesLoading)
-        {
-            this.setState({addSeriesLoading:true})
-            let series = {isAdmin:true,title:this.state.title,questionCount:this.state.questionCount,timeDuration:this.state.timeDuration,isPractice:this.state.isPractice,courseId:this.props.route.params.courseId,maxMarks:this.state.maxMarks}
-            addTestSeries(series,this.state.questionData,this.handleAddSeriesCallback)
-            console.log(series)
-        }
+        console.log("this.state.questionData",this.state.questionData)
+        console.log("this.state.questionCount",this.state.questionCount)
+        // if(this.verify(this.state))
+        // {
+        //     if(!this.state.addSeriesLoading)
+        //     {
+        //         this.setState({addSeriesLoading:true})
+        //         let series = {isAdmin:true,title:this.state.title,questionCount:this.state.questionCount,timeDuration:this.state.timeDuration,isPractice:this.state.isPractice,courseId:this.props.route.params.courseId,maxMarks:this.state.maxMarks}
+                
+        //         addTestSeries(series,this.state.questionData,this.handleAddSeriesCallback)
+        //         console.log(series)
+        //     }
+        // }
+        // else
+        // {
+        //     Toast.show('Please Fill All The Fields.');
+        // }
         
     }
+
+    verify=({title,questionCount,timeDuration,isPractice,maxMarks,questionData})=>title&&questionCount&&timeDuration&&isPractice&&maxMarks&&questionData
 
     render() {
         console.log(this.state.questionData)

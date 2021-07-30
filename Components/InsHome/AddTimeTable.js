@@ -4,6 +4,7 @@ import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {theme,screenMobileWidth} from '../config'
 import CardView from '../Utils/CardView'; 
 import {addCourseTimeTableSubject} from '../Utils/DataHelper/Course'
+import Toast from 'react-native-simple-toast';
 class AddTimeTable extends React.Component {
     state = {
         name: "",
@@ -13,13 +14,17 @@ class AddTimeTable extends React.Component {
     handleAddSubjectCallBack=(reponse) =>
     {
         this.setState({addSubjectLoading:false})    
-            if(reponse.status ===201)
-            {
-                console.log("created",reponse.headers.map.location)
-                this.props.route.params.appendSubject({name:this.state.name,courseId:this.props.route.params.courseId,id:reponse.headers.map.location,courseTimeTableItem:[]})
-                this.props.navigation.goBack()
-            }
-            
+        if(reponse.status ===201)
+        {
+            Toast.show('Time Table Added Successfully.');
+            console.log("created",reponse.headers.map.location)
+            this.props.route.params.appendSubject({name:this.state.name,courseId:this.props.route.params.courseId,id:reponse.headers.map.location,courseTimeTableItem:[]})
+            this.props.navigation.goBack()
+        }
+        else
+        {
+            Toast.show('Something Went Wrong. Please Try Again Later.');
+        }   
     }
     handleAddSubjectClick=() =>
     {
@@ -31,7 +36,7 @@ class AddTimeTable extends React.Component {
                 addCourseTimeTableSubject(this.state.name,this.props.route.params.courseId,this.handleAddSubjectCallBack)
             }else
             {
-                console.log("empty filds")
+                Toast.show('Please Fill All The Fields.');
             }
         }
         

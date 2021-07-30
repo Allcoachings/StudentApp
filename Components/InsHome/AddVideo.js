@@ -8,6 +8,8 @@ import {addCourseVideo,fetch_video_playlist} from '../Utils/DataHelper/Course'
 import { Picker } from 'native-base';
 import { Feather } from '@expo/vector-icons';
 import AddVideoPlaylist from './AddVideoPlaylist';
+import Toast from 'react-native-simple-toast';
+
 class AddVideo extends React.Component {
     state = {
         title: "",
@@ -31,26 +33,34 @@ class AddVideo extends React.Component {
     }
     handleAddVideoCallBack=(response)=>
     {
-            if(response.status==201)
-            {     
-                let details = response.headers.map.location.split("*");
-                this.props.route.params.appendVideo({id:details[0],videoLocation:serverBaseUrl+details[1],name:this.state.title,description:this.state.description,isDemo:false,courseId:this.props.route.params.courseId,videoThumb:videoDefaultThumbnail})
-            
-                this.props.navigation.goBack();
-            } 
-            this.setState({loadingAddVideo:false})
+        if(response.status==201)
+        {     
+            Toast.show('Video Added Successfully.');
+            let details = response.headers.map.location.split("*");
+            this.props.route.params.appendVideo({id:details[0],videoLocation:serverBaseUrl+details[1],name:this.state.title,description:this.state.description,isDemo:false,courseId:this.props.route.params.courseId,videoThumb:videoDefaultThumbnail})
+        
+            this.props.navigation.goBack();
+        } 
+        else{
+            Toast.show('Something Went Wrong. Please Try Again Later.');
+        }
+        this.setState({loadingAddVideo:false})
     }
     handleSubmitButtonClick=()=>
     {
-            if(this.verify(this.state))
+        if(this.verify(this.state))
+        {
+            if(!this.state.loadingAddVideo)
             {
-                if(!this.state.loadingAddVideo)
-                {
 
-                this.setState({loadingAddVideo:true});
-                addCourseVideo(this.state.video,this.state.title,this.state.description,false,'0',this.props.route.params.courseId,this.handleAddVideoCallBack,this.state.selectedPlaylist)
-                }
+            this.setState({loadingAddVideo:true});
+            addCourseVideo(this.state.video,this.state.title,this.state.description,false,'0',this.props.route.params.courseId,this.handleAddVideoCallBack,this.state.selectedPlaylist)
             }
+        }
+        else
+        {
+            Toast.show('Please Fill All The Fields.');
+        }
     }
 
     verify=({title,description,video})=>title&&description&&video.type=='success'
@@ -77,7 +87,7 @@ class AddVideo extends React.Component {
                 
         }else
         {
-            console.log("something went wrong")
+            Toast.show('Something Went Wrong.');
         }
         
     }

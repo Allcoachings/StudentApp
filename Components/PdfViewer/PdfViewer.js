@@ -1,16 +1,20 @@
+import { Text } from 'native-base'
 import * as React from 'react'
 import { View } from 'react-native'
 import PDFReader from 'rn-pdf-reader-js'
+import { theme } from '../config'
+import PDFRenderer from './PDFRenderer'
 
-export default class App extends React.Component {
+export default class PDFViewer extends React.Component {
   render() {
-      console.log(this.props.route.params)
+       
     return (
-      <PDFReader
-        source={{
-          uri: this.props.route.params.pdf,
-        }}
-      />
+      <>
+        <PDFRenderer pdf={this.props.route.params.pdf}/>
+         <View style={{flexDirection: 'row',position:'absolute',top:40,left:40,zIndex:1000,elevation:1000,opacity:0.4}}>
+                <Text style={{color:theme.featureNoColor}}>User Name  -- +911234567890</Text> 
+         </View>  
+       </>
     )
   }
 }

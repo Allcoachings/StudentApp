@@ -3,6 +3,8 @@ import { View, Text,StyleSheet,Modal,TouchableOpacity,TextInput,ScrollView } fro
 import CardView from '../Utils/CardView'
 import{theme} from '../config'
 import {addCourse} from '../Utils/DataHelper/Course'
+import Toast from 'react-native-simple-toast';
+
 class AddCourseModal extends Component {
    state={
        addCourseLoading:false,
@@ -11,14 +13,20 @@ class AddCourseModal extends Component {
 
 
   verfiyFields=({title,description,fees})=>title&&description&&fees
+
   handleAddCourseCallback=(response)=> 
   {
       console.log(response.status)
       if(response.status==201)
       {
-          this.setState({addCourseLoading:false})
-          this.props.appendCourses({id:response.headers.map.location,title:this.state.title,description:this.state.description,fees:this.state.fees,instId:this.props.instId})
-        this.props.closeModal()
+            Toast.show('Course Added Successfully.');
+            this.setState({addCourseLoading:false})
+            this.props.appendCourses({id:response.headers.map.location,title:this.state.title,description:this.state.description,fees:this.state.fees,instId:this.props.instId})
+            this.props.closeModal()
+      }
+      else
+      {
+        Toast.show('Something Went Wrong. Please Try Again Later.');
       }
   }
   handleSubMitBtnClick=()=>
@@ -31,7 +39,7 @@ class AddCourseModal extends Component {
                 addCourse(title, description,fees,this.props.instId,this.handleAddCourseCallback);
           }else
           {
-              this.setState({error:"Please Fill All Fields"});
+              Toast.show('Please Fill All The Fields.');
           }
       }
   }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform,Dimensions,ActivityIndicator} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,TouchableWithoutFeedback,FlatList, Image,Platform,Dimensions,ActivityIndicator} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {storyLine,homeFeaturesData} from '../../FakeDataService/FakeData'
 import { theme ,serverBaseUrl,dataLimit} from '../config';
@@ -60,9 +60,9 @@ class Home extends React.Component {
                     <View style={styles.rowContainer}>
                         <View style={styles.rowHeader}>
                             <Text style={styles.rowHeaderTitle}>{item.title}</Text>
-                            <TouchableOpacity onPress={()=>this.props.navigation.navigate("CategoryList", {type: item.title,id:item.id})}>
+                            <TouchableWithoutFeedback onPress={()=>this.props.navigation.navigate("CategoryList", {type: item.title,id:item.id})}>
                                 <Feather name="arrow-right" size={25} color={theme.secondaryColor}/>
-                            </TouchableOpacity>
+                            </TouchableWithoutFeedback>
                         </View>
                         <View style={styles.rowBody}>
                             <FlatList 
@@ -95,7 +95,8 @@ class Home extends React.Component {
  
     renderInstituteList=({item})=>{
         return (
-            <TouchableOpacity style={styles.instituteItemContainer} onPress={()=>this.redirectTo(item)}>
+            <TouchableWithoutFeedback onPress={()=>this.redirectTo(item)}>
+                <View style={styles.instituteItemContainer}>
                 <View style={styles.instituteItemImageView}>
                     {CardView(
                         <Image source={{uri:serverBaseUrl+item.logo}} style={styles.instituteItemImage}/> 
@@ -121,16 +122,19 @@ class Home extends React.Component {
                         />
                     </View>
                 </View>
-            </TouchableOpacity>
+                </View>
+            </TouchableWithoutFeedback>
         )
     }
     renderBannerList=({item})=>
     {
         
         return(
-            <TouchableOpacity style={styles.bannerItemContainer} onPress={()=>this.props.navigation.navigate('webview',{link:item.bannerLink,mode:'defaultAppHeader'})}>
+            <TouchableWithoutFeedback onPress={()=>this.props.navigation.navigate('webview',{link:item.bannerLink,mode:'defaultAppHeader'})}>
+                <View style={styles.bannerItemContainer} >
                     <Image source={{uri:serverBaseUrl+item.bannerImageLink}} style={styles.bannerImage}/>
-            </TouchableOpacity  >
+                    </View>
+            </TouchableWithoutFeedback  >
         )
     }
 
@@ -269,7 +273,8 @@ const styles = StyleSheet.create({
                             {
                                 flexWrap:'wrap',
                                 width:'100%', 
-                                fontSize:12
+                                fontSize:12,
+                                height:30
                             },
                             instituteRating:
                             {
