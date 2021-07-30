@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,StyleSheet,View,TouchableOpacity,ScrollView,Platform,Image,Dimensions} from 'react-native';
+import { Text,StyleSheet,View,TouchableOpacity,ScrollView,Platform,Image,Dimensions,TouchableWithoutFeedback} from 'react-native';
 import {connect} from 'react-redux'
 import {screenMobileWidth} from '../config'
 import AuthHeader from './AuthHeader';
@@ -13,7 +13,6 @@ import OtpVerification from './OtpVerification';
 import SocialAuth from './SocialAuth';
 // import Onboarding from 'react-native-onboarding-swiper';
 import Splash from  './Splash';
-
 import { LinearGradient } from 'expo-linear-gradient';
 
 const width = Dimensions.get('window').width
@@ -70,18 +69,18 @@ class Auth extends React.Component {
     render() { 
         return (
             
-            <ScrollView >
+            // <ScrollView >
             <>
                     <View style={styles.container}> 
                         <View style={[styles.authContainer,{flex:this.props.screenWidth<=screenMobileWidth?1:0.5}]}>
                             
-                            <LinearGradient
+                            {/* <LinearGradient
                                 // Button Linear Gradient
                                 colors={[theme.primaryColor, '#AFeeee']}
-                                style={styles.button}>
-                                <View>
+                                style={styles.button}> */}
+                                {/* <View>
                                     <AuthHeader/>
-                                </View>
+                                </View> */}
                                 {/* <View style={styles.authSection}>
                                     <View style={styles.authModes}> 
                                             {this.authModeButton("Login",0)}
@@ -97,10 +96,20 @@ class Auth extends React.Component {
                                     <Splash />
                                 </View>
                                 
-                                <View style={{marginTop:-(height*0.38),marginBottom:10,}}>
+
+                                {/* <View style={{marginTop:-(height*0.38),marginBottom:10,}}>
                                     <Card phoneNumberEntered={this.phoneNumberEntered} openModal={this.openModalOTP}/>
+                                </View> */}
+
+                                <View style={{position: 'absolute',bottom:25,width:width-10,margin:10,alignSelf: 'center'}}>
+                                    <TouchableWithoutFeedback onPress={this.openInfoModal}>
+                                        <View style={{backgroundColor:theme.accentColor,padding:15,borderRadius:10,alignItems: 'center'}}>
+                                            <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>Get started</Text>
+                                        </View>
+                                    </TouchableWithoutFeedback>
+
                                 </View>
-                            </LinearGradient>
+                            {/* </LinearGradient> */}
         
                         </View>
                     {this.props.screenWidth<=screenMobileWidth?(null):(
@@ -112,7 +121,7 @@ class Auth extends React.Component {
                     <OtpVerification mobile={this.state.mobile} isOtpModal = {this.state.isOtpModal} navigation={this.props.navigation} closeModal = {this.closeModalOTP} openInfoModal={this.openInfoModal}/>
                     <InfoModal isModalVisible={this.state.isModalVisible} mobileNumber={this.state.mobile} navigation={this.props.navigation}/>
                     </>
-            </ScrollView>
+            // </ScrollView>
         );
     }
 }
@@ -120,14 +129,12 @@ class Auth extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex:1,
-        flexDirection: 'row',
-        backgroundColor:'#ffe6ff',
+        flexDirection: 'row', 
         // paddingTop:-10
     },
         authContainer:
         {   
-            flexDirection:'column',
-            backgroundColor: '#ffe6ff'
+            flexDirection:'column', 
         },
         authSection:
         {

@@ -3,11 +3,12 @@ import { Text,StyleSheet,View,TouchableOpacity,ScrollView,Platform,Image,Dimensi
 import { theme } from '../config';
 
 const height = Dimensions.get('screen').height
+
+const { width } = Dimensions.get('window');
 const Splash = () => {
   const [sliderState, setSliderState] = useState({ currentPage: 0 });
-  const { width, height } = Dimensions.get('window');
 
-  // const setSliderPage = (event: any) => {
+  // const setSliderPage = (event) => {
   //   const { currentPage } = sliderState;
   //   const { x } = event.nativeEvent.contentOffset;
   //   const indexOfNextScreen = Math.floor(x / width);
@@ -22,9 +23,9 @@ const Splash = () => {
   const { currentPage: pageIndex } = sliderState;
 
   return (
-    < View style={{height:height*0.975}}>
+    < View style={{height:height}}>
       {/* <StatusBar barStyle="dark-content" /> */}
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 ,height: height}}>
         <ScrollView
           style={{ flex: 1 ,}}
           horizontal={true}
@@ -37,58 +38,58 @@ const Splash = () => {
           // }}
         >
           <View style={{ width, height }}>
-            <Image source={require('../../assets/hired.png')} style={styles.imageStyle} />
-            <View style={styles.wrapper}>
+            <Image source={{uri:'https://www.membroz.com/wp-content/uploads/2020/04/08_Intro.jpg'}} style={styles.imageStyle}/>
+            {/* <View style={styles.wrapper}>
               <Text style={styles.header}>Daily interactive live classes</Text>
               <Text style={styles.paragraph}>chat with your educator,ask your doubts and participate in polls</Text>
-            </View>
+            </View> */}
           </View>
           <View style={{ width, height }}>
             <Image
-              source={require('../../assets/hired.png')}
+              source={{uri:'https://www.membroz.com/wp-content/uploads/2020/04/08_Intro.jpg'}}
               style={styles.imageStyle}
             />
-            <View style={styles.wrapper}>
+            {/* <View style={styles.wrapper}>
               <Text style={styles.header}>High quality Art work</Text>
               <Text style={styles.paragraph}>... for a fraction of the price</Text>
-            </View>
+            </View> */}
           </View>
           <View style={{ width, height }}>
             <Image
-              source={require('../../assets/hired.png')}
+              source={{uri:'https://www.membroz.com/wp-content/uploads/2020/04/08_Intro.jpg'}}
               style={styles.imageStyle}
             />
-            <View style={styles.wrapper}>
+            {/* <View style={styles.wrapper}>
               <Text style={styles.header}>Daily interactive live classes</Text>
               <Text style={styles.paragraph}>chat with your educator,ask your doubts and participate in polls</Text>
-            </View>
+            </View> */}
           </View>
           <View style={{ width, height }}>
             <Image
-              source={require('../../assets/hired.png')}
+              source={{uri:'https://www.membroz.com/wp-content/uploads/2020/04/08_Intro.jpg'}}
               style={styles.imageStyle}
             />
-            <View style={styles.wrapper}>
+            {/* <View style={styles.wrapper}>
               <Text style={styles.header}>Best deal on the market</Text>
               <Text style={styles.paragraph}>... let's find your next art</Text>
-            </View>
+            </View> */}
           </View>
           <View style={{ width, height }}>
             <Image
-              source={require('../../assets/hired.png')}
+              source={{uri:'https://www.membroz.com/wp-content/uploads/2020/04/08_Intro.jpg'}}
               style={styles.imageStyle}
             />
-            <View style={styles.wrapper}>
+            {/* <View style={styles.wrapper}>
               <Text style={styles.header}>It's all about art</Text>
               <Text style={styles.paragraph}>... seriously, it is</Text>
-            </View>
+            </View> */}
           </View>
         </ScrollView>
-        <View style={styles.paginationWrapper}>
+        {/* <View style={styles.paginationWrapper}>
           {Array.from(Array(5).keys()).map((key, index) => (
             <View style={[styles.paginationDots, { opacity: pageIndex === index ? 1 : 0.2 }]} key={index} />
           ))}
-        </View>
+        </View> */}
       </SafeAreaView>
     </View>
   );
@@ -96,13 +97,15 @@ const Splash = () => {
 
 const styles = StyleSheet.create({
   imageStyle: {
-    height: PixelRatio.getPixelSizeForLayoutSize(10),
-    width: '80%',
+    height:height,
+    width: width,
     backgroundColor: theme.transparent,
-    flex: 0.35,
-    marginLeft:20,
+    // flex: 0.35,
+    // marginLeft:20,
     flexDirection:'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    resizeMode:'cover',
+
   },
   wrapper: {
     justifyContent: 'center',

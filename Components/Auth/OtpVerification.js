@@ -1,6 +1,6 @@
-import React, { Component ,useState} from 'react';
+import React, { Component ,useState,useRef} from 'react';
 import { Feather } from '@expo/vector-icons';
-import { View, Text,StyleSheet,ScrollView,TouchableOpacity,Dimensions,Image, Modal, TextInput, ImageBackground,ToastAndroid } from 'react-native';
+import { View, Text,StyleSheet,ScrollView,TouchableOpacity,Dimensions,Image,TouchableWithoutFeedback, Modal, TextInput, ImageBackground,ToastAndroid } from 'react-native';
 import CardView from '../Utils/CardView';
 import AuthHeader from './AuthHeader';
 import {theme, Assets} from '../config'
@@ -13,14 +13,19 @@ import OtpInputs from '../OtpInputs';
 import { generateOtp,validateOtp } from '../Utils/DataHelper/Otp';
 import { findStudentByMobile } from '../Utils/DataHelper/EnrollStudent';
 import {setUserInfo,userAuthStatus} from '../Actions'    
+
+import PhoneInput from "react-native-phone-number-input";
 // import { Toast } from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 var rate ; 
+
+const phoneInput = useRef<PhoneInput>(null);
 class OtpVerification extends React.Component {  
     state = {
-        phoneNumber : this.props.mobile
+        phoneNumber : this.props.mobile,
+        mode:'mobile'
     }
     getOtp=(otp) =>{
         console.log(otp);
@@ -92,37 +97,85 @@ class OtpVerification extends React.Component {
             validateOtp(this.state.otp,this.state.phoneNumber,this.otpVerificationCallback)
         }
     }
-    render() {
-        return(
-            <Modal
-            animationType="slide"
-            transparent={true}  
-            // style={{height:500,width:5001}}
-            visible={this.props.isOtpModal}
-            >
-                <View>
-                {CardView(
+
+
+
+
+
+    sendOtp=()=>
+    {
+            this.setState({mode:"mobile"});
+    }
+    renderContent=()=>
+    {
+        switch(this.state.mode)
+        {
+            case 'mobile':
+                return(
                     <View style={styles.container}>
-                        
-                            <View style={styles.header}>
-                                <AuthHeader/>                        
+                        <View style={{margin:10,marginLeft:20,width:'100%',}}>
+                            <Text style={{fontFamily:'Raleway_700Bold',color:theme.secondaryColor,fontSize:20,marginBottom:5}}>Your mobile number</Text>
+                            <Text style={{fontFamily:'Raleway_400Regular',color:theme.greyColor,marginBottom:8}}>We'll send on OTP for Verification</Text>
+                        </View> 
+                        <View style={{marginLeft:'auto' }}>
+                            <PhoneInput
+                                ref={phoneInput}
+                                // defaultValue={value}
+                                defaultCode="DM"
+                                layout="first"
+                                containerStyle={{
+                                    borderColor:theme.secondaryColor,
+                                    borderWidth:1,
+                                    borderRadius:10,
+                                    padding:5,
+                                    width:width-20, 
+                                    margin:10
+                                }}
+                                textInputStyle={{
+                                    fontFamily:'Raleway_600SemiBold'
+                                }}
+                                maxLength={10}
+                                onChangeText={(text) => {
+                                    this.checkNumber(text)
+                                }}
+                                onChangeFormattedText={(text) => {
+                                    // this.checkNumber(text)   
+                                }}
+                                withDarkTheme
+                                defaultCode='IN'
+                                withShadow 
+                                // autoFocus
+                                 
+                                />
+                        </View>
+                        <View style={{alignItems: 'center',width: width,marginTop:'auto',marginBottom:15}}>
+                            <View style={{margin:20}}>
+                                <Text style={{fontFamily:'Raleway_600SemiBold',fontSize:12,color:theme.greyColor}}>Login as Institute</Text> 
                             </View>
-                        <View >
-                            <View style={{marginTop:20,marginLeft:20,marginRight:-10}}>
-                                <Text style={{fontSize:25,marginBottom:10}}>Enter OTP</Text>
-                                <Text style={{fontSize:16}}>
-                                    Verification OTP sent to {this.state.phoneNumber} 
-                                    <TouchableOpacity onPress={this.props.closeModal}>
-                                            <Text style={[styles.email,{marginBottom:-2}]}>Edit</Text>
-                                    </TouchableOpacity>
-                                </Text>
+                            <TouchableWithoutFeedback onPress={this.sendOtp}>
+                                <View style={{backgroundColor:theme.greyColor,padding:15,borderRadius:10,alignItems: 'center',width:'95%'}}>
+                                    <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>Continue</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </View>
+                    </View>
+                )
+            case 'otp':
+                return (
+                    <View >
+
+                            <Text style={{fontSize:25,marginBottom:10,fontFamily:'Raleway_600SemiBold',marginLeft:10}}>Verify OTP</Text>
+                            <View style={{marginLeft:10,flexDirection: 'row',}}>
+                                
+                                <Text style={{fontSize:13,color:theme.greyColor,fontFamily:'Raleway_600SemiBold'}}>
+                                    We have sent it on {this.state.phoneNumber}</Text> 
                             </View>
                             {/* <View style={{marginTop:15,marginLeft:20}}>
                                 <TextInput style={styles.queDesc} onChangeText={(text)=>this.setState({Otp: text})}  placeholder="Enter OTP" placeholderTextColor={theme.labelOrInactiveColor}/>
                             </View> */}
-                            {/* <View style={{marginTop:15,marginBottom:20,marginLeft:width*0.15,borderWidth:2,borderColor:theme.accentColor,borderRadius:5}}> */}
+                            {/* <View style={{marginTop:15,marginBottom:20,marginLeft:width*0.15,borderWidth:2,borderColor:theme.greyColor,borderRadius:5}}> */}
                                 <OTPInputView
-                                    style={{width: '100%', height: 80}}
+                                    style={{width: '100%', height: 80,borderRadius:10}}
                                     pinCount={6}
                                     code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
                                     onCodeChanged = {code => { this.setState({code})}}
@@ -133,32 +186,57 @@ class OtpVerification extends React.Component {
                                 />
                             {/* </View> */}
                              {/* <OtpInputs getOtp={(otp) => this.getOtp(otp)} /> */}
-                            <View style={{flexDirection:'row',justifyContent:'center',marginTop:20,marginLeft:'30%',}}>
+                            <View style={{flexDirection:'row',marginTop:20,marginLeft:10,color:theme.greyColor,fontFamily:'Raleway_600SemiBold'}}>
                                 <View>
                                     <Text>
-                                        Resend In 56s
+                                      Resend Otp in 59s
                                     </Text>  
                                 </View>
-                                <View>
+                                {/* <View>
                                     <TouchableOpacity onPress={()=>this.handleResendBtnClick()}>
                                         <Text style={[styles.email]}>Resend</Text>
                                     </TouchableOpacity>
-                                </View>
+                                </View> */}
                                 
                             </View>
-                            <View style={{flexDirection:'row',justifyContent:'center',marginLeft:width*0.25,marginTop:height*0.35,marginBottom:20}}>
-                                <TouchableOpacity  style={styles.authModeBtn} onPress={this.handleContinueBtnClick}>
-                                    <Feather name="arrow-right" size={20} color={theme.primaryColor} style={{marginTop:Platform.OS=='web'?5:0}}/> 
-                                </TouchableOpacity>
+
+
+                            <View style={{flexDirection:'row',justifyContent:'center',marginTop:height*0.5,width:width*0.9,alignItems: 'center'}}>
+                                <Text style={{fontFamily:'Raleway_600SemiBold'}}>Having Trouble? <Text style={[styles.email]}>Reach Us at www.example.com</Text></Text>
+                            </View>
+                            <View style={{flexDirection:'row',justifyContent:'center',marginTop:20,marginBottom:20,alignItems: 'center',width:width,borderTopWidth:1,borderTopColor:theme.labelOrInactiveColor,paddingTop:10}}> 
+                                <TouchableWithoutFeedback onPress={this.handleContinueBtnClick}>
+                                    <View style={{backgroundColor:theme.greyColor,padding:15,borderRadius:10,alignItems: 'center',width:'95%'}}>
+                                        <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>Continue</Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                            </View>
                             
-                            </View>
-                            <View style={{flexDirection:'row',justifyContent:'center',width:width*0.9}}>
-                                <Text>Having Trouble? <Text style={[styles.email]}>Reach Us at www.example.com</Text></Text>
-                            </View>
+                            
                         </View>
                             
                         
-                    </View>,{width: width, height: height, marginLeft: 'auto', marginRight:'auto', borderRadius: 20, marginTop:height*0.05}
+                )
+        }
+    }
+    render() {
+        return(
+            <Modal
+            animationType="fade"
+            transparent={true}  
+            // style={{height:500,width:5001}}
+            visible={this.props.isOtpModal}
+            >
+                <View>
+                {CardView(
+                    <View style={styles.container}>
+                        
+                                <View style={styles.header}>
+                                    {/* <AuthHeader/>                         */}
+                                    <Feather name="chevron-left" size={20} color={theme.greyColor}/>
+                                </View>
+                            {this.renderContent()}
+                    </View>,{width: width, height: height, }
                 )}
                 </View>
             </Modal>
@@ -179,17 +257,18 @@ const styles = StyleSheet.create({
         header:
         {
             flexDirection: 'row',
-            width: width*0.65,
+            width: width,
             height: height*0.05,
-            alignItems: 'center',
-            marginLeft:width*0.1,
+            alignItems: 'center', 
+            margin:10,
             justifyContent: 'space-between',
         },
         email:{
-            color:theme.accentColor,
+            color:theme.greyColor,
             textDecorationLine: 'underline',
             textDecorationStyle: 'solid',
             marginLeft:5,
+            fontFamily:'Raleway_400Regular'
         },
         queDesc:
             {
@@ -205,7 +284,7 @@ const styles = StyleSheet.create({
           },
          
           borderStyleHighLighted: {
-            borderColor: theme.accentColor,
+            borderColor: theme.greyColor,
           },
          
           underlineStyleBase: {     
@@ -216,15 +295,16 @@ const styles = StyleSheet.create({
             // borderWidth: 0,
             // color:'black',
             // borderBottomWidth: 1,
-            margin:5
+            margin:5,
+            borderRadius:10
           },
          
           underlineStyleHighLighted: {
-            borderColor: theme.accentColor,
+            borderColor: theme.greyColor,
           },
           authModeBtn :
           {
-              backgroundColor:theme.accentColor,
+              backgroundColor:theme.greyColor,
               padding:"5%",
               marginTop:'3%', 
               width:width*0.15,

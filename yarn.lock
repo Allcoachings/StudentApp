@@ -1219,6 +1219,11 @@
   dependencies:
     "@types/hammerjs" "^2.0.36"
 
+"@expo-google-fonts/raleway@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/raleway/-/raleway-0.2.0.tgz#28d2664943e6019f27653f02e9ee86afb64d4b04"
+  integrity sha512-5b6MABfcPcKSxtVGBM7pQBIU6hbxVuuGMrZgV6V2HWUENmUjSYHJszrorbkRaC6qkV6K2DWtGFksh4iEskeXIw==
+
 "@expo/config-plugins@1.0.31", "@expo/config-plugins@^1.0.18":
   version "1.0.31"
   resolved "https://registry.yarnpkg.com/@expo/config-plugins/-/config-plugins-1.0.31.tgz#c6e24cee0892ea2fb4f7633a80ae63cbc8cb80de"

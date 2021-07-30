@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View,StyleSheet, TextInput, TouchableOpacity, Image, ScrollView, CheckBox,ActivityIndicator} from 'react-native';
+import {Text, View,StyleSheet, TextInput, TouchableOpacity, Image, ScrollView, CheckBox,ActivityIndicator,Dimensions} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {theme,screenMobileWidth} from '../config'
 import CardView from '../Utils/CardView';
@@ -9,10 +9,11 @@ import {fetch_categories} from '../Utils/DataHelper/Categories'
 import {registerCoaching} from '../Utils/DataHelper/Coaching'
 import { Picker } from 'native-base';
 import * as DocumentPicker from 'expo-document-picker';
-
+import {Feather} from '@expo/vector-icons';
 import {setInstituteDetails,setInstituteAuth} from '../Actions'
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+const width = Dimensions.get('window').width
 class InsRegister extends React.Component {
     state = {
         insName: '',
@@ -36,11 +37,14 @@ class InsRegister extends React.Component {
 
     renderTextInput=(icon, placeholder,onPress)=>{
         return(
-            CardView(
+            // CardView(
                 // <View style={{flex: 1, flexDirection: 'row'}}>
-                    <TextInput style={styles.inputField} placeholder={placeholder} onChangeText={(text)=>onPress(text)} />
-               ,{marginTop: 10, padding: 12}
-            )
+                    <>
+                        <Text style={{fontFamily:'Raleway_600SemiBold',alignSelf: 'flex-start',marginLeft:10}}>{placeholder}</Text>
+                        <TextInput style={styles.inputField} placeholder={"Enter "+placeholder} onChangeText={(text)=>onPress(text)} />
+                    </>
+            //    ,{marginTop: 10, padding: 12}
+            // )
         )
     }
 
@@ -143,17 +147,22 @@ class InsRegister extends React.Component {
     render() {
         // fetch_categories((response)=>{console.log(response)})
         return(
-            <PageStructure
-                iconName={"menu"}
-                btnHandler={() => {this.props.navigation.toggleDrawer()}}
-            >
+            // <PageStructure
+            //     iconName={"menu"}
+            //     btnHandler={() => {this.props.navigation.toggleDrawer()}}
+            // >
                 <ScrollView>
                     <View style={styles.container}>
+                        <View style={styles.header}>
+                            {/* <AuthHeader/>                         */}
+                            <Feather name="chevron-left" size={20} color={theme.greyColor}/>
+                        </View>
                         <View style={styles.headView}>
-                            <Text style={styles.headText}>Welcome Back</Text>
+                            <Text style={styles.headText}>Submit Your Institute Details</Text>
                         </View>
                         <TouchableOpacity style={styles.imageView} onPress={this.handleImageBtnClick}>
                             <Image source={{uri: this.state.logo?this.state.logo.uri:'https://picsum.photos/200/300'}} style={styles.imageStyle}/>
+                            <Text style={{fontFamily:'Raleway_600SemiBold',alignSelf: 'center'}}>{"Choose Logo"}</Text>
                         </TouchableOpacity>
                         <View style={styles.inputView}>
                             {this.renderTextInput('', 'Institute Name',(insName)=>{this.setState({insName})})}
@@ -168,7 +177,14 @@ class InsRegister extends React.Component {
                             {this.renderTextInput('', 'E-mail ID',(email)=>{this.setState({email})})}
                         </View>
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'New Password',(pass)=>{this.setState({pass})})}
+                            {this.renderTextInput('', 'Password',(pass)=>{this.setState({pass})})}
+                        </View>
+                        <View style={styles.inputView}>
+                            {this.renderTextInput('', 'ConfirmPassword',(pass)=>{this.setState({pass})})}
+                        </View>
+                        
+                        <View style={styles.inputView}>
+                            {this.renderTextInput('', 'About this Institute',(about)=>{this.setState({about})})}
                         </View>
                         <View style={styles.inputView}>
                             {this.renderTextInput('', 'Institute Address',(addr)=>{this.setState({addr})})}
@@ -180,17 +196,14 @@ class InsRegister extends React.Component {
                             {this.renderTextInput('', 'State',(state)=>{this.setState({state})})}
                         </View>
                         
-                        <View style={styles.inputView}>
-                            {this.renderTextInput('', 'About this Coaching',(about)=>{this.setState({about})})}
-                        </View>
                         
                         {!this.state.loadingCategory?(
                             
-                            CardView(
+                            // CardView(
                                 <View style={styles.dropdownView}>
                                     <Picker
 
-                                        style={{height:30}}
+                                        style={[styles.inputField,{height:30}]}
                                         selectedValue={this.state.selectedCategory}
                                         onValueChange={(itemValue, itemIndex) =>
                                             this.setSelectedCategory(itemValue)
@@ -213,7 +226,8 @@ class InsRegister extends React.Component {
                                             elevation:100
                                         }}
                                     /> */}
-                                </View> ,{marginTop: 10, padding: 12})
+                                </View> 
+                                // ,{marginTop: 10, padding: 12})
                         ):(null)}
                         
 
@@ -240,7 +254,7 @@ class InsRegister extends React.Component {
                         </View>
                     </View>
                 </ScrollView>
-           </PageStructure>
+        //    </PageStructure>
         )}
     }
 
@@ -250,25 +264,32 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         // justifyContent: 'center',
-        alignItems: 'center'
+        // alignItems: 'center'
     },
+        header:
+        {
+            margin:10
+        },
         headView:
         {
             display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
+            flexDirection: 'row', 
+            alignItems: 'flex-start'
     
         },
             headText:
             {
-                marginTop:10,
-                fontSize: 28,
-                fontWeight: 'bold',
+                margin:10,
+                fontSize: 20,
+                
+                // fontWeight: 'bold',
+                fontFamily:'Raleway_600SemiBold',
                 color: theme.secondaryColor
             },
         imageView:
         {
-            marginTop: 10
+            marginTop: 10,
+            alignItems: 'center'
         },
             imageStyle:
             {
@@ -278,11 +299,18 @@ const styles = StyleSheet.create({
             },
         inputView:
         {
-            marginTop: 10
+            marginTop: 10,
+            alignItems: 'center', 
         },
             inputField:
             {
-                fontSize: 18
+                width: width-20,
+                borderRadius: 10,
+                padding: 10,
+                margin:10,
+                borderWidth: 1,
+                fontFamily: 'Raleway_600SemiBold',
+                borderColor:theme.labelOrInactiveColor, 
             },
         checkboxContainer: 
         {

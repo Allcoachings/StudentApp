@@ -26,8 +26,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        margin:10,
-        marginTop:"5%"
+        margin:20, 
     },
         headerBranding:
         {
@@ -36,9 +35,13 @@ const styles = StyleSheet.create({
             justifyContent: 'center',
             alignItems: 'center',
             height:70,
+            alignSelf: 'center',
+            width:'100%',
+            marginLeft:'auto',
         },
             brandingImage: 
             {
+               
                 width:150,
                 height:50
             },

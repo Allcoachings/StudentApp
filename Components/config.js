@@ -7,7 +7,7 @@ export const theme={
     primaryColor: "#fff",
     secondaryColor: "#000",
     appBackgroundColor:"#fff",
-    accentColor:"#228b22",
+    accentColor:"#13b989",
     labelOrInactiveColor:'#D3D3D3',
     greyColor:'grey',
     addMoreButtonColor: '#00CED1',

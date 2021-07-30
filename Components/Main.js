@@ -11,6 +11,10 @@ import {screenWidthConfigChange,setInstituteAuth,userAuthStatus,setUserInfo,setI
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('screen').height; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Font from 'expo-font';
+
+import { StatusBar } from 'expo-status-bar';
+import {useFonts,Raleway_400Regular,Raleway_600SemiBold,Raleway_700Bold} from '@expo-google-fonts/raleway';
 class Main extends React.Component {
     state = {
         width:windowWidth,
@@ -21,7 +25,15 @@ class Main extends React.Component {
 
     componentDidMount()
     {
-        
+
+        // StatusBar.setStatusBarBackgroundColor(theme.greyColor,true)
+
+        Font.loadAsync({ 
+            Raleway_400Regular,
+            Raleway_600SemiBold,
+            Raleway_700Bold
+        })
+        // AsyncStorage.clear()
         AsyncStorage.getItem('authInfo').then(data => {
             if(data)
             {
@@ -41,6 +53,8 @@ class Main extends React.Component {
             }
             console.log("nodata")
         }) 
+
+      
         this.props.screenWidthConfigChange(windowWidth)
         Dimensions.addEventListener('change',({ window, screen })=>{
             this.setState({width: window.width, height:screen.height})
@@ -123,7 +137,7 @@ class Main extends React.Component {
 const styles = StyleSheet.create({
     safeAreaView:
     {
-        paddingTop:Platform.OS=='android'?25:0
+        paddingTop:Platform.OS=='android'?35:0
     },
         container: 
         {
