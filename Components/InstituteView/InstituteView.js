@@ -24,6 +24,11 @@ import {tabListInstitute} from '../../FakeDataService/FakeData'
 import {addLead} from '../Utils/DataHelper/Leads'
 import ImageZoomModal from './ImageZoomModal';
 import { checkSubscription, subscribe, unsubscribe }  from '../Utils/DataHelper/Subscription'
+import EmptyList from '../Utils/EmptyList'
+import RenderSingleTestSeries from '../SeriesList/RenderSingleTestSeries'
+import RenderLiveClass from './RenderLiveClass'
+import RenderDocument from './RenderDocument'
+import RenderVideo from './RenderVideo'
 
 import {fetch_institute_feed} from '../Utils/DataHelper/Feed'
 class InstituteView extends React.Component {
@@ -303,30 +308,6 @@ class InstituteView extends React.Component {
         )
     }
 
-    renderVideos=({item})=>{
-        return(
-            <View style={styles.videoContainer}>
-            <TouchableOpacity onPress={()=>{
-                this.addToHistory("video", item.id)
-                this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+item.videoLocation})}
-            }>
-                <Image source={{uri:item.videoThumb}} style={styles.videoImage}/>
-            </TouchableOpacity>
-            <View style={styles.videoColumn}>
-                <View>
-                    <Text style={styles.videoText}>{item.name}</Text>
-                </View>
-                <View>
-                    <Text style={styles.videoText}>{item.description}</Text>
-                </View>
-                <View>
-                    <Text style={styles.videoText}>{item.date}</Text>
-                </View>
-            </View>
-        </View>
-        )
-    }
-
     renderItem=(item)=>{
         return(
            
@@ -398,77 +379,12 @@ class InstituteView extends React.Component {
                         keyExtractor={(item)=>item.id}
                         horizontal={false}
                         showsHorizontalScrollIndicator={false}
+                        ListEmptyComponent={<EmptyList />}
                     />
                 </View>
             // </Accordian>
 
 
-        )
-    }
-
-    renderTestSeries=({item})=>{
-        return( 
-            CardView(
-                <View style={styles.list}>
-                    <View style={styles.topRow}>
-                        <Text style={styles.queText}>{item.questionCount} Questions</Text>
-                        <Text style={styles.timeText}>{item.timeDuration} minutes</Text>
-                    </View>
-                    <View style={styles.bottomRow}>
-                        <Text style={styles.titleText}>{item.title}</Text>
-                        <TouchableOpacity style={styles.btnView} onPress={()=>{
-                            this.addToHistory("testSeries", item.id)
-                            this.props.navigation.navigate("SingleTestSeries",{item:item})}}>
-                            <Feather name="play" size={12} style={{color: theme.primaryColor, marginRight: 3}}/>
-                            <Text style={styles.btnText}>Start</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>,{margin: 10, borderWidth: 1, borderRadius: 10, borderColor: theme.labelOrInactiveColor}
-            )
-        )
-    }
-
-    renderDocument=({item})=>{
-        return(
-            <View style={styles.documentContainer}>
-                <TouchableOpacity onPress={()=>{
-                    this.addToHistory("document", item.id)
-                    this.props.navigation.navigate('pdfViewer',{pdf:serverBaseUrl+item.fileAddress})}}>
-                    <Image source={{uri:documentPlaceholder}} style={styles.documentImage}/>
-                </TouchableOpacity>
-                <View style={{flexShrink: 1, justifyContent: 'center', alignItems: 'center'}}>
-                    <View style={{ display: 'flex', flexDirection: 'row'}}>
-                        <Text style={styles.documentTitle}>{item.name}</Text>
-                    </View>
-                    {/* <View>
-                        <Text style={styles.documentText}>{this.state.institute.name}</Text>
-                    </View> */}
-                    {/* <View>
-                        <Text style={styles.documentText}>{item.Views} {item.date}</Text>
-                    </View> */}
-                </View>
-            </View>
-        )
-    }
-
-    renderLiveClass=({item})=>{
-        return(
-            <View style={styles.classContainer}>
-                <View>
-                    <Image source={item.image} style={styles.classImage}/>
-                </View>
-                <View style={{flexShrink: 1}}>
-                    <View style={{flexDirection: 'row'}}>
-                        <Text style={styles.classTitle}>{item.title}</Text>
-                    </View>
-                    <View>
-                        <Text style={styles.classText}>{item.institute}</Text>
-                    </View>
-                    <View>
-                        <Text style={styles.classText}>{item.Views} {item.date}</Text>
-                    </View>
-                </View>
-            </View>
         )
     }
 
@@ -498,7 +414,7 @@ class InstituteView extends React.Component {
             case 'liveClass':   return(
                                     <FlatList 
                                         data={instituteData.liveClassFilters} 
-                                        renderItem={this.renderSubjectOptions}
+                                        renderItem={(this.renderSubjectOptions)}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={true}
                                         showsHorizontalScrollIndicator={false}
@@ -580,34 +496,38 @@ class InstituteView extends React.Component {
             case 'liveClass':   return(
                                     <FlatList 
                                         data={instituteData.liveClasses} 
-                                        renderItem={this.renderLiveClass}
+                                        renderItem={({item})=><RenderLiveClass item={item} navigation={this.props.navigation}/>}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
+                                        ListEmptyComponent={<EmptyList />}
                                     />)
             case 'videos':      return(
                                     <FlatList 
                                         data={this.state.courseVideos} 
-                                        renderItem={this.renderVideos}
+                                        renderItem={({item})=><RenderVideo item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="institute"/>}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
+                                        ListEmptyComponent={<EmptyList />}
                                     />)
             case 'testSeries':  return(
                                     <FlatList 
                                         data={this.state.courseTestSeries} 
-                                        renderItem={this.renderTestSeries}
+                                        renderItem={({item})=><RenderSingleTestSeries item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="institute"/>}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
+                                        ListEmptyComponent={<EmptyList />}
                                     />)
             case 'document':    return(
                                     <FlatList 
                                         data={this.state.courseDocuments} 
-                                        renderItem={this.renderDocument}
+                                        renderItem={({item})=><RenderDocument item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="institute"/>}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
+                                        ListEmptyComponent={<EmptyList />}
                                     />)
             case 'timeTable':    
                         if(!this.state.courseTimetableLoaded&&!this.state.isCourseTimeTableLoading)
@@ -618,13 +538,6 @@ class InstituteView extends React.Component {
                         }
                             return(
                                 this.renderTimeTable(this.state.courseTimeTable)
-                                    // <FlatList 
-                                    //     data={this.state.courseTimeTable} 
-                                    //     renderItem={this.renderTimeTable}
-                                    //     keyExtractor={(item)=>item.id} 
-                                    //     horizontal={false}
-                                    //     showsHorizontalScrollIndicator={false}
-                                    // />
                                     )
         }
     }

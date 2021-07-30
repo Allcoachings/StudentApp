@@ -3,6 +3,8 @@ import { View, Text,Modal,ScrollView,TouchableOpacity,ActivityIndicator,StyleShe
 import {theme} from '../config'
 import CardView from '../Utils/CardView';
 import {addCourseVideoPlaylist} from '../Utils/DataHelper/Course'
+import Toast from 'react-native-simple-toast';
+
 class AddVideoPlaylist extends Component { 
     state=
     {
@@ -11,14 +13,20 @@ class AddVideoPlaylist extends Component {
 
     handleAddPlaylistCallBack=(reponse) =>
     {
-            if(reponse.status ===201)
-            {
-                console.log("created",reponse.headers.map.location)
-                this.props.appendPlaylist({name:this.state.name,courseId:this.props.courseId,id:reponse.headers.map.location})
-                this.props.closeModal()
-            }
-            this.setState({addPlaylistLoading:false})
+        if(reponse.status ===201)
+        {
+            Toast.show('Playlist Added Successfully.');
+            console.log("created",reponse.headers.map.location)
+            this.props.appendPlaylist({name:this.state.name,courseId:this.props.courseId,id:reponse.headers.map.location})
+            this.props.closeModal()
+        }
+        else
+        {
+            Toast.show('Something Went Wrong. Please Try Again Later.');
+        }
+        this.setState({addPlaylistLoading:false})
     }
+
     handleAddPlaylistClick=() =>
     {
         if(this.verify(this.state))
@@ -27,7 +35,7 @@ class AddVideoPlaylist extends Component {
             addCourseVideoPlaylist(this.state.name,this.props.courseId,this.handleAddPlaylistCallBack)
         }else
         {
-            console.log("empty filds")
+            Toast.show('Please Fill All The Fields.');
         }
     }
 

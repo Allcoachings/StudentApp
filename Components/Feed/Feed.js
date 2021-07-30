@@ -10,6 +10,7 @@ import {fetch_feed_all,fetch_feed_by_category} from '../Utils/DataHelper/Feed'
 import FeedText from '../Feed/FeedText';
 import FeedImage from '../Feed/FeedImage';
 import FeedPoll from '../Feed/FeedPoll';
+
 class Feed extends React.Component {
     state={
         offset:0,
@@ -34,25 +35,6 @@ class Feed extends React.Component {
     componentDidMount()
     {
         fetch_feed_all(this.state.offset,dataLimit,this.handleFeedCallBack);
-    }
-
-    renderLikeShareRow=()=>{
-        return(
-            <View style={styles.bottomRowContainer}>
-                <TouchableOpacity style={styles.likeView}>
-                    <Feather name="thumbs-up" size={18} />
-                    <Text style={styles.text}>Like</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.likeView}>
-                    <Feather name="message-square" size={18} />
-                    <Text style={styles.text}>Comment</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.likeView}>
-                    <Feather name="send" size={18} />
-                    <Text style={styles.text}>Share</Text>
-                </TouchableOpacity>
-            </View>
-        )
     }
 
     header=() => {

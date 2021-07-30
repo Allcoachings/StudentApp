@@ -39,7 +39,7 @@ export function DrawerContent(props){
                             </View>
                             <View style={styles.userNameSec}>
                                 <Title>{props.userInfo.name}</Title>
-                                <Text style={{color: theme.greyColor}}>{props.userInfo.userId}</Text>
+                                <Text style={{color: theme.greyColor}}>{props.userInfo.mobileNumber}</Text>
                             </View>
                         </View>
                         <TouchableWithoutFeedback style={{height:"20%",justifyContent: 'center',borderWidth:1,borderColor: theme.labelOrInactiveColor,marginRight:10,paddingHorizontal:5}}
@@ -90,7 +90,7 @@ export function DrawerContent(props){
 
             {isCatModalOpen?(
 
-                    <ChangeCatModal isModalVisible={isCatModalOpen} closeModal={()=>setCatModalOpen(false)}/>
+                    <ChangeCatModal isModalVisible={isCatModalOpen} closeModal={()=>setCatModalOpen(false)} navigation={props.navigation}/>
 
             ):(null)}
             

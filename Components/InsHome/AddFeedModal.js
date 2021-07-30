@@ -6,6 +6,8 @@ import PageStructure from '../StructuralComponents/PageStructure/PageStructure';
 import CardView from '../Utils/CardView';
 import {addImgeFeed,saveFeed} from '../Utils/DataHelper/Feed'
 import * as DocumentPicker from 'expo-document-picker';
+import Toast from 'react-native-simple-toast';
+
 
 class AddFeedModal extends Component {
   state={
@@ -32,6 +34,7 @@ class AddFeedModal extends Component {
       console.log(response.status)
       if(response.status==201)
       {
+        Toast.show('Feed Added Successfully.');
           this.setState({addFeedLoading:false})
         
         let feedItem = {feed:this.state.feedItem};
@@ -39,6 +42,10 @@ class AddFeedModal extends Component {
         console.log(feedItem)
           this.props.addFeedCallBack(feedItem)
           this.props.closeModal()
+      }
+      else
+      {
+        Toast.show('Something Went Wrong. Please Try Again Later.');
       }
   }
 
@@ -74,7 +81,7 @@ class AddFeedModal extends Component {
             
       }else
       {
-          console.log("empty feed")
+        Toast.show('Please Fill All The Fields.');
       }
   }
   verifyPollPost=({pollQuestion,pollOptions})=>pollQuestion&&pollOptions.filter(item=>item.pollOption)
@@ -104,8 +111,11 @@ class AddFeedModal extends Component {
             }
             this.setState({feedItem:feed})
             addImgeFeed(feed,this.state.postImage,this.handleAddFeedCallback)
-        }
-        
+        }  
+    }
+    else
+    {
+        Toast.show('Please Fill All The Fields.');
     }
   } 
   verifyImagePost=({postImage})=>postImage.type=='success'
@@ -136,6 +146,10 @@ class AddFeedModal extends Component {
             this.setState({feedItem:feed})
             saveFeed(feed,this.handleAddFeedCallback)
         } 
+    }
+    else
+    {
+        Toast.show('Please Fill All The Fields.');
     }
   } 
   verifyTextPost=({description})=>description

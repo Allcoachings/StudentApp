@@ -30,7 +30,7 @@ class BottomTab extends React.Component {
     {
       key: "Subscription",
       icon: 'youtube',
-      label: 'Following',
+      label: 'Followings',
       barColor: theme.primaryColor,
       pressColor: 'rgba(255, 255, 255, 0.16)',
       params:{}
@@ -110,7 +110,6 @@ class BottomTab extends React.Component {
 const styles = StyleSheet.create({
     container: { 
         flex:1,  
-  
         
     },
         TabContainer:

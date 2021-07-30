@@ -27,8 +27,6 @@ const renderPickerItem=(item)=>
 
 const ChangeCatModal = (props) => {
 
-
-
       const [selectedCategory,setSelectedCategory] = useState();
       const [loadingCategory,setLoadingCategory] = useState(true);
       const [categories,setCategories] = useState([])
@@ -36,13 +34,11 @@ const ChangeCatModal = (props) => {
 
       useEffect(() => {
 
-
         fetch_categories((response)=>{
                 if(response.status === 200)
                 {
                     response.json().then(response=>
                         { 
-                        console.log("response",response)
                         response.unshift({key:-1,label:"Select Category"})
                         setCategories(response);
                         setLoadingCategory(false);
@@ -58,10 +54,11 @@ const ChangeCatModal = (props) => {
       })
 
 return(
+    
     CardView(
         <Modal 
           animationIn="slideInLeft"
-          animationOut="slideOutRi ght"
+          animationOut="slideOutRight"
           transparent={false}
           visible={props.isModalVisible}
           onRequestClose={props.closeModal}>
@@ -75,11 +72,10 @@ return(
 
                                         style={{height:30}}
                                         selectedValue={selectedCategory}
-                                        onValueChange={(itemValue, itemIndex) =>
-                                            setSelectedCategory(itemValue)
+                                        onValueChange={(itemValue, itemIndex) =>{
+                                                props.closeModal(),
+                                                props.navigation.navigate("CategoryList", {type: itemValue,id:itemIndex})}
                                         }>
-                                            {/* <Picker.Item label="Java" value="java" />
-                                            <Picker.Item label="JavaScript" value="js" /> */}
                                         {categories&&categories.map((item)=>renderPickerItem(item))}
                                     </Picker>
                                     {/* <DropDownPicker

@@ -8,6 +8,8 @@ import * as DocumentPicker from 'expo-document-picker';;
 import {fetch_document_playlist,addCourseDocument} from '../Utils/DataHelper/Course'
 import { Picker } from 'native-base'; 
 import AddDocumentPlaylist from './AddDocumentPlaylist';
+import Toast from 'react-native-simple-toast';
+
 class AddPdf extends React.Component {
     state = {
         title: '',
@@ -86,12 +88,17 @@ class AddPdf extends React.Component {
         handleAddDocumentCallBack=(response)=>
         {
             this.setState({loadingAddDocument:false})
-                if(response.status==201)
-                {     
-                    let details = response.headers.map.location.split("*");
-                    this.props.route.params.appendDocument({id:details[0],fileAddr:serverBaseUrl+details[1],name:this.state.title,courseId:this.props.route.params.courseId})
-                    this.props.navigation.goBack();
-                }
+            if(response.status==201)
+            {     
+                Toast.show('Document Added Successfully.');
+                let details = response.headers.map.location.split("*");
+                this.props.route.params.appendDocument({id:details[0],fileAddr:serverBaseUrl+details[1],name:this.state.title,courseId:this.props.route.params.courseId})
+                this.props.navigation.goBack();
+            }
+            else
+            {
+                Toast.show('Something Went Wrong. Please Try Again Later.');
+            }
                 
         }
         handlePlaylistCallback=(response)=>
@@ -125,15 +132,18 @@ class AddPdf extends React.Component {
         }
         handleSubmitButtonClick=()=>
         {
-                if(this.verify(this.state))
+            if(this.verify(this.state))
+            {
+                if(!this.state.loadingAddDocument)
                 {
-                    if(!this.state.loadingAddDocument)
-                    {
-                        this.setState({loadingAddDocument:true})
-                        addCourseDocument(this.state.document,this.state.title,this.props.route.params.courseId,this.handleAddDocumentCallBack,this.state.selectedPlaylist)
-                    }
-                    
+                    this.setState({loadingAddDocument:true})
+                    addCourseDocument(this.state.document,this.state.title,this.props.route.params.courseId,this.handleAddDocumentCallBack,this.state.selectedPlaylist)
                 }
+            }
+            else
+            {
+                Toast.show('Please Fill All The Fields.');
+            }
         }
 
         verify=({title,selectedPlaylist,document})=>title&&selectedPlaylist!=-1&&document.type=='success'
