@@ -286,6 +286,7 @@ const styles = StyleSheet.create({
         headerSection:
         {
             flexDirection: 'column',
+            paddingTop:10
         },
             headerRowSection:
             {

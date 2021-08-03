@@ -13,12 +13,9 @@ import {Feather} from '@expo/vector-icons';
 import {setInstituteDetails,setInstituteAuth} from '../Actions'
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-<<<<<<< HEAD
 const width = Dimensions.get('window').width
-=======
 import Toast from 'react-native-simple-toast';
 
->>>>>>> be17a82c371210640657704176842bbfa696bb12
 class InsRegister extends React.Component {
     state = {
         insName: '',
