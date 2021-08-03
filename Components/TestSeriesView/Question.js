@@ -308,41 +308,39 @@ const styles = StyleSheet.create({
                  marginBottom:5
             },
 
-correctAns:
-{
-    backgroundColor:theme.featureYesColor+'4D',
-     
-     
+    correctAns:
+    {
 
-},
-wrongAns:
-{
-    backgroundColor:theme.featureNoColor+'4D',  
+        backgroundColor:theme.featureYesColor+'4D',
 
-},
-attemptedAns:
-{
-    borderColor:theme.labelOrInactiveColor,
-    borderWidth:1,
-     
+    },
+    wrongAns:
+    {
 
-},
-correctAnsIndex:
-{
-    backgroundColor:theme.featureYesColor+'4D',
+        backgroundColor:theme.featureNoColor+'4D',  
 
-},
-wrongAnsIndex:
-{
-    backgroundColor:theme.featureNoColor+'4D',
-     
+    },
+    attemptedAns:
+    {
 
-},
-attemptedAnsIndex:
-{
-     backgroundColor:theme.labelOrInactiveColor,
-     
+        borderColor:theme.labelOrInactiveColor,
+        borderWidth:1,
+        
+    },
+    correctAnsIndex:
+    {
+        backgroundColor:theme.yellowColor+'4D',
 
-}
-});
+    },
+    wrongAnsIndex:
+    {
+        backgroundColor:theme.featureNoColor+'4D',
+    },
+    attemptedAnsIndex:
+    {
+        backgroundColor:theme.labelOrInactiveColor,
+        
+
+    }
+    });
 export default Question;

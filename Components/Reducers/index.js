@@ -54,7 +54,7 @@ const app_redux = (state=initialState,action)=>
 //user reducer starts
 const initial_user_state=
 {
-    userAuthStatus:false,
+    userAuthStatus:true,
     userInfo:{},
     "id": "1",
     "name": "DU BUDDY",

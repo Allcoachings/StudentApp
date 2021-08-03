@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity, Modal, TextInput,ActivityIndicator} from 'react-native';
+import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity, Modal, Dimensions, TextInput,ActivityIndicator} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {instituteData} from '../../FakeDataService/FakeData'
 import { AirbnbRating,Rating } from 'react-native-ratings';
@@ -17,6 +17,7 @@ import {fetch_instituteDetails} from '../Utils/DataHelper/Coaching'
 import {fetch_institute_courses,fetch_courses_banners,addCourseBanner,fetch_courses_videos,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents,fetch_courses_timetable,fetch_testSeries} from '../Utils/DataHelper/Course'
 import { checkUserEnrollment } from '../Utils/DataHelper/EnrollStudent'
 import { saveStudentHistory } from '../Utils/DataHelper/StudentHistory'
+import { SliderBox } from 'react-native-image-slider-box';
 import FeedText from '../Feed/FeedText';
 import FeedImage from '../Feed/FeedImage';
 import FeedPoll from '../Feed/FeedPoll';
@@ -29,8 +30,11 @@ import RenderSingleTestSeries from '../SeriesList/RenderSingleTestSeries'
 import RenderLiveClass from './RenderLiveClass'
 import RenderDocument from './RenderDocument'
 import RenderVideo from './RenderVideo'
+import { LinearGradient } from "expo-linear-gradient";
 
 import {fetch_institute_feed} from '../Utils/DataHelper/Feed'
+
+const width = Dimensions.get('window').width
 class InstituteView extends React.Component {
     state = { 
         activeTab: 'videos', 
@@ -46,7 +50,10 @@ class InstituteView extends React.Component {
         loadingInstitute:true,
         subscribe: '',
         zoomModal: false,
-        zimage:''
+        zimage:'',
+        bannerImg:[],
+        index: '',
+        activeFilter: 'All'
         
      }
      instituteCallback=(response) =>
@@ -105,7 +112,7 @@ class InstituteView extends React.Component {
     {
         if(this.props.route.params.insId!=this.state.instituteId)
         {
-            this.setState({instituteId:this.props.route.params.insId,loadingInstitute:true},()=>
+            this.setState({instituteId:this.props.route.params.insId,loadingInstitute:true, bannerImg: []},()=>
             {
             fetch_instituteDetails(this.state.instituteId,this.instituteCallback)
             fetch_institute_courses(this.state.instituteId,this.coursesCallBack)
@@ -135,6 +142,8 @@ class InstituteView extends React.Component {
          {
              response.json().then(data=>
                  { 
+                     var images = data.map((item, key) =>serverBaseUrl+item.bannerImageLink)
+                     this.setState({bannerImg: images})
                      this.setState({courseBanners:data});
                  })
          }
@@ -176,9 +185,23 @@ class InstituteView extends React.Component {
             addLead(item.id,this.state.instituteId, this.state.studentId, this.addLeadCallback)
         }
          return (
-            <TouchableOpacity style={[styles.courseItemContainer,this.state.activeCourse==item.id?({backgroundColor:theme.secondaryColor}):(null)]} onPress={()=>this.handleCourseItemClick(item)}> 
-                <Text style={[styles.courseTitle,this.state.activeCourse==item.id?({color:theme.primaryColor}):({color:theme.secondaryColor})]}>{item.title}</Text>
-            </TouchableOpacity>
+            // this.state.activeCourse==item.id?(
+            //     <LinearGradient
+            //         start={[1, 0.5]}
+            //         end={[0, 0]}
+            //         colors={['#9795ef',  '#f9c5d1']}
+            //         style={{paddingLeft:12, paddingRight:12, marginRight:10,paddingVertical: 3.5,marginTop:5 ,paddingHorizontal:2,borderWidth:1, borderColor:theme.primaryColor,borderRadius:15}}
+            //     >
+            //         <TouchableOpacity style={[{backgroundColor:"transparent"}]} onPress={()=>this.handleCourseItemClick(item)}> 
+            //             <Text style={[styles.courseTitle, {color:theme.primaryColor}]}>{item.title}</Text>
+            //         </TouchableOpacity>
+            //     </LinearGradient>
+            // ):(
+                <TouchableOpacity style={[styles.courseItemContainer,this.state.activeCourse==item.id?({backgroundColor:theme.purpleColor, borderColor:theme.darkPurpleColor}):({backgroundColor:theme.gradientColor})]} onPress={()=>this.handleCourseItemClick(item)}> 
+                        <Text style={[styles.courseTitle,this.state.activeCourse==item.id?({color: theme.darkPurpleColor}):({color:theme.primaryColor})]}>{item.title}</Text>
+                </TouchableOpacity>
+            // )
+            
          );
      }
      toggleModal(visible) {
@@ -205,8 +228,7 @@ class InstituteView extends React.Component {
         )
     }
 
-    openZoomModal = (image) => {
-        console.log("image",image)
+    openZoomModal = () => {
         this.setState({ zimage: image, zoomModal: true});
     }
 
@@ -282,15 +304,23 @@ class InstituteView extends React.Component {
             {
                 response.json().then(data=>
                 {
+                    
+                    console.log("doc", data)
+                    var playlist={"courseId": this.state.activeCourse, "id": -1, "name": "All"}
+                    data.unshift(playlist)
                     this.setState({courseDocumentPlaylist:data,courseDocumentPlaylistLoaded:true,isCourseDocumentPlaylistLoading:false});                   
                 })
             }
     }
     courseVideoPlaylistCallback=(response)=>{
+        
             if(response.status==200)
             {
                 response.json().then(data=>
                 {
+                    
+                    var playlist={"courseId": this.state.activeCourse, "id": -1, "name": "All"}
+                    data.unshift(playlist)
                     this.setState({courseVideosPlaylist:data,courseVideoPlaylistLoaded:true,isCourseVideoPlaylistLoading:false});                   
                 })
             }
@@ -300,7 +330,7 @@ class InstituteView extends React.Component {
     {
         
         return(
-            <TouchableOpacity 
+        <TouchableOpacity 
             onPress={()=>{this.filterItemClick(item)}} 
             style={[styles.singleSubject,this.state.activeFilter==item.name?({backgroundColor:theme.secondaryColor}):(null)]}>
             <Text style={[styles.singleSubjectText,this.state.activeFilter==item.name?({color:theme.primaryColor}):(null)]}>{item.name}</Text>
@@ -393,13 +423,13 @@ class InstituteView extends React.Component {
         switch(this.state.activeTab)
         {
           case 'videos':  
-                this.setState({activeFilter: item.name,isCourseVideoLoading:true,courseVideoLoaded:false},()=>
+                this.setState({activeFilter: item.name, isCourseVideoLoading:true,courseVideoLoaded:false},()=>
                 {
                     fetch_courses_videos(null,this.courseVideoCallback,item.id);
                 }) 
                 break;
            case 'document':
-                this.setState({activeFilter: item.name,isCourseDocumentLoading:true,courseDocumentLoaded:false},()=>
+                this.setState({activeFilter: item.name, isCourseDocumentLoading:true,courseDocumentLoaded:false},()=>
                 {
                     fetch_courses_documents(null,this.courseDocumentCallback,item.id);
                 }) 
@@ -412,6 +442,7 @@ class InstituteView extends React.Component {
         switch(tab)
         {
             case 'liveClass':   return(
+                        
                                     <FlatList 
                                         data={instituteData.liveClassFilters} 
                                         renderItem={(this.renderSubjectOptions)}
@@ -438,9 +469,9 @@ class InstituteView extends React.Component {
                             null
                         ):
                         (
-                            <ScrollView>
+                        <ScrollView>
                            <View style={styles.AddFilter}>
-                                
+
                                <FlatList 
                                    data={this.state.courseVideosPlaylist} 
                                    renderItem={this.renderSubjectOptions}
@@ -623,22 +654,33 @@ class InstituteView extends React.Component {
                             /> 
                     </View>
                     <View style={styles.rowContainer}>
-                            <FlatList 
+                            {/* <FlatList 
                             data={this.state.courseBanners} 
                             renderItem={this.renderBannerList} 
                             keyExtractor={(item)=>item.id}
                             horizontal={true} 
                             showsHorizontalScrollIndicator={false}
-                            />
+                            /> */}
+                            <TouchableOpacity style={styles.bannerItemContainer} onPress={this.openZoomModal} underlayColor='none'>
+                                <SliderBox 
+                                    dotColor={"transparent"} 
+                                    inactiveDotColor={"transparent"} 
+                                    images={this.state.bannerImg} 
+                                    style={styles.bannerImage} 
+                                  onCurrentImagePressed={index => this.setState({index: index, zoomModal: true})} 
+                                    imageLoadingColor={theme.secondaryColor}
+                                />
+                            </TouchableOpacity>
+                            
                             <View style={styles.optionalRow}> 
-                                <TouchableOpacity style={{borderColor:theme.borderColor,borderWidth:1,borderRadius:10,padding:10}}>
-                                    <Text style={{fontSize:10,color:theme.secondaryColor,fontWeight:'bold'}}>
+                                <TouchableOpacity style={{borderColor:theme.borderColor,borderWidth:1,borderRadius:10,padding:10}} onPress={() => this.props.navigation.navigate("AboutCourse")}>
+                                    <Text style={{fontSize:12,color:theme.secondaryColor,fontFamily:'Raleway_700Bold'}}>
                                         Upsc Cse- optional Subscription
                                     </Text>
                                 </TouchableOpacity>
                                 {this.state.studentEnrolled?(null):(<TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10}} onPress={()=>this.props.navigation.navigate("Payment", {insId:this.state.institute.id,courseId:this.state.activeCourse})}>
-                                    <Text style={{fontSize:10,color:theme.primaryColor}}>
-                                        Fees:{this.state.activeCourseDetail&&this.state.activeCourseDetail.fees}
+                                    <Text style={{fontSize:14,color:theme.primaryColor, fontFamily:'Raleway_700Bold'}}>
+                                        Fees : {this.state.activeCourseDetail&&this.state.activeCourseDetail.fees}
                                     </Text>
                                 </TouchableOpacity>)}
                             </View>
@@ -708,7 +750,7 @@ class InstituteView extends React.Component {
         
 
     render() {
-       
+       console.log(this.state.bannerImg)
       this.updateComponent()
         const  {institute,loadingInstitute} = this.state;
         // this.updateComponent()
@@ -725,7 +767,7 @@ class InstituteView extends React.Component {
             (
                 <ActivityIndicator color={this.accentColor} size={"large"}/>
             ):(
-            <ScrollView onScroll={()=>console.log("scrolling")}  onScrollToTop={()=>console.log("Hello To To")}>
+            <ScrollView >
                 <View style={styles.container}>
 
                         {/* <View style={styles.headerView}>
@@ -761,8 +803,8 @@ class InstituteView extends React.Component {
                                     <View style={[styles.btnView1,this.state.tabtoshow==1?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor})]}>
                                         <Text style={[styles.btnText,{color:this.state.tabtoshow==1?theme.primaryColor:theme.greyColor}]} onPress={()=>{this.tabtoshow(1)}}>Courses</Text>
                                     </View>
-                                    <View style={[styles.btnView2,this.state.tabtoshow==2?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor})]}>
-                                        <Text style={[styles.btnText,{color:theme.blueColor,fontWeight: 'bold'}]}>{institute.followersCount} Follower</Text>
+                                    <View style={[styles.btnView2,this.state.tabtoshow==2?({backgroundColor:theme.accentColor}):({backgroundColor:theme.primaryColor})]}>
+                                        <Text style={[styles.btnText,{color:theme.blueColor}]}>{institute.followersCount} Follower</Text>
                                     </View>
                                     <TouchableOpacity style={[styles.btnView3,this.state.tabtoshow==3?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor})]} onPress={this.handleFeedTabBtnClick}>
                                         <Text style={[styles.btnText,{color:this.state.tabtoshow==3?theme.primaryColor:theme.greyColor}]} >Feed</Text>
@@ -798,6 +840,8 @@ class InstituteView extends React.Component {
 
                         </View>
                     </View>
+
+                    <View style={{borderBottomWidth: 1, borderBottomColor: theme.labelOrInactiveColor, marginVertical: 10}}/>
                     
                         <View style={{marginVertical: 20,}}>
                             <Text style={styles.RatingText}>About Institute</Text>
@@ -869,7 +913,7 @@ class InstituteView extends React.Component {
                     <ImageZoomModal 
                         zoomModal={this.state.zoomModal}
                         closeModal={this.closeModal}
-                        image={this.state.zimage}
+                        images={this.state.bannerImg}
                         index={this.state.index}
                     />
                 ):(null)}
@@ -979,12 +1023,10 @@ const styles = StyleSheet.create({
                             {
                                 flex: 0.6,
                                 paddingLeft: 10,
-                                borderWidth:1,
                                 paddingRight: 10,
                                 paddingTop: 5,
                                 paddingBottom: 5,
                                 backgroundColor:theme.greyColor,
-                                borderRadius: 5,
                                 margin: 2,
                                 justifyContent:'center',
                                 alignItems: 'center'
@@ -1005,6 +1047,7 @@ const styles = StyleSheet.create({
                             },
                                 btnText:
                                 {
+                                    fontFamily: 'Raleway_600SemiBold',
                                     fontSize: 16,
                                     color: theme.greyColor
                                 },
@@ -1145,20 +1188,21 @@ const styles = StyleSheet.create({
                     },
                     courseItemContainer:
                     {  
-                        paddingLeft:10,
-                        paddingRight:10, 
+                        paddingLeft:12,
+                        paddingRight:12, 
                         marginRight:10,
-                        // padding:5,
+                        paddingVertical: 3.5,
                         marginTop:5 ,
-                        padding:2,
+                        paddingHorizontal:2,
                         borderWidth:1, 
-                        borderColor:theme.labelOrInactiveColor,
+                        borderColor:theme.primaryColor,
                         borderRadius:15
                     },
                         courseTitle:
                         {
-                            fontSize:15, 
-                            color:theme.greyColor
+                            fontSize:14, 
+                            color:theme.greyColor,
+                            fontFamily: 'Raleway_700Bold',
                         },
                 bannerItemContainer:
                 {
@@ -1167,10 +1211,12 @@ const styles = StyleSheet.create({
                 },
                     bannerImage:
                     {
-                        width:300,
                         height:140,
+                        width: width-20,
                         borderRadius:10,
                         marginRight:10,
+                        borderWidth: 0.6,
+                        borderColor:theme.greyColor,
                     },
                 optionalRow:
                 { 
@@ -1247,6 +1293,7 @@ const styles = StyleSheet.create({
                     {
                         marginLeft: 5,
                         borderWidth: 1,
+                        paddingHorizontal: 10,
                         borderColor: theme.greyColor,
                         borderRadius: 20,
                     },
@@ -1372,6 +1419,7 @@ const styles = StyleSheet.create({
                         },
                             btnText:
                             {
+                                fontFamily: 'Raleway_700Bold',
                                 fontSize: 14,
                                 color: theme.primaryColor   
                             },

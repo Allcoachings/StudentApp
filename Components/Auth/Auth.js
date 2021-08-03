@@ -13,7 +13,6 @@ import OtpVerification from './OtpVerification';
 import SocialAuth from './SocialAuth';
 // import Onboarding from 'react-native-onboarding-swiper';
 import Splash from  './Splash';
-import { LinearGradient } from 'expo-linear-gradient';
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('screen').height

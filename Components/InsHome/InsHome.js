@@ -942,7 +942,7 @@ class InsHome extends React.Component {
                                     </View>
                                      
                                     <View style={[styles.btnView2,this.state.tabtoshow==2?({backgroundColor:theme.accentColor+'4D',borderColor:theme.accentColor+'4D'}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor,borderWidth: 1})]}>
-                                        <Text style={[styles.btnText,{color:theme.blueColor,fontWeight: 'bold'}]}>{institute.follower?institute.follower:0} Follower</Text>
+                                        <Text style={[styles.btnText,{color:theme.blueColor}]}>{institute.follower?institute.follower:0} Follower</Text>
                                     </View>
                                     <TouchableOpacity style={[styles.btnView3,this.state.tabtoshow==3?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor,borderWidth:1})]} onPress={this.handleFeedTabBtnClick}>
                                         <Text style={[styles.btnText,{color:this.state.tabtoshow==3?theme.primaryColor:theme.greyColor}]} >Feed</Text>
@@ -953,6 +953,7 @@ class InsHome extends React.Component {
                             
                         </View>
                     </View>
+                    <View style={{borderBottomWidth: 1, borderBottomColor: theme.labelOrInactiveColor, marginVertical: 10}}/>
                     <View style={{marginVertical: 20,}}>
                             <Text style={styles.RatingText}>About Institute</Text>
                             <Text>{this.props.institute.details.about}</Text>
@@ -1187,6 +1188,7 @@ const styles = StyleSheet.create({
                     },
                         btnText:
                         {
+                            fontFamily: 'Raleway_700Bold',
                             fontSize: 16,
                             color: theme.primaryColor
                         },
@@ -1226,6 +1228,8 @@ const styles = StyleSheet.create({
                         height:140,
                         borderRadius:10,
                         marginRight:10,
+                        borderWidth: 1,
+                        borderColor:theme.greyColor,
                     },
                 optionalRow:
                 { 
@@ -1430,6 +1434,7 @@ const styles = StyleSheet.create({
                             },
                                 btnText:
                                 {
+                                    fontFamily: 'Raleway_700Bold',
                                     fontSize: 14,
                                     color: theme.primaryColor   
                                 },

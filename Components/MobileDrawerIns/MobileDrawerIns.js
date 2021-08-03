@@ -33,6 +33,7 @@ class indexIns extends React.Component {
                                 <Drawer.Screen name="Leads" component={Leads}  />
                                 <Drawer.Screen name="pdfViewer" component={PdfViewer} /> 
                                 <Drawer.Screen name="videoplayer" component={VideoPlayerCustom} />
+                                <Drawer.Screen name="Register" component={InsRegister}  /> 
                             </>
                        ):(
                                 <Drawer.Screen name="Register" component={InsRegister}  />    

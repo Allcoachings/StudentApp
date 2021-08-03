@@ -45,20 +45,25 @@ class ResultAnalysis extends React.Component {
     renderTestItem=(item)=>
     {
         console.log("test data",item)
+        
         let date  = moment(item.date, 'DD/MM/YYYY');
         let month = date.format('MMM')
         let day = date.format('DD')
+        var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        var d = new Date(date);
+        var dayName = d.toString().split(' ')[0];
+        var today  = moment().format('DD/MM/YYYY'); 
         return(
             <>
                 <View style={styles.testItemContainer}>
                     <View style={styles.testItemLeft}>
-                        <Text style={styles.testItemMonth}>{month}</Text>
-                        <Text style={styles.testItemDay}>{day}</Text>
+                        <Text style={[styles.testItemMonth, dayName=='Sat'||dayName=='Sun'?({color: theme.featureNoColor}):({color: theme.blueColor})]}>{month}</Text>
+                        <Text style={[styles.testItemDay, dayName=='Sat'||dayName=='Sun'?({color: theme.featureNoColor}):({color: theme.blueColor})]}>{day}</Text>
                         <View style={styles.testItemEmptySpace}></View>  
                     </View>
                     <View style={styles.testItemMiddle}>
                         <Text style={styles.testItemName}>{item.title}</Text>
-                        <Text style={styles.testItemTestTime}>Test {item.test} • {item.time}</Text>
+                        <Text style={styles.testItemTestTime}>Start Class {item.test} • {item.time}</Text>
                     </View>
                 </View>
                   
