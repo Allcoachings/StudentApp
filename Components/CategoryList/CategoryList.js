@@ -31,6 +31,16 @@ class CategoryList extends React.Component {
         fetch_coachingByCategory(this.state.cat_id,this.state.offset,dataLimit,this.coachingCallBack)
     }
 
+    updateComponent=()=>{
+        if(this.state.cat_id!=this.props.route.params.id)
+        {
+            console.log("this.state.cat_id",this.state.cat_id)
+            console.log("this.props.route.params.id",this.props.route.params.id)
+            this.setState({cat_id:this.props.route.params.id, offset: 0},()=>fetch_coachingByCategory(this.state.cat_id,this.state.offset,dataLimit,this.coachingCallBack))
+            
+        }
+    }
+
     renderInstituteList=({item})=>{ 
         return (
                 <TouchableOpacity style={styles.instituteItemContainer} onPress={()=> this.props.navigation.navigate('Institute') }>
@@ -77,7 +87,7 @@ class CategoryList extends React.Component {
     }
 
     render() {
-    
+        this.updateComponent()
         return(
             <PageStructure
                 iconName={"arrow-left"}

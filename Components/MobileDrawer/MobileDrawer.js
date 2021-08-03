@@ -26,7 +26,9 @@ import Downloads from '../Downloads/Downloads';
 import BottomTab from '../BottomTab';
 import PdfViewer from '../PdfViewer/PdfViewer'
 import Profile from '../Profile/Profile'
+import Notification from '../Home/Notification'
 import VideoPlayerCustom from '../VideoPLayer/VideoPlayerCustom';
+import AboutCourse from '../AboutCourse/AboutCourse'
 import WebViewCustom from '../WebView/WebViewCustom';
 // import ReviewAndRatings from '../ReviewAndRatings/ReviewAndRatings';
 const Drawer = createDrawerNavigator();
@@ -52,7 +54,10 @@ class index extends React.Component {
                             <Drawer.Screen name="Solution" component={Solutions}  /> 
                             <Drawer.Screen name="ResultAnalysis" component={ResultAnalysis}  /> 
                             <Drawer.Screen name="CategoryList" component={CategoryList} /> 
-                            <Drawer.Screen name="EditProfile" component={Profile} /> 
+                            <Drawer.Screen name="Category" component={CategoryList} /> 
+                            <Drawer.Screen name="EditProfile" component={Profile} />  
+                            <Drawer.Screen name="Notification" component={Notification} />   
+                            <Drawer.Screen name="AboutCourse" component={AboutCourse} />    
 
                             {/* <Drawer.Screen name="SingleTestSeries" component={SingleTestSeries} /> */}
 

@@ -25,11 +25,12 @@ class Home extends React.Component {
     }
 
     handleHomeDataCallBack=(response) => {
-           
+        console.log("data",response.status)
             if(response.status==200)
             {
                     response.json().then(data=>
                         {
+                            console.log("data",data)
                             this.setState({loadingData:false,homeMainContent:data});
                         })
             }else
@@ -106,7 +107,8 @@ class Home extends React.Component {
                 </View>
                 <View style={styles.instituteMetaContainer}>
                     <View style={{display:'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginLeft: 2}}>
-                        <Text style={styles.instituteTitle} numberOfLines={2}>{item.name}</Text>
+                        <Text style={styles.instituteTitle} numberOfLines={2}>
+                            {item.name.length<=16?(item.name):(item.name.substr(0, 20)+"..")}</Text>
                     </View>
                     <View style={{display:'flex', flexDirection: 'row', alignItems: 'center'}}>
                         <Text style={{alignSelf:'flex-start', color: theme.greyColor,fontSize:12}}>{item.totalRatingCount>0?(item.totalRating/item.totalRatingCount):(0)+' • '}</Text> 
@@ -175,6 +177,7 @@ class Home extends React.Component {
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
                 catInHeader={true}
                 catOnpress={this.toggleCatMode}
+                rightIconOnPress={() =>this.props.navigation.navigate("Notification")}
                 scrollMode={'scroll'}
                 navigation={this.props.navigation}
                 searchFun={this.search}
@@ -190,19 +193,20 @@ class Home extends React.Component {
                         this.state.catMode?(
                             <View>
                             <FlatList 
-                            data={this.state.institute}  
-                            showsVerticalScrollIndicator={false} 
-                            renderItem={this.renderInstituteList}
-                            numColumns={3}
-                            keyExtractor={item => item.id}
+                                data={this.state.institute}  
+                                showsVerticalScrollIndicator={false} 
+                                renderItem={this.renderInstituteList}
+                                numColumns={3}
+                                keyExtractor={item => item.id}
                             />
                             </View>
                         ):(
                             <FlatList 
-                            data={this.state.homeMainContent}  
-                            showsVerticalScrollIndicator={false} 
-                            renderItem={this.renderMainContetnRow}
-                            keyExtractor={item => item.id}/>
+                                data={this.state.homeMainContent}  
+                                showsVerticalScrollIndicator={false} 
+                                renderItem={this.renderMainContetnRow}
+                                keyExtractor={item => item.id}
+                            />
                         )
                     )}
                     

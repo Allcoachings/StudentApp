@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View,Modal,StyleSheet } from 'react-native'; 
+import { Text, View,Modal,StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native'; 
 import CardView from '../Utils/CardView';
-
+import {screenMobileWidth, theme, appLogo} from '../config'
 import {fetch_categories} from '../Utils/DataHelper/Categories'
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-
+import BrickList from 'react-native-masonry-brick-list';
 import { Picker } from 'native-base';
-
-
-
-
 
 
 
@@ -23,7 +18,11 @@ const renderPickerItem=(item)=>
         <Picker.Item label={item.label} value={item.key} />
     )
 }
- 
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 const ChangeCatModal = (props) => {
 
@@ -39,9 +38,14 @@ const ChangeCatModal = (props) => {
                 {
                     response.json().then(response=>
                         { 
-                        response.unshift({key:-1,label:"Select Category"})
-                        setCategories(response);
-                        setLoadingCategory(false);
+                            let arr=[1,2,3]
+                            let random = getRandomInt(0,2);
+                            span = arr[random];
+                            response.unshift({key:-1,label:"All",span:3})
+                            let pancham   = response.map(item=>item.span=span)
+                            // console.log(pancham,response,random);
+                            setCategories(pancham);
+                            setLoadingCategory(false);
                         })
                         
                 }else
@@ -51,7 +55,19 @@ const ChangeCatModal = (props) => {
        
 
         }) 
-      })
+    })
+
+    const renderCategory=(item)=>{
+        return(
+            <TouchableOpacity style={{flexDirection: 'row', borderWidth: 0.5, borderColor: 'black', borderRadius:20, height: 40, justifyContent: 'center', alignItems: 'center'}}>
+                <Image
+                    source={appLogo}
+                    style={{height: 20, width: 20, marginRight: 5}}
+                />
+                <Text style={{fontFamily:'Raleway_400Regular', fontSize: 18}}>{item.label}</Text>
+            </TouchableOpacity>
+        )
+    }
 
 return(
     
@@ -63,8 +79,8 @@ return(
           visible={props.isModalVisible}
           onRequestClose={props.closeModal}>
 
-              <View>
-              {!loadingCategory?(
+              <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+              {/* {!loadingCategory?(
                             
                             CardView(
                                 <View style={styles.dropdownView}>
@@ -77,7 +93,7 @@ return(
                                                 props.navigation.navigate("CategoryList", {type: itemValue,id:itemIndex})}
                                         }>
                                         {categories&&categories.map((item)=>renderPickerItem(item))}
-                                    </Picker>
+                                    </Picker> */}
                                     {/* <DropDownPicker
                                         placeholder="Select Category"
                                         placeholderTextColor={theme.greyColor}
@@ -92,9 +108,35 @@ return(
                                             elevation:100
                                         }}
                                     /> */}
-                                </View> ,{marginTop: 10, padding: 12})
-                        ):(null)}
-                        
+                                {/* </View> ,{marginTop: 10, padding: 12})
+                        ):(null)} */}
+                        <View style={{justifyContent: 'center', alignItems: 'center', marginTop: '10%'}}>
+                            <Text style={{fontFamily:'Raleway_700Bold',fontSize: 24}}>Select  Category</Text>
+                        </View>
+                        <View style={{flexDirection: 'column', justifyContent: 'space-between', marginTop: '10%'}}>
+                            {/* <FlatList
+                                data={categories}
+                                renderItem={renderCategory}
+                                numColumns={2}
+                                keyExtractor={(item) => item.id}
+                            /> */}
+                            {/* <BrickList
+                                data={categories}
+                                renderItem={renderCategory}
+                                numColumns={2}
+                            /> */}
+                            <BrickList
+                                data = {categories}
+                                renderItem={renderCategory}
+                                columns = {3}
+                            />
+
+                        </View>
+                        <View style={{justifyContent: 'flex-end', alignItems: 'center', marginTop: '95%'}}>
+                            <TouchableOpacity style={{ backgroundColor: theme.greyColor, padding: 10, width:'50%', justifyContent: 'center', alignItems: 'center',borderRadius: 30}}>
+                                <Text style={{fontFamily:'Raleway_700Bold',fontSize:18, color: theme.primaryColor}}>Explore</Text>
+                            </TouchableOpacity>
+                        </View>
               </View>
           </Modal>
     ))

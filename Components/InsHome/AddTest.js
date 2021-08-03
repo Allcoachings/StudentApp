@@ -177,23 +177,21 @@ class AddTest extends React.Component {
     }
     handleSubmitBtn=()=>
     {
-        console.log("this.state.questionData",this.state.questionData)
-        console.log("this.state.questionCount",this.state.questionCount)
-        // if(this.verify(this.state))
-        // {
-        //     if(!this.state.addSeriesLoading)
-        //     {
-        //         this.setState({addSeriesLoading:true})
-        //         let series = {isAdmin:true,title:this.state.title,questionCount:this.state.questionCount,timeDuration:this.state.timeDuration,isPractice:this.state.isPractice,courseId:this.props.route.params.courseId,maxMarks:this.state.maxMarks}
+        if(this.verify(this.state))
+        {
+            if(!this.state.addSeriesLoading)
+            {
+                this.setState({addSeriesLoading:true})
+                let series = {isAdmin:true,title:this.state.title,questionCount:this.state.questionCount,timeDuration:this.state.timeDuration,isPractice:this.state.isPractice,courseId:this.props.route.params.courseId,maxMarks:this.state.maxMarks}
                 
-        //         addTestSeries(series,this.state.questionData,this.handleAddSeriesCallback)
-        //         console.log(series)
-        //     }
-        // }
-        // else
-        // {
-        //     Toast.show('Please Fill All The Fields.');
-        // }
+                addTestSeries(series,this.state.questionData,this.handleAddSeriesCallback)
+                console.log(series)
+            }
+        }
+        else
+        {
+            Toast.show('Please Fill All The Fields.');
+        }
         
     }
 

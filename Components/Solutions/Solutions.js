@@ -2,7 +2,7 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView,Dimensions} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import { theme } from '../config';
-import { Feather } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 const windowWidth = Dimensions.get('window').width
 class Solutions extends React.Component {
@@ -198,6 +198,9 @@ class Solutions extends React.Component {
                                 <Text style={styles.headText}>
                                     Solutions
                                 </Text>
+                                <View style={{justifyContent: 'flex-end'}}>
+                                    <MaterialIcons name="report-problem" size={24} color="black" />
+                                </View>
                             </View>
                             
                             <View style={{borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}/>
@@ -247,7 +250,8 @@ const styles = StyleSheet.create({
         headView:
         {
             flexDirection: 'row',
-            alignItems: 'center'
+            alignItems: 'center',
+            justifyContent: 'space-between',
         },
             headText:
             {

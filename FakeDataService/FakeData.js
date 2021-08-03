@@ -378,47 +378,9 @@ export const instituteData =
             date: 'Apr 24,2018',
 
         },
-        {
-            id: '2',
-            image: { uri: 'https://picsum.photos/200' },
-            title: 'Javascript Tutorial for Beginner: Learn Javascript in 1 hour',
-            institute: 'Chandra Institute',
-            Views: '4,017,055',
-            date: 'Apr 24,2018',
-
-        },
-        {
-            id: '3',
-            image: { uri: 'https://picsum.photos/200' },
-            title: 'Javascript Tutorial for Beginner: Learn Javascript in 1 hour',
-            institute: 'Chandra Institute',
-            Views: '4,017,055',
-            date: 'Apr 24,2018',
-
-        },
-        {
-            id: '4',
-            image: { uri: 'https://picsum.photos/200' },
-            title: 'Javascript Tutorial for Beginner: Learn Javascript in 1 hour',
-            institute: 'Chandra Institute',
-            Views: '4,017,055',
-            date: 'Apr 24,2018',
-
-        },
     ],
     liveClassFilters:[
-        {
-            id: '1',
-            title: 'Live 1'
-        },
-        {
-            id: '2',
-            title: 'Live 2'
-        },
-        {
-            id: '3',
-            title: 'Live 3'
-        },
+        
     ],
     videos: [
         {
