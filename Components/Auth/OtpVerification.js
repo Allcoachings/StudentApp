@@ -146,7 +146,7 @@ class OtpVerification extends React.Component {
                                 withShadow 
                                 // autoFocus
                                  
-                                />
+                            />
                         </View>
                         <View style={{alignItems: 'center',width: width,marginTop:'auto',marginBottom:15}}>
                             <View style={{margin:20}}>
@@ -163,57 +163,54 @@ class OtpVerification extends React.Component {
             case 'otp':
                 return (
                     <View >
-
-                            <Text style={{fontSize:25,marginBottom:10,fontFamily:'Raleway_600SemiBold',marginLeft:10}}>Verify OTP</Text>
-                            <View style={{marginLeft:10,flexDirection: 'row',}}>
-                                
-                                <Text style={{fontSize:13,color:theme.greyColor,fontFamily:'Raleway_600SemiBold'}}>
-                                    We have sent it on {this.state.phoneNumber}</Text> 
-                            </View>
-                            {/* <View style={{marginTop:15,marginLeft:20}}>
-                                <TextInput style={styles.queDesc} onChangeText={(text)=>this.setState({Otp: text})}  placeholder="Enter OTP" placeholderTextColor={theme.labelOrInactiveColor}/>
-                            </View> */}
-                            {/* <View style={{marginTop:15,marginBottom:20,marginLeft:width*0.15,borderWidth:2,borderColor:theme.greyColor,borderRadius:5}}> */}
-                                <OTPInputView
-                                    style={{width: '100%', height: 80,borderRadius:10}}
-                                    pinCount={6}
-                                    code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
-                                    onCodeChanged = {code => { this.setState({code})}}
-                                    autoFocusOnLoad
-                                    codeInputFieldStyle={styles.underlineStyleBase}
-                                    codeInputHighlightStyle={styles.underlineStyleHighLighted}
-                                    onCodeFilled = {this.getOtp}
-                                />
-                            {/* </View> */}
-                             {/* <OtpInputs getOtp={(otp) => this.getOtp(otp)} /> */}
-                            <View style={{flexDirection:'row',marginTop:20,marginLeft:10,color:theme.greyColor,fontFamily:'Raleway_600SemiBold'}}>
-                                <View>
-                                    <Text>
-                                      Resend Otp in 59s
-                                    </Text>  
-                                </View>
-                                {/* <View>
-                                    <TouchableOpacity onPress={()=>this.handleResendBtnClick()}>
-                                        <Text style={[styles.email]}>Resend</Text>
-                                    </TouchableOpacity>
-                                </View> */}
-                                
-                            </View>
-
-
-                            <View style={{flexDirection:'row',justifyContent:'center',marginTop:height*0.5,width:width*0.9,alignItems: 'center'}}>
-                                <Text style={{fontFamily:'Raleway_600SemiBold'}}>Having Trouble? <Text style={[styles.email]}>Reach Us at www.example.com</Text></Text>
-                            </View>
-                            <View style={{flexDirection:'row',justifyContent:'center',marginTop:20,marginBottom:20,alignItems: 'center',width:width,borderTopWidth:1,borderTopColor:theme.labelOrInactiveColor,paddingTop:10}}> 
-                                <TouchableWithoutFeedback onPress={this.handleContinueBtnClick}>
-                                    <View style={{backgroundColor:theme.greyColor,padding:15,borderRadius:10,alignItems: 'center',width:'95%'}}>
-                                        <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>Continue</Text>
-                                    </View>
-                                </TouchableWithoutFeedback>
-                            </View>
+                        <Text style={{fontSize:25,marginBottom:10,fontFamily:'Raleway_600SemiBold',marginLeft:10}}>Verify OTP</Text>
+                        <View style={{marginLeft:10,flexDirection: 'row',}}>
                             
+                            <Text style={{fontSize:13,color:theme.greyColor,fontFamily:'Raleway_600SemiBold'}}>
+                                We have sent it on {this.state.phoneNumber}</Text> 
+                        </View>
+                        {/* <View style={{marginTop:15,marginLeft:20}}>
+                            <TextInput style={styles.queDesc} onChangeText={(text)=>this.setState({Otp: text})}  placeholder="Enter OTP" placeholderTextColor={theme.labelOrInactiveColor}/>
+                        </View> */}
+                        {/* <View style={{marginTop:15,marginBottom:20,marginLeft:width*0.15,borderWidth:2,borderColor:theme.greyColor,borderRadius:5}}> */}
+                            <OTPInputView
+                                style={{width: '100%', height: 80,borderRadius:10}}
+                                pinCount={6}
+                                code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
+                                onCodeChanged = {code => { this.setState({code})}}
+                                autoFocusOnLoad
+                                codeInputFieldStyle={styles.underlineStyleBase}
+                                codeInputHighlightStyle={styles.underlineStyleHighLighted}
+                                onCodeFilled = {this.getOtp}
+                            />
+                        {/* </View> */}
+                            {/* <OtpInputs getOtp={(otp) => this.getOtp(otp)} /> */}
+                        <View style={{flexDirection:'row',marginTop:20,marginLeft:10,color:theme.greyColor,fontFamily:'Raleway_600SemiBold'}}>
+                            <View>
+                                <Text>
+                                    Resend Otp in 59s
+                                </Text>  
+                            </View>
+                            {/* <View>
+                                <TouchableOpacity onPress={()=>this.handleResendBtnClick()}>
+                                    <Text style={[styles.email]}>Resend</Text>
+                                </TouchableOpacity>
+                            </View> */}
                             
                         </View>
+
+
+                        <View style={{flexDirection:'row',justifyContent:'center',marginTop:height*0.5,width:width*0.9,alignItems: 'center'}}>
+                            <Text style={{fontFamily:'Raleway_600SemiBold'}}>Having Trouble? <Text style={[styles.email]}>Reach Us at www.example.com</Text></Text>
+                        </View>
+                        <View style={{flexDirection:'row',justifyContent:'center',marginTop:20,marginBottom:20,alignItems: 'center',width:width,borderTopWidth:1,borderTopColor:theme.labelOrInactiveColor,paddingTop:10}}> 
+                            <TouchableWithoutFeedback onPress={this.handleContinueBtnClick}>
+                                <View style={{backgroundColor:theme.greyColor,padding:15,borderRadius:10,alignItems: 'center',width:'95%'}}>
+                                    <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>Continue</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </View>
+                    </View>
                             
                         
                 )
