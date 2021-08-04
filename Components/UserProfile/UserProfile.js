@@ -303,24 +303,30 @@ class UserProfile extends React.Component {
                                 <Text style={styles.number}>{this.props.userInfo.mobileNumber}</Text>
                             </View>
                         </View>
-                        <View style={{borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}/>
+                        <View style={{marginTop:10}}/>
 
                         <View style={styles.profile_navigation}>
-                                <View>
-                                    <Text style={[styles.navlink,{color:this.state.activeTab==1?theme.accentColor:theme.labelOrInactiveColor}]} onPress={()=>{this.activeTab(1)}}>Purchase</Text>
+                                <View style={[styles.btnView1,this.state.activeTab==1?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor})]}>
+                                    <Text style={[styles.btnText,{color:this.state.activeTab==1?theme.primaryColor:theme.greyColor}]} onPress={()=>{this.activeTab(1)}}>Enrollments</Text>
                                 </View>
-                                <View>
-                                    <Text style={[styles.navlink,{color:this.state.activeTab==2?theme.accentColor:theme.labelOrInactiveColor}]} onPress={()=>{
-                                        this.activeTab(2)
-                                        this.setState({loadingData: true, offset: 0},()=>fetch_student_history(this.props.userInfo.id, this.state.offset, dataLimit, this.studentHistoryCallBack))
-                                    }}>History</Text>
+                                {/* <View>
+                                    <Text style={[styles.navlink,{color:this.state.activeTab==1?theme.accentColor:theme.labelOrInactiveColor}]} onPress={()=>{this.activeTab(1)}}>Enrollments</Text>
+                                </View> */}
+
+
+                                <View style={[styles.btnView1,this.state.activeTab==2?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor})]}>
+                                    <Text style={[styles.btnText,{color:this.state.activeTab==2?theme.primaryColor:theme.greyColor}]} onPress={()=>{ this.activeTab(2)
+                                        this.setState({loadingData: true, offset: 0},()=>fetch_student_history(this.props.userInfo.id, this.state.offset, dataLimit, this.studentHistoryCallBack))}}>Recents</Text>
                                 </View>
-                                <View>
-                                    <Text style={[styles.navlink,{color:this.state.activeTab==3?theme.accentColor:theme.labelOrInactiveColor}]} onPress={()=>{
-                                        this.activeTab(3),
-                                        this.setState({loadingData:true, offset: 0},()=>fetch_student_feed(this.props.userInfo.id,this.state.offset,dataLimit, this.fetchFeedCallback))
-                                    }}>Feed</Text>
+                               
+
+
+
+                                <View style={[styles.btnView1,this.state.activeTab==3?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor})]}>
+                                    <Text style={[styles.btnText,{color:this.state.activeTab==3?theme.primaryColor:theme.greyColor}]} onPress={()=>{    this.activeTab(3),
+                                        this.setState({loadingData:true, offset: 0},()=>fetch_student_feed(this.props.userInfo.id,this.state.offset,dataLimit, this.fetchFeedCallback))}}>Feed</Text>
                                 </View>
+                                 
                         </View>
 
                         <View style={{borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}/>
@@ -414,15 +420,38 @@ const styles = StyleSheet.create({
 
 
         profile_navigation:{
+            flex:1,
             flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginHorizontal: 20,
+            justifyContent: 'space-between', 
+            // marginHorizontal: 20,
         },
             navlink:{
                 fontSize: 20,
                 color: theme.greyColor
             },
+
+
+        btnView1:
+            {
+                flex: 0.4,
+                paddingLeft: 10,
+                paddingRight: 10,
+                paddingTop: 5,
+                paddingBottom: 5,
+                backgroundColor:theme.greyColor,
+                borderRadius: 5,
+                borderWidth:1,
+                margin: 2, 
+                justifyContent:'center',
+                alignItems: 'center'
+            },
+                btnText:
+                {
+                    fontFamily: 'Raleway_600SemiBold',
+                    fontSize: 16,
+                    color: theme.greyColor
+                },
+
 
 
         // feed wala style

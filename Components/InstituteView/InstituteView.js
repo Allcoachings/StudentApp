@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity, Modal, Dimensions, TextInput,ActivityIndicator} from 'react-native';
+import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity, Modal, Dimensions, TextInput,ActivityIndicator,TouchableWithoutFeedback} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {instituteData} from '../../FakeDataService/FakeData'
 import { AirbnbRating,Rating } from 'react-native-ratings';
@@ -375,6 +375,7 @@ class InstituteView extends React.Component {
 
     renderTestItem=(item)=>{
         return(
+            <View style={{borderColor:theme.labelOrInactiveColor,borderWidth:1,margin:10}}>
             <Accordian
             header={this.accordianHeader(item.name," ","chevron-down")}
         > 
@@ -394,6 +395,7 @@ class InstituteView extends React.Component {
                 />,{width:'95%', padding:10, margin:5}
             )} */}
         </Accordian>
+         </View>
         )
     }
 
@@ -675,7 +677,7 @@ class InstituteView extends React.Component {
                             <View style={styles.optionalRow}> 
                                 <TouchableOpacity style={{borderColor:theme.borderColor,borderWidth:1,borderRadius:10,padding:10}} onPress={() => this.props.navigation.navigate("AboutCourse")}>
                                     <Text style={{fontSize:12,color:theme.secondaryColor,fontFamily:'Raleway_700Bold'}}>
-                                        Upsc Cse- optional Subscription
+                                        About Course
                                     </Text>
                                 </TouchableOpacity>
                                 {this.state.studentEnrolled?(null):(<TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10}} onPress={()=>this.props.navigation.navigate("Payment", {insId:this.state.institute.id,courseId:this.state.activeCourse})}>
@@ -874,7 +876,8 @@ class InstituteView extends React.Component {
                                 transparent = {true}
                                 visible = {this.state.modalVisible}
                                 onRequestClose = {() => { console.log("Modal has been closed.") } }>
-                            <TouchableOpacity  onPress={() =>this.setState({modalVisible:false})} style={{width:'100%',height:'100%'}}>
+                            <TouchableWithoutFeedback onPress={() =>this.setState({modalVisible:false})}>        
+                            <View   style={{width:'100%',height:'100%'}}>
                                 <TouchableOpacity style={{alignSelf: 'flex-end', width: 200, height: 120, padding: 6, backgroundColor: 'white',postion: 'absolute',top:10}}>
                                     {CardView(
                                         <>
@@ -900,7 +903,8 @@ class InstituteView extends React.Component {
                                         {width:'100%',height:'100%'}
                                     )} 
                                 </TouchableOpacity>
-                            </TouchableOpacity>
+                            </View>
+                            </TouchableWithoutFeedback>
                         </Modal>
                         
                         {/* <TouchableOpacity onPress = {() => {this.toggleModal(true)}}>
@@ -1007,7 +1011,7 @@ const styles = StyleSheet.create({
                         },
                             btnView1:
                             {
-                                flex: 0.2,
+                                flex: 0.3,
                                 paddingLeft: 10,
                                 paddingRight: 10,
                                 paddingTop: 5,
@@ -1015,7 +1019,7 @@ const styles = StyleSheet.create({
                                 backgroundColor:theme.greyColor,
                                 borderRadius: 5,
                                 borderWidth:1,
-                                margin: 2,
+                                margin: 2, 
                                 justifyContent:'center',
                                 alignItems: 'center'
                             },
@@ -1192,11 +1196,14 @@ const styles = StyleSheet.create({
                         paddingRight:12, 
                         marginRight:10,
                         paddingVertical: 3.5,
-                        marginTop:5 ,
+                        marginTop:5 , 
                         paddingHorizontal:2,
                         borderWidth:1, 
                         borderColor:theme.primaryColor,
-                        borderRadius:15
+                        borderRadius:15,
+                         alignItems:'center',
+                         justifyContent: 'center'
+
                     },
                         courseTitle:
                         {

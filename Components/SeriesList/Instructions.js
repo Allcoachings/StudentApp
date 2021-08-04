@@ -16,26 +16,26 @@ class Instructions extends React.Component {
     const { closeModal } = this.props;
     return (
         <Modal
-          animationType="slide"
-          transparent={true}
+          animationType="fade"
+          transparent={false}
           visible={this.props.modalVisible}
           onRequestClose={closeModal}>
           {CardView(<View style={styles.centeredView}>
-            <View style={styles.headView}>
-                <Text style={styles.headText}>Instructions</Text>
+            <View style={{borderBottomWidth:1,borderBottomColor:theme.labelOrInactiveColor,padding:10,}}>
+                <Text style={{fontFamily:'Raleway_700Bold',fontSize:20}}>Instructions</Text>
             </View>
-            <View style={styles.bodyView}>
+            <View style={{margin:10}}>
                 <Text style={styles.bodyText}>Instructions Here</Text>
             </View>
-            <View style={styles.btnView}>
-                <TouchableOpacity style={styles.btn} onPress={()=>{this.props.navigation.navigate("SingleTestSeries", {item: this.props.item}), closeModal()}}>
-                    <Text style={styles.btnText}>Continue</Text>
+            <View style={{marginTop:'auto',}}>
+                <TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,alignItems: 'center'}} onPress={()=>{this.props.navigation.navigate("SingleTestSeries", {item: this.props.item}), closeModal()}}>
+                    <Text style={{fontFamily:'Raleway_600SemiBold',fontSize:18,color:theme.primaryColor}}>Continue</Text>
                 </TouchableOpacity >
-                <TouchableOpacity style={styles.btn} onPress={closeModal}>
+                {/* <TouchableOpacity style={styles.btn} onPress={closeModal}>
                     <Text style={styles.btnText}>Cancel</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
-          </View>,{height: height*0.5, width: width*0.7, justifyContent: 'center', marginTop: height*0.25,marginLeft: width*0.15,})}
+          </View>,{height: height, width: width})}
         </Modal>
     );
   }
@@ -47,45 +47,8 @@ const styles = StyleSheet.create({
     flex: 1,
     // justifyContent: 'center',
     // alignItems: 'center'
-  },
-    headerView: 
-    {
-        justifyContent: 'center'
-    },
-        headText:
-        {
-            fontSize: 18, 
-            fontWeight: 'bold', 
-            margin: 10
-        },
-    bodyView: 
-    {
-        justifyContent: 'center', 
-        alignItems: 'center'
-    },
-        bodyText:{
-            fontSize: 16,  
-            margin: 10
-        },
-    btnView:
-    {
-        flexDirection: 'row', 
-        justifyContent: 'flex-end', 
-        marginTop: 'auto', 
-        marginBottom: 10, 
-        marginRight: 10
-    },
-        btn:
-        {
-            backgroundColor: theme.accentColor,
-            padding:6, 
-            borderRadius: 3, 
-            margin: 5
-        },
-            btnText:
-            {
-                color: theme.primaryColor
-            }
+  },  
+     
     
 });
 

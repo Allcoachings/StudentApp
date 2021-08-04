@@ -11,7 +11,8 @@ import Toast from 'react-native-simple-toast';
 
 class AddFeedModal extends Component {
   state={
-      stepCheck:1,//to check on which step user is in order to add a feed
+      stepCheck:2,//to check on which step user is in order to add a feed
+      postType:1,
       addFeedLoading:false,
       description:'',
       pollOptions:[
@@ -25,7 +26,6 @@ class AddFeedModal extends Component {
           }
         ],
         pollOptionCounter:2,
-
         feedItem:{}
 
   }
@@ -424,6 +424,20 @@ renderFeedTypeOptions=()=>
       }
   }
 
+
+  renderButton=(name,icon,onPress)=>
+  {
+    return(
+        <TouchableOpacity style={{flex:1,flexDirection:'column',padding:10,alignItems: 'center'}} onPress={onPress}> 
+            <View style={{}}>
+                <Feather name={icon} color={theme.accentColor} size={20}/>
+            </View>
+            <View>
+                <Text>{name}</Text>
+            </View>
+        </TouchableOpacity>
+    )
+  }
   render() {
      
     return (
@@ -434,10 +448,31 @@ renderFeedTypeOptions=()=>
             onRequestClose = {() => this.props.closeModal()}>
     
             <ScrollView>
-                <View style={styles.headView}>
-                    <Text style={styles.headText}>Add Feed</Text>
+                <View style={styles.headView}> 
+                   <Text style={styles.headText}>Add Feed</Text>
                 </View>
-                {this.renderFeedSteps(this.state.stepCheck)}
+                {/* {this.renderFeedSteps(this.state.stepCheck)} */}
+
+
+
+                <View style={{borderWidth:1,borderColor:theme.labelOrInactiveColor,margin:10,borderRadius:10}}>
+                    <TextInput
+                        style={{height:250,fontFamily:'Raleway_400Regular',marginHorizontal:10}}
+                        placeholder="Write Something...."
+
+                    />
+                    <View style={{flex:1,flexDirection:'row',justifyContent: 'flex-end'}}>
+                        <View style={{marginHorizontal:10}}>
+                        {this.renderButton("Poll","bar-chart-2",()=>{})} 
+                        </View>
+                        <View style={{marginHorizontal:10}}>
+                        {this.renderButton("Image","image",()=>{})} 
+                        </View>
+                        <View style={{marginHorizontal:10,backgroundColor:theme.labelOrInactiveColor,borderTopLeftRadius:10,borderTopRightRadius:10}}>
+                        {this.renderButton("Post","align-left",()=>{})} 
+                        </View>
+                    </View>
+                </View>
                 {/* <View style={styles.btnView}>
                     <TouchableOpacity style={styles.submitButton} onPress={this.handleNextBtnClick}>
                           {this.state.addCourseLoading?
@@ -470,8 +505,8 @@ const styles = StyleSheet.create({
         headText:
         {
             marginTop:10,
-            fontSize: 24,
-            fontWeight: 'bold',
+            fontSize: 24, 
+            fontFamily: 'Raleway_600SemiBold',
             color: theme.secondaryColor
         },
     inputView: {

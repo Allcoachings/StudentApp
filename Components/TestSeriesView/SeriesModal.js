@@ -14,7 +14,9 @@ class SeriesModal extends React.Component {
     Unattempted:this.props.totalQuestions-(this.props.attempted),
     attempted:this.props.attempted,
     questions:Object.values(this.props.questions),
-    testSeriesDetails:this.props.testSeriesDetails
+    testSeriesDetails:this.props.testSeriesDetails,
+    listModeIcon:'list',
+    listMode:'list'
     
   };
 
@@ -66,7 +68,7 @@ class SeriesModal extends React.Component {
          }
       } 
   }
-  renderQuestion=({item,index})=>{
+  renderQuestionGridItem=({item,index})=>{
 
 
     this.calculateScore(item.status,item.correctMarks,item.wrongMarks)
@@ -74,6 +76,22 @@ class SeriesModal extends React.Component {
       <TouchableOpacity style={[styles.queView,this.provideQuestionItemStyle(item.status)]}>
         <Text style={styles.queno}>{index+1}</Text>
       </TouchableOpacity>
+    )
+  }
+
+  renderQuestionListItem=({item,index})=>
+  {
+    this.calculateScore(item.status,item.correctMarks,item.wrongMarks)
+    return(
+      <View style={[{flex: 1,flexDirection: 'row',alignItems: 'center',flexWrap:'wrap',margin:5},this.provideQuestionItemStyle(item.status)]}>
+
+          <TouchableOpacity style={[styles.queView]}>
+            <Text style={styles.queno}>{index+1}</Text>
+          </TouchableOpacity>
+          <View>
+              <Text style={styles.queno}>{item.question}</Text>
+          </View>
+      </View>
     )
   }
   handleSubmitTestButtonClick=()=>
@@ -90,6 +108,50 @@ class SeriesModal extends React.Component {
      this.props.navigation.navigate("ResultAnalysis");
      this.props.closeModal()
      window.clearInterval(this.props.intervalRef)
+  }
+
+
+  changeListMode=()=>
+  {
+        switch(this.state.listMode)
+        {
+          case 'list':
+              this.setState({listMode: 'grid',listModeIcon:'grid'})
+            break;
+          case 'grid':
+            this.setState({listMode: 'list',listModeIcon:'list'})
+
+            break;
+        }
+  }
+
+  renderQuestionList=()=>
+  {
+
+
+    switch(this.state.listMode)
+    {
+        case 'grid':
+          return (
+            <View>
+              <FlatList
+                data={this.state.questions}
+                renderItem={this.renderQuestionGridItem} 
+                numColumns={7}
+                keyExtractor={(item) => item.id}
+                />  
+              </View>
+          )
+        case 'list':
+          return (
+            <FlatList
+              data={this.state.questions}
+              renderItem={this.renderQuestionListItem}  
+              keyExtractor={(item) => item.id}
+              />  
+          )
+    }
+    
   }
   render() {
     const { isModalVisible,closeModal,isPractice } = this.props;
@@ -203,18 +265,19 @@ class SeriesModal extends React.Component {
                     <View style={styles.rowElement}>
                       <Text style={{fontSize:30,color:theme.labelOrInactiveColor}}> • </Text> 
                       <Text style={{fontSize: 12,color: theme.greyColor}}>Unattempted ({this.state.Unattempted})</Text>
+                    </View>
+                    
+                    <View style={styles.rowElement}>
+                       
+                        <Feather name={this.state.listModeIcon} size={20} onPress={this.changeListMode}/>
+                      
                     </View> 
                 </View>
 
 
 
                 <View style={styles.questions}>
-                  <FlatList
-                      data={this.state.questions}
-                      renderItem={this.renderQuestion} 
-                      numColumns={7}
-                      keyExtractor={(item) => item.id}
-                  />
+                  {this.renderQuestionList()}
                 </View> 
                 <TouchableOpacity style={styles.submitBtn} onPress={this.handleSubmitTestButtonClick}>
                   <Text style={styles.btntext}>Submit Test</Text>
@@ -375,11 +438,13 @@ const styles = StyleSheet.create({
 
 correctQues:
 {
-  borderColor:theme.featureYesColor
+  borderColor:theme.featureYesColor,
+  backgroundColor: theme.featureYesColor+'4D',
 },
 wrongQues:
 {
-  borderColor:theme.featureNoColor
+  borderColor:theme.featureNoColor,
+  backgroundColor: theme.featureNoColor+'4D',
 
 },
 attemptedQues:

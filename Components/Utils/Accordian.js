@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet,TouchableOpacity } from 'react-native';
+import { View, StyleSheet,TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 
  class Accordian extends Component {
  
@@ -19,9 +19,11 @@ import { View, StyleSheet,TouchableOpacity } from 'react-native';
     return (
       <View style={styles.container}>
         <View style={styles.accordianHeader}>
-            <TouchableOpacity   onPress={()=>this.accordionOnPress()}> 
-                {this.props.header}
-            </TouchableOpacity>
+            <TouchableWithoutFeedback   onPress={()=>this.accordionOnPress()}>
+                <View>
+                  {this.props.header}
+                </View> 
+            </TouchableWithoutFeedback>
         </View>
         {this.state.isContentVisible?(
             this.props.children

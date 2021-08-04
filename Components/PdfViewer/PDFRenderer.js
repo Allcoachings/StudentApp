@@ -8,6 +8,7 @@ const PDFRenderer = (props) => (
         <PDFReader
         withPinchZoom={true}
         withScroll={true}
+        useGoogleReader
         customStyle={
           {readerContainerZoomContainerButton:{height:0, width:0}}
         }

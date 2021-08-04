@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,TouchableOpacity } from 'react-native';
+import { View, Text,StyleSheet,TouchableOpacity,TouchableWithoutFeedback } from 'react-native';
 import {theme} from '../config'
 import {Feather} from '@expo/vector-icons';
 class Question extends Component {
@@ -9,6 +9,7 @@ class Question extends Component {
       userOptionIndex:'',
       isCorrect:false,
       isResponded:false,
+      showSolution:false,
 
   }
 
@@ -168,10 +169,32 @@ class Question extends Component {
                 </View> 
             </View>
             {this.state.isPractice&&this.state.isResponded?(
-                <View style={styles.explanationView}>
-                    <Text style={styles.heading}>Reason</Text>
-                    <Text style={styles.explanation}>{this.props.item.explanation}</Text>
-                </View> 
+                this.state.showSolution?(
+                    <>
+                    <View style={{alignItems: 'flex-end',margin:10}}>
+                        <TouchableWithoutFeedback onPress={()=>this.setState({showSolution:false})}>
+                            <View style={{flexDirection:'row', }}>
+                                <Text style={{color:theme.accentColor}}>Hide</Text>
+                                <Feather name="chevron-up" color={theme.accentColor} size={20}/>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </View>
+                    <View style={styles.explanationView}>
+                        <Text style={styles.heading}>Reason</Text>
+                        <Text style={styles.explanation}>{this.props.item.explanation}</Text>
+                    </View> 
+                    </>
+                ):(
+                    <View style={{alignItems: 'flex-end',margin:10}}>
+                        <TouchableWithoutFeedback onPress={()=>this.setState({showSolution:true})}>
+                            <View style={{flexDirection:'row', }}>
+                                <Text style={{color:theme.accentColor}}>View Solution</Text>
+                                <Feather name="chevron-down" color={theme.accentColor} size={20}/>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </View>
+                )
+                
             ):(null)}
             
         </View>
@@ -329,7 +352,7 @@ const styles = StyleSheet.create({
     },
     correctAnsIndex:
     {
-        backgroundColor:theme.yellowColor+'4D',
+        backgroundColor:theme.featureYesColor+'4D',
 
     },
     wrongAnsIndex:

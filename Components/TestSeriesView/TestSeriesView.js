@@ -258,7 +258,8 @@ class TestSeriesView extends React.Component {
                             questions={this.state.questions}
                             attempted={this.state.attempted}
                             isModalVisible={this.state.isModalVisible}
-                            isPractice={this.state.testSeries.isPractice}
+                            isPractice={true}
+                            // isPractice={this.state.testSeries.isPractice}
                             closeModal={this.closeModal}
                             testSeriesDetails={this.state.testSeries}
                             timeOver ={this.state.timeOver}

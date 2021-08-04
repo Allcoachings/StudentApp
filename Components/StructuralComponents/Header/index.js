@@ -46,7 +46,7 @@ class index extends React.Component {
     renderTabItems=({item})=>
     {
         return (
-            <TouchableOpacity style={[styles.courseItemContainer,this.state.activeTab==item.id?({backgroundColor:theme.secondaryColor,borderColor:theme.accentColor+'4D'}):({backgroundColor:theme.labelOrInactiveColor+'4D',borderColor:theme.labelOrInactiveColor})]} onPress={()=>this.handleCatPress(item)}> 
+            <TouchableOpacity style={[styles.courseItemContainer,this.state.activeTab==item.id?({backgroundColor:theme.secondaryColor,borderColor:theme.secondaryColor}):({backgroundColor:theme.labelOrInactiveColor+'4D',borderColor:theme.labelOrInactiveColor})]} onPress={()=>this.handleCatPress(item)}> 
                     <Text style={[styles.courseTitle,this.state.activeTab==item.id?({color:theme.primaryColor}):({color:theme.greyColor})]}>{item.name}</Text>
             </TouchableOpacity>
         );

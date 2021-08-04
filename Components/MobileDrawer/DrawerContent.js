@@ -71,7 +71,7 @@ export function DrawerContent(props){
                     </Drawer.Section> 
                 </View>
             </DrawerContentScrollView>
-            <Drawer.Section style={styles.bottomDrawer}>
+            {/* <Drawer.Section style={styles.bottomDrawer}>
                 <DrawerItem
                     icon={({color, size}) => (
                         <Icon
@@ -85,7 +85,7 @@ export function DrawerContent(props){
                     inactiveTintColor={theme.primaryColor}
                     onPress={()=>{props.navigation.navigate("Auth")}}
                 />
-            </Drawer.Section>
+            </Drawer.Section> */}
             <Drawer.Section>
             </Drawer.Section>
 

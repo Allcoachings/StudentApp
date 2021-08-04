@@ -81,11 +81,39 @@ class StudentReview extends React.Component {
     render() {
         return (
                 <View>
-                    <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10, marginTop: 10}}>
+                    <View style={{flexDirection: 'column', justifyContent: 'space-between', marginBottom: 10, marginTop: 10}}>
                         <Text style={styles.RatingText}>Rating & Reviews</Text>
                         {this.props.studentEnrolled?(
-                            <Feather name="arrow-right" size={26} color={'grey'} style={{alignSelf: 'flex-end',}} onPress = {() => {this.reviewModal(true)}}/>
-                        ):(null)}
+                            <View style={{ paddingHorizontal: 6,marginVertical:10,backgroundColor: 'white'}}>
+                            {/* <Rating
+                                type='star'
+                                ratingCount={5}
+                                startingValue={0}
+                                imageSize={30} 
+                                unSelectedColor={theme.appBackgroundColor} 
+                                // tintColor={theme.appBackgroundColor}
+                                ratingColor={theme.blueColor}
+                                style={styles.instituteRating}
+                                readOnly={true}
+                                style={{textAlign: 'center', marginBottom: 10}} 
+                            /> */}
+                            <AirbnbRating 
+                                starContainerStyle={[styles.instituteRating,{alignSelf:"center"}]} 
+                                count={5}
+                                reviews={[]} 
+                                isDisabled={false}
+                                defaultRating={0}
+                                size={30}
+                                selectedColor={theme.blueColor}
+                                showRating={false}
+                                onFinishRating={this.ratingCompleted}
+                            />
+                            <TextInput style={{borderWidth: 1, borderColor: 'black', borderRadius:10, paddingLeft: 6, paddingBottom:30,}} placeholder="Write a Review" placeholderTextColor='grey' onChangeText={(text) => this.setState({review: text})}></TextInput>
+                            <TouchableOpacity style={styles.reviewbutton} onPress={()=>this.addReview()}>
+                                <Text style={styles.reviewbutton_text}>Submit</Text>
+                            </TouchableOpacity>
+                        </View>
+                         ):(null)} 
                     </View>
                     {this.state.reviewLoading?(
                         <ActivityIndicator color={theme.featureYesColor} size={"large"}/>
