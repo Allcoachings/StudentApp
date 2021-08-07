@@ -18,6 +18,7 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/{insId}/course")
     public  Iterable<Course> findAllCourse(@PathVariable long insId)
     {

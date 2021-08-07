@@ -196,6 +196,7 @@ const styles = StyleSheet.create({
     RatingText:
     {
         fontSize: 20, 
+        fontFamily: 'Raleway_700Bold',
     },
     reviewbutton:{
         flexDirection: 'row',

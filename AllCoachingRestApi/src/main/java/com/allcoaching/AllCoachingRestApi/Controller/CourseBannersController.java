@@ -35,13 +35,14 @@ public class CourseBannersController {
         URI location = ServletUriComponentsBuilder.fromPath("{id}*{addr}").buildAndExpand(courseBanners_saved.getId(),bannerImageLink).toUri();
         return ResponseEntity.created(location).build();
     }
-
+    @CrossOrigin(origins = "*")
     @GetMapping("/{id}")
     public Optional<CourseBanners> findById(@PathVariable long id)
     {
         return courseBannersService.findById(id);
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/all/{id}")
     public Iterable<CourseBanners> findByCourseId(@PathVariable long id)
     {

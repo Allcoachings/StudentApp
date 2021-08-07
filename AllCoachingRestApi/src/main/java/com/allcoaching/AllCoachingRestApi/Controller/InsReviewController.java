@@ -49,6 +49,7 @@ public class InsReviewController {
         return ResponseEntity.ok().build();
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/{offset}/{data_limit}/{sortBy}/{insId}")
     public Iterable<InsReviewDto> getAllReviews(
             @PathVariable(name = "offset") Integer offset,

@@ -48,6 +48,8 @@ public class CourseVideoController {
 //        return courseVideoService.findByPlaylist(id);
 //
 //    }
+
+    @CrossOrigin(origins = "*")
     @GetMapping("/all/{id}")
     public Iterable<CourseVideo> findByCourse(@PathVariable  long id)
     {

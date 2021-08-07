@@ -51,7 +51,7 @@ public class FileController {
 
                     .contentType(MediaType.parseMediaType(contentType))
 
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                    .header( "attachment; filename=\"" + resource.getFilename() + "\"")
 
                     .body(resource);
 

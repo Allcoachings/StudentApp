@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     
     RatingText:
     {
+        fontFamily: 'Raleway_700Bold',
         fontSize: 20, 
         marginTop: 10
     },  

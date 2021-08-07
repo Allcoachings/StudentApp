@@ -21,7 +21,7 @@ class Auth extends React.Component {
         auth_mode: 0,
         isModalVisible: false,
         isOtpModal : false,
-        mobile:8449129069
+        mobile:''
       } 
 
 
@@ -61,9 +61,9 @@ class Auth extends React.Component {
             </TouchableOpacity>
         )
     }
-    openInfoModal=()=>
+    openInfoModal=(number)=>
     {
-        this.setState({isModalVisible:true})   
+        this.setState({ mobile: number,isModalVisible:true})   
     }
     render() { 
         return (
@@ -101,7 +101,7 @@ class Auth extends React.Component {
                                 </View> */}
 
                                 <View style={{position: 'absolute',bottom:25,width:width-10,margin:10,alignSelf: 'center'}}>
-                                    <TouchableWithoutFeedback onPress={this.openInfoModal}>
+                                    <TouchableWithoutFeedback onPress={this.openModalOTP}>
                                         <View style={{backgroundColor:theme.accentColor,padding:15,borderRadius:10,alignItems: 'center'}}>
                                             <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>Get started</Text>
                                         </View>
@@ -117,7 +117,7 @@ class Auth extends React.Component {
                         </View>
                     )} 
                     </View>
-                    <OtpVerification mobile={this.state.mobile} isOtpModal = {this.state.isOtpModal} navigation={this.props.navigation} closeModal = {this.closeModalOTP} openInfoModal={this.openInfoModal}/>
+                    <OtpVerification isOtpModal = {this.state.isOtpModal} navigation={this.props.navigation} closeModal = {this.closeModalOTP} openInfoModal={this.openInfoModal}/>
                     <InfoModal isModalVisible={this.state.isModalVisible} mobileNumber={this.state.mobile} navigation={this.props.navigation}/>
                     </>
             // </ScrollView>

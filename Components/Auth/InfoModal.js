@@ -16,7 +16,6 @@ var rate ;
 class InfoModal extends React.Component {
     state = {
         heading : 'Create your account',
-        mobileNumber:this.props.mobileNumber,
         studentImage:defaultStudentImage
         
     }
@@ -25,19 +24,20 @@ class InfoModal extends React.Component {
             console.log(response.status)   
             if(response.status === 201)
             {
-                  this.props.setUserInfo({id:response.headers.map.location,email:this.state.email,name:this.state.name,state:this.state.state,mobileNumber:this.state.mobileNumber,userId:this.state.mobileNumber,studentImage:this.state.studentImage})
+                  this.props.setUserInfo({id:response.headers.map.location,email:this.state.email,name:this.state.name,state:this.state.state,mobileNumber:this.props.mobileNumber,userId:this.props.mobileNumber,studentImage:this.state.studentImage})
                   this.props.userAuthStatus(true);
                 //   this.props.navigation.navigate("Home")
-                AsyncStorage.setItem('userDetails', JSON.stringify({id:response.headers.map.location,email:this.state.email,name:this.state.name,state:this.state.state,mobileNumber:this.state.mobileNumber,userId:this.state.mobileNumber,studentImage:this.state.studentImage,authType:'user'}))
+                AsyncStorage.setItem('userDetails', JSON.stringify({id:response.headers.map.location,email:this.state.email,name:this.state.name,state:this.state.state,mobileNumber:this.props.mobileNumber,userId:this.props.mobileNumber,studentImage:this.state.studentImage,authType:'user'}))
 
             }
     }
 
     handleSubmitButtonClick=() => {
-        registerStudent(this.state.email,this.state.name,this.state.state,this.state.mobileNumber,this.state.studentImage,this.registerCallBack)
+        registerStudent(this.state.email,this.state.name,this.state.state,this.props.mobileNumber,this.state.studentImage,this.registerCallBack)
     }
     
     render() {
+        console.log("this.props.mobileNumber",this.props.mobileNumber)
         return(
             <Modal
             animationType="fade"
@@ -45,57 +45,61 @@ class InfoModal extends React.Component {
             // style={{height:500,width:5001}}
             visible={this.props.isModalVisible}
             >
-                <View>
-                {CardView(
-                    <View style={styles.container}>
+                <TouchableWithoutFeedback>
+                    <View style={{height:height,width:width}}>
+                        {CardView(
+                            <View style={styles.container}>
 
 
-                        <View style={styles.header}>
-                            {/* <AuthHeader/>                         */}
-                            <Feather name="chevron-left" size={20} color={theme.greyColor}/>
-                        </View>
-                        <View>
-                            <Text style={styles.postQueText}>{this.state.heading}</Text>
-                            <View style={{flexDirection:'row'}}>
-                                <Text style={{fontFamily: 'Raleway_400Regular',marginLeft:'5%',marginRight:2}}>Signing up with </Text>
-                                <Text style={{margin:2}}>+91 8109176342</Text>
-                            </View>
-                            {/* <TouchableOpacity onPress={()=>this.props.closeModal()}>
-                                <Image source={Assets.discussions.closeIcon} style={styles.closeIcon}/>
-                            </TouchableOpacity> */}
-                             
-                        </View>
-                        
-                        <View style={{marginTop:height*0.04}}>
-                            <Text style={{marginLeft:15,fontFamily:'Raleway_600SemiBold'}}>Full Name</Text>
-                        </View>
-                        <View style={styles.queDescView}>
-                            <TextInput style={styles.queDesc} onChangeText={(text)=>this.setState({name: text})}  placeholder="Enter full name" placeholderTextColor={theme.labelOrInactiveColor}/>
-                        </View>
-                        <View style={{marginTop:15}}>
-                            <Text style={{marginLeft:15,fontFamily:'Raleway_600SemiBold'}}>Email address</Text>
-                        </View>
-                        <View style={styles.queDescView}>
-                            <TextInput style={styles.queDesc} onChangeText={(text)=>this.setState({email: text})}  placeholder="Enter email address" placeholderTextColor={theme.labelOrInactiveColor}/>
-                        </View>
-                        <View style={{marginTop:15,}}>
-                            <Text style={{marginLeft:15,fontFamily:'Raleway_600SemiBold'}}>State</Text>
-                        </View>
-                        <View style={styles.queDescView}>
-                            <TextInput style={styles.queDesc} onChangeText={(text)=>this.setState({state: text})}  placeholder="Select your state" placeholderTextColor={theme.labelOrInactiveColor}/>
-                        </View>
-                        <View style={{flexDirection:'row',justifyContent:'center',marginTop:'auto',marginBottom:20,alignItems: 'center',width:width,borderTopWidth:1,borderTopColor:theme.labelOrInactiveColor,paddingTop:10}}>  
-                            <TouchableWithoutFeedback onPress={this.handleSubmitButtonClick}>
-                                <View style={{backgroundColor:theme.greyColor,padding:15,borderRadius:10,alignItems: 'center',width:'95%'}}>
-                                    <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>Continue</Text>
+                                <View style={styles.header}>
+                                    {/* <AuthHeader/>                         */}
+                                    <Feather name="chevron-left" size={20} color={theme.greyColor}/>
                                 </View>
-                            </TouchableWithoutFeedback>
-                        </View>
-                            
-                        
-                    </View>,{width: width, height: height-40, marginLeft: 'auto', marginRight:'auto',}
-                )}
-                </View>
+                                <View>
+                                    <Text style={styles.postQueText}>{this.state.heading}</Text>
+                                    <View style={{flexDirection:'row'}}>
+                                        <Text style={{fontFamily: 'Raleway_400Regular',marginLeft:'5%',marginRight:2}}>Signing up with </Text>
+                                        <Text style={{margin:2}}>+91 8109176342</Text>
+                                    </View>
+                                    {/* <TouchableOpacity onPress={()=>this.props.closeModal()}>
+                                        <Image source={Assets.discussions.closeIcon} style={styles.closeIcon}/>
+                                    </TouchableOpacity> */}
+                                    
+                                </View>
+                                
+                                <View style={{marginTop:height*0.04}}>
+                                    <Text style={{marginLeft:15,fontFamily:'Raleway_600SemiBold'}}>Full Name</Text>
+                                </View>
+                                <View style={styles.queDescView}>
+                                    <TextInput style={styles.queDesc} onChangeText={(text)=>this.setState({name: text})}  placeholder="Enter full name" placeholderTextColor={theme.labelOrInactiveColor}/>
+                                </View>
+                                <View style={{marginTop:15}}>
+                                    <Text style={{marginLeft:15,fontFamily:'Raleway_600SemiBold'}}>Email address</Text>
+                                </View>
+                                <View style={styles.queDescView}>
+                                    <TextInput style={styles.queDesc} onChangeText={(text)=>this.setState({email: text})}  placeholder="Enter email address" placeholderTextColor={theme.labelOrInactiveColor}/>
+                                </View>
+                                <View style={{marginTop:15,}}>
+                                    <Text style={{marginLeft:15,fontFamily:'Raleway_600SemiBold'}}>State</Text>
+                                </View>
+                                <View style={styles.queDescView}>
+                                    <TextInput style={styles.queDesc} onChangeText={(text)=>this.setState({state: text})}  placeholder="Select your state" placeholderTextColor={theme.labelOrInactiveColor}/>
+                                </View>
+                                <View 
+                                    style={{flexDirection:'row',justifyContent:'center',marginTop:'auto',marginBottom:20,alignItems: 'center',width:width,borderTopWidth:1,borderTopColor:theme.labelOrInactiveColor,paddingTop:10}}
+                                >  
+                                    <TouchableWithoutFeedback onPress={this.handleSubmitButtonClick}>
+                                        <View style={{backgroundColor:theme.accentColor,padding:15,borderRadius:10,alignItems: 'center',width:'95%'}}>
+                                            <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>Continue</Text>
+                                        </View>
+                                    </TouchableWithoutFeedback>
+                                </View>
+                                    
+                                
+                            </View>,{width: width, height: height-40, marginLeft: 'auto', marginRight:'auto',}
+                        )}
+                    </View>
+                </TouchableWithoutFeedback>
             </Modal>
         )
     }

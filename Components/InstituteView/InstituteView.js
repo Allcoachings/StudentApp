@@ -847,7 +847,7 @@ class InstituteView extends React.Component {
                     
                         <View style={{marginVertical: 20,}}>
                             <Text style={styles.RatingText}>About Institute</Text>
-                            <Text>{this.state.institute.about}</Text>
+                            <Text style={{fontFamily: 'Raleway_600SemiBold'}}>{this.state.institute.about}</Text>
                         </View>
 
                     <StudentReview 
@@ -1495,7 +1495,8 @@ const styles = StyleSheet.create({
         RatingText:
         {
             fontSize: 20, 
-            marginTop: 10
+            marginTop: 10,
+            fontFamily: 'Raleway_700Bold',
         },
 
 

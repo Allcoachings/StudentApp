@@ -89,8 +89,10 @@ class InsHome extends React.Component {
             fetch_courses_banners(item.id,this.courseBannerCallback)
         }
         return (
-            <TouchableOpacity style={[styles.courseItemContainer,this.state.activeCourse==item.id?({backgroundColor:theme.secondaryColor}):(null)]} onPress={()=>this.handleCourseItemClick(item)}> 
-                    <Text style={[styles.courseTitle,this.state.activeCourse==item.id?({color:theme.primaryColor}):({color:theme.secondaryColor})]}>{item.title}</Text>
+            <TouchableOpacity 
+                style={[styles.courseItemContainer,this.state.activeCourse==item.id?({backgroundColor:theme.purpleColor, borderColor:theme.darkPurpleColor}):({backgroundColor:theme.gradientColor,borderColor: theme.labelOrInactiveColor})]} onPress={()=>this.handleCourseItemClick(item)}
+            > 
+                    <Text style={[styles.courseTitle,this.state.activeCourse==item.id?({color: theme.darkPurpleColor}):({color:theme.primaryColor})]}>{item.title}</Text>
             </TouchableOpacity>
         );
     }
@@ -167,11 +169,10 @@ class InsHome extends React.Component {
 
     renderSubjectOptions=({item})=>
     {
-        console.log(item.name)
         return(
             <TouchableOpacity 
                 onPress={()=>{this.filterItemClick(item)}} 
-                style={[styles.singleSubject,this.state.activeFilter==item.name?({backgroundColor:theme.secondaryColor}):(null)]}>
+                style={[styles.singleSubject,this.state.activeFilter==item.name?({backgroundColor:theme.secondaryColor}):(null), {paddingHorizontal: 5}]}>
                 <Text style={[styles.singleSubjectText,this.state.activeFilter==item.name?({color:theme.primaryColor}):(null)]}>{item.name}</Text>
             </TouchableOpacity>
         )
@@ -511,7 +512,8 @@ class InsHome extends React.Component {
             {
                 response.json().then(data=>
                 {
-                    console.log(data);
+                    var playlist={"courseId": this.state.activeCourse, "id": -1, "name": "All"}
+                    data.unshift(playlist)
                     this.setState({courseVideosPlaylist:data,courseVideoPlaylistLoaded:true,isCourseVideoPlaylistLoading:false});                   
                 })
             }
@@ -534,15 +536,18 @@ class InsHome extends React.Component {
             {
                 response.json().then(data=>
                 {
-                    console.log(data);
+                    var playlist={"courseId": this.state.activeCourse, "id": -1, "name": "All"}
+                    data.unshift(playlist)
                     this.setState({courseDocumentPlaylist:data,courseDocumentPlaylistLoaded:true,isCourseDocumentPlaylistLoading:false});                   
                 })
             }
     }
     appendCourseVideoPlaylist =(obj)=>
     {
+
         let courseVideosPlaylist = this.state.courseVideosPlaylist;
         courseVideosPlaylist.push(obj)
+        
         this.setState({courseVideosPlaylist})
     }
      
@@ -778,8 +783,8 @@ class InsHome extends React.Component {
                    <>
                    
                             <View style={styles.InstituteCourseListView}>
-                                <TouchableOpacity style={{marginTop: 20, borderWidth: 1, borderColor: theme.secondaryColor, marginRight: 10, borderRadius:10, paddingHorizontal: 10,}} onPress={()=>this.openAddCourseModal()}>
-                                    <Text> + Add Course</Text>
+                                <TouchableOpacity style={{marginTop: 25, borderWidth: 1, borderColor: theme.secondaryColor, marginRight: 10, borderRadius:20, paddingVertical:4, paddingHorizontal: 10}} onPress={()=>this.openAddCourseModal()}>
+                                    <Text style={{fontFamily: 'Raleway_700Bold', fontSize:14}}> + Add Course</Text>
                                 </TouchableOpacity>
 
                                 <FlatList 
@@ -802,13 +807,13 @@ class InsHome extends React.Component {
                             {this.state.activeCourse?(
                                 <>
                                 <View style={styles.optionalRow}> 
-                                    <TouchableOpacity style={{borderColor:theme.borderColor,borderWidth:1,borderRadius:10,padding:10}}>
-                                        <Text style={{fontSize:10,color:theme.secondaryColor,fontWeight:'bold'}}>
+                                    <TouchableOpacity style={{borderColor:theme.borderColor,borderWidth:1,borderRadius:10,padding:10}} onPress={() => this.props.navigation.navigate("AboutCourse")}>
+                                        <Text style={{fontSize:12,color:theme.secondaryColor,fontFamily:'Raleway_700Bold'}}>
                                             About Course Chats
                                         </Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10}}>
-                                        <Text style={{fontSize:10,color:theme.primaryColor}}>
+                                        <Text style={{fontSize:14,color:theme.primaryColor, fontFamily:'Raleway_700Bold'}}>
                                             Fees - {this.state.activeCourseDetail&&this.state.activeCourseDetail.fees}
                                         </Text>
                                     </TouchableOpacity>
@@ -941,7 +946,7 @@ class InsHome extends React.Component {
                                         <Text style={[styles.btnText,{color:this.state.tabtoshow==1?theme.primaryColor:theme.greyColor}]} onPress={()=>{this.tabtoshow(1)}}>Courses</Text>
                                     </View>
                                      
-                                    <View style={[styles.btnView2,this.state.tabtoshow==2?({backgroundColor:theme.accentColor+'4D',borderColor:theme.accentColor+'4D'}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor,borderWidth: 1})]}>
+                                    <View style={[styles.btnView2,this.state.tabtoshow==2?({backgroundColor:theme.accentColor+'4D',borderColor:theme.accentColor+'4D'}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor})]}>
                                         <Text style={[styles.btnText,{color:theme.blueColor}]}>{institute.follower?institute.follower:0} Follower</Text>
                                     </View>
                                     <TouchableOpacity style={[styles.btnView3,this.state.tabtoshow==3?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor,borderWidth:1})]} onPress={this.handleFeedTabBtnClick}>
@@ -956,7 +961,7 @@ class InsHome extends React.Component {
                     <View style={{borderBottomWidth: 1, borderBottomColor: theme.labelOrInactiveColor, marginVertical: 10}}/>
                     <View style={{marginVertical: 20,}}>
                             <Text style={styles.RatingText}>About Institute</Text>
-                            <Text>{this.props.institute.details.about}</Text>
+                            <Text style={{fontFamily: 'Raleway_600SemiBold'}}>{this.props.institute.details.about}</Text>
                         </View>
                     <InsReviews />  
 
@@ -1201,7 +1206,7 @@ const styles = StyleSheet.create({
 
                 courseItemContainer:
                 {
-                    borderColor:theme.secondaryColor,
+                    borderColor:theme.primaryColor,
                     borderWidth:1,
                     // padding:5,
                     marginTop:'30%',
@@ -1214,8 +1219,9 @@ const styles = StyleSheet.create({
                 },
                     courseTitle:
                     {
-                        fontSize:12,
-                        color:theme.secondaryColor
+                        fontSize:14,
+                        color:theme.secondaryColor,
+                        fontFamily: 'Raleway_700Bold',
                     },
                 bannerItemContainer:
                 {
@@ -1556,6 +1562,7 @@ const styles = StyleSheet.create({
             },
             RatingText:
             {
+                fontFamily: 'Raleway_700Bold',
                 fontSize: 20, 
                 marginTop: 10
             },

@@ -105,7 +105,7 @@ class InsRegister extends React.Component {
                 this.props.setInstituteDetails({id:response.headers.map.location,name:this.state.insName,directorName:this.state.dirName,email:this.state.email,phone:this.state.phone,password:this.state.password,address:this.state.address,city:this.state.city,state:this.state.state,category:this.state.category,about:this.state.about,logo:this.state.logo.uri,status:1})
                 this.props.setInstituteAuth(true);
                 AsyncStorage.setItem('authInfo', JSON.stringify({id:response.headers.map.location,name:this.state.insName,directorName:this.state.dirName,email:this.state.email,phone:this.state.phone,password:this.state.password,address:this.state.address,city:this.state.city,state:this.state.state,category:this.state.category,about:this.state.about,logo:this.state.logo.uri,status:1,authType:'ins'}))
-                // this.props.navigation.navigate("Home")
+                this.props.navigation.navigate("Home")
 
             }
             else
@@ -206,10 +206,10 @@ class InsRegister extends React.Component {
                         {!this.state.loadingCategory?(
                             
                             // CardView(
-                                <View style={styles.dropdownView}>
+                                <View style={styles.inputField}>
                                     <Picker
 
-                                        style={[styles.inputField,{height:30}]}
+                                        style={[styles.dropDownView,{height:30}]}
                                         selectedValue={this.state.selectedCategory}
                                         onValueChange={(itemValue, itemIndex) =>
                                             this.setSelectedCategory(itemValue)
@@ -238,14 +238,14 @@ class InsRegister extends React.Component {
                         
 
 
-                        {CardView(<View style={styles.checkboxContainer}>
+                        <View style={styles.checkboxContainer}>
                             <CheckBox
                                 value={this.state.isSelected}
                                 onValueChange={this.setSelection}
                                 style={styles.checkbox}
                             />
                             <Text style={styles.label}>By pressing 'Signup' you agree to our Terms & Conditions</Text>
-                        </View>, {marginTop: 10, padding: 12,zIndex:-10,elevation:-10})}
+                        </View>
 
                         <View style={styles.regBtnView}>
                             <TouchableOpacity style={styles.regBtn} onPress={this.registerCoachingClickHandler}>
@@ -320,17 +320,27 @@ const styles = StyleSheet.create({
             },
         checkboxContainer: 
         {
-            flexDirection: "row",
-            marginTop: 10,
-            alignItems: "center"
+            width: width-20,
+            borderRadius: 10,
+            padding: 10,
+            margin:10,
+            borderWidth: 1,
+            flexDirection: 'row',
+            // justifyContent: 'center',
+            alignItems: 'center',
+            // fontFamily: 'Raleway_600SemiBold',
+            borderColor:theme.labelOrInactiveColor,
         },
             checkbox: 
             {
-                
+                borderWidth: 1,
+                fontFamily: 'Raleway_600SemiBold',
+                borderColor:theme.labelOrInactiveColor, 
             },
             label: 
             {
                 fontSize: 12,
+                fontFamily: 'Raleway_600SemiBold',
                 color: theme.greyColor,
                 marginLeft: 5
             },
@@ -342,16 +352,25 @@ const styles = StyleSheet.create({
             {
                 marginTop: 10,
                 backgroundColor: theme.accentColor,
-                padding: 10,
-                borderRadius: 10
+                padding: 15,
+                borderRadius: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginBottom: 2
             },
                 regBtnText:
                 {
                     marginLeft: 15,
                     marginRight: 15,
                     fontSize: 18,
-                    color: theme.primaryColor
-                }
+                    color: theme.primaryColor,
+                    fontFamily: 'Raleway_700Bold',
+                },
+        dropDownView:
+        {
+            color: theme.greyColor,
+            fontFamily: 'Raleway_600SemiBold',
+        }
     
 })
 

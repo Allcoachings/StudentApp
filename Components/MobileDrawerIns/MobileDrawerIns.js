@@ -13,6 +13,7 @@ import {theme} from '../config'
 import  {DrawerContent}  from './DrawerContent';
 import PdfViewer from '../PdfViewer/PdfViewer'
 import VideoPlayerCustom from '../VideoPLayer/VideoPlayerCustom';
+import AboutCourse from '../AboutCourse/AboutCourse'
 const Drawer = createDrawerNavigator();
 class indexIns extends React.Component {
     state = {  }
@@ -26,6 +27,7 @@ class indexIns extends React.Component {
                        {this.props.insAuth?(
                             <>
                                 <Drawer.Screen name="Home" component={InsHome} />  
+                                <Drawer.Screen name="AboutCourse" component={AboutCourse} /> 
                                 <Drawer.Screen name="AddVideos" component={AddVideo}  /> 
                                 <Drawer.Screen name="AddDocument" component={AddPdf}  /> 
                                 <Drawer.Screen name="AddTimeTable" component={AddTimeTable}  /> 

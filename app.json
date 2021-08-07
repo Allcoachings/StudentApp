@@ -8,7 +8,7 @@
     "androidStatusBar": {
       "barStyle": "light-content",
       "backgroundColor": "#404040"
-  },
+    },
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
