@@ -33,9 +33,9 @@ public class MainBannersService {
         }
     }
 
-    public MainBanners updateBannerDetails(MainBanners mainBanners)
+    public void updateBannerDetails(MainBanners mainBanners)
     {
-        return mainBannersRepo.updateBannerDetails(mainBanners.getBannerLink(),mainBanners.getPlaceHolder(),mainBanners.getId());
+        mainBannersRepo.updateBannerDetails(mainBanners.getBannerLink(),mainBanners.getPlaceHolder(),mainBanners.getId());
     }
 
      public void updateBannerImage(MainBanners mainBanners)

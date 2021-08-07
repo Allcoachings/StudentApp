@@ -21,8 +21,8 @@ public interface MainBannersRepo extends PagingAndSortingRepository<MainBanners,
 
 
     @Modifying
-    @Query("UPDATE MainBanners set bannerLink=:bannerLink,placeholder=:placeholder where id=:id")
-    MainBanners updateBannerDetails(String bannerLink,String placeholder,long id);
+    @Query("UPDATE MainBanners set bannerLink=:bannerLink,placeHolder=:placeholder where id=:id")
+    void updateBannerDetails(String bannerLink,String placeholder,long id);
 
     @Modifying
     @Query("UPDATE MainBanners set bannerImageLink=:imageLink where id=:id")

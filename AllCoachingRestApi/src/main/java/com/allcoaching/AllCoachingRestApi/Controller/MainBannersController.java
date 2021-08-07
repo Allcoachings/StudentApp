@@ -62,6 +62,7 @@ public class MainBannersController {
         mainBannersService.updateBannerDetails(mainBanners);
         return ResponseEntity.ok().build();
     }
+
     @CrossOrigin(origins = "*")
     @PutMapping("/image")
     public  ResponseEntity<Object> updateBannerImage(@RequestParam MultipartFile file,@RequestParam  long id)
