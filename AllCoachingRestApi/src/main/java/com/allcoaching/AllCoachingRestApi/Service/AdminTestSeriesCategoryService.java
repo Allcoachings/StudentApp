@@ -64,4 +64,9 @@ public class AdminTestSeriesCategoryService {
         return adminTestSeriesCategoryRepo.findById(id);
     }
 
+    public void delete(long id)
+    {
+        adminTestSeriesCategoryRepo.deleteById(id);
+    }
+
 }
