@@ -32,6 +32,18 @@ public class MainBannersService {
             return new ArrayList<MainBanners>();
         }
     }
+
+    public MainBanners updateBannerDetails(MainBanners mainBanners)
+    {
+        return mainBannersRepo.updateBannerDetails(mainBanners.getBannerLink(),mainBanners.getPlaceHolder(),mainBanners.getId());
+    }
+
+     public void updateBannerImage(MainBanners mainBanners)
+     {
+         mainBannersRepo.updateBannerImage(mainBanners.getBannerImageLink(),mainBanners.getId());
+     }
+
+
     //fetching all the banners from repo
     public Iterable<MainBanners> findAll()
     {

@@ -46,5 +46,34 @@ public class MainBannersController {
         return mainBannersService.findAll();
     }
 
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("/{id}")
+    public  ResponseEntity<Object> deleteBanner(@PathVariable long id)
+    {
+                mainBannersService.deleteById(id);
+                return ResponseEntity.ok().build();
+    }
+
+
+    @CrossOrigin(origins = "*")
+    @PutMapping("/details")
+    public  ResponseEntity<Object> updateBanner(@RequestBody MainBanners mainBanners)
+    {
+        mainBannersService.updateBannerDetails(mainBanners);
+        return ResponseEntity.ok().build();
+    }
+    @CrossOrigin(origins = "*")
+    @PutMapping("/image")
+    public  ResponseEntity<Object> updateBannerImage(@RequestParam MultipartFile file,@RequestParam  long id)
+    {
+        String fileAddr = "files/";
+        fileAddr += fileUploadService.storeFile(file);
+        MainBanners banner = new MainBanners();
+        banner.setBannerImageLink(fileAddr);
+        banner.setId(id);
+        mainBannersService.updateBannerImage(banner);
+        return ResponseEntity.ok().build();
+    }
+
 
 }

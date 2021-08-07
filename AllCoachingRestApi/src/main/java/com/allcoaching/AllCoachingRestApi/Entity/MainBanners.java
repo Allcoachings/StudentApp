@@ -39,6 +39,11 @@ public class MainBanners {
                 '}';
     }
 
+    public MainBanners(String bannerLink, String placeHolder) {
+        this.bannerLink = bannerLink;
+        this.placeHolder = placeHolder;
+    }
+
     public String getPlaceHolder() {
         return placeHolder;
     }
