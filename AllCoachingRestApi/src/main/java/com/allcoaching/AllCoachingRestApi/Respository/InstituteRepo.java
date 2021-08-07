@@ -31,5 +31,11 @@ public interface InstituteRepo extends PagingAndSortingRepository<Institute,Long
 
     Page<Institute> findByNameContainingIgnoreCase(String name,Pageable pageable);
 
+    @Modifying
+    @Query("UPDATE Institute set status=:status where id=:id")
+    void updateStatus(int status,long id);
 
+    @Modifying
+    @Query("UPDATE Institute set boostValue=:value where id=:id")
+    void boostIns(long id,int value);
 }

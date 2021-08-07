@@ -29,6 +29,11 @@ public class CategoryService {
         return categoryRepo.save(category);
     }
 
+    public void delete(long id)
+    {
+          categoryRepo.deleteById(id);
+    }
+
     //fetching all categories from repo
     public Iterable<Category> findAll()
     {

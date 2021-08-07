@@ -10,6 +10,7 @@ import com.allcoaching.AllCoachingRestApi.dto.AppStudentHomeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,15 +36,13 @@ public class AppStudentHomeController {
     {
             List<AppStudentHomeDto> list = new ArrayList<>();
             Iterable<Category> categories = categoryService.findAll();
-            Pageable topTwenty = PageRequest.of(0, 20);
+            Pageable topTwenty = PageRequest.of(0, 20, Sort.by(Sort.Direction.DESC,"boostValue","totalRating"));
             categories.forEach(item->{
                 list.add(new AppStudentHomeDto(item.getName(),"listing",item.getId(),instituteService.findByCategory(item.getId(),topTwenty)));
             });
 
             Iterable<MainBanners> mainBannerRow1 = mainBannersService.fetchPagedBanners(0,10);
-
             Iterable<MainBanners> mainBannerRow2 = mainBannersService.fetchPagedBanners(10,10);
-
             list.add(0,new AppStudentHomeDto("","banner",0,mainBannerRow1));
             list.add(4,new AppStudentHomeDto("","banner",0,mainBannerRow2));
             return list;

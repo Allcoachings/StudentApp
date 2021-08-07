@@ -28,6 +28,8 @@ public class Institute {
     private long category;
     private String about;
     private String logo;
+    //1 for approve ,0 for pending 2 for block
+    private int boostValue=0;
     private int status;
     private long followersCount =0;
     private int fiveStarCount =0;
@@ -54,6 +56,7 @@ public class Institute {
         this.about = about;
         this.logo = logo;
         this.status = status;
+
 
     }
 }

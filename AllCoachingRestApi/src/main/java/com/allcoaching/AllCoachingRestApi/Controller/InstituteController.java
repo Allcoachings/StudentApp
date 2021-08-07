@@ -78,5 +78,30 @@ public class InstituteController {
         return instituteService.findByCategory(category,topTwenty);
     }
 
+    @CrossOrigin(origins = "*")
+    @PutMapping("/status/{status}/{insId}")
+    public ResponseEntity<Object> updateStatus(@PathVariable int status,@PathVariable long insId)
+    {
+        instituteService.updateStatus(status,insId);
+        return ResponseEntity.ok().build();
+    }
+
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> deleteIns(@PathVariable long id)
+    {
+        instituteService.deleteIns(id);
+        return  ResponseEntity.ok().build();
+    }
+
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("/boost/{boostvalue}/{id}")
+    public ResponseEntity<Object> boostIns(@PathVariable int boostvalue,@PathVariable long id)
+    {
+        instituteService.boostIns(id,boostvalue);
+        return  ResponseEntity.ok().build();
+    }
+
+
 
 }

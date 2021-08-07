@@ -49,4 +49,27 @@ public class CategoryController {
         return categoryService.findByAllForDropdown();
     }
 
+
+    @CrossOrigin(origins = "*")
+    @PutMapping("/")
+    public ResponseEntity<Object> edit(@RequestBody Category category)
+    {
+        Category saved_category = categoryService.save(category);
+        URI location  = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(saved_category.getId()).toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> delete(@PathVariable long id)
+    {
+        categoryService.delete(id);
+        return ResponseEntity.ok().build();
+    }
+
+
+
+
+
 }

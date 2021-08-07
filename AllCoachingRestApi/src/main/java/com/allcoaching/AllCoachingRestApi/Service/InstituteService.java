@@ -61,4 +61,23 @@ public class InstituteService {
              return new ArrayList<>();
          }
     }
+
+
+
+    public  void updateStatus(int status, long id)
+    {
+            instituteRepo.updateStatus(status,id);
+    }
+
+
+    public void deleteIns(long id)
+    {
+        instituteRepo.deleteById(id);
+    }
+
+
+    public void boostIns(long id,int value)
+    {
+        instituteRepo.boostIns(id,value);
+    }
 }
