@@ -4,6 +4,7 @@ package com.allcoaching.AllCoachingRestApi.Controller;
 import com.allcoaching.AllCoachingRestApi.Entity.Course;
 import com.allcoaching.AllCoachingRestApi.Respository.CourseRepo;
 import com.allcoaching.AllCoachingRestApi.Service.CourseService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/v1/institute")
+@Api()
 public class CourseController {
 
     @Autowired

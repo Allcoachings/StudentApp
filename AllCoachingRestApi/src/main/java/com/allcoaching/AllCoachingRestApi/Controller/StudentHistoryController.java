@@ -3,6 +3,7 @@ package com.allcoaching.AllCoachingRestApi.Controller;
 import com.allcoaching.AllCoachingRestApi.Entity.StudentHistory;
 import com.allcoaching.AllCoachingRestApi.Service.StudentHistoryService;
 import com.allcoaching.AllCoachingRestApi.dto.StudentHistoryDto;
+import io.swagger.annotations.Api;
 import io.swagger.models.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("api/v1/student/history/")
+@Api(value = "student",description = "Student History")
 public class StudentHistoryController {
 
 

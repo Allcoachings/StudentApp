@@ -37,7 +37,7 @@ class HeaderMobile extends React.Component {
 
   closeModal=()=> this.setState({search:false})
   render() {
-    console.log(this.props.nosearchIcon);
+     
     return (
       // <KeyboardAwareScrollView>
       <View style={styles.container}>

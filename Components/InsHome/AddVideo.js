@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View,StyleSheet, TextInput, TouchableOpacity, ScrollView,ActivityIndicator} from 'react-native';
+import {Text, View,StyleSheet, TextInput, TouchableOpacity, ScrollView,ActivityIndicator,Dimensions} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {theme,screenMobileWidth, serverBaseUrl, videoDefaultThumbnail} from '../config'
 import CardView from '../Utils/CardView';
@@ -9,7 +9,8 @@ import { Picker } from 'native-base';
 import { Feather } from '@expo/vector-icons';
 import AddVideoPlaylist from './AddVideoPlaylist';
 import Toast from 'react-native-simple-toast';
-
+const width = Dimensions.get('window').width
+const height = Dimensions.get('screen').width
 class AddVideo extends React.Component {
     state = {
         title: "",
@@ -124,25 +125,32 @@ class AddVideo extends React.Component {
                 iconName={"menu"}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
             >
-                <ScrollView>
+                 <ScrollView>
+                    
                     <View style={styles.headView}>
-                        <Text style={styles.headText}>Add Video</Text>
+                        <Text style={styles.headText}>Add Video</Text> 
+                    </View>
+                    <View style={styles.inputView}> 
+                            <TouchableOpacity style={styles.submitButton} onPress={this.handleAddVideoClick}>
+                                <Text style={styles.submitButtonText}>Choose Video</Text>
+                            </TouchableOpacity>
+                            <Text style={{fontFamily: 'Raleway_600SemiBold'}}>{this.state.video.name}</Text>
                     </View>
                     <View style={styles.inputView}>
                             <Text style={styles.labelText}>Video Title</Text>
-                            {CardView(
+                       
                                 <TextInput 
                                     placeholderTextColor={theme.greyColor} 
                                     placeholder="Title" 
                                     defaultValue={this.props.description} 
                                     onChangeText={(text)=>this.setState({title: text})} 
                                     style={styles.inputField}
-                                />, {borderRadius: 10}
-                            )}
+                                /> 
+                         
                     </View>
                     <View style={styles.inputView}>
                     <Text style={styles.labelText}>Video Description</Text>
-                            {CardView(
+                   
                                 <TextInput 
                                     placeholderTextColor={theme.greyColor} 
                                     placeholder="Description" 
@@ -150,8 +158,7 @@ class AddVideo extends React.Component {
                                     multiline={true} 
                                     numberOfLines={3} 
                                     style={styles.inputField}
-                                />, {borderRadius: 10}
-                            )}
+                                /> 
                     </View>
                     {!this.state.loadingPlaylist?(
                             <View style={styles.inputView}>
@@ -160,8 +167,8 @@ class AddVideo extends React.Component {
                                     <Text style={styles.labelText}>Video Playlist</Text>
                                     <Feather name="plus" onPress={()=>this.openModal()} size={20}/>
                             </View> 
-                            {CardView(
-                                <View style={styles.dropdownView}>
+                            
+                                <View style={styles.inputField}>
                                     <Picker 
                                         style={{ height:30 }}
                                         selectedValue={this.state.selectedPlaylist}
@@ -184,15 +191,10 @@ class AddVideo extends React.Component {
                                             elevation:100
                                         }}
                                     /> */}
-                                </View> ,{marginTop: 10, padding: 12})}
+                                </View>  
                             </View>
                             ):(null)}
-                    <View style={styles.inputView}>
-                            <Text style={styles.labelText}>Video</Text>
-                            <TouchableOpacity style={styles.submitButton} onPress={this.handleAddVideoClick}>
-                                <Text style={styles.submitButtonText}>Choose Video</Text>
-                            </TouchableOpacity>
-                    </View>
+                   
                     <View style={styles.btnView}>
                         <TouchableOpacity style={styles.submitButton} onPress={this.handleSubmitButtonClick}>
                             {this.state.loadingAddVideo?(
@@ -202,16 +204,16 @@ class AddVideo extends React.Component {
                             )}
                                 
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.addMoreButton}>
-                                <Text style={styles.addMoreButtonText}>Add More+</Text>
-                        </TouchableOpacity>
+                        
                     </View>
-                </ScrollView>
+              
                 {this.state.isModalVisible?(
-                            <AddVideoPlaylist    appendPlaylist={this.appendPlaylist} isModalVisible={this.state.isModalVisible} closeModal={this.closeModal} courseId={this.props.route.params.courseId}/>
+                            <AddVideoPlaylist  appendPlaylist={this.appendPlaylist} isModalVisible={this.state.isModalVisible} closeModal={this.closeModal} courseId={this.props.route.params.courseId}/>
                 ):(
                     null
                 )}
+               
+                </ScrollView>
            </PageStructure>
         )}
     }
@@ -226,45 +228,54 @@ const styles = StyleSheet.create({
         headText:
         {
             marginTop:10,
-            fontSize: 24,
-            fontWeight: 'bold',
+            fontSize: 24, 
+            fontFamily: 'Raleway_600SemiBold',
             color: theme.secondaryColor
         },
     inputView: {
         marginTop:'5%',
         display: 'flex',
         flexDirection: 'column',
-        marginLeft: 10,
-        alignItems: 'flex-start'
+        marginLeft: 10, 
     },
         labelText: {
+             
             fontSize: 18,
-            fontWeight: '700',
+            fontFamily: 'Raleway_600SemiBold',
             color: theme.secondaryColor,
             marginBottom: 10,
         },
         inputField:
         {
-            padding:10,
-            fontSize: 16
+            borderRadius: 10,
+            padding: 10,
+            margin:10,
+            borderWidth: 1,
+            fontFamily: 'Raleway_600SemiBold',
+            borderColor:theme.labelOrInactiveColor, 
         },
     btnView:
     {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'center',
-        marginTop: 10
+        justifyContent: 'center', 
+        marginTop:'auto',
+        width: width-30,
+        margin:10,
+        alignItems: 'center'
     },
         submitButton:
         {
             borderRadius: 10,
             backgroundColor:theme.accentColor,
             padding: 10,
-            marginRight:10
+          
+            width:'100%',
         },
             submitButtonText:
             {
-                color: theme.primaryColor
+                color: theme.primaryColor,
+                textAlign: 'center'
             },
         addMoreButton:
         {

@@ -3,6 +3,7 @@ package com.allcoaching.AllCoachingRestApi.Controller;
 import com.allcoaching.AllCoachingRestApi.Entity.Category;
 import com.allcoaching.AllCoachingRestApi.Service.CategoryService;
 import com.allcoaching.AllCoachingRestApi.dto.CategoryDropDownDto;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/category")
+@Api()
 public class CategoryController {
 
     @Autowired

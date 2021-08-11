@@ -1,8 +1,10 @@
 package com.allcoaching.AllCoachingRestApi.Controller;
 
 import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @RestController
+@Api()
 public class FileController {
 
     @Autowired
@@ -51,7 +54,7 @@ public class FileController {
 
                     .contentType(MediaType.parseMediaType(contentType))
 
-                    .header( "attachment; filename=\"" + resource.getFilename() + "\"")
+                    .header("attachment; filename=\"" + resource.getFilename() + "\"")
 
                     .body(resource);
 

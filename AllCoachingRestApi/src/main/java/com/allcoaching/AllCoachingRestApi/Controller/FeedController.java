@@ -5,6 +5,7 @@ import com.allcoaching.AllCoachingRestApi.Service.FeedService;
 import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
 import com.allcoaching.AllCoachingRestApi.dto.FeedContentDto;
 import com.allcoaching.AllCoachingRestApi.dto.FeedDto;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/v1/feed")
+@Api()
 public class FeedController {
 
     @Autowired

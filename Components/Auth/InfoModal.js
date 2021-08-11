@@ -9,6 +9,8 @@ import { Rating, AirbnbRating } from 'react-native-ratings';
 import {setUserInfo,userAuthStatus} from '../Actions'
 import {registerStudent} from '../Utils/DataHelper/EnrollStudent'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Picker } from 'native-base';
+import { ActivityIndicator } from 'react-native-paper';
 const width = Dimensions.get('window').width
 const height = Dimensions.get('screen').height
 var rate ;
@@ -16,12 +18,61 @@ var rate ;
 class InfoModal extends React.Component {
     state = {
         heading : 'Create your account',
-        studentImage:defaultStudentImage
+        studentImage:defaultStudentImage,
+        isLoading:false,
+        indianStates:[
+            "Andaman and Nicobar Islands",
+            "Andhra Pradesh",
+            "Arunachal Pradesh",
+            "Assam",
+            "Bihar",
+            "Chandigarh",
+            "Chhattisgarh",
+            "Dadra and Nagar Haveli",
+            "Daman and Diu",
+            "Delhi",
+            "Goa",
+            "Gujarat",
+            "Haryana",
+            "Himachal Pradesh",
+            "Jammu and Kashmir",
+            "Jharkhand",
+            "Karnataka",
+            "Kerala",
+            "Ladakh",
+            "Lakshadweep",
+            "Madhya Pradesh",
+            "Maharashtra",
+            "Manipur",
+            "Meghalaya",
+            "Mizoram",
+            "Nagaland",
+            "Odisha",
+            "Puducherry",
+            "Punjab",
+            "Rajasthan",
+            "Sikkim",
+            "Tamil Nadu",
+            "Telangana",
+            "Tripura",
+            "Uttar Pradesh",
+            "Uttarakhand",
+            "West Bengal"
+        ],
+        state:'Andaman and Nicobar Islands'
         
+    }
+
+
+    renderPickerItem=(item)=>
+    {
+        return(
+            <Picker.Item label={item} value={item} />
+        )
     }
     registerCallBack=(response)=>
     {
-            console.log(response.status)   
+             
             if(response.status === 201)
             {
                   this.props.setUserInfo({id:response.headers.map.location,email:this.state.email,name:this.state.name,state:this.state.state,mobileNumber:this.props.mobileNumber,userId:this.props.mobileNumber,studentImage:this.state.studentImage})
@@ -29,15 +80,35 @@ class InfoModal extends React.Component {
                 //   this.props.navigation.navigate("Home")
                 AsyncStorage.setItem('userDetails', JSON.stringify({id:response.headers.map.location,email:this.state.email,name:this.state.name,state:this.state.state,mobileNumber:this.props.mobileNumber,userId:this.props.mobileNumber,studentImage:this.state.studentImage,authType:'user'}))
 
+            }else
+            {
+                this.setState({error:'Email Already Registered',isLoading:false})
             }
     }
-
+    verify=({email,name,state})=>email&&name&&state
     handleSubmitButtonClick=() => {
-        registerStudent(this.state.email,this.state.name,this.state.state,this.props.mobileNumber,this.state.studentImage,this.registerCallBack)
+        if(!this.state.isLoading)
+        {
+            if(this.verify(this.state))
+            {
+                this.setState({isLoading:true,error:null})
+                registerStudent(this.state.email,this.state.name,this.state.state,this.props.mobileNumber,this.state.studentImage,this.registerCallBack)
+            }else
+            {
+                this.setState({error:'Please fill all the fields'});
+                
+            }
+        }
+        
+        
     }
-    
+    setSelectedState=(state)=>
+    {
+      
+            this.setState({state})
+    }
     render() {
-        console.log("this.props.mobileNumber",this.props.mobileNumber)
+        
         return(
             <Modal
             animationType="fade"
@@ -64,6 +135,10 @@ class InfoModal extends React.Component {
                                     {/* <TouchableOpacity onPress={()=>this.props.closeModal()}>
                                         <Image source={Assets.discussions.closeIcon} style={styles.closeIcon}/>
                                     </TouchableOpacity> */}
+                                    {this.state.error?( 
+                                        <Text style={styles.errorText}>{this.state.error}</Text>
+                                    ):(null)}
+                                    
                                     
                                 </View>
                                 
@@ -83,14 +158,33 @@ class InfoModal extends React.Component {
                                     <Text style={{marginLeft:15,fontFamily:'Raleway_600SemiBold'}}>State</Text>
                                 </View>
                                 <View style={styles.queDescView}>
-                                    <TextInput style={styles.queDesc} onChangeText={(text)=>this.setState({state: text})}  placeholder="Select your state" placeholderTextColor={theme.labelOrInactiveColor}/>
+                                    {/* <TextInput style={styles.queDesc} onChangeText={(text)=>this.setState({state: text
+                                    })}  placeholder="Select your state" placeholderTextColor={theme.labelOrInactiveColor}/> */}
+                                    <Picker
+                                        style={[styles.queDesc,{height:30}]}
+                                        selectedValue={this.state.state}
+                                        onValueChange={(itemValue, itemIndex) =>
+                                            this.setSelectedState(itemValue)
+                                        }>
+                                            {/* <Picker.Item label="Java" value="java" />
+                                            <Picker.Item label="JavaScript" value="js" /> */}
+                                        {this.state.indianStates&&this.state.indianStates.map((item)=>this.renderPickerItem(item))}
+                                        </Picker>
                                 </View>
                                 <View 
                                     style={{flexDirection:'row',justifyContent:'center',marginTop:'auto',marginBottom:20,alignItems: 'center',width:width,borderTopWidth:1,borderTopColor:theme.labelOrInactiveColor,paddingTop:10}}
                                 >  
+                                
                                     <TouchableWithoutFeedback onPress={this.handleSubmitButtonClick}>
+                                        
                                         <View style={{backgroundColor:theme.accentColor,padding:15,borderRadius:10,alignItems: 'center',width:'95%'}}>
-                                            <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>Continue</Text>
+                                        {this.state.isLoading?(
+
+                                                <ActivityIndicator color={theme.primaryColor} size={'small'}/>
+                                            ):(
+                                                <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>Continue</Text>    
+                                            )}
+                                            
                                         </View>
                                     </TouchableWithoutFeedback>
                                 </View>
@@ -131,6 +225,13 @@ const styles = StyleSheet.create({
                marginLeft: '5%', 
                fontFamily: 'Raleway_600SemiBold'
 
+            },
+            errorText:
+            {
+                fontFamily: 'Raleway_600SemiBold',
+                textAlign: 'center',
+                marginTop:10,
+                color:theme.featureNoColor 
             },
             closeIcon:
             {

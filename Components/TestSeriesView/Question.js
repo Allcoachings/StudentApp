@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text,StyleSheet,TouchableOpacity,TouchableWithoutFeedback } from 'react-native';
 import {theme} from '../config'
-import {Feather} from '@expo/vector-icons';
+import {Feather, FontAwesome} from '@expo/vector-icons';
 class Question extends Component {
   state={
       isPractice:this.props.isPractice,
@@ -10,6 +10,7 @@ class Question extends Component {
       isCorrect:false,
       isResponded:false,
       showSolution:false,
+      
 
   }
 
@@ -26,6 +27,7 @@ class Question extends Component {
                 this.setState({userOptionIndex:selected,isCorrect:true,isResponded:true})
                  
                     this.props.setQuestionAttemptStatus(index,"correct")  
+                    
                   
                 
             }else
@@ -38,6 +40,13 @@ class Question extends Component {
             }
        }
       
+  }
+  handleBookmarkClick=(index)=>{
+        this.setState({bookmarked:!this.state.bookmarked},()=>{
+            this.props.bookmarkQuestion(index,this.state.bookmarked)
+        })
+     
+          
   }
 
   provideOptionResponseStyle=(selectedIndex,currentIndex)=>
@@ -151,9 +160,9 @@ class Question extends Component {
                     <Text style={styles.timeText}>Time</Text>
                     <Text style={styles.timeText}>00:00</Text>
                 </View> */}
-                <View style={styles.alertView}>
-                    <Feather name="bookmark" size={24} color={theme.labelOrInactiveColor}/>
-                </View>
+                <TouchableOpacity style={styles.alertView} onPress={()=>this.handleBookmarkClick(index-1)}> 
+                    <FontAwesome name={this.state.bookmarked?"bookmark":"bookmark-o"} size={24} color={theme.labelOrInactiveColor}/>
+                </TouchableOpacity>
             </View>
         </View>
         <View style={styles.quizQuestionView}>
@@ -180,7 +189,7 @@ class Question extends Component {
                         </TouchableWithoutFeedback>
                     </View>
                     <View style={styles.explanationView}>
-                        <Text style={styles.heading}>Reason</Text>
+                        {/* <Text style={styles.heading}>Reason</Text> */}
                         <Text style={styles.explanation}>{this.props.item.explanation}</Text>
                     </View> 
                     </>
@@ -303,7 +312,7 @@ const styles = StyleSheet.create({
                 flexDirection: 'row',
                 alignItems: 'center',
                 marginTop: 20,
-                marginHorizontal: 20,
+                // marginHorizontal: 20,
             },
                 optionAns:{
                     flexDirection: 'row',
@@ -316,7 +325,7 @@ const styles = StyleSheet.create({
                 },
         explanationView:
         {
-            backgroundColor:theme.labelOrInactiveColor,
+            // backgroundColor:theme.labelOrInactiveColor,
             margin:5
         },
             heading:

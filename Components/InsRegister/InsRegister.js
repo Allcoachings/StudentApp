@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View,StyleSheet, TextInput, TouchableOpacity, Image, ScrollView, CheckBox,ActivityIndicator,Dimensions} from 'react-native';
+import {Text, View,StyleSheet, TextInput, TouchableOpacity,TouchableWithoutFeedback, Image, ScrollView, CheckBox,ActivityIndicator,Dimensions} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {theme,screenMobileWidth} from '../config'
 import CardView from '../Utils/CardView';
@@ -24,7 +24,7 @@ class InsRegister extends React.Component {
         email: '',
         password: '',
         insAddr: '',
-        state: '',
+        state: 'Andaman and Nicobar Islands',
         city: '',
         about: '',
         tandc: '',
@@ -33,7 +33,46 @@ class InsRegister extends React.Component {
         selectedCategory:-1,
         categories:[],
         open:false,
-        registerLoader:false
+        registerLoader:false,
+        indianStates:[
+            "Andaman and Nicobar Islands",
+            "Andhra Pradesh",
+            "Arunachal Pradesh",
+            "Assam",
+            "Bihar",
+            "Chandigarh",
+            "Chhattisgarh",
+            "Dadra and Nagar Haveli",
+            "Daman and Diu",
+            "Delhi",
+            "Goa",
+            "Gujarat",
+            "Haryana",
+            "Himachal Pradesh",
+            "Jammu and Kashmir",
+            "Jharkhand",
+            "Karnataka",
+            "Kerala",
+            "Ladakh",
+            "Lakshadweep",
+            "Madhya Pradesh",
+            "Maharashtra",
+            "Manipur",
+            "Meghalaya",
+            "Mizoram",
+            "Nagaland",
+            "Odisha",
+            "Puducherry",
+            "Punjab",
+            "Rajasthan",
+            "Sikkim",
+            "Tamil Nadu",
+            "Telangana",
+            "Tripura",
+            "Uttar Pradesh",
+            "Uttarakhand",
+            "West Bengal"
+        ]
     }
 
 
@@ -60,7 +99,7 @@ class InsRegister extends React.Component {
         {
             response.json().then(response=>
                 { 
-                console.log("response",response)
+                
                 response.unshift({key:-1,label:"Select Category"})
                 this.setState({categories: response,loadingCategory:false},()=>{
                 
@@ -76,8 +115,7 @@ class InsRegister extends React.Component {
     componentDidMount()
     {
 
-        
-        console.log("component")
+     
         fetch_categories(this.handleCatgoryCallback) 
         
         // fetch_categories((response)=>{console.log(response)})
@@ -88,16 +126,24 @@ class InsRegister extends React.Component {
             <Picker.Item label={item.label} value={item.key} />
         )
     }
+    renderPickerItemState=(item)=>
+    {
+        return(
+            <Picker.Item label={item} value={item} />
+        )
+    }
     setSelectedCategory=(selectedCategory)=>
     {
-        console.log("callback")
+                
             this.setState({selectedCategory})
     }
     
- 
+    setSelectedState=(state)=>{
+        this.setState({state});
+    }
     registerCoachingCallBack =(response)=>
     {
-            console.log("callback",response.status)
+           
             if(response.status==201)
             {
                 Toast.show('Institute Added Successfully.');
@@ -143,7 +189,7 @@ class InsRegister extends React.Component {
     {
         DocumentPicker.getDocumentAsync({type:"image/*",copyToCacheDirectory:true,multiple:false}).then(response=>
             {
-                console.log(response)
+               
                 if(response.type=="success")
                 {
                     this.setState({logo:response})
@@ -152,6 +198,7 @@ class InsRegister extends React.Component {
     }
     render() {
         // fetch_categories((response)=>{console.log(response)})
+ 
         return(
             // <PageStructure
             //     iconName={"menu"}
@@ -161,7 +208,9 @@ class InsRegister extends React.Component {
                     <View style={styles.container}>
                         <View style={styles.header}>
                             {/* <AuthHeader/>                         */}
-                            <Feather name="chevron-left" size={20} color={theme.greyColor}/>
+                            <TouchableWithoutFeedback onPress={()=>this.props.changeAuthMode(1)}> 
+                                <Feather name="chevron-left" size={20} color={theme.greyColor}  />
+                            </TouchableWithoutFeedback>
                         </View>
                         <View style={styles.headView}>
                             <Text style={styles.headText}>Submit Your Institute Details</Text>
@@ -198,8 +247,18 @@ class InsRegister extends React.Component {
                         <View style={styles.inputView}>
                             {this.renderTextInput('', 'City',(city)=>{this.setState({city})})}
                         </View>
-                        <View style={styles.inputView}>
-                            {this.renderTextInput('', 'State',(state)=>{this.setState({state})})}
+                        <View style={styles.inputField}>
+                            {/* {this.renderTextInput('', 'State',(state)=>{this.setState({state})})} */}
+                            <Picker 
+                            style={[styles.dropDownView,{height:30}]}
+                            selectedValue={this.state.state}
+                            onValueChange={(itemValue, itemIndex) =>
+                                this.setSelectedState(itemValue)
+                            }>
+                                {/* <Picker.Item label="Java" value="java" />
+                                <Picker.Item label="JavaScript" value="js" /> */}
+                            {this.state.indianStates&&this.state.indianStates.map((item)=>this.renderPickerItemState(item))}
+                            </Picker>
                         </View>
                         
                         

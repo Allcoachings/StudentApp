@@ -5,6 +5,8 @@ import com.allcoaching.AllCoachingRestApi.Entity.AdminBlogs;
 import com.allcoaching.AllCoachingRestApi.Respository.AdminBlogRepo;
 import com.allcoaching.AllCoachingRestApi.Service.AdminBlogService;
 import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,12 +17,14 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("api/v1/admin/blog")
+@Api()
 public class AdminBlogController {
     @Autowired
     private AdminBlogService adminBlogService;
 
     @Autowired
     private FileUploadService fileUploadService;
+
 
     @CrossOrigin(origins = "*")
     @PostMapping("/")

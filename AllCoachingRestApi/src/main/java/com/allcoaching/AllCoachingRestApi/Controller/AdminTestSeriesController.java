@@ -10,6 +10,7 @@ import com.allcoaching.AllCoachingRestApi.Service.AdminTestSeriesSubCategoryCont
 import com.allcoaching.AllCoachingRestApi.Service.AdminTestSubCategoriesService;
 import com.allcoaching.AllCoachingRestApi.Service.InsTestSeriesService;
 import com.allcoaching.AllCoachingRestApi.dto.AdminTestCategoriesDto;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("api/v1/admintestseries")
+@Api()
 public class AdminTestSeriesController {
 
     @Autowired

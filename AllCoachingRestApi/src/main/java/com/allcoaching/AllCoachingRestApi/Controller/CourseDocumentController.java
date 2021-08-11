@@ -6,6 +6,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.DocumentPlaylist;
 import com.allcoaching.AllCoachingRestApi.Respository.CourseDocumentRepo;
 import com.allcoaching.AllCoachingRestApi.Service.CourseDocumentService;
 import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/institute/course/document")
+@Api()
 public class CourseDocumentController {
 
     @Autowired

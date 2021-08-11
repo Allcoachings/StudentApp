@@ -4,11 +4,13 @@ import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Service.InstituteService;
 import com.allcoaching.AllCoachingRestApi.Service.SearchService;
 import com.allcoaching.AllCoachingRestApi.dto.AdminTestCategoriesDto;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/search")
+@Api(value = "search",description = "Search controller for Student")
 public class SearchController {
 
     @Autowired

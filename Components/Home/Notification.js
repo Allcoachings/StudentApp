@@ -23,7 +23,7 @@ class Notification extends React.Component {
                 <View style={styles.instituteheader}>
                     {CardView(
                         <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.instituteheaderLogo}/>
-                        ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"20%",height:80,borderRadius:40}):({width:80,height:80, borderRadius:40})])
+                        ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:80,borderRadius:15}):({width:80,height:80, borderRadius:40})])
                     } 
                     <View style={styles.instituteheaderMeta}>
                         <View style={{display: 'flex', flexDirection: 'row'}}>
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
                 {
                     width:"100%",
                     height:"100%",
-                    borderRadius:50,
+                    borderRadius:15,
                 },  
             instituteheaderMeta:
             {

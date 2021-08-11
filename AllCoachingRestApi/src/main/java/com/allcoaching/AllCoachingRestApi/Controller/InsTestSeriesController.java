@@ -5,6 +5,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeriesQuestions;
 import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeriesPlaylist;
 import com.allcoaching.AllCoachingRestApi.Service.InsTestSeriesService;
 import com.allcoaching.AllCoachingRestApi.dto.TestSeriesDto;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/v1/institute/course/testseries")
+@Api(value="instituteAdmin",description = "Insitiute and Admin Test series controller")
 public class InsTestSeriesController {
 
     @Autowired

@@ -79,6 +79,36 @@ export   const fetch_instituteDetails=(instId,callback)=>
    
         
 } 
+export   const validateLogin=(email,password,callback)=>
+{
+
+    
+            // var formData   = new FormData(); 
+            // formData.append("fetch_banners",'true') 
+            // formData.append("offset",offset) 
+            // formData.append("data_limit",limit)  
+            let headers = new Headers();
+
+            headers.append('Content-Type', 'application/json'); 
+
+            headers.append('Access-Control-Allow-Origin', serverApiUrl);
+            headers.append('Access-Control-Allow-Credentials', 'true');
+
+            headers.append('GET', 'POST', 'OPTIONS'); 
+
+             fetch(serverApiUrl+'/institute/validate/',
+            {
+                method: 'POST',  
+                headers,
+                body:JSON.stringify({email,password})
+            })
+            .then((response)=>callback(response)) 
+            .catch((error)=>{console.log(error)})
+
+       
+   
+        
+} 
 
 
 export const fetch_coachingByCategory =(category,offset,dataLimit,callback)=>

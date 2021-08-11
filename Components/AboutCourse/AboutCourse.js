@@ -21,11 +21,12 @@ class AboutCourse extends React.Component {
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
                 titleonheader={"About Course"}
             >
+            <ScrollView>
                 <SliderBox images={this.state.sliderImg}  onCurrentImagePressed={index => this.setState({index: index, zoomModal: true})}/>
                 <View style={{marginTop: '6%', marginHorizontal: 10}}>
                     <Text style={styles.head}>Course Name</Text>
                 </View>
-                <ScrollView>
+               
                     <View style={{marginHorizontal:10, marginTop: '5%'}}>
                     <Text style={styles.body}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ut metus magna. Integer mollis nulla justo, ac euismod leo bibendum sit amet. Mauris eget lorem eu lorem ornare hendrerit imperdiet eget orci. Maecenas ac orci pharetra, consequat lectus vitae, eleifend tortor. Phasellus semper rutrum arcu, cursus consequat enim iaculis a. Mauris aliquet eget justo eget ultricies. Nullam sed turpis efficitur, facilisis nibh at, egestas eros.</Text>
 

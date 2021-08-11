@@ -63,7 +63,7 @@ class RenderSingleSubsInstitute extends React.Component {
                     <View style={styles.instituteheader}>
                         {CardView(
                             <Image source={{uri:serverBaseUrl+this.props.item.logo}} style={styles.instituteheaderLogo}/>
-                            ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:120,borderRadius:15}):({width:200,height:150})])
+                            ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:100,borderRadius:15}):({width:200,height:150})])
                         } 
                         <View style={styles.instituteheaderMeta}>
                             <View style={{display: 'flex', flexDirection: 'row'}}>
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
 instituteheader:
 {
     flexDirection:'row',
-    flex:0.2
+    flex:0.3
 },
     logoCard:
     { 
@@ -149,6 +149,7 @@ instituteheader:
         {
             width:"100%",
             height:"100%",
+             
             borderRadius:15,
         },  
     instituteheaderMeta:

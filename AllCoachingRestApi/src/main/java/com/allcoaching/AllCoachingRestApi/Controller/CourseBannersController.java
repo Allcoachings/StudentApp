@@ -5,6 +5,8 @@ import com.allcoaching.AllCoachingRestApi.Entity.MainBanners;
 import com.allcoaching.AllCoachingRestApi.Respository.CourseBannersRepo;
 import com.allcoaching.AllCoachingRestApi.Service.CourseBannersService;
 import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
+import io.swagger.annotations.Api;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/institute/course/banners/")
+@Api()
 public class CourseBannersController {
 
     @Autowired
@@ -23,6 +26,8 @@ public class CourseBannersController {
     @Autowired
     private FileUploadService fileUploadService;
 
+
+    @CrossOrigin(origins = "*")
     @PostMapping("/upload/")
     public ResponseEntity<Object> uploadBanner(
             @RequestParam("file") MultipartFile image,

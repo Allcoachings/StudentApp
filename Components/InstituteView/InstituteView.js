@@ -197,8 +197,8 @@ class InstituteView extends React.Component {
             //         </TouchableOpacity>
             //     </LinearGradient>
             // ):(
-                <TouchableOpacity style={[styles.courseItemContainer,this.state.activeCourse==item.id?({backgroundColor:theme.purpleColor, borderColor:theme.darkPurpleColor}):({backgroundColor:theme.gradientColor})]} onPress={()=>this.handleCourseItemClick(item)}> 
-                        <Text style={[styles.courseTitle,this.state.activeCourse==item.id?({color: theme.darkPurpleColor}):({color:theme.primaryColor})]}>{item.title}</Text>
+                <TouchableOpacity style={[styles.courseItemContainer,this.state.activeCourse==item.id?({backgroundColor:theme.darkPurpleColor, borderColor:theme.darkPurpleColor}):({backgroundColor:theme.purpleColor, borderColor:theme.darkPurpleColor})]} onPress={()=>this.handleCourseItemClick(item)}> 
+                        <Text style={[styles.courseTitle,this.state.activeCourse==item.id?({color: theme.primaryColor}):({color:theme.darkPurpleColor})]}>{item.title}</Text>
                 </TouchableOpacity>
             // )
             
@@ -680,10 +680,15 @@ class InstituteView extends React.Component {
                                         About Course
                                     </Text>
                                 </TouchableOpacity>
-                                {this.state.studentEnrolled?(null):(<TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10}} onPress={()=>this.props.navigation.navigate("Payment", {insId:this.state.institute.id,courseId:this.state.activeCourse})}>
+                                {this.state.studentEnrolled?(null):(
+                                <TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10,flexDirection: 'row',}} onPress={()=>this.props.navigation.navigate("Payment", {insId:this.state.institute.id,courseId:this.state.activeCourse})}>
+                                     
                                     <Text style={{fontSize:14,color:theme.primaryColor, fontFamily:'Raleway_700Bold'}}>
-                                        Fees : {this.state.activeCourseDetail&&this.state.activeCourseDetail.fees}
-                                    </Text>
+                                            Fees -  
+                                        </Text>
+                                        <Text style={{fontSize:14,color:theme.primaryColor}}>
+                                            {this.state.activeCourseDetail&&this.state.activeCourseDetail.fees}
+                                        </Text>
                                 </TouchableOpacity>)}
                             </View>
                             <View style={styles.content}>
@@ -762,6 +767,7 @@ class InstituteView extends React.Component {
                 btnHandler={() => {this.props.navigation.goBack()}}
                 catInHeader={false}
                 titleonheader={"UPSC Coaching"}
+                noBottomTab={true}
                 notificationreplaceshare={"more-vertical"}
                 rightIconOnPress={()=>{this.setState({modalVisible:true})}} 
             > 
@@ -806,7 +812,8 @@ class InstituteView extends React.Component {
                                         <Text style={[styles.btnText,{color:this.state.tabtoshow==1?theme.primaryColor:theme.greyColor}]} onPress={()=>{this.tabtoshow(1)}}>Courses</Text>
                                     </View>
                                     <View style={[styles.btnView2,this.state.tabtoshow==2?({backgroundColor:theme.accentColor}):({backgroundColor:theme.primaryColor})]}>
-                                        <Text style={[styles.btnText,{color:theme.blueColor}]}>{institute.followersCount} Follower</Text>
+                                        <Text style={{color:theme.blueColor,fontSize:16,fontWeight: 'bold'}}>{institute.followersCount}</Text>
+                                        <Text style={[styles.btnText,{color:theme.blueColor}]}> Follower</Text>
                                     </View>
                                     <TouchableOpacity style={[styles.btnView3,this.state.tabtoshow==3?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor})]} onPress={this.handleFeedTabBtnClick}>
                                         <Text style={[styles.btnText,{color:this.state.tabtoshow==3?theme.primaryColor:theme.greyColor}]} >Feed</Text>
@@ -931,6 +938,7 @@ const styles = StyleSheet.create({
         {
             flex: 1,
             flexDirection:'column',
+            paddingBottom:20
         },
             headerView:
             {
@@ -1032,6 +1040,8 @@ const styles = StyleSheet.create({
                                 paddingBottom: 5,
                                 backgroundColor:theme.greyColor,
                                 margin: 2,
+                                flexDirection: 'row',
+                                alignItems: 'center',
                                 justifyContent:'center',
                                 alignItems: 'center'
                             },
@@ -1186,7 +1196,7 @@ const styles = StyleSheet.create({
                     catRow:
                     {
                         borderTopWidth:1,
-                        
+                        marginBottom:10,
                         borderTopColor:theme.labelOrInactiveColor,
                         padding:5
                     },

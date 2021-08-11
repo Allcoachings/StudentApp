@@ -74,7 +74,7 @@ class index extends React.Component {
                             <Drawer.Screen name="webview" component={WebViewCustom}/>
                         </>
                     ):(
-                        <Drawer.Screen name="Auth" component={Auth}  /> 
+                        <Drawer.Screen name="Auth" component={Auth} initialParams={{changeMode:this.props.changeMode}} /> 
                     )}
                         
                         {/* <Drawer.Screen 

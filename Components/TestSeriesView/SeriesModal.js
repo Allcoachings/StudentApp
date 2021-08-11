@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Modal,TouchableWithoutFeedback} from 'react-native';
 import { theme } from '../config';
-import { Feather } from '@expo/vector-icons';
+import { Feather, FontAwesome } from '@expo/vector-icons';
 import {connect } from 'react-redux'
 import {singlequedata} from '../../FakeDataService/FakeData'
 import CardView from '../Utils/CardView'
@@ -75,6 +75,11 @@ class SeriesModal extends React.Component {
     return(
       <TouchableOpacity style={[styles.queView,this.provideQuestionItemStyle(item.status)]}>
         <Text style={styles.queno}>{index+1}</Text>
+        {item.bookmarked?(
+            <View style={{marginLeft:'auto',marginRight:10,position:'absolute',bottom:-5}}>
+              <FontAwesome name="bookmark" size={20} color={theme.labelOrInactiveColor}/>
+            </View>
+          ):(null)}
       </TouchableOpacity>
     )
   }
@@ -82,14 +87,24 @@ class SeriesModal extends React.Component {
   renderQuestionListItem=({item,index})=>
   {
     this.calculateScore(item.status,item.correctMarks,item.wrongMarks)
+    console.log(item);
     return(
-      <View style={[{flex: 1,flexDirection: 'row',alignItems: 'center',flexWrap:'wrap',margin:5},this.provideQuestionItemStyle(item.status)]}>
+      <View style={[{flex: 1,flexDirection: 'row',alignItems: 'center',flexWrap:'wrap'},this.provideQuestionItemStyle(item.status)]}>
 
-          <TouchableOpacity style={[styles.queView]}>
+          <TouchableOpacity style={[styles.queView,{borderWidth:0}]}>
             <Text style={styles.queno}>{index+1}</Text>
           </TouchableOpacity>
           <View>
               <Text style={styles.queno}>{item.question}</Text>
+          </View>
+
+          {item.bookmarked?(
+            <View style={{marginLeft:'auto',marginRight:10}}>
+              <FontAwesome name="bookmark" size={24} color={theme.labelOrInactiveColor}/>
+            </View>
+          ):(null)}
+          <View>
+
           </View>
       </View>
     )
@@ -155,7 +170,7 @@ class SeriesModal extends React.Component {
   }
   render() {
     const { isModalVisible,closeModal,isPractice } = this.props;
-    console.log(isPractice)
+     
     return (
           CardView(
           <Modal 

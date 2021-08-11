@@ -6,6 +6,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.CourseVideo;
 import com.allcoaching.AllCoachingRestApi.Entity.VideoPlaylist;
 import com.allcoaching.AllCoachingRestApi.Service.CourseVideoService;
 import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/institute/course/video")
+@Api()
 public class CourseVideoController {
 
     @Autowired

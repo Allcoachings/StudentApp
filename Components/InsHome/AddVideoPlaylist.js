@@ -55,15 +55,14 @@ class AddVideoPlaylist extends Component {
                 </View>
                 <View style={styles.inputView}>
                         <Text style={styles.labelText}>Playlist Name</Text>
-                        {CardView(
+          
                             <TextInput
                                 placeholderTextColor={theme.greyColor}
                                 placeholder="Name"
                                 defaultValue={this.state.name}
                                 onChangeText={(text)=>this.setState({name: text})}
                                 style={styles.inputField}
-                            />, {borderRadius: 10}
-                        )}
+                            /> 
                 </View>
                 <View style={styles.btnView}>
                     <TouchableOpacity style={styles.submitButton} onPress={this.handleAddPlaylistClick}>
@@ -71,7 +70,7 @@ class AddVideoPlaylist extends Component {
                           (
                             <ActivityIndicator color={theme.primaryColor} size={"large"}/>
                           ):( 
-                               <Text style={styles.submitButtonText}>Submit</Text>
+                               <Text style={styles.submitButtonText}>Add</Text>
                             )}
                     </TouchableOpacity> 
                 </View>
@@ -95,7 +94,7 @@ const styles = StyleSheet.create({
         {
             marginTop:10,
             fontSize: 24,
-            fontWeight: 'bold',
+            fontFamily:'Raleway_600SemiBold',
             color: theme.secondaryColor
         },
     inputView: {
@@ -106,14 +105,18 @@ const styles = StyleSheet.create({
     },
         labelText: {
             fontSize: 18,
-            fontWeight: '700',
+            fontFamily:'Raleway_600SemiBold',
             color: theme.secondaryColor,
             marginBottom: 10,
         },
         inputField:
         {
-            padding:10,
-            fontSize: 16
+            borderRadius: 10,
+            padding: 10,
+            margin:10,
+            borderWidth: 1,
+            fontFamily: 'Raleway_600SemiBold',
+            borderColor:theme.labelOrInactiveColor,
         },
     btnView:
     {

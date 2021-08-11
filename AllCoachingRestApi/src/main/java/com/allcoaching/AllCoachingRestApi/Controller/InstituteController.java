@@ -3,6 +3,8 @@ package com.allcoaching.AllCoachingRestApi.Controller;
 import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
 import com.allcoaching.AllCoachingRestApi.Service.InstituteService;
+import com.allcoaching.AllCoachingRestApi.dto.InsCredentialDto;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/institute/")
+@Api(value = "Institute" , description = "Institute detail controller")
 public class InstituteController {
 
     @Autowired
@@ -53,6 +56,12 @@ public class InstituteController {
 
     }
 
+    @CrossOrigin(origins = "*")
+    @PostMapping("/validate/")
+    public Optional<Institute> validateIns(@RequestBody InsCredentialDto insCredentialDto)
+    {
+                   return instituteService.validateIns(insCredentialDto);
+    }
     @CrossOrigin(origins = "*")
     @GetMapping("/{offset}/{data_limit}/{sortBy}")
     public Iterable<Institute> findAll(

@@ -2,6 +2,7 @@ package com.allcoaching.AllCoachingRestApi.Service;
 
 import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Respository.InstituteRepo;
+import com.allcoaching.AllCoachingRestApi.dto.InsCredentialDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +30,12 @@ public class InstituteService {
         }
     }
 
+
+    public Optional<Institute> validateIns(InsCredentialDto insCredentialDto)
+    {
+        return instituteRepo.findByEmailAndPassword(insCredentialDto.getEmail(),insCredentialDto.getPassword());
+         
+    }
     public  Iterable<Institute> findByCategory(long id,Pageable topTwenty)
     {
 
