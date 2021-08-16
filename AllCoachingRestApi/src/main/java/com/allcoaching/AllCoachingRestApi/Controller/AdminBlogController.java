@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/admin/blog")
@@ -25,6 +26,19 @@ public class AdminBlogController {
     @Autowired
     private FileUploadService fileUploadService;
 
+    @CrossOrigin(origins = "*")
+    @GetMapping("/all/{offset}/{limit}")
+    public Iterable<AdminBlogs>  findAll(@PathVariable int offset,@PathVariable int limit)
+    {
+        return adminBlogService.findAll(offset,limit);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/byId/{id}")
+    public Optional<AdminBlogs> findById(@PathVariable  long id)
+    {
+        return adminBlogService.findById(id);
+    }
 
     @CrossOrigin(origins = "*")
     @PostMapping("/")
