@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,Modal,TouchableOpacity,TextInput,ScrollView } from 'react-native';
+import { View, Text,StyleSheet,Modal,TouchableWithoutFeedback,TextInput,ScrollView } from 'react-native';
 import CardView from '../Utils/CardView'
 import{theme} from '../config'
 import {addCourse} from '../Utils/DataHelper/Course'
@@ -49,19 +49,18 @@ class AddCourseModal extends Component {
                 
                 <View style={styles.inputView}>
                         <Text style={styles.labelText}>Course Title</Text>
-                        {CardView(
+                      
                             <TextInput 
                                 placeholderTextColor={theme.greyColor} 
                                 placeholder="Title" 
                                 defaultValue={this.props.description} 
                                 onChangeText={(text)=>this.setState({title: text})} 
                                 style={styles.inputField}
-                            />, {borderRadius: 10}
-                        )}
+                            /> 
                 </View>
                 <View style={styles.inputView}>
                         <Text style={styles.labelText}>Course Description</Text>
-                        {CardView(
+                      
                             <TextInput 
                                 placeholderTextColor={theme.greyColor} 
                                 placeholder="Description" 
@@ -69,12 +68,11 @@ class AddCourseModal extends Component {
                                 multiline={true} 
                                 numberOfLines={3} 
                                 style={styles.inputField}
-                            />, {borderRadius: 10}
-                        )}
+                            /> 
                 </View>
                 <View style={styles.inputView}>
                         <Text style={styles.labelText}>Course Fee</Text>
-                        {CardView(
+                    
                             <TextInput 
                                 placeholderTextColor={theme.greyColor} 
                                 placeholder="Fee" 
@@ -83,8 +81,8 @@ class AddCourseModal extends Component {
                                 multiline={false} 
                                 numberOfLines={1} 
                                 style={styles.inputField}
-                            />, {borderRadius: 10}
-                        )}
+                            /> 
+                        
                 </View>
         </>
       )
@@ -98,25 +96,27 @@ class AddCourseModal extends Component {
             visible = {this.props.isAddCourseModalVisible}
             onRequestClose = {() => this.props.closeModal()}>
     
-            <ScrollView>
+            <>
                 <View style={styles.headView}>
                     <Text style={styles.headText}>Add Course</Text>
                 </View>
                 {this.addCourseFrom()}
                 <View style={styles.btnView}>
-                    <TouchableOpacity style={styles.submitButton} onPress={this.handleSubMitBtnClick}>
+                    <TouchableWithoutFeedback  onPress={this.handleSubMitBtnClick}>
+                        <View style={styles.submitButton}>
                           {this.state.addCourseLoading?
                           (
                             <ActivityIndicator color={theme.primaryColor} size={"large"}/>
                           ):( 
                                <Text style={styles.submitButtonText}>Submit</Text>
-                            )}
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.addMoreButton}>
+                          )}
+                        </View>
+                    </TouchableWithoutFeedback>
+                    {/* <TouchableOpacity style={styles.addMoreButton}>
                             <Text style={styles.addMoreButtonText}>Add More+</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
-            </ScrollView>
+            </>
    
 
     </Modal>
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
         {
             marginTop:10,
             fontSize: 24,
-            fontWeight: 'bold',
+            fontFamily: 'Raleway_600SemiBold',
             color: theme.secondaryColor
         },
     inputView: {
@@ -146,29 +146,39 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
         labelText: {
-            fontSize: 18,
-            fontWeight: '700',
+            fontSize: 18, 
             color: theme.secondaryColor,
             marginBottom: 10,
+            fontFamily:'Raleway_600SemiBold'
         },
         inputField:
         {
-            padding:10,
-            fontSize: 16
+           
+            borderRadius: 10,
+            padding: 10,
+            margin:10,
+            borderWidth: 1,
+            fontFamily: 'Raleway_600SemiBold',
+            borderColor:theme.labelOrInactiveColor, 
         },
     btnView:
     {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
-        marginTop: 10
+        marginTop: 'auto',
+    
+        marginBottom: 20,
     },
         submitButton:
         {
             borderRadius: 10,
             backgroundColor:theme.accentColor,
-            padding: 10,
-            marginRight:10
+            padding: 10, 
+            width:'95%',
+            alignItems: 'center',
+
+
         },
             submitButtonText:
             {

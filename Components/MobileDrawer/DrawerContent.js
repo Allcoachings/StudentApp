@@ -29,6 +29,7 @@ export function DrawerContent(props){
 
 
     const [isCatModalOpen,setCatModalOpen] = useState(false);
+    
     return(
         <View style={{flex: 1, width: '100%'}}>
             <DrawerContentScrollView {...props}>
@@ -40,7 +41,7 @@ export function DrawerContent(props){
                             </View>
                             <View style={styles.userNameSec}>
                                 <Title>{props.userInfo.name}</Title>
-                                <Text style={{color: theme.greyColor}}>{props.userInfo.mobileNumber}</Text>
+                                <Text style={{color: theme.greyColor}}>{props.userInfo.userId}</Text>
                             </View>
                         </View>
                         <TouchableWithoutFeedback style={{height:"20%",justifyContent: 'center',borderWidth:1,borderColor: theme.labelOrInactiveColor,marginRight:10,paddingHorizontal:5}}

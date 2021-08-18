@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity, Modal, TextInput ,ActivityIndicator} from 'react-native';
+import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity,TouchableWithoutFeedback, Modal, TextInput ,ActivityIndicator,Dimensions} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {instituteData, insBanners} from '../../FakeDataService/FakeData'
 import { Rating } from 'react-native-ratings';
@@ -22,6 +22,8 @@ import AddFeedModal from './AddFeedModal';
 import FeedText from '../Feed/FeedText';
 import FeedImage from '../Feed/FeedImage';
 import FeedPoll from '../Feed/FeedPoll';
+
+const width = Dimensions.get('window').width
 class InsHome extends React.Component {
     
     state = { 
@@ -89,11 +91,14 @@ class InsHome extends React.Component {
             fetch_courses_banners(item.id,this.courseBannerCallback)
         }
         return (
-            <TouchableOpacity 
-                style={[styles.courseItemContainer,this.state.activeCourse==item.id?({backgroundColor:theme.purpleColor, borderColor:theme.darkPurpleColor}):({backgroundColor:theme.gradientColor,borderColor: theme.labelOrInactiveColor})]} onPress={()=>this.handleCourseItemClick(item)}
+            <TouchableWithoutFeedback 
+                 onPress={()=>this.handleCourseItemClick(item)}
             > 
-                    <Text style={[styles.courseTitle,this.state.activeCourse==item.id?({color: theme.darkPurpleColor}):({color:theme.primaryColor})]}>{item.title}</Text>
-            </TouchableOpacity>
+                        
+                    <View style={[styles.courseItemContainer,this.state.activeCourse==item.id?({backgroundColor:theme.darkPurpleColor, borderColor:theme.darkPurpleColor}):({backgroundColor:theme.purpleColor, borderColor:theme.darkPurpleColor})]}>
+                        <Text style={[styles.courseTitle,this.state.activeCourse==item.id?({color: theme.primaryColor}):({color:theme.darkPurpleColor})]}>{item.title}</Text>
+                    </View>
+            </TouchableWithoutFeedback>
         );
     }
     bannerCallback=(response)=>
@@ -126,15 +131,19 @@ class InsHome extends React.Component {
         if(item.type=='add')
         {
             return(
-                <TouchableOpacity style={styles.bannerItemContainer} onPress={()=>this.addCourseBanner()}>
-                    <Image source={{uri:item.bannerImageLink}} style={styles.bannerImage}/>
-                </TouchableOpacity  >
+                <TouchableWithoutFeedback  onPress={()=>this.addCourseBanner()}>
+                    <View style={styles.bannerItemContainer}>
+                        <Image source={{uri:item.bannerImageLink}} style={styles.bannerImage}/>
+                    </View>
+                </TouchableWithoutFeedback  >
             )
         } 
         return(
-            <TouchableOpacity style={styles.bannerItemContainer} >
-                    <Image source={{uri:serverBaseUrl+item.bannerImageLink}} style={styles.bannerImage}/>
-            </TouchableOpacity  >
+            <TouchableWithoutFeedback style={styles.bannerItemContainer} >
+                    <View style={styles.bannerItemContainer}>
+                        <Image source={{uri:serverBaseUrl+item.bannerImageLink}} style={styles.bannerImage}/>
+                    </View>
+            </TouchableWithoutFeedback  >
         )
     }
 
@@ -197,7 +206,7 @@ class InsHome extends React.Component {
         } 
     }
     renderVideos=({item})=>{
-        console.log(item);
+      
         return(
             <View style={styles.videoContainer}>
                 <TouchableOpacity onPress={()=>this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+item.videoLocation})}>
@@ -238,11 +247,11 @@ class InsHome extends React.Component {
                 header={this.accordianHeader("folder",item.subject,"chevron-down")}
             >
                  <FlatList 
-                        data={item.date} 
-                        renderItem={this.timeTableView}
-                        keyExtractor={(item)=>item.id} 
-                        horizontal={false}
-                        showsHorizontalScrollIndicator={false}
+                    data={item.date} 
+                    renderItem={this.timeTableView}
+                    keyExtractor={(item)=>item.id} 
+                    horizontal={false}
+                    showsHorizontalScrollIndicator={false}
                     />
         </Accordian>  
         )
@@ -397,9 +406,11 @@ class InsHome extends React.Component {
             //     header={this.accordianHeader(item.title, " ", "chevron-down")}
             // >
             <>
-                <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', marginTop: '5%'}} onPress={()=>this.props.navigation.navigate("AddTimeTable",{courseId:this.state.activeCourse,appendSubject:this.appendCourseTimeTableSubject})}>
-                    <Text style={{fontSize: 18, fontWeight: 'bold'}}>Add Time Table+</Text>
-                </TouchableOpacity>
+                <TouchableWithoutFeedback  onPress={()=>this.props.navigation.navigate("AddTimeTable",{courseId:this.state.activeCourse,appendSubject:this.appendCourseTimeTableSubject})}>
+                    <View style={{justifyContent: 'center', alignItems: 'center', marginTop: '5%',backgroundColor:theme.labelOrInactiveColor}}>
+                        <Text style={{fontSize: 18, fontWeight: 'bold'}}>Add Time Table</Text>
+                    </View>
+                </TouchableWithoutFeedback>
                   <View style={styles.weekView}> 
                     <FlatList 
                         data={item} 
@@ -783,7 +794,7 @@ class InsHome extends React.Component {
                    <>
                    
                             <View style={styles.InstituteCourseListView}>
-                                <TouchableOpacity style={{marginTop: 25, borderWidth: 1, borderColor: theme.secondaryColor, marginRight: 10, borderRadius:20, paddingVertical:4, paddingHorizontal: 10}} onPress={()=>this.openAddCourseModal()}>
+                                <TouchableOpacity style={{ borderWidth: 1, borderColor: theme.secondaryColor, marginRight: 10, borderRadius:20, paddingVertical:4, paddingHorizontal: 10}} onPress={()=>this.openAddCourseModal()}>
                                     <Text style={{fontFamily: 'Raleway_700Bold', fontSize:14}}> + Add Course</Text>
                                 </TouchableOpacity>
 
@@ -809,12 +820,15 @@ class InsHome extends React.Component {
                                 <View style={styles.optionalRow}> 
                                     <TouchableOpacity style={{borderColor:theme.borderColor,borderWidth:1,borderRadius:10,padding:10}} onPress={() => this.props.navigation.navigate("AboutCourse")}>
                                         <Text style={{fontSize:12,color:theme.secondaryColor,fontFamily:'Raleway_700Bold'}}>
-                                            About Course Chats
+                                            About Course
                                         </Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10}}>
+                                    <TouchableOpacity style={{backgroundColor:theme.accentColor,flexDirection:'row',alignItems: 'center',padding:10,borderRadius:10}}>
                                         <Text style={{fontSize:14,color:theme.primaryColor, fontFamily:'Raleway_700Bold'}}>
-                                            Fees - {this.state.activeCourseDetail&&this.state.activeCourseDetail.fees}
+                                            Fees -  
+                                        </Text>
+                                        <Text style={{fontSize:14,color:theme.primaryColor}}>
+                                            {this.state.activeCourseDetail&&this.state.activeCourseDetail.fees}
                                         </Text>
                                     </TouchableOpacity>
                                     </View>
@@ -911,7 +925,7 @@ class InsHome extends React.Component {
                 <View style={styles.container}>
                         <View style={styles.instituteheader}>
                             {CardView(
-                                <Image source={{uri:institute.logo}} style={styles.instituteheaderLogo}/>
+                                <Image source={{uri:serverBaseUrl+institute.logo}} style={styles.instituteheaderLogo}/>
                             ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:100}):({width:200,height:150})])
                             } 
                             <View style={styles.instituteheaderMeta}>
@@ -1180,7 +1194,7 @@ const styles = StyleSheet.create({
                     },
                     btnView3:
                     {
-                        flex: 0.2,
+                        flex: 0.3,
                         paddingLeft: 10,
                         paddingRight: 10,
                         paddingTop: 5,
@@ -1199,8 +1213,10 @@ const styles = StyleSheet.create({
                         },
                 
                 InstituteCourseListView:{
+                    paddingTop:10,
                     flexDirection: 'row',
                     borderTopWidth:1,
+                    alignItems: 'center',
                     borderTopColor: theme.labelOrInactiveColor
                 },
 
@@ -1209,7 +1225,7 @@ const styles = StyleSheet.create({
                     borderColor:theme.primaryColor,
                     borderWidth:1,
                     // padding:5,
-                    marginTop:'30%',
+                    // marginTop:'30%',
                     paddingLeft:10,
                     paddingRight:10,
                     paddingTop: 4,
@@ -1230,11 +1246,12 @@ const styles = StyleSheet.create({
                 },
                     bannerImage:
                     {
-                        width:300,
+                        width:width-20,
                         height:140,
                         borderRadius:10,
                         marginRight:10,
                         borderWidth: 1,
+                        // resizeMode:'contain',
                         borderColor:theme.greyColor,
                     },
                 optionalRow:

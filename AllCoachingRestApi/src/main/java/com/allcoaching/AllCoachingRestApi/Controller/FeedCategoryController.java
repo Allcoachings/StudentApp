@@ -4,6 +4,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.Category;
 import com.allcoaching.AllCoachingRestApi.Entity.Feed;
 import com.allcoaching.AllCoachingRestApi.Entity.FeedCategory;
 import com.allcoaching.AllCoachingRestApi.Service.FeedCategoryService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/feedcategory")
+@Api()
 public class FeedCategoryController {
     
     @Autowired

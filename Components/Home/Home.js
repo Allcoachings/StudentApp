@@ -146,6 +146,7 @@ class Home extends React.Component {
         {
             response.json().then(data=>
                 {
+                     
                     this.setState({institute:data,loadingData:false})
                 })
         }
@@ -166,6 +167,7 @@ class Home extends React.Component {
                 })
                 break;
             case false:
+                this.setState({catMode:false})
             break;
         }
         

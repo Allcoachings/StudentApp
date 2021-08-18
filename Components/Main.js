@@ -33,7 +33,7 @@ class Main extends React.Component {
             Raleway_600SemiBold,
             Raleway_700Bold
         })
-        // AsyncStorage.clear()
+        // AsyncStorage.clear()  
         AsyncStorage.getItem('authInfo').then(data => {
             if(data)
             {
@@ -70,7 +70,7 @@ class Main extends React.Component {
         }
         else  
         {
-              return(<MobileViewController userAuth={this.props.userAuth} userInfo={this.props.userInfo}/>)
+              return(<MobileViewController changeMode={this.changeMode} userAuth={this.props.userAuth} userInfo={this.props.userInfo}/>)
         }
         // return(<MobileViewController userAuth={this.props.userAuth}/>)
     }
@@ -82,7 +82,7 @@ class Main extends React.Component {
         }
         else  
         {
-              return(<MobileViewControllerIns insAuth={this.props.insAuth} />)
+              return(<MobileViewControllerIns changeMode={this.changeMode} insAuth={this.props.insAuth} />)
         }
          
     }
@@ -123,7 +123,10 @@ class Main extends React.Component {
 
         }
     }
-
+    changeMode=(mode)=>
+    {
+        this.setState({mode})
+    }
     render() {
 
         return( 

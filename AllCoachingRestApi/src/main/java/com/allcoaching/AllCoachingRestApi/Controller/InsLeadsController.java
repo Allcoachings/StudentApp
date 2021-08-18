@@ -6,6 +6,7 @@ import com.allcoaching.AllCoachingRestApi.Respository.InsLeadsRepo;
 import com.allcoaching.AllCoachingRestApi.Service.InsLeadService;
 import com.allcoaching.AllCoachingRestApi.dto.InsLeadsDto;
 import com.allcoaching.AllCoachingRestApi.dto.InsLeadsStudentDto;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/v1/institute/leads")
+@Api(value = "student" ,description = "institute leads controller")
 public class InsLeadsController {
     @Autowired
     private InsLeadService insLeadService;

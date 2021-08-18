@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform,Dimensions, ScrollView} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {homeFeaturesData} from '../../FakeDataService/FakeData'
 import { theme,dataLimit, serverBaseUrl } from '../config';
@@ -7,6 +7,7 @@ import { Feather } from '@expo/vector-icons';
 import { Rating ,AirbnbRating} from 'react-native-ratings';
 import { Redirect } from 'react-router';
 import {fetch_coachingByCategory} from '../Utils/DataHelper/Coaching'
+const windowWidth = Dimensions.get('window').width;
 class CategoryList extends React.Component {
 
     state={
@@ -142,15 +143,15 @@ const styles = StyleSheet.create({
                 instituteItemContainer:
                 {
                     flexDirection:'column',
-                    width:102,
+                    width:(windowWidth/3)-20,
                     height:180,
                     marginLeft:10,
                     marginTop:10
                 },
                     instituteItemImage:
                     {
-                        width:102,
-                        height:100,
+                        width:'100%',
+                        height:90,
                         borderRadius:15
                     },
                     instituteMetaContainer:
@@ -161,9 +162,9 @@ const styles = StyleSheet.create({
                         instituteTitle:
                         {
                             flexWrap:'wrap',
-                            width:'100%', 
-                            
-                            fontSize:10
+                                width:'100%', 
+                                fontSize:12,
+                                height:30
                         },
                         instituteRating:
                         {

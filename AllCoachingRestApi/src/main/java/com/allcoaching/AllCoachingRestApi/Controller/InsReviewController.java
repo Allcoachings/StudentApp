@@ -6,6 +6,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Service.InsReviewService;
 import com.allcoaching.AllCoachingRestApi.dto.InsReviewDto;
 import com.allcoaching.AllCoachingRestApi.dto.StudentPurchaseDto;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/institute/course/reviews")
+@Api(value="student", description = "For Student to review institute")
 public class InsReviewController {
 
     @Autowired

@@ -14,6 +14,7 @@ import  {DrawerContent}  from './DrawerContent';
 import PdfViewer from '../PdfViewer/PdfViewer'
 import VideoPlayerCustom from '../VideoPLayer/VideoPlayerCustom';
 import AboutCourse from '../AboutCourse/AboutCourse'
+import AuthIns from '../InsRegister/AuthIns';
 const Drawer = createDrawerNavigator();
 class indexIns extends React.Component {
     state = {  }
@@ -35,10 +36,10 @@ class indexIns extends React.Component {
                                 <Drawer.Screen name="Leads" component={Leads}  />
                                 <Drawer.Screen name="pdfViewer" component={PdfViewer} /> 
                                 <Drawer.Screen name="videoplayer" component={VideoPlayerCustom} />
-                                <Drawer.Screen name="Register" component={InsRegister}  /> 
+                             
                             </>
                        ):(
-                                <Drawer.Screen name="Register" component={InsRegister}  />    
+                                <Drawer.Screen name="Register" component={AuthIns}  initialParams={{changeMode:this.props.changeMode}}  />    
                        )}
                         
                        

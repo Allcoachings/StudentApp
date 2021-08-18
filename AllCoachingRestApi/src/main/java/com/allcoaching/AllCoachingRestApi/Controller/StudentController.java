@@ -3,6 +3,7 @@ package com.allcoaching.AllCoachingRestApi.Controller;
 import com.allcoaching.AllCoachingRestApi.Entity.Student;
 import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
 import com.allcoaching.AllCoachingRestApi.Service.StudentService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/student")
+@Api(value = "student",description = "Student Detail Controller")
 public class StudentController {
 
     @Autowired

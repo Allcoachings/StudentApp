@@ -7,6 +7,7 @@ import com.allcoaching.AllCoachingRestApi.Service.CategoryService;
 import com.allcoaching.AllCoachingRestApi.Service.InstituteService;
 import com.allcoaching.AllCoachingRestApi.Service.MainBannersService;
 import com.allcoaching.AllCoachingRestApi.dto.AppStudentHomeDto;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/app/home/")
+@Api()
 public class AppStudentHomeController {
 
     @Autowired

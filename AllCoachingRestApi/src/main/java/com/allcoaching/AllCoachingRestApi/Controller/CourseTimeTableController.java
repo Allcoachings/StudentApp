@@ -4,6 +4,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.CourseTimeTableItem;
 import com.allcoaching.AllCoachingRestApi.Entity.CourseTimeTableSubject;
 import com.allcoaching.AllCoachingRestApi.Service.CourseTimeTableService;
 import com.allcoaching.AllCoachingRestApi.dto.CourseTimeTableDto;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/v1/institute/course/timetable")
+@Api()
 public class CourseTimeTableController {
 
     @Autowired

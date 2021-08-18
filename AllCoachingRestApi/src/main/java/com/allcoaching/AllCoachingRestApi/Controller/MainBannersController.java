@@ -3,6 +3,7 @@ package com.allcoaching.AllCoachingRestApi.Controller;
 import com.allcoaching.AllCoachingRestApi.Entity.MainBanners;
 import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
 import com.allcoaching.AllCoachingRestApi.Service.MainBannersService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -18,6 +19,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/v1/mainbanners/")
+@Api(value = "admin",description = "Admin Controller for adding Banners")
 public class MainBannersController {
 
     @Autowired

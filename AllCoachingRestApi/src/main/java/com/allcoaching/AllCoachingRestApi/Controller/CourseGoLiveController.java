@@ -2,6 +2,7 @@ package com.allcoaching.AllCoachingRestApi.Controller;
 
 import com.allcoaching.AllCoachingRestApi.Entity.CourseGoLive;
 import com.allcoaching.AllCoachingRestApi.Service.CourseGoLiveService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/institute/course/golive")
+@Api()
 public class CourseGoLiveController {
 
     @Autowired

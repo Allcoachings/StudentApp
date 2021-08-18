@@ -23,15 +23,21 @@ class index extends React.Component {
         else
         {
             console.log("not type")
-            fetch_categories_normalized('main',this.categoriesCallBack)
+            fetch_categories_normalized('main',(response)=>this.categoriesCallBack(response,true))
         }  
     }
 
-    categoriesCallBack=(response)=>{
+    categoriesCallBack=(response,isMain)=>{
         if(response.status==200)
         {
             response.json().then(data=>
             {
+             
+                if(isMain)
+                {
+                    let obj = {icon:'',name:'All',sortOrder:1,id:-1}
+                    data.unshift(obj)
+                } 
                 this.setState({tabListInstitute:data});                   
             })
         }
@@ -40,7 +46,14 @@ class index extends React.Component {
     handleCatPress=(item)=>
     {
         this.setState({activeTab:item.id})
-        this.props.catOnpress(true,item)
+        if(item.id==-1)
+        {
+            this.props.catOnpress(false)
+        }else
+        {
+            this.props.catOnpress(true,item)
+        }
+        
     }
 
     renderTabItems=({item})=>

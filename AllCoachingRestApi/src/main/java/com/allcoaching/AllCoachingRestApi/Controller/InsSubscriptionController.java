@@ -5,6 +5,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.InsSubscription;
 import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Entity.Student;
 import com.allcoaching.AllCoachingRestApi.Service.InsSubscriptionService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/v1/subscription")
+@Api(value = "student",description = "Student controller to subscribe and unsubscribe institute")
 public class InsSubscriptionController {
 
     @Autowired

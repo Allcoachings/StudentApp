@@ -163,39 +163,6 @@ class AddPdf extends React.Component {
                         <Text style={styles.headText}>Add Document</Text>
                     </View>
                     <View style={styles.inputView}>
-                            <Text style={styles.labelText}>Document Title</Text>
-                            {CardView(
-                                <TextInput 
-                                    placeholderTextColor={theme.greyColor} 
-                                    placeholder="Title" 
-                                    defaultValue={this.props.description} 
-                                    onChangeText={(text)=>this.setState({title: text})} 
-                                    style={styles.inputField}
-                                />, {borderRadius: 10} 
-                            )}
-                    </View>
-                    {!this.state.loadingPlaylist?(
-                            <View style={styles.inputView}>
-                                
-                            <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
-                                    <Text style={styles.labelText}>Document Playlist</Text>
-                                    <Feather name="plus" onPress={()=>this.openModal()} size={20}/>
-                            </View> 
-                            {CardView(
-                                <View style={styles.dropdownView}>
-                                    <Picker 
-                                        style={{ height:30 }}
-                                        selectedValue={this.state.selectedPlaylist}
-                                        onValueChange={(itemValue, itemIndex) =>
-                                            this.setSelectedPlaylist(itemValue)
-                                        }> 
-                                        {this.state.playlist&&this.state.playlist.map((item)=>this.renderPickerItem(item))}
-                                        </Picker>
-                                  
-                                </View> ,{marginTop: 10, padding: 12})}
-                            </View>
-                            ):(null)}
-                    <View style={styles.inputView}>
                             <Text style={styles.labelText}>Document(.pdf)</Text>
                             {/* <TouchableOpacity
                                 onPress={() =>this.docPicker()}
@@ -207,9 +174,43 @@ class AddPdf extends React.Component {
                              <TouchableOpacity style={styles.submitButton} onPress={this.handleAddDocumentClick}>
                                 <Text style={styles.submitButtonText}>Choose Document</Text>
                             </TouchableOpacity>
+                            <Text style={{fontFamily: 'Raleway_600SemiBold'}}>{this.state.document.name}</Text>
                             {/* <Feather name="link" size={12} color={theme.secondaryColor}/> */}
                             {/* {this.renderInputFiled()} */}
                     </View>
+                    <View style={styles.inputView}>
+                            <Text style={styles.labelText}>Document Title</Text>
+                     
+                                <TextInput 
+                                    placeholderTextColor={theme.greyColor} 
+                                    placeholder="Title" 
+                                    defaultValue={this.props.description} 
+                                    onChangeText={(text)=>this.setState({title: text})} 
+                                    style={styles.inputField}
+                                /> 
+                    </View>
+                    {!this.state.loadingPlaylist?(
+                            <View style={styles.inputView}>
+                                
+                            <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
+                                    <Text style={styles.labelText}>Document Playlist</Text>
+                                    <Feather name="plus" onPress={()=>this.openModal()} size={20}/>
+                            </View> 
+                             
+                                <View style={styles.inputField}>
+                                    <Picker 
+                                        style={{ height:30 }}
+                                        selectedValue={this.state.selectedPlaylist}
+                                        onValueChange={(itemValue, itemIndex) =>
+                                            this.setSelectedPlaylist(itemValue)
+                                        }> 
+                                        {this.state.playlist&&this.state.playlist.map((item)=>this.renderPickerItem(item))}
+                                        </Picker>
+                                  
+                                </View> 
+                            </View>
+                            ):(null)}
+                  
                     <View style={styles.btnView}>
                         <TouchableOpacity style={styles.submitButton} onPress={()=>this.handleSubmitButtonClick()}>
                             {this.state.loadingAddDocument?(
@@ -219,9 +220,7 @@ class AddPdf extends React.Component {
                             )}
                                 
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.addMoreButton}>
-                                <Text style={styles.addMoreButtonText}>Add More+</Text>
-                        </TouchableOpacity>
+                      
                     </View>
                 </ScrollView>
                 {this.state.isModalVisible?(
@@ -244,7 +243,7 @@ const styles = StyleSheet.create({
         {
             marginTop:10,
             fontSize: 28,
-            fontWeight: 'bold',
+            fontFamily: 'Raleway_600SemiBold',
             color: theme.secondaryColor
         },
     inputView: {
@@ -255,14 +254,18 @@ const styles = StyleSheet.create({
     },
         labelText: {
             fontSize: 18,
-            fontWeight: '700',
+            fontFamily: 'Raleway_600SemiBold',
             color: theme.secondaryColor,
             marginBottom: 10,
         },
         inputField:
         {
-            padding:10,
-            fontSize: 16
+            borderRadius: 10,
+            padding: 10,
+            margin:10,
+            borderWidth: 1,
+            fontFamily: 'Raleway_600SemiBold',
+            borderColor:theme.labelOrInactiveColor,
         },
     btnView:
     {
@@ -280,7 +283,8 @@ const styles = StyleSheet.create({
         },
             submitButtonText:
             {
-                color: theme.primaryColor
+                color: theme.primaryColor,
+                textAlign: 'center'
             },
         addMoreButton:
         {

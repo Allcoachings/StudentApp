@@ -12,6 +12,7 @@ import SeriesModal from './SeriesModal';
 import {fetch_testSeries_questions} from '../Utils/DataHelper/TestSeries'
 import Question from './Question';
 import moment from 'moment'
+import { StatusBar } from 'expo-status-bar';
 class TestSeriesView extends React.Component {
 
     state={
@@ -36,7 +37,7 @@ class TestSeriesView extends React.Component {
             {   
                     response.json().then(data=>
                     {
-                        console.log("questions",data);
+                       
                       this.setState({questions:{...this.state.questions,...data},isFirstTimeLoading:false,loadingQuestions:false})
                     })
             }
@@ -209,9 +210,17 @@ class TestSeriesView extends React.Component {
              questions[quesIndex]['status'] = status;
              this.setState({questions,correctQues,wrongQues,attempted})
       }
+      bookmarkQuestion=(quesIndex,status)=>
+      {
+            let questions = this.state.questions;  
+            questions[quesIndex]['bookmarked']=status;
+            this.setState({questions})
+      }
     render(){
         this.updateComponent() 
         return (
+            <>
+            <StatusBar hidden/>
             <PageStructure
                 iconName={"arrow-left"}
                 btnHandler={() => {this.props.navigation.goBack()}}
@@ -237,7 +246,7 @@ class TestSeriesView extends React.Component {
                                      
                                 <FlatList 
                                     data={Object.values(this.state.questions)} 
-                                    renderItem={({item,index}) =><Question item={item} index={index} isPractice={true} setQuestionAttemptStatus={this.setQuestionAttemptStatus}/>}
+                                    renderItem={({item,index}) =><Question item={item} index={index} isPractice={true} bookmarkQuestion={this.bookmarkQuestion} setQuestionAttemptStatus={this.setQuestionAttemptStatus}/>}
                                     keyExtractor={(item)=>item.id} 
                                     horizontal={false}
                                     showsHorizontalScrollIndicator={false}
@@ -272,6 +281,7 @@ class TestSeriesView extends React.Component {
                     
                 
             </PageStructure>
+            </>
         )
     }
 
@@ -325,6 +335,8 @@ const styles = StyleSheet.create({
                     justifyContent: 'center',
                     alignItems: 'center',
                     paddingRight:3,
+                    // marginHorizontal:'auto',
+                    marginLeft:"auto",
                     flexDirection: 'row',
                 },
                     pauseBtnText:
