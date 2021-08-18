@@ -4,6 +4,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.Category;
 import com.allcoaching.AllCoachingRestApi.Service.CategoryService;
 import com.allcoaching.AllCoachingRestApi.dto.CategoryDropDownDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -30,8 +31,10 @@ public class CategoryController {
     public ResponseEntity<Object> save(@RequestBody Category category)
     {
         Category saved_category = categoryService.save(category);
-        URI location  = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(saved_category.getId()).toUri();
-        return ResponseEntity.created(location).build();
+        URI location  = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(saved_category.getId()).toUri();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Expose-Headers", "Location");
+        return ResponseEntity.created(location).headers(headers).build();
     }
 
     @CrossOrigin(origins = "*")

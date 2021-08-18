@@ -22,7 +22,7 @@ public class CourseBannersController {
     private CourseBannersService courseBannersService;
     @Autowired
     private FileUploadService fileUploadService;
-
+    @CrossOrigin(origins = "*")
     @PostMapping("/upload/")
     public ResponseEntity<Object> uploadBanner(
             @RequestParam("file") MultipartFile image,
