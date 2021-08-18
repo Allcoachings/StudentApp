@@ -21,4 +21,9 @@ public class CourseService {
     {
         return courseRepo.findByInstId(instId);
     }
+
+    public void deleteCourseById(long id)
+    {
+          courseRepo.deleteById(id);
+    }
 }

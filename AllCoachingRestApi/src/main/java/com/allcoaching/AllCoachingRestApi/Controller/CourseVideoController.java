@@ -88,4 +88,20 @@ public class CourseVideoController {
         return courseVideoService.findByPlaylist(id);
     }
 
+
+    @CrossOrigin(origins="*")
+    @PutMapping("/publish/{status}/{id}")
+    public  ResponseEntity<Object> updatePublishedStatus(@PathVariable boolean status,@PathVariable long id)
+    {
+        courseVideoService.updatePublishedStatusById(status,id);
+        return ResponseEntity.ok().build();
+    }
+
+    @CrossOrigin(origins="*")
+    @PutMapping("/hidden/{status}/{id}")
+    public  ResponseEntity<Object> updateHiddenStatus(@PathVariable boolean status,@PathVariable long id)
+    {
+        courseVideoService.updateHiddenStatusById(status,id);
+        return ResponseEntity.ok().build();
+    }
 }

@@ -12,7 +12,7 @@ import Toast from 'react-native-simple-toast';
 class AddFeedModal extends Component {
   state={
       stepCheck:2,//to check on which step user is in order to add a feed
-      postType:1,
+      postType:1,//1 for image , 2 for poll 3 for text option 
       addFeedLoading:false,
       description:'',
       pollOptions:[
@@ -193,6 +193,11 @@ renderFeedTypeOptions=()=>
             {this.feedOption("bar-chart-2","Poll",()=>{this.setState({postType:2,stepCheck:2})})}
         </View>
     )
+}
+
+setFeedTypeOption=(postType)=>
+{
+        this.setState({postType}); 
 }
 
 
@@ -438,6 +443,24 @@ renderFeedTypeOptions=()=>
         </TouchableOpacity>
     )
   }
+
+  renderAddImageSection=()=>
+  {
+      return (
+          <View style={{flexDirection: 'row'}}>
+              <FlatList
+                    data={this.state.feddImageData}
+                    renderItem={({item})=>this.renderFeedImages(item)}
+              />
+          </View>
+      )
+  }
+  renderFeedImages=(item)=>
+  {
+      return (
+          <View></View>
+      )
+  }
   render() {
      
     return (
@@ -462,14 +485,14 @@ renderFeedTypeOptions=()=>
 
                     />
                     <View style={{flex:1,flexDirection:'row',justifyContent: 'flex-end'}}>
-                        <View style={{marginHorizontal:10}}>
-                        {this.renderButton("Poll","bar-chart-2",()=>{})} 
+                        <View style={[styles.feedOption,this.state.postType==2?(styles.activeFeedOption):(null)]}>
+                        {this.renderButton("Poll","bar-chart-2",()=>this.setFeedTypeOption(2))} 
                         </View>
-                        <View style={{marginHorizontal:10}}>
-                        {this.renderButton("Image","image",()=>{})} 
+                        <View style={[styles.feedOption,this.state.postType==1?(styles.activeFeedOption):(null)]}>
+                        {this.renderButton("Image","image",()=>this.setFeedTypeOption(1))} 
                         </View>
-                        <View style={{marginHorizontal:10,backgroundColor:theme.labelOrInactiveColor,borderTopLeftRadius:10,borderTopRightRadius:10}}>
-                        {this.renderButton("Post","align-left",()=>{})} 
+                        <View style={[styles.feedOption,this.state.postType==3?(styles.activeFeedOption):(null)]}>
+                        {this.renderButton("Post","align-left",()=>this.setFeedTypeOption(3))} 
                         </View>
                     </View>
                 </View>
@@ -509,55 +532,21 @@ const styles = StyleSheet.create({
             fontFamily: 'Raleway_600SemiBold',
             color: theme.secondaryColor
         },
-    inputView: {
-        marginTop:'5%',
-        display: 'flex',
-        flexDirection: 'column',
-        marginLeft: 10
-    },
-        labelText: {
-            fontSize: 18,
-            fontWeight: '700',
-            color: theme.secondaryColor,
-            marginBottom: 10,
-        },
-        inputField:
-        {
-            padding:10,
-            fontSize: 16
-        },
-    btnView:
+    feedOption:
     {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        marginTop: 10
+        marginHorizontal:10,
     },
-        submitButton:
-        {
-            borderRadius: 10,
-            backgroundColor:theme.accentColor,
-            padding: 10,
-            marginRight:10
-        },
-            submitButtonText:
-            {
-                color: theme.primaryColor
-            },
-        addMoreButton:
-        {
-            borderRadius: 10,
-            backgroundColor:theme.addMoreButtonColor,
-            padding: 10,
-            marginLeft: 10
-        },
-            addMoreButtonText:
-            {
-                color: theme.primaryColor
-            },
+    activeFeedOption:
+    {
+        backgroundColor:theme.labelOrInactiveColor,
+        borderTopLeftRadius:10,
+        borderTopRightRadius:10
+    }
 
 
     // add course css end
+
+
 });
 
 export default AddFeedModal;

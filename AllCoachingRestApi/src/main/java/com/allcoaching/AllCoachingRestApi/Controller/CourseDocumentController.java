@@ -90,4 +90,20 @@ public class CourseDocumentController {
         return courseDocumentService.findByDocumentPlaylists(id);
     }
 
+    @CrossOrigin(origins="*")
+    @PutMapping("/publish/{status}/{id}")
+    public  ResponseEntity<Object> updatePublishedStatus(@PathVariable boolean status,@PathVariable long id)
+    {
+        courseDocumentService.updatePublishedStatusById(status,id);
+        return ResponseEntity.ok().build();
+    }
+
+    @CrossOrigin(origins="*")
+    @PutMapping("/hidden/{status}/{id}")
+    public  ResponseEntity<Object> updateHiddenStatus(@PathVariable boolean status,@PathVariable long id)
+    {
+        courseDocumentService.updateHiddenStatusById(status,id);
+        return ResponseEntity.ok().build();
+    }
+
 }

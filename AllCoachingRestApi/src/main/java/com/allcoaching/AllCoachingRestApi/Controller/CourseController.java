@@ -39,4 +39,12 @@ public class CourseController {
         return ResponseEntity.created(location).build();
     }
 
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteCourseById(@PathVariable long id)
+    {
+        courseService.deleteCourseById(id);
+        return ResponseEntity.ok().build();
+    }
+
 }

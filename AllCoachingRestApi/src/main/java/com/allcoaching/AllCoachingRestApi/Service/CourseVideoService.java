@@ -51,4 +51,16 @@ public class CourseVideoService {
     {
         return courseVideoPLayListRepo.findByCourseId(id);
     }
+
+    //updating published Status
+    public void updatePublishedStatusById(boolean status,long id)
+    {
+        courseVideoRepo.updatePublishedStatus(status,id);
+    }
+
+    //updating hidden Status
+    public void updateHiddenStatusById(boolean status,long id)
+    {
+        courseVideoRepo.updateHiddenStatus(status,id);
+    }
 }

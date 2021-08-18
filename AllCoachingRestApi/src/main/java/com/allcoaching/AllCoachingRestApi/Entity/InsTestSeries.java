@@ -25,6 +25,8 @@ public class InsTestSeries {
     private int timeDuration;
     private boolean isPractice;
     private int maxMarks;
+    private boolean published;
+    private boolean hidden;
     private boolean isAdmin;
 
     @DateTimeFormat(pattern = "dd/MM/yyyy")

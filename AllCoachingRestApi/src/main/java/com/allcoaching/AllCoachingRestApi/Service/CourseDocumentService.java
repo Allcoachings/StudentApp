@@ -59,4 +59,17 @@ public class CourseDocumentService {
     {
         return courseDocumentPlaylistRepo.findByCourseId(id);
     }
+
+
+    //updating published Status
+    public void updatePublishedStatusById(boolean status,long id)
+    {
+        courseDocumentRepo.updatePublishedStatus(status,id);
+    }
+
+    //updating hidden Status
+    public void updateHiddenStatusById(boolean status,long id)
+    {
+        courseDocumentRepo.updateHiddenStatus(status,id);
+    }
 }
