@@ -1,6 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,Modal,TouchableOpacity,ActivityIndicator,ScrollView,Image,TextInput,FlatList } from 'react-native';
+import { View, Text,StyleSheet,Modal,TouchableOpacity,TouchableWithoutFeedback,ActivityIndicator,ScrollView,Image,TextInput,FlatList } from 'react-native';
 import { addBannerImagePlaceholder, theme } from '../config';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure';
 import CardView from '../Utils/CardView';
@@ -15,6 +15,7 @@ class AddFeedModal extends Component {
       postType:1,//1 for image , 2 for poll 3 for text option 
       addFeedLoading:false,
       description:'',
+      feedImageData:[{type:'add',image:{ uri:addBannerImagePlaceholder}}],
       pollOptions:[
           {
               
@@ -162,7 +163,10 @@ class AddFeedModal extends Component {
               console.log(response)
               if(response.type=="success")
               {
-                  this.setState({postImage:response})
+                  let feedImageData  = this.state.feedImageData;
+                  feedImageData.unshift({image: response,type:'none'})
+                  this.setState({feedImageData})
+                //   this.setState({postImage:response})
               }
           })
   }
@@ -447,19 +451,49 @@ setFeedTypeOption=(postType)=>
   renderAddImageSection=()=>
   {
       return (
-          <View style={{flexDirection: 'row'}}>
+          <View >
+ 
               <FlatList
-                    data={this.state.feddImageData}
+                    data={this.state.feedImageData}
                     renderItem={({item})=>this.renderFeedImages(item)}
+                    keyExtractor={(item,index)=>index.toString()}
+                    horizontal={true}
               />
           </View>
       )
   }
+  handleSubmitButtonClick=()=>
+  {
+      console.log("submitted")
+  }
   renderFeedImages=(item)=>
   {
-      return (
-          <View></View>
-      )
+    console.log(item)
+    switch(item.type)
+    {
+        case 'add':   
+            return (
+                <TouchableWithoutFeedback onPress={() =>this.handleImageBtnClick()}> 
+                
+                    <View style={styles.feedImageContainer}> 
+                        <View style={styles.deleteImageIcon}>
+                            <Feather name="x" size={20} color={theme.featureNoColor}/>
+                        </View>
+                        <Image source={{uri:item.image.uri}}  style={styles.feedImage}/>
+                    </View>
+                </TouchableWithoutFeedback>
+            )
+        default:  
+            return (
+                <View style={styles.feedImageContainer}> 
+                    <View style={styles.deleteImageIcon}>
+                        <Feather name="x" size={20} color={theme.featureNoColor}/>
+                    </View>
+                    <Image source={{uri:item.image.uri}} style={styles.feedImage}/>
+                </View>
+            )
+    }
+     
   }
   render() {
      
@@ -484,6 +518,12 @@ setFeedTypeOption=(postType)=>
                         placeholder="Write Something...."
 
                     />
+                    {this.state.postType==1?(
+                        <View style={{}}>
+                            {this.renderAddImageSection()} 
+                        </View>
+                    ):(null)}
+                    
                     <View style={{flex:1,flexDirection:'row',justifyContent: 'flex-end'}}>
                         <View style={[styles.feedOption,this.state.postType==2?(styles.activeFeedOption):(null)]}>
                         {this.renderButton("Poll","bar-chart-2",()=>this.setFeedTypeOption(2))} 
@@ -495,6 +535,12 @@ setFeedTypeOption=(postType)=>
                         {this.renderButton("Post","align-left",()=>this.setFeedTypeOption(3))} 
                         </View>
                     </View>
+
+                    <TouchableWithoutFeedback onPress={this.handleSubmitButtonClick}>
+                        <View style=> 
+
+                        </View>
+                    </TouchableWithoutFeedback>
                 </View>
                 {/* <View style={styles.btnView}>
                     <TouchableOpacity style={styles.submitButton} onPress={this.handleNextBtnClick}>
@@ -541,8 +587,26 @@ const styles = StyleSheet.create({
         backgroundColor:theme.labelOrInactiveColor,
         borderTopLeftRadius:10,
         borderTopRightRadius:10
-    }
-
+    },
+    feedImageContainer:
+    {
+        margin:5,
+        
+    },
+        deleteImageIcon:
+        {
+            position:"absolute",
+            right:0,
+            top:0,
+            zIndex:1000,
+            elevation:1000
+        },
+        feedImage:
+        {
+            height:70,
+            width: 70,
+            borderRadius: 10
+        }
 
     // add course css end
 

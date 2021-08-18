@@ -38,7 +38,7 @@ public class MainBannersController {
         bannerImageLink += fileUploadService.storeFile(image);
         MainBanners mainBanners = new MainBanners(bannerImageLink, bannerLink, placeHolder);
         MainBanners mainBanners_saved = mainBannersService.save(mainBanners);
-        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/{id}").buildAndExpand(mainBanners_saved.getId()).toUri();
+        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("{image_addr}").buildAndExpand(bannerImageLink).toUri();
         return ResponseEntity.created(location).build();
     }
 
@@ -75,7 +75,8 @@ public class MainBannersController {
         banner.setBannerImageLink(fileAddr);
         banner.setId(id);
         mainBannersService.updateBannerImage(banner);
-        return ResponseEntity.ok().build();
+        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("{image_addr}").buildAndExpand(fileAddr).toUri();
+        return ResponseEntity.created(location).build();
     }
 
 
