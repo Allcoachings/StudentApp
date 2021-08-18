@@ -54,8 +54,8 @@ public class AdminBlogController {
     }
 
     @CrossOrigin(origins = "*")
-    @DeleteMapping("/")
-    public ResponseEntity<Object> deleteBlog(long id)
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteBlog(@PathVariable long id)
     {
           adminBlogService.deleteBlog(id);
           return ResponseEntity.ok().build();
