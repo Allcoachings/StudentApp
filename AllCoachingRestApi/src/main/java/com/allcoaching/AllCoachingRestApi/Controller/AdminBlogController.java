@@ -42,12 +42,12 @@ public class AdminBlogController {
 
     @CrossOrigin(origins = "*")
     @PostMapping("/")
-    public ResponseEntity<Object> addBlog(@RequestParam MultipartFile featureImage, @RequestParam String blogBody)
+    public ResponseEntity<Object> addBlog(@RequestParam MultipartFile featureImage, @RequestParam String blogBody,@RequestParam String blogTitle)
     {
 
             String imageAddr = "files/";
             imageAddr += fileUploadService.storeFile(featureImage);
-            AdminBlogs adminBlogs = new AdminBlogs(blogBody,imageAddr);
+            AdminBlogs adminBlogs = new AdminBlogs(blogTitle,blogBody,imageAddr);
             AdminBlogs adminBlogs_saved =  adminBlogService.addBlog(adminBlogs);
             URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(adminBlogs_saved).toUri();
             return ResponseEntity.created(location).build();
@@ -63,11 +63,11 @@ public class AdminBlogController {
 
     @CrossOrigin(origins = "*")
     @PutMapping("/withimage")
-    public ResponseEntity<Object>  updateBlogWithImage(@RequestParam MultipartFile featureImage, @RequestParam String blogBody,@RequestParam long id)
+    public ResponseEntity<Object>  updateBlogWithImage(@RequestParam MultipartFile featureImage, @RequestParam String blogBody,@RequestParam String blogTitle,@RequestParam long id)
     {
         String imageAddr = "files/";
         imageAddr += fileUploadService.storeFile(featureImage);
-        AdminBlogs adminBlogs = new AdminBlogs(blogBody,imageAddr);
+        AdminBlogs adminBlogs = new AdminBlogs(blogTitle,blogBody,imageAddr);
         adminBlogs.setId(id);
         AdminBlogs adminBlogs_saved =  adminBlogService.addBlog(adminBlogs);
 

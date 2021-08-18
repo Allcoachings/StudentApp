@@ -24,6 +24,8 @@ public class CourseDocument {
     private String name;
     private long courseId;
     private long playlistId;
+    private boolean published;
+    private boolean hidden;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)

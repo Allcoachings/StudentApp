@@ -27,6 +27,8 @@ public class CourseVideo {
     private  String demoLenght;
     private long courseId;
     private long playlistId;
+    private boolean published;
+    private boolean hidden;
     private String videoThumb="https://i.stack.imgur.com/PtbGQ.png";
 
 

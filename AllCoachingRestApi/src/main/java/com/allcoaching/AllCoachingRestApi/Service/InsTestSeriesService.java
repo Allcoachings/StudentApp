@@ -92,4 +92,17 @@ public class InsTestSeriesService {
             return new ArrayList<InsTestSeries>();
         }
     }
+
+
+    //updating published Status
+    public void updatePublishedStatusById(boolean status,long id)
+    {
+        insTestSeriesRepo.updatePublishedStatus(status,id);
+    }
+
+    //updating hidden Status
+    public void updateHiddenStatusById(boolean status,long id)
+    {
+        insTestSeriesRepo.updateHiddenStatus(status,id);
+    }
 }

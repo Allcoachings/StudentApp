@@ -18,6 +18,7 @@ public class AdminBlogs {
     @GeneratedValue
     private long id;
 
+    private String title;
     private String blogBody;
     private String blogFeatureImage;
 
@@ -26,7 +27,8 @@ public class AdminBlogs {
      private Date addDate;
 
 
-    public AdminBlogs(String blogBody, String blogFeatureImage) {
+    public AdminBlogs(String title, String blogBody, String blogFeatureImage) {
+        this.title = title;
         this.blogBody = blogBody;
         this.blogFeatureImage = blogFeatureImage;
     }

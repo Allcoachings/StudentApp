@@ -86,5 +86,21 @@ public class InsTestSeriesController {
     }
 
 
+    @CrossOrigin(origins="*")
+    @PutMapping("/publish/{status}/{id}")
+    public  ResponseEntity<Object> updatePublishedStatus(@PathVariable boolean status,@PathVariable long id)
+    {
+        insTestSeriesService.updatePublishedStatusById(status,id);
+        return ResponseEntity.ok().build();
+    }
+
+    @CrossOrigin(origins="*")
+    @PutMapping("/hidden/{status}/{id}")
+    public  ResponseEntity<Object> updateHiddenStatus(@PathVariable boolean status,@PathVariable long id)
+    {
+        insTestSeriesService.updateHiddenStatusById(status,id);
+        return ResponseEntity.ok().build();
+    }
+
 
 }
