@@ -28,7 +28,7 @@ public class InsReviewController {
     {
         InsReview insReview_saved = insReviewService.save(insReview);
         URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{id}")
+                .fromCurrentRequest().path("{id}")
                 .buildAndExpand(insReview_saved.getId())
                 .toUri();
 

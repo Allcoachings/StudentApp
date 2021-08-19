@@ -32,7 +32,7 @@ public class CategoryController {
     public ResponseEntity<Object> save(@RequestBody Category category)
     {
         Category saved_category = categoryService.save(category);
-        URI location  = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(saved_category.getId()).toUri();
+        URI location  = ServletUriComponentsBuilder.fromCurrentRequest().path("{id}").buildAndExpand(saved_category.getId()).toUri();
         return ResponseEntity.created(location).build();
     }
 
@@ -57,7 +57,7 @@ public class CategoryController {
     public ResponseEntity<Object> edit(@RequestBody Category category)
     {
         Category saved_category = categoryService.save(category);
-        URI location  = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(saved_category.getId()).toUri();
+        URI location  = ServletUriComponentsBuilder.fromCurrentRequest().path("{id}").buildAndExpand(saved_category.getId()).toUri();
         return ResponseEntity.created(location).build();
     }
 
@@ -69,9 +69,4 @@ public class CategoryController {
         categoryService.delete(id);
         return ResponseEntity.ok().build();
     }
-
-
-
-
-
 }

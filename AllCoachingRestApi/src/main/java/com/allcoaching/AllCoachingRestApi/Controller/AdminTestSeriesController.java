@@ -89,6 +89,23 @@ public class AdminTestSeriesController {
         return insTestSeriesService.findByCategoryAndIsAdmin(subId,offset,dataLimit);
     }
 
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("/category/delete/{id}")
+    public ResponseEntity<Object> deleteId(@PathVariable long id)
+    {
+           adminTestSeriesCategoryService.delete(id);
+           return ResponseEntity.ok().build();
+    }
+
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("/subCategory/delete/{id}")
+    public ResponseEntity<Object> deleteSubCategoryById(@PathVariable long id)
+    {
+           adminTestSubCategoriesService.delete(id);
+           return ResponseEntity.ok().build();
+    }
+
+
 
 
 }
