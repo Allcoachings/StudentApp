@@ -63,4 +63,16 @@ public class CourseTimeTableService {
          return courseTimeTableDtos;
     }
 
+
+    //delete whole subject
+    public void deleteTimeTableSubject(long id)
+    {
+        subjectRepo.deleteById(id);
+    }
+
+    //delete single item of subject
+    public void deleteTimeTableSubjectItem(long id)
+    {
+        itemRepo.deleteById(id);
+    }
 }

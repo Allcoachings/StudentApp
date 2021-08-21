@@ -16,7 +16,7 @@ public interface InsTestSeriesRepo extends PagingAndSortingRepository<InsTestSer
     Iterable<InsTestSeries> findByCourseIdAndIsAdmin(long id,boolean isAdmin);
     Page<InsTestSeries> findByCategoryAndIsAdmin(long id, boolean isAdmin, Pageable pageable);
     Page<InsTestSeries> findByIsAdmin(boolean isAdmin,Pageable pageable);
-
+    long countByCourseId(long id);
 
     @Modifying
     @Query("UPDATE InsTestSeries set published=:publishedStatus WHERE id=:id")

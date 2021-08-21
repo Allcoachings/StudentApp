@@ -79,4 +79,9 @@ public class CourseDocumentService {
         courseDocumentRepo.deleteById(id);
     }
 
+    //count course documents
+    public  long countCourseDocuments(long courseId)
+    {
+        return courseDocumentRepo.countByCourseId(courseId);
+    }
 }

@@ -74,6 +74,14 @@ public class CourseDocumentController {
         return courseDocumentService.findByPlaylistId(id);
     }
 
+    //count course documents
+    @CrossOrigin(origins = "*")
+    @GetMapping("/count/{courseId}")
+    public long countDocumentByCourse(@PathVariable  long courseId )
+    {
+        return courseDocumentService.countCourseDocuments(courseId);
+    }
+
     //fetch documents using course id
     @CrossOrigin(origins = "*")
     @GetMapping("/all/{id}")

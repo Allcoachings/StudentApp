@@ -42,6 +42,12 @@ public class Institute {
     private long leads=0;
     private long totalRevenue=0;
 
+    //institute account details
+    private String accountNumber;
+    private String ifsc;
+    private String accountHolderName;
+    private String bankName;
+
     public Institute(String name, String directorName, String email, String phone, String password, String address, String city, String state, long category, String about, String logo, int status) {
 
         this.name = name;

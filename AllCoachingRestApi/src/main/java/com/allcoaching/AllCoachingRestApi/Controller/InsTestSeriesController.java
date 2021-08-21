@@ -34,6 +34,14 @@ public class InsTestSeriesController {
 
     }
 
+    //count course testseries
+    @CrossOrigin(origins = "*")
+    @GetMapping("/count/{courseId}")
+    public long countByCourseId(@PathVariable long courseId)
+    {
+        return  insTestSeriesService.countCourseTestSeries(courseId);
+    }
+
 
 
     //for creating a test series TestSeriesDto should be passed
@@ -100,6 +108,22 @@ public class InsTestSeriesController {
     {
         insTestSeriesService.updateHiddenStatusById(status,id);
         return ResponseEntity.ok().build();
+    }
+
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("/delete/series/{id}")
+    public ResponseEntity<Object> deleteSeriesById(@PathVariable long id)
+    {
+        insTestSeriesService.deleteSeriesById(id);
+        return  ResponseEntity.ok().build();
+    }
+
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("/delete/series/question/{id}")
+    public ResponseEntity<Object> deleteSeriesQuestionById(@PathVariable long id)
+    {
+        insTestSeriesService.deleteSeriesQuestionById(id);
+        return  ResponseEntity.ok().build();
     }
 
 

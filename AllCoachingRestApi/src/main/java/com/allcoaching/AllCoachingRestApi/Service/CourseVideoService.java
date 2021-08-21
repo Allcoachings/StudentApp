@@ -69,4 +69,10 @@ public class CourseVideoService {
     {
         courseVideoRepo.deleteById(id);
     }
+
+    //count course video
+    public  long countCourseVideo(long courseId)
+    {
+        return courseVideoRepo.countByCourseId(courseId);
+    }
 }

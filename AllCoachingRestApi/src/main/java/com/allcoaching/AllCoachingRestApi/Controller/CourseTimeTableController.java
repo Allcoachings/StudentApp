@@ -58,4 +58,20 @@ public class CourseTimeTableController {
         return service.fetchCourseTimeTable(courseId);
     }
 
+
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("/delete/subject/{id}")
+    public ResponseEntity<Object> deleteSubject(@PathVariable long id)
+    {
+        service.deleteTimeTableSubject(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("/delete/subject/item/{id}")
+    public ResponseEntity<Object> deleteSubjectItem(@PathVariable long id)
+    {
+        service.deleteTimeTableSubjectItem(id);
+        return ResponseEntity.ok().build();
+    }
 }

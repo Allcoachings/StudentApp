@@ -91,4 +91,20 @@ public class InsReviewController {
         return ResponseEntity.ok().build();
     }
 
+    //count reviews by courseId
+    @CrossOrigin(origins = "*")
+    @GetMapping("count/course/{courseId}")
+    public long countByCourseId(@PathVariable long courseId)
+    {
+        return insReviewService.countCourseReviews(courseId);
+    }
+
+    //count reviews by insId
+    @CrossOrigin(origins = "*")
+    @GetMapping("count/ins/{insId}")
+    public long countByInsId(@PathVariable long insId)
+    {
+        return insReviewService.countInstituteReviews(insId);
+    }
+
 }

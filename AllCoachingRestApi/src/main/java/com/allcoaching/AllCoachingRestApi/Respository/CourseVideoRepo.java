@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 public interface CourseVideoRepo extends CrudRepository<CourseVideo,Long> {
 
     Iterable<CourseVideo> findByCourseId(long id);
-
+    long  countByCourseId(long courseId);
 
     @Modifying
     @Query("UPDATE CourseVideo set published=:publishedStatus WHERE id=:id")

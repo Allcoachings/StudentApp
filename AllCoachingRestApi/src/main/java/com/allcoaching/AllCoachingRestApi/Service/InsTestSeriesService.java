@@ -28,6 +28,7 @@ public class InsTestSeriesService {
 
     public InsTestSeriesPlaylist createTestSeriesPlaylist(InsTestSeriesPlaylist insTestSeriesPlaylist)
     {
+
         return  testSeriesPlaylistRepo.save(insTestSeriesPlaylist);
     }
 
@@ -107,4 +108,21 @@ public class InsTestSeriesService {
     }
 
 
+    //delete whole test series
+    public void deleteSeriesById(long id)
+    {
+        insTestSeriesRepo.deleteById(id);
+    }
+    //delete single question of test series
+    public void deleteSeriesQuestionById(long id)
+    {
+        insTestSeriesQuestionsRepo.deleteById(id);
+    }
+
+
+    //count course testSeries
+    public long countCourseTestSeries(long id)
+    {
+        return insTestSeriesRepo.countByCourseId(id);
+    }
 }

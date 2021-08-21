@@ -50,6 +50,9 @@ public interface InsReviewRepo extends PagingAndSortingRepository<InsReview,Long
     Page<InsLeadsStudentDto> findAllByCourseId(long id, Pageable pageable);
 
 
+    long countByCourseId(long courseId);
+    long countByInsId(long insId);
+
 
 
 }

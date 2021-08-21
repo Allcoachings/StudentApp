@@ -20,8 +20,9 @@ public class InsReviewService {
     @Autowired
     private InsReviewRepo insReviewRepo;
 
-    //fetch all reviews
 
+
+    //fetch all reviews
     public  Iterable<InsReviewDto> getAllReviews(Integer pageNo, Integer pageSize, String sortBy,long insId)
     {
 
@@ -34,6 +35,17 @@ public class InsReviewService {
         }
     }
 
+
+    //count course reviews
+    public  long countCourseReviews(long courseId)
+    {
+        return insReviewRepo.countByCourseId(courseId);
+    }
+    //count institute reviews
+    public  long countInstituteReviews(long insId)
+    {
+        return insReviewRepo.countByInsId(insId);
+    }
 
     public boolean findByCourseIdStudentId(long courseId, long studentId)
     {

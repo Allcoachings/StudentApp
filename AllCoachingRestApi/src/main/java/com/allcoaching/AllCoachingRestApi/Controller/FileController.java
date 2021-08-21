@@ -72,7 +72,7 @@ public class FileController {
     public ResponseEntity<Object> uploadFile(@RequestParam MultipartFile file)
     {
         String fileAddr ="files/";
-       fileAddr += fileUploadService.storeFile(file);
+        fileAddr += fileUploadService.storeFile(file);
         URI location = ServletUriComponentsBuilder.fromPath("{addr}").buildAndExpand(fileAddr).toUri();
         return ResponseEntity.created(location).build();
     }

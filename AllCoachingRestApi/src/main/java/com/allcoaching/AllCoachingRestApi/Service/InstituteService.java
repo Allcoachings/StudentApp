@@ -2,6 +2,7 @@ package com.allcoaching.AllCoachingRestApi.Service;
 
 import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Respository.InstituteRepo;
+import com.allcoaching.AllCoachingRestApi.dto.InsAccountDto;
 import com.allcoaching.AllCoachingRestApi.dto.InsCredentialDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -86,5 +87,27 @@ public class InstituteService {
     public void boostIns(long id,int value)
     {
         instituteRepo.boostIns(id,value);
+    }
+
+    //update institute bank details
+    public void updateInstituteBankDetails(InsAccountDto insAccountDto)
+    {
+        instituteRepo.updateInstituteAccountDetails(insAccountDto.getAccountNumber(),insAccountDto.getIfsc(),insAccountDto.getStringAccountHolderName,insAccountDto.getBankName(),insAccountDto.getInsId());
+
+    }
+
+    //fetch institute bank details by ins id
+    public InsAccountDto fetchAccountDetailsByInsId(long id)
+    {
+
+        Optional<Institute> i = instituteRepo.findById(id);
+        if(i.isPresent())
+        {
+            return  new InsAccountDto(i.getId(),i.getAccountNumber(),i.getIfsc(),i.AccountHolderName(),i.getBankName());
+        }else
+        {
+            return null;
+        }
+
     }
 }

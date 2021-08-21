@@ -3,6 +3,7 @@ package com.allcoaching.AllCoachingRestApi.Controller;
 import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
 import com.allcoaching.AllCoachingRestApi.Service.InstituteService;
+import com.allcoaching.AllCoachingRestApi.dto.InsAccountDto;
 import com.allcoaching.AllCoachingRestApi.dto.InsCredentialDto;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,6 +112,22 @@ public class InstituteController {
         return  ResponseEntity.ok().build();
     }
 
+    //update account details of institute
+    @CrossOrigin(origins = "*")
+    @PutMapping("/ins/account")
+    public ResponseEntity<Object> updateAccountDetails(@RequestBody InsAccountDto insAccountDto)
+    {
+        instituteService.updateInstituteBankDetails(insAccountDto);
+        return ResponseEntity.ok().build();
+    }
+
+    //fetch account details of institute
+    @CrossOrigin(origins = "*")
+    @GetMapping("ins/{insId}/account")
+    public InsAccountDto fetchAccountDetails(@PathVariable long insId)
+    {
+        return instituteService.fetchAccountDetailsByInsId(insId);
+    }
 
 
 }

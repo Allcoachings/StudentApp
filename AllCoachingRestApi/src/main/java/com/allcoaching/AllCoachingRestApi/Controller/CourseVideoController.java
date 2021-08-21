@@ -112,4 +112,13 @@ public class CourseVideoController {
         courseVideoService.delete(id);
         return ResponseEntity.ok().build();
     }
+
+
+    //count course videos
+    @CrossOrigin(origins = "*")
+    @GetMapping("/count/{courseId}")
+    public long countDocumentByCourse(@PathVariable  long courseId )
+    {
+        return courseVideoService.countCourseVideo(courseId);
+    }
 }

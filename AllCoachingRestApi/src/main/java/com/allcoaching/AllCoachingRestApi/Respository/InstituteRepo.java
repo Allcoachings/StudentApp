@@ -40,4 +40,8 @@ public interface InstituteRepo extends PagingAndSortingRepository<Institute,Long
     @Modifying
     @Query("UPDATE Institute set boostValue=:value where id=:id")
     void boostIns(long id,int value);
+
+    @Modifying
+    @Query("UPDATE Institute set accountNumber=:accountNumber,ifsc=:ifsc,accountHolderName=:accountHolderName,bankName=:bankName where id=:id")
+    void updateInstituteAccountDetails(String accountNumber,String ifsc,String accountHolderName,String bankName,long id);
 }
