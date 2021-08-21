@@ -40,6 +40,11 @@ public class AdminTestSeriesSubCategoryContentService {
 
      }
 
+     public void deleteById(long id)
+     {
+         adminTestSeriesSubCategoryContentRepo.deleteById(id);
+     }
+
 
 
 }

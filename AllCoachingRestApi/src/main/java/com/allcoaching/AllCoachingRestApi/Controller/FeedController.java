@@ -61,9 +61,11 @@ public class FeedController {
     //for adding feed to database
     @CrossOrigin(origins = "*")
     @PostMapping("/add")
-    public ResponseEntity<Object> addFeed(@RequestBody FeedContentDto FeedContentDto)
+    public ResponseEntity<Object> addFeed(@RequestBody FeedContentDto feedContentDto)
     {
-        Feed f = feedService.saveFeed(FeedContentDto);
+
+        System.out.println(feedContentDto);
+        Feed f = feedService.saveFeed(feedContentDto);
 
         URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(f.getId()).toUri();
         return ResponseEntity.created(location).build();

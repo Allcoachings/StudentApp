@@ -12,10 +12,10 @@ import Toast from 'react-native-simple-toast';
 class AddFeedModal extends Component {
   state={
       stepCheck:2,//to check on which step user is in order to add a feed
-      postType:1,//1 for image , 2 for poll 3 for text option 
+      postType:3,//1 for image , 2 for poll 3 for text option 
       addFeedLoading:false,
       description:'',
-      feedImageData:[{type:'add',image:{ uri:addBannerImagePlaceholder}}],
+      feedImageData:[],
       pollOptions:[
           {
               
@@ -62,7 +62,7 @@ class AddFeedModal extends Component {
             let feed = {
                 feed:{
                     feedType:2,
-                    pollQuestion:this.state.pollQuestion,
+                    pollQuestion:this.state.description,
                     postedBy:this.props.postedBy,
                     ...posterId,
                     tags:this.state.tags,
@@ -70,13 +70,11 @@ class AddFeedModal extends Component {
                     pollVotedStudents: ",",
                     pollVoterList: ",",
                     feedLikerIns: ",",
-                    feedLikerStudent: ",",
-
+                    feedLikerStudent: ",", 
                 },
                 feedPollOptions:this.state.pollOptions
             }
-            this.setState({feedItem:feed})
-
+            this.setState({feedItem:feed}) 
             saveFeed(feed,this.handleAddFeedCallback)
           }
             
@@ -85,7 +83,7 @@ class AddFeedModal extends Component {
         Toast.show('Please Fill All The Fields.');
       }
   }
-  verifyPollPost=({pollQuestion,pollOptions})=>pollQuestion&&pollOptions.filter(item=>item.pollOption)
+  verifyPollPost=({description,pollOptions})=>description&&pollOptions.filter(item=>item.pollOption)
 
   handleAddImageFeedBtnClick=()=>
   {
@@ -111,7 +109,7 @@ class AddFeedModal extends Component {
                 feedPollOptions:null
             }
             this.setState({feedItem:feed})
-            addImgeFeed(feed,this.state.postImage,this.handleAddFeedCallback)
+            addImgeFeed(feed,this.state.feedImageData,this.handleAddFeedCallback)
         }  
     }
     else
@@ -119,7 +117,11 @@ class AddFeedModal extends Component {
         Toast.show('Please Fill All The Fields.');
     }
   } 
-  verifyImagePost=({postImage})=>postImage.type=='success'
+  verifyImagePost=({feedImageData})=>{
+      
+ 
+    return    feedImageData.filter((item)=>item.type=='success').length==feedImageData.length;
+}
   
   handleAddTextFeedBtnClick=()=>
   {
@@ -158,13 +160,14 @@ class AddFeedModal extends Component {
   
   handleImageBtnClick=()=>
   {
+      this.setFeedTypeOption(1);
       DocumentPicker.getDocumentAsync({type:"image/*",copyToCacheDirectory:true,multiple:false}).then(response=>
           {
-              console.log(response)
+           
               if(response.type=="success")
               {
                   let feedImageData  = this.state.feedImageData;
-                  feedImageData.unshift({image: response,type:'none'})
+                  feedImageData.unshift(response)
                   this.setState({feedImageData})
                 //   this.setState({postImage:response})
               }
@@ -464,32 +467,30 @@ setFeedTypeOption=(postType)=>
   }
   handleSubmitButtonClick=()=>
   {
-      console.log("submitted")
+      switch(this.state.postType)
+      {
+          case 1:
+            this.handleAddImageFeedBtnClick();
+            break;
+          case 2:
+            this.handleAddPollFeedBtnClick();
+            break;
+          case 3:
+            this.handleAddTextFeedBtnClick();
+            break;
+      }
   }
   renderFeedImages=(item)=>
   {
-    console.log(item)
-    switch(item.type)
-    {
-        case 'add':   
-            return (
-                <TouchableWithoutFeedback onPress={() =>this.handleImageBtnClick()}> 
-                
-                    <View style={styles.feedImageContainer}>  
-                        <Image source={{uri:item.image.uri}}  style={styles.feedImage}/>
-                    </View>
-                </TouchableWithoutFeedback>
-            )
-        default:  
-            return (
-                <View style={styles.feedImageContainer}> 
-                    <View style={styles.deleteImageIcon}>
-                        <Feather name="x" size={20} color={theme.featureNoColor}/>
-                    </View>
-                    <Image source={{uri:item.image.uri}} style={styles.feedImage}/>
+     
+        return (
+            <View style={styles.feedImageContainer}> 
+                <View style={styles.deleteImageIcon}>
+                    <Feather name="x" size={20} color={theme.featureNoColor}/>
                 </View>
-            )
-    }
+                <Image source={{uri:item.uri}} style={styles.feedImage}/>
+            </View>
+        )
      
   }
 
@@ -497,7 +498,13 @@ setFeedTypeOption=(postType)=>
   {
         return (
             <View>
-                <View style={{flexDirection: 'row',alignItems: 'center',margin:10}}>
+                
+            <FlatList 
+                data={this.state.pollOptions}  
+                renderItem={({item,index}) =>this.renderPollOption(item,index)}
+                keyExtractor={(item,index) =>index.toString()}
+            />
+            <View style={{flexDirection: 'row',alignItems: 'center',margin:10}}>
                     <Text style={{fontSize:18,fontFamily: 'Raleway_600SemiBold'}}>Poll Options</Text>
                     <View style={{flex: 1,flexDirection:'row',justifyContent: 'flex-end', alignItems: 'center'}}>
                         <TouchableOpacity style={{margin:10,padding:10}} onPress={this.addPollOptions}>
@@ -512,11 +519,6 @@ setFeedTypeOption=(postType)=>
                         
                     </View>
                 </View>
-            <FlatList 
-                data={this.state.pollOptions}  
-                renderItem={({item,index}) =>this.renderPollOption(item,index)}
-                keyExtractor={(item,index) =>index.toString()}
-            />
         </View> 
         );
   }
@@ -541,6 +543,7 @@ setFeedTypeOption=(postType)=>
                     <TextInput
                         style={{height:250,fontFamily:'Raleway_400Regular',marginHorizontal:10}}
                         placeholder="Write Something...."
+                        onChangeText={(text)=>this.setState({description:text})}
 
                     />
                     {this.state.postType==1?(
@@ -555,24 +558,30 @@ setFeedTypeOption=(postType)=>
                     ):(null)}
                     
                     <View style={{flex:1,flexDirection:'row',justifyContent: 'flex-end'}}>
-                        <View style={[styles.feedOption,this.state.postType==2?(styles.activeFeedOption):(null)]}>
+                        <View style={[styles.feedOption]}>
                         {this.renderButton("Poll","bar-chart-2",()=>this.setFeedTypeOption(2))} 
                         </View>
-                        <View style={[styles.feedOption,this.state.postType==1?(styles.activeFeedOption):(null)]}>
-                        {this.renderButton("Image","image",()=>this.setFeedTypeOption(1))} 
+                        <View style={[styles.feedOption]}>
+                        {this.renderButton("Image","image",this.handleImageBtnClick)} 
                         </View>
-                        <View style={[styles.feedOption,this.state.postType==3?(styles.activeFeedOption):(null)]}>
-                        {this.renderButton("Post","align-left",()=>this.setFeedTypeOption(3))} 
+                        <View style={[styles.feedOption]}>
+                            {this.state.addFeedLoading?(
+                                    <ActivityIndicator size={"large"} color={theme.accentColor}/>
+                            ):
+                            (
+                                this.renderButton("Post","align-left",()=>this.handleSubmitButtonClick())
+                            )}
+                                
                         </View>
                     </View>
 
                 
                 </View>
-                <TouchableWithoutFeedback onPress={this.handleSubmitButtonClick}>
+                {/* <TouchableWithoutFeedback onPress={this.handleSubmitButtonClick}>
                     <View style={{backgroundColor:theme.accentColor,padding:15,borderRadius:10,alignItems: 'center',width:'95%',alignSelf: 'center'}}> 
                         <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>Continue</Text> 
                     </View>
-                </TouchableWithoutFeedback>
+                </TouchableWithoutFeedback> */}
                 {/* <View style={styles.btnView}>
                     <TouchableOpacity style={styles.submitButton} onPress={this.handleNextBtnClick}>
                           {this.state.addCourseLoading?

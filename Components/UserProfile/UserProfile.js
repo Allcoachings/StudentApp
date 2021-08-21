@@ -135,6 +135,8 @@ class UserProfile extends React.Component {
                     <FeedImage item={item} type={2}/>
                 )
             case 2:
+           
+
                 return (
                     <FeedPoll item={item} type={2}/>
                 )

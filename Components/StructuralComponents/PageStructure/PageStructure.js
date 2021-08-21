@@ -14,41 +14,36 @@ class PageStructure extends React.Component {
         return(
             <View style={styles.container}>
                 <View style={styles.containerMain}> 
-                     {this.switchRender(this.props.scrollMode)}
-                     
+                    {this.switchRender(this.props.scrollMode)} 
                     {!this.props.noBottomTab&&this.props.screenWidth<=screenMobileWidth?(
                         <View style={[styles.pageBottomTab,{flex:this.props.catInHeader?0.11:0.102}]}>
-                                <BottomTab 
-                                    replacBottomTab={this.props.replaceBottomTab} 
-                                    bottomComponentStyle={this.props.bottomComponentStyle}  
-                                    bottomComponent={this.props.bottomComponent}
-                                    navigation={this.props.navigation}
-                                />
+                            <BottomTab 
+                                replacBottomTab={this.props.replaceBottomTab} 
+                                bottomComponentStyle={this.props.bottomComponentStyle}  
+                                bottomComponent={this.props.bottomComponent}
+                                navigation={this.props.navigation}
+                            />
                         </View>
-                    ):(null)}
-                  
+                    ):(null)} 
                 </View>
-            </View>
- 
+            </View> 
         )
     }
-
-
+ 
     // handleScroll=(event)=> {
     //     console.log(event.nativeEvent.contentOffset.y);
     //     // if(event.nativeEvent.contentOffset.y>40)
     //     // {
     //     //     this.setState({catStyle:{position: 'absolute',top:0}})
-    //     // }
-        
-    // } 
-  
+    //     // }    
+    // }  
+
     switchRender=(scrollMode)=>{
             switch(scrollMode)
             {
                 case 'scroll':    
                     return(
-                        <ScrollView style={{flex:this.props.catInHeader?0.2:0.08}} >
+                        <ScrollView  >
                             <View style={[styles.containerHeader,this.props.headerStyle]}> 
                                 <Header 
                                     iconName={this.props.iconName}
@@ -86,7 +81,7 @@ class PageStructure extends React.Component {
                         return (
                             
                             <>
-                                <View style={[styles.containerHeader,{flex:this.props.catInHeader?0.2:0.1},this.props.headerStyle]}> 
+                                <View style={[styles.containerHeader,this.props.headerStyle]}> 
                                         <Header 
                                             iconName={this.props.iconName}
                                             searchFun={this.props.searchFun}

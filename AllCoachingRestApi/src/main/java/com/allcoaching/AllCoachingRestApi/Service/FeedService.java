@@ -1,11 +1,9 @@
 package com.allcoaching.AllCoachingRestApi.Service;
 
 import com.allcoaching.AllCoachingRestApi.Entity.Feed;
+import com.allcoaching.AllCoachingRestApi.Entity.FeedImages;
 import com.allcoaching.AllCoachingRestApi.Entity.FeedPollOptions;
-import com.allcoaching.AllCoachingRestApi.Respository.FeedPollOptionsRepo;
-import com.allcoaching.AllCoachingRestApi.Respository.FeedRepo;
-import com.allcoaching.AllCoachingRestApi.Respository.InstituteRepo;
-import com.allcoaching.AllCoachingRestApi.Respository.StudentRepo;
+import com.allcoaching.AllCoachingRestApi.Respository.*;
 import com.allcoaching.AllCoachingRestApi.dto.FeedContentDto;
 import com.allcoaching.AllCoachingRestApi.dto.FeedDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +31,8 @@ public class FeedService {
     @Autowired
     private FeedPollOptionsRepo pollOptionsRepo;
 
-
+    @Autowired
+    private FeedImageRepo feedImageRepo;
 
     //saving feed to repo
     public Feed saveFeed(FeedContentDto feedContentDto)
@@ -45,6 +44,14 @@ public class FeedService {
             Iterable<FeedPollOptions> feedPollOptions = feedContentDto.getFeedPollOptions();
             feedPollOptions.forEach(item->item.setFeedId(feed_saved.getId()));
             pollOptionsRepo.saveAll(feedPollOptions);
+        }
+        if(feed.getFeedType()==1)
+        {
+            Iterable<FeedImages> feedImages = feedContentDto.getFeedImages();
+
+            feedImages.forEach(item->item.setFeedId(feed_saved.getId()));
+            System.out.println("feed Images "+feedImages);
+            feedImageRepo.saveAll(feedImages);
         }
         return feed_saved;
     }
@@ -62,8 +69,6 @@ public class FeedService {
         if(pagedFeeds.hasContent())
         {
             pagedFeeds.forEach(item->{
-
-
                 FeedContentDto feedContentDto = new FeedContentDto(item);
                 FeedDto feedDto = new FeedDto(feedContentDto);
 
@@ -82,6 +87,14 @@ public class FeedService {
                 {
                     //if yes then fetching poll options for that feed
                     feedContentDto.setFeedPollOptions(pollOptionsRepo.findByFeedId(item.getId()));
+
+                }
+
+                //checking if it is a image feed
+                if(item.getFeedType()==1)
+                {
+
+                    feedContentDto.setFeedImages(feedImageRepo.findByFeedId(item.getId()));
 
                 }
                 //adding to list of feeddtos
@@ -130,6 +143,14 @@ public class FeedService {
                     feedContentDto.setFeedPollOptions(pollOptionsRepo.findByFeedId(item.getId()));
 
                 }
+
+                //checking if it is a image feed
+                if(item.getFeedType()==1)
+                {
+                    //if yes then fetching poll options for that feed
+                    feedContentDto.setFeedImages(feedImageRepo.findByFeedId(item.getId()));
+
+                }
                 //adding to list of feeddtos
                 feedDtos.add(feedDto);
             });
@@ -173,6 +194,14 @@ public class FeedService {
                 {
                     //if yes then fetching poll options for that feed
                     feedContentDto.setFeedPollOptions(pollOptionsRepo.findByFeedId(item.getId()));
+
+                }
+
+                //checking if it is a image feed
+                if(item.getFeedType()==1)
+                {
+
+                    feedContentDto.setFeedImages(feedImageRepo.findByFeedId(item.getId()));
 
                 }
                 //adding to list of feeddtos
@@ -220,6 +249,14 @@ public class FeedService {
                     feedContentDto.setFeedPollOptions(pollOptionsRepo.findByFeedId(item.getId()));
 
                 }
+
+                //checking if it is a image feed
+                if(item.getFeedType()==1)
+                {
+                    //if yes then fetching poll options for that feed
+                    feedContentDto.setFeedImages(feedImageRepo.findByFeedId(item.getId()));
+
+                }
                 //adding to list of feeddtos
                 feedDtos.add(feedDto);
             });
@@ -262,7 +299,5 @@ public class FeedService {
     {
 //        feedRepo.unlikeFeed(id);
     }
-
-
 
 }

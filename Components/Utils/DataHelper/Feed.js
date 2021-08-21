@@ -5,7 +5,7 @@ import mime from "mime";
 
             export   const saveFeed =(feed,callback,image=null)=>
             {
-                feed.feed['photoLocation']=image;
+                feed['feedImages']=image;
                 let headers = new Headers(); 
                 headers.append('Content-Type', 'application/json');  
                 headers.append('Access-Control-Allow-Origin', serverApiUrl);
@@ -24,15 +24,35 @@ import mime from "mime";
 
             export const addImgeFeed=(feed,image,callback)=>
             {
-                uploadFeedImage(image,(response)=>{
-                    if(response.status==201)
-                    {
-                        saveFeed(feed,callback,response.headers.map.location)
-                    }else
-                    {
-                            callback(response);
-                    }
+
+                let uploadedImageCounter=0,counter=0;
+                uploadedImageArray=[];
+                image.map(item=>{
+                    uploadFeedImage(item,(response)=>{
+                        counter++;
+                        if(response.status==201)
+                        {
+                                uploadedImageCounter++;
+                                uploadedImageArray.push(response.headers.map.location) 
+                        }
+                        if(counter>=image.length)
+                        {
+                            saveFeed(feed,callback,uploadedImageArray);
+                        }
+
+                         
+                    })
                 })
+                
+
+                    // if(response.status==201)
+                    // {
+                        
+                    // }else
+                    // {
+                    //         callback(response);
+                    // }
+                 
             }
 
             export const uploadFeedImage=(image,callback)=>

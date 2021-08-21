@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     {
         flex:1,
         flexDirection: 'column',
-        // margin:3, 
+        // margin:3,  
     },
         headerRow:
         {

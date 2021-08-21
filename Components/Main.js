@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,Dimensions,Platform,StyleSheet,View, TouchableOpacity, Image } from 'react-native';
+import { Text,Dimensions,Platform,StyleSheet,View, TouchableOpacity, Image,StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import {screenMobileWidth, theme, appLogo} from './config'
 import {connect } from 'react-redux'; 
@@ -13,7 +13,7 @@ const windowHeight = Dimensions.get('screen').height;
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Font from 'expo-font';
 
-import { StatusBar } from 'expo-status-bar';
+// import { StatusBar } from 'expo-status-bar';
 import {useFonts,Raleway_400Regular,Raleway_600SemiBold,Raleway_700Bold} from '@expo-google-fonts/raleway';
 class Main extends React.Component {
     state = {
@@ -140,7 +140,7 @@ class Main extends React.Component {
 const styles = StyleSheet.create({
     safeAreaView:
     {
-        paddingTop:Platform.OS=='android'?35:0
+        paddingTop:Platform.OS=='android'?StatusBar.currentHeight:0
     },
         container: 
         {

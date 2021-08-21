@@ -159,7 +159,8 @@ const styles = StyleSheet.create({
                             fontSize: 14, 
                             padding: 2, 
                             fontWeight: '700', 
-                            color: theme.secondaryColor
+                            color: theme.secondaryColor,
+                            textAlign: 'center'
                         },
                     countView:
                     {

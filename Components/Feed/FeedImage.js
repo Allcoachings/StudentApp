@@ -6,6 +6,7 @@ import CardView from '../Utils/CardView'
 import { connect } from 'react-redux'
 import {like_feed} from "../Utils/DataHelper/Feed"
 import moment from 'moment'
+import { FlatListSlider } from '../Utils/ImageSlider';
 class FeedImage extends Component {
   state={
     // canUserLike: this.props.type==1?(this.props.item.feed.feed.feedLikerIns.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.feedLikerStudent.includes(`,${this.props.userInfo.id},`)?(false):(true)):(true)),
@@ -27,14 +28,17 @@ likeFeedCallBack=(response)=>{
     }
 }
 
+
+
   render() {
     const{feed,posterObject} = this.props.item
     return(
         // CardView(
             <View style={{flexDirection: 'column', padding: 5}}>
                 <View style={styles.boxView}>
-                    <View style={{flex: 0.1, padding: 5,}}>
+                    <View style={{flex: 0.1, padding: 5}}>
                         <Image source={{ uri: serverBaseUrl+posterObject.logo}} style={styles.circleView}/> 
+                      
                     </View>
                     <View style={styles.innerBoxView}>
                         <View style={styles.rowView}>
@@ -51,7 +55,21 @@ likeFeedCallBack=(response)=>{
                                     </Text>
                                 </View>
                             ):(null)}
-                        <Image source={{ uri: serverBaseUrl+feed.feed.photoLocation }} style={styles.img}/>
+                        {/* <Image source={{ uri: serverBaseUrl+feed.feed.photoLocation }} style={styles.img}/> */}
+                        <FlatListSlider
+                                data={feed.feedImages}
+                                height={150}
+                                timer={5000}
+                                imageKey="feedImage"
+                                onPress={item => {}}
+                                contentContainerStyle={{resizeMode:'contain'}} 
+                                indicatorActiveColor={'#8e44ad'}
+                                indicatorInActiveColor={'#ffffff'}
+                                indicatorActiveWidth={10}
+                                animation 
+                                autoscroll={false}
+                                serverBaseUrl={serverBaseUrl}
+                            />
                         <View style={styles.bottomRowContainer}>
                             {this.state.canUserLike?(
                                 <TouchableOpacity style={styles.likeView}  onPress={()=>this.likeFeed(feed.feed.id)}>

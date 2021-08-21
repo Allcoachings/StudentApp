@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: theme.primaryColor,
     // justifyContent: 'space-between',
-    alignItems: "center",
+    alignItems: "center", 
   },
   headerSearch: {
     flex: 1,

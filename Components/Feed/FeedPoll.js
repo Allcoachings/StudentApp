@@ -11,10 +11,10 @@ import { connect } from 'react-redux'
 
 class FeedPoll extends Component {
     state = {
-        // canUserVote: this.props.type==1?(this.props.item.feed.feed.pollVotedInstitutes.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.pollVotedStudents.includes(`,${this.props.userInfo.id},`)?(false):(true)):(null)),
+        canUserVote: this.props.type==1?(this.props.item.feed.feed.pollVotedInstitutes.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.pollVotedStudents.includes(`,${this.props.userInfo.id},`)?(false):(true)):(null)),
         optionData: this.props.item.feed.feedPollOptions,
         totalPollVotes: this.props.item.feed.feed.totalPollVotes,
-        // canUserLike: this.props.type==1?(this.props.item.feed.feed.feedLikerIns.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.feedLikerStudent.includes(`,${this.props.userInfo.id},`)?(false):(true)):(null)),
+        canUserLike: this.props.type==1?(this.props.item.feed.feed.feedLikerIns.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.feedLikerStudent.includes(`,${this.props.userInfo.id},`)?(false):(true)):(null)),
     }
 
     updateVote=(option_id)=>
@@ -50,10 +50,7 @@ class FeedPoll extends Component {
 
 
     render() {
-    const{feed,posterObject} = this.props.item
-    console.log(this.state.canUserLike)
-    console.log(this.props.item.feed.feed.feedLikerIns)
-    console.log(this.props.item.feed.feed.feedLikerStudent)
+    const{feed,posterObject} = this.props.item 
     return(
         // CardView(
             <View style={{flexDirection: 'column', padding: 5}}>

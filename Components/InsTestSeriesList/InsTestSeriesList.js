@@ -112,12 +112,12 @@ class InsTestSeriesList extends React.Component {
                         <Text style={styles.title}>UPSC CSE</Text>
                         <Feather name="share-2" size={18} style={{marginRight: 10}}/>
                     </View> */}
-                    <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 10, marginBottom: 10}}>
+                    {/* <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 10, marginBottom: 10}}>
                         <Image 
                             source={{uri: serverBaseUrl+this.props.route.params.image}} 
                             style={{height: 60, width: 60, borderRadius: 30}}
                         />
-                    </View>
+                    </View> */}
                     <View style={styles.rowContainer}>
                         <FlatList 
                             data={this.state.banner} 

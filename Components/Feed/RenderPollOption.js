@@ -49,6 +49,7 @@ class RenderPollOption extends React.Component {
 
     renderOption=()=>
     {
+
         return(
             <>
                 {/* <Text style={styles.optionText}>{this.props.item.pollOption}</Text> */}
@@ -57,6 +58,8 @@ class RenderPollOption extends React.Component {
         )
     }
     render() {
+        console.log(this.props.item)
+
         return (
             <View style={styles.container}>
                 {this.renderOption()} 

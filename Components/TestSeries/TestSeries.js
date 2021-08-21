@@ -43,8 +43,7 @@ class TestSeries extends React.Component {
             <View style={styles.rowBody}>
                 <FlatList 
                     data={item.data} 
-                    renderItem={this.singleItem} 
-                    
+                    renderItem={this.singleItem}        
                     keyExtractor={(item)=>item.id}
                     horizontal={true} 
                     showsHorizontalScrollIndicator={false}
