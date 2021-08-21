@@ -104,7 +104,7 @@ public class InstituteController {
     }
 
     @CrossOrigin(origins = "*")
-    @DeleteMapping("/boost/{boostvalue}/{id}")
+    @PutMapping("/boost/{boostvalue}/{id}")
     public ResponseEntity<Object> boostIns(@PathVariable int boostvalue,@PathVariable long id)
     {
         instituteService.boostIns(id,boostvalue);

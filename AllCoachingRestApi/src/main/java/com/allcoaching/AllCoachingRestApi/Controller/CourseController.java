@@ -27,6 +27,7 @@ public class CourseController {
         return courseService.findByInstId(insId);
     }
 
+    @CrossOrigin(origins = "*")
     @PostMapping("/course/")
     public ResponseEntity<Object> AddCourse(@RequestBody Course course)
     {

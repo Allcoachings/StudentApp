@@ -106,4 +106,12 @@ public class CourseDocumentController {
         return ResponseEntity.ok().build();
     }
 
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> delete(@PathVariable long id)
+    {
+        courseDocumentService.delete(id);
+        return ResponseEntity.ok().build();
+    }
+
 }

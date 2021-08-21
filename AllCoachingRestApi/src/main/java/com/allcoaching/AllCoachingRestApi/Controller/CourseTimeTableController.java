@@ -58,5 +58,4 @@ public class CourseTimeTableController {
         return service.fetchCourseTimeTable(courseId);
     }
 
-
 }

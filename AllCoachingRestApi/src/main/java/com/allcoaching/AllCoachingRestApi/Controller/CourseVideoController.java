@@ -104,4 +104,12 @@ public class CourseVideoController {
         courseVideoService.updateHiddenStatusById(status,id);
         return ResponseEntity.ok().build();
     }
+
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> delete(@PathVariable long id)
+    {
+        courseVideoService.delete(id);
+        return ResponseEntity.ok().build();
+    }
 }

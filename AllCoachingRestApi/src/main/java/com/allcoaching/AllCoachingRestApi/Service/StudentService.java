@@ -54,6 +54,11 @@ public class StudentService {
 
     }
 
+    public void delete(long id)
+    {
+        studentRepo.deleteById(id);
+    }
+
 
 
 
