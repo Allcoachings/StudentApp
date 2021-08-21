@@ -83,5 +83,12 @@ public class StudentController {
         return studentService.findAll(offset,data_limit);
     }
 
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> delete(@PathVariable long id)
+    {
+        studentService.delete(id);
+        return ResponseEntity.ok().build();
+    }
 
 }

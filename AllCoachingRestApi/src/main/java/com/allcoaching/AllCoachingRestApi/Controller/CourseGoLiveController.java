@@ -30,7 +30,7 @@ public class CourseGoLiveController {
     {
         CourseGoLive courseGoLive_saved = courseGoLiveService.save(courseGoLive);
         URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{id}")
+                .fromCurrentRequest().path("{id}")
                 .buildAndExpand(courseGoLive_saved.getId())
                 .toUri();
 

@@ -72,4 +72,11 @@ public class CourseDocumentService {
     {
         courseDocumentRepo.updateHiddenStatus(status,id);
     }
+
+    //delete by id
+    public void delete(long id)
+    {
+        courseDocumentRepo.deleteById(id);
+    }
+
 }

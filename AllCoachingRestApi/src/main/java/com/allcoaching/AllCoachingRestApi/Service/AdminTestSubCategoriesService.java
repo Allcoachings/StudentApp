@@ -62,6 +62,13 @@ public class AdminTestSubCategoriesService {
 //    }
 
 
+    public  void delete(long id)
+    {
+        adminTestSubCategoriesRepo.deleteById(id);
+
+    }
+
+
 
 
 }

@@ -280,16 +280,16 @@ setFeedTypeOption=(postType)=>
         return (
             <View style={styles.inputView}>
                 <Text style={styles.labelText}>Poll Option {index+1}</Text>
-                {CardView(
+                 
                     <TextInput 
                         placeholderTextColor={theme.greyColor} 
-                        placeholder="Option" 
+                        placeholder={"Option "+(index+1)} 
                         onChangeText={(text)=>this.onChangeTextPollOption(index, text)} 
                         multiline={true} 
                         numberOfLines={2} 
                         style={styles.inputField}
-                    />, {borderRadius: 10}
-                )}
+                    /> 
+                
             </View> 
         )
   }
@@ -475,10 +475,7 @@ setFeedTypeOption=(postType)=>
             return (
                 <TouchableWithoutFeedback onPress={() =>this.handleImageBtnClick()}> 
                 
-                    <View style={styles.feedImageContainer}> 
-                        <View style={styles.deleteImageIcon}>
-                            <Feather name="x" size={20} color={theme.featureNoColor}/>
-                        </View>
+                    <View style={styles.feedImageContainer}>  
                         <Image source={{uri:item.image.uri}}  style={styles.feedImage}/>
                     </View>
                 </TouchableWithoutFeedback>
@@ -495,6 +492,34 @@ setFeedTypeOption=(postType)=>
     }
      
   }
+
+  renderPollOPtionsSection=()=>
+  {
+        return (
+            <View>
+                <View style={{flexDirection: 'row',alignItems: 'center',margin:10}}>
+                    <Text style={{fontSize:18,fontFamily: 'Raleway_600SemiBold'}}>Poll Options</Text>
+                    <View style={{flex: 1,flexDirection:'row',justifyContent: 'flex-end', alignItems: 'center'}}>
+                        <TouchableOpacity style={{margin:10,padding:10}} onPress={this.addPollOptions}>
+                            <Feather name="plus" size={20} color={theme.accentColor} />
+                        </TouchableOpacity>
+                        {this.state.pollOptionCounter>2?(
+
+                        <TouchableOpacity style={{margin:10,padding:10}} onPress={this.removePollOption}>
+                            <Feather name="minus" size={20} color={theme.accentColor} />
+                        </TouchableOpacity>
+                        ):(null)}
+                        
+                    </View>
+                </View>
+            <FlatList 
+                data={this.state.pollOptions}  
+                renderItem={({item,index}) =>this.renderPollOption(item,index)}
+                keyExtractor={(item,index) =>index.toString()}
+            />
+        </View> 
+        );
+  }
   render() {
      
     return (
@@ -504,7 +529,7 @@ setFeedTypeOption=(postType)=>
             visible = {this.props.isAddCourseModalVisible}
             onRequestClose = {() => this.props.closeModal()}>
     
-            <ScrollView>
+            <ScrollView  >
                 <View style={styles.headView}> 
                    <Text style={styles.headText}>Add Feed</Text>
                 </View>
@@ -523,6 +548,11 @@ setFeedTypeOption=(postType)=>
                             {this.renderAddImageSection()} 
                         </View>
                     ):(null)}
+                    {this.state.postType==2?(
+                        <View style={{}}>
+                            {this.renderPollOPtionsSection()} 
+                        </View>
+                    ):(null)}
                     
                     <View style={{flex:1,flexDirection:'row',justifyContent: 'flex-end'}}>
                         <View style={[styles.feedOption,this.state.postType==2?(styles.activeFeedOption):(null)]}>
@@ -536,12 +566,13 @@ setFeedTypeOption=(postType)=>
                         </View>
                     </View>
 
-                    <TouchableWithoutFeedback onPress={this.handleSubmitButtonClick}>
-                        <View style=> 
-
-                        </View>
-                    </TouchableWithoutFeedback>
+                
                 </View>
+                <TouchableWithoutFeedback onPress={this.handleSubmitButtonClick}>
+                    <View style={{backgroundColor:theme.accentColor,padding:15,borderRadius:10,alignItems: 'center',width:'95%',alignSelf: 'center'}}> 
+                        <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>Continue</Text> 
+                    </View>
+                </TouchableWithoutFeedback>
                 {/* <View style={styles.btnView}>
                     <TouchableOpacity style={styles.submitButton} onPress={this.handleNextBtnClick}>
                           {this.state.addCourseLoading?
@@ -606,7 +637,30 @@ const styles = StyleSheet.create({
             height:70,
             width: 70,
             borderRadius: 10
-        }
+        },
+
+    inputView: {
+        marginTop:'5%',
+        display: 'flex',
+        flexDirection: 'column',
+        marginLeft: 10
+    },
+        labelText: {
+            fontSize: 14, 
+            color: theme.secondaryColor,
+            marginBottom: 10,
+            fontFamily:'Raleway_600SemiBold'
+        },
+        inputField:
+        {
+            
+            borderRadius: 10,
+            padding: 10,
+            margin:10,
+            borderWidth: 1,
+            fontFamily: 'Raleway_600SemiBold',
+            borderColor:theme.labelOrInactiveColor, 
+        },
 
     // add course css end
 

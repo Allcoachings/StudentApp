@@ -31,5 +31,16 @@ public class CourseBannersService {
         return courseBannersRepo.findAllByCourseId(id);
     }
 
+    //delete banner by id
+    public void delete(long id)
+    {
+        courseBannersRepo.deleteById(id);
+    }
+
+    //updating published Status
+    public void updatePublishedStatusById(boolean status,long id)
+    {
+        courseBannersRepo.updatePublishedStatus(status,id);
+    }
 
 }

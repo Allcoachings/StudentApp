@@ -53,4 +53,20 @@ public class CourseBannersController {
         return courseBannersService.findByCourseId(id);
 
     }
+
+    @CrossOrigin(origins="*")
+    @PutMapping("/publish/{status}/{id}")
+    public  ResponseEntity<Object> updatePublishedStatus(@PathVariable boolean status,@PathVariable long id)
+    {
+        courseBannersService.updatePublishedStatusById(status,id);
+        return ResponseEntity.ok().build();
+    }
+
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> delete(@PathVariable long id)
+    {
+        courseBannersService.delete(id);
+        return ResponseEntity.ok().build();
+    }
 }

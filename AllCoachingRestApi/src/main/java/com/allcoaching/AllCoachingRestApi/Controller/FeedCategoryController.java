@@ -33,7 +33,7 @@ public class FeedCategoryController {
     public ResponseEntity<Object> save(@RequestBody FeedCategory category)
     {
         FeedCategory saved_category = feedCategoryService.save(category);
-        URI location  = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(saved_category.getId()).toUri();
+        URI location  = ServletUriComponentsBuilder.fromCurrentRequest().path("{id}").buildAndExpand(saved_category.getId()).toUri();
         return ResponseEntity.created(location).build();
     }
 

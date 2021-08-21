@@ -20,6 +20,7 @@ public class CourseBanners {
     private String bannerImageLink;
     private String bannerLink;
     private String placeHolder;
+    private boolean published;
     private long courseId;
 
     public CourseBanners(String bannerImageLink, String bannerLink, String placeHolder, long courseId) {

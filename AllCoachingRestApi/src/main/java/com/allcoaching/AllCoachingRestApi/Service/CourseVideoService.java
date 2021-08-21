@@ -63,4 +63,10 @@ public class CourseVideoService {
     {
         courseVideoRepo.updateHiddenStatus(status,id);
     }
+
+    //delete
+    public void delete(long id)
+    {
+        courseVideoRepo.deleteById(id);
+    }
 }

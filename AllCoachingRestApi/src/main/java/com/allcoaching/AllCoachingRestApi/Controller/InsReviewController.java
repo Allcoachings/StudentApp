@@ -23,18 +23,20 @@ public class InsReviewController {
     @Autowired
     private InsReviewService insReviewService;
 
+    @CrossOrigin(origins = "*")
     @PostMapping("/")
     public ResponseEntity<Object> save(@RequestBody InsReview insReview)
     {
         InsReview insReview_saved = insReviewService.save(insReview);
         URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{id}")
+                .fromCurrentRequest().path("{id}")
                 .buildAndExpand(insReview_saved.getId())
                 .toUri();
 
         return ResponseEntity.created(location).build();
     }
 
+    @CrossOrigin(origins = "*")
     @PutMapping("/")
     public ResponseEntity<Object> updateReview(@RequestBody InsReview insReview)
     {
@@ -44,6 +46,7 @@ public class InsReviewController {
         return ResponseEntity.ok().build();
     }
 
+    @CrossOrigin(origins = "*")
     @PutMapping("/add/")
     public ResponseEntity<Object> addReview(@RequestBody InsReview insReview)
     {
@@ -62,6 +65,7 @@ public class InsReviewController {
         return  insReviewService.getAllReviews(offset,data_limit,sortBy,insId);
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/{courseId}/{studentId}")
     public boolean findByCourseIdStudentId(
             @PathVariable(name = "courseId") long courseId,
@@ -69,7 +73,7 @@ public class InsReviewController {
     {
         return  insReviewService.findByCourseIdStudentId(courseId, studentId);
     }
-
+    @CrossOrigin(origins = "*")
     @GetMapping("/purchaseList/{studentId}/{offset}/{dataLimit}")
     public Iterable<StudentPurchaseDto> findByStudentId(
             @PathVariable(name = "studentId") long studentId,

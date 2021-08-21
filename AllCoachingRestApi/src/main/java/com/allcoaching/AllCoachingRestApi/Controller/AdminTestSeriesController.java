@@ -12,6 +12,7 @@ import com.allcoaching.AllCoachingRestApi.Service.InsTestSeriesService;
 import com.allcoaching.AllCoachingRestApi.dto.AdminTestCategoriesDto;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -41,7 +42,9 @@ public class AdminTestSeriesController {
     {
         AdminTestSeriesCategory adminTestSeriesCategory_saved =  adminTestSeriesCategoryService.save(adminTestSeriesCategory);
         URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(adminTestSeriesCategory_saved.getId()).toUri();
-        return ResponseEntity.created(location).build();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Expose-Headers", "Location");
+        return ResponseEntity.created(location).headers(headers).build();
 
 
     }
@@ -52,7 +55,9 @@ public class AdminTestSeriesController {
     {
        AdminTestSubCategories adminTestSubCategories_saved =  adminTestSubCategoriesService.save(adminTestSubCategories);
         URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(adminTestSubCategories_saved.getId()).toUri();
-        return ResponseEntity.created(location).build();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Expose-Headers", "Location");
+        return ResponseEntity.created(location).headers(headers).build();
     }
 
     @CrossOrigin(origins = "*")
@@ -68,7 +73,9 @@ public class AdminTestSeriesController {
     {
         AdminTestSeriesSubCategoryContent adminTestSeriesSubCategoryContent_saved = adminTestSeriesSubCategoryContentService.addSubCategoryItem(adminTestSeriesSubCategoryContent);
         URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(adminTestSeriesSubCategoryContent_saved.getId()).toUri();
-        return  ResponseEntity.created(location).build();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Expose-Headers", "Location");
+        return  ResponseEntity.created(location).headers(headers).build();
     }
 
     @CrossOrigin(origins = "*")
@@ -88,6 +95,23 @@ public class AdminTestSeriesController {
     {
         return insTestSeriesService.findByCategoryAndIsAdmin(subId,offset,dataLimit);
     }
+
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("/category/delete/{id}")
+    public ResponseEntity<Object> deleteId(@PathVariable long id)
+    {
+           adminTestSeriesCategoryService.delete(id);
+           return ResponseEntity.ok().build();
+    }
+
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("/subCategory/delete/{id}")
+    public ResponseEntity<Object> deleteSubCategoryById(@PathVariable long id)
+    {
+           adminTestSubCategoriesService.delete(id);
+           return ResponseEntity.ok().build();
+    }
+
 
 
 
