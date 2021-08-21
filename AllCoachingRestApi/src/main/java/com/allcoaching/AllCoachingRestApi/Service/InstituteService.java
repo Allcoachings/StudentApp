@@ -92,7 +92,7 @@ public class InstituteService {
     //update institute bank details
     public void updateInstituteBankDetails(InsAccountDto insAccountDto)
     {
-        instituteRepo.updateInstituteAccountDetails(insAccountDto.getAccountNumber(),insAccountDto.getIfsc(),insAccountDto.getStringAccountHolderName,insAccountDto.getBankName(),insAccountDto.getInsId());
+        instituteRepo.updateInstituteAccountDetails(insAccountDto.getAccountNumber(),insAccountDto.getIfsc(),insAccountDto.getAccountHolderName(),insAccountDto.getBankName(),insAccountDto.getInsId());
 
     }
 
@@ -103,7 +103,8 @@ public class InstituteService {
         Optional<Institute> i = instituteRepo.findById(id);
         if(i.isPresent())
         {
-            return  new InsAccountDto(i.getId(),i.getAccountNumber(),i.getIfsc(),i.AccountHolderName(),i.getBankName());
+            Institute institute = i.get();
+            return  new InsAccountDto(institute.getId(),institute.getAccountNumber(),institute.getIfsc(),institute.getAccountHolderName(),institute.getBankName());
         }else
         {
             return null;

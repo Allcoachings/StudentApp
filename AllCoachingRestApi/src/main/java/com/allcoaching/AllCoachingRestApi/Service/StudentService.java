@@ -60,6 +60,16 @@ public class StudentService {
     }
 
 
+    public  void updateBlockedStatus(int status, long id)
+
+    {
+        studentRepo.updateBlockedStatus(status,id);
+    }
+
+
+
+
+
 
 
 

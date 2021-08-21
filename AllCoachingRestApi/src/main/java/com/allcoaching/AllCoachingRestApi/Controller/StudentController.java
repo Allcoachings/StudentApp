@@ -34,7 +34,13 @@ public class StudentController {
         return ResponseEntity.created(location).build();
 
     }
-
+    @CrossOrigin(origins = "*")
+    @PutMapping("/status/{status}/{studentId}")
+    public ResponseEntity<Object> updateStatus(@PathVariable int status,@PathVariable long studentId)
+    {
+        studentService.updateBlockedStatus(status,studentId);
+        return ResponseEntity.ok().build();
+    }
     @CrossOrigin(origins = "*")
     @PostMapping("/update/profile")
     public ResponseEntity<Object> updateProfilePic(@RequestParam("image") MultipartFile image,@RequestParam("id") long id)

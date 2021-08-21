@@ -20,4 +20,9 @@ public interface StudentRepo extends PagingAndSortingRepository<Student,Long> {
     @Modifying
     @Query("UPDATE Student set studentImage=:image where id=:id")
     void updateProfilePic(String image,long id);
+
+
+    @Modifying
+    @Query("UPDATE Student set blocked=:status where id=:id")
+    void updateBlockedStatus(int status,long id);
 }
