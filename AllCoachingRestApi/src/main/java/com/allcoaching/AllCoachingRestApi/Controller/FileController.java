@@ -8,12 +8,13 @@ import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.net.URI;
 
 @RestController
 @Api()
@@ -22,6 +23,7 @@ public class FileController {
     @Autowired
     private FileUploadService fileUploadService;
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/files/{imageName}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String imageName, HttpServletRequest request) {
         Resource resource = null;
@@ -63,5 +65,15 @@ public class FileController {
             return ResponseEntity.notFound().build();
 
         }
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/files/upload")
+    public ResponseEntity<Object> uploadFile(@RequestParam MultipartFile file)
+    {
+        String fileAddr ="files/";
+       fileAddr += fileUploadService.storeFile(file);
+        URI location = ServletUriComponentsBuilder.fromPath("{addr}").buildAndExpand(fileAddr).toUri();
+        return ResponseEntity.created(location).build();
     }
 }

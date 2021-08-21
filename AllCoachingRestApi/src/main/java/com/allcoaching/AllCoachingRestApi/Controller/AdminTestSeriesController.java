@@ -111,6 +111,13 @@ public class AdminTestSeriesController {
            adminTestSubCategoriesService.delete(id);
            return ResponseEntity.ok().build();
     }
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("/subCategoryContent/delete/{id}")
+    public ResponseEntity<Object> deleteSubCategoryContentById(@PathVariable long id)
+    {
+           adminTestSeriesSubCategoryContentService.deleteById(id);
+           return ResponseEntity.ok().build();
+    }
 
 
 

@@ -82,4 +82,13 @@ public class InsReviewController {
     {
         return  insReviewService.findByStudentId(studentId,offset,dataLimit);
     }
+
+    @CrossOrigin(origins = "*")
+    @PutMapping("/updateReview/")
+    public ResponseEntity<Object> updateReviewById(@RequestBody InsReview insReview)
+    {
+         insReviewService.updateReviewById(insReview);
+        return ResponseEntity.ok().build();
+    }
+
 }

@@ -67,4 +67,8 @@ public class InsReviewService {
     }
 
 
+    public void updateReviewById(InsReview insReview)
+    {
+          insReviewRepo.updateReviewById(insReview.getId(), insReview.getReview(), insReview.getRating());
+    }
 }
