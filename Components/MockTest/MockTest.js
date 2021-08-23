@@ -137,7 +137,7 @@ class ResultAnalysis extends React.Component {
                         </TouchableOpacity>
                     </View> */}
                     {this.state.isModalVisible?(
-                        <AddItemModal    appendItems={this.appendItems} isModalVisible={this.state.isModalVisible} closeModal={this.closeModal} subjectId={this.props.subjectId}/>
+                        <AddItemModal    appendItems={this.appendItems} isModalVisible={this.state.isModalVisible} closeModal={this.closeModal} insId={this.props.insId} subjectId={this.props.subjectId}/>
                 ):(
                     null
                 )}

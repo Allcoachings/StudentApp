@@ -4,18 +4,23 @@ import { theme, documentPlaceholder,dataLimit, serverBaseUrl } from '../config';
 import { Feather } from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
+import { downloadFile } from '../Utils/DownloadFile';
 
 class RenderDocument extends React.Component {
     state = {
         
     }
+    documentOnClick = ()=>
+    {
 
+        this.props.mode=="institute"?(this.props.addToHistory("document", this.props.item.id)):(null)
+        this.props.navigation.navigate('pdfViewer',{pdf:serverBaseUrl+this.props.item.fileAddress})
+        // downloadFile(this.props.item,this.props.userId,'document',(response)=>{console.log(response)})
+    }
     render(){
         return( 
             <View style={styles.documentContainer}>
-                <TouchableOpacity onPress={()=>{
-                    this.props.mode=="institute"?(this.props.addToHistory("document", this.props.item.id)):(null)
-                    this.props.navigation.navigate('pdfViewer',{pdf:serverBaseUrl+this.props.item.fileAddress})}}>
+                <TouchableOpacity onPress={()=>{this.documentOnClick()}}>
                     <Image source={{uri:documentPlaceholder}} style={styles.documentImage}/>
                 </TouchableOpacity>
                 <View style={{flexShrink: 1, justifyContent: 'center', alignItems: 'center'}}>

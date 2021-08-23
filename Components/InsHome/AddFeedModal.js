@@ -221,8 +221,7 @@ setFeedTypeOption=(postType)=>
                                 placeholderTextColor={theme.greyColor} 
                                 placeholder="Description" 
                                 onChangeText={(text)=>this.setState({description: text})} 
-                                multiline={true} 
-                                numberOfLines={3} 
+                                multiline={true}  
                                 style={styles.inputField}
                             />, {borderRadius: 10}
                         )}
@@ -543,6 +542,7 @@ setFeedTypeOption=(postType)=>
                     <TextInput
                         style={{height:250,fontFamily:'Raleway_400Regular',marginHorizontal:10}}
                         placeholder="Write Something...."
+                        multiline={true}  
                         onChangeText={(text)=>this.setState({description:text})}
 
                     />

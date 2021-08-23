@@ -1,5 +1,7 @@
+import { Feather } from '@expo/vector-icons';
 import React, { Component } from 'react';
 import { View, StyleSheet,TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import CardView from './CardView';
 
  class Accordian extends Component {
  
@@ -17,18 +19,31 @@ import { View, StyleSheet,TouchableOpacity, TouchableWithoutFeedback } from 'rea
 
   render() {
     return (
-      <View style={styles.container}>
-        <View style={styles.accordianHeader}>
-            <TouchableWithoutFeedback   onPress={()=>this.accordionOnPress()}>
-                <View>
-                  {this.props.header}
-                </View> 
-            </TouchableWithoutFeedback>
-        </View>
-        {this.state.isContentVisible?(
-            this.props.children
-        ):(null)}
-      </View>
+
+      CardView(
+        <View style={styles.container}>
+          <View style={styles.accordianHeader}>
+              <TouchableWithoutFeedback   onPress={()=>this.accordionOnPress()}>
+                  <View style={{flexDirection: 'row',marginHorizontal:10,marginTop:10}}>
+                    <View>
+                      {this.props.header}
+                    </View>
+                    <View >
+                      <Feather name={this.state.isContentVisible?"chevron-up":"chevron-down"} size={20} />
+                    </View>
+                  </View> 
+              </TouchableWithoutFeedback>
+          </View>
+          {this.state.isContentVisible?(
+              this.props.children
+          ):(null)}
+        </View>,
+        {
+            width:'95%', 
+            padding:5,
+            margin:5,
+           
+        })
     );
   }
 }

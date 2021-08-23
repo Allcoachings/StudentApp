@@ -377,7 +377,7 @@ class InsHome extends React.Component {
     }
 
     renderTestItem=(item)=>{
-        console.log("subject",item.name)
+        console.log("subject",this.props.institute,this.props.institute.details.id)
         return(
             <Accordian
                 header={this.accordianHeader(item.name," ","chevron-down")}
@@ -387,7 +387,7 @@ class InsHome extends React.Component {
                     <Text style={{fontSize: 16, fontWeight: 'bold'}}>Time</Text>
                     <Text style={{fontSize: 16, fontWeight: 'bold'}}>Teacher</Text>
                 </View> */}
-                <MockTest data={item.courseTimeTableItem} subjectId={item.id} />
+                <MockTest data={item.courseTimeTableItem} insId={this.props.institute.details.id} subjectId={item.id} />
                 {/* {CardView(
                     <FlatList 
                         data={item.date} 

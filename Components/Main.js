@@ -11,8 +11,8 @@ import {screenWidthConfigChange,setInstituteAuth,userAuthStatus,setUserInfo,setI
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('screen').height; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Font from 'expo-font';
-
+// import * as Font from 'expo-font';
+import AppLoading from 'expo-app-loading';
 // import { StatusBar } from 'expo-status-bar';
 import {useFonts,Raleway_400Regular,Raleway_600SemiBold,Raleway_700Bold} from '@expo-google-fonts/raleway';
 class Main extends React.Component {
@@ -28,11 +28,13 @@ class Main extends React.Component {
 
         // StatusBar.setStatusBarBackgroundColor(theme.greyColor,true)
 
-        Font.loadAsync({ 
-            Raleway_400Regular,
-            Raleway_600SemiBold,
-            Raleway_700Bold
-        })
+        // Font.loadAsync({ 
+        //     Raleway_400Regular,
+        //     Raleway_600SemiBold,
+        //     Raleway_700Bold
+        // }).then(() => {
+        //     this.setState({fontLoaded:true})
+        // })
         // AsyncStorage.clear()  
         AsyncStorage.getItem('authInfo').then(data => {
             if(data)
@@ -129,7 +131,15 @@ class Main extends React.Component {
     }
     render() {
 
+        // if(!this.state.fontLoaded)
+        // {
+              
+        //         return (
+        //             <AppLoading/>
+        //         )
+        // }
         return( 
+            
             <SafeAreaProvider  style={styles.safeAreaView}>
                 {this.switchRender(this.state.mode)}
             </SafeAreaProvider>

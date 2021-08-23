@@ -1,61 +1,116 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,Image } from 'react-native';
-import { theme } from '../config';
+import { View, Text,StyleSheet,Image, FlatList } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
+import { connect } from 'react-redux';
+import { serverBaseUrl, theme } from '../config';
+import RenderDocument from '../InstituteView/RenderDocument';
+import RenderVideo from '../InstituteView/RenderVideo';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 class Downloads extends Component {
   
    state = {
-       activeTab:1
+       activeTab:1,
+       loading:true,
     };
     activeTab=(tabValue)=>{
-        this.setState({activeTab:tabValue});
+        this.setState({activeTab:tabValue},()=>
+        {
+            this.extractSavedItems(this.props.userInfo.id,this.state.activeTab==2?'document':'video');
+        });
+
+    }
+
+    extractSavedItems=(uid,doctype)=>
+    {
+        this.setState({loading:true});
+        AsyncStorage.getItem("offline").then((result)=>{
+            if(result)
+            {
+                let offlineObj = JSON.parse(result)
+                let documentArr = offlineObj[uid][doctype]
+                if(documentArr)
+                {
+                    this.setState({data:documentArr,loading:false})
+                }else
+                {
+                    this.setState({data:[],loading:false})
+                }
+            }else
+            {
+                this.setState({data:[],loading:false})
+            }
+        })
     }
     switchTabRender=(activeTab)=>{
+
+        
+        if(this.state.loading)
+        {
+            <ActivityIndicator size={'large'} color={theme.accentColor}/>
+        }
+            
+         
         switch (activeTab) {
             case 2: 
-                    return this.renderDocument({image:{uri:'https://picsum.photos/200'},title:'The Course2',institute:'CHandan coaching institute',Views:'104,234',date:'date here'})
+                    // return this.renderDocument({image:{uri:'https://picsum.photos/200'},title:'The Course2',institute:'CHandan coaching institute',Views:'104,234',date:'date here'})
+                    return (
+                        <FlatList
+                            data={this.state.data}
+                            renderItem={({item}) =><RenderDocument userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="offline"/>}
+                            keyExtractor={(item)=>item.id}
+                        />
+                    )
                     
             case 1:
                 return(
-                    <View>
-                            {/* <View style={styles.content}>
-                                <TouchableOpacity 
-                                    onPress={()=>{this.activeTab('liveClass')}} style={[styles.liveClassOuter,this.state.activeTab=='liveClass'?({backgroundColor:'red'}):({backgroundColor: theme.primaryColor})]}>
-                                    <View style={styles.liveClassInner}>
-                                        <Feather name="disc" size={13} color={theme.primaryColor}/>
-                                        <Text style={styles.liveClassText}>Live Now</Text>
-                                    </View>
-                                </TouchableOpacity>
-                                {this.renderList('Videos', 'play-circle', 'videos')}
-                                {this.renderList('Test Series', 'copy', 'testSeries')}
-                                {this.renderList('Document', 'file', 'document')}
-                                {this.renderList('Time Table', 'clock', 'timeTable')}
-                            </View>
+                    // <View>
+                    //         {/* <View style={styles.content}>
+                    //             <TouchableOpacity 
+                    //                 onPress={()=>{this.activeTab('liveClass')}} style={[styles.liveClassOuter,this.state.activeTab=='liveClass'?({backgroundColor:'red'}):({backgroundColor: theme.primaryColor})]}>
+                    //                 <View style={styles.liveClassInner}>
+                    //                     <Feather name="disc" size={13} color={theme.primaryColor}/>
+                    //                     <Text style={styles.liveClassText}>Live Now</Text>
+                    //                 </View>
+                    //             </TouchableOpacity>
+                    //             {this.renderList('Videos', 'play-circle', 'videos')}
+                    //             {this.renderList('Test Series', 'copy', 'testSeries')}
+                    //             {this.renderList('Document', 'file', 'document')}
+                    //             {this.renderList('Time Table', 'clock', 'timeTable')}
+                    //         </View>
                             
-                            <View style={styles.purchage_coursewrapper}>
-                            <View>
-                                <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.curvedimage}/>
-                            </View>
+                    //         <View style={styles.purchage_coursewrapper}>
+                    //         <View>
+                    //             <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.curvedimage}/>
+                    //         </View>
                            
-                                <View style={{flex: 1,justifyContent: 'space-evenly'}}>
-                                    <Text>The Course-2</Text>
-                                    <Text>Chapter two realease</Text>
-                                    <Text>Module-3</Text>
-                                </View>
-                            </View> */}
-                            {this.renderVideos({image:{uri: 'https://picsum.photos/200' },title:'The Course2',description:'Video description here',date:'date here'})}
-                    </View>
+                    //             <View style={{flex: 1,justifyContent: 'space-evenly'}}>
+                    //                 <Text>The Course-2</Text>
+                    //                 <Text>Chapter two realease</Text>
+                    //                 <Text>Module-3</Text>
+                    //             </View>
+                    //         </View> */}
+                    //         {this.renderVideos({image:{uri: 'https://picsum.photos/200' },title:'The Course2',description:'Video description here',date:'date here'})}
+                    // </View>
+                    
+                    <FlatList
+                    data={this.state.data}
+                    renderItem={({item}) =><RenderVideo userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="offline"/>}
+                    keyExtractor={(item)=>item.id}
+                    />
                 )
              
         }
 
     }
-
+    componentDidMount() {
+        this.extractSavedItems(this.props.userInfo.id,this.state.activeTab==2?'document':'video');
+    }
     renderDocument=(item)=>{
         return(
             <View style={styles.documentContainer}>
                 <View>
-                    <Image source={item.image} style={styles.documentImage}/>
+                    <Image source={{uri:serverBaseUrl+item.image}} style={styles.documentImage}/>
                 </View>
                 <View style={{flexShrink: 1}}>
                     <View style={{ display: 'flex', flexDirection: 'row'}}>
@@ -214,4 +269,10 @@ const styles = StyleSheet.create({
             },
 });
 
-export default Downloads;
+const  mapStateToProps = (state)=>
+{
+    return { 
+        userInfo:state.user.userInfo,   
+    }
+} 
+export default connect(mapStateToProps)( Downloads);

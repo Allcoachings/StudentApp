@@ -46,7 +46,7 @@ class FeedText extends Component {
                             
                             <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
                         </View>
-                        <Text style={{fontSize: 18, marginVertical: 10}}>{feed.feed.description}</Text>
+                        <Text style={{fontFamily:'Raleway_400Regular', marginVertical: 10}}>{feed.feed.description}</Text>
                         <View style={styles.bottomRowContainer}>
                             {this.state.canUserLike?(
                                 <TouchableOpacity style={styles.likeView}  onPress={()=>this.likeFeed(feed.feed.id)}>

@@ -426,7 +426,7 @@ export const fetch_courses_timetable=(courseId,callback)=>
 }
 
 //add timetable item
-export   const addCourseTimetableItem =(title,subTitle,date,time,subjectId,callback)=>
+export   const addCourseTimetableItem =(title,subTitle,dateReverse,date,time,subjectId,insId,callback)=>
 {
 
     // const newImageUri =  "file:///" + document.uri.split("file:/").join("");
@@ -448,11 +448,14 @@ export   const addCourseTimetableItem =(title,subTitle,date,time,subjectId,callb
             headers.append('Access-Control-Allow-Credentials', 'true');
 
             headers.append('GET', 'POST', 'OPTIONS');  
+
+            let dateTime =  new Date(Date.parse(dateReverse+'T'+time+"+05:30"))
+            console.log("string Date time",dateReverse+'T'+time,dateTime," y-",dateTime.getFullYear()," m-",dateTime.getMonth()," d-",dateTime.getDate()," h-",dateTime.getHours()," min-",dateTime.getMinutes());
              fetch(serverApiUrl+'/institute/course/timetable/addsubjectitem',
             {
                 method: 'POST',  
                 headers,
-                body:JSON.stringify({date,title,subTitle,time,subjectId})
+                body:JSON.stringify({date,title,subTitle,time,subjectId,insId,dateTime})
             })
             .then((response)=>callback(response)) 
             .catch((error)=>{console.log(error)})
@@ -570,6 +573,26 @@ export const fetch_testSeries = (courseId,callback)=>
              
                 
              fetch(apiUrl,
+            {
+                method: 'GET',  
+                headers,
+                // body:JSON.stringify({title,description,fees,instId})
+            })
+            .then((response)=>callback(response)) 
+            .catch((error)=>{console.log(error)})
+
+}
+
+export const fetch_latestUpcomingSchedule = (insId,callback)=>
+{
+
+            let headers = new Headers(); 
+            headers.append('Content-Type', 'application/json');  
+            headers.append('Access-Control-Allow-Origin', serverApiUrl);
+            headers.append('Access-Control-Allow-Credentials', 'true'); 
+            headers.append('GET', 'POST', 'OPTIONS'); 
+            let apiUrl = serverApiUrl+'/institute/course/timetable/latestupcoming/'+insId 
+            fetch(apiUrl,
             {
                 method: 'GET',  
                 headers,

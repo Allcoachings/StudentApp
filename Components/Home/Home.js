@@ -14,6 +14,7 @@ import {fetch_institute_courses,fetch_courses_banners,fetch_courses_videos,fetch
 import {fetch_homeData} from '../Utils/DataHelper/HomeData'
 import {fetch_coachingByCategory} from '../Utils/DataHelper/Coaching'
 import {SearchInstitute} from '../Utils/DataHelper/Search'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -40,6 +41,7 @@ class Home extends React.Component {
     }
     componentDidMount() {
         this.props.setNavigation(this.props.navigation);
+        this.checkForUserCat()
         fetch_homeData(this.handleHomeDataCallBack)
     }
 
@@ -156,6 +158,25 @@ class Home extends React.Component {
         SearchInstitute(search, offset, dataLimit, callback)
     }
      
+    checkForUserCat=()=>
+    {
+        AsyncStorage.getItem("userCat").then((response)=>{
+
+             if(response)
+             {
+                 let obj = JSON.parse(response);
+                 this.setState({selectedCat:obj.key})
+                 if(obj.key==-1)
+                 {
+                    this.toggleCatMode(false,obj)
+                 }else
+                 {
+                    this.toggleCatMode(true,obj)
+                 }
+                 
+             }
+        })
+    }
     toggleCatMode=(mode,item)=>
     {
         switch(mode)
@@ -179,6 +200,7 @@ class Home extends React.Component {
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
                 catInHeader={true}
                 catOnpress={this.toggleCatMode}
+                selectedCat={this.state.selectedCat}
                 rightIconOnPress={() =>this.props.navigation.navigate("Notification")}
                 scrollMode={'scroll'}
                 navigation={this.props.navigation}

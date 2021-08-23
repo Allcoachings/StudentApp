@@ -50,7 +50,7 @@ likeFeedCallBack=(response)=>{
                         </View>
                         {feed.feed.description?( 
                                 <View style={{marginVertical:10}}>
-                                    <Text style={{color: theme.greyColor}}>
+                                    <Text style={{color: theme.greyColor,fontFamily:'Raleway_400Regular'}}>
                                         {feed.feed.description}
                                     </Text>
                                 </View>
@@ -58,14 +58,14 @@ likeFeedCallBack=(response)=>{
                         {/* <Image source={{ uri: serverBaseUrl+feed.feed.photoLocation }} style={styles.img}/> */}
                         <FlatListSlider
                                 data={feed.feedImages}
-                                height={150}
+                                height={250}
                                 timer={5000}
                                 imageKey="feedImage"
                                 onPress={item => {}}
-                                contentContainerStyle={{resizeMode:'contain'}} 
-                                indicatorActiveColor={'#8e44ad'}
-                                indicatorInActiveColor={'#ffffff'}
-                                indicatorActiveWidth={10}
+                                contentContainerStyle={{resizeMode:'cover'}} 
+                                indicatorActiveColor={theme.greyColor}
+                                indicatorInActiveColor={theme.labelOrInactiveColor}
+                                indicatorActiveWidth={5}
                                 animation 
                                 autoscroll={false}
                                 serverBaseUrl={serverBaseUrl}

@@ -10,7 +10,7 @@ import {theme} from '../../config'
 import {tabListInstitute} from '../../../FakeDataService/FakeData'
 class index extends React.Component {
     state = { 
-        activeTab: 1,
+        activeTab: this.props.selectedCat||-1,
         tabListInstitute:[],
     }
 
@@ -38,7 +38,7 @@ class index extends React.Component {
                     let obj = {icon:'',name:'All',sortOrder:1,id:-1}
                     data.unshift(obj)
                 } 
-                this.setState({tabListInstitute:data});                   
+                this.setState({tabListInstitute:data,activeTab:this.props.selectedCat||-1});                   
             })
         }
     }
@@ -83,6 +83,7 @@ class index extends React.Component {
                                 noNotificationIcon={this.props.noNotificationIcon}
                                 searchFun={this.props.searchFun}
                                 singleItem={this.props.singleItem}
+                                selectedCat={this.props.selectedCat}
                                 />
                             )
                             :

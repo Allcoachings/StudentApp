@@ -28,13 +28,13 @@ class Review extends React.Component {
                 <View style={styles.container}> 
                      <View style={styles.overView}>
                             <RatingOverView
-                                rating={rating.toFixed(1)}
+                                rating={this.props.total_rating>0?(rating.toFixed(1)):(0)}
                                 ratingCount={this.props.total_rating}
-                                progress5={(this.props.five_star/this.props.total_rating)*100}
-                                progress4={(this.props.four_star/this.props.total_rating)*100}
-                                progress3={(this.props.three_star/this.props.total_rating)*100}
-                                progress2={(this.props.two_star/this.props.total_rating)*100}
-                                progress1={(this.props.one_star/this.props.total_rating)*100}
+                                progress5={this.props.total_rating>0?((this.props.five_star/this.props.total_rating)*100):0}
+                                progress4={this.props.total_rating>0?((this.props.four_star/this.props.total_rating)*100):0}
+                                progress3={this.props.total_rating>0?((this.props.three_star/this.props.total_rating)*100):0}
+                                progress2={this.props.total_rating>0?((this.props.two_star/this.props.total_rating)*100):0}
+                                progress1={this.props.total_rating>0?((this.props.one_star/this.props.total_rating)*100):0}
                             /> 
                      </View>
                      <View style={{flex: 1}}>

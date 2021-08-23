@@ -7,9 +7,15 @@ import com.allcoaching.AllCoachingRestApi.Respository.CourseTimeTableItemRepo;
 import com.allcoaching.AllCoachingRestApi.Respository.CourseTimeTableSubjectRepo;
 import com.allcoaching.AllCoachingRestApi.dto.CourseTimeTableDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,4 +81,21 @@ public class CourseTimeTableService {
     {
         itemRepo.deleteById(id);
     }
+
+    //fetch latest upcoming scheduled item
+    public CourseTimeTableItem latestUpcomingItem(long insId)
+    {
+        Date date = new Date();
+        Timestamp timestamp = new Timestamp(date.getTime());
+
+        System.out.println(timestamp);
+        System.out.println(timestamp);
+        List<CourseTimeTableItem> result =  itemRepo.findByInsIdAndDateTimeGreaterThanOrderByDateTimeAsc(insId, timestamp);
+        System.out.println(result);
+        if(!result.isEmpty()) {
+            return result.get(0);
+        }
+        return null;
+    }
+
 }

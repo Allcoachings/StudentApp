@@ -74,4 +74,11 @@ public class CourseTimeTableController {
         service.deleteTimeTableSubjectItem(id);
         return ResponseEntity.ok().build();
     }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/latestupcoming/{insId}")
+    public CourseTimeTableItem latestUpcoming(@PathVariable long insId)
+    {
+        return  service.latestUpcomingItem(insId);
+    }
 }
