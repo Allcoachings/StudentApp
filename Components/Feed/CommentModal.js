@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text,Image,StyleSheet, TouchableOpacity, Dimensions, Modal, FlatList, TextInput } from 'react-native';
+import { View, Text,Image,StyleSheet, TouchableOpacity, Dimensions, Modal, FlatList, TextInput, ScrollView } from 'react-native';
 import {serverBaseUrl, theme, dataLimit, appLogo} from '../config';
 import {Feather, AntDesign, FontAwesome} from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
@@ -14,7 +14,8 @@ class CommentModal extends Component {
     modalVisible: this.props.modalVisible,
     offset: 0,
     loadingData: true,
-    comments: []
+    commentData: [],
+    comment: ''
   }
 
 
@@ -28,7 +29,7 @@ class CommentModal extends Component {
       {
             response.json().then(data=>{
                 console.log(data)
-                this.setState({comments:data,loadingData:false})
+                this.setState({commentData:data,loadingData:false})
             })
       }
   }
@@ -38,30 +39,51 @@ class CommentModal extends Component {
   }
 
   addCallback=(response)=>{
-      if(response.status==200)
+      
+      if(response.status==201)
       {
-          console.log("success",response)
-          console.log(response.map.get('location'))
+          var obj={
+            commenterObject: {
+                blocked: this.props.userInfo.blocked,
+                email: this.props.userInfo.email,
+                id: this.props.userInfo.id,
+                mobileNumber: this.props.userInfo.mobileNumber,
+                name: this.props.userInfo.name,
+                stateOfResidence: this.props.userInfo.stateOfResidence,
+                studentImage: this.props.userInfo.studentImage,
+                userId: this.props.userInfo.userId,
+              },
+              feedComments: {
+                comment: this.state.comment,
+                commenter: 2,
+                feedId: this.state.feedId,
+                id: response.headers.map.location,
+                insId: 0,
+                studentId: this.props.userInfo.id
+              },
+            }
+        this.state.commentData.push(obj)
+        this.setState({comment: ''},()=>this.textInput.clear())
       }
       else
       {
-          console.log("error",response)
+          console.log("error", response.status)
       }
   }
 
   renderSingleComment=(item)=>{
       return(
-          <View style={{ flexDirection: 'row', margin: 15, padding: 10}}>
-              <View>
-                  <Image source={appLogo} style={{height: 50, width: 50, borderRadius: 25}}/>
+          <View style={{ flex:1, flexDirection: 'row', margin: 5, padding: 10}}>
+              <View style={{flex: 0.15}}>
+                  <Image source={{uri: serverBaseUrl+item.commenterObject.studentImage}} style={{height: 50, width: 50, borderRadius: 25}}/>
               </View>
-              <View style={{ flexDirection: 'column'}}>
+              <View style={{flex: 0.85, flexDirection: 'column', marginLeft: 10, marginTop: 2}}>
                   <View style={{ flexDirection: 'row'}}>
-                      <Text>UserName {' • '}</Text>
-                      <Text>{moment(item.timeStamp).fromNow()}</Text>
+                      <Text style={{fontFamily:'Raleway_700Bold', fontSize: 16}}>{item.commenterObject.name} {' • '}</Text>
+                      <Text style={{fontFamily:'Raleway_700Bold', fontSize: 15}}>{moment(item.feedComments.timeStamp).fromNow()}</Text>
                   </View>
-                  <View>
-                      <Text>{item.comment}</Text>
+                  <View style={{flexShrink: 1}}>
+                      <Text style={{fontFamily: 'Raleway_600SemiBold',  flexWrap: 'wrap'}}>{item.feedComments.comment}</Text>
                   </View>
               </View>
           </View>
@@ -83,24 +105,33 @@ class CommentModal extends Component {
                     </TouchableOpacity>
                     <Text style={{fontFamily:'Raleway_700Bold',fontSize:20, marginLeft: 10}}>Comments</Text>
                 </View>
+                <View style={{flexDirection:'row', backgroundColor: 'white', width: width, marginTop: 15}}>  
+                <View style={{flex: 1,  flexDirection: 'row',borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor}}>        
+                    <TextInput 
+                        style={{flex:0.9,borderRadius:10, paddingLeft: 6, justifyContent: 'flex-end'}} 
+                        onChangeText={(text)=>this.setState({comment: text})}
+                        placeholder="Write a Comment" placeholderTextColor='grey'
+                        ref={input => { this.textInput = input }}
+                    >
+
+                    </TextInput>
+                    {this.state.comment!=''?(
+                    <TouchableOpacity onPress={()=>this.add()} style={{flex: 0.1}}>
+                        <AntDesign name="arrowright" size={24} color={theme.labelOrInactiveColor} />
+                    </TouchableOpacity>):(null)}
+                    </View>  
+                </View>
+                <ScrollView>
                 <View>
+                    
                     <FlatList
-                        data={this.state.comments}
+                        data={this.state.commentData}
                         renderItem={({item}) => this.renderSingleComment(item)}
                         keyExtractor={(item,index)=>index}
                     />
                 </View>
-            
-                <View style={{backgroundColor: 'white', position: 'absolute', bottom: 0, width: width*0.97, marginLeft: width*0.015}}>            
-                    <TextInput 
-                        style={{borderWidth: 1, borderColor: 'black', borderRadius:10, paddingLeft: 6, paddingBottom:30}} 
-                        onChange={(text) =>this.setState({comments: text})}
-                        placeholder="Write a Comment" placeholderTextColor='grey'>
-                    </TextInput>
-                    <TouchableOpacity style={{flexDirection: 'row',backgroundColor: theme.accentColor,paddingLeft: 8, paddingRight: 8,  paddingTop: 5, paddingBottom: 5, borderRadius: 3, marginTop: 5, alignSelf: 'center', marginBottom: 20}} onPress={()=>this.add()}>
-                        <Text style={{textAlign: 'center', fontSize: 18,color: theme.primaryColor}}>Submit</Text>
-                    </TouchableOpacity>
-                </View>
+                </ScrollView>
+                
             </View>
 
         </Modal>
@@ -110,7 +141,8 @@ class CommentModal extends Component {
 const styles = StyleSheet.create({
       container: {
           height: height, 
-          width: width
+          width: width,
+          flexDirection: 'column',
       }                       
                 
 });

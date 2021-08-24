@@ -258,12 +258,8 @@ import mime from "mime";
             }
 
 
-            export const add_comment=(comment, commentor, feedId, insId, userId, callback)=>
+            export const add_comment=(comment, commenter, feedId, insId, studentId, callback)=>
             {
-                // var formData   = new FormData(); 
-                // formData.append("fetch_banners",'true') 
-                // formData.append("offset",offset) 
-                // formData.append("data_limit",limit)  
                 let headers = new Headers(); 
                 headers.append('Content-Type', 'application/json'); 
 
@@ -276,7 +272,7 @@ import mime from "mime";
                 {
                     method: 'POST',  
                     headers,
-                    body:JSON.stringify({comment, commentor, feedId, insId, userId})
+                    body:JSON.stringify({comment, commenter, feedId, insId, studentId})
                 })
                 .then((response)=>callback(response)) 
                 .catch((error)=>{console.log(error)})
