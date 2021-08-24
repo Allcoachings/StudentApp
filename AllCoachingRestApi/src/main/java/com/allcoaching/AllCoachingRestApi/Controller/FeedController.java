@@ -5,6 +5,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.FeedComments;
 import com.allcoaching.AllCoachingRestApi.Service.FeedCommentService;
 import com.allcoaching.AllCoachingRestApi.Service.FeedService;
 import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
+import com.allcoaching.AllCoachingRestApi.dto.FeedCommentDto;
 import com.allcoaching.AllCoachingRestApi.dto.FeedContentDto;
 import com.allcoaching.AllCoachingRestApi.dto.FeedDto;
 import io.swagger.annotations.Api;
@@ -126,7 +127,7 @@ public class FeedController {
     //fetch feed comments
     @CrossOrigin(origins = "*")
     @GetMapping("feed/comment/{feedId}/{offset}/{dataLimit}")
-    public  Iterable<FeedComments> fetch_feedComments(@PathVariable long feedId,@PathVariable int offset,@PathVariable int dataLimit)
+    public  Iterable<FeedCommentDto> fetch_feedComments(@PathVariable long feedId, @PathVariable int offset, @PathVariable int dataLimit)
     {
         return feedCommentService.fetchCommentsByFeedId(feedId,offset,dataLimit);
     }

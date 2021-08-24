@@ -20,9 +20,9 @@ public class FeedComments {
 
     private String comment;
     private long feedId;
-    private int commentor;//1 for ins 2 for student
+    private int commenter;//1 for ins 2 for student
     private long insId;
-    private long user_id;
+    private long studentId;
     @Temporal(TemporalType.TIMESTAMP)
     private Date timeStamp;
 }
