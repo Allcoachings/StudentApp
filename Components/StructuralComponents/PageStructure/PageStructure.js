@@ -16,7 +16,7 @@ class PageStructure extends React.Component {
                 <View style={styles.containerMain}> 
                     {this.switchRender(this.props.scrollMode)} 
                     {!this.props.noBottomTab&&this.props.screenWidth<=screenMobileWidth?(
-                        <View style={[styles.pageBottomTab,{flex:this.props.catInHeader?0.11:0.102}]}>
+                        <View style={[styles.pageBottomTab,{flex:this.props.catInHeader?0.08:0.102}]}>
                             <BottomTab 
                                 replacBottomTab={this.props.replaceBottomTab} 
                                 bottomComponentStyle={this.props.bottomComponentStyle}  
@@ -43,7 +43,7 @@ class PageStructure extends React.Component {
             {
                 case 'scroll':    
                     return(
-                        <ScrollView  >
+                        <ScrollView  style={{flex:this.props.catInHeader?0.1:0.08}}>
                             <View style={[styles.containerHeader,this.props.headerStyle]}> 
                                 <Header 
                                     iconName={this.props.iconName}
@@ -61,6 +61,7 @@ class PageStructure extends React.Component {
                                     noNotificationIcon={this.props.noNotificationIcon}
                                     catOnpress={this.props.catOnpress}
                                     catType={this.props.catType}
+                                    selectedCat={this.props.selectedCat}
                                 />  
                             </View>
                             <View style={[styles.pageLayout,this.props.screenWidth<=screenMobileWidth?({   margin:'2%'}):(null)]}> 
@@ -97,6 +98,7 @@ class PageStructure extends React.Component {
                                             noNotificationIcon={this.props.noNotificationIcon}
                                             catOnpress={this.props.catOnpress}
                                             catType={this.props.catType}
+                                            selectedCat={this.props.selectedCat}
                                         />  
                                     </View>
                                     <View style={[styles.pageLayout,this.props.screenWidth<=screenMobileWidth?({   margin:'2%'}):(null)]}> 
@@ -165,7 +167,7 @@ const styles = StyleSheet.create({
             },
         pageBottomTab:
         {
-            marginTop:'auto'
+            marginTop:'auto' 
         }
 })
 

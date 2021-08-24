@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useState, useEffect,useCallback} from 'react';
 import { Text, View, StyleSheet, Animated } from 'react-native'; 
 import { theme } from '../config'
 
@@ -27,6 +27,8 @@ const RatingBar = (props) => {
     
   let animation = useRef(new Animated.Value(0));
   const [progress, setProgress] = useState(props.progress);
+  const [labelViewHeight,setLabelViewHeight] = useState(props.height)
+
 //   useInterval(() => {
 //     if(progress < 100) {
 //       setProgress(progress + 5);
@@ -45,11 +47,14 @@ const RatingBar = (props) => {
     outputRange: ["0%", "100%"],
     extrapolate: "clamp"
   })
+  const onTextLayout = useCallback(e => {
+    setLabelViewHeight(e.nativeEvent.lines.length*labelViewHeight) 
+  }, []);
   return (
     <View style={styles.container}> 
-      <View style={[styles.progressBar,{backgroundColor: props.backgroundColor,borderRadius: props.borderRadius, height:  props.height,},props.style]}>
+      <View style={[styles.progressBar,{backgroundColor: props.backgroundColor,borderRadius: props.borderRadius,height:  labelViewHeight,},props.style]}>
         {props.label?( 
-            <Text style={[styles.ratingLabel,props.labelStyle]}>{props.label}</Text>
+            <Text style={[styles.ratingLabel,props.labelStyle]} onTextLayout={onTextLayout}>{props.label}</Text>
         ):(null)}
       
         <Animated.View style={[StyleSheet.absoluteFill], {backgroundColor: props.progressColor, width ,borderRadius: props.borderRadius}}/>
@@ -81,7 +86,7 @@ const styles = StyleSheet.create({
       position: 'absolute',
       left:0,
       paddingHorizontal:10,
-      top:3,
+      top:0,
       color:theme.greyColor,
       flexWrap:'wrap',
       width:'100%'

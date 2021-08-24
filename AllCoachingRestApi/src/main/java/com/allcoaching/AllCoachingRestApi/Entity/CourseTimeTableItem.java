@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @ToString
@@ -20,13 +21,17 @@ public class CourseTimeTableItem {
     private String title;
     private String subTitle;
     private String time;
-   private long subjectId;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateTime;
+    private long subjectId;
+    private  long insId;
 
-    public CourseTimeTableItem(String date, String title, String subTitle, String time,long subjectId) {
+    public CourseTimeTableItem(String date, String title, String subTitle, String time, long subjectId, long insId) {
         this.date = date;
         this.title = title;
         this.subTitle = subTitle;
         this.time = time;
-        this.subjectId=subjectId;
+        this.subjectId = subjectId;
+        this.insId = insId;
     }
 }

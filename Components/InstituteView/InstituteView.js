@@ -4,6 +4,7 @@ import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {instituteData} from '../../FakeDataService/FakeData'
 import { AirbnbRating,Rating } from 'react-native-ratings';
 import {theme,screenMobileWidth,serverBaseUrl,documentPlaceholder,dataLimit} from '../config'
+
 import CardView from '../Utils/CardView';
 import MarqueeText from 'react-native-marquee';
 import { Feather } from '@expo/vector-icons';
@@ -13,8 +14,9 @@ import StudentReview from './StudentReview'
 import Review from '../ReviewAndRatings/Review'
 import Accordian from '../Utils/Accordian'
 import MockTest from '../MockTest/MockTest'
+import CountDown from 'react-native-countdown-component';
 import {fetch_instituteDetails} from '../Utils/DataHelper/Coaching'
-import {fetch_institute_courses,fetch_courses_banners,addCourseBanner,fetch_courses_videos,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents,fetch_courses_timetable,fetch_testSeries} from '../Utils/DataHelper/Course'
+import {fetch_institute_courses,fetch_courses_banners,addCourseBanner,fetch_courses_videos,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents,fetch_courses_timetable,fetch_testSeries, fetch_latestUpcomingSchedule} from '../Utils/DataHelper/Course'
 import { checkUserEnrollment } from '../Utils/DataHelper/EnrollStudent'
 import { saveStudentHistory } from '../Utils/DataHelper/StudentHistory'
 import { SliderBox } from 'react-native-image-slider-box';
@@ -56,6 +58,8 @@ class InstituteView extends React.Component {
         activeFilter: 'All'
         
      }
+
+     
      instituteCallback=(response) =>
      {
          if(response.status==200)
@@ -86,12 +90,27 @@ class InstituteView extends React.Component {
             })
         }
     }
-    
+    liveDataCallback=(response)=>
+    {
+        if(response.status==200)
+        {
+            response.json().then(data=>{
+
+                var startDate = new Date(); 
+                var endDate   = new Date(data.dateTime);
+                var seconds = (endDate.getTime() - startDate.getTime()) / 1000;
+                this.setState({liveDataLoaded:true,liveData:data,eventSeconds:seconds});
+                
+            })
+        }
+            
+    }
     componentDidMount() {
          fetch_instituteDetails(this.state.instituteId,this.instituteCallback)
          fetch_institute_courses(this.state.instituteId,this.coursesCallBack)
          checkUserEnrollment(this.state.courseId, this.state.studentId, this.checkEnrollCallBack)
-         checkSubscription(this.state.studentId,this.state.instituteId,this.checkSubscriptionCallback)
+         checkSubscription(this.state.studentId,this.state.instituteId,this.checkSubscriptionCallback) 
+         fetch_latestUpcomingSchedule(this.state.instituteId,this.liveDataCallback)
     }
 
     checkSubscriptionCallback=(response)=>{
@@ -117,6 +136,7 @@ class InstituteView extends React.Component {
             fetch_instituteDetails(this.state.instituteId,this.instituteCallback)
             fetch_institute_courses(this.state.instituteId,this.coursesCallBack)
             checkUserEnrollment(this.state.courseId, this.state.studentId, this.checkEnrollCallBack)
+            fetch_latestUpcomingSchedule(this.state.instituteId,this.liveDataCallback)
             })
         }
     }
@@ -162,14 +182,18 @@ class InstituteView extends React.Component {
 
      handleCourseItemClick=(item)=>
      {
-         this.setState({activeCourse:item.id,activeCourseDetail:item,
-            courseTimetableLoaded:false,isCourseTimetableLoading:true,
-            courseDocumentPlaylistLoaded:false,isCourseDocumentPlaylistLoading:true,
-            courseDocumentLoaded:false,isCourseDocumentLoading:true,
-            courseTestSeriesLoaded:false,isCourseTestSeriesLoading:true,
-            courseVideoPlaylistLoaded:false,isCourseVideoPlaylistLoading:true},()=>
+         this.setState({
+                activeCourse:item.id,activeCourseDetail:item,
+                courseTimetableLoaded:false,isCourseTimeTableLoading:false,courseTimeTable:[],
+                courseDocumentPlaylistLoaded:false,isCourseDocumentPlaylistLoading:false,courseDocumentPlaylist:[],
+                courseDocumentLoaded:false,isCourseDocumentLoading:false,courseDocuments:[],
+                courseTestSeriesLoaded:false,isCourseTestSeriesLoading:false,courseTestSeries:[],
+                courseVideoPlaylistLoaded:false,isCourseVideoPlaylistLoading:false,courseVideosPlaylist:[],
+                courseVideoLoaded:false,isCourseVideoLoading:false,courseVideos:[]
+            
+            },()=>
             {
-                console.log("testsdjsb")
+                
             })
             addLead(item.id, this.state.instituteId, this.state.studentId, this.addLeadCallback)
             fetch_courses_banners(item.id,this.courseBannerCallback)
@@ -352,7 +376,7 @@ class InstituteView extends React.Component {
     accordianHeader = (title,testCount,rightIcon) =>
     {
         return(
-            CardView(<View style={styles.accordianHeader}>
+            <View style={styles.accordianHeader}>
                         <View style={styles.accordianLeft}>
                             <Text style={styles.accordianTitle}>{title}</Text>
                             <Text style={styles.accordianTestCount}>{testCount}</Text> 
@@ -361,21 +385,15 @@ class InstituteView extends React.Component {
                            
                         </View>
                         <View style={styles.accordianRight}>
-                            <Feather name={rightIcon} size={20}/>
+                         
                         </View> 
-            </View>,
-            {
-                width:'95%', 
-                padding:5,
-                margin:5
-            }
-            )
+            </View>
         )
     }
 
     renderTestItem=(item)=>{
         return(
-            <View style={{borderColor:theme.labelOrInactiveColor,borderWidth:1,margin:10}}>
+            <View style={{margin:10}}>
             <Accordian
             header={this.accordianHeader(item.name," ","chevron-down")}
         > 
@@ -443,15 +461,39 @@ class InstituteView extends React.Component {
     showFilters=(tab)=>{
         switch(tab)
         {
-            case 'liveClass':   return(
-                        
-                                    <FlatList 
-                                        data={instituteData.liveClassFilters} 
-                                        renderItem={(this.renderSubjectOptions)}
-                                        keyExtractor={(item)=>item.id} 
-                                        horizontal={true}
-                                        showsHorizontalScrollIndicator={false}
-                                    />)
+            // case 'liveClass':   return(
+            //                         <View> 
+            //                                 <View style={styles.liveItemTextView}>
+            //                                     <Text>lorem ipsum dolor sit amet, consectetur adipiscing elit and a long more dummy text to be written here</Text> 
+            //                                 </View>
+            //                                 <View style={{flexDirection: 'row'}}>
+            //                                         <Feather name="wifi" size="large"/>
+            //                                         <Text style={styles.liveInText}>Live in</Text>
+            //                                 </View>
+            //                                 <View style={{flexDirection: 'row'}}>
+            //                                             <View>
+            //                                                 <Text style={styles.timeText}>03</Text>
+            //                                                 <Text style={styles.timelabel}>days</Text> 
+            //                                             </View>
+            //                                             <View>
+            //                                                 <Text style={styles.timeText}>12</Text>
+            //                                                 <Text style={styles.timelabel}>hours</Text> 
+            //                                             </View>
+            //                                             <View>
+            //                                                 <Text style={styles.timeText}>47</Text>
+            //                                                 <Text style={styles.timelabel}>minutes</Text> 
+            //                                             </View>
+            //                                 </View>
+            //                                 <TouchableWithoutFeedback>
+            //                                     <View style={{backgroundColor:theme.accentColor,padding:15,borderRadius:10,alignItems: 'center',width:'95%'}}>
+            //                                         <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>
+            //                                             Notify Me
+            //                                         </Text>
+            //                                     </View>
+            //                                 </TouchableWithoutFeedback>
+
+            //                         </View>
+                                    // )
 
             case 'videos':    
            
@@ -487,7 +529,7 @@ class InstituteView extends React.Component {
                    )
             case 'testSeries':  
             
-                        if(!this.state.courseTestseriesLoaded&&!this.state.isCourseTestseriesLoading)
+                        if(!this.state.courseTestseriesLoaded&&!this.state.isCourseTestseriesLoading&&this.state.activeCourse)
                         {
                             this.setState({isCourseTestseriesLoading:true})
                             fetch_testSeries(this.state.activeCourseDetail.id,this.courseTestseriesCallback);
@@ -502,12 +544,12 @@ class InstituteView extends React.Component {
                                     />)
 
             case 'document':                
-                        if(!this.state.courseDocumentLoaded&&!this.state.isCourseDocumentLoading)
+                        if(!this.state.courseDocumentLoaded&&!this.state.isCourseDocumentLoading&&this.state.activeCourse)
                         {
                             this.setState({isCourseDocumentLoading:true})
                             fetch_courses_documents(this.state.activeCourse,this.courseDocumentCallback);
                         }
-                        if(!this.state.courseDocumentPlaylistLoaded&&!this.state.isCourseDocumentPlaylistLoading)
+                        if(!this.state.courseDocumentPlaylistLoaded&&!this.state.isCourseDocumentPlaylistLoading&&this.state.activeCourse)
                         {
                             this.setState({isCourseDocumentPlaylistLoading:true})
                             fetch_document_playlist(this.state.activeCourse,this.courseDocumentPlaylistCallback);
@@ -527,18 +569,55 @@ class InstituteView extends React.Component {
         switch(tab)
         {
             case 'liveClass':   return(
-                                    <FlatList 
-                                        data={instituteData.liveClasses} 
-                                        renderItem={({item})=><RenderLiveClass item={item} navigation={this.props.navigation}/>}
-                                        keyExtractor={(item)=>item.id} 
-                                        horizontal={false}
-                                        showsHorizontalScrollIndicator={false}
-                                        ListEmptyComponent={<EmptyList />}
-                                    />)
+                <View style={styles.liveContainer}>  
+                                            <View style={styles.liveItemTextView}>
+                                                <Text style={styles.liveItemText}>{this.state.liveData.title}</Text> 
+                                            </View>
+                                            <View style={styles.liveDataTimeConatiner}>
+                                                <View style={{flexDirection: 'row'}}>
+                                                        {/* <Feather name="wifi" size="large"/> */}
+                                                        <Text style={styles.liveInText}>LIVE IN</Text>
+                                                </View> 
+                                                <View style={{flexDirection: 'row'}}>
+                                                    <CountDown
+                                                        until={this.state.eventSeconds}
+                                                        onFinish={() => alert('finished')}
+                                                        onPress={() => alert('hello')}
+                                                        size={25}
+                                                        style={{margin:10}}
+                                                        separatorStyle={{marginHorizontal:10}}
+                                                        digitStyle={styles.timeItemContainer}
+                                                        timeToShow={['D','H','M', 'S']}
+                                                    />
+                                                    {/* <View style={styles.timeItemContainer}>
+                                                        <Text style={styles.liveTimeText}>03</Text>
+                                                        <Text style={styles.timelabel}>days</Text> 
+                                                    </View>
+                                                    <View style={styles.timeItemContainer}>
+                                                        <Text style={styles.liveTimeText}>12</Text>
+                                                        <Text style={styles.timelabel}>hours</Text> 
+                                                    </View>
+                                                    <View style={styles.timeItemContainer}>
+                                                        <Text style={styles.liveTimeText}>47</Text>
+                                                        <Text style={styles.timelabel}>minutes</Text> 
+                                                    </View> */}
+                                                </View>
+
+                                            </View>
+                                            <TouchableWithoutFeedback>
+                                                <View style={{backgroundColor:theme.accentColor,padding:15,borderRadius:10,alignItems: 'center',width:'95%'}}>
+                                                    <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>
+                                                        Notify Me
+                                                    </Text>
+                                                </View>
+                                            </TouchableWithoutFeedback>
+
+                                    </View>                     
+                )
             case 'videos':      return(
                                     <FlatList 
                                         data={this.state.courseVideos} 
-                                        renderItem={({item})=><RenderVideo item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="institute"/>}
+                                        renderItem={({item})=><RenderVideo userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="institute"/>}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
@@ -556,16 +635,16 @@ class InstituteView extends React.Component {
             case 'document':    return(
                                     <FlatList 
                                         data={this.state.courseDocuments} 
-                                        renderItem={({item})=><RenderDocument item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="institute"/>}
+                                        renderItem={({item})=><RenderDocument userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="institute"/>}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
                                         ListEmptyComponent={<EmptyList />}
                                     />)
             case 'timeTable':    
-                        if(!this.state.courseTimetableLoaded&&!this.state.isCourseTimeTableLoading)
+                        if(!this.state.courseTimetableLoaded&&!this.state.isCourseTimeTableLoading&&this.state.activeCourse)
                         {
-                           
+                           console.log("running")
                             this.setState({isCourseTimeTableLoading:true})
                             fetch_courses_timetable(this.state.activeCourseDetail.id,this.courseTimeTableCallback);
                         }
@@ -1331,6 +1410,48 @@ const styles = StyleSheet.create({
                     display: 'flex',
                     flexDirection: 'column'
                 },
+                    liveContainer:
+                    {
+                        margin:10,
+                        alignItems: 'center'
+                    },
+                        liveItemText:
+                        {
+                            fontFamily: 'Raleway_600SemiBold',
+                            fontSize:16
+                        },
+                        liveDataTimeConatiner:
+                        {
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                        },
+                            liveInText:
+                            {
+
+                                color:theme.featureNoColor,
+                                fontFamily: 'Raleway_600SemiBold',
+                                fontSize:16,
+                                margin:10
+                            },
+                            timeItemContainer:
+                            {
+                                borderWidth:0.3,
+                                borderColor:theme.labelOrInactiveColor,
+                                padding:10,
+                                alignItems: 'center',
+                                margin:5
+                            },
+                                liveTimeText:
+                                {
+                                    fontSize:25, 
+                                    fontFamily: 'Raleway_700Bold',
+                                    margin:10
+
+                                },
+                                timelabel:
+                                {
+                                    fontFamily: 'Raleway_600SemiBold'
+                                },
                     videoContainer:
                     {
                         marginTop: 10,

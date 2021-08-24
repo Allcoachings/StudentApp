@@ -11,10 +11,10 @@ import { connect } from 'react-redux'
 
 class FeedPoll extends Component {
     state = {
-        canUserVote: this.props.type==1?(this.props.item.feed.feed.pollVotedInstitutes.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.pollVotedStudents.includes(`,${this.props.userInfo.id},`)?(false):(true)):(null)),
+        canUserVote: this.props.type==1?(this.props.item.feed.feed.pollVotedInstitutes.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.pollVotedStudents.includes(`,${this.props.userInfo.id},`)?(false):(true)):(true)),
         optionData: this.props.item.feed.feedPollOptions,
         totalPollVotes: this.props.item.feed.feed.totalPollVotes,
-        canUserLike: this.props.type==1?(this.props.item.feed.feed.feedLikerIns.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.feedLikerStudent.includes(`,${this.props.userInfo.id},`)?(false):(true)):(null)),
+        canUserLike: this.props.type==1?(this.props.item.feed.feed.feedLikerIns.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.feedLikerStudent.includes(`,${this.props.userInfo.id},`)?(false):(true)):(true)),
     }
 
     updateVote=(option_id)=>
@@ -69,7 +69,7 @@ class FeedPoll extends Component {
                             
                             <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
                         </View>
-                        <Text style={{fontSize: 18, marginTop: 10}}>{feed.feed.pollQuestion}</Text>
+                        <Text style={{ fontFamily:'Raleway_400Regular',marginTop: 10,}}>{feed.feed.pollQuestion}</Text>
                         <FlatList
                             data={this.state.optionData}
                             renderItem={({item})=><RenderPollOption updateVote={this.updateVote} item={item} canUserVote={this.state.canUserVote} totalVote={this.state.totalPollVotes} userType={this.props.type}/>}
