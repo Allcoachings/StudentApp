@@ -1,11 +1,14 @@
 package com.allcoaching.AllCoachingRestApi.Controller;
 
 import com.allcoaching.AllCoachingRestApi.Entity.Feed;
+import com.allcoaching.AllCoachingRestApi.Entity.FeedComments;
+import com.allcoaching.AllCoachingRestApi.Service.FeedCommentService;
 import com.allcoaching.AllCoachingRestApi.Service.FeedService;
 import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
 import com.allcoaching.AllCoachingRestApi.dto.FeedContentDto;
 import com.allcoaching.AllCoachingRestApi.dto.FeedDto;
 import io.swagger.annotations.Api;
+import io.swagger.models.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +24,8 @@ public class FeedController {
 
     @Autowired
     private FeedService feedService;
-
+    @Autowired
+    private FeedCommentService feedCommentService;
     @Autowired
     private FileUploadService fileUploadService;
 
@@ -113,4 +117,34 @@ public class FeedController {
 //         feedService.unlikeFeed(feedId,likerType,likerId);
 //         return ResponseEntity.ok().build();
 //    }
+
+
+    //feed comment section
+
+
+
+    //fetch feed comments
+    @CrossOrigin(origins = "*")
+    @GetMapping("feed/comment/{feedId}/{offset}/{dataLimit}")
+    public  Iterable<FeedComments> fetch_feedComments(@PathVariable long feedId,@PathVariable int offset,@PathVariable int dataLimit)
+    {
+        return feedCommentService.fetchCommentsByFeedId(feedId,offset,dataLimit);
+    }
+
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("feed/comment/{id}")
+    public ResponseEntity<Object> deleteCommentById(@PathVariable long id)
+    {
+            feedCommentService.deleteCommentById(id);
+            return ResponseEntity.ok().build();
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/feed/comment")
+    public ResponseEntity<Object> addComment(@RequestBody FeedComments feedComments)
+    {
+        FeedComments feedComments_saved = feedCommentService.saveComment(feedComments);
+        URI location =  ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(feedComments_saved.getId()).toUri();
+        return ResponseEntity.created(location).build();
+    }
 }
