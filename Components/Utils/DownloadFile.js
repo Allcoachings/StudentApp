@@ -1,10 +1,10 @@
 import * as FileSystem from 'expo-file-system';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { serverBaseUrl } from '../config';
-export const downloadFile=(item,userId,savingDocTye,callback) => {
+export const downloadFile=(item,url,userId,savingDocTye,callback) => {
     FileSystem.downloadAsync(
-        serverBaseUrl+item.fileAddress,
-        FileSystem.cacheDirectory + item.fileAddress.replace('files/','')
+        serverBaseUrl+url,
+        FileSystem.cacheDirectory + url.replace('files/','')
       )
         .then(({ uri }) => {
             let offlineItem = {...item,fileAddress:uri}

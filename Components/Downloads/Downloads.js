@@ -7,6 +7,7 @@ import { serverBaseUrl, theme } from '../config';
 import RenderDocument from '../InstituteView/RenderDocument';
 import RenderVideo from '../InstituteView/RenderVideo';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
+
 class Downloads extends Component {
   
    state = {
@@ -57,7 +58,7 @@ class Downloads extends Component {
                     return (
                         <FlatList
                             data={this.state.data}
-                            renderItem={({item}) =><RenderDocument userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="offline"/>}
+                            renderItem={({item}) =><RenderDocument userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="offline" downloadMode={false}/>}
                             keyExtractor={(item)=>item.id}
                         />
                     )
@@ -95,7 +96,7 @@ class Downloads extends Component {
                     
                     <FlatList
                     data={this.state.data}
-                    renderItem={({item}) =><RenderVideo userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="offline"/>}
+                    renderItem={({item}) =><RenderVideo userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="offline" downloadMode={false}/>}
                     keyExtractor={(item)=>item.id}
                     />
                 )

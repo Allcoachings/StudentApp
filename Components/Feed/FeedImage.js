@@ -7,9 +7,11 @@ import { connect } from 'react-redux'
 import {like_feed} from "../Utils/DataHelper/Feed"
 import moment from 'moment'
 import { FlatListSlider } from '../Utils/ImageSlider';
+import FeedBottomComponent from './FeedBottomComponent'
+
 class FeedImage extends Component {
   state={
-    // canUserLike: this.props.type==1?(this.props.item.feed.feed.feedLikerIns.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.feedLikerStudent.includes(`,${this.props.userInfo.id},`)?(false):(true)):(true)),
+
   }
 
   likeFeed=(feedId)=>{
@@ -48,14 +50,15 @@ likeFeedCallBack=(response)=>{
                             
                             <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
                         </View>
+                        
                         {feed.feed.description?( 
-                                <View style={{marginVertical:10}}>
-                                    <Text style={{color: theme.greyColor,fontFamily:'Raleway_400Regular'}}>
-                                        {feed.feed.description}
-                                    </Text>
-                                </View>
-                            ):(null)}
-                        {/* <Image source={{ uri: serverBaseUrl+feed.feed.photoLocation }} style={styles.img}/> */}
+                            <View style={{marginVertical:10}}>
+                                <Text style={{color: theme.greyColor,fontFamily:'Raleway_400Regular'}}>
+                                    {feed.feed.description}
+                                </Text>
+                            </View>
+                        ):(null)}
+
                         <FlatListSlider
                                 data={feed.feedImages}
                                 height={250}
@@ -69,25 +72,9 @@ likeFeedCallBack=(response)=>{
                                 animation 
                                 autoscroll={false}
                                 serverBaseUrl={serverBaseUrl}
-                            />
-                        <View style={styles.bottomRowContainer}>
-                            {this.state.canUserLike?(
-                                <TouchableOpacity style={styles.likeView}  onPress={()=>this.likeFeed(feed.feed.id)}>
-                                    <AntDesign name="hearto" size={22} color={theme.greyColor} />
-                                </TouchableOpacity>
-                            ):(
-                                <TouchableOpacity style={styles.likeView}>
-                                    <AntDesign name="heart" size={22} color={theme.greyColor}/>
-                                </TouchableOpacity>
-                            )}
-                            <TouchableOpacity style={styles.likeView}>
-                                <FontAwesome name="comments" size={22} color={theme.greyColor} />
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.likeView}>
-                                <AntDesign name="sharealt" size={22} color={theme.greyColor} />
-                            </TouchableOpacity>
-                        </View>
-                        
+                        />
+                        <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation}/>
+                                                
                     </View>
                     
                 </View>

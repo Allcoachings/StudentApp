@@ -132,17 +132,17 @@ class UserProfile extends React.Component {
         {
             case 1:
                 return (
-                    <FeedImage item={item} type={2}/>
+                    <FeedImage item={item} type={2} navigation={this.props.navigation}/>
                 )
             case 2:
            
 
                 return (
-                    <FeedPoll item={item} type={2}/>
+                    <FeedPoll item={item} type={2} navigation={this.props.navigation}/>
                 )
             case 3:
                 return (
-                    <FeedText item={item} type={2}/>
+                    <FeedText item={item} type={2} navigation={this.props.navigation}/>
                 )
         }
     }

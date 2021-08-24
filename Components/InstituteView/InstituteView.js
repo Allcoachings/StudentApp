@@ -43,7 +43,7 @@ class InstituteView extends React.Component {
         tabtoshow: 1,
         modalVisible: false,
         ReviewmodalVisible: false,
-        courseId:1,
+        courseId: ' ',
         instituteId: this.props.route.params.insId,
         studentId:this.props.userInfo.id,
         studentEnrolled: false,
@@ -55,7 +55,8 @@ class InstituteView extends React.Component {
         zimage:'',
         bannerImg:[],
         index: '',
-        activeFilter: 'All'
+        activeFilter: 'All',
+        activeCourse: ''
         
      }
 
@@ -77,7 +78,8 @@ class InstituteView extends React.Component {
         {
             response.json().then((data)=>
             {
-                this.setState({courses:data})
+                this.setState({courses:data, courseId: data[0].id, activeCourse: data[0].id, activeCourseDetail: data[0]},()=>
+                checkUserEnrollment(this.state.courseId, this.state.studentId, this.checkEnrollCallBack))
             })
         }
     }
@@ -86,6 +88,7 @@ class InstituteView extends React.Component {
         {
             response.json().then(data=>
             {
+                console.log("student enrolled", data)
                 this.setState({studentEnrolled: data});                   
             })
         }
@@ -108,7 +111,6 @@ class InstituteView extends React.Component {
     componentDidMount() {
          fetch_instituteDetails(this.state.instituteId,this.instituteCallback)
          fetch_institute_courses(this.state.instituteId,this.coursesCallBack)
-         checkUserEnrollment(this.state.courseId, this.state.studentId, this.checkEnrollCallBack)
          checkSubscription(this.state.studentId,this.state.instituteId,this.checkSubscriptionCallback) 
          fetch_latestUpcomingSchedule(this.state.instituteId,this.liveDataCallback)
     }
@@ -135,7 +137,6 @@ class InstituteView extends React.Component {
             {
             fetch_instituteDetails(this.state.instituteId,this.instituteCallback)
             fetch_institute_courses(this.state.instituteId,this.coursesCallBack)
-            checkUserEnrollment(this.state.courseId, this.state.studentId, this.checkEnrollCallBack)
             fetch_latestUpcomingSchedule(this.state.instituteId,this.liveDataCallback)
             })
         }
@@ -191,10 +192,12 @@ class InstituteView extends React.Component {
                 courseVideoPlaylistLoaded:false,isCourseVideoPlaylistLoading:false,courseVideosPlaylist:[],
                 courseVideoLoaded:false,isCourseVideoLoading:false,courseVideos:[]
             
-            },()=>
-            {
+            },()=>{}
+            
                 
-            })
+                
+            )
+            checkUserEnrollment(item.id, this.state.studentId, this.checkEnrollCallBack)
             addLead(item.id, this.state.instituteId, this.state.studentId, this.addLeadCallback)
             fetch_courses_banners(item.id,this.courseBannerCallback)
      }
@@ -569,7 +572,7 @@ class InstituteView extends React.Component {
         switch(tab)
         {
             case 'liveClass':   return(
-                <View style={styles.liveContainer}>  
+                                    this.state.liveData?(<View style={styles.liveContainer}>  
                                             <View style={styles.liveItemTextView}>
                                                 <Text style={styles.liveItemText}>{this.state.liveData.title}</Text> 
                                             </View>
@@ -612,12 +615,12 @@ class InstituteView extends React.Component {
                                                 </View>
                                             </TouchableWithoutFeedback>
 
-                                    </View>                     
+                                    </View>):(<Text>No Live Classes Available</Text>)                     
                 )
             case 'videos':      return(
                                     <FlatList 
                                         data={this.state.courseVideos} 
-                                        renderItem={({item})=><RenderVideo userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="institute"/>}
+                                        renderItem={({item})=><RenderVideo userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="institute" studentEnrolled={this.state.studentEnrolled} downloadMode={true}/>}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
@@ -626,7 +629,7 @@ class InstituteView extends React.Component {
             case 'testSeries':  return(
                                     <FlatList 
                                         data={this.state.courseTestSeries} 
-                                        renderItem={({item})=><RenderSingleTestSeries item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="institute"/>}
+                                        renderItem={({item})=><RenderSingleTestSeries item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="institute" studentEnrolled={this.state.studentEnrolled} />}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
@@ -635,7 +638,7 @@ class InstituteView extends React.Component {
             case 'document':    return(
                                     <FlatList 
                                         data={this.state.courseDocuments} 
-                                        renderItem={({item})=><RenderDocument userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="institute"/>}
+                                        renderItem={({item})=><RenderDocument userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="institute" studentEnrolled={this.state.studentEnrolled} downloadMode={true}/>}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
@@ -702,15 +705,15 @@ class InstituteView extends React.Component {
             case 1:
                
                 return (
-                    <FeedImage item={item}/>
+                    <FeedImage item={item} navigation={this.props.navigation}/>
                 )
             case 2:
                 return (
-                    <FeedPoll item={item}/>
+                    <FeedPoll item={item} navigation={this.props.navigation}/>
                 )
             case 3:
                 return (
-                    <FeedText item={item}/>
+                    <FeedText item={item} navigation={this.props.navigation}/>
                 )
         }
     }

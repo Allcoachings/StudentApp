@@ -7,7 +7,7 @@ import RenderPollOption from './RenderPollOption'
 import {like_feed} from "../Utils/DataHelper/Feed"
 import moment from 'moment' 
 import { connect } from 'react-redux'
-
+import FeedBottomComponent from './FeedBottomComponent'
 
 class FeedPoll extends Component {
     state = {
@@ -82,23 +82,7 @@ class FeedPoll extends Component {
                             <Text style={{fontSize: 16, marginTop: 3}}>Arctic Ocean</Text>
                         </View> */}
 
-                        <View style={styles.bottomRowContainer}>
-                            {this.state.canUserLike?(
-                                <TouchableOpacity style={styles.likeView}  onPress={()=>this.likeFeed(feed.feed.id)}>
-                                <AntDesign name="hearto" size={22} color={theme.greyColor} />
-                            </TouchableOpacity>
-                            ):(
-                                <TouchableOpacity style={styles.likeView}>
-                                    <AntDesign name="heart" size={22} color={theme.greyColor}/>
-                                </TouchableOpacity>
-                            )}
-                            <TouchableOpacity style={styles.likeView}>
-                                <FontAwesome name="comments" size={22} color={theme.greyColor} />
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.likeView}>
-                                <AntDesign name="sharealt" size={22} color={theme.greyColor} />
-                            </TouchableOpacity>
-                        </View>
+                        <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation}/>
                     </View>
                 </View>
                 <View style={{borderTopWidth: 0.8, borderColor: theme.labelOrInactiveColor, marginVertical: 10, width: '100%'}}/>

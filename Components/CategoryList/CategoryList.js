@@ -97,7 +97,7 @@ class CategoryList extends React.Component {
         return(
             <PageStructure
                 iconName={"arrow-left"}
-                btnHandler={() => {this.props.navigation.toggleDrawer()}}
+                btnHandler={() => {this.props.navigation.goBack()}}
                 titleonheader={this.props.route.params.type}
                 searchFun={this.search}
                 singleItem={this.renderMain}  

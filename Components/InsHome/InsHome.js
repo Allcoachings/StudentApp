@@ -773,15 +773,15 @@ class InsHome extends React.Component {
         {
             case 1:
                 return (
-                    <FeedImage item={item} type={1}/>
+                    <FeedImage item={item} type={1} navigation={this.props.navigation}/>
                 )
             case 2:
                 return (
-                    <FeedPoll item={item} type={1}/>
+                    <FeedPoll item={item} type={1} navigation={this.props.navigation}/>
                 )
             case 3:
                 return (
-                    <FeedText item={item} type={1}/>
+                    <FeedText item={item} type={1} navigation={this.props.navigation}/>
                 )
         }
     }

@@ -143,7 +143,6 @@ class HeaderMobile extends React.Component {
 {this.state.search?(
 
         <Modal
-            animationType="slide"
             transparent={false}
             visible={this.state.search}
             onShow={ () => { this.textInput.focus(); }}
