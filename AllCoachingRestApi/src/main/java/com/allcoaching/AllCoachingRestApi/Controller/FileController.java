@@ -68,12 +68,15 @@ public class FileController {
     }
 
     @CrossOrigin(origins = "*")
-    @PostMapping("/files/upload")
+    @PostMapping("api/v1/files/upload")
     public ResponseEntity<Object> uploadFile(@RequestParam MultipartFile file)
     {
         String fileAddr ="files/";
         fileAddr += fileUploadService.storeFile(file);
+        HttpHeaders headers = new HttpHeaders();
+        System.out.println(fileAddr);
+        headers.add("Access-Control-Expose-Headers", "Location");
         URI location = ServletUriComponentsBuilder.fromPath("{addr}").buildAndExpand(fileAddr).toUri();
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.created(location).headers(headers).build();
     }
 }
