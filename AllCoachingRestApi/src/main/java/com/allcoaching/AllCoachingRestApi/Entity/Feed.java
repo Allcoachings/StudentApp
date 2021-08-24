@@ -19,7 +19,6 @@ public class Feed {
 
 
     private int feedType;//1-imagesPost,2-Poll post,3-text post
-
     private String photoLocation;
     private String description;
 
