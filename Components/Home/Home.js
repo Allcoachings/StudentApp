@@ -2,7 +2,7 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,TouchableWithoutFeedback,FlatList, Image,Platform,Dimensions,ActivityIndicator} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {storyLine,homeFeaturesData} from '../../FakeDataService/FakeData'
-import { theme ,serverBaseUrl,dataLimit} from '../config';
+import { theme ,serverBaseUrl,dataLimit, paytmConfig} from '../config';
 import { Feather } from '@expo/vector-icons';
 import { AirbnbRating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
@@ -15,6 +15,7 @@ import {fetch_homeData} from '../Utils/DataHelper/HomeData'
 import {fetch_coachingByCategory} from '../Utils/DataHelper/Coaching'
 import {SearchInstitute} from '../Utils/DataHelper/Search'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import PaymentGateway from '../Utils/PaymentGateway';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -43,6 +44,8 @@ class Home extends React.Component {
         this.props.setNavigation(this.props.navigation);
         this.checkForUserCat()
         fetch_homeData(this.handleHomeDataCallBack)
+        
+        PaymentGateway({orderId:"123",mid:paytmConfig.mid,isStaging:paytmConfig.isStaging,appInvokeRestricted:paytmConfig.appInvokeRestricted,amount:10,tranxToken:"123",callback:(response)=>{console.log(response)}})
     }
 
     redirectTo =(item)=>
