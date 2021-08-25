@@ -92,7 +92,7 @@ class Feed extends React.Component {
                 catInHeader={true}
                 catType="feed"
             >
-                <ScrollView>
+                {/* <ScrollView> */}
                     <View style={styles.container}>
 
                     {this.state.loadingData?(
@@ -106,7 +106,7 @@ class Feed extends React.Component {
                     )}
                     
                     </View>
-                </ScrollView>
+                {/* </ScrollView> */}
             </PageStructure>
         )
     }

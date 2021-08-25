@@ -46,8 +46,7 @@ likeFeedCallBack=(response)=>{
                         <View style={styles.rowView}>
                             <View  style={{flexDirection: 'row',alignItems: 'center'}}>
                                 <Text style={styles.coaching}>{posterObject.name}{' • '}<Text style={styles.timeDateText}>{moment(feed.feed.creationTime).fromNow()}</Text></Text>
-                            </View>
-                            
+                            </View> 
                             <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
                         </View>
                         
@@ -58,21 +57,25 @@ likeFeedCallBack=(response)=>{
                                 </Text>
                             </View>
                         ):(null)}
-
-                        <FlatListSlider
-                                data={feed.feedImages}
-                                height={250}
-                                timer={5000}
-                                imageKey="feedImage"
-                                onPress={item => {}}
-                                contentContainerStyle={{resizeMode:'cover'}} 
-                                indicatorActiveColor={theme.greyColor}
-                                indicatorInActiveColor={theme.labelOrInactiveColor}
-                                indicatorActiveWidth={5}
-                                animation 
-                                autoscroll={false}
-                                serverBaseUrl={serverBaseUrl}
-                        />
+                        {console.log(feed.feedImages)}
+                        {feed.feedImages.length == 1?(
+                                <Image source={{uri:serverBaseUrl + feed.feedImages[0].feedImage}} style={styles.img}/>
+                        ):( 
+                            <FlatListSlider
+                                    data={feed.feedImages}
+                                    height={250}
+                                    timer={5000}
+                                    imageKey="feedImage"
+                                    onPress={item => {}}
+                                    contentContainerStyle={{resizeMode:'cover'}} 
+                                    indicatorActiveColor={theme.greyColor}
+                                    indicatorInActiveColor={theme.labelOrInactiveColor}
+                                    indicatorActiveWidth={5}
+                                    animation 
+                                    autoscroll={false}
+                                    serverBaseUrl={serverBaseUrl}
+                            />
+                        )}
                         <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation}/>
                                                 
                     </View>

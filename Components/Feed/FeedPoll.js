@@ -14,7 +14,7 @@ class FeedPoll extends Component {
         canUserVote: this.props.type==1?(this.props.item.feed.feed.pollVotedInstitutes.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.pollVotedStudents.includes(`,${this.props.userInfo.id},`)?(false):(true)):(true)),
         optionData: this.props.item.feed.feedPollOptions,
         totalPollVotes: this.props.item.feed.feed.totalPollVotes,
-        canUserLike: this.props.type==1?(this.props.item.feed.feed.feedLikerIns.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.feedLikerStudent.includes(`,${this.props.userInfo.id},`)?(false):(true)):(true)),
+        canUserLike:this.props.type==1?(this.props.item.feed.feed.feedLikerIns&&this.props.item.feed.feed.feedLikerIns.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.feedLikerStudent&&this.props.item.feed.feed.feedLikerStudent.includes(`,${this.props.userInfo.id},`)?(false):(true)):(true)),
     }
 
     updateVote=(option_id)=>
@@ -51,6 +51,10 @@ class FeedPoll extends Component {
 
     render() {
     const{feed,posterObject} = this.props.item 
+    if(!posterObject)
+    {
+        console.log(this.props.item)
+    }
     return(
         // CardView(
             <View style={{flexDirection: 'column', padding: 5}}>

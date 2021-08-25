@@ -24,6 +24,14 @@ export const theme={
     darkPurpleColor: '#7859c5'
 }
 
+//paytm config 
+export const paytmConfig={
+        mid:'CyetnE81614660519794',
+        isStaging:true,
+        callbackurl:'https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID=123',
+        restrictAppInvoke:true
+}
+
 //online serverBaseUrl
 // export const serverBaseUrl="http://198.12.248.18:8080/"
 //local server base url
