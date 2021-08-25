@@ -43,8 +43,8 @@ public class AppStudentHomeController {
                 list.add(new AppStudentHomeDto(item.getName(),"listing",item.getId(),instituteService.findByCategory(item.getId(),topTwenty)));
             });
 
-            Iterable<MainBanners> mainBannerRow1 = mainBannersService.fetchPagedBanners(0,10);
-            Iterable<MainBanners> mainBannerRow2 = mainBannersService.fetchPagedBanners(10,10);
+            Iterable<MainBanners> mainBannerRow1 = mainBannersService.findByPlaceholder("home1");
+            Iterable<MainBanners> mainBannerRow2 = mainBannersService.findByPlaceholder("home2");
             list.add(0,new AppStudentHomeDto("","banner",0,mainBannerRow1));
             list.add(4,new AppStudentHomeDto("","banner",0,mainBannerRow2));
             return list;

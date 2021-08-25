@@ -221,9 +221,17 @@ class UserProfile extends React.Component {
             case 3:
             return(
                 <View style={styles.container}>
-                    <TouchableOpacity  onPress={()=>this.openAddFeedModal()} style={{backgroundColor: theme.textColor, justifyContent: 'center', alignItems: 'center', padding:5, borderRadius:5}}> 
+                    {/* <TouchableOpacity  onPress={()=>this.openAddFeedModal()} style={{backgroundColor: theme.textColor, justifyContent: 'center', alignItems: 'center', padding:5, borderRadius:5}}> 
                         <Text style={{color: theme.primaryColor}}>Add Feed</Text>
-                    </TouchableOpacity>           
+                    </TouchableOpacity>            */}
+                    <AddFeedModal 
+                            addFeedCallBack={this.appendFeed}
+                            isAddFeedModalVisible={this.state.isAddFeedModalVisible} 
+                            closeModal={this.closeAddFeedModal}
+                            posterId={this.props.userInfo.id} 
+                            postedBy={2}
+                            instituteDetails={this.props.userInfo}
+                        />
                     {this.state.loadingData?(
                             <ActivityIndicator color={theme.accentColor} size={"large"}/>
                     ):(
@@ -242,7 +250,7 @@ class UserProfile extends React.Component {
 
     appendFeed=(feed)=>{
         let feeds = this.state.feeds
-        feeds.push(feed)
+        feeds.unshift(feed)
         this.setState({feeds})
     }
 
@@ -348,7 +356,7 @@ class UserProfile extends React.Component {
                         closeModal={this.closeModal}
                     />
                 ) : (null)}
-                {this.state.isAddFeedModalVisible?(
+                {/* {this.state.isAddFeedModalVisible?(
                         <AddFeedModal 
                             addFeedCallBack={this.appendFeed}
                             isAddFeedModalVisible={this.state.isAddFeedModalVisible} 
@@ -359,7 +367,7 @@ class UserProfile extends React.Component {
                         />
                 ):(
                     null
-                )}
+                )} */}
                 {this.state.modalVisible?(
                     <Instructions 
                         closeModal={this.closeModal} 

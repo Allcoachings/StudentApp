@@ -16,7 +16,7 @@ import Accordian from '../Utils/Accordian'
 import MockTest from '../MockTest/MockTest'
 import CountDown from 'react-native-countdown-component';
 import {fetch_instituteDetails} from '../Utils/DataHelper/Coaching'
-import {fetch_institute_courses,fetch_courses_banners,addCourseBanner,fetch_courses_videos,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents,fetch_courses_timetable,fetch_testSeries, fetch_latestUpcomingSchedule} from '../Utils/DataHelper/Course'
+import {fetch_institute_courses,fetch_courses_banners,addCourseBanner,fetch_courses_videos,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents,fetch_courses_timetable,fetch_testSeries, fetch_latestUpcomingSchedule, fetch_testSeriesPlaylist} from '../Utils/DataHelper/Course'
 import { checkUserEnrollment } from '../Utils/DataHelper/EnrollStudent'
 import { saveStudentHistory } from '../Utils/DataHelper/StudentHistory'
 import { SliderBox } from 'react-native-image-slider-box';
@@ -189,13 +189,10 @@ class InstituteView extends React.Component {
                 courseDocumentPlaylistLoaded:false,isCourseDocumentPlaylistLoading:false,courseDocumentPlaylist:[],
                 courseDocumentLoaded:false,isCourseDocumentLoading:false,courseDocuments:[],
                 courseTestSeriesLoaded:false,isCourseTestSeriesLoading:false,courseTestSeries:[],
+                courseTestSeriesPlaylistLoaded:false,isCourseTestSeriesPlaylistLoading:false,courseTestSeriesPlaylist:[],
                 courseVideoPlaylistLoaded:false,isCourseVideoPlaylistLoading:false,courseVideosPlaylist:[],
-                courseVideoLoaded:false,isCourseVideoLoading:false,courseVideos:[]
-            
-            },()=>{}
-            
-                
-                
+                courseVideoLoaded:false,isCourseVideoLoading:false,courseVideos:[] 
+            },()=>{}  
             )
             checkUserEnrollment(item.id, this.state.studentId, this.checkEnrollCallBack)
             addLead(item.id, this.state.instituteId, this.state.studentId, this.addLeadCallback)
@@ -352,6 +349,19 @@ class InstituteView extends React.Component {
                 })
             }
     }
+    courseTestSeriesPlaylistCallback=(response)=>{
+        
+            if(response.status==200)
+            {
+                response.json().then(data=>
+                {
+                    
+                    var playlist={"courseId": this.state.activeCourse, "id": -1, "name": "All"}
+                    data.unshift(playlist)
+                    this.setState({courseTestSeriesPlaylist:data,courseTestSeriesPlaylistLoaded:true,isCourseTestSeriesPlaylistLoading:false});                   
+                })
+            }
+    }
 
     renderSubjectOptions=({item})=>
     {
@@ -443,6 +453,7 @@ class InstituteView extends React.Component {
 
     filterItemClick=(item)=>
     {
+        console.log(item,this.state.activeTab);
         switch(this.state.activeTab)
         {
           case 'videos':  
@@ -455,6 +466,12 @@ class InstituteView extends React.Component {
                 this.setState({activeFilter: item.name, isCourseDocumentLoading:true,courseDocumentLoaded:false},()=>
                 {
                     fetch_courses_documents(null,this.courseDocumentCallback,item.id);
+                }) 
+                break;
+            case 'testSeries':
+                this.setState({activeFilter: item.name, isCourseTestSeriesLoading:true,courseTestSeriesLoaded:false},()=>
+                {
+                    fetch_testSeries(null,this.courseTestseriesCallback,item.id);
                 }) 
                 break;
 
@@ -535,11 +552,18 @@ class InstituteView extends React.Component {
                         if(!this.state.courseTestseriesLoaded&&!this.state.isCourseTestseriesLoading&&this.state.activeCourse)
                         {
                             this.setState({isCourseTestseriesLoading:true})
-                            fetch_testSeries(this.state.activeCourseDetail.id,this.courseTestseriesCallback);
+                            fetch_testSeries(this.state.activeCourse,this.courseTestseriesCallback);
                         }
+                        if(!this.state.courseTestSeriesPlaylistLoaded&&!this.state.isCourseTestSeriesPlaylistLoading&&this.state.activeCourse)
+                        {
+                            this.setState({isCourseTestSeriesPlaylistLoading:true})
+                            fetch_testSeriesPlaylist(this.state.activeCourse,this.courseTestSeriesPlaylistCallback);
+                             
+                        }
+
                                 return(
                                     <FlatList 
-                                        data={instituteData.testSeriesFilters} 
+                                        data={this.state.courseTestSeriesPlaylist} 
                                         renderItem={this.renderSubjectOptions}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={true}
@@ -572,7 +596,8 @@ class InstituteView extends React.Component {
         switch(tab)
         {
             case 'liveClass':   return(
-                                    this.state.liveData?(<View style={styles.liveContainer}>  
+                                    this.state.liveData?(
+                                        <View style={styles.liveContainer}>  
                                             <View style={styles.liveItemTextView}>
                                                 <Text style={styles.liveItemText}>{this.state.liveData.title}</Text> 
                                             </View>

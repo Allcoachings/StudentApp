@@ -53,6 +53,11 @@ public class InsTestSeriesService {
         return insTestSeriesRepo.findByCourseIdAndIsAdmin(id,false);
     }
 
+    public Iterable<InsTestSeries> getTestSeriesByPlaylistID(long id)
+    {
+        return insTestSeriesRepo.findByPlaylistIdAndIsAdmin(id,false);
+    }
+
     public Iterable<InsTestSeriesQuestions> getSeriesQuestion(long id,int page,int pageSize)
     {
         Page<InsTestSeriesQuestions> pagesResult = insTestSeriesQuestionsRepo.findByTestSeriesId(id, PageRequest.of(page,pageSize));
@@ -124,5 +129,10 @@ public class InsTestSeriesService {
     public long countCourseTestSeries(long id)
     {
         return insTestSeriesRepo.countByCourseId(id);
+    }
+
+    public  Iterable<InsTestSeriesPlaylist> findPlaylistByCourseId(long courseId)
+    {
+        return testSeriesPlaylistRepo.findByCourseId(courseId);
     }
 }

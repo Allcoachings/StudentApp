@@ -559,7 +559,76 @@ export   const addTestSeries=( testSeries,questions,callback)=>
         
 }
 
-export const fetch_testSeries = (courseId,callback)=>
+export const fetch_testSeries = (courseId,callback,playlistId=-1)=>
+{
+console.log(courseId)
+            let headers = new Headers(); 
+            headers.append('Content-Type', 'application/json'); 
+
+            headers.append('Access-Control-Allow-Origin', serverApiUrl);
+            headers.append('Access-Control-Allow-Credentials', 'true');
+
+            headers.append('GET', 'POST', 'OPTIONS'); 
+            let apiUrl = serverApiUrl+'/institute/course/testseries/all/'+courseId
+             
+            if(playlistId == -1)
+            {
+                apiUrl = serverApiUrl+'/institute/course/testseries/all/'+courseId
+            }else
+            {
+                apiUrl = serverApiUrl+'/institute/course/testseries/playlist/'+playlistId+"/"
+            }
+             fetch(apiUrl,
+            {
+                method: 'GET',  
+                headers,
+                // body:JSON.stringify({title,description,fees,instId})
+            })
+            .then((response)=>callback(response)) 
+            .catch((error)=>{console.log(error)})
+
+}
+// create playlist
+export   const addCourseTestSeriesPlaylist=(name,courseId,callback)=>
+{
+
+    // const newImageUri =  "file:///" + video.uri.split("file:/").join("");
+            // var formData   = new FormData();  
+            // formData.append("file",{ 
+            //     uri : newImageUri,
+            //     type: mime.getType(newImageUri),
+            //     name: video.name
+            // }) 
+            //  console.log("courseId",courseId)
+            //  formData.append("name",name)
+            //  formData.append("description",description)
+
+            //  formData.append("isDemo",isDemo)
+            //  formData.append("demoLength",demoLength)
+             
+            //  formData.append("courseId",courseId)
+            //  formData.append("playlistId",playlistId)
+             
+            let headers = new Headers(); 
+            headers.append('Content-Type', 'application/json');
+            headers.append('Access-Control-Allow-Origin', serverApiUrl);
+            headers.append('Access-Control-Allow-Credentials', 'true');
+
+            headers.append('GET', 'POST', 'OPTIONS');  
+             fetch(serverApiUrl+'/institute/course/testseries/createplaylist',
+            {
+                method: 'POST',  
+                headers,
+                body:JSON.stringify({name,courseId})
+            })
+            .then((response)=>callback(response)) 
+            .catch((error)=>{console.log(error)})
+
+       
+   
+        
+}
+export const fetch_testSeriesPlaylist = (courseId,callback)=>
 {
 
             let headers = new Headers(); 
@@ -569,7 +638,7 @@ export const fetch_testSeries = (courseId,callback)=>
             headers.append('Access-Control-Allow-Credentials', 'true');
 
             headers.append('GET', 'POST', 'OPTIONS'); 
-            let apiUrl = serverApiUrl+'/institute/course/testseries/all/'+courseId
+            let apiUrl = serverApiUrl+'/institute/course/testseries/all/playlists/'+courseId
              
                 
              fetch(apiUrl,

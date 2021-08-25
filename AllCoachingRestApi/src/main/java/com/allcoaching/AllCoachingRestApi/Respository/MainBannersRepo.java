@@ -1,6 +1,7 @@
 package com.allcoaching.AllCoachingRestApi.Respository;
 
 import com.allcoaching.AllCoachingRestApi.Entity.MainBanners;
+import jdk.tools.jmod.Main;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
@@ -19,7 +20,7 @@ public interface MainBannersRepo extends PagingAndSortingRepository<MainBanners,
     @Override
     Page<MainBanners> findAll(Pageable pageable);
 
-
+    Iterable<MainBanners> findByPlaceHolder(String placeHolder);
     @Modifying
     @Query("UPDATE MainBanners set bannerLink=:bannerLink,placeHolder=:placeholder where id=:id")
     void updateBannerDetails(String bannerLink,String placeholder,long id);

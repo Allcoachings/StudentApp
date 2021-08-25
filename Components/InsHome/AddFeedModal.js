@@ -36,7 +36,16 @@ class AddFeedModal extends Component {
       if(response.status==201)
       {
         Toast.show('Feed Added Successfully.');
-          this.setState({addFeedLoading:false})
+          this.setState({addFeedLoading:false,description:"",feedImageData:[],pollOptions:[
+            {
+                
+                pollOption:''
+            },
+            {
+                
+                pollOption:''
+            }
+          ]})
         
         let feedItem = {feed:this.state.feedItem};
         feedItem['posterObject']=this.props.instituteDetails
@@ -219,6 +228,7 @@ setFeedTypeOption=(postType)=>
                         {CardView(
                             <TextInput 
                                 placeholderTextColor={theme.greyColor} 
+                                defaultValue={this.state.description}
                                 placeholder="Description" 
                                 onChangeText={(text)=>this.setState({description: text})} 
                                 multiline={true}  
@@ -457,7 +467,7 @@ setFeedTypeOption=(postType)=>
  
               <FlatList
                     data={this.state.feedImageData}
-                    renderItem={({item})=>this.renderFeedImages(item)}
+                    renderItem={({item,index}) =>this.renderFeedImages(item,index)}
                     keyExtractor={(item,index)=>index.toString()}
                     horizontal={true}
               />
@@ -479,14 +489,22 @@ setFeedTypeOption=(postType)=>
             break;
       }
   }
-  renderFeedImages=(item)=>
+  removeImage=(item,index)=>
+  {
+      let feedImageData = this.state.feedImageData
+      feedImageData.splice(index, 1);
+      this.setState(feedImageData);
+  }
+  renderFeedImages=(item,index)=>
   {
      
         return (
-            <View style={styles.feedImageContainer}> 
-                <View style={styles.deleteImageIcon}>
-                    <Feather name="x" size={20} color={theme.featureNoColor}/>
-                </View>
+            <View style={styles.feedImageContainer}>
+                <TouchableWithoutFeedback onPress={()=>this.removeImage(item,index)}>
+                    <View style={styles.deleteImageIcon}>
+                        <Feather name="x" size={20} color={theme.featureNoColor}/>
+                    </View>
+                </TouchableWithoutFeedback> 
                 <Image source={{uri:item.uri}} style={styles.feedImage}/>
             </View>
         )
@@ -524,25 +542,26 @@ setFeedTypeOption=(postType)=>
   render() {
      
     return (
-        <Modal 
-            animationType = {"fade"} 
-            transparent = {false}
-            visible = {this.props.isAddCourseModalVisible}
-            onRequestClose = {() => this.props.closeModal()}>
+        // <Modal 
+        //     animationType = {"fade"} 
+        //     transparent = {false}
+        //     visible = {this.props.isAddCourseModalVisible}
+        //     onRequestClose = {() => this.props.closeModal()}>
     
             <ScrollView  >
-                <View style={styles.headView}> 
+                {/* <View style={styles.headView}> 
                    <Text style={styles.headText}>Add Feed</Text>
-                </View>
+                </View> */}
                 {/* {this.renderFeedSteps(this.state.stepCheck)} */}
 
 
 
                 <View style={{borderWidth:1,borderColor:theme.labelOrInactiveColor,margin:10,borderRadius:10}}>
                     <TextInput
-                        style={{height:250,fontFamily:'Raleway_400Regular',marginHorizontal:10}}
+                        style={{height:50,fontFamily:'Raleway_400Regular',marginHorizontal:10}}
                         placeholder="Write Something...."
                         multiline={true}  
+                        defaultValue={this.state.description}
                         onChangeText={(text)=>this.setState({description:text})}
 
                     />
@@ -598,7 +617,7 @@ setFeedTypeOption=(postType)=>
             </ScrollView>
    
 
-    </Modal>
+    // </Modal>
 
     );
   }
