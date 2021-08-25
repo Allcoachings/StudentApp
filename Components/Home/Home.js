@@ -2,7 +2,7 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,TouchableWithoutFeedback,FlatList, Image,Platform,Dimensions,ActivityIndicator} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {storyLine,homeFeaturesData} from '../../FakeDataService/FakeData'
-import { theme ,serverBaseUrl,dataLimit, paytmConfig} from '../config';
+import { theme ,serverBaseUrl,dataLimit, paytmConfig, Assets} from '../config';
 import { Feather } from '@expo/vector-icons';
 import { AirbnbRating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
@@ -16,6 +16,8 @@ import {fetch_coachingByCategory} from '../Utils/DataHelper/Coaching'
 import {SearchInstitute} from '../Utils/DataHelper/Search'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PaymentGateway from '../Utils/PaymentGateway';
+import EmptyList from '../Utils/EmptyList'
+import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -65,7 +67,7 @@ class Home extends React.Component {
                     
                     <View style={styles.rowContainer}>
                         <View style={styles.rowHeader}>
-                            <Text style={styles.rowHeaderTitle}>{item.title}</Text>
+                            <Text style={styles.rowHeaderTitle} numberOfLines={1}>{item.title}</Text>
                             <TouchableWithoutFeedback onPress={()=>this.props.navigation.navigate("CategoryList", {type: item.title,id:item.id})}>
                                 <Feather name="arrow-right" size={25} color={theme.secondaryColor}/>
                             </TouchableWithoutFeedback>
@@ -214,7 +216,7 @@ class Home extends React.Component {
                     <View style={styles.mainContent}> 
                     {this.state.loadingData?(
                         <View style={{margin:10,padding:10}}>
-                            <ActivityIndicator color={theme.accentColor} size={"large"}/>
+                            <CustomActivtiyIndicator mode="skimmer"/>
                         </View>
                     ):(
                         this.state.catMode?(
@@ -225,6 +227,7 @@ class Home extends React.Component {
                                 renderItem={this.renderInstituteList}
                                 numColumns={3}
                                 keyExtractor={item => item.id}
+                                ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                             />
                             </View>
                         ):(
@@ -233,6 +236,7 @@ class Home extends React.Component {
                                 showsVerticalScrollIndicator={false} 
                                 renderItem={this.renderMainContetnRow}
                                 keyExtractor={item => item.id}
+                                ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                             />
                         )
                     )}
@@ -273,7 +277,7 @@ const styles = StyleSheet.create({
                 },
                     rowHeaderTitle:
                     {   
-                        // color: theme.greyColor,
+                        flex:0.9,
                         fontSize:18,
                         fontWeight:'bold'
                     },

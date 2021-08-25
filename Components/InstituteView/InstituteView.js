@@ -3,7 +3,7 @@ import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity, Moda
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {instituteData} from '../../FakeDataService/FakeData'
 import { AirbnbRating,Rating } from 'react-native-ratings';
-import {theme,screenMobileWidth,serverBaseUrl,documentPlaceholder,dataLimit} from '../config'
+import {theme,screenMobileWidth,serverBaseUrl,documentPlaceholder,dataLimit, Assets} from '../config'
 
 import CardView from '../Utils/CardView';
 import MarqueeText from 'react-native-marquee';
@@ -28,6 +28,7 @@ import {addLead} from '../Utils/DataHelper/Leads'
 import ImageZoomModal from './ImageZoomModal';
 import { checkSubscription, subscribe, unsubscribe }  from '../Utils/DataHelper/Subscription'
 import EmptyList from '../Utils/EmptyList'
+import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import RenderSingleTestSeries from '../SeriesList/RenderSingleTestSeries'
 import RenderLiveClass from './RenderLiveClass'
 import RenderDocument from './RenderDocument'
@@ -56,8 +57,9 @@ class InstituteView extends React.Component {
         bannerImg:[],
         index: '',
         activeFilter: 'All',
-        activeCourse: ''
-        
+        activeCourse: '',
+        insName:'',
+        insNumber:''
      }
 
      
@@ -67,8 +69,7 @@ class InstituteView extends React.Component {
          {
              response.json().then(data=>
                  {
-
-                     this.setState({institute:data,loadingInstitute:false})
+                     this.setState({institute:data,loadingInstitute:false, insName: data.name, insNumber: data.phone})
                  })
              
          }
@@ -432,7 +433,7 @@ class InstituteView extends React.Component {
                         keyExtractor={(item)=>item.id}
                         horizontal={false}
                         showsHorizontalScrollIndicator={false}
-                        ListEmptyComponent={<EmptyList />}
+                        ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                     />
                 </View>
             // </Accordian>
@@ -624,7 +625,7 @@ class InstituteView extends React.Component {
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
-                                        ListEmptyComponent={<EmptyList />}
+                                        ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                                     />)
             case 'testSeries':  return(
                                     <FlatList 
@@ -633,16 +634,16 @@ class InstituteView extends React.Component {
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
-                                        ListEmptyComponent={<EmptyList />}
+                                        ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                                     />)
             case 'document':    return(
                                     <FlatList 
                                         data={this.state.courseDocuments} 
-                                        renderItem={({item})=><RenderDocument userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="institute" studentEnrolled={this.state.studentEnrolled} downloadMode={true}/>}
+                                        renderItem={({item})=><RenderDocument userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="institute" studentEnrolled={this.state.studentEnrolled} downloadMode={true} insName={this.state.insName} insNumber={this.state.insNumber}/>}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
-                                        ListEmptyComponent={<EmptyList />}
+                                        ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                                     />)
             case 'timeTable':    
                         if(!this.state.courseTimetableLoaded&&!this.state.isCourseTimeTableLoading&&this.state.activeCourse)
@@ -751,7 +752,7 @@ class InstituteView extends React.Component {
                                     inactiveDotColor={"transparent"} 
                                     images={this.state.bannerImg} 
                                     style={styles.bannerImage} 
-                                  onCurrentImagePressed={index => this.setState({index: index, zoomModal: true})} 
+                                    onCurrentImagePressed={index => this.setState({index: index, zoomModal: true})} 
                                     imageLoadingColor={theme.secondaryColor}
                                 />
                             </TouchableOpacity>
@@ -809,6 +810,7 @@ class InstituteView extends React.Component {
                             data={this.state.feeds}
                             renderItem={({item}) => this.renderFeedItem(item)}
                             keyExtractor={(item,index)=>index}
+                            ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                         />
                         {/* { this.renderImagePost()}
                         { this.renderQuizPost()}
@@ -852,10 +854,11 @@ class InstituteView extends React.Component {
                 noBottomTab={true}
                 notificationreplaceshare={"more-vertical"}
                 rightIconOnPress={()=>{this.setState({modalVisible:true})}} 
+                nosearchIcon={true}
             > 
             {loadingInstitute?
             (
-                <ActivityIndicator color={this.accentColor} size={"large"}/>
+                <CustomActivtiyIndicator mode="skimmer"/>
             ):(
             <ScrollView >
                 <View style={styles.container}>
@@ -1008,6 +1011,7 @@ class InstituteView extends React.Component {
                         closeModal={this.closeModal}
                         images={this.state.bannerImg}
                         index={this.state.index}
+                        type="normal"
                     />
                 ):(null)}
             </PageStructure>

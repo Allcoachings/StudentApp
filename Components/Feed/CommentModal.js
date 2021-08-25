@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import { View, Text,Image,StyleSheet, TouchableOpacity, Dimensions, Modal, FlatList, TextInput, ScrollView } from 'react-native';
-import {serverBaseUrl, theme, dataLimit, appLogo} from '../config';
+import {serverBaseUrl, theme, dataLimit, appLogo, Assets} from '../config';
 import {Feather, AntDesign, FontAwesome} from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
 import { connect } from 'react-redux'
 import {fetch_comments, add_comment} from "../Utils/DataHelper/Feed"
 import moment from 'moment'
+import Toast from 'react-native-simple-toast';
+import { ActivityIndicator } from 'react-native-paper';
+import EmptyList from '../Utils/EmptyList'
+import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
+import ImageZoomModal from '../InstituteView/ImageZoomModal'
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 
@@ -15,7 +20,10 @@ class CommentModal extends Component {
     offset: 0,
     loadingData: true,
     commentData: [],
-    comment: ''
+    comment: '',
+    zoomModal: false,
+    index: 0,
+    userImage: []
   }
 
 
@@ -28,20 +36,30 @@ class CommentModal extends Component {
       if(response.status==200)
       {
             response.json().then(data=>{
-                console.log(data)
+            
                 this.setState({commentData:data,loadingData:false})
             })
       }
   }
 
   add=()=>{
-    add_comment(this.state.comment, 2, this.props.feedId, 0, this.props.userInfo.id, this.addCallback)
+        Toast.show("Please Wait...")
+        add_comment(this.state.comment, 2, this.props.feedId, 0, this.props.userInfo.id, this.addCallback)
+  }
+
+  openZoomModal=() => {
+      this.setState({zoomModal: true})
+  }
+
+  closeModal = () => {
+    this.setState({ zoomModal: false });
   }
 
   addCallback=(response)=>{
       
       if(response.status==201)
       {
+            Toast.show("Comment Added Successfully!!")
           var obj={
             commenterObject: {
                 blocked: this.props.userInfo.blocked,
@@ -67,16 +85,23 @@ class CommentModal extends Component {
       }
       else
       {
-          console.log("error", response.status)
+            Toast.show("Something Went Wrong. Please Try Again Later!!")
+            console.log("error", response.status)
       }
+  }
+
+  addImage=(link)=>{
+    this.state.userImage.pop()
+      this.state.userImage.push(link)
+      this.openZoomModal()
   }
 
   renderSingleComment=(item)=>{
       return(
           <View style={{ flex:1, flexDirection: 'row', margin: 5, padding: 10}}>
-              <View style={{flex: 0.15}}>
-                  <Image source={{uri: serverBaseUrl+item.commenterObject.studentImage}} style={{height: 50, width: 50, borderRadius: 25}}/>
-              </View>
+              <TouchableOpacity style={{flex: 0.15}} onPress={()=>this.addImage(serverBaseUrl+item.commenterObject.studentImage)}>
+                  <Image source={{uri: serverBaseUrl+item.commenterObject.studentImage}} style={{height: 50, width: 50, borderRadius: 25, borderWidth: 0.6, borderColor:theme.greyColor,}}/>
+              </TouchableOpacity>
               <View style={{flex: 0.85, flexDirection: 'column', marginLeft: 10, marginTop: 2}}>
                   <View style={{ flexDirection: 'row'}}>
                       <Text style={{fontFamily:'Raleway_700Bold', fontSize: 16}}>{item.commenterObject.name} {' • '}</Text>
@@ -92,6 +117,7 @@ class CommentModal extends Component {
 
   render() {
     return(
+        <View>
         <Modal
           animationType="fade"
           transparent={false}
@@ -124,17 +150,31 @@ class CommentModal extends Component {
                 <ScrollView>
                 <View>
                     
-                    <FlatList
+                    {this.state.loadingData?(
+                        <CustomActivtiyIndicator mode="skimmer"/>
+                    ):(<FlatList
                         data={this.state.commentData}
                         renderItem={({item}) => this.renderSingleComment(item)}
                         keyExtractor={(item,index)=>index}
-                    />
+                        ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                    />)}
                 </View>
                 </ScrollView>
                 
             </View>
-
+            
         </Modal>
+        {this.state.zoomModal?(
+            <ImageZoomModal 
+                zoomModal={this.state.zoomModal}
+                closeModal={this.closeModal}
+                images={this.state.userImage}
+                index={this.state.index}
+                type="normal"
+            />
+        ):(null)}
+
+       </View>
     )
   }
 }

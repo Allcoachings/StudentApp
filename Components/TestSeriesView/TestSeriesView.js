@@ -1,8 +1,9 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView,ActivityIndicator,Alert} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-
-import { theme,dataLimit } from '../config';
+import EmptyList from '../Utils/EmptyList'
+import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
+import { theme,dataLimit, Assets } from '../config';
 import { Feather } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
@@ -250,6 +251,7 @@ class TestSeriesView extends React.Component {
                                     keyExtractor={(item)=>item.id} 
                                     horizontal={false}
                                     showsHorizontalScrollIndicator={false}
+                                    ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                                 />
                                 {/* {this.renderQuizQuestion(this.state.questions[0])} */}
                             

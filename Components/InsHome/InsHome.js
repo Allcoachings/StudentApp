@@ -3,7 +3,7 @@ import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity,Touch
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {instituteData, insBanners} from '../../FakeDataService/FakeData'
 import { Rating } from 'react-native-ratings';
-import {theme,screenMobileWidth, serverBaseUrl,documentPlaceholder,dataLimit,addBannerImagePlaceholder} from '../config'
+import {theme,screenMobileWidth, serverBaseUrl,documentPlaceholder,dataLimit,addBannerImagePlaceholder, Assets} from '../config'
 import CardView from '../Utils/CardView';
 import MarqueeText from 'react-native-marquee';
 import { Feather } from '@expo/vector-icons';
@@ -22,7 +22,8 @@ import AddFeedModal from './AddFeedModal';
 import FeedText from '../Feed/FeedText';
 import FeedImage from '../Feed/FeedImage';
 import FeedPoll from '../Feed/FeedPoll';
-
+import EmptyList from '../Utils/EmptyList'
+import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 const width = Dimensions.get('window').width
 class InsHome extends React.Component {
     
@@ -252,6 +253,7 @@ class InsHome extends React.Component {
                     keyExtractor={(item)=>item.id} 
                     horizontal={false}
                     showsHorizontalScrollIndicator={false}
+                    ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                     />
         </Accordian>  
         )
@@ -418,6 +420,7 @@ class InsHome extends React.Component {
                         keyExtractor={(item)=>item.id} 
                         horizontal={false}
                         showsHorizontalScrollIndicator={false}
+                        ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                     />
                  </View>
          
@@ -598,7 +601,7 @@ class InsHome extends React.Component {
                          return(
                              this.state.isCourseVideoLoading?
                              (
-                                 <ActivityIndicator color={theme.accentColor} style={"large"}/>
+                                <CustomActivtiyIndicator mode="skimmer"/>
                              ):
                              (
                                  <ScrollView>
@@ -690,6 +693,7 @@ class InsHome extends React.Component {
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
+                                        ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                                     />)
             case 'videos':      return(
                                     <FlatList 
@@ -698,6 +702,7 @@ class InsHome extends React.Component {
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
+                                        ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                                     />)
             case 'testSeries':  return(
                                     <FlatList 
@@ -706,6 +711,7 @@ class InsHome extends React.Component {
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
+                                        ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                                     />)
             case 'document':    return(
                                     <FlatList 
@@ -714,6 +720,7 @@ class InsHome extends React.Component {
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
+                                        ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                                     />)
             case 'timeTable':   
             
@@ -875,13 +882,9 @@ class InsHome extends React.Component {
                             data={this.state.feeds}
                             renderItem={({item}) => this.renderFeedItem(item)}
                             keyExtractor={(item,index)=>index}
+                            ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                         />
-                        {/* <FeedImage/> */}
-                        {/* { this.renderImagePost()} */}
-                        {/* { this.renderQuizPost()} */}
-                        {/* <FeedPoll/> */}
-                        {/* { this.renderTextPost()} */}
-                        {/* <FeedText/> */}
+                       
                     </View>
                 )
                 

@@ -2,7 +2,7 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image, Platform, ScrollView, Modal, ActivityIndicator} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 // import {connect} from 'react-redux'
-import { theme,dataLimit,screenMobileWidth,serverBaseUrl,documentPlaceholder } from '../config';
+import { theme,dataLimit,screenMobileWidth,serverBaseUrl,documentPlaceholder, Assets } from '../config';
 import AddFeedModal from '../InsHome/AddFeedModal';
 import { Feather } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
@@ -22,7 +22,7 @@ import RenderSingleTestSeries from '../SeriesList/RenderSingleTestSeries';
 import RenderDocument from '../InstituteView/RenderDocument';
 import RenderVideo from '../InstituteView/RenderVideo';
 import EmptyList from '../Utils/EmptyList'
-
+import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 // import {Feed} from "../Feed/Feed"
 
 class UserProfile extends React.Component {
@@ -173,6 +173,7 @@ class UserProfile extends React.Component {
                         renderItem={({item}) => this.renderPurchageCourse(item)}
                         keyExtractor={(item,index)=>index}
                         ListEmptyComponent={<EmptyList />}
+                        ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                     />
                     </View>
 
@@ -194,13 +195,14 @@ class UserProfile extends React.Component {
                             </View>
                             <View style={styles.dataContainer}>
                                 {this.state.loadingData?(
-                                    <ActivityIndicator color={theme.accentColor} size={"large"}/>
+                                    <CustomActivtiyIndicator mode="skimmer"/>
                                 ):(
                                     <FlatList
                                         data={this.state.history}
                                         renderItem={({item}) => this.displayItems(item)}
                                         keyExtractor={(item,index)=>index}
                                         ListEmptyComponent={<EmptyList />}
+                                        ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                                     />
                                 )}
                             </View>
@@ -225,13 +227,14 @@ class UserProfile extends React.Component {
                         <Text style={{color: theme.primaryColor}}>Add Feed</Text>
                     </TouchableOpacity>           
                     {this.state.loadingData?(
-                            <ActivityIndicator color={theme.accentColor} size={"large"}/>
+                            <CustomActivtiyIndicator mode="skimmer"/>
                     ):(
                         <FlatList
                             data={this.state.feeds}
                             renderItem={({item}) => this.renderFeedItem(item)}
                             keyExtractor={(item,index)=>index}
                             ListEmptyComponent={<EmptyList />}
+                            ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                         />
                     )}
                 </View>

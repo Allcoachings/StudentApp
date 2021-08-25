@@ -91,7 +91,7 @@ import mime from "mime";
                 // formData.append("offset",offset) 
                 // formData.append("data_limit",limit)  
                 let headers = new Headers();
-                console.log(instId)
+              
                 headers.append('Content-Type', 'application/json'); 
 
                 headers.append('Access-Control-Allow-Origin', serverApiUrl);

@@ -29,6 +29,7 @@ export const userAuthStatus=(status)=>{
     }
 }
 export const setUserInfo=(info)=>{
+    console.log(info)
     return{
         type: actionTypes.SET_USER_INFO, //this type will be used to match the type
         payload:{

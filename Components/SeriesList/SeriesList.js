@@ -2,7 +2,7 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {insTestSeries} from '../../FakeDataService/FakeData'
-import { theme, dataLimit, serverBaseUrl } from '../config';
+import { theme, dataLimit, serverBaseUrl, Assets } from '../config';
 import { Feather } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
@@ -114,7 +114,7 @@ class SeriesList extends React.Component {
                                 renderItem={this.renderBannerList} 
                                 keyExtractor={(item)=>item.id}
                                 horizontal={true} 
-                                showsHorizontalScrollIndicator={false}
+                                ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                             />
                         </View>
                         <View style={styles.container}>
@@ -124,7 +124,7 @@ class SeriesList extends React.Component {
                                 keyExtractor={(item)=>item.id} 
                                 horizontal={false}
                                 showsHorizontalScrollIndicator={false}
-                                ListEmptyComponent={<EmptyList />}
+                                ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                             />
                         </View>
                     </View>

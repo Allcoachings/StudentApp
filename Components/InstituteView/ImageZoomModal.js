@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Alert, Modal, StyleSheet, Text, Image, TouchableOpacity, View, TextInput } from "react-native";
-import {theme} from '../config';
+import {theme,serverBaseUrl} from '../config';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
 class ImageZoomModal extends React.Component {
@@ -8,10 +8,20 @@ class ImageZoomModal extends React.Component {
     modalVisible: true,
   };
 
+  renderImage=()=>{
+    switch(this.props.type)
+    {
+      case "normal": return (<ImageViewer imageUrls={this.props.images.map(e => { return { url: e }})} />)
+                    break;
 
+      case "slider": return (<ImageViewer imageUrls={this.props.images.map(e => { return { url: serverBaseUrl+e.feedImage }})} />)
+                    break;
+    }
+  }
  
   render() {
     const { zoomModal,closeModal } = this.props;
+    console.log("this.props.images", this.props.images)
     return (
         <Modal
           animationType="slide"
@@ -19,7 +29,7 @@ class ImageZoomModal extends React.Component {
           visible={zoomModal}
           onRequestClose={closeModal}>
           <View style={styles.centeredView}>
-            <ImageViewer imageUrls={this.props.images.map(e => { return { url: e }})} />
+            {this.renderImage()}
           </View>
         </Modal>
     );

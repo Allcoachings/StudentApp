@@ -7,7 +7,8 @@ import {fetch_institute_reviews} from '../Utils/DataHelper/Reviews'
 import { AirbnbRating,Rating } from 'react-native-ratings';
 import {theme,screenMobileWidth, serverBaseUrl, dataLimit} from '../config'
 import { addStudentReview } from '../Utils/DataHelper/Reviews'
-
+import EmptyList from '../Utils/EmptyList'
+import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 class StudentReview extends React.Component {
     
     state = {
@@ -116,7 +117,7 @@ class StudentReview extends React.Component {
                          ):(null)} 
                     </View>
                     {this.state.reviewLoading?(
-                        <ActivityIndicator color={theme.featureYesColor} size={"large"}/>
+                        <CustomActivtiyIndicator mode="skimmer"/>
                     ):(
                         <Review 
                             review={this.state.reviews} 

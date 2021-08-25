@@ -8,10 +8,14 @@ import {like_feed} from "../Utils/DataHelper/Feed"
 import moment from 'moment'
 import { FlatListSlider } from '../Utils/ImageSlider';
 import FeedBottomComponent from './FeedBottomComponent'
+import ImageZoomModal from '../InstituteView/ImageZoomModal'
 
 class FeedImage extends Component {
   state={
-
+    zoomModal: false,
+    index: 0,
+    imageArr:[],
+    type: ''
   }
 
   likeFeed=(feedId)=>{
@@ -30,6 +34,20 @@ likeFeedCallBack=(response)=>{
     }
 }
 
+openZoomModal=() => {
+    this.setState({zoomModal: true})
+}
+
+closeModal = () => {
+  this.setState({ zoomModal: false });
+}
+
+addImage=(link, type)=>{
+        var arr = this.state.imageArr;
+        arr.pop()
+        arr.push(link)
+        this.setState({ imageArr: arr, type: type },()=>this.openZoomModal());   
+  }
 
 
   render() {
@@ -38,9 +56,8 @@ likeFeedCallBack=(response)=>{
         // CardView(
             <View style={{flexDirection: 'column', padding: 5}}>
                 <View style={styles.boxView}>
-                    <View style={{flex: 0.1, padding: 5}}>
-                        <Image source={{ uri: serverBaseUrl+posterObject.logo}} style={styles.circleView}/> 
-                      
+                    <View style={{flex: 0.1, padding: 5}} >
+                        <Image source={{ uri: feed.feed.postedBy==2?(serverBaseUrl+posterObject.studentImage):(posterObject.logo)}} style={styles.circleView}/> 
                     </View>
                     <View style={styles.innerBoxView}>
                         <View style={styles.rowView}>
@@ -57,16 +74,17 @@ likeFeedCallBack=(response)=>{
                                 </Text>
                             </View>
                         ):(null)}
-                        {console.log(feed.feedImages)}
                         {feed.feedImages.length == 1?(
+                            <TouchableOpacity onPress={()=>this.addImage(serverBaseUrl + feed.feedImages[0].feedImage, "normal")}>
                                 <Image source={{uri:serverBaseUrl + feed.feedImages[0].feedImage}} style={styles.img}/>
+                            </TouchableOpacity>
                         ):( 
                             <FlatListSlider
                                     data={feed.feedImages}
                                     height={250}
                                     timer={5000}
                                     imageKey="feedImage"
-                                    onPress={item => {}}
+                                    onPress={item => this.setState({imageArr: feed.feedImages, zoomModal: true, index: item, type: "slider"})}
                                     contentContainerStyle={{resizeMode:'cover'}} 
                                     indicatorActiveColor={theme.greyColor}
                                     indicatorInActiveColor={theme.labelOrInactiveColor}
@@ -82,6 +100,15 @@ likeFeedCallBack=(response)=>{
                     
                 </View>
                 <View style={{borderTopWidth: 0.8, borderColor: theme.labelOrInactiveColor, marginVertical: 10, width: '100%'}}/>
+                {this.state.zoomModal?(
+                    <ImageZoomModal 
+                        zoomModal={this.state.zoomModal}
+                        closeModal={this.closeModal}
+                        images={this.state.imageArr}
+                        index={this.state.index}
+                        type={this.state.type}
+                    />
+                ):(null)}
             </View>
             // ,{width: '100%', padding: 6, marginBottom: 10}
         // )

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet,TouchableOpacity,TouchableWithoutFeedback } from 'react-native';
-import { theme } from '../config';
+import { serverBaseUrl, theme } from '../config';
 import {Text, Switch, Avatar, Title, Caption, Paragraph, Drawer, TouchableRipple} from 'react-native-paper'
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import  Icon  from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -37,7 +37,7 @@ export function DrawerContent(props){
                     <View style={{display: 'flex',justifyContent: 'space-between',borderBottomWidth:1,borderBottomColor: theme.labelOrInactiveColor, flexDirection: 'row',paddingBottom:5}}>
                         <View style={styles.userInfoSection}>
                             <View>
-                                <Avatar.Image source={{ uri: 'https://picsum.photos/200' }}  size={80}/>
+                                <Avatar.Image source={{ uri: serverBaseUrl+props.userInfo.studentImage }}  size={80}/>
                             </View>
                             <View style={styles.userNameSec}>
                                 <Title>{props.userInfo.name}</Title>

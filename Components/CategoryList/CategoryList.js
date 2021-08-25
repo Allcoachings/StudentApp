@@ -2,12 +2,14 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform,Dimensions, ScrollView} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {homeFeaturesData} from '../../FakeDataService/FakeData'
-import { theme,dataLimit, serverBaseUrl } from '../config';
+import { theme,dataLimit, serverBaseUrl, Assets } from '../config';
 import { Feather } from '@expo/vector-icons';
 import { Rating ,AirbnbRating} from 'react-native-ratings';
 import { Redirect } from 'react-router';
 import {fetch_coachingByCategory} from '../Utils/DataHelper/Coaching'
 import {SearchInstituteByCategory} from '../Utils/DataHelper/Search'
+import EmptyList from '../Utils/EmptyList'
+import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 const windowWidth = Dimensions.get('window').width;
 class CategoryList extends React.Component {
 
@@ -19,12 +21,10 @@ class CategoryList extends React.Component {
     }
 
     coachingCallBack=(response) => {
-        console.log(response.status)
         if(response.status==200)
         {
             response.json().then(data=>
                 {
-                    console.log(data);
                     this.setState({institute:data,loadingInstitute:false})
                 })
         }
@@ -36,8 +36,6 @@ class CategoryList extends React.Component {
     updateComponent=()=>{
         if(this.state.cat_id!=this.props.route.params.id)
         {
-            console.log("this.state.cat_id",this.state.cat_id)
-            console.log("this.props.route.params.id",this.props.route.params.id)
             this.setState({cat_id:this.props.route.params.id, offset: 0},()=>fetch_coachingByCategory(this.state.cat_id,this.state.offset,dataLimit,this.coachingCallBack))
             
         }
@@ -100,21 +98,24 @@ class CategoryList extends React.Component {
                 btnHandler={() => {this.props.navigation.goBack()}}
                 titleonheader={this.props.route.params.type}
                 searchFun={this.search}
-                singleItem={this.renderMain}  
+                singleItem={this.renderMain} 
+                nosearchIcon={true} 
+                noNotificationIcon={true}
             >
             <ScrollView>
             <View style={styles.container}>
-                {/* <View style={styles.headerView}>
-                    <Text style={styles.headText}>UPSC Coaching</Text>
-                </View> */}
-
-                <FlatList 
+                {this.state.loadingInstitute?(
+                    <CustomActivtiyIndicator mode="skimmer"/>
+                ):(
+                    <FlatList 
                     data={this.state.institute}  
                     showsVerticalScrollIndicator={false} 
                     renderItem={this.renderInstituteList}
                     numColumns={3}
                     keyExtractor={item => item.id}
+                    ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                 />
+                )}
             </View>
             </ScrollView>
             </PageStructure>

@@ -70,7 +70,7 @@ class HeaderMobile extends React.Component {
               <>
              
                     <TouchableOpacity
-                    style={{ margin: "1%",marginTop: 15}}
+                    style={{ margin: "1%",marginTop: 15, flex:0.05}}
                     onPress={this.props.btnHandler}
                     >
                     <Feather
@@ -81,30 +81,31 @@ class HeaderMobile extends React.Component {
                     </TouchableOpacity> 
                 
 
-                <View style={!this.props.titleonheader?{alignSelf: 'center',marginLeft: "auto"}:{marginTop:15}}>
-                  {this.props.titleonheader ? (
-                    <Text
-                      style={{
-                        fontSize: 18,
-                        fontWeight: "bold",
-                        alignSelf: "flex-start",
-                        marginLeft: 10,
-                      }}
-                    >
-                      {this.props.titleonheader}
-                    </Text>
-                  ) : (
-                    <View>
-                      <Image source={appLogo} style={styles.headerLogo} />
-                    </View>
-                    
-                  )}
-                </View>
-                {!this.props.nosearchIcon?(
-                <TouchableOpacity
-                  style={{ marginLeft: "auto" }}
-                  onPress={() => this.setState({ search: true })}
-                >
+                  <View style={!this.props.titleonheader?{alignSelf: 'center',marginLeft: "auto",flex: 0.9}:{marginTop:15, flex: 0.9}}>
+                    {this.props.titleonheader ? (
+                      <Text
+                        style={{
+                          fontSize: 18,
+                          fontWeight: "bold",
+                          numberOfLines: 1,
+                          alignSelf: "flex-start",
+                          marginLeft: 10,
+                        }}
+                      >
+                        {this.props.titleonheader}
+                      </Text>
+                    ) : (
+                      <View>
+                        <Image source={appLogo} style={styles.headerLogo} />
+                      </View>
+                      
+                    )}
+                  </View>
+                  {!this.props.nosearchIcon?(
+                  <TouchableOpacity
+                    style={{ marginLeft: "auto" }}
+                    onPress={() => this.setState({ search: true })}
+                  >
                   <Feather
                     name="search"
                     size={20}

@@ -3,11 +3,12 @@ import React, { Component } from 'react';
 import { View, Text,StyleSheet,Image, FlatList } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import { connect } from 'react-redux';
-import { serverBaseUrl, theme } from '../config';
+import { serverBaseUrl, theme, Assets } from '../config';
 import RenderDocument from '../InstituteView/RenderDocument';
 import RenderVideo from '../InstituteView/RenderVideo';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-
+import EmptyList from '../Utils/EmptyList'
+import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 class Downloads extends Component {
   
    state = {
@@ -48,7 +49,7 @@ class Downloads extends Component {
         
         if(this.state.loading)
         {
-            <ActivityIndicator size={'large'} color={theme.accentColor}/>
+            <CustomActivtiyIndicator mode="skimmer"/>
         }
             
          
@@ -60,6 +61,7 @@ class Downloads extends Component {
                             data={this.state.data}
                             renderItem={({item}) =><RenderDocument userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="offline" downloadMode={false}/>}
                             keyExtractor={(item)=>item.id}
+                            ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                         />
                     )
                     
@@ -98,6 +100,7 @@ class Downloads extends Component {
                     data={this.state.data}
                     renderItem={({item}) =><RenderVideo userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="offline" downloadMode={false}/>}
                     keyExtractor={(item)=>item.id}
+                    ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                     />
                 )
              

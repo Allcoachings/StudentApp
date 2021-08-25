@@ -1,10 +1,12 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import { theme } from '../config';
+import { theme, Assets } from '../config';
 import { Feather } from '@expo/vector-icons';
 import {connect } from 'react-redux'
 import Solutions from '../Solutions/Solutions'
+import EmptyList from '../Utils/EmptyList'
+import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 class ResultAnalysis extends React.Component {
     state={
        data:[
@@ -206,6 +208,7 @@ class ResultAnalysis extends React.Component {
                             renderItem={this.renderBoxView}
                             keyExtractor={(item)=>item.id} 
                             numColumns={3}
+                            ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                         />
                     </View>
 

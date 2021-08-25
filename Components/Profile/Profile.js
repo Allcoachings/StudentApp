@@ -7,19 +7,21 @@ import { Feather } from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import * as DocumentPicker from 'expo-document-picker';
-import { updateStudent } from '../Utils/DataHelper/UserProfile';
+import { updateStudentDetails, updateStudentImage } from '../Utils/DataHelper/UserProfile';
 import {setUserInfo} from '../Actions'  
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-simple-toast';
 // import {Feed} from "../Feed/Feed"
 
 class Profile extends React.Component {
 
    state={
-        studentImage: this.props.userInfo.studentImage,
+       studentImage: this.props.userInfo.studentImage,
        name: this.props.userInfo.name,
        email: this.props.userInfo.email,
        mobileNumber: this.props.userInfo.mobileNumber,
-       stateOfResidence: this.props.userInfo.stateOfResidence
+       stateOfResidence: this.props.userInfo.stateOfResidence,
+     
    }
 
     handleImageBtnClick=()=>
@@ -29,7 +31,8 @@ class Profile extends React.Component {
             console.log(response)
             if(response.type=="success")
             {
-                this.setState({studentImage: response.uri})
+                this.setState({changedImage:response})
+                console.log(response)
             }
         })
     }
@@ -37,16 +40,34 @@ class Profile extends React.Component {
     
 
     saveDetails=()=>{
-        this.setState({loader:true})
-        updateStudent(this.props.userInfo.id, this.props.userInfo.userId, this.state.email, this.state.name, this.state.stateOfResidence, this.state.mobileNumber, this.state.studentImage, this.props.userInfo.blocked,this.updateStudentCallback)
+        this.setState({loader: true})
+        if(this.state.changedImage)
+        {
+            updateStudentImage(this.props.userInfo.id, this.state.changedImage, this.imageCallback)
+        }
+        else
+        {
+            updateStudentDetails(this.props.userInfo.id, this.props.userInfo.userId, this.state.email, this.state.name, this.state.stateOfResidence, this.state.mobileNumber, this.state.studentImage, this.props.userInfo.blocked,this.updateStudentCallback)
+        }
+    }
+
+    imageCallback=(response)=>{
+        if(response.status==201)
+        {
+            this.setState({studentImage:response.headers.map.location})
+            updateStudentDetails(this.props.userInfo.id, this.props.userInfo.userId, this.state.email, this.state.name, this.state.stateOfResidence, this.state.mobileNumber, this.state.studentImage, this.props.userInfo.blocked,this.updateStudentCallback)
+        }
+        else
+        {
+            console.log("image error", response.status)
+            Toast.show("Failed To Update Image. Please Try Again Later.")
+        }
     }
 
     updateStudentCallback=(response)=>{
-        console.log("done",response.status)
         this.setState({loader: false})
-        if(response.status=="201")
+        if(response.status==201)
         {
-            
             var obj={
                 name: this.state.name, 
                 email: this.state.email, 
@@ -58,12 +79,15 @@ class Profile extends React.Component {
                 userId: this.props.userInfo.userId,
                 id: this.props.userInfo.id,
             }
-            
+            console.log("obj", obj)
+
             this.props.setUserInfo(obj)
+            AsyncStorage.setItem('userDetails', JSON.stringify(obj))
+            Toast.show("Profile Updated Successfully.")
         }
         else
         {
-            console.log("error")
+            Toast.show("Something Went Wrong. Please Try Again Later.")
         }
     }
 

@@ -35,7 +35,7 @@ class FeedText extends Component {
             <View style={{flexDirection: 'column', padding: 5}}>
                 <View style={styles.boxView}>
                     <View style={{flex: 0.1, padding: 5,}}>
-                        <Image source={{ uri: serverBaseUrl+posterObject.logo}} style={styles.circleView}/>
+                        <Image source={{ uri: feed.feed.postedBy==2?(serverBaseUrl+posterObject.studentImage):(posterObject.logo)}} style={styles.circleView}/>
                     </View>
                     <View style={styles.innerBoxView}>
                         <View style={styles.rowView}>

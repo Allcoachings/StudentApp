@@ -1,14 +1,15 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import { theme, dataLimit } from '../config';
+import { theme, dataLimit , Assets} from '../config';
 import { Feather } from '@expo/vector-icons';
 import { feedData } from '../../FakeDataService/FakeData' 
 import {connect } from 'react-redux'
 import CardView from '../Utils/CardView';
 import RenderCourseList from './RenderCourseList';
 import { fetchLeads } from '../Utils/DataHelper/Leads'
-
+import EmptyList from '../Utils/EmptyList'
+import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 class Leads extends React.Component {
     state={
         leads:[],
@@ -80,6 +81,7 @@ class Leads extends React.Component {
                                 keyExtractor={(item)=>item.id} 
                                 horizontal={false}
                                 showsHorizontalScrollIndicator={false}
+                                ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                             />
                         </View>
                         

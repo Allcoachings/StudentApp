@@ -4,7 +4,9 @@ import PageStructure from '../StructuralComponents/PageStructure/PageStructure';
 import RatingOverView from './RatingOverView';
 import RenderReview from './RenderReview';
 import {connect} from 'react-redux'
-import { screenMobileWidth} from '../config' 
+import { screenMobileWidth, Assets} from '../config'
+import EmptyList from '../Utils/EmptyList'
+import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator'; 
 
 class Review extends React.Component {
     state = {  
@@ -43,6 +45,7 @@ class Review extends React.Component {
                                 data={this.props.review}
                                 renderItem={({item})=><RenderReview  replyMode={this.props.replyMode} item={item} userId={this.props.userId}/>}
                                 keyExtractor={(item)=>item.id}   
+                                ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                             />
                        
                             

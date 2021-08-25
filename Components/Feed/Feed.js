@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView,ActivityIndicator} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import { theme,dataLimit } from '../config';
+import { theme,dataLimit, Assets } from '../config';
 import { Feather } from '@expo/vector-icons';
 import { feedData } from '../../FakeDataService/FakeData' 
 import {connect } from 'react-redux'
@@ -10,7 +10,8 @@ import {fetch_feed_all,fetch_feed_by_category} from '../Utils/DataHelper/Feed'
 import FeedText from '../Feed/FeedText';
 import FeedImage from '../Feed/FeedImage';
 import FeedPoll from '../Feed/FeedPoll';
-
+import EmptyList from '../Utils/EmptyList'
+import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 class Feed extends React.Component {
     state={
         offset:0,
@@ -19,10 +20,8 @@ class Feed extends React.Component {
 
     handleFeedCallBack=(response)=>
     {
-        console.log(response.status)
             if(response.status==200){
                 response.json().then(data=>{
-                        console.log(data)
 
                         this.setState({feeds:data,loadingData:false})
                 })
@@ -83,6 +82,7 @@ class Feed extends React.Component {
     }
 
     render() {
+     
         return(
             <PageStructure
                 iconName={"menu"}
@@ -96,12 +96,13 @@ class Feed extends React.Component {
                     <View style={styles.container}>
 
                     {this.state.loadingData?(
-                            <ActivityIndicator color={theme.accentColor} size={"large"}/>
+                            <CustomActivtiyIndicator mode="skimmer"/>
                     ):(
                         <FlatList
                             data={this.state.feeds}
                             renderItem={({item}) => this.renderFeedItem(item)}
                             keyExtractor={(item,index)=>index}
+                            ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                         />
                     )}
                     

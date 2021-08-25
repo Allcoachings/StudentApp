@@ -7,12 +7,12 @@ import PDFRenderer from './PDFRenderer'
 
 export default class PDFViewer extends React.Component {
   render() {
-       
     return (
+     
       <>
         <PDFRenderer pdf={this.props.route.params.pdf}/>
          <View style={{flexDirection: 'row',position:'absolute',top:40,left:40,zIndex:1000,elevation:1000,opacity:0.4}}>
-                <Text style={{color:theme.featureNoColor}}>User Name  -- +911234567890</Text> 
+                <Text style={{color:theme.featureNoColor}}>{this.props.route.params.insName}  {this.props.route.params.insNumber}</Text> 
          </View>  
        </>
     )

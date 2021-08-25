@@ -15,34 +15,43 @@ class RenderDocument extends React.Component {
     {
 
         this.props.mode=="institute"?(this.props.addToHistory("document", this.props.item.id)):(null)
-        this.props.mode=="institute"?(this.props.studentEnrolled?(this.props.navigation.navigate('pdfViewer',{pdf:serverBaseUrl+this.props.item.fileAddress})):(Toast.show('You Have Not Enrolled For This Course.'))):(this.props.navigation.navigate('pdfViewer',{pdf:serverBaseUrl+this.props.item.fileAddress}))
+        this.props.mode=="institute"?(this.props.studentEnrolled?(this.props.navigation.navigate('pdfViewer',{pdf:serverBaseUrl+this.props.item.fileAddress, insName: this.props.insName, insNumber: this.props.insNumber})):(Toast.show('You Have Not Enrolled For This Course.'))):(this.props.navigation.navigate('pdfViewer',{pdf:serverBaseUrl+this.props.item.fileAddress, insName: this.props.insName, insNumber: this.props.insNumber}))
         // downloadFile(this.props.item,this.props.userId,'document',(response)=>{console.log(response)})
     }
 
     download=(item, type)=>{
+        Toast.show('PLease Wait...')
         downloadFile(item,item.fileAddress,this.props.userInfo.id,type,this.downloadCallback)
     }
 
     downloadCallback=(response)=>{
-        console.log(response)
+        
+        if(response.status=="success")
+        {
+            Toast.show('Document Downloaded successfully. Please Check in your Downloads Section.')
+        }
+        else
+        {
+            Toast.show('Something Went Wrong. Please Try Again Later')
+        }
     }
 
     render(){
         return( 
             <View style={styles.documentContainer}>
-                <TouchableOpacity onPress={()=>{this.documentOnClick()}} style={{flex: 0.25}}>
+                <TouchableOpacity onPress={()=>{this.documentOnClick()}}>
                     <Image source={{uri:documentPlaceholder}} style={styles.documentImage}/>
                 </TouchableOpacity>
-                <View style={{flexShrink: 1, flex: 0.63,  justifyContent: 'center'}}>
+                <View style={{flexShrink: 1, justifyContent: 'center'}}>
                     <View style={{ display: 'flex', flexDirection: 'row'}}>
                         <Text style={styles.documentTitle}>{this.props.item.name}</Text>
                     </View>
                 </View>
                 {this.props.downloadMode?(
-                    <View style={{flexDirection: 'column',  flex: 0.1, justifyContent: 'space-between'}}>
+                    <View style={{flexDirection: 'row',  marginLeft: 'auto', marginTop: 'auto', marginRight: 10, marginBottom: 15}}>
                         <View></View>
                         <TouchableOpacity onPress={()=>this.download(this.props.item, 'document')}>
-                            <View style={{marginBottom: 15}}>
+                            <View>
                                 <Image source={downloadIcon} style={{height: 25, width: 25}} />
                             </View>
                         </TouchableOpacity>

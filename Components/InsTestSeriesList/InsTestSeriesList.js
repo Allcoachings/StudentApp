@@ -2,14 +2,15 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {insTestSeries} from '../../FakeDataService/FakeData'
-import { theme, dataLimit,serverBaseUrl } from '../config';
+import { theme, dataLimit,serverBaseUrl, Assets } from '../config';
 import { Feather } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import { fetchTestSeriesBySubCategory } from '../Utils/DataHelper/TestSeries'
-
+import EmptyList from '../Utils/EmptyList'
+import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 class InsTestSeriesList extends React.Component {
 
     state={
@@ -125,6 +126,7 @@ class InsTestSeriesList extends React.Component {
                             keyExtractor={(item)=>item.id}
                             horizontal={true} 
                             showsHorizontalScrollIndicator={false}
+                            ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                         />
                     </View>
                     
@@ -134,6 +136,7 @@ class InsTestSeriesList extends React.Component {
                             renderItem={this.renderSeries}
                             numColumns={3}
                             keyExtractor={(item) => item.id}
+                            ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                         />
                     </View>
                 </ScrollView>

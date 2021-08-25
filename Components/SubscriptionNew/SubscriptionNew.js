@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
 // import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import {theme,screenMobileWidth, dataLimit,serverBaseUrl} from '../config'
+import {theme,screenMobileWidth, dataLimit,serverBaseUrl, Assets} from '../config'
 import { Feather } from '@expo/vector-icons';
 import {connect } from 'react-redux'
 import {subscriptionNew} from '../../FakeDataService/FakeData'
@@ -10,7 +10,8 @@ import { AirbnbRating } from 'react-native-ratings';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import { fetchSubscribedInstituteList } from '../Utils/DataHelper/Subscription'
 import RenderSingleSubsInstitute from './RenderSingleSubsInstitute'
-
+import EmptyList from '../Utils/EmptyList'
+import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 class SubscriptionNew extends React.Component {
     
     state = {
@@ -100,6 +101,7 @@ class SubscriptionNew extends React.Component {
                             keyExtractor={(item)=>item.id}
                             horizontal={false} 
                             showsHorizontalScrollIndicator={false}
+                            ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                         />
                     </View>
                 </ScrollView>

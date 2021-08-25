@@ -4,6 +4,8 @@ import Review from '../ReviewAndRatings/Review'
 import {connect} from 'react-redux'
 import {fetch_institute_reviews} from '../Utils/DataHelper/Reviews'
 import {theme,screenMobileWidth, serverBaseUrl, dataLimit} from '../config'
+import EmptyList from '../Utils/EmptyList'
+import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 
 class InsReviews extends React.Component {
     
@@ -38,7 +40,7 @@ class InsReviews extends React.Component {
             <View>
                 <Text style={styles.RatingText}>Rating & Reviews</Text>
                 {this.state.reviewLoading?(
-                    <ActivityIndicator color={theme.featureYesColor} size={"large"}/>
+                    <CustomActivtiyIndicator mode="skimmer"/>
                 ):(
                     <Review replyMode 
                         review={this.state.reviews} 

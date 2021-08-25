@@ -1,8 +1,9 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView,Dimensions} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import { theme } from '../config';
+import { theme , Assets} from '../config';
 import { MaterialIcons } from '@expo/vector-icons';
+import EmptyList from '../Utils/EmptyList'
 import { connect } from 'react-redux';
 const windowWidth = Dimensions.get('window').width
 class Solutions extends React.Component {
@@ -230,6 +231,7 @@ class Solutions extends React.Component {
                             keyExtractor={(item)=>item.id} 
                             horizontal={false}
                             showsHorizontalScrollIndicator={false}
+                            ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                         />
                         
                         

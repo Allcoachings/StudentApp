@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Dimensions,Image,Platform, ScrollView} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import { theme } from '../config';
+import { theme, Assets } from '../config';
 import { Feather } from '@expo/vector-icons';
 import {connect } from 'react-redux'
 import {MockTest} from '../../FakeDataService/FakeData'
@@ -9,6 +9,8 @@ import Accordian from '../Utils/Accordian'
 import CardView from '../Utils/CardView';
 import moment from 'moment';
 import AddItemModal from './AddItemModal';
+import EmptyList from '../Utils/EmptyList'
+import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 const height = Dimensions.get('screen').height
 class ResultAnalysis extends React.Component {
     state={
@@ -87,6 +89,7 @@ class ResultAnalysis extends React.Component {
                             keyExtractor={(item)=>item.id} 
                             horizontal={false}
                             showsHorizontalScrollIndicator={false}
+                            ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                         />
             </>
             //     </View>
@@ -130,6 +133,7 @@ class ResultAnalysis extends React.Component {
                             keyExtractor={(item)=>item.id} 
                             horizontal={false}
                             showsHorizontalScrollIndicator={false}
+                            ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                         />
                     {/* <View style={styles.enrollBtnView}>
                         <TouchableOpacity style={styles.enrollBtn}>

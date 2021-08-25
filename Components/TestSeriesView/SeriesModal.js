@@ -1,10 +1,12 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Modal,TouchableWithoutFeedback} from 'react-native';
-import { theme } from '../config';
+import { theme , Assets} from '../config';
 import { Feather, FontAwesome } from '@expo/vector-icons';
 import {connect } from 'react-redux'
 import {singlequedata} from '../../FakeDataService/FakeData'
 import CardView from '../Utils/CardView'
+import EmptyList from '../Utils/EmptyList'
+import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import {setTestResultData} from '../Actions'
 class SeriesModal extends React.Component {
   state = {
@@ -154,6 +156,7 @@ class SeriesModal extends React.Component {
                 renderItem={this.renderQuestionGridItem} 
                 numColumns={7}
                 keyExtractor={(item) => item.id}
+                ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                 />  
               </View>
           )
@@ -163,6 +166,7 @@ class SeriesModal extends React.Component {
               data={this.state.questions}
               renderItem={this.renderQuestionListItem}  
               keyExtractor={(item) => item.id}
+              ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
               />  
           )
     }

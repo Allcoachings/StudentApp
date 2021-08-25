@@ -6,7 +6,7 @@ class EmptyList extends React.Component {
     render() {
         return (
             <View style={styles.container}> 
-                <Text style={{fontSize: 18}}>No Data Available</Text>
+                <Image style={styles.image} source={this.props.image}/>
             </View>
             
         );
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         {
             margin:'10%',
             width:200,
-            height:200,
+            height:200, 
         }
 }) 
 export default EmptyList;

@@ -2,12 +2,14 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {testSeriesData, storyLine} from '../../FakeDataService/FakeData'
-import { theme } from '../config';
+import { theme, Assets } from '../config';
 import { Feather } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
+import EmptyList from '../Utils/EmptyList'
+import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 class TestSeries extends React.Component {
     state = {  }
 
@@ -47,6 +49,7 @@ class TestSeries extends React.Component {
                     keyExtractor={(item)=>item.id}
                     horizontal={true} 
                     showsHorizontalScrollIndicator={false}
+                    ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                 />
             </View>
         </View>)
@@ -64,6 +67,7 @@ class TestSeries extends React.Component {
                         renderItem={this.singleRow} 
                         keyExtractor={(item)=>item.id}
                         showsVerticalScrollIndicator={false} 
+                        ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                     />
                 </View> 
            </PageStructure>

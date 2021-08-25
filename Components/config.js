@@ -47,3 +47,11 @@ export const dataLimit=30;
 //   201- create update     
 //   200 - success (fetch)
 //   400-bad request 404-notfound  500-hota hai
+
+
+export const Assets = {
+    noResult:
+    {
+        noRes1: require('../assets/noresult1.png'),
+    },
+}

@@ -2,7 +2,7 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {insTestSeries} from '../../FakeDataService/FakeData'
-import { theme, dataLimit,serverBaseUrl } from '../config';
+import { theme, dataLimit,serverBaseUrl, Assets } from '../config';
 import { Feather } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
@@ -10,7 +10,8 @@ import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import { fetch_testSeries_category } from '../Utils/DataHelper/TestSeries'
 import {SearchTestSeries} from '../Utils/DataHelper/Search'
-
+import EmptyList from '../Utils/EmptyList'
+import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 class TestSeriesIns extends React.Component {
     state = { 
         offset: 0,
@@ -27,6 +28,7 @@ class TestSeriesIns extends React.Component {
         {
             response.json().then(data=>
             {
+                console.log("TestSeries data", data)
                 this.setState({testSeries: data, category: data[0].categoryName})
             })
         }
@@ -95,6 +97,7 @@ class TestSeriesIns extends React.Component {
                             renderItem={this.singleRow} 
                             keyExtractor={(item)=>item.id}
                             showsVerticalScrollIndicator={false} 
+                            ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                         />
                     </View> 
                 </ScrollView>

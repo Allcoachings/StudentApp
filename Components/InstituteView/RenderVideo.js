@@ -13,11 +13,19 @@ class RenderVideo extends React.Component {
     }
 
     download=(item, type)=>{
+        Toast.show('PLease Wait...')
         downloadFile(item,item.videoLocation, this.props.userInfo.id,type,this.downloadCallback)
     }
 
     downloadCallback=(response)=>{
-        console.log(response)
+        if(response.status=="success")
+        {
+            Toast.show('Video Downloaded successfully. Please Check in your Downloads Section.')
+        }
+        else
+        {
+            Toast.show('Something Went Wrong. Please Try Again Later')
+        }
     }
 
     render(){
@@ -26,7 +34,7 @@ class RenderVideo extends React.Component {
                 <TouchableOpacity onPress={()=>{
                     this.props.mode=="institute"?(this.props.addToHistory("video", this.props.item.id)):(null)
                     this.props.mode=="institute"?(this.props.studentEnrolled?(this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation})):(Toast.show('You Have Not Enrolled For This Course.'))):(this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation}))}
-                } style={{flex: 0.35}}>
+                } >
                     <Image source={{uri:this.props.item.videoThumb}} style={styles.videoImage}/>
                 </TouchableOpacity>
                 <View style={styles.videoColumn}>
@@ -41,10 +49,10 @@ class RenderVideo extends React.Component {
                     </View>
                 </View>
                 {this.props.downloadMode?(
-                    <View style={{flexDirection: 'column',  flex: 0.1, justifyContent: 'space-between'}}>
+                    <View style={{flexDirection: 'row',  marginLeft: 'auto', marginTop: 'auto', marginRight: 10, marginBottom: 15}}>
                         <View></View>
                         <TouchableOpacity onPress={()=>this.download(this.props.item, 'video')}>
-                            <View style={{marginBottom: 15}}>
+                            <View>
                                 <Image source={downloadIcon} style={{height: 25, width: 25}} />
                             </View>
                         </TouchableOpacity>
@@ -71,8 +79,8 @@ const styles = StyleSheet.create({
         },
         videoColumn:
         {
+            marginTop: 6,
             marginLeft: 5,
-            flex: 0.55, 
             flexDirection: 'column'
         },
         videoText:
