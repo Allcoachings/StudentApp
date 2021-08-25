@@ -7,9 +7,11 @@ import { connect } from 'react-redux'
 import {like_feed} from "../Utils/DataHelper/Feed"
 import moment from 'moment'
 import { FlatListSlider } from '../Utils/ImageSlider';
+import FeedBottomComponent from './FeedBottomComponent'
+
 class FeedImage extends Component {
   state={
-    // canUserLike: this.props.type==1?(this.props.item.feed.feed.feedLikerIns.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.feedLikerStudent.includes(`,${this.props.userInfo.id},`)?(false):(true)):(true)),
+
   }
 
   likeFeed=(feedId)=>{
@@ -44,50 +46,38 @@ likeFeedCallBack=(response)=>{
                         <View style={styles.rowView}>
                             <View  style={{flexDirection: 'row',alignItems: 'center'}}>
                                 <Text style={styles.coaching}>{posterObject.name}{' • '}<Text style={styles.timeDateText}>{moment(feed.feed.creationTime).fromNow()}</Text></Text>
-                            </View>
-                            
+                            </View> 
                             <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
                         </View>
-                        {feed.feed.description?( 
-                                <View style={{marginVertical:10}}>
-                                    <Text style={{color: theme.greyColor,fontFamily:'Raleway_400Regular'}}>
-                                        {feed.feed.description}
-                                    </Text>
-                                </View>
-                            ):(null)}
-                        {/* <Image source={{ uri: serverBaseUrl+feed.feed.photoLocation }} style={styles.img}/> */}
-                        <FlatListSlider
-                                data={feed.feedImages}
-                                height={250}
-                                timer={5000}
-                                imageKey="feedImage"
-                                onPress={item => {}}
-                                contentContainerStyle={{resizeMode:'cover'}} 
-                                indicatorActiveColor={theme.greyColor}
-                                indicatorInActiveColor={theme.labelOrInactiveColor}
-                                indicatorActiveWidth={5}
-                                animation 
-                                autoscroll={false}
-                                serverBaseUrl={serverBaseUrl}
-                            />
-                        <View style={styles.bottomRowContainer}>
-                            {this.state.canUserLike?(
-                                <TouchableOpacity style={styles.likeView}  onPress={()=>this.likeFeed(feed.feed.id)}>
-                                    <AntDesign name="hearto" size={22} color={theme.greyColor} />
-                                </TouchableOpacity>
-                            ):(
-                                <TouchableOpacity style={styles.likeView}>
-                                    <AntDesign name="heart" size={22} color={theme.greyColor}/>
-                                </TouchableOpacity>
-                            )}
-                            <TouchableOpacity style={styles.likeView}>
-                                <FontAwesome name="comments" size={22} color={theme.greyColor} />
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.likeView}>
-                                <AntDesign name="sharealt" size={22} color={theme.greyColor} />
-                            </TouchableOpacity>
-                        </View>
                         
+                        {feed.feed.description?( 
+                            <View style={{marginVertical:10}}>
+                                <Text style={{color: theme.greyColor,fontFamily:'Raleway_400Regular'}}>
+                                    {feed.feed.description}
+                                </Text>
+                            </View>
+                        ):(null)}
+                        {console.log(feed.feedImages)}
+                        {feed.feedImages.length == 1?(
+                                <Image source={{uri:serverBaseUrl + feed.feedImages[0].feedImage}} style={styles.img}/>
+                        ):( 
+                            <FlatListSlider
+                                    data={feed.feedImages}
+                                    height={250}
+                                    timer={5000}
+                                    imageKey="feedImage"
+                                    onPress={item => {}}
+                                    contentContainerStyle={{resizeMode:'cover'}} 
+                                    indicatorActiveColor={theme.greyColor}
+                                    indicatorInActiveColor={theme.labelOrInactiveColor}
+                                    indicatorActiveWidth={5}
+                                    animation 
+                                    autoscroll={false}
+                                    serverBaseUrl={serverBaseUrl}
+                            />
+                        )}
+                        <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation}/>
+                                                
                     </View>
                     
                 </View>

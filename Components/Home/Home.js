@@ -45,7 +45,7 @@ class Home extends React.Component {
         this.checkForUserCat()
         fetch_homeData(this.handleHomeDataCallBack)
         
-        PaymentGateway({orderId:"123",mid:paytmConfig.mid,isStaging:paytmConfig.isStaging,appInvokeRestricted:paytmConfig.appInvokeRestricted,amount:10,tranxToken:"123",callback:(response)=>{console.log(response)}})
+        // PaymentGateway({orderId:"123",mid:paytmConfig.mid,isStaging:paytmConfig.isStaging,appInvokeRestricted:paytmConfig.appInvokeRestricted,amount:10,tranxToken:"123",callback:(response)=>{console.log(response)}})
     }
 
     redirectTo =(item)=>

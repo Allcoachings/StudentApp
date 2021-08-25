@@ -7,6 +7,7 @@ import { Feather } from '@expo/vector-icons';
 import { Rating ,AirbnbRating} from 'react-native-ratings';
 import { Redirect } from 'react-router';
 import {fetch_coachingByCategory} from '../Utils/DataHelper/Coaching'
+import {SearchInstituteByCategory} from '../Utils/DataHelper/Search'
 const windowWidth = Dimensions.get('window').width;
 class CategoryList extends React.Component {
 
@@ -87,13 +88,19 @@ class CategoryList extends React.Component {
         )
     }
 
+    search=(offset, search, callback)=>{
+        SearchInstituteByCategory(search, this.state.cat_id, offset, dataLimit, callback)
+    }
+
     render() {
         this.updateComponent()
         return(
             <PageStructure
                 iconName={"arrow-left"}
-                btnHandler={() => {this.props.navigation.toggleDrawer()}}
+                btnHandler={() => {this.props.navigation.goBack()}}
                 titleonheader={this.props.route.params.type}
+                searchFun={this.search}
+                singleItem={this.renderMain}  
             >
             <ScrollView>
             <View style={styles.container}>
