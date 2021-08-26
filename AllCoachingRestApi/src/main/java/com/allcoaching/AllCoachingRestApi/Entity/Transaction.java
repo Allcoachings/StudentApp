@@ -27,13 +27,15 @@ public class Transaction {
     private Date purchaseDate;
     private String orderId;
     private String gatewayTransactionId;
+    private String status;
 
-    public Transaction(long insId, long studentId, long courseId, String amount, String orderId, String gatewayTransactionId) {
+    public Transaction(long insId, long studentId, long courseId, String amount, String orderId, String gatewayTransactionId, String status) {
         this.insId = insId;
         this.studentId = studentId;
         this.courseId = courseId;
         this.amount = amount;
         this.orderId = orderId;
         this.gatewayTransactionId = gatewayTransactionId;
+        this.status = status;
     }
 }
