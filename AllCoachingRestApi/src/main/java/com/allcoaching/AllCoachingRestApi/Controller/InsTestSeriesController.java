@@ -69,10 +69,10 @@ public class InsTestSeriesController {
 
     //fetching all test series of a course by course id
     @CrossOrigin(origins = "*")
-    @GetMapping("/all/{courseId}")
-    public Iterable<InsTestSeries> findByCourseId(@PathVariable long courseId)
+    @GetMapping("/all/{courseId}/{offset}/{dataLimit}")
+    public Iterable<InsTestSeries> findByCourseId(@PathVariable long courseId,@PathVariable int offset,@PathVariable int dataLimit)
     {
-        return insTestSeriesService.getTestSeriesByCourseID(courseId);
+        return insTestSeriesService.getTestSeriesByCourseID(courseId,offset,dataLimit);
     }
 
 
@@ -87,10 +87,10 @@ public class InsTestSeriesController {
 
     //fetch Test Series by playlistId
     @CrossOrigin(origins = "*")
-    @GetMapping("/playlist/{playListId}/")
-    public Iterable<InsTestSeries> findByPlaylistId(@PathVariable long playListId)
+    @GetMapping("/playlist/{playListId}/{offset}/{dataLimit}")
+    public Iterable<InsTestSeries> findByPlaylistId(@PathVariable long playListId,@PathVariable int offset,@PathVariable int dataLimit)
     {
-        return insTestSeriesService.getTestSeriesByPlaylistID(playListId);
+        return insTestSeriesService.getTestSeriesByPlaylistID(playListId,offset,dataLimit);
     }
 
     //fetch Test Series playlists by courseId

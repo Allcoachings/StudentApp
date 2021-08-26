@@ -52,10 +52,10 @@ public class CourseTimeTableController {
     }
 
     @CrossOrigin(origins = "*")
-    @GetMapping("/all/{courseId}")
-    public Iterable<CourseTimeTableDto>  fetchTimeTableByCourseId(@PathVariable long courseId)
+    @GetMapping("/all/{courseId}/{offset}/{dataLimit}")
+    public Iterable<CourseTimeTableDto>  fetchTimeTableByCourseId(@PathVariable long courseId,@PathVariable int offset,@PathVariable int dataLimit)
     {
-        return service.fetchCourseTimeTable(courseId);
+        return service.fetchCourseTimeTable(courseId,offset,dataLimit);
     }
 
 

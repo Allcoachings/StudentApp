@@ -3,6 +3,7 @@ package com.allcoaching.AllCoachingRestApi.Service;
 
 import com.allcoaching.AllCoachingRestApi.Entity.CourseTimeTableItem;
 import com.allcoaching.AllCoachingRestApi.Entity.CourseTimeTableSubject;
+import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeries;
 import com.allcoaching.AllCoachingRestApi.Respository.CourseTimeTableItemRepo;
 import com.allcoaching.AllCoachingRestApi.Respository.CourseTimeTableSubjectRepo;
 import com.allcoaching.AllCoachingRestApi.dto.CourseTimeTableDto;
@@ -40,7 +41,7 @@ public class CourseTimeTableService {
         return itemRepo.save(courseTimeTableItem);
     }
 
-    //fetching TimeTable by subject id
+    //fetching TimeTable by   id
     public CourseTimeTableDto fetchTimeTable(long id)
     {
 
@@ -56,10 +57,10 @@ public class CourseTimeTableService {
     }
 
     //fetching TimeTable by subject id
-    public Iterable<CourseTimeTableDto> fetchCourseTimeTable(long id)
+    public Iterable<CourseTimeTableDto> fetchCourseTimeTable(long id,int page,int pageSize)
     {
 
-        Iterable<CourseTimeTableSubject> courseTimeTableSubject = subjectRepo.findByCourseId(id);
+        Iterable<CourseTimeTableSubject> courseTimeTableSubject = extractDataFromPage(subjectRepo.findByCourseId(id,PageRequest.of(page,pageSize)));
         List<CourseTimeTableDto> courseTimeTableDtos = new ArrayList<>();
         courseTimeTableSubject.forEach(item->
         {
@@ -97,5 +98,14 @@ public class CourseTimeTableService {
         }
         return null;
     }
-
+    public Iterable<CourseTimeTableSubject> extractDataFromPage(Page<CourseTimeTableSubject> transactionPage)
+    {
+        if(transactionPage.hasContent())
+        {
+            return transactionPage.getContent();
+        }else
+        {
+            return new ArrayList<>();
+        }
+    }
 }
