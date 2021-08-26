@@ -194,13 +194,13 @@ class InsHome extends React.Component {
           case 'videos':  
                 this.setState({activeFilter: item.name,isCourseVideoLoading:true,isCourseVideoLoaded:false},()=>
                 {
-                    fetch_courses_videos(null,this.courseVideoCallback,item.id);
+                    fetch_courses_videos(this.state.offset, dataLimit,null,this.courseVideoCallback,item.id);
                 }) 
                 break;
            case 'document':
                 this.setState({activeFilter: item.name,isCourseDocumentLoading:true,isCourseDocumentLoaded:false},()=>
                 {
-                    fetch_courses_documents(null,this.courseDocumentCallback,item.id);
+                    fetch_courses_documents(this.state.offset, dataLimit, null,this.courseDocumentCallback,item.id);
                 }) 
                 break;
 
@@ -590,7 +590,7 @@ class InsHome extends React.Component {
                     {
                         console.log("active course id",this.state.activeCourseId)
                         this.setState({isCourseVideoLoading:true})
-                        fetch_courses_videos(this.state.activeCourseDetail.id,this.courseVideoCallback);
+                        fetch_courses_videos(this.state.offset, dataLimit,this.state.activeCourseDetail.id,this.courseVideoCallback);
                     }
                     if(!this.state.courseVideoPlaylistLoaded&&!this.state.isCourseVideoPlaylistLoading)
                     {
@@ -658,7 +658,7 @@ class InsHome extends React.Component {
                         {
                             console.log("active course id",this.state.activeCourseId)
                             this.setState({isCourseDocumentLoading:true})
-                            fetch_courses_documents(this.state.activeCourseDetail.id,this.courseDocumentCallback);
+                            fetch_courses_documents(this.state.offset, dataLimit, this.state.activeCourseDetail.id,this.courseDocumentCallback);
                         }
                         if(!this.state.courseDocumentPlaylistLoaded&&!this.state.isCourseDocumentPlaylistLoading)
                         {
@@ -780,15 +780,15 @@ class InsHome extends React.Component {
         {
             case 1:
                 return (
-                    <FeedImage item={item} type={1} navigation={this.props.navigation}/>
+                    <FeedImage item={item} type={1} navigation={this.props.navigation} mode="insProfile"/>
                 )
             case 2:
                 return (
-                    <FeedPoll item={item} type={1} navigation={this.props.navigation}/>
+                    <FeedPoll item={item} type={1} navigation={this.props.navigation} mode="insProfile"/>
                 )
             case 3:
                 return (
-                    <FeedText item={item} type={1} navigation={this.props.navigation}/>
+                    <FeedText item={item} type={1} navigation={this.props.navigation} mode="insProfile"/>
                 )
         }
     }

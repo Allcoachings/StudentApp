@@ -65,7 +65,7 @@ class UserProfile extends React.Component {
         this.setState({loadingData:false})
         console.log(response.status)
         if(response.status==200)
-        {   console.log("purchase success")
+        {   
             response.json().then(data=>
             {
                 console.log(data)
@@ -76,6 +76,12 @@ class UserProfile extends React.Component {
         {
             console.log("something went wrong")
         }
+    }
+
+    updateEditFeedState=()=>{}
+
+    setUpdateEditFeedState=(ref)=>{
+        this.updateEditFeedState=ref;
     }
 
     header=() => {
@@ -91,7 +97,6 @@ class UserProfile extends React.Component {
     }
 
     renderPurchageCourse=(item)=>{
-        console.log("item",item)
         return(
         <PurchageListRow item={item} navigation={this.props.navigation}/>
         )
@@ -125,26 +130,33 @@ class UserProfile extends React.Component {
         this.setState({activeTab:tabValue});
     }
 
-    renderFeedItem=(item)=>
+    renderFeedItem=(item, index)=>
     {
         
         switch(item.feed.feed.feedType)
         {
             case 1:
                 return (
-                    <FeedImage item={item} type={2} navigation={this.props.navigation}/>
+                    <FeedImage item={item} type={2} navigation={this.props.navigation} mode="userProfile" updateEditFeedState={this.updateEditFeedState} index={index}/>
                 )
             case 2:
            
 
                 return (
-                    <FeedPoll item={item} type={2} navigation={this.props.navigation}/>
+                    <FeedPoll item={item} type={2} navigation={this.props.navigation} mode="userProfile" updateEditFeedState={this.updateEditFeedState} index={index}/>
                 )
             case 3:
                 return (
-                    <FeedText item={item} type={2} navigation={this.props.navigation}/>
+                    <FeedText item={item} type={2} navigation={this.props.navigation} mode="userProfile" updateEditFeedState={this.updateEditFeedState} index={index}/>
                 )
         }
+    }
+
+    updateSingleFeed=(item, index)=>{
+        var obj=this.state.feeds
+        obj[index]=item;
+        console.log("obj ", obj)
+        this.setState({feeds: obj})
     }
 
     displayItems=(item)=>{
@@ -233,13 +245,15 @@ class UserProfile extends React.Component {
                             posterId={this.props.userInfo.id} 
                             postedBy={2}
                             instituteDetails={this.props.userInfo}
-                        />
+                            setUpdateFun={this.setUpdateEditFeedState}
+                            updateSingleFeed={this.updateSingleFeed}
+                    />
                     {this.state.loadingData?(
                             <CustomActivtiyIndicator mode="skimmer"/>
                     ):(
                         <FlatList
                             data={this.state.feeds}
-                            renderItem={({item}) => this.renderFeedItem(item)}
+                            renderItem={({item, index}) => this.renderFeedItem(item, index)}
                             keyExtractor={(item,index)=>index}
                             ListEmptyComponent={<EmptyList />}
                             ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}

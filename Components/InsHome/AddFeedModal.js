@@ -1,7 +1,7 @@
 import { Feather } from '@expo/vector-icons';
 import React, { Component } from 'react';
 import { View, Text,StyleSheet,Modal,TouchableOpacity,TouchableWithoutFeedback,ActivityIndicator,ScrollView,Image,TextInput,FlatList } from 'react-native';
-import { addBannerImagePlaceholder, theme } from '../config';
+import { addBannerImagePlaceholder, theme, serverBaseUrl } from '../config';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure';
 import CardView from '../Utils/CardView';
 import {addImgeFeed,saveFeed} from '../Utils/DataHelper/Feed'
@@ -17,8 +17,7 @@ class AddFeedModal extends Component {
       description:'',
       feedImageData:[],
       pollOptions:[
-          {
-              
+          { 
               pollOption:''
           },
           {
@@ -26,16 +25,44 @@ class AddFeedModal extends Component {
               pollOption:''
           }
         ],
-        pollOptionCounter:2,
-        feedItem:{}
-
+      pollOptionCounter:2,
+      feedItem:{},
+      id: '',
+      mode: "add",
+      index: ''
   }
+
+  updateState=(type, description, feedImages, pollOptions, id, index)=>{
+    if(type==1)
+    {
+        this.setState({postType: type, feedImageData: feedImages, description: description, mode: "edit", id: id, index: index})
+    }
+    else if(type==2)
+    {
+        this.setState({postType: type, pollOptions: pollOptions, mode: "edit", id: id, description: description, pollOptionCounter: pollOptions.length, index: index})
+    }
+    else if(type==3)
+    {
+        this.setState({postType: type, description: description, mode: "edit", id: id, index: index})
+    }
+  }
+
+  componentDidMount(){
+        this.props.setUpdateFun(this.updateState)
+  }
+
   handleAddFeedCallback=(response)=>
   {
-      console.log(response.status)
       if(response.status==201)
       {
-        Toast.show('Feed Added Successfully.');
+            if(this.state.mode=="edit")
+            {
+                Toast.show('Feed Updateed Successfully.');
+            }
+            else
+            {
+                Toast.show('Feed Added Successfully.');
+            }
           this.setState({addFeedLoading:false,description:"",feedImageData:[],pollOptions:[
             {
                 
@@ -46,12 +73,21 @@ class AddFeedModal extends Component {
                 pollOption:''
             }
           ]})
-        
-        let feedItem = {feed:this.state.feedItem};
-        feedItem['posterObject']=this.props.instituteDetails
-        console.log(feedItem)
-          this.props.addFeedCallBack(feedItem)
-          this.props.closeModal()
+        if(this.state.mode!="edit"){
+            let feedItem = {feed:this.state.feedItem};
+            feedItem['posterObject']=this.props.instituteDetails
+            console.log("feedItem", feedItem);
+            this.props.addFeedCallBack(feedItem)
+        }
+        else
+        {
+            let feedItem = {feed:this.state.feedItem};
+            feedItem['posterObject']=this.props.instituteDetails
+            // console.log("feeditem", feedItem)
+            // console.log(this.state.index)
+            this.props.updateSingleFeed(feedItem, this.state.index)
+        }
+        this.props.closeModal()
       }
       else
       {
@@ -82,6 +118,10 @@ class AddFeedModal extends Component {
                     feedLikerStudent: ",", 
                 },
                 feedPollOptions:this.state.pollOptions
+            }
+            if(this.state.mode=="edit")
+            {
+                feed.feed.id=this.state.id
             }
             this.setState({feedItem:feed}) 
             saveFeed(feed,this.handleAddFeedCallback)
@@ -116,6 +156,10 @@ class AddFeedModal extends Component {
                     feedLikerStudent: ",",   
                 },
                 feedPollOptions:null
+            }
+            if(this.state.mode=="edit")
+            {
+                feed.feed.id=this.state.id;
             }
             this.setState({feedItem:feed})
             addImgeFeed(feed,this.state.feedImageData,this.handleAddFeedCallback)
@@ -155,6 +199,10 @@ class AddFeedModal extends Component {
                 },
                 feedPollOptions:null
             }
+            if(this.state.mode=="edit")
+            {
+                feed.feed.id=this.state.id
+            }
             this.setState({feedItem:feed})
             saveFeed(feed,this.handleAddFeedCallback)
         } 
@@ -164,8 +212,8 @@ class AddFeedModal extends Component {
         Toast.show('Please Fill All The Fields.');
     }
   } 
-  verifyTextPost=({description})=>description
 
+  verifyTextPost=({description})=>description
   
   handleImageBtnClick=()=>
   {
@@ -300,6 +348,7 @@ setFeedTypeOption=(postType)=>
                         multiline={true} 
                         numberOfLines={2} 
                         style={styles.inputField}
+                        defaultValue={item.pollOption}
                     /> 
                 
             </View> 
@@ -505,7 +554,7 @@ setFeedTypeOption=(postType)=>
                         <Feather name="x" size={20} color={theme.featureNoColor}/>
                     </View>
                 </TouchableWithoutFeedback> 
-                <Image source={{uri:item.uri}} style={styles.feedImage}/>
+                <Image source={{uri: this.state.mode=='add'?(item.uri):(serverBaseUrl+item.feedImage)}} style={styles.feedImage}/>
             </View>
         )
      
@@ -540,7 +589,7 @@ setFeedTypeOption=(postType)=>
         );
   }
   render() {
-     
+      console.log(this.state.description)
     return (
         // <Modal 
         //     animationType = {"fade"} 

@@ -68,15 +68,15 @@ class Feed extends React.Component {
         {
             case 1:
                 return (
-                    <FeedImage item={item} type={2} navigation={this.props.navigation}/>
+                    <FeedImage item={item} type={2} navigation={this.props.navigation} mode="all"/>
                 )
             case 2:
                 return (
-                    <FeedPoll item={item} type={2} navigation={this.props.navigation}/>
+                    <FeedPoll item={item} type={2} navigation={this.props.navigation} mode="all"/>
                 )
             case 3:
                 return (
-                    <FeedText item={item} type={2} navigation={this.props.navigation}/>
+                    <FeedText item={item} type={2} navigation={this.props.navigation} mode="all"/>
                 )
         }
     }

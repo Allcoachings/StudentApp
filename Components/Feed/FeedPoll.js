@@ -71,8 +71,9 @@ class FeedPoll extends Component {
                                 
                                 <Text style={styles.coaching}>{posterObject.name}{' • '}<Text style={styles.timeDateText}>{moment(feed.feed.creationTime).fromNow()}</Text></Text>
                             </View>
-                            
-                            <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
+                            <TouchableOpacity onPress={()=>this.props.mode=="userProfile"?(this.props.updateEditFeedState(feed.feed.feedType, feed.feed.pollQuestion, null, this.state.optionData, feed.feed.id, this.props.index)):(null)}>
+                                <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
+                            </TouchableOpacity>
                         </View>
                         <Text style={{ fontFamily:'Raleway_400Regular',marginTop: 10,}}>{feed.feed.pollQuestion}</Text>
                         <FlatList

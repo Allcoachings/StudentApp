@@ -45,6 +45,8 @@ export const reply=(id,reply,callback)=>
 
 export const addStudentReview=(studentId,courseId,review,rating,callback)=>
 {
+    
+    console.log('addStudentReview',courseId,review,studentId,rating)
     let headers = new Headers();
 
     headers.append('Content-Type', 'application/json'); 

@@ -64,7 +64,9 @@ addImage=(link, type)=>{
                             <View  style={{flexDirection: 'row',alignItems: 'center'}}>
                                 <Text style={styles.coaching}>{posterObject.name}{' • '}<Text style={styles.timeDateText}>{moment(feed.feed.creationTime).fromNow()}</Text></Text>
                             </View> 
-                            <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
+                            <TouchableOpacity onPress={()=>this.props.mode=="userProfile"?(this.props.updateEditFeedState(feed.feed.feedType, feed.feed.description, feed.feedImages, null, feed.feed.id, this.props.index)):(null)}>
+                                <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
+                            </TouchableOpacity>
                         </View>
                         
                         {feed.feed.description?( 
@@ -74,6 +76,7 @@ addImage=(link, type)=>{
                                 </Text>
                             </View>
                         ):(null)}
+
                         {feed.feedImages.length == 1?(
                             <TouchableOpacity onPress={()=>this.addImage(serverBaseUrl + feed.feedImages[0].feedImage, "normal")}>
                                 <Image source={{uri:serverBaseUrl + feed.feedImages[0].feedImage}} style={styles.img}/>

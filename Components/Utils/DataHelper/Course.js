@@ -121,9 +121,8 @@ export   const addCourseBanner=(banner,courseId,callback)=>
 
 
 //video section starts 
-export const fetch_courses_videos=(courseId=-1,callback,playlistId=-1)=>
+export const fetch_courses_videos=(offset, dataLimit, courseId=-1,callback,playlistId=-1)=>
 {
-
     
             // var formData   = new FormData(); 
             // formData.append("fetch_banners",'true') 
@@ -139,12 +138,12 @@ export const fetch_courses_videos=(courseId=-1,callback,playlistId=-1)=>
             let apiUrl;
             if(playlistId == -1)
             {
-                apiUrl = serverApiUrl+'/institute/course/video/all/'+courseId
+                apiUrl = serverApiUrl+'institute/course/video/all/'+courseId+'/'+offset+'/'+dataLimit
             }else
             {
-                apiUrl = serverApiUrl+'/institute/course/video/playlist/'+playlistId
+                apiUrl = serverApiUrl+'institute/course/video/playlist/'+playlistId+'/'+offset+'/'+dataLimit
             }
-                
+               console.log(apiUrl) 
              fetch(apiUrl,
             {
                 method: 'GET',  
@@ -261,7 +260,7 @@ export const fetch_video_playlist=(courseId,callback)=>
 //video section ends here
 
 //document section starts 
-export const fetch_courses_documents=(courseId=-1,callback,playlistId=-1)=>
+export const fetch_courses_documents=(offset, dataLimit, courseId=-1,callback,playlistId=-1)=>
 {
 
     
@@ -279,12 +278,13 @@ export const fetch_courses_documents=(courseId=-1,callback,playlistId=-1)=>
             let apiUrl;
             if(playlistId == -1)
             {
-                apiUrl = serverApiUrl+'/institute/course/document/all/'+courseId
-            }else
-            {
-                apiUrl = serverApiUrl+'/institute/course/document/playlist/'+playlistId
+                apiUrl = serverApiUrl+'institute/course/document/all/'+courseId+'/'+offset+'/'+dataLimit
             }
-                
+            else
+            {
+                apiUrl = serverApiUrl+'/institute/course/document/playlist/'+playlistId+'/'+offset+'/'+dataLimit
+            }
+              console.log(apiUrl);  
              fetch(apiUrl,
             {
                 method: 'GET',  

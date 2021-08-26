@@ -4,11 +4,12 @@ import Review from '../ReviewAndRatings/Review'
 import {connect} from 'react-redux'
 import { Feather } from '@expo/vector-icons';
 import {fetch_institute_reviews} from '../Utils/DataHelper/Reviews'
-import { AirbnbRating,Rating } from 'react-native-ratings';
-import {theme,screenMobileWidth, serverBaseUrl, dataLimit} from '../config'
+import { AirbnbRating } from 'react-native-ratings';
+import {theme, dataLimit} from '../config'
 import { addStudentReview } from '../Utils/DataHelper/Reviews'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
+import Toast from 'react-native-simple-toast';
 class StudentReview extends React.Component {
     
     state = {
@@ -46,6 +47,10 @@ class StudentReview extends React.Component {
         {
            addStudentReview(this.state.studentId, this.state.courseId, this.state.review, this.state.rating, this.addReviewCallBack)
         }
+        else
+        {
+            Toast.show("Please Fill All The Fields.")
+        }
     }
 
     ratingCompleted=(rating)=>{
@@ -58,8 +63,14 @@ class StudentReview extends React.Component {
        this.setState({ReviewmodalVisible: false})
         if(response.status==200)
         {
+            Toast.show("Review Added successfully!!")
             var obj={"insName": 'Cyberflow', "insReview":{"id": 3, "courseId": 1, "insId": 1,  "reply": '', "review": this.state.review, "rating": this.state.rating,"studentId": 1}, "studentImage": "sdfghj", "studentName": "DU BUDDY"}
             this.setState({ reviews: this.state.reviews.concat(obj) })
+        }
+        else
+        {
+            console.log("error", response.status)
+            Toast.show("Something Went Wrong. Please Try Again Later.")
         }
     }
 
@@ -86,18 +97,6 @@ class StudentReview extends React.Component {
                         <Text style={styles.RatingText}>Rating & Reviews</Text>
                         {this.props.studentEnrolled?(
                             <View style={{ paddingHorizontal: 6,marginVertical:10,backgroundColor: 'white'}}>
-                            {/* <Rating
-                                type='star'
-                                ratingCount={5}
-                                startingValue={0}
-                                imageSize={30} 
-                                unSelectedColor={theme.appBackgroundColor} 
-                                // tintColor={theme.appBackgroundColor}
-                                ratingColor={theme.blueColor}
-                                style={styles.instituteRating}
-                                readOnly={true}
-                                style={{textAlign: 'center', marginBottom: 10}} 
-                            /> */}
                             <AirbnbRating 
                                 starContainerStyle={[styles.instituteRating,{alignSelf:"center"}]} 
                                 count={5}
