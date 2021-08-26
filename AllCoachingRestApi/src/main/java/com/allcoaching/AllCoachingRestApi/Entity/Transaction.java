@@ -25,17 +25,22 @@ public class Transaction {
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date purchaseDate;
+
     private String orderId;
     private String gatewayTransactionId;
+    private String gatewayResponseMsg;
     private String status;
+    private String productType;//COURSE or Any other digital product of all coaching
 
-    public Transaction(long insId, long studentId, long courseId, String amount, String orderId, String gatewayTransactionId, String status) {
+
+
+    public Transaction(long insId, long studentId, long courseId, String amount, String orderId, String status,String productType) {
         this.insId = insId;
         this.studentId = studentId;
         this.courseId = courseId;
         this.amount = amount;
         this.orderId = orderId;
-        this.gatewayTransactionId = gatewayTransactionId;
         this.status = status;
+        this.productType = productType;
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class TransactionService {
@@ -63,5 +64,18 @@ public class TransactionService {
         {
             return new ArrayList<>();
         }
+    }
+
+
+    //update status and gatewayTransactionId for completing transaction
+    public void compeleteTransaction(String status,String gatewayTxnId,String responseMsg,String orderId)
+    {
+            transactionRepo.completeTransaction(status,gatewayTxnId,responseMsg,orderId);
+    }
+
+    //fetch transaction details by order id
+    public Optional<Transaction> findByOrderId(String orderId)
+    {
+        return  transactionRepo.findByOrderId(orderId);
     }
 }

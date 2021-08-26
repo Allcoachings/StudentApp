@@ -5,6 +5,8 @@ import com.allcoaching.AllCoachingRestApi.Respository.CourseRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CourseService {
     @Autowired
@@ -25,5 +27,11 @@ public class CourseService {
     public void deleteCourseById(long id)
     {
           courseRepo.deleteById(id);
+    }
+
+    //fetch course bu its id
+    public Optional<Course> findById(long id)
+    {
+        return courseRepo.findById(id);
     }
 }
