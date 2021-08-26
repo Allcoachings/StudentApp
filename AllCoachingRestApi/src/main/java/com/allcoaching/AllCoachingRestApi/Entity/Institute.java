@@ -24,6 +24,7 @@ public class Institute {
     private String password;
     private String address;
     private String city;
+    private String expoToken;
     private String state;
     private long category;
     private String about;

@@ -52,10 +52,10 @@ public class CourseVideoController {
 //    }
 
     @CrossOrigin(origins = "*")
-    @GetMapping("/all/{id}")
-    public Iterable<CourseVideo> findByCourse(@PathVariable  long id)
+    @GetMapping("/all/{id}/{offset}/{dataLimit}")
+    public Iterable<CourseVideo> findByCourse(@PathVariable  long id,@PathVariable int offset,@PathVariable int dataLimit)
     {
-        return courseVideoService.findByCourseId(id);
+        return courseVideoService.findByCourseId(id,offset,dataLimit);
 
     }
     @GetMapping("/{id}")
@@ -82,10 +82,10 @@ public class CourseVideoController {
     }
 
     //mapping for fetching videos of a playlist
-    @GetMapping("/playlist/{id}")
-    public  Iterable<CourseVideo> findPlaylistById(@PathVariable long id)
+    @GetMapping("/playlist/{id}/{offset}/{dataLimit}")
+    public  Iterable<CourseVideo> findPlaylistById(@PathVariable long id,@PathVariable int offset,@PathVariable int dataLimit)
     {
-        return courseVideoService.findByPlaylist(id);
+        return courseVideoService.findByPlaylist(id,offset,dataLimit);
     }
 
 

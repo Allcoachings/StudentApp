@@ -1,12 +1,16 @@
 package com.allcoaching.AllCoachingRestApi.Service;
 
 import com.allcoaching.AllCoachingRestApi.Entity.CourseVideo;
+import com.allcoaching.AllCoachingRestApi.Entity.Transaction;
 import com.allcoaching.AllCoachingRestApi.Entity.VideoPlaylist;
 import com.allcoaching.AllCoachingRestApi.Respository.CourseVideoPLayListRepo;
 import com.allcoaching.AllCoachingRestApi.Respository.CourseVideoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -29,15 +33,15 @@ public class CourseVideoService {
     }
 
     //fetching videos by playlist
-    public Iterable<CourseVideo> findByPlaylist(long id)
+    public Iterable<CourseVideo> findByPlaylist(long id,int page,int pageSize)
     {
-        return courseVideoPLayListRepo.playListContent(id);
+        return extractDataFromPage(courseVideoPLayListRepo.playListContent(id,PageRequest.of(page,pageSize)));
     }
 
     //fetching video by course Id
-    public  Iterable<CourseVideo> findByCourseId(long id)
+    public  Iterable<CourseVideo> findByCourseId(long id,int page,int pageSize)
     {
-        return courseVideoRepo.findByCourseId(id);
+        return extractDataFromPage(courseVideoRepo.findByCourseId(id, PageRequest.of(page,pageSize)));
     }
 
     //fetching video by  Id
@@ -74,5 +78,17 @@ public class CourseVideoService {
     public  long countCourseVideo(long courseId)
     {
         return courseVideoRepo.countByCourseId(courseId);
+    }
+
+
+    public Iterable<CourseVideo> extractDataFromPage(Page<CourseVideo> transactionPage)
+    {
+        if(transactionPage.hasContent())
+        {
+            return transactionPage.getContent();
+        }else
+        {
+            return new ArrayList<>();
+        }
     }
 }

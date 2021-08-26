@@ -67,7 +67,10 @@ public class StudentService {
     }
 
 
-
+    public void updatePushToken(long id,String token)
+    {
+        studentRepo.updatePushToken(id,token);
+    }
 
 
 
