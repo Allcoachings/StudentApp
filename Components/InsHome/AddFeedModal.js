@@ -183,33 +183,33 @@ class AddFeedModal extends Component {
           })
   }
 
-handleNextBtnClick=()=>
-{
-    this.setState({stepCheck:2})
-}
-feedOption=(icon,name,onPress)=>
-{
-    return(
-        <TouchableOpacity style={{flex:1,flexDirection:'row',padding:10,borderBottomWidth:1,borderBottomColor:theme.labelOrInactiveColor}} onPress={onPress}> 
-            <View style={{}}>
-                <Feather name={icon} color={theme.accentColor} size={20}/>
-            </View>
-            <View>
-                <Text>{name}</Text>
-            </View>
-        </TouchableOpacity>
-    )
-}
-renderFeedTypeOptions=()=>
-{
-    return (
-        <View>
-            {this.feedOption("image","Image Post",()=>{this.setState({postType:1,stepCheck:2})})}
-            {this.feedOption("align-left","Text Post",()=>{this.setState({postType:3,stepCheck:2})})}
-            {this.feedOption("bar-chart-2","Poll",()=>{this.setState({postType:2,stepCheck:2})})}
-        </View>
-    )
-}
+// handleNextBtnClick=()=>
+// {
+//     this.setState({stepCheck:2})
+// }
+// feedOption=(icon,name,onPress)=>
+// {
+//     return(
+//         <TouchableOpacity style={{flex:1,flexDirection:'row',padding:10,borderBottomWidth:1,borderBottomColor:theme.labelOrInactiveColor}} onPress={onPress}> 
+//             <View style={{}}>
+//                 <Feather name={icon} color={theme.accentColor} size={20}/>
+//             </View>
+//             <View>
+//                 <Text>{name}</Text>
+//             </View>
+//         </TouchableOpacity>
+//     )
+// }
+// renderFeedTypeOptions=()=>
+// {
+//     return (
+//         <View>
+//             {this.feedOption("image","Image Post",()=>{this.setState({postType:1,stepCheck:2})})}
+//             {this.feedOption("align-left","Text Post",()=>{this.setState({postType:3,stepCheck:2})})}
+//             {this.feedOption("bar-chart-2","Poll",()=>{this.setState({postType:2,stepCheck:2})})}
+//         </View>
+//     )
+// }
 
 setFeedTypeOption=(postType)=>
 {
@@ -217,53 +217,53 @@ setFeedTypeOption=(postType)=>
 }
 
 
-  renderAddImagePostForm=()=>{
-      return ( 
-        <View> 
-                <TouchableOpacity onPress={this.handleImageBtnClick}>
-                    <Image style={{width: '100%',height: 200,resizeMode:'contain'}} source={{uri:this.state.postImage?this.state.postImage.uri:addBannerImagePlaceholder}}/>
-                </TouchableOpacity >
-                <View style={styles.inputView}>
-                        <Text style={styles.labelText}>Post Description</Text>
-                        {CardView(
-                            <TextInput 
-                                placeholderTextColor={theme.greyColor} 
-                                defaultValue={this.state.description}
-                                placeholder="Description" 
-                                onChangeText={(text)=>this.setState({description: text})} 
-                                multiline={true}  
-                                style={styles.inputField}
-                            />, {borderRadius: 10}
-                        )}
-                </View> 
-                <View style={styles.inputView}>
-                        <Text style={styles.labelText}>Tags (# Separated)</Text>
-                        {CardView(
-                            <TextInput 
-                                placeholderTextColor={theme.greyColor} 
-                                placeholder="Tags" 
-                                onChangeText={(text)=>this.setState({tags: text})} 
-                                multiline={true} 
-                                numberOfLines={3} 
-                                style={styles.inputField}
-                            />, {borderRadius: 10}
-                        )}
-                </View>
-                 <View style={styles.btnView}>
-                    <TouchableOpacity style={styles.submitButton} onPress={this.handleAddImageFeedBtnClick}>
-                          {this.state.addFeedLoading?
-                          (
-                                <ActivityIndicator color={theme.primaryColor} size={"large"}/>
-                          ):( 
-                                <Text style={styles.submitButtonText}>Add</Text>
-                            )}
-                    </TouchableOpacity>
+//   renderAddImagePostForm=()=>{
+//       return ( 
+//         <View> 
+//                 <TouchableOpacity onPress={this.handleImageBtnClick}>
+//                     <Image style={{width: '100%',height: 200,resizeMode:'contain'}} source={{uri:this.state.postImage?this.state.postImage.uri:addBannerImagePlaceholder}}/>
+//                 </TouchableOpacity >
+//                 <View style={styles.inputView}>
+//                         <Text style={styles.labelText}>Post Description</Text>
+//                         {CardView(
+//                             <TextInput 
+//                                 placeholderTextColor={theme.greyColor} 
+//                                 defaultValue={this.state.description}
+//                                 placeholder="Description" 
+//                                 onChangeText={(text)=>this.setState({description: text})} 
+//                                 multiline={true}  
+//                                 style={styles.inputField}
+//                             />, {borderRadius: 10}
+//                         )}
+//                 </View> 
+//                 <View style={styles.inputView}>
+//                         <Text style={styles.labelText}>Tags (# Separated)</Text>
+//                         {CardView(
+//                             <TextInput 
+//                                 placeholderTextColor={theme.greyColor} 
+//                                 placeholder="Tags" 
+//                                 onChangeText={(text)=>this.setState({tags: text})} 
+//                                 multiline={true} 
+//                                 numberOfLines={3} 
+//                                 style={styles.inputField}
+//                             />, {borderRadius: 10}
+//                         )}
+//                 </View>
+//                  <View style={styles.btnView}>
+//                     <TouchableOpacity style={styles.submitButton} onPress={this.handleAddImageFeedBtnClick}>
+//                           {this.state.addFeedLoading?
+//                           (
+//                                 <ActivityIndicator color={theme.primaryColor} size={"large"}/>
+//                           ):( 
+//                                 <Text style={styles.submitButtonText}>Add</Text>
+//                             )}
+//                     </TouchableOpacity>
                      
-                </View>
+//                 </View>
 
-        </View>
-      )
-  }
+//         </View>
+//       )
+//   }
 
   addPollOptions=()=>
   {
@@ -305,145 +305,145 @@ setFeedTypeOption=(postType)=>
             </View> 
         )
   }
-  renderAddPollPostForm=()=>
-  {
-    return ( 
-        <View>  
-                <View style={styles.inputView}>
-                        <Text style={styles.labelText}>Poll Question</Text>
-                        {CardView(
-                            <TextInput 
-                                placeholderTextColor={theme.greyColor} 
-                                placeholder="Question" 
-                                onChangeText={(text)=>this.setState({pollQuestion: text})} 
-                                multiline={true} 
-                                numberOfLines={3} 
-                                style={styles.inputField}
-                            />, {borderRadius: 10}
-                        )}
-                </View> 
-                <View>
-                    <View style={{flex: 1,flexDirection:'row'}}>
-                        <TouchableOpacity style={{backgroundColor:theme.featureYesColor,margin:10,padding:10}} onPress={this.addPollOptions}>
-                            <Feather name="plus" size={20} color={theme.accentColor} />
-                        </TouchableOpacity>
-                        {this.state.pollOptionCounter>2?(
+//   renderAddPollPostForm=()=>
+//   {
+//     return ( 
+//         <View>  
+//                 <View style={styles.inputView}>
+//                         <Text style={styles.labelText}>Poll Question</Text>
+//                         {CardView(
+//                             <TextInput 
+//                                 placeholderTextColor={theme.greyColor} 
+//                                 placeholder="Question" 
+//                                 onChangeText={(text)=>this.setState({pollQuestion: text})} 
+//                                 multiline={true} 
+//                                 numberOfLines={3} 
+//                                 style={styles.inputField}
+//                             />, {borderRadius: 10}
+//                         )}
+//                 </View> 
+//                 <View>
+//                     <View style={{flex: 1,flexDirection:'row'}}>
+//                         <TouchableOpacity style={{backgroundColor:theme.featureYesColor,margin:10,padding:10}} onPress={this.addPollOptions}>
+//                             <Feather name="plus" size={20} color={theme.accentColor} />
+//                         </TouchableOpacity>
+//                         {this.state.pollOptionCounter>2?(
 
-                        <TouchableOpacity style={{backgroundColor:theme.featureNoColor,margin:10,padding:10}} onPress={this.removePollOption}>
-                            <Feather name="minus" size={20} color={theme.accentColor} />
-                        </TouchableOpacity>
-                        ):(null)}
+//                         <TouchableOpacity style={{backgroundColor:theme.featureNoColor,margin:10,padding:10}} onPress={this.removePollOption}>
+//                             <Feather name="minus" size={20} color={theme.accentColor} />
+//                         </TouchableOpacity>
+//                         ):(null)}
                         
-                    </View>
-                    <FlatList 
-                        data={this.state.pollOptions}  
-                        renderItem={({item,index}) =>this.renderPollOption(item,index)}
-                        keyExtractor={(item,index) =>index.toString()}
-                    />
-                </View> 
-                <View style={styles.inputView}>
-                        <Text style={styles.labelText}>Tags (# Separated)</Text>
-                        {CardView(
-                            <TextInput 
-                                placeholderTextColor={theme.greyColor} 
-                                placeholder="Tags" 
-                                onChangeText={(text)=>this.setState({tags: text})} 
-                                multiline={true} 
-                                numberOfLines={3} 
-                                style={styles.inputField}
-                            />, {borderRadius: 10}
-                        )}
-                </View>
-                 <View style={styles.btnView}>
-                    <TouchableOpacity style={styles.submitButton} onPress={this.handleAddPollFeedBtnClick}>
-                          {this.state.addFeedLoading?
-                          (
-                                <ActivityIndicator color={theme.primaryColor} size={"large"}/>
-                          ):( 
-                                <Text style={styles.submitButtonText}>Add</Text>
-                            )}
-                    </TouchableOpacity>
+//                     </View>
+//                     <FlatList 
+//                         data={this.state.pollOptions}  
+//                         renderItem={({item,index}) =>this.renderPollOption(item,index)}
+//                         keyExtractor={(item,index) =>index.toString()}
+//                     />
+//                 </View> 
+//                 <View style={styles.inputView}>
+//                         <Text style={styles.labelText}>Tags (# Separated)</Text>
+//                         {CardView(
+//                             <TextInput 
+//                                 placeholderTextColor={theme.greyColor} 
+//                                 placeholder="Tags" 
+//                                 onChangeText={(text)=>this.setState({tags: text})} 
+//                                 multiline={true} 
+//                                 numberOfLines={3} 
+//                                 style={styles.inputField}
+//                             />, {borderRadius: 10}
+//                         )}
+//                 </View>
+//                  <View style={styles.btnView}>
+//                     <TouchableOpacity style={styles.submitButton} onPress={this.handleAddPollFeedBtnClick}>
+//                           {this.state.addFeedLoading?
+//                           (
+//                                 <ActivityIndicator color={theme.primaryColor} size={"large"}/>
+//                           ):( 
+//                                 <Text style={styles.submitButtonText}>Add</Text>
+//                             )}
+//                     </TouchableOpacity>
                      
-                </View>
+//                 </View>
 
-        </View>
-      )
-  }
-  renderAddTextPostForm=()=>
-  {
-    return ( 
-        <View> 
-                {/* <TouchableOpacity onPress={this.handleImageBtnClick}>
-                    <Image style={{width: '100%',height: 200,resizeMode:'contain'}} source={{uri:this.state.postImage?this.state.postImage.uri:addBannerImagePlaceholder}}/>
-                </TouchableOpacity > */}
-                <View style={styles.inputView}>
-                        <Text style={styles.labelText}>Post Description</Text>
-                        {CardView(
-                            <TextInput 
-                                placeholderTextColor={theme.greyColor} 
-                                placeholder="Description" 
-                                onChangeText={(text)=>this.setState({description: text})} 
-                                multiline={true} 
-                                numberOfLines={3} 
-                                style={styles.inputField}
-                            />, {borderRadius: 10}
-                        )}
-                </View> 
-                <View style={styles.inputView}>
-                        <Text style={styles.labelText}>Tags (# Separated)</Text>
-                        {CardView(
-                            <TextInput 
-                                placeholderTextColor={theme.greyColor} 
-                                placeholder="Tags" 
-                                onChangeText={(text)=>this.setState({tags: text})} 
-                                multiline={true} 
-                                numberOfLines={3} 
-                                style={styles.inputField}
-                            />, {borderRadius: 10}
-                        )}
-                </View>
-                 <View style={styles.btnView}>
-                    <TouchableOpacity style={styles.submitButton} onPress={this.handleAddTextFeedBtnClick}>
-                          {this.state.addFeedLoading?
-                          (
-                                <ActivityIndicator color={theme.primaryColor} size={"large"}/>
-                          ):( 
-                                <Text style={styles.submitButtonText}>Add</Text>
-                            )}
-                    </TouchableOpacity>
+//         </View>
+//       )
+//   }
+//   renderAddTextPostForm=()=>
+//   {
+//     return ( 
+//         <View> 
+//                 {/* <TouchableOpacity onPress={this.handleImageBtnClick}>
+//                     <Image style={{width: '100%',height: 200,resizeMode:'contain'}} source={{uri:this.state.postImage?this.state.postImage.uri:addBannerImagePlaceholder}}/>
+//                 </TouchableOpacity > */}
+//                 <View style={styles.inputView}>
+//                         <Text style={styles.labelText}>Post Description</Text>
+//                         {CardView(
+//                             <TextInput 
+//                                 placeholderTextColor={theme.greyColor} 
+//                                 placeholder="Description" 
+//                                 onChangeText={(text)=>this.setState({description: text})} 
+//                                 multiline={true} 
+//                                 numberOfLines={3} 
+//                                 style={styles.inputField}
+//                             />, {borderRadius: 10}
+//                         )}
+//                 </View> 
+//                 <View style={styles.inputView}>
+//                         <Text style={styles.labelText}>Tags (# Separated)</Text>
+//                         {CardView(
+//                             <TextInput 
+//                                 placeholderTextColor={theme.greyColor} 
+//                                 placeholder="Tags" 
+//                                 onChangeText={(text)=>this.setState({tags: text})} 
+//                                 multiline={true} 
+//                                 numberOfLines={3} 
+//                                 style={styles.inputField}
+//                             />, {borderRadius: 10}
+//                         )}
+//                 </View>
+//                  <View style={styles.btnView}>
+//                     <TouchableOpacity style={styles.submitButton} onPress={this.handleAddTextFeedBtnClick}>
+//                           {this.state.addFeedLoading?
+//                           (
+//                                 <ActivityIndicator color={theme.primaryColor} size={"large"}/>
+//                           ):( 
+//                                 <Text style={styles.submitButtonText}>Add</Text>
+//                             )}
+//                     </TouchableOpacity>
                      
-                </View>
+//                 </View>
 
-        </View>
-      )
-  }
+//         </View>
+//       )
+//   }
 
-  renderFeedSteps=(stepCheck)=>{
-      switch(stepCheck)
-      {
-          case 1:
-              return (
-                this.renderFeedTypeOptions()
-              )
-        case 2:
-            switch(this.state.postType)
-            {
-                case 1:
-                    return (
-                        this.renderAddImagePostForm()
-                        ) 
-                case 2:
-                    return (
-                        this.renderAddPollPostForm()
-                        ) 
-                case 3:
-                    return (
-                        this.renderAddTextPostForm()
-                        )  
-            }
+//   renderFeedSteps=(stepCheck)=>{
+//       switch(stepCheck)
+//       {
+//           case 1:
+//               return (
+//                 this.renderFeedTypeOptions()
+//               )
+//         case 2:
+//             switch(this.state.postType)
+//             {
+//                 case 1:
+//                     return (
+//                         this.renderAddImagePostForm()
+//                         ) 
+//                 case 2:
+//                     return (
+//                         this.renderAddPollPostForm()
+//                         ) 
+//                 case 3:
+//                     return (
+//                         this.renderAddTextPostForm()
+//                         )  
+//             }
 
-      }
-  }
+//       }
+//   }
 
 
   renderButton=(name,icon,onPress)=>
