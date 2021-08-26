@@ -1,5 +1,6 @@
 package com.allcoaching.AllCoachingRestApi.Service;
 
+import com.allcoaching.AllCoachingRestApi.Entity.CourseDocument;
 import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeries;
 import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeriesQuestions;
 import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeriesPlaylist;
@@ -48,14 +49,14 @@ public class InsTestSeriesService {
         return insTestSeriesQuestionsRepo.saveAll(insTestSeriesQuestionsList);
     }
 
-    public Iterable<InsTestSeries> getTestSeriesByCourseID(long id)
+    public Iterable<InsTestSeries> getTestSeriesByCourseID(long id,int page,int pageSize)
     {
-        return insTestSeriesRepo.findByCourseIdAndIsAdmin(id,false);
+        return extractDataFromPage(insTestSeriesRepo.findByCourseIdAndIsAdmin(id,false,PageRequest.of(page,pageSize )));
     }
 
-    public Iterable<InsTestSeries> getTestSeriesByPlaylistID(long id)
+    public Iterable<InsTestSeries> getTestSeriesByPlaylistID(long id,int page,int pageSize)
     {
-        return insTestSeriesRepo.findByPlaylistIdAndIsAdmin(id,false);
+        return extractDataFromPage(insTestSeriesRepo.findByPlaylistIdAndIsAdmin(id,false,PageRequest.of(page,pageSize)));
     }
 
     public Iterable<InsTestSeriesQuestions> getSeriesQuestion(long id,int page,int pageSize)
@@ -134,5 +135,17 @@ public class InsTestSeriesService {
     public  Iterable<InsTestSeriesPlaylist> findPlaylistByCourseId(long courseId)
     {
         return testSeriesPlaylistRepo.findByCourseId(courseId);
+    }
+
+
+    public Iterable<InsTestSeries> extractDataFromPage(Page<InsTestSeries> transactionPage)
+    {
+        if(transactionPage.hasContent())
+        {
+            return transactionPage.getContent();
+        }else
+        {
+            return new ArrayList<>();
+        }
     }
 }

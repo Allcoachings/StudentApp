@@ -47,7 +47,7 @@ public class CourseDocumentService {
     public Iterable<CourseDocument> findByPlaylistId(long id,int page,int pageSize)
     {
 
-        return extractDataFromPage(courseDocumentPlaylistRepo.playListContent(id,PageRequest.of(page,pageSize));
+        return extractDataFromPage(courseDocumentPlaylistRepo.playListContent(id,PageRequest.of(page,pageSize)));
     }
 
 
