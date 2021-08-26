@@ -83,5 +83,11 @@ public class MainBannersController {
         return ResponseEntity.created(location).headers(headers).build();
     }
 
+    @CrossOrigin(origins = "*")
+    @GetMapping("byplaceholder/{placeholder}")
+    public Iterable<MainBanners> findByPlaceholder(@PathVariable String placeholder)
+    {
+        return mainBannersService.findByPlaceholder(placeholder);
+    }
 
 }

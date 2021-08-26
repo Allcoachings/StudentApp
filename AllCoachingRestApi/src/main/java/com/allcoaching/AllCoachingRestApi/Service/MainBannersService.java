@@ -50,9 +50,16 @@ public class MainBannersService {
         return mainBannersRepo.findAll();
     }
 
+    //fetching banners by placeholder values
+    public Iterable<MainBanners> findByPlaceholder(String placeholder)
+    {
+        return mainBannersRepo.findByPlaceHolder(placeholder);
+    }
     //removing stored banner using banner unique id
     public void deleteById(long id)
     {
         mainBannersRepo.deleteById(id);
     }
+
+
 }

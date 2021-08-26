@@ -9,6 +9,7 @@ import { Redirect } from 'react-router';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import {seriesList} from '../Utils/DataHelper/TestSeries'
+import { fetch_Banners } from '../Utils/DataHelper/Banners'
 import Instructions from './Instructions'
 import RenderSingleTestSeries from './RenderSingleTestSeries'
 import EmptyList from '../Utils/EmptyList'
@@ -54,6 +55,21 @@ class SeriesList extends React.Component {
 
     componentDidMount(){
         seriesList(this.state.id,this.state.offset,dataLimit,this.seriesListCallBack)
+        fetch_Banners("testSeries", this.bannerCallback)
+    }
+
+    bannerCallback=(response)=>{
+        if(response.status==200)
+        {
+            response.json().then(data=>
+            {
+                this.setState({banner: data})
+            })
+        }
+        else
+        {
+            console.log("something went wrong", response.status)
+        }
     }
 
     seriesListCallBack=(response)=>{
@@ -79,7 +95,7 @@ class SeriesList extends React.Component {
     {
         return(
             <TouchableOpacity style={styles.bannerItemContainer}>
-                    <Image source={item.image} style={styles.bannerImage}/>
+                    <Image source={{uri: serverBaseUrl+item.bannerImageLink}} style={styles.bannerImage}/>
             </TouchableOpacity  >
         )
     }
@@ -96,11 +112,6 @@ class SeriesList extends React.Component {
             >
                <ScrollView>
                     <View style={styles.main}>
-                        {/* <View style={styles.headTitleView}>
-                            <Text></Text>
-                            <Text style={styles.title}>UPSC CSE</Text>
-                            <Feather name="share-2" size={18} style={{marginRight: 10}}/>
-                        </View> */}
                         <View 
                             style={{justifyContent: 'center', alignItems: 'center', marginTop: 10, marginBottom: 10}}>
                             <Image 

@@ -874,10 +874,18 @@ class InsHome extends React.Component {
                 // console.log(this.state.feeds)
                 return(
                     <View style={styles.container}>
-                        <TouchableOpacity style={{backgroundColor:theme.textColor,borderColor:theme.labelOrInactiveColor,borderWidth:1, padding:4, borderRadius:6, marginHorizontal:5, marginBottom:7, justifyContent: 'center', alignItems: 'center'}} onPress={()=>this.openAddFeedModal()}>
+                        {/* <TouchableOpacity style={{backgroundColor:theme.textColor,borderColor:theme.labelOrInactiveColor,borderWidth:1, padding:4, borderRadius:6, marginHorizontal:5, marginBottom:7, justifyContent: 'center', alignItems: 'center'}} onPress={()=>this.openAddFeedModal()}>
                             <Text style={{color:theme.primaryColor, fontSize:16}}>Add</Text>
                             
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
+                        <AddFeedModal 
+                            addFeedCallBack={this.appendFeed}
+                            isAddFeedModalVisible={this.state.isAddFeedModalVisible} 
+                            closeModal={this.closeAddFeedModal}
+                            posterId={this.props.institute.details.id} 
+                            postedBy={1}
+                            instituteDetails={institute}
+                        />
                         <FlatList
                             data={this.state.feeds}
                             renderItem={({item}) => this.renderFeedItem(item)}
@@ -995,7 +1003,7 @@ class InsHome extends React.Component {
                     null
                 )} 
                 
-                {this.state.isAddFeedModalVisible?(
+                {/* {this.state.isAddFeedModalVisible?(
                         <AddFeedModal 
                             addFeedCallBack={this.appendFeed}
                             isAddFeedModalVisible={this.state.isAddFeedModalVisible} 
@@ -1006,7 +1014,7 @@ class InsHome extends React.Component {
                         />
                 ):(
                     null
-                )} 
+                )}  */}
             </PageStructure>
         );
     }

@@ -5,12 +5,13 @@ import {theme,screenMobileWidth} from '../config'
 import CardView from '../Utils/CardView';
 import { Feather } from '@expo/vector-icons';
 import {connect} from 'react-redux'
-import {addTestSeries} from '../Utils/DataHelper/Course'
+import {addTestSeries, fetch_testSeriesPlaylist} from '../Utils/DataHelper/Course'
 import Toast from 'react-native-simple-toast';
 
 import { RadioButton } from 'react-native-paper';
 
 import { Picker } from 'native-base';
+import AddCourseTestSeriesPlaylist from './AddCourseTestSeriesPlaylist';
 class AddTest extends React.Component {
     state = {
         title: '',
@@ -160,6 +161,27 @@ class AddTest extends React.Component {
             </>
         )
     }
+
+    componentDidMount() {
+        fetch_testSeriesPlaylist(this.props.route.params.courseId,this.handlePlaylistCallback)
+    }
+    handlePlaylistCallback=(response)=>
+    {
+        console.log("response playlist",response.status)
+        if(response.status == 200)
+        {
+            response.json().then(response=>
+            { 
+                console.log("response",response)
+                response.unshift({id:-1,name:"Select Playlist"})
+                this.setState({playlist: response,loadingPlaylist:false})
+            })
+                
+        }else
+        {
+            Toast.show('Something Went Wrong.');
+        }
+    } 
     handleAddSeriesCallback=(response) => 
     {
          
@@ -175,6 +197,7 @@ class AddTest extends React.Component {
             Toast.show('Something Went Wrong. Please Try Again Later.');
         }
     }
+
     handleSubmitBtn=()=>
     {
         if(this.verify(this.state))
@@ -193,6 +216,35 @@ class AddTest extends React.Component {
             Toast.show('Please Fill All The Fields.');
         }
         
+    }
+    setSelectedPlaylist=(selectedPlaylist)=>
+    {
+    
+            this.setState({selectedPlaylist})
+    }
+    renderPickerItem=(item)=>
+    {
+        console.log(item)
+        return( 
+           
+            <Picker.Item label={item.name} value={item.id} />
+        )
+    }
+    appendPlaylist=(obj)=>
+    {
+        let playlist = this.state.playlist;
+        playlist.push(obj)
+        this.setState({playlist})
+        this.props.route.params.appendCourseTestSeriesPlaylist(obj);
+
+    }
+    openModal=()=>
+    {
+        this.setState({isModalVisible: true})
+    }
+    closeModal=()=>
+    {
+        this.setState({isModalVisible: false})
     }
 
     verify=({title,questionCount,timeDuration,isPractice,maxMarks,questionData})=>title&&questionCount&&timeDuration&&isPractice&&maxMarks&&questionData
@@ -266,7 +318,41 @@ class AddTest extends React.Component {
                                 />, {borderRadius: 10}
                             )}
                     </View>
-                    
+                    {!this.state.loadingPlaylist?(
+                            <View style={styles.inputView}>
+                                
+                            <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
+                                    <Text style={styles.labelText}>Test Series Playlist</Text>
+                                    <Feather name="plus" onPress={()=>this.openModal()} size={20}/>
+                            </View> 
+                            
+                                <View style={styles.inputField}>
+                                    <Picker 
+                                        style={{ height:30 }}
+                                        selectedValue={this.state.selectedPlaylist}
+                                        onValueChange={(itemValue, itemIndex) =>
+                                            this.setSelectedPlaylist(itemValue)
+                                        }> 
+                                        {this.state.playlist&&this.state.playlist.map((item)=>this.renderPickerItem(item))}
+                                        </Picker>
+                                    {/* <DropDownPicker
+                                        placeholder="Select Category"
+                                        placeholderTextColor={theme.greyColor}
+                                        containerStyle={{borderColor: theme.greyColor}}
+                                        items={this.state.categories}
+                                        open={this.state.open}
+                                        setOpen={this.open}
+                                        value={this.state.selectedPlaylist}
+                                        setValue={this.setValue}
+                                        dropdownContainerStyle={{
+                                            zIndex:1000,
+                                            elevation:100
+                                        }}
+                                    /> */}
+                                </View>  
+                            </View>
+                        ):(null)}
+                   
                     <FlatList 
                             data={Object.values(this.state.questionData)}
                             renderItem={({item,index})=>this.renderQuestionView(item,index)}
@@ -287,6 +373,11 @@ class AddTest extends React.Component {
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
+                {this.state.isModalVisible?(
+                            <AddCourseTestSeriesPlaylist  appendPlaylist={this.appendPlaylist} isModalVisible={this.state.isModalVisible} closeModal={this.closeModal} courseId={this.props.route.params.courseId}/>
+                ):(
+                    null
+                )}
            </PageStructure>
         )}
     }

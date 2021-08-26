@@ -28,7 +28,6 @@ class TestSeriesIns extends React.Component {
         {
             response.json().then(data=>
             {
-                console.log("TestSeries data", data)
                 this.setState({testSeries: data, category: data[0].categoryName})
             })
         }

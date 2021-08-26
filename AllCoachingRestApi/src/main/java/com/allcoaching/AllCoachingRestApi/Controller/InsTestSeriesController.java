@@ -90,7 +90,15 @@ public class InsTestSeriesController {
     @GetMapping("/playlist/{playListId}/")
     public Iterable<InsTestSeries> findByPlaylistId(@PathVariable long playListId)
     {
-        return insTestSeriesService.getTestSeriesByCourseID(playListId);
+        return insTestSeriesService.getTestSeriesByPlaylistID(playListId);
+    }
+
+    //fetch Test Series playlists by courseId
+    @CrossOrigin(origins = "*")
+    @GetMapping("all/playlists/{courseId}")
+    public Iterable<InsTestSeriesPlaylist> findAllPlaylists(@PathVariable long courseId)
+    {
+         return  insTestSeriesService.findPlaylistByCourseId(courseId);
     }
 
 

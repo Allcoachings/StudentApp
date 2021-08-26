@@ -9,6 +9,7 @@ import { Redirect } from 'react-router';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import { fetchTestSeriesBySubCategory } from '../Utils/DataHelper/TestSeries'
+import { fetch_Banners } from '../Utils/DataHelper/Banners'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 class InsTestSeriesList extends React.Component {
@@ -49,8 +50,10 @@ class InsTestSeriesList extends React.Component {
 
     componentDidMount(){
         fetchTestSeriesBySubCategory(this.state.id, this.state.offset, dataLimit,this.SubCatTestSeriesCallback)
+        fetch_Banners("testSeries", this.bannerCallback)
     }
 
+    
     SubCatTestSeriesCallback=(response)=>{
         if(response.status==200)
         {
@@ -64,12 +67,24 @@ class InsTestSeriesList extends React.Component {
             console.log("something went wrong")
         }
     }
-
+    bannerCallback=(response)=>{
+        if(response.status==200)
+        {
+            response.json().then(data=>
+            {
+                this.setState({banner: data})
+            })
+        }
+        else
+        {
+            console.log("something went wrong", response.status)
+        }
+    }
     renderBannerList=({item})=>
     {
         return(
             <TouchableOpacity style={styles.bannerItemContainer}>
-                    <Image source={item.image} style={styles.bannerImage}/>
+                    <Image source={{uri: serverBaseUrl+item.bannerImageLink}} style={styles.bannerImage}/>
             </TouchableOpacity  >
         )
     }
