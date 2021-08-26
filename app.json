@@ -9,6 +9,12 @@
       "barStyle": "light-content",
       "backgroundColor": "#404040"
     },
+    "notification": {
+      "icon": "./assets/noti.png",
+      "color": "#D41422",
+      "androidMode": "collapse",
+      "androidCollapsedTitle": "collapse"
+    },
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -28,6 +34,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
+      "useNextNotificationsApi": true,
+      "googleServicesFile": "./google-services.json", 
       "package": "com.allcoaching"
     },
     "web": {

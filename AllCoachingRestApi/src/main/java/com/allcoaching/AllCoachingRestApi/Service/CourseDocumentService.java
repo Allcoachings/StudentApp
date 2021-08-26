@@ -3,12 +3,16 @@ package com.allcoaching.AllCoachingRestApi.Service;
 import com.allcoaching.AllCoachingRestApi.Entity.Course;
 
 import com.allcoaching.AllCoachingRestApi.Entity.CourseDocument;
+import com.allcoaching.AllCoachingRestApi.Entity.CourseVideo;
 import com.allcoaching.AllCoachingRestApi.Entity.DocumentPlaylist;
 import com.allcoaching.AllCoachingRestApi.Respository.CourseDocumentPlaylistRepo;
 import com.allcoaching.AllCoachingRestApi.Respository.CourseDocumentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -33,17 +37,17 @@ public class CourseDocumentService {
     }
 
     //fetching documents  by course id
-    public Iterable<CourseDocument> findByCourseId(long id)
+    public Iterable<CourseDocument> findByCourseId(long id,int page,int pageSize)
     {
-        return courseDocumentRepo.findByCourseId(id);
+        return extractDataFromPage(courseDocumentRepo.findByCourseId(id, PageRequest.of(page,pageSize)));
 
     }
 
     //fetching  documents  by playlist id
-    public Iterable<CourseDocument> findByPlaylistId(long id)
+    public Iterable<CourseDocument> findByPlaylistId(long id,int page,int pageSize)
     {
 
-        return courseDocumentPlaylistRepo.playListContent(id);
+        return extractDataFromPage(courseDocumentPlaylistRepo.playListContent(id,PageRequest.of(page,pageSize));
     }
 
 
@@ -83,5 +87,15 @@ public class CourseDocumentService {
     public  long countCourseDocuments(long courseId)
     {
         return courseDocumentRepo.countByCourseId(courseId);
+    }
+    public Iterable<CourseDocument> extractDataFromPage(Page<CourseDocument> transactionPage)
+    {
+        if(transactionPage.hasContent())
+        {
+            return transactionPage.getContent();
+        }else
+        {
+            return new ArrayList<>();
+        }
     }
 }

@@ -26,6 +26,7 @@ public class Student {
     private String email;
     private String name;
     private String stateOfResidence;
+    private String expoToken;
     private String mobileNumber;
     private String studentImage;
     private boolean blocked;

@@ -1,0 +1,135 @@
+{
+  "project_info": {
+    "project_number": "81193211191",
+    "firebase_url": "https://cyber-flow.firebaseio.com",
+    "project_id": "cyber-flow",
+    "storage_bucket": "cyber-flow.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:81193211191:android:be7a834a1dd623198a76b2",
+        "android_client_info": {
+          "package_name": "com.allcoaching"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "81193211191-dgj9c3u6bj89071c869eapoc1tkjm07a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3oiXOA0lkK1yxBWTsJ0NydYK6GOjC3pw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "81193211191-dgj9c3u6bj89071c869eapoc1tkjm07a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:81193211191:android:c330022fe3dc67e18a76b2",
+        "android_client_info": {
+          "package_name": "com.barter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "81193211191-dgj9c3u6bj89071c869eapoc1tkjm07a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3oiXOA0lkK1yxBWTsJ0NydYK6GOjC3pw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "81193211191-dgj9c3u6bj89071c869eapoc1tkjm07a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:81193211191:android:8d3f6e7e7aea0af28a76b2",
+        "android_client_info": {
+          "package_name": "com.cyberflow.scanit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "81193211191-vat8fnersmr77vl3ts9jl2rgtn0uanvu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cyberflow.scanit",
+            "certificate_hash": "1a162cf2a71888dddf96fc255f7f9e3d570dcfad"
+          }
+        },
+        {
+          "client_id": "81193211191-dgj9c3u6bj89071c869eapoc1tkjm07a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3oiXOA0lkK1yxBWTsJ0NydYK6GOjC3pw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "81193211191-dgj9c3u6bj89071c869eapoc1tkjm07a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:81193211191:android:48e4cdcc4f9109b58a76b2",
+        "android_client_info": {
+          "package_name": "in.cyberflow.dubuddy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "81193211191-dgj9c3u6bj89071c869eapoc1tkjm07a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3oiXOA0lkK1yxBWTsJ0NydYK6GOjC3pw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "81193211191-dgj9c3u6bj89071c869eapoc1tkjm07a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

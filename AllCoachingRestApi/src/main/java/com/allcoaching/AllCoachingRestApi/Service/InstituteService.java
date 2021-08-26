@@ -111,4 +111,10 @@ public class InstituteService {
         }
 
     }
+
+
+    public void updatePushToken(long id,String token)
+    {
+        instituteRepo.updatePushToken(id,token);
+    }
 }

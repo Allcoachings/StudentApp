@@ -13,7 +13,7 @@ import OtpInputs from '../OtpInputs';
 import { generateOtp,validateOtp } from '../Utils/DataHelper/Otp';
 import { findStudentByMobile } from '../Utils/DataHelper/EnrollStudent';
 import {setUserInfo,userAuthStatus} from '../Actions'    
-
+import registerForPushNotificationsAsync from '../Utils/PushNotification'
 import PhoneInput from "react-native-phone-number-input";
 // import { Toast } from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -74,8 +74,10 @@ class OtpVerification extends React.Component {
                     this.props.setUserInfo(data)
                     this.props.userAuthStatus(true);
                     AsyncStorage.setItem('authInfo', JSON.stringify({...data,authType:'user'}))  
-                    // this.props.navigation.navigate("Home")  
+                    // this.props.navigation.navigate("Home")   
+                    registerForPushNotificationsAsync(data.id,'student',()=>{console.log('token saved')})
                 }else
+
                 {
                     console.log("this.state.phoneNumber",this.state.phoneNumber)
                     this.props.openInfoModal(this.state.phoneNumber)

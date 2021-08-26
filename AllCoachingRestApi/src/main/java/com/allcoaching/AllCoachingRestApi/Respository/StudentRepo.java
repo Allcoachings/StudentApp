@@ -25,4 +25,8 @@ public interface StudentRepo extends PagingAndSortingRepository<Student,Long> {
     @Modifying
     @Query("UPDATE Student set blocked=:status where id=:id")
     void updateBlockedStatus(int status,long id);
+
+    @Modifying
+    @Query("UPDATE Student set expoToken=:token where id=:id")
+    void updatePushToken(long id,String token);
 }
