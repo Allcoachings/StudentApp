@@ -45,7 +45,6 @@ const ChangeCatModal = (props) => {
                             let span = arr[random];
                             response.unshift({key:-1,label:"All",span:3})
                             let pancham   = response.map(item=>({...item,id:item.key,span:arr[getRandomInt(0,2)]}))
-                            console.log(pancham,response,random);
                             setCategories(pancham);
                             setLoadingCategory(false);
                         })

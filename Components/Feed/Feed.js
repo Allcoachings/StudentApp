@@ -23,11 +23,8 @@ class Feed extends React.Component {
 
     handleFeedCallBack=(response)=>
     {
-        console.log("this.state.offser",this.state.offset)
         if(response.status==200){
             response.json().then(data=>{
-                console.log("data.length",data.length)
-                console.log("data",data)
                 if(data.length>0)
                 {
                     this.setState({feeds:[...this.state.feeds,...data],loadingData:false, showLoadMore: true, loadingFooter: false})

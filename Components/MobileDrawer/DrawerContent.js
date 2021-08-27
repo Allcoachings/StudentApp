@@ -56,7 +56,7 @@ export function DrawerContent(props){
                      
                         {/* {renderDrawerItem('Home','home',()=>props.navigation.navigate("Home"))} */}
                         {renderDrawerItem('Profile','user',()=>props.navigation.navigate("Profile"))}
-                        {renderDrawerItem('Notifications','bell',()=>props.navigation.navigate("Notifications"))}
+                        {renderDrawerItem('Notifications','bell',()=>props.navigation.navigate("Notification"))}
                         {renderDrawerItem('Enrollments','lock',()=>props.navigation.navigate("Enrollments"))}
                         {renderDrawerItem('Downloads','user',()=>props.navigation.navigate("Downloads"))}
                         {renderDrawerItem('Test Series','lock',()=>props.navigation.navigate("TestSeries"))}

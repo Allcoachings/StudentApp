@@ -859,9 +859,6 @@ class InstituteView extends React.Component {
                             keyExtractor={(item,index)=>index}
                             ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                         />
-                        {/* { this.renderImagePost()}
-                        { this.renderQuizPost()}
-                        { this.renderTextPost()} */}
                     </View>
                 )
                 
@@ -890,7 +887,6 @@ class InstituteView extends React.Component {
     render() {
       this.updateComponent()
         const  {institute,loadingInstitute} = this.state;
-        // this.updateComponent()
         return (
             <PageStructure 
                 iconName={"arrow-left"}
@@ -1013,10 +1009,6 @@ class InstituteView extends React.Component {
                             </View>
                             </TouchableWithoutFeedback>
                         </Modal>
-                        
-                        {/* <TouchableOpacity onPress = {() => {this.toggleModal(true)}}>
-                        <Text style = {styles.text}>Open Modal</Text>
-                        </TouchableOpacity> */}
                     </View> 
                 </ScrollView>
                 )} 

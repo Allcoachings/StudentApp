@@ -1,42 +1,80 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
 // import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import {theme,screenMobileWidth, dataLimit,serverBaseUrl} from '../config'
+import {theme,screenMobileWidth, dataLimit,serverBaseUrl, Assets} from '../config'
 import { Feather } from '@expo/vector-icons';
 import {connect } from 'react-redux'
 import CardView from '../Utils/CardView'
 import { AirbnbRating } from 'react-native-ratings';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-
+import {fetchNotifications} from '../Utils/DataHelper/Notification'
+import EmptyList from '../Utils/EmptyList'
+import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 class Notification extends React.Component {
     
     state = {
-        subscription: [],
+        notifications: [],
         offset: 0,
+        showLoadMore: true,
+        isNotificationLoading: true,
+        loadingFooter: false,
     }
 
+    componentDidMount(){
+        fetchNotifications(this.props.userInfo.id, 2, this.state.offset, dataLimit, this.notificationCallback)
+    }
 
-    singleRow=()=>{
+    notificationCallback=(response)=>{
+        if(response.status==200)
+        {
+            response.json().then(data=>
+            {
+                if(data.length>0)
+                {
+                    this.setState({notifications:[...this.state.notifications,...data],isNotificationLoading:false, showLoadMore: true, loadingFooter:false});  
+                }
+                else
+                {
+                    this.setState({notifications:this.state.notifications,isNotificationLoading:false, showLoadMore: false, loadingFooter: false}); 
+                }                  
+            })
+        }
+    }
+
+    singleRow=({item})=>{
         return(
-            
-            <View style={{marginBottom: '5%'}}>
-                <View style={styles.instituteheader}>
-                    {CardView(
-                        <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.instituteheaderLogo}/>
-                        ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:80,borderRadius:15}):({width:80,height:80, borderRadius:40})])
-                    } 
-                    <View style={styles.instituteheaderMeta}>
-                        <View style={{display: 'flex', flexDirection: 'row'}}>
-                            <Text style={styles.instituteheaderText}>Institute Name</Text>
+            <TouchableOpacity onPress={()=>this.props.navigation.navigate('webview',{link:item.notification.redirectLinkkkkkkkkkkk,mode:'defaultAppHeader'})}>
+                <View style={{marginBottom: '5%'}}>
+                    <View style={styles.instituteheader}>
+                        {CardView(
+                            <Image source={{ uri: serverBaseUrl+item.senderObject.image }} style={styles.instituteheaderLogo}/>
+                            ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:80,borderRadius:15}):({width:80,height:80, borderRadius:40})])
+                        } 
+                        <View style={styles.instituteheaderMeta}>
+                            <View style={{display: 'flex', flexDirection: 'row'}}>
+                                <Text style={styles.instituteheaderText}>{item.senderObject.name}</Text>
+                            </View>
+                            <Text style={styles.instituteDirector}>{item.notification.message}</Text>
                         </View>
-                        <Text style={styles.instituteDirector}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque elementum, eros quis elementum malesuada,</Text>
                     </View>
+                    <View style={{ borderBottomWidth: 1, borderBottomColor:theme.labelOrInactiveColor}}/>
                 </View>
-                <View style={{ borderBottomWidth: 1, borderBottomColor:theme.labelOrInactiveColor}}/>
-            </View>
-            
+            </TouchableOpacity>
         )
     }
+
+    renderFooter = () => {
+        try {
+       
+          if (this.state.loadingFooter) {
+            return <CustomActivtiyIndicator/>;
+          } else {
+            return null;
+          }
+        } catch (error) {
+          console.log(error);
+        }
+    };
 
     render() {
         return(
@@ -44,30 +82,35 @@ class Notification extends React.Component {
                 iconName={"menu"}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
                 titleonheader={"Notifications"}
-                // notificationreplaceshare={"share-2"}
+                noNotificationIcon={true}
+                nosearchIcon={true}
             >
                 <ScrollView>
                     <View style={styles.container}>
-                        {/* <View style={styles.headView}>
-                            <TouchableOpacity onPress={null}>
-                                <Feather name="chevron-left" size={26} />
-                            </TouchableOpacity>
-                            <Text style={styles.headText}>
-                                Subscription
-                            </Text>
-                            <TouchableOpacity onPress={null}>
-                                <Feather name="share-2" size={22} />
-                            </TouchableOpacity>
-                        </View> */}
-                        {this.singleRow()}
-                        {this.singleRow()}
-                        {this.singleRow()}
-                        {this.singleRow()}
-                        {this.singleRow()}
-                        {this.singleRow()}
-                        {this.singleRow()}
-                        {this.singleRow()}
-                        {this.singleRow()}
+                        {this.state.isNotificationLoading?(
+                            <CustomActivtiyIndicator mode="skimmer"/>
+                        ):(
+                            <FlatList 
+                            data={this.state.notifications} 
+                            renderItem={({item})=>this.singleRow({item})}
+                            keyExtractor={(item)=>item.id} 
+                            horizontal={false}
+                            showsHorizontalScrollIndicator={false}
+                            ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                            onEndReachedThreshold={0.1}
+                            refreshing={this.state.refreshing}
+                            ListFooterComponent={this.renderFooter}
+                            onEndReached={() => 
+                            {
+                                if(this.state.showLoadMore&&!this.state.loadingFooter)
+                                {
+                                    console.log("hehe")
+                                    this.setState({ refreshing: true,loadingFooter:true,offset:parseInt(this.state.offset)+1},()=>fetchNotifications(this.props.userInfo.id, 2, this.state.offset, dataLimit, this.notificationCallback))
+                                        
+                                }
+                            
+                            }}
+                        />)}
                     </View>
                 </ScrollView>
             </PageStructure>

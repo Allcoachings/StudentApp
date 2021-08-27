@@ -32,7 +32,26 @@ import { theme } from '../config';
           if(webData[0]=="navigate")
           {
               this.props.navigation.navigate(webData[1]);
-          }else
+          }
+          else if(webData[0]=="payment")
+          {
+              switch(webData[1])
+              {
+                  case'fail': this.props.navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Home' }],
+                  })
+                    break;
+
+                  case 'success':   this.props.navigation.reset({
+                                        index: 0,
+                                        routes: [{ name: 'Home' }],
+                                    })
+
+                    break;
+              }
+          }
+          else
           {
               this.setState({webPageTitle:webData[1],webUrl:webData[0]})
           }

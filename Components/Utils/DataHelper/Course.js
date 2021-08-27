@@ -561,7 +561,6 @@ export   const addTestSeries=( testSeries,questions,callback)=>
 
 export const fetch_testSeries = (offset, dataLimit, courseId,callback,playlistId=-1)=>
 {
-            console.log("tesetseries fetch")
             let headers = new Headers(); 
             headers.append('Content-Type', 'application/json'); 
 
