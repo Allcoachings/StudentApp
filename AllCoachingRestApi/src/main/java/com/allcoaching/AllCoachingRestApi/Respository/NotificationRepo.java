@@ -15,7 +15,7 @@ import javax.transaction.Transactional;
 public interface NotificationRepo extends PagingAndSortingRepository<Notification,Long> {
 
 
-    Page<Notification> findByNotificationForOrderByNotificationTimeDesc(int notificationFor, Pageable pageable);
+    Page<Notification> findByNotificationForAndReceiverIdOrderByNotificationTimeDesc(int notificationFor,long receiverId, Pageable pageable);
 
     @Modifying
     @Query("UPDATE Notification set isSeen=:isSeen where id=:id")

@@ -24,8 +24,9 @@ public class Notification {
     private Date notificationTime;
     private boolean isSeen=false ;
     private int notificationFor;//1 for ins 2 for student
-    private long insId;
-    private long studentId;
+    private long receiverId;
+    private  String notificationFrom;
+    private long senderId;
     private String redirectLink;
 
 

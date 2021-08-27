@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties("paytm.payment")
 @Data
-
 public class PaytmDetailPojo {
 
     private String merchantId;
