@@ -303,17 +303,33 @@ class InstituteView extends React.Component {
             {
                 response.json().then(data=>
                 {
-                    this.setState({courseTimeTable:data,courseTimetableLoaded:true,isCourseTimetableLoading:false});                   
+                    if(data.length>0)
+                    {
+                        this.setState({courseTimeTable:[...this.state.courseTimeTable,...data],courseTimetableLoaded:true,isCourseTimetableLoading:false, showLoadMore: true});               
+                    }
+                    else
+                    {
+                        this.setState({courseTimeTable:this.state.courseTimeTable,courseTimetableLoaded:true,isCourseTimetableLoading:false, showLoadMore: false});
+                    }    
                 })
             }
     }
     courseTestseriesCallback=(response)=>
     {
+        console.log(response.status)
         if(response.status==200)
         {
             response.json().then(data=>
                 {
-                    this.setState({courseTestSeries:data,courseTestSeriesLoaded:true,isCourseTestSeriesLoading:false});                   
+                    console.log(data)
+                    if(data.length>0)
+                    {
+                        this.setState({courseTestSeries:[...this.state.courseTestSeries,...data],courseTestSeriesLoaded:true,isCourseTestSeriesLoading:false, showLoadMore: true});
+                    }   
+                    else
+                    {
+                        this.setState({courseTestSeries:this.state.courseTestSeries,courseTestSeriesLoaded:true,isCourseTestSeriesLoading:false, showLoadMore: false});
+                    }                                    
                 })
         }
     }
@@ -501,9 +517,9 @@ class InstituteView extends React.Component {
                 }) 
                 break;
             case 'testSeries':
-                this.setState({activeFilter: item.name, isCourseTestSeriesLoading:true,courseTestSeriesLoaded:false, activeFilterId: item.id, offset: 0, showLoadMore: true},()=>
+                this.setState({activeFilter: item.name, isCourseTestSeriesLoading:true,courseTestSeriesLoaded:false, activeFilterId: item.id, offset: 0, showLoadMore: true, courseTestSeries: []},()=>
                 {
-                    fetch_testSeries(this.state.activeCourse,this.courseTestseriesCallback,item.id);
+                    fetch_testSeries(this.state.offset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback,item.id);
                 }) 
                 break;
 
@@ -548,8 +564,8 @@ class InstituteView extends React.Component {
             
                         if(!this.state.courseTestseriesLoaded&&!this.state.isCourseTestseriesLoading&&this.state.activeCourse)
                         {
-                            this.setState({isCourseTestseriesLoading:true})
-                            fetch_testSeries(this.state.activeCourse,this.courseTestseriesCallback);
+                            this.setState({isCourseTestseriesLoading:true, activeFilterId: -1})
+                            fetch_testSeries(this.state.offset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback,this.state.activeFilterId);
                         }
                         if(!this.state.courseTestSeriesPlaylistLoaded&&!this.state.isCourseTestSeriesPlaylistLoading&&this.state.activeCourse)
                         {
@@ -653,14 +669,16 @@ class InstituteView extends React.Component {
                                         <CustomActivtiyIndicator mode="skimmer"/>
                                     ))
             case 'testSeries':  return(
-                                     this.state.courseTestSeriesLoaded?(<FlatList 
+                                     this.state.isCourseDocumentLoading?(
+                                     <CustomActivtiyIndicator mode="skimmer"/>):(
+                                     <FlatList 
                                         data={this.state.courseTestSeries} 
                                         renderItem={({item})=><RenderSingleTestSeries item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="institute" studentEnrolled={this.state.studentEnrolled} />}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
                                         ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
-                                    />):(<CustomActivtiyIndicator mode="skimmer"/>))
+                                    />))
             case 'document':    return(
                                     this.state.courseDocumentLoaded?(<FlatList 
                                         data={this.state.courseDocuments} 
@@ -674,7 +692,7 @@ class InstituteView extends React.Component {
                         if(!this.state.courseTimetableLoaded&&!this.state.isCourseTimeTableLoading&&this.state.activeCourse)
                         {
                             this.setState({isCourseTimeTableLoading:true})
-                            fetch_courses_timetable(this.state.activeCourseDetail.id,this.courseTimeTableCallback);
+                            fetch_courses_timetable(this.state.offset, dataLimit,this.state.activeCourseDetail.id,this.courseTimeTableCallback);
                         }
                             return(
                                 this.renderTimeTable(this.state.courseTimeTable)
@@ -733,21 +751,21 @@ class InstituteView extends React.Component {
     loadMoreOnPress=()=>{
         if(this.state.activeTab=='document')
         {
-            this.setState({offset: parseInt(this.state.offset)+dataLimit},()=>{fetch_courses_documents(this.state.offset, dataLimit, this.state.activeCourse,this.courseDocumentCallback,this.state.activeFilterId);})
+            this.setState({offset: parseInt(this.state.offset)+1},()=>{fetch_courses_documents(this.state.offset, dataLimit, this.state.activeCourse,this.courseDocumentCallback,this.state.activeFilterId);})
         }
         else if(this.state.activeTab=='timeTable')
         {
-            this.setState({offset: parseInt(this.state.offset)+dataLimit},()=>{})
+            this.setState({offset: parseInt(this.state.offset)+1},()=>{fetch_courses_timetable(this.state.offset, dataLimit,this.state.activeCourse,this.courseTimeTableCallback);})
         }
         else if(this.state.activeTab=='videos')
         {
-            this.setState({offset: parseInt(this.state.offset)+dataLimit},()=>
+            this.setState({offset: parseInt(this.state.offset)+1},()=>
                 fetch_courses_videos(this.state.offset, dataLimit,this.state.activeCourse,this.courseVideoCallback,this.state.activeFilterId)
             )
         }
         else if(this.state.activeTab=='testSeries')
         {
-            this.setState({offset: parseInt(this.state.offset)+dataLimit},()=>{})
+            this.setState({offset: parseInt(this.state.offset)+1},()=>{fetch_testSeries(this.state.offset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback,this.state.activeFilterId)})
         }
     }
 
@@ -803,7 +821,7 @@ class InstituteView extends React.Component {
                             </View>
                             <View style={styles.content}>
                                 <TouchableOpacity 
-                                    onPress={()=>{this.setState({offset: 0, activeFilterId: -1, showLoadMore: true, courseDocuments:[], courseVideos: []},()=>this.activeTab('liveClass'))}} style={[styles.liveClassOuter,this.state.activeTab=='liveClass'?({backgroundColor:'red'}):({backgroundColor: theme.primaryColor})]}>
+                                    onPress={()=>{this.setState({offset: 0, activeFilterId: -1, showLoadMore: true, courseDocuments:[], courseVideos: [], courseTimeTable: [], courseTestSeries: []},()=>this.activeTab('liveClass'))}} style={[styles.liveClassOuter,this.state.activeTab=='liveClass'?({backgroundColor:'red'}):({backgroundColor: theme.primaryColor})]}>
                                     <View style={styles.liveClassInner}>
                                         <Feather name="disc" size={13} color={theme.primaryColor}/>
                                         <Text style={styles.liveClassText}>Live Now</Text>
@@ -931,32 +949,7 @@ class InstituteView extends React.Component {
                                     <TouchableOpacity style={[styles.btnView3,this.state.tabtoshow==3?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor})]} onPress={this.handleFeedTabBtnClick}>
                                         <Text style={[styles.btnText,{color:this.state.tabtoshow==3?theme.primaryColor:theme.greyColor}]} >Feed</Text>
                                     </TouchableOpacity>
-                            </View>
-                            {/* <View style={styles.marquee}>
-                                <Text style={styles.updateStyle}>
-                                    Update
-                                </Text>
-                                <MarqueeText
-                                    style={styles.marqueeContent}
-                                    duration={5000}
-                                    marqueeOnStart
-                                    loop
-                                    marqueeDelay={1000}
-                                    marqueeResetDelay={1000}
-                                    >
-                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry and typesetting industry. 
-                                 </MarqueeText>
-                            </View> */}
-                            {/* <View style={styles.InstituteCourseListView}>
-                                <FlatList 
-                                    data={instituteData.courses} 
-                                    renderItem={this.renderCourseItems}
-                                    keyExtractor={(item)=>item.id} 
-                                    horizontal={true}
-                                    showsHorizontalScrollIndicator={false}
-                                /> 
-                            </View> */}
-                            
+                            </View>                            
                             {this.switchTabRender(this.state.tabtoshow)}
 
 
@@ -985,12 +978,6 @@ class InstituteView extends React.Component {
                         institle={institute.name}
                     />
                    
-
-                    
-
-                    
-
-                
                     <View style = {styles.container}>
                         <Modal animationType = {"fade"} 
                                 transparent = {true}

@@ -628,7 +628,7 @@ class InsHome extends React.Component {
                         {
                             console.log("active course id",this.state.activeCourseId)
                             this.setState({isCourseTestseriesLoading:true})
-                            fetch_testSeries(this.state.activeCourseDetail.id,this.courseTestseriesCallback);
+                            fetch_testSeries(this.state.offset, dataLimit,this.state.activeCourseDetail.id,this.courseTestseriesCallback);
                         }
                         // if(!this.state.courseTestseriesPlaylistLoaded&&!this.state.isCourseTestseriesPlaylistLoading)
                         // {
@@ -728,7 +728,7 @@ class InsHome extends React.Component {
                         {
                            
                             this.setState({isCourseTimeTableLoading:true})
-                            fetch_courses_timetable(this.state.activeCourseDetail.id,this.courseTimeTableCallback);
+                            fetch_courses_timetable(this.state.offset, dataLimit, this.state.activeCourseDetail.id,this.courseTimeTableCallback);
                         }
                        
             

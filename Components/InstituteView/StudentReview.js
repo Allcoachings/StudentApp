@@ -31,6 +31,8 @@ class StudentReview extends React.Component {
         five_star_count: this.props.five_star_count,
         inslogo: this.props.inslogo,
         institle: this.props.institle,
+        showLoadMore: true,
+        loadingFooter: false
      }
 
     componentDidMount() {
@@ -65,7 +67,7 @@ class StudentReview extends React.Component {
         {
             Toast.show("Review Added successfully!!")
             var obj={"insName": 'Cyberflow', "insReview":{"id": 3, "courseId": 1, "insId": 1,  "reply": '', "review": this.state.review, "rating": this.state.rating,"studentId": 1}, "studentImage": "sdfghj", "studentName": "DU BUDDY"}
-            this.setState({ reviews: this.state.reviews.concat(obj) })
+            this.setState({ reviews: this.state.reviews.concat(obj), showReviewBox: false })
         }
         else
         {
@@ -77,16 +79,27 @@ class StudentReview extends React.Component {
     reviewsCallBack=(response)=>{
         if(response.status==200)
         {
-            console.log("review res");
             response.json().then(data=>
             {
-                this.setState({reviews:data,reviewLoading:false});                   
+                if(data.length>0)
+                {
+                    this.setState({reviews:[...this.state.reviews,...data],reviewLoading:false, showLoadMore: true});  
+                }
+                else
+                {
+                    this.setState({reviews:this.state.reviews,reviewLoading:false, showLoadMore: false}); 
+                }
+                                 
             })
         }
     }
 
     reviewModal(visible) {
         this.setState({ReviewmodalVisible: visible });
+    }
+
+    fetchMoreReviews=()=>{
+        this.setState({reviewOffset: parseInt(this.state.reviewOffset)+1},()=>this.fetchReviews())
     }
 
 
@@ -127,6 +140,8 @@ class StudentReview extends React.Component {
                             four_star={this.state.four_star_count}
                             five_star={this.state.five_star_count}
                             userId={this.state.studentId}
+                            showLoadMore={this.state.showLoadMore}
+                            fetchMoreReviews={this.fetchMoreReviews}
                         />
                     )}
                     <Modal animationType = {"fade"} transparent = {false}
@@ -152,18 +167,7 @@ class StudentReview extends React.Component {
                                     <View style={styles.modalHeaderRight}></View>
                                 </View>
                                 <View style={{ paddingHorizontal: 6,marginVertical:20,backgroundColor: 'white'}}>
-                                    {/* <Rating
-                                        type='star'
-                                        ratingCount={5}
-                                        startingValue={0}
-                                        imageSize={30} 
-                                        unSelectedColor={theme.appBackgroundColor} 
-                                        // tintColor={theme.appBackgroundColor}
-                                        ratingColor={theme.blueColor}
-                                        style={styles.instituteRating}
-                                        readOnly={true}
-                                        style={{textAlign: 'center', marginBottom: 10}} 
-                                    /> */}
+                                  
                                     <AirbnbRating 
                                         starContainerStyle={[styles.instituteRating,{alignSelf:"center"}]} 
                                         count={5}

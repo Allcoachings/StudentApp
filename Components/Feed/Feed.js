@@ -16,19 +16,31 @@ class Feed extends React.Component {
     state={
         offset:0,
         loadingData:true,
+        shoeLoadMore:true,
+        feeds:[],
+        loadingFooter: false
     }
 
     handleFeedCallBack=(response)=>
     {
-            if(response.status==200){
-                response.json().then(data=>{
-
-                        this.setState({feeds:data,loadingData:false})
-                })
-            }else
-            {
-                this.setState({loadingData:false})
-            }
+        console.log("this.state.offser",this.state.offset)
+        if(response.status==200){
+            response.json().then(data=>{
+                console.log("data.length",data.length)
+                console.log("data",data)
+                if(data.length>0)
+                {
+                    this.setState({feeds:[...this.state.feeds,...data],loadingData:false, showLoadMore: true, loadingFooter: false})
+                }
+                else
+                {
+                    this.setState({feeds:this.state.feeds,showLoadMore: false,loadingData:false, loadingFooter: false})
+                }   
+            })
+        }else
+        {
+            this.setState({loadingData:false})
+        }
     }
 
     componentDidMount()
@@ -81,6 +93,19 @@ class Feed extends React.Component {
         }
     }
 
+    renderFooter = () => {
+        try {
+       
+          if (this.state.loadingFooter) {
+            return <CustomActivtiyIndicator/>;
+          } else {
+            return null;
+          }
+        } catch (error) {
+          console.log(error);
+        }
+    };
+
     render() {
      
         return(
@@ -103,6 +128,20 @@ class Feed extends React.Component {
                             renderItem={({item}) => this.renderFeedItem(item)}
                             keyExtractor={(item,index)=>index}
                             ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                            onEndReachedThreshold={0.1}
+                            refreshing={this.state.refreshing}
+                            ListFooterComponent={this.renderFooter}
+                            onEndReached={() => 
+                            {
+                                console.log("end ", "this.state.showLoadMore ", this.state.showLoadMore, "this.state.loadingFooter ", this.state.loadingFooter)
+                                if(this.state.showLoadMore&&!this.state.loadingFooter)
+                                {
+                                    console.log("here")
+                                    this.setState({ refreshing: true,loadingFooter:true,offset:parseInt(this.state.offset)+1},()=>fetch_feed_all(this.state.offset,dataLimit,this.handleFeedCallBack));
+                                        
+                                }
+                            
+                            }}
                         />
                     )}
                     

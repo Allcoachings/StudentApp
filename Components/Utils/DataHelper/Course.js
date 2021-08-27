@@ -397,10 +397,10 @@ export const fetch_document_playlist=(courseId,callback)=>
 //document section ends here
 
 //timetable section starts 
-export const fetch_courses_timetable=(courseId,callback)=>
+export const fetch_courses_timetable=(offset, dataLimit,courseId,callback)=>
 {
 
-    
+        console.log('fetch_courses_timetable', offset, dataLimit, courseId)
             // var formData   = new FormData(); 
             // formData.append("fetch_banners",'true') 
             // formData.append("offset",offset) 
@@ -412,7 +412,7 @@ export const fetch_courses_timetable=(courseId,callback)=>
             headers.append('Access-Control-Allow-Credentials', 'true');
 
             headers.append('GET', 'POST', 'OPTIONS'); 
-            let apiUrl = serverApiUrl+'/institute/course/timetable/all/'+courseId
+            let apiUrl = serverApiUrl+'/institute/course/timetable/all/'+courseId+'/'+offset+'/'+dataLimit
              
                 
              fetch(apiUrl,
@@ -559,9 +559,9 @@ export   const addTestSeries=( testSeries,questions,callback)=>
         
 }
 
-export const fetch_testSeries = (courseId,callback,playlistId=-1)=>
+export const fetch_testSeries = (offset, dataLimit, courseId,callback,playlistId=-1)=>
 {
-console.log(courseId)
+            console.log("tesetseries fetch")
             let headers = new Headers(); 
             headers.append('Content-Type', 'application/json'); 
 
@@ -569,15 +569,16 @@ console.log(courseId)
             headers.append('Access-Control-Allow-Credentials', 'true');
 
             headers.append('GET', 'POST', 'OPTIONS'); 
-            let apiUrl = serverApiUrl+'/institute/course/testseries/all/'+courseId
+            let apiUrl = serverApiUrl+'institute/course/testseries/all/'+courseId+'/'+offset+'/'+dataLimit
              
             if(playlistId == -1)
             {
-                apiUrl = serverApiUrl+'/institute/course/testseries/all/'+courseId
+                apiUrl = serverApiUrl+'institute/course/testseries/all/'+courseId+'/'+offset+'/'+dataLimit
             }else
             {
-                apiUrl = serverApiUrl+'/institute/course/testseries/playlist/'+playlistId+"/"
+                apiUrl = serverApiUrl+'institute/course/testseries/playlist/'+playlistId+"/"+offset+"/"+dataLimit
             }
+            console.log(apiUrl)
              fetch(apiUrl,
             {
                 method: 'GET',  

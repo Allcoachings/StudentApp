@@ -13,14 +13,24 @@ class Review extends React.Component {
         
         loadingReviewData:true,
         refreshing:1,
-        reviewData:[],
         loadingClgData:true,
         clgData:{},
-        
-        
+        loadingFooter: false,
+        showLoadMore: this.props.showLoadMore,
     }
-     
-    // startPercent = (s5,s4,s3,s2,s1,sx)=>(parseInt(sx)*100)/(parseInt(s5)+parseInt(s4)+parseInt(s3)+parseInt(s2)+parseInt(s1))
+
+    renderFooter = () => {
+        try {
+       
+          if (this.state.loadingFooter) {
+            return <CustomActivtiyIndicator/>;
+          } else {
+            return null;
+          }
+        } catch (error) {
+          console.log(error);
+        }
+    };
 
     render() {
         const rating=((parseInt(this.props.one_star)*1)+(parseInt(this.props.two_star)*2)+(parseInt(this.props.three_star)*3)+(parseInt(this.props.four_star)*4)+(parseInt(this.props.five_star*5)))/(parseInt(this.props.five_star)+parseInt(this.props.four_star)+parseInt(this.props.three_star)+parseInt(this.props.two_star)+parseInt(this.props.one_star))
@@ -46,6 +56,18 @@ class Review extends React.Component {
                                 renderItem={({item})=><RenderReview  replyMode={this.props.replyMode} item={item} userId={this.props.userId}/>}
                                 keyExtractor={(item)=>item.id}   
                                 ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                                onEndReachedThreshold={0.1}
+                                refreshing={this.state.refreshing}
+                                ListFooterComponent={this.renderFooter}
+                                onEndReached={() => 
+                                {
+                                    console.log("end ", "this.state.showLoadMore ", this.state.showLoadMore, "this.state.loadingFooter ", this.state.loadingFooter)
+                                    if(this.state.showLoadMore&&!this.state.loadingFooter)
+                                    {
+                                        this.setState({ refreshing: true,loadingFooter:true },()=>this.props.fetchMoreReviews()); 
+                                    }
+                                
+                                }}
                             />
                        
                             
