@@ -139,10 +139,10 @@ class Home extends React.Component {
     {
         
         return(
-            <TouchableWithoutFeedback onPress={()=>this.props.navigation.navigate('webview',{link:item.bannerLink,mode:'defaultAppHeader'})}>
+            <TouchableWithoutFeedback onPress={()=>item.bannerLink?(this.props.navigation.navigate('webview',{link:item.bannerLink,mode:'defaultAppHeader'})):(console.log("nolink"))}>
                 <View style={styles.bannerItemContainer} >
                     <Image source={{uri:serverBaseUrl+item.bannerImageLink}} style={styles.bannerImage}/>
-                    </View>
+                </View>
             </TouchableWithoutFeedback  >
         )
     }

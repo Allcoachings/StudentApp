@@ -88,8 +88,7 @@ class StudentReview extends React.Component {
                 else
                 {
                     this.setState({reviews:this.state.reviews,reviewLoading:false, showLoadMore: false}); 
-                }
-                                 
+                }                  
             })
         }
     }
@@ -188,9 +187,7 @@ class StudentReview extends React.Component {
                             </View>
 
                     </Modal>
-                </View>
-
-                
+                </View>     
         )
     }
 }
