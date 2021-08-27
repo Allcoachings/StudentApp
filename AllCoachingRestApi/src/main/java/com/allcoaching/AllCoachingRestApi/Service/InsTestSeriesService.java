@@ -48,6 +48,10 @@ public class InsTestSeriesService {
     {
         return insTestSeriesQuestionsRepo.saveAll(insTestSeriesQuestionsList);
     }
+    public InsTestSeriesQuestions saveSeriesQuestionOneByOne(InsTestSeriesQuestions insTestSeriesQuestion)
+    {
+        return insTestSeriesQuestionsRepo.save(insTestSeriesQuestion);
+    }
 
     public Iterable<InsTestSeries> getTestSeriesByCourseID(long id,int page,int pageSize)
     {
