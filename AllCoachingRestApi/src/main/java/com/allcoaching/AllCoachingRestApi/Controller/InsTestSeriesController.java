@@ -3,7 +3,9 @@ package com.allcoaching.AllCoachingRestApi.Controller;
 import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeries;
 import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeriesQuestions;
 import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeriesPlaylist;
+import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
 import com.allcoaching.AllCoachingRestApi.Service.InsTestSeriesService;
+import com.allcoaching.AllCoachingRestApi.dto.QuestionDto;
 import com.allcoaching.AllCoachingRestApi.dto.TestSeriesDto;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,8 @@ public class InsTestSeriesController {
     private InsTestSeriesService insTestSeriesService;
 
 
-
+    @Autowired
+    private FileUploadService fileUploadService;
     //for creating a playlist
     @CrossOrigin(origins = "*")
     @PostMapping("/createplaylist")
@@ -134,5 +137,72 @@ public class InsTestSeriesController {
         return  ResponseEntity.ok().build();
     }
 
+
+
+
+    //save only test test series with questions
+    @CrossOrigin(origins = "*")
+    @PostMapping("/save/testseries")
+    public ResponseEntity<Object> saveTestSeries(@RequestBody InsTestSeries insTestSeries)
+    {
+        InsTestSeries insTestSeries_saved = insTestSeriesService.createTestSeries(insTestSeries);
+        URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(insTestSeries_saved.getId()).toUri();
+        return  ResponseEntity.created(location).build();
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/series/addquestion/{seriesId}")
+    public ResponseEntity<Object> addQuestion(@ModelAttribute QuestionDto questionDto,@PathVariable long seriesId)
+    {
+        String seriesQuestion="";
+        switch (questionDto.getQuestionType())
+        {
+
+
+            case 1:
+            case 3:
+                seriesQuestion = questionDto.getQuestionText();
+                break;
+            case 2:
+            case 4:
+                String imageAddr = "files/";
+                imageAddr += fileUploadService.storeFile(questionDto.getQuestionImage());
+                seriesQuestion = imageAddr;
+                break;
+        }
+
+        String optionA="",optionB="",optionC="",optionD="";
+        switch (questionDto.getOptionType())
+        {
+            case 1:
+                optionA = questionDto.getOptionAText();
+                optionB = questionDto.getOptionBText();
+                optionC = questionDto.getOptionCText();
+                optionD = questionDto.getOptionDText();
+
+                break;
+            case 2:
+
+                optionA = "files/";
+                optionB = "files/";
+                optionC = "files/";
+                optionD = "files/";
+
+                optionA += fileUploadService.storeFile(questionDto.getOptionAImage());
+                optionB += fileUploadService.storeFile(questionDto.getOptionBImage());
+                optionC += fileUploadService.storeFile(questionDto.getOptionCImage());
+                optionD += fileUploadService.storeFile(questionDto.getOptionDImage());
+
+                break;
+        }
+        InsTestSeriesQuestions insTestSeriesQuestions = new InsTestSeriesQuestions(seriesQuestion,optionA,optionB,optionC,optionD,questionDto.getCorrectOpt(),questionDto.getExplanation(),questionDto.getCorrectMarks(),questionDto.getWrongMarks(),questionDto.getQuestionType(),questionDto.getOptionType(),questionDto.getTestSeriesId());
+        if(questionDto.getMode().equals("edit"))
+        {
+            insTestSeriesQuestions.setId(questionDto.getQuestionId());
+        }
+        InsTestSeriesQuestions insTestSeriesQuestions_saved =  insTestSeriesService.saveSeriesQuestionOneByOne(insTestSeriesQuestions);
+        URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(insTestSeriesQuestions_saved.getId()).toUri();
+        return ResponseEntity.created(location).build();
+    }
 
 }
