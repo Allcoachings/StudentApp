@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties("allCoaching.admin")
+@ConfigurationProperties("allcoaching.admin")
 @Data
 public class AdminConfig {
     private String image;
