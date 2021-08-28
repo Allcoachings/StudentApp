@@ -70,9 +70,6 @@ class InsHome extends React.Component {
         fetch_institute_courses(this.props.institute.details.id,this.coursesCallBack)
      }
 
-    
-
-      
     courseBannerCallback=(response)=>
     {
         if(response.status==200)

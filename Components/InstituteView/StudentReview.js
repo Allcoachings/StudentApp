@@ -6,7 +6,7 @@ import { Feather } from '@expo/vector-icons';
 import {fetch_institute_reviews} from '../Utils/DataHelper/Reviews'
 import { AirbnbRating } from 'react-native-ratings';
 import {theme, dataLimit} from '../config'
-import { addStudentReview } from '../Utils/DataHelper/Reviews'
+import { addStudentReview, findReviewByStudentId } from '../Utils/DataHelper/Reviews'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import Toast from 'react-native-simple-toast';
@@ -32,12 +32,15 @@ class StudentReview extends React.Component {
         inslogo: this.props.inslogo,
         institle: this.props.institle,
         showLoadMore: true,
-        loadingFooter: false
+        loadingFooter: false,
+        showAddReview: '',
      }
 
     componentDidMount() {
         this.fetchReviews()
      }
+
+   
 
      fetchReviews=()=>{
         this.setState({reviewLoading: true})
@@ -71,7 +74,6 @@ class StudentReview extends React.Component {
         }
         else
         {
-            console.log("error", response.status)
             Toast.show("Something Went Wrong. Please Try Again Later.")
         }
     }
@@ -108,24 +110,34 @@ class StudentReview extends React.Component {
                     <View style={{flexDirection: 'column', justifyContent: 'space-between', marginBottom: 10, marginTop: 10}}>
                         <Text style={styles.RatingText}>Rating & Reviews</Text>
                         {this.props.studentEnrolled?(
+                           this.state.showAddReview?(
                             <View style={{ paddingHorizontal: 6,marginVertical:10,backgroundColor: 'white'}}>
-                            <AirbnbRating 
-                                starContainerStyle={[styles.instituteRating,{alignSelf:"center"}]} 
-                                count={5}
-                                reviews={[]} 
-                                isDisabled={false}
-                                defaultRating={0}
-                                size={30}
-                                selectedColor={theme.blueColor}
-                                showRating={false}
-                                onFinishRating={this.ratingCompleted}
-                            />
-                            <TextInput style={{borderWidth: 1, borderColor: 'black', borderRadius:10, paddingLeft: 6, paddingBottom:30,}} placeholder="Write a Review" placeholderTextColor='grey' onChangeText={(text) => this.setState({review: text})}></TextInput>
-                            <TouchableOpacity style={styles.reviewbutton} onPress={()=>this.addReview()}>
-                                <Text style={styles.reviewbutton_text}>Submit</Text>
-                            </TouchableOpacity>
-                        </View>
-                         ):(null)} 
+                                <AirbnbRating 
+                                    starContainerStyle={[styles.instituteRating,{alignSelf:"center"}]} 
+                                    count={5}
+                                    reviews={[]} 
+                                    isDisabled={false}
+                                    defaultRating={0}
+                                    size={30}
+                                    selectedColor={theme.blueColor}
+                                    showRating={false}
+                                    onFinishRating={this.ratingCompleted}
+                                />
+                                <TextInput style={{borderWidth: 1, borderColor: 'black', borderRadius:10, paddingLeft: 6, paddingBottom:30,}} placeholder="Write a Review" placeholderTextColor='grey' onChangeText={(text) => this.setState({review: text})}></TextInput>
+                                <TouchableOpacity style={styles.reviewbutton} onPress={()=>this.addReview()}>
+                                    <Text style={styles.reviewbutton_text}>Submit</Text>
+                                </TouchableOpacity>
+                            </View>
+                        ):(
+                            <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
+                                <TouchableOpacity style={{backgroundColor: theme.accentColor, justifyContent: 'center', alignItems: 'center'}}>
+                                    <Text style={{color: theme.primaryColor}}>Edit Your Review</Text>
+                                </TouchableOpacity>
+                            </View>
+                        )
+                         ):(
+                             null
+                         )} 
                     </View>
                     {this.state.reviewLoading?(
                         <CustomActivtiyIndicator mode="skimmer"/>
@@ -141,6 +153,7 @@ class StudentReview extends React.Component {
                             userId={this.state.studentId}
                             showLoadMore={this.state.showLoadMore}
                             fetchMoreReviews={this.fetchMoreReviews}
+                            replyMode={false}
                         />
                     )}
                     <Modal animationType = {"fade"} transparent = {false}
