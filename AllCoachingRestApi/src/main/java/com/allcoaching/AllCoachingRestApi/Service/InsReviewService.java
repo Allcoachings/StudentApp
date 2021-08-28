@@ -53,7 +53,7 @@ public class InsReviewService {
     }
     public   Optional<InsReview> findByInsIdStudentId(long insId, long studentId)
     {
-        return insReviewRepo.findByInsIdAndStudentId(insId, studentId);
+        return insReviewRepo.findByInsIdAndStudentIdAndReviewNotNull(insId, studentId);
     }
 
     public Iterable<StudentPurchaseDto> findByStudentId(long id,int page,int pageSize)

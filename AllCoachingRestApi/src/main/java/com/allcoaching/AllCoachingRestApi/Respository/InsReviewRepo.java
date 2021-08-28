@@ -21,7 +21,7 @@ import java.util.Optional;
 public interface InsReviewRepo extends PagingAndSortingRepository<InsReview,Long> {
 
 
-    Optional<InsReview> findByInsIdAndStudentId(long insId, long studentId);
+    Optional<InsReview> findByInsIdAndStudentIdAndReviewNotNull(long insId, long studentId);
     Optional<InsReview> findByCourseIdAndStudentId(long courseId, long studentId);
 
     @Query("SELECT new com.allcoaching.AllCoachingRestApi.dto.InsReviewDto(s.name,i.name, s.studentImage, r) from Institute i, InsReview r, Student s where r.insId=i.id and i.id = :id and r.studentId=s.id")
