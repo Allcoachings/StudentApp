@@ -46,7 +46,7 @@ class InstituteView extends React.Component {
         courseId: ' ',
         instituteId: this.props.route.params.insId,
         studentId:this.props.userInfo.id,
-        studentEnrolled: false,
+        studentEnrolled: '',
         review: '',
         feedOffset:0,
         loadingInstitute:true,
@@ -853,6 +853,7 @@ class InstituteView extends React.Component {
         
 
     render() {
+        console.log("this.state.studentEnrolled",this.state.studentEnrolled)
       this.updateComponent()
         const  {institute,loadingInstitute} = this.state;
         return (

@@ -6,7 +6,7 @@ import { Feather } from '@expo/vector-icons';
 import {fetch_institute_reviews} from '../Utils/DataHelper/Reviews'
 import { AirbnbRating } from 'react-native-ratings';
 import {theme, dataLimit} from '../config'
-import { addStudentReview, findReviewByStudentId } from '../Utils/DataHelper/Reviews'
+import { addStudentReview, findReviewByStudentId, updateReview } from '../Utils/DataHelper/Reviews'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import Toast from 'react-native-simple-toast';
@@ -34,13 +34,34 @@ class StudentReview extends React.Component {
         showLoadMore: true,
         loadingFooter: false,
         showAddReview: '',
+        editReviewModal: false,
      }
 
     componentDidMount() {
         this.fetchReviews()
+        findReviewByStudentId(this.state.studentId, this.state.instituteId, this.checkReviewCallBack)
      }
 
-   
+     checkReviewCallBack=(response)=>{
+         if(response.status==200)
+         {
+            response.json().then(data=>{
+                console.log("data",data);
+                if(data)
+                {
+                    this.setState({studentReviewData: data, showAddReview: false})
+                }
+                else
+                {
+                    this.setState({showAddReview: true})
+                }
+            })
+         }
+         else
+         {
+             console.log("something went wrong", response.status)
+         }
+     }
 
      fetchReviews=()=>{
         this.setState({reviewLoading: true})
@@ -62,6 +83,31 @@ class StudentReview extends React.Component {
         this.setState({rating})
     }
 
+    editReview=(id)=>{
+        if(this.state.review&&this.state.rating)
+        {
+            Toast.show("Please Wait...")
+            updateReview(id, this.state.review,  this.state.rating, this.editReviewCallBack)
+        }
+        else
+        {
+            Toast.show("Please Fill All The Fields.")
+        }
+    }
+
+    editReviewCallBack=(response)=>{
+        this.setState({editReviewModal:false})
+        if(response.status==200)
+        {
+            Toast.show("Review Updated Successfully.")
+        }
+        else
+        {
+            console.log(response.status)
+            Toast.show("Something Went Wrong. Please Try Again Later.")
+        }
+    }
+
 
     addReviewCallBack=(response)=>{
         
@@ -74,6 +120,7 @@ class StudentReview extends React.Component {
         }
         else
         {
+            console.log("error", response.status)
             Toast.show("Something Went Wrong. Please Try Again Later.")
         }
     }
@@ -130,7 +177,7 @@ class StudentReview extends React.Component {
                             </View>
                         ):(
                             <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
-                                <TouchableOpacity style={{backgroundColor: theme.accentColor, justifyContent: 'center', alignItems: 'center'}}>
+                                <TouchableOpacity style={{backgroundColor: theme.accentColor, justifyContent: 'center', alignItems: 'center', padding: 7, borderRadius: 6}} onPress={()=>this.setState({editReviewModal: true, review: this.state.studentReviewData.review, rating: this.state.studentReviewData.rating})}>
                                     <Text style={{color: theme.primaryColor}}>Edit Your Review</Text>
                                 </TouchableOpacity>
                             </View>
@@ -200,6 +247,51 @@ class StudentReview extends React.Component {
                             </View>
 
                     </Modal>
+
+                    {this.state.editReviewModal?(
+                        <Modal animationType = {"fade"} transparent = {false} visible = {this.state.editReviewModal} onRequestClose = {() => { console.log("Modal has been closed.") } }> 
+                            <View>
+                                <View style={{flexDirection: 'row',alignItems: 'center',paddingBottom:10,borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}>
+                                    <View style={{marginLeft:10}}>
+                                        <TouchableOpacity onPress={()=>this.setState({editReviewModal:false})}>
+                                            <Feather name={'arrow-left'} size={20}/>
+                                        </TouchableOpacity>
+                                    </View>
+                                    <View style={{marginHorizontal:10,flex:0.8,flexWrap:'wrap'}}>
+                                        <View style={{display: 'flex', flexDirection: 'row',}}> 
+                                            <Image source={this.state.inslogo} style={{width:35,height:35,borderRadius:5,marginRight:10}}/>
+                                            <View>
+                                                <Text numberOfLines={1} style={{color:theme.secondaryColor,fontSize:15}}>{this.state.institle}</Text>
+                                                <Text style={{color: theme.greyColor}}>Rate this Institute</Text>
+                                            </View>
+                                        </View>
+
+                                    </View>
+                                    <View style={styles.modalHeaderRight}></View>
+                                </View>
+                                <View style={{ paddingHorizontal: 6,marginVertical:20,backgroundColor: 'white'}}>
+                                  
+                                    <AirbnbRating 
+                                        starContainerStyle={[styles.instituteRating,{alignSelf:"center"}]} 
+                                        count={5}
+                                        reviews={[]} 
+                                        isDisabled={false}
+                                        defaultRating={this.state.studentReviewData.rating}
+                                        size={30}
+                                        selectedColor={theme.blueColor}
+                                        showRating={false}
+                                        onFinishRating={this.ratingCompleted}
+                                    />
+                                    <TextInput style={{borderWidth: 1, borderColor: 'black', borderRadius:10, paddingLeft: 6, paddingBottom:30,}} defaultValue={this.state.studentReviewData.review} placeholderTextColor='grey' onChangeText={(text) => this.setState({review: text})}></TextInput>
+                                    <TouchableOpacity style={styles.reviewbutton} onPress={()=>this.editReview(this.state.studentReviewData.id)}>
+                                        <Text style={styles.reviewbutton_text}>Save changes</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                
+                            </View>
+
+                        </Modal>
+                    ):(null)}
                 </View>     
         )
     }

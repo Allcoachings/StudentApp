@@ -35,7 +35,7 @@ export   const checkUserEnrollment=(courseId,studentId,callback)=>
 
     headers.append('GET', 'POST', 'OPTIONS'); 
 
-    fetch(serverApiUrl+'institute/course/reviews/'+courseId+'/'+studentId,
+    fetch(serverApiUrl+'institute/course/reviews/enrollcheck/'+courseId+'/'+studentId,
     {
         method: 'GET',  
         headers,
