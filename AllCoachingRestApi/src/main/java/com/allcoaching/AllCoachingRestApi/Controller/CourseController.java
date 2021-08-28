@@ -47,4 +47,11 @@ public class CourseController {
         return ResponseEntity.ok().build();
     }
 
+    @CrossOrigin(origins = "*")
+    @GetMapping("countcourse/{insId}")
+    public long countCoursesOf(@PathVariable long insId)
+    {
+        return  courseService.countCoursesOf(insId);
+    }
+
 }

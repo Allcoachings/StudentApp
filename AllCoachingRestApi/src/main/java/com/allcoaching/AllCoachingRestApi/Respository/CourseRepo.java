@@ -13,6 +13,7 @@ import java.util.Optional;
 @Transactional
 public interface CourseRepo extends CrudRepository<Course,Long> {
 
+    long countByInstId(long instId);
     Iterable<Course> findByInstId(long id);
 
     @Modifying

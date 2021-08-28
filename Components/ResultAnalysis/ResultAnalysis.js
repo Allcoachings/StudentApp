@@ -26,14 +26,7 @@ class ResultAnalysis extends React.Component {
                que: this.props.testSeriesData.brief.Unattempted
            },
        ]
-    }
-
-
-
-
-
-     
-
+    } 
     renderCategory=({item})=>{
         return(
             <TouchableOpacity onPress={()=>this.setState({activeTab: item.type})} style={[styles.btnView,
