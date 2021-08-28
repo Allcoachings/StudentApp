@@ -60,7 +60,7 @@ class Leads extends React.Component {
                         )} */}
 
                         <View style={styles.helloView}>
-                            <Text style={styles.helloText}>Hello, Coaching</Text>
+                            <Text style={styles.helloText}>Hello, {this.props.institute.details.name}</Text>
                         </View>
 
                         <View style={styles.rowContainer}>
@@ -97,7 +97,6 @@ const styles = StyleSheet.create({
     {
         flex: 1,
         flexDirection: 'column',
-        padding:5,
     },
         headView:
         {
@@ -154,7 +153,8 @@ const styles = StyleSheet.create({
             marginTop: '10%',
             display: 'flex',
             flexDirection: 'column',
-            padding: 5
+            justifyContent: 'center',
+            alignItems: 'center',
         },
             corsePriceView:
             {

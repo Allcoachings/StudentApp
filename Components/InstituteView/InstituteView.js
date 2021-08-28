@@ -34,7 +34,6 @@ import RenderLiveClass from './RenderLiveClass'
 import RenderDocument from './RenderDocument'
 import RenderVideo from './RenderVideo'
 import { LinearGradient } from "expo-linear-gradient";
-
 import {fetch_institute_feed} from '../Utils/DataHelper/Feed'
 
 const width = Dimensions.get('window').width
@@ -64,7 +63,9 @@ class InstituteView extends React.Component {
         activeFilterId: -1,
         showLoadMore: true,
         courseDocuments:[],
-        courseVideos:[]
+        courseVideos:[], 
+        courseTimeTable:[],
+        courseTestSeries:[]
      }
 
      
@@ -305,11 +306,11 @@ class InstituteView extends React.Component {
                 {
                     if(data.length>0)
                     {
-                        this.setState({courseTimeTable:[...this.state.courseTimeTable,...data],courseTimetableLoaded:true,isCourseTimetableLoading:false, showLoadMore: true});               
+                        this.setState({courseTimeTable:[...this.state.courseTimeTable,...data],courseTimetableLoaded:true,isCourseTimetableLoading:false, showLoadMore: true, loadingFooter: false});               
                     }
                     else
                     {
-                        this.setState({courseTimeTable:this.state.courseTimeTable,courseTimetableLoaded:true,isCourseTimetableLoading:false, showLoadMore: false});
+                        this.setState({courseTimeTable:this.state.courseTimeTable,courseTimetableLoaded:true,isCourseTimetableLoading:false, showLoadMore: false, loadingFooter: false});
                     }    
                 })
             }
@@ -324,11 +325,11 @@ class InstituteView extends React.Component {
                     console.log(data)
                     if(data.length>0)
                     {
-                        this.setState({courseTestSeries:[...this.state.courseTestSeries,...data],courseTestSeriesLoaded:true,isCourseTestSeriesLoading:false, showLoadMore: true});
+                        this.setState({courseTestSeries:[...this.state.courseTestSeries,...data],courseTestSeriesLoaded:true,isCourseTestSeriesLoading:false, showLoadMore: true, loadingFooter: false});
                     }   
                     else
                     {
-                        this.setState({courseTestSeries:this.state.courseTestSeries,courseTestSeriesLoaded:true,isCourseTestSeriesLoading:false, showLoadMore: false});
+                        this.setState({courseTestSeries:this.state.courseTestSeries,courseTestSeriesLoaded:true,isCourseTestSeriesLoading:false, showLoadMore: false, loadingFooter: false});
                     }                                    
                 })
         }
@@ -341,17 +342,13 @@ class InstituteView extends React.Component {
                 {
                     if(data.length>0)
                     {
-                        this.setState({courseDocuments:[...this.state.courseDocuments,...data],courseDocumentLoaded:true,isCourseDocumentLoading:false, showLoadMore: true});   
+                        this.setState({courseDocuments:[...this.state.courseDocuments,...data],courseDocumentLoaded:true,isCourseDocumentLoading:false, showLoadMore: true, loadingFooter: false});   
                     } 
                     else
                     {
-                        this.setState({courseDocuments:this.state.courseDocuments,courseDocumentLoaded:true,isCourseDocumentLoading:false, showLoadMore: false}); 
+                        this.setState({courseDocuments:this.state.courseDocuments,courseDocumentLoaded:true,isCourseDocumentLoading:false, showLoadMore: false, loadingFooter: false}); 
                     }               
                 })
-            }
-            else if(response.status==400)
-            {
-                this.setState({courseDocuments:this.state.courseDocuments,courseDocumentLoaded:true,isCourseDocumentLoading:false, showLoadMore: false});
             }
     }
     courseVideoCallback=(response)=>{
@@ -361,17 +358,13 @@ class InstituteView extends React.Component {
             {
                 if(data.length>0)
                 {
-                    this.setState({courseVideos:[...this.state.courseVideos,...data],courseVideoLoaded:true,isCourseVideoLoading:false, showLoadMore: true}); 
+                    this.setState({courseVideos:[...this.state.courseVideos,...data],courseVideoLoaded:true,isCourseVideoLoading:false, showLoadMore: true, loadingFooter: false}); 
                 }  
                 else
                 {
-                    this.setState({courseVideos:this.state.courseVideos,courseVideoLoaded:true,isCourseVideoLoading:false, showLoadMore: false}); 
+                    this.setState({courseVideos:this.state.courseVideos,courseVideoLoaded:true,isCourseVideoLoading:false, showLoadMore: false, loadingFooter: false}); 
                 }                
             })
-        }
-        else if(response.status==400)
-        {
-            this.setState({courseVideos:this.state.courseVideos,courseVideoLoaded:true,isCourseVideoLoading:false, showLoadMore: false});
         }
     }
     courseDocumentPlaylistCallback=(response)=>{
@@ -459,21 +452,9 @@ class InstituteView extends React.Component {
             <Accordian
             header={this.accordianHeader(item.name," ","chevron-down")}
         > 
-            {/* <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin:5, paddingLeft:20, paddingRight:20}}>
-                <Text style={{fontSize: 16, fontWeight: 'bold'}}>Date</Text>
-                <Text style={{fontSize: 16, fontWeight: 'bold'}}>Time</Text>
-                <Text style={{fontSize: 16, fontWeight: 'bold'}}>Teacher</Text>
-            </View> */}
+            
             <MockTest data={item.courseTimeTableItem} subjectId={item.id} mode="readonly" />
-            {/* {CardView(
-                <FlatList 
-                    data={item.date} 
-                    renderItem={({item}) =>this.renderItem(item)}
-                    keyExtractor={(item)=>item.id} 
-                    horizontal={false}
-                    showsHorizontalScrollIndicator={false}
-                />,{width:'95%', padding:10, margin:5}
-            )} */}
+          
         </Accordian>
          </View>
         )
@@ -616,7 +597,6 @@ class InstituteView extends React.Component {
                                             </View>
                                             <View style={styles.liveDataTimeConatiner}>
                                                 <View style={{flexDirection: 'row'}}>
-                                                        {/* <Feather name="wifi" size="large"/> */}
                                                         <Text style={styles.liveInText}>LIVE IN</Text>
                                                 </View> 
                                                 <View style={{flexDirection: 'row'}}>
@@ -630,18 +610,6 @@ class InstituteView extends React.Component {
                                                         digitStyle={styles.timeItemContainer}
                                                         timeToShow={['D','H','M', 'S']}
                                                     />
-                                                    {/* <View style={styles.timeItemContainer}>
-                                                        <Text style={styles.liveTimeText}>03</Text>
-                                                        <Text style={styles.timelabel}>days</Text> 
-                                                    </View>
-                                                    <View style={styles.timeItemContainer}>
-                                                        <Text style={styles.liveTimeText}>12</Text>
-                                                        <Text style={styles.timelabel}>hours</Text> 
-                                                    </View>
-                                                    <View style={styles.timeItemContainer}>
-                                                        <Text style={styles.liveTimeText}>47</Text>
-                                                        <Text style={styles.timelabel}>minutes</Text> 
-                                                    </View> */}
                                                 </View>
 
                                             </View>
@@ -659,7 +627,7 @@ class InstituteView extends React.Component {
                                     this.state.courseVideoLoaded?(
                                     <FlatList 
                                         data={this.state.courseVideos} 
-                                        renderItem={({item})=><RenderVideo userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="institute" studentEnrolled={this.state.studentEnrolled} downloadMode={true}/>}
+                                        renderItem={({item})=><RenderVideo userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="student" studentEnrolled={this.state.studentEnrolled} downloadMode={true}/>}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
@@ -673,7 +641,7 @@ class InstituteView extends React.Component {
                                      <CustomActivtiyIndicator mode="skimmer"/>):(
                                      <FlatList 
                                         data={this.state.courseTestSeries} 
-                                        renderItem={({item})=><RenderSingleTestSeries item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="institute" studentEnrolled={this.state.studentEnrolled} />}
+                                        renderItem={({item})=><RenderSingleTestSeries item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="student" studentEnrolled={this.state.studentEnrolled} />}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
@@ -682,7 +650,7 @@ class InstituteView extends React.Component {
             case 'document':    return(
                                     this.state.courseDocumentLoaded?(<FlatList 
                                         data={this.state.courseDocuments} 
-                                        renderItem={({item})=><RenderDocument userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="institute" studentEnrolled={this.state.studentEnrolled} downloadMode={true} insName={this.state.insName} insNumber={this.state.insNumber}/>}
+                                        renderItem={({item})=><RenderDocument userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="student" studentEnrolled={this.state.studentEnrolled} downloadMode={true} insName={this.state.insName} insNumber={this.state.insNumber}/>}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
