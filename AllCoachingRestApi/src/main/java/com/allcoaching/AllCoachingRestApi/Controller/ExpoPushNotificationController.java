@@ -4,12 +4,14 @@ import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Service.InstituteService;
 import com.allcoaching.AllCoachingRestApi.Service.StudentService;
 import com.allcoaching.AllCoachingRestApi.dto.SavePushTokenDto;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/notification/")
+@Api()
 public class ExpoPushNotificationController {
 
     @Autowired
