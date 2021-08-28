@@ -12,7 +12,9 @@ import FeedBottomComponent from './FeedBottomComponent'
 class FeedPoll extends Component {
     state = {
         canUserVote: this.props.type==1?(this.props.item.feed.feed.pollVotedInstitutes.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.pollVotedStudents.includes(`,${this.props.userInfo.id},`)?(false):(true)):(true)),
+
         optionData: this.props.item.feed.feedPollOptions,
+
         totalPollVotes: this.props.item.feed.feed.totalPollVotes,
         canUserLike:this.props.type==1?(this.props.item.feed.feed.feedLikerIns&&this.props.item.feed.feed.feedLikerIns.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.feedLikerStudent&&this.props.item.feed.feed.feedLikerStudent.includes(`,${this.props.userInfo.id},`)?(false):(true)):(true)),
     }
@@ -33,6 +35,7 @@ class FeedPoll extends Component {
     }
 
     likeFeed=(feedId)=>{
+        console.log("like feed")
         this.setState({canUserLike: !this.state.canUserLike},()=>{
             like_feed(feedId,this.props.type,this.props.type==1?(this.props.institute.details.id):(this.props.userInfo.id),this.likeFeedCallBack)
         })
@@ -49,13 +52,14 @@ class FeedPoll extends Component {
     }
 
 
+
     render() {
+    console.log("this.state.canUserLike", this.state.optionData)
     const{feed,posterObject} = this.props.item 
     if(!posterObject)
     {
         console.log(this.props.item)
     }
-    console.log("this.state.feeds", posterObject)
     return(
         // CardView(
             <View style={{flexDirection: 'column', padding: 5}}>
@@ -88,7 +92,7 @@ class FeedPoll extends Component {
                             <Text style={{fontSize: 16, marginTop: 3}}>Arctic Ocean</Text>
                         </View> */}
 
-                        <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation}/>
+                        <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation} changeCanUserLike={this.changeCanUserLike}/>
                     </View>
                 </View>
                 <View style={{borderTopWidth: 0.8, borderColor: theme.labelOrInactiveColor, marginVertical: 10, width: '100%'}}/>

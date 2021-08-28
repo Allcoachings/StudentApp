@@ -19,6 +19,7 @@ class FeedImage extends Component {
   }
 
   likeFeed=(feedId)=>{
+    console.log("like feed")
     this.setState({canUserLike: !this.state.canUserLike},()=>{
         like_feed(feedId,this.props.type,this.props.type==1?(this.props.institute.details.id):(this.props.userInfo.id),this.likeFeedCallBack)
     })
@@ -48,6 +49,8 @@ addImage=(link, type)=>{
         arr.push(link)
         this.setState({ imageArr: arr, type: type },()=>this.openZoomModal());   
   }
+
+
 
 
   render() {
@@ -97,7 +100,7 @@ addImage=(link, type)=>{
                                     serverBaseUrl={serverBaseUrl}
                             />
                         )}
-                        <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation}/>
+                        <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation} changeCanUserLike={this.changeCanUserLike}/>
                                                 
                     </View>
                     

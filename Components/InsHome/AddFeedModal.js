@@ -57,7 +57,7 @@ class AddFeedModal extends Component {
       {
             if(this.state.mode=="edit")
             {
-                Toast.show('Feed Updateed Successfully.');
+                Toast.show('Feed Updated Successfully.');
             }
             else
             {
@@ -76,15 +76,12 @@ class AddFeedModal extends Component {
         if(this.state.mode!="edit"){
             let feedItem = {feed:this.state.feedItem};
             feedItem['posterObject']=this.props.instituteDetails
-            console.log("feedItem", feedItem);
             this.props.addFeedCallBack(feedItem)
         }
         else
         {
             let feedItem = {feed:this.state.feedItem};
             feedItem['posterObject']=this.props.instituteDetails
-            // console.log("feeditem", feedItem)
-            // console.log(this.state.index)
             this.props.updateSingleFeed(feedItem, this.state.index)
         }
         this.props.closeModal()
@@ -589,7 +586,6 @@ setFeedTypeOption=(postType)=>
         );
   }
   render() {
-      console.log(this.state.description)
     return (
         // <Modal 
         //     animationType = {"fade"} 

@@ -70,9 +70,6 @@ class InsHome extends React.Component {
         fetch_institute_courses(this.props.institute.details.id,this.coursesCallBack)
      }
 
-    
-
-      
     courseBannerCallback=(response)=>
     {
         if(response.status==200)
@@ -561,7 +558,6 @@ class InsHome extends React.Component {
             {
                 response.json().then(data=>
                 {
-                    console.log(data);
                     if(data.length>0)
                     {
                         this.setState({courseDocuments:[...this.state.courseDocuments,...data],courseDocumentLoaded:true,isCourseDocumentLoading:false, showLoadMore: true, loadingFooter: false});   
@@ -836,22 +832,22 @@ class InsHome extends React.Component {
     tabtoshow=(tabValue)=>{
         this.setState({tabtoshow:tabValue});
     }
-    renderFeedItem=(item)=>
+    renderFeedItem=(item, index)=>
     {
         
         switch(item.feed.feed.feedType)
         {
             case 1:
                 return (
-                    <FeedImage item={item} type={1} navigation={this.props.navigation} mode="insProfile" updateEditFeedState={this.updateEditFeedState}/>
+                    <FeedImage item={item} type={1} navigation={this.props.navigation} mode="insProfile" updateEditFeedState={this.updateEditFeedState} index={index}/>
                 )
             case 2:
                 return (
-                    <FeedPoll item={item} type={1} navigation={this.props.navigation} mode="insProfile" updateEditFeedState={this.updateEditFeedState}/>
+                    <FeedPoll item={item} type={1} navigation={this.props.navigation} mode="insProfile" updateEditFeedState={this.updateEditFeedState} index={index}/>
                 )
             case 3:
                 return (
-                    <FeedText item={item} type={1} navigation={this.props.navigation} mode="insProfile" updateEditFeedState={this.updateEditFeedState}/>
+                    <FeedText item={item} type={1} navigation={this.props.navigation} mode="insProfile" updateEditFeedState={this.updateEditFeedState} index={index}/>
                 )
         }
     }
@@ -974,7 +970,7 @@ class InsHome extends React.Component {
                             <CustomActivtiyIndicator mode="skimmer"/>
                         ):(<FlatList
                             data={this.state.feeds}
-                            renderItem={({item}) => this.renderFeedItem(item)}
+                            renderItem={({item, index}) => this.renderFeedItem(item, index)}
                             keyExtractor={(item,index)=>index}
                             ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                         />)}
@@ -994,8 +990,7 @@ class InsHome extends React.Component {
     updateSingleFeed=(item, index)=>{
         var obj=this.state.feeds
         obj[index]=item;
-        console.log("obj ", obj)
-        this.setState({feeds: obj})
+        this.setState({feeds: obj},()=>console.log("state set"))
     }
 
     handleFeedCallBack=(response)=>

@@ -89,9 +89,9 @@ class RenderReview extends React.Component {
                             <View style={{padding: 10, backgroundColor:theme.labelOrInactiveColor}}>
                                 <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                                     <Text style={{fontSize: 14, fontWeight: 'bold', marginBottom: 10}}>{item.insName}</Text>
-                                    <TouchableOpacity onPress={()=>this.setState({ReviewmodalVisible: true, editReply: this.state.reply})}>
+                                    {this.props.replyMode?(<TouchableOpacity onPress={()=>this.setState({ReviewmodalVisible: true, editReply: this.state.reply})}>
                                         <Feather name="edit-3" size={18} color={theme.secondaryColor} />
-                                    </TouchableOpacity>
+                                    </TouchableOpacity>):(null)}
                                 </View>
                                 <Text>{this.state.reply}</Text>
                             </View>

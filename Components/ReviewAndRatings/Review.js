@@ -61,7 +61,6 @@ class Review extends React.Component {
                                 ListFooterComponent={this.renderFooter}
                                 onEndReached={() => 
                                 {
-                                    console.log("end ", "this.state.showLoadMore ", this.state.showLoadMore, "this.state.loadingFooter ", this.state.loadingFooter)
                                     if(this.state.showLoadMore&&!this.state.loadingFooter)
                                     {
                                         this.setState({ refreshing: true,loadingFooter:true },()=>this.props.fetchMoreReviews()); 

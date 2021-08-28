@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, Text, View,StyleSheet, ActivityIndicator } from 'react-native';
 import Review from '../ReviewAndRatings/Review'
 import {connect} from 'react-redux'
-import {fetch_institute_reviews} from '../Utils/DataHelper/Reviews'
+import { fetch_institute_reviews } from '../Utils/DataHelper/Reviews'
 import {theme,screenMobileWidth, serverBaseUrl, dataLimit} from '../config'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
@@ -29,7 +29,6 @@ class InsReviews extends React.Component {
         {
             response.json().then(data=>
             {
-                console.log("data", data)
                 this.setState({reviews:data,reviewLoading:false});                   
             })
         }
@@ -45,7 +44,8 @@ class InsReviews extends React.Component {
                 {this.state.reviewLoading?(
                     <CustomActivtiyIndicator mode="skimmer"/>
                 ):(
-                    <Review replyMode 
+                    <Review 
+                        replyMode={true} 
                         review={this.state.reviews} 
                         total_rating={this.props.institute.details.total_rating_count}
                         one_star={this.props.institute.details.one_star_count} 
