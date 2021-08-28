@@ -970,12 +970,14 @@ class InsHome extends React.Component {
                             setUpdateFun={this.setUpdateEditFeedState}
                             updateSingleFeed={this.updateSingleFeed}
                         />
-                        <FlatList
+                        {this.state.isFeedLoading?(
+                            <CustomActivtiyIndicator mode="skimmer"/>
+                        ):(<FlatList
                             data={this.state.feeds}
                             renderItem={({item}) => this.renderFeedItem(item)}
                             keyExtractor={(item,index)=>index}
                             ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
-                        />
+                        />)}
                        
                     </View>
                 )
@@ -1003,8 +1005,12 @@ class InsHome extends React.Component {
                 response.json().then(data=>
                 {
                      
-                    this.setState({feeds: data})
+                    this.setState({feeds: data, isFeedLoading: false})
                 })
+            }
+            else
+            {
+                this.setState({isFeedLoading: false})
             }
     }
     handleFeedTabBtnClick=()=>
