@@ -34,4 +34,9 @@ public class CourseService {
     {
         return courseRepo.findById(id);
     }
+
+    public long countCoursesOf(long institute)
+    {
+        return courseRepo.countByInstId(institute);
+    }
 }
