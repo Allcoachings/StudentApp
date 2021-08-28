@@ -92,7 +92,7 @@ export function DrawerContent(props){
 
             {isCatModalOpen?(
 
-                    <ChangeCatModal isModalVisible={isCatModalOpen} closeModal={()=>setCatModalOpen(false)} navigation={props.navigation}/>
+                    <ChangeCatModal navigation={props.navigation} isModalVisible={isCatModalOpen} closeModal={()=>setCatModalOpen(false)} navigation={props.navigation}/>
 
             ):(null)}
             

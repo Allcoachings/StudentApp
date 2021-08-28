@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView,ActivityIndicator,Alert} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,StatusBar,FlatList, Image,Platform, ScrollView,ActivityIndicator,Alert} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
@@ -12,8 +12,7 @@ import {connect } from 'react-redux'
 import SeriesModal from './SeriesModal';
 import {fetch_testSeries_questions} from '../Utils/DataHelper/TestSeries'
 import Question from './Question';
-import moment from 'moment'
-import { StatusBar } from 'expo-status-bar';
+import moment from 'moment' 
 class TestSeriesView extends React.Component {
 
     state={
@@ -46,6 +45,7 @@ class TestSeriesView extends React.Component {
 
     componentDidMount() 
     {  
+        StatusBar.setHidden(true);
         fetch_testSeries_questions(this.state.testSeriesId,this.state.offset,dataLimit,this.questionCallback)
         this.timer();
     }
@@ -174,7 +174,10 @@ class TestSeriesView extends React.Component {
       openModal = () => {
         this.setState({ isModalVisible: true });
       }
- 
+        componentWillUnmount() {
+            console.log("hidden")
+            StatusBar.setHidden(false);
+        }
       updateComponent=()=>
       {
            
@@ -221,7 +224,7 @@ class TestSeriesView extends React.Component {
         this.updateComponent() 
         return (
             <>
-            <StatusBar hidden/>
+          
             <PageStructure
                 iconName={"arrow-left"}
                 btnHandler={() => {this.props.navigation.goBack()}}
@@ -231,6 +234,7 @@ class TestSeriesView extends React.Component {
                 bottomComponent={this.renderFooter()}
                 headerStyle={{flex:0.0623}}
                 noBottomTab={true}
+                statusBarHidden={true}
                 bottomComponentStyle={{paddingLeft:0,paddingRight:0,paddingBottom:0}}
             >
                 

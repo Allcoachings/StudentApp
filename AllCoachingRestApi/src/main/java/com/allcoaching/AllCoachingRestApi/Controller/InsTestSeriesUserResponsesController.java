@@ -34,7 +34,7 @@ public class InsTestSeriesUserResponsesController {
 
     @CrossOrigin(origins="*")
     @GetMapping("/get-user-response/{responseId}")
-    public Optional<InsTestSeriesUserResponseBrief> getResponse(long responseId)
+    public Optional<InsTestSeriesUserResponseBrief> getResponse(@PathVariable long responseId)
     {
         return userResponsesService.userResponseBriefs(responseId);
     }

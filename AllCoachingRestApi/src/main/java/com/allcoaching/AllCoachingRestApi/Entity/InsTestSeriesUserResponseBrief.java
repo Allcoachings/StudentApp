@@ -27,16 +27,20 @@ public class InsTestSeriesUserResponseBrief {
     private String percentile;
     private String timeTaken;
 
-    @OneToMany(mappedBy = "brief", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "brief")
     private List<InsTestSeriesUserQuestionResponses> userQuestionResponses;
 
-    public void addInsTestSeriesUserQuestionResponses(InsTestSeriesUserQuestionResponses insTestSeriesUserQuestionResponses){
-        userQuestionResponses.add(insTestSeriesUserQuestionResponses);
-        insTestSeriesUserQuestionResponses.setBrief(this);
+    public void addInsTestSeriesUserQuestionResponses(List<InsTestSeriesUserQuestionResponses> insTestSeriesUserQuestionResponses){
+        insTestSeriesUserQuestionResponses.forEach(item->{
+           item.setBrief(this);
+        });
+        userQuestionResponses=insTestSeriesUserQuestionResponses;
+
     }
-    public void removeInsTestSeriesUserQuestionResponses(InsTestSeriesUserQuestionResponses insTestSeriesUserQuestionResponses){
-        userQuestionResponses.remove(insTestSeriesUserQuestionResponses);
-        insTestSeriesUserQuestionResponses.setBrief(null);
+    public void removeInsTestSeriesUserQuestionResponses(List<InsTestSeriesUserQuestionResponses> insTestSeriesUserQuestionResponses){
+        insTestSeriesUserQuestionResponses.forEach(item->{item.setBrief(null);});
+        userQuestionResponses=insTestSeriesUserQuestionResponses;
+
     }
     @Override
     public boolean equals(Object o) {

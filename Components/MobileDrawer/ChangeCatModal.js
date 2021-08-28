@@ -76,6 +76,10 @@ const handleExplorePress=()=>
     AsyncStorage.setItem("userCat",JSON.stringify(selectedCategory)).then(()=>
     {
         props.closeModal()
+        props.navigation.reset({
+            index: 0,
+            routes: [{ name: 'Home' }],
+        })
     });
 }
 const setCatSelector=(item)=>{

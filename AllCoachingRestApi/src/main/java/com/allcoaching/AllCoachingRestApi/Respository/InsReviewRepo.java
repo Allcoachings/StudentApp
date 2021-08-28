@@ -20,8 +20,8 @@ import java.util.Optional;
 @Transactional
 public interface InsReviewRepo extends PagingAndSortingRepository<InsReview,Long> {
 
-    @Query("SELECT r from InsReview r where r.courseId = :courseId and r.studentId = :studentId")
-    Optional<InsReview> findByCourseIdStudentId(long courseId, long studentId);
+
+    Optional<InsReview> findByInsIdAndStudentId(long insId, long studentId);
 
     @Query("SELECT new com.allcoaching.AllCoachingRestApi.dto.InsReviewDto(s.name,i.name, s.studentImage, r) from Institute i, InsReview r, Student s where r.insId=i.id and i.id = :id and r.studentId=s.id")
     Page<InsReviewDto> findByInsId(long id, Pageable pageable);

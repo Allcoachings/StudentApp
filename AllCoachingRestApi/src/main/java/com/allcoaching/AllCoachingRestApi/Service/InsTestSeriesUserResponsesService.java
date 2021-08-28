@@ -24,6 +24,9 @@ public class InsTestSeriesUserResponsesService {
 
     public InsTestSeriesUserResponseBrief saveUserResponse(InsTestSeriesUserResponseBrief insTestSeriesUserResponseBrief)
     {
-        return userResponseBriefRepo.save(insTestSeriesUserResponseBrief);
+         InsTestSeriesUserResponseBrief insTestSeriesUserResponseBrief_saved = userResponseBriefRepo.save(insTestSeriesUserResponseBrief);
+         insTestSeriesUserResponseBrief_saved.addInsTestSeriesUserQuestionResponses(insTestSeriesUserResponseBrief.getUserQuestionResponses());
+
+        return insTestSeriesUserResponseBrief_saved;
     }
 }

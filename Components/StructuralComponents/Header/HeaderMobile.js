@@ -45,32 +45,11 @@ class HeaderMobile extends React.Component {
           this.props.headerComponent
         ) : (
           <>
-            {this.state.search ? (
-                CardView(
-                    <View style={{flex: 1,flexDirection: 'row'}}>
-                        <TextInput
-                        placeholder="Search Institute"
-                        style={styles.searchInput}
-                        onChangeText={(value) => this.setState({ search: value })}
-                        />
-                        <TouchableOpacity
-                          onPress={() => this.setState({ search: false })}
-                        >
-                        <Feather
-                            name="x"
-                            size={20}
-                            color={theme.secondaryColor}
-                            style={styles.searchIcon}
-                        />
-                        </TouchableOpacity>
-                    </View>,
-                    styles.headerSearch,2
-                )
-            ) : (
+            {(
               <>
              
                     <TouchableOpacity
-                    style={{ margin: "1%",marginTop: 15, flex:0.05}}
+                    style={{ margin: "1%",marginTop: 2, flex:0.1}}
                     onPress={this.props.btnHandler}
                     >
                     <Feather
@@ -81,7 +60,7 @@ class HeaderMobile extends React.Component {
                     </TouchableOpacity> 
                 
 
-                  <View style={!this.props.titleonheader?{alignSelf: 'center',marginLeft: "auto",flex: 0.9}:{marginTop:15, flex: 0.9}}>
+                  <View style={!this.props.titleonheader?{alignSelf: 'center',alignItems: 'center',flex: 0.9}:{marginTop:2, flex: 0.9}}>
                     {this.props.titleonheader ? (
                       <Text
                         style={{
@@ -245,8 +224,8 @@ const styles = StyleSheet.create({
   headerLogo: {
     width: 25,
     height: 25,
-    alignSelf: "center",
-    marginLeft:'35%'
+    alignSelf: "center", 
+    resizeMode:'contain'
     
   },
 });
