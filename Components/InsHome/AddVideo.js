@@ -149,8 +149,7 @@ class AddVideo extends React.Component {
                          
                     </View>
                     <View style={styles.inputView}>
-                    <Text style={styles.labelText}>Video Description</Text>
-                   
+                                <Text style={styles.labelText}>Video Description</Text> 
                                 <TextInput 
                                     placeholderTextColor={theme.greyColor} 
                                     placeholder="Description" 

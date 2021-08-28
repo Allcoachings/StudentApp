@@ -250,7 +250,7 @@ class AddTest extends React.Component {
     verify=({title,questionCount,timeDuration,isPractice,maxMarks,questionData})=>title&&questionCount&&timeDuration&&isPractice&&maxMarks&&questionData
 
     render() {
-        console.log(this.state.questionData)
+       
         return(
             <PageStructure
                 iconName={"menu"}
@@ -272,8 +272,7 @@ class AddTest extends React.Component {
                             )}
                     </View>
                     <View style={styles.inputView}>
-                            <Text style={styles.labelText}>Test Type</Text>
-
+                            <Text style={styles.labelText}>Test Type</Text> 
                             <View style={{flexDirection: 'row',alignItems: 'center'}}>
                                 <RadioButton
                                     value={true}

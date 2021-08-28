@@ -25,6 +25,21 @@ class Leads extends React.Component {
 
     componentDidMount(){
         fetchLeads(this.props.institute.details.id,this.state.offset, dataLimit,this.fetchLeadsCallback)
+        getLeadCount(this.props.institute.details.id, this.leadCountCallBack)
+    }
+
+    leadCountCallBack=(response)=>{
+        if(response.status==200)
+        {
+            response.json().then(data=>{
+                console.log("lead count", data)
+                this.setState({leadCount: data, loadingCount: false})
+            })
+        }
+        else
+        {
+            console.log("something went wrong", response.status)
+        }
     }
 
     fetchLeadsCallback=(response)=>{

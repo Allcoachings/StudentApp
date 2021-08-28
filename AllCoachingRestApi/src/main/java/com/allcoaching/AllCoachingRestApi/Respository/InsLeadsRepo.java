@@ -17,10 +17,13 @@ public interface InsLeadsRepo extends PagingAndSortingRepository<InsLeads,Long> 
 
 
     Optional<InsLeads> findByCourseIdAndInsIdAndUserId(long courseId,long insId,long userId);
+    long countByInsId(long insId);
 
     @Query("Select new com.allcoaching.AllCoachingRestApi.dto.InsLeadsDto(c.id,c.title,c.leads) from Course c , InsLeads il where c.id = il.courseId and il.insId=:id")
     Page<InsLeadsDto> findAllByInsId(long id, Pageable pageable);
 
     @Query("Select new com.allcoaching.AllCoachingRestApi.dto.InsLeadsStudentDto(s.id,s.name,s.studentImage,s.userId) from Student s , InsLeads il where s.id = il.userId and il.courseId=:id")
     Page<InsLeadsStudentDto> findAllByCourseId(long id,Pageable pageable);
+
+
 }

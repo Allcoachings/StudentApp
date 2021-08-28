@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Modal,TouchableWithoutFeedback} from 'react-native';
-import { theme , Assets} from '../config';
+import { Text,View,StyleSheet,TouchableOpacity,Dimensions,FlatList, Image,Platform, ScrollView, Modal,TouchableWithoutFeedback} from 'react-native';
+import { theme , Assets, serverBaseUrl} from '../config';
 import { Feather, FontAwesome } from '@expo/vector-icons';
 import {connect } from 'react-redux'
 import {singlequedata} from '../../FakeDataService/FakeData'
@@ -8,6 +8,7 @@ import CardView from '../Utils/CardView'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import {setTestResultData} from '../Actions'
+const width = Dimensions.get('window').width
 class SeriesModal extends React.Component {
   state = {
     modalVisible: true,
@@ -85,7 +86,27 @@ class SeriesModal extends React.Component {
       </TouchableOpacity>
     )
   }
+  renderQuestion=(item) => {
+    switch (item.questionType)
+    {
+        case 1:
+        case '1':
+        case '3': 
+        case 3:
+                  return(
+                      <Text style={styles.queno}>{item.question}</Text>
+                  ); 
+      case 2:
+      case '2': 
+      case 4:
+      case '4':
 
+          return(
+               <Image source={{uri: serverBaseUrl+item.question}} style={{width:width,height:150,resizeMode:'contain'}} />
+          ); 
+
+    }
+}
   renderQuestionListItem=({item,index})=>
   {
     this.calculateScore(item.status,item.correctMarks,item.wrongMarks)
@@ -97,7 +118,8 @@ class SeriesModal extends React.Component {
             <Text style={styles.queno}>{index+1}</Text>
           </TouchableOpacity>
           <View>
-              <Text style={styles.queno}>{item.question}</Text>
+              {/* <Text style={styles.queno}>{item.question}</Text> */}
+              {this.renderQuestion(item)}
           </View>
 
           {item.bookmarked?(
