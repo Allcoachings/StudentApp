@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView,Dimensions} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import { theme , Assets} from '../config';
+import { theme , Assets, serverBaseUrl} from '../config';
 import { MaterialIcons } from '@expo/vector-icons';
 import EmptyList from '../Utils/EmptyList'
 import { connect } from 'react-redux';
@@ -145,6 +145,27 @@ class Solutions extends React.Component {
             return true;
         }
     }
+    renderQuestion=(item) => {
+        switch (item.questionType)
+        {
+            case 1:
+            case '1':
+            case '3': 
+            case 3:
+                      return(
+                          <Text style={styles.ansStatement}>{item.question}</Text>
+                      ); 
+          case 2:
+          case '2': 
+          case 4:
+          case '4':
+  
+              return(
+                   <Image source={{uri: serverBaseUrl+item.question}} style={{width:'100%',height:150,resizeMode:'contain'}} />
+              ); 
+  
+        }
+    }
     renderSolution=({item,index})=>{
 
         if(this.tabNstatusMatching(item.status))
@@ -159,18 +180,20 @@ class Solutions extends React.Component {
                                         <Text style={styles.queText}>Q.{index+1}</Text>
                                         <Text style={[styles.typeText,this.questionStatusStyle(item.status)]}>{this.questionStatusTypeProvider(item.status)}</Text>
                                     </View>
-                                    <Text style={styles.timeText}>Time: {item.time}</Text>
+                                    {/* <Text style={styles.timeText}>Time: {item.time}</Text> */}
                                 </View>
                                 <View style={styles.ansView}>
-                                    <Text style={styles.ansStatement}>
+                                    {/* <Text style={styles.ansStatement}>
                                          {item.question}
-                                    </Text>
-                                    
+                                    </Text> */}
+                                    {this.renderQuestion(item)}
                                     <View style={styles.explanationView}>
-                                        <Text style={styles.ansStatement}>
-                                            Correct answer {item["option"+item.correctOpt]}
-                                        </Text>
-                                        <Text style={styles.heading}>Reason</Text>
+                                        <Text style={styles.correctAnswer}>
+                                            Correct answer :  ({item.correctOpt})  {item.optionType==1?item["option"+item.correctOpt]:null}
+                                        </Text> 
+                                        {item.optionType==2?(
+                                             <Image source={{uri:serverBaseUrl+item["option"+item.correctOpt]}} style={{borderWidth:0.5,borderColor: theme.labelOrInactiveColor,width:'85%',height:150,marginLeft:10}}/>
+                                        ):(null)}
                                         <Text style={styles.explanation}>{item.explanation}</Text>
                                     </View> 
                                 </View>
@@ -303,7 +326,7 @@ const styles = StyleSheet.create({
                 btnText:
                 {
                     paddingLeft: 15,
-                    paddingRight: 15,
+                    paddingRight: 15, 
                     paddingTop: 4,
                     paddingBottom: 4,
                     color: theme.secondaryColor
@@ -334,12 +357,14 @@ const styles = StyleSheet.create({
                 },
                     queText:
                     {
+                        fontFamily: 'Raleway_600SemiBold',
                         fontWeight: 'bold',
                         fontSize: 18,
                         marginRight: 10,
                     },
                     typeText:
                     {
+                        fontFamily: 'Raleway_600SemiBold',
                         marginLeft: 10,
                         // fontWeight: '700',
                         color: theme.accentColor, 
@@ -364,18 +389,19 @@ const styles = StyleSheet.create({
                 },
                 explanationView:
                 {
-                    backgroundColor:theme.labelOrInactiveColor,
+                    // backgroundColor:theme.labelOrInactiveColor,
                     margin:5,
                     width:windowWidth/1.2,
                 },
-                    heading:
+                    correctAnswer:
                     {
-                        color: theme.secondaryColor,
-                        fontWeight:'bold',
+                        color: theme.featureYesColor, 
+                        fontFamily: 'Raleway_600SemiBold',
                         margin:10
                     },
                     explanation:
                     {
+                        fontFamily: 'Raleway_600SemiBold',
                         marginLeft:10,
                         marginBottom:5
                     },

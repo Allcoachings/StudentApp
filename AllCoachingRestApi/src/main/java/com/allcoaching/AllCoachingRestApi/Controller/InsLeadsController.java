@@ -37,6 +37,12 @@ public class InsLeadsController {
     {
         return insLeadService.InsLeadsInfo(insId,offset,dataLimit);
     }
+    @CrossOrigin(origins = "*")
+    @GetMapping("/leadcount/{insId}")
+    public  long countLeadsOfInstitute(@PathVariable long insId)
+    {
+        return insLeadService.countLeadsOf(insId);
+    }
 
     @CrossOrigin(origins = "*")
     @GetMapping("/course/{courseId}/{offset}/{dataLimit}")
@@ -44,6 +50,7 @@ public class InsLeadsController {
     {
         return insLeadService.InsCourseLeadList(courseId,offset,dataLimit);
     }
+
 
 
 }

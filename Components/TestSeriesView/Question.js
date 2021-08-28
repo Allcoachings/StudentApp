@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,TouchableOpacity,TouchableWithoutFeedback } from 'react-native';
-import {theme} from '../config'
+import { View, Text,StyleSheet,Image,TouchableOpacity,TouchableWithoutFeedback,Dimensions } from 'react-native';
+import {serverBaseUrl, theme} from '../config'
 import {Feather, FontAwesome} from '@expo/vector-icons';
+ const width = Dimensions.get('window').width
 class Question extends Component {
   state={
       isPractice:this.props.isPractice,
@@ -118,24 +119,54 @@ class Question extends Component {
        
             
   }
-  renderOption=(index, text,onPress)=>
+  renderOption=(index, text,optionType,onPress)=>
   {
+      
       return(
             <View style={[styles.singleOptionView,this.provideOptionResponseStyle(this.state.userOptionIndex,index)]}>
-                <TouchableOpacity style={styles.optionAns} onPress={onPress}>
-                    <View style={[{marginRight:10,borderRadius:15,paddingHorizontal:10,padding:5,borderWidth:1,borderColor: theme.labelOrInactiveColor},this.provideOptionIndexResponseStyle(this.state.userOptionIndex,index)]}>
-                        <Text>{index}</Text>
-                    </View> 
-                    <Text style={styles.optionText}>{text}</Text>
-                </TouchableOpacity>
+                <TouchableWithoutFeedback style={styles.optionAns} onPress={onPress}>
+                    <View style={styles.optionAns}>
+                        <View style={[{marginRight:10,borderRadius:15,paddingHorizontal:10,padding:5,borderWidth:1,borderColor: theme.labelOrInactiveColor},this.provideOptionIndexResponseStyle(this.state.userOptionIndex,index)]}>
+                            <Text>{index}</Text>
+                        </View> 
+                        {optionType==1?(
+                            <Text style={styles.optionText}>{text}</Text>
+                        ):(
+                            <Image source={{uri:serverBaseUrl+text}} style={{borderWidth:0.5,borderColor: theme.labelOrInactiveColor,width:'85%',height:150}}/>
+                        )} 
+                    </View>
+                </TouchableWithoutFeedback>
             </View>
       )
   }
+  renderQuestion=(item) => {
+      switch (item.questionType)
+      {
+          case 1:
+          case '1':
+          case '3': 
+          case 3:
+                    return(
+                        <Text style={styles.quizText}>{item.question}</Text>
+                    ); 
+        case 2:
+        case '2': 
+        case 4:
+        case '4':
 
+            return(
+                 <Image source={{uri: serverBaseUrl+item.question}} style={{width:width,height:150,resizeMode:'contain'}} />
+            ); 
+
+      }
+  }
+ 
   render() {
+
      const {item} = this.props;
      const propsIndex = this.props.index;
      const  index = propsIndex+1
+     console.log(item);
     return (
         <>
         <View style={styles.quesRowSection}>
@@ -166,15 +197,16 @@ class Question extends Component {
             </View>
         </View>
         <View style={styles.quizQuestionView}>
-            <Text style={styles.quizText}>{item.question}</Text>
+            {this.renderQuestion(item)}
+           
             <View style={styles.optionView}>
                 <View style={styles.optionRow}>
-                    {this.renderOption("A",item.optionA,()=>{this.handleOptionBtnClick(propsIndex,item.correctOpt,"A")})}
-                    {this.renderOption("B",item.optionB,()=>{this.handleOptionBtnClick(propsIndex,item.correctOpt,"B")})}
+                    {this.renderOption("A",item.optionA,item.optionType,()=>{this.handleOptionBtnClick(propsIndex,item.correctOpt,"A")})}
+                    {this.renderOption("B",item.optionB,item.optionType,()=>{this.handleOptionBtnClick(propsIndex,item.correctOpt,"B")})}
                 </View> 
                 <View style={styles.optionRow}>
-                    {this.renderOption("C",item.optionC,()=>{this.handleOptionBtnClick(propsIndex,item.correctOpt,"C")})}
-                    {this.renderOption("D",item.optionD,()=>{this.handleOptionBtnClick(propsIndex,item.correctOpt,"D")})}  
+                    {this.renderOption("C",item.optionC,item.optionType,()=>{this.handleOptionBtnClick(propsIndex,item.correctOpt,"C")})}
+                    {this.renderOption("D",item.optionD,item.optionType,()=>{this.handleOptionBtnClick(propsIndex,item.correctOpt,"D")})}  
                 </View> 
             </View>
             {this.state.isPractice&&this.state.isResponded?(
@@ -189,7 +221,7 @@ class Question extends Component {
                         </TouchableWithoutFeedback>
                     </View>
                     <View style={styles.explanationView}>
-                        {/* <Text style={styles.heading}>Reason</Text> */}
+                        <Text style={styles.correctAnswer}>Correct Answer: {item.correctOpt}</Text>
                         <Text style={styles.explanation}>{this.props.item.explanation}</Text>
                     </View> 
                     </>
@@ -197,7 +229,7 @@ class Question extends Component {
                     <View style={{alignItems: 'flex-end',margin:10}}>
                         <TouchableWithoutFeedback onPress={()=>this.setState({showSolution:true})}>
                             <View style={{flexDirection:'row', }}>
-                                <Text style={{color:theme.accentColor}}>View Solution</Text>
+                                <Text style={{fontFamily:'Raleway_600SemiBold',color:theme.accentColor}}>View Solution</Text>
                                 <Feather name="chevron-down" color={theme.accentColor} size={20}/>
                             </View>
                         </TouchableWithoutFeedback>
@@ -292,6 +324,7 @@ const styles = StyleSheet.create({
     },
         quizText:{
             fontSize: 16,
+            fontFamily: 'Raleway_600SemiBold',
             color: theme.secondaryColor,
             
         },
@@ -308,6 +341,7 @@ const styles = StyleSheet.create({
             singleOptionView:{
                 // backgroundColor: theme.labelOrInactiveColor,
                 padding: 5,
+                width:width,
                 borderRadius: 5,
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -321,6 +355,7 @@ const styles = StyleSheet.create({
                 },
                 optionText:{
                     fontSize: 16,
+                    fontFamily: 'Raleway_600SemiBold',
                     color: theme.secondaryColor
                 },
         explanationView:
@@ -334,10 +369,18 @@ const styles = StyleSheet.create({
                 fontWeight:'bold',
                 margin:10
             },
+            correctAnswer:
+            {
+                color:theme.featureYesColor,
+                fontFamily: 'Raleway_600SemiBold',
+                marginLeft:10,
+                marginBottom:5,
+            },
             explanation:
             {
                  marginLeft:10,
-                 marginBottom:5
+                 marginBottom:5,
+                 fontFamily: 'Raleway_600SemiBold'
             },
 
     correctAns:

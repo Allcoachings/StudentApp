@@ -53,6 +53,12 @@ public class InsLeadService {
 
     }
 
+    //counting total leads of a institute
+    public long countLeadsOf(long institute)
+    {
+        return insLeadsRepo.countByInsId(institute);
+    }
+
 
 
 
