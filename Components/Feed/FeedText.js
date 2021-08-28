@@ -13,6 +13,7 @@ class FeedText extends Component {
   }
 
     likeFeed=(feedId)=>{
+        console.log("like feed")
         this.setState({canUserLike: !this.state.canUserLike},()=>{
             like_feed(feedId,this.props.type,this.props.type==1?(this.props.institute.details.id):(this.props.userInfo.id),this.likeFeedCallBack)
         })
@@ -28,6 +29,7 @@ class FeedText extends Component {
         }
     }
 
+    
   render() {
     const{feed,posterObject} = this.props.item
     return(
@@ -48,7 +50,7 @@ class FeedText extends Component {
                             </TouchableOpacity>
                         </View>
                         <Text style={{fontFamily:'Raleway_400Regular', marginVertical: 10}}>{feed.feed.description}</Text>
-                        <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation}/>
+                        <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation} changeCanUserLike={this.changeCanUserLike}/>
                     </View>
                 </View>
                 <View style={{borderTopWidth: 0.8, borderColor: theme.labelOrInactiveColor, marginVertical: 10, width: '100%'}}/>
