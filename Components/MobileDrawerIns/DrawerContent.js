@@ -34,6 +34,18 @@ export function DrawerContent(props){
                         />
                         <DrawerItem
                             icon={({color, size}) => (
+                                <Icon 
+                                name="home-outline" 
+                                color={color}
+                                size={size}
+                                />
+                            )}
+                            label="Account Details"
+                            onPress={()=>{props.navigation.navigate("accountDetails")}}
+                            style={{borderBottomWidth: 0.2, borderColor: theme.greyColor}}
+                        />
+                        <DrawerItem
+                            icon={({color, size}) => (
                                 <Icon
                                     name="home-outline"
                                     color={color}
@@ -41,7 +53,7 @@ export function DrawerContent(props){
                                 />
                             )}
                             label="Notification"
-                            onPress={()=>{}}
+                            onPress={()=>{props.navigation.navigate("Notification",{mode: 'institute'})}}
                             style={{borderBottomWidth: 0.2, borderColor: theme.greyColor}}
                         />
                          <DrawerItem

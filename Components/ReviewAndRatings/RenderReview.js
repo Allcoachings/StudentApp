@@ -5,6 +5,7 @@ import {theme,screenMobileWidth} from '../config'
 import { AirbnbRating } from 'react-native-ratings';
 import { Feather } from '@expo/vector-icons';
 import {reply} from '../Utils/DataHelper/Reviews'
+import  Toast  from 'react-native-simple-toast';
 
 class RenderReview extends React.Component {
     state = {
@@ -15,22 +16,33 @@ class RenderReview extends React.Component {
       }
 
 
-    sendReply=(id)=>{
+    sendReply=(id,rating,review,courseId, studentId, insId)=>{
         if(this.state.reply!='')
         {
-            reply(id, this.state.reply, this.replyCallBack)
+            Toast.show("Please Wait...")
+            reply(id, this.state.reply, rating,review,courseId, studentId, insId, this.replyCallBack)
+        }
+        else
+        {
+            Toast.show("Please Fill All The Fields.")
         }
     }
 
     replyCallBack=(response)=>{
         if(response.status==200)
         {
+            Toast.show("Reply Added Successfully.")
             this.setState({ReviewmodalVisible: false, editReply:''})
+        }
+        else
+        {
+            console.log("response.status",response.status)
         }
     }
 
     renderReviews=(item)=>
     {
+        console.log("item", item)
         return (
         <View style={styles.ratingContainer}>
             {item.insReview.review!=null&&item.insReview.review!=''?(  
@@ -49,10 +61,6 @@ class RenderReview extends React.Component {
                 </View>
 
                 <View style={styles.ratingMetaView}>
-                    {/* <View style={styles.ratingUserMeta}>
-                        <Text style={styles.ratingUserName}>{item.userName}</Text>
-                        <Text style={styles.ratingUserid}>{item.user}</Text>
-                    </View> */}
                     <View>
                         <View style={{flexDirection: 'row'}}>
                             <AirbnbRating 
@@ -60,7 +68,7 @@ class RenderReview extends React.Component {
                                 count={5}
                                 reviews={[]} 
                                 isDisabled={true}
-                                defaultRating={item.rating}
+                                defaultRating={item.insReview.rating}
                                 size={12}
                                 selectedColor={theme.blueColor}
                                 showRating={false}
@@ -122,7 +130,7 @@ class RenderReview extends React.Component {
                                         onChangeText={(text) =>this.setState({reply: text})} 
                                         placeholder="Write a Review" placeholderTextColor='grey'>
                                     </TextInput>
-                                    <TouchableOpacity style={styles.reviewbutton} onPress={()=>this.sendReply(item.insReview.id)}>
+                                    <TouchableOpacity style={styles.reviewbutton} onPress={()=>this.sendReply(item.insReview.id,item.insReview.rating,item.insReview.review,item.insReview.courseId, item.insReview.studentId, item.insReview.insId)}>
                                         <Text style={styles.reviewbutton_text}>Submit</Text>
                                     </TouchableOpacity>
                                 </View>

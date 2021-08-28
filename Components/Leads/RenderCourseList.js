@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions, ActivityIndicator} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import { theme, dataLimit, Assets } from '../config';
+import { theme, dataLimit, Assets, serverBaseUrl } from '../config';
 import { Feather } from '@expo/vector-icons';
 import { feedData } from '../../FakeDataService/FakeData' 
 import {connect } from 'react-redux'
@@ -16,7 +16,7 @@ class RenderCourseList extends React.Component {
     state={
         loading: false,
         offset: 0,
-        studentList:[]
+        studentList:[],
     }
 
     studentListCallBack=(response)=>{
@@ -25,6 +25,7 @@ class RenderCourseList extends React.Component {
             console.log("success student list")
             response.json().then(data=>
             {
+
                 this.setState({studentList: data, loading: false})
             })
         }
@@ -37,6 +38,7 @@ class RenderCourseList extends React.Component {
     accordianHeader = () =>
     {
         return(
+            
             <View style={styles.corsePriceView}>
                 <Text style={styles.courseText}>{this.props.item.courseName}</Text>
                 <Text style={styles.coursePriceText}>{this.props.item.leads}</Text>
@@ -48,15 +50,15 @@ class RenderCourseList extends React.Component {
 
         return(
             CardView(
-            <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                <View style={{marginHorizontal: 10}}>
-                    <Image source={{uri: item.studentImage}} style={{height: 50, width:50, borderRadius: 25}} />
-                </View>
-                <View style={{display: 'flex', flexDirection: 'column', marginHorizontal: 10}}>
-                    <Text>{item.studentName}</Text>
-                    <Text>{item.studentUniqueId}</Text>
-                </View>
-            </View>, {marginVertical: 10, padding:5}
+                <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{marginHorizontal: 10}}>
+                        <Image source={{uri: serverBaseUrl+item.studentImage}} style={{height: 50, width:50, borderRadius: 25}} />
+                    </View>
+                    <View style={{display: 'flex', flexDirection: 'column', marginHorizontal: 10}}>
+                        <Text>{item.studentName}</Text>
+                        <Text>{item.studentUniqueId}</Text>
+                    </View>
+                </View>, {padding:5, marginVertical: 10}
             )
         )
     }
@@ -71,6 +73,7 @@ class RenderCourseList extends React.Component {
                 {this.state.loading?(
                     <CustomActivtiyIndicator mode="skimmer"/>
                 ):(
+                    <View style={{justifyContent: 'center', alignItems: 'center'}}>
                     <FlatList 
                         data={this.state.studentList} 
                         renderItem={(item)=>{console.log(item);return this.studentList(item)}}
@@ -78,7 +81,8 @@ class RenderCourseList extends React.Component {
                         horizontal={false}
                         showsHorizontalScrollIndicator={false}
                         ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
-                    /> 
+                    />
+                    </View> 
                 )}
             </Accordian>
         )
@@ -87,16 +91,15 @@ class RenderCourseList extends React.Component {
 
 const styles = StyleSheet.create({
     corsePriceView:
-    {
+    { 
         display: 'flex',
-        width: width-10,
         flexDirection: 'row',
         backgroundColor: theme.blueColor+"0D",
-        borderRadius: 5,
+        width: width-width*0.15,
+        marginVertical: 5,
         justifyContent: 'space-between',
-        paddingHorizontal: 25,
-        paddingVertical: 15,
-        marginBottom: 10
+        padding: 10,
+        borderRadius: 5
     },
         courseText:
         {

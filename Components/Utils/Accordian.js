@@ -1,8 +1,9 @@
 import { Feather } from '@expo/vector-icons';
 import React, { Component } from 'react';
-import { View, StyleSheet,TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { View, StyleSheet,TouchableOpacity, TouchableWithoutFeedback, Dimensions } from 'react-native';
 import CardView from './CardView';
-
+import { theme } from '../config'
+const width = Dimensions.get('window').width
  class Accordian extends Component {
  
    state = {
@@ -24,7 +25,7 @@ import CardView from './CardView';
         <View style={styles.container}>
           <View style={styles.accordianHeader}>
               <TouchableWithoutFeedback   onPress={()=>this.accordionOnPress()}>
-                  <View style={{flexDirection: 'row',marginHorizontal:10,marginTop:10}}>
+                  <View style={{flexDirection: 'row',justifyContent: 'space-between', alignItems: 'center'}}>
                     <View>
                       {this.props.header}
                     </View>
@@ -39,10 +40,10 @@ import CardView from './CardView';
           ):(null)}
         </View>,
         {
-            width:'95%', 
-            padding:5,
-            margin:5,
-           
+            width: width-width*0.05,
+            borderWidth: 0.5,
+            borderColor: theme.greyColor,
+            marginVertical: 5
         })
     );
   }
@@ -50,12 +51,10 @@ import CardView from './CardView';
 const styles = StyleSheet.create({
     container:
     {
-        width:'100%',
-        // backgroundColor: "#000"
+        
     },
         accordianHeader:
         {
-            width:'100%',
             alignItems: 'center'
         }
 

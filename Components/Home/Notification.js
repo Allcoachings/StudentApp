@@ -21,7 +21,18 @@ class Notification extends React.Component {
     }
 
     componentDidMount(){
-        fetchNotifications(this.props.userInfo.id, 2, this.state.offset, dataLimit, this.notificationCallback)
+        this.fetch()
+    }
+
+    fetch=() => {
+        if(this.props.mode=="student")
+        {
+            fetchNotifications(this.props.userInfo.id, 2, this.state.offset, dataLimit, this.notificationCallback)
+        }
+        else
+        {
+            fetchNotifications(this.props.institute.details.id, 1, this.state.offset, dataLimit, this.notificationCallback)
+        }
     }
 
     notificationCallback=(response)=>{
@@ -104,8 +115,7 @@ class Notification extends React.Component {
                             {
                                 if(this.state.showLoadMore&&!this.state.loadingFooter)
                                 {
-                                    console.log("hehe")
-                                    this.setState({ refreshing: true,loadingFooter:true,offset:parseInt(this.state.offset)+1},()=>fetchNotifications(this.props.userInfo.id, 2, this.state.offset, dataLimit, this.notificationCallback))
+                                    this.setState({ refreshing: true,loadingFooter:true,offset:parseInt(this.state.offset)+1},()=>this.fetch())
                                         
                                 }
                             
@@ -214,6 +224,7 @@ const  mapStateToProps = (state)=>
     return {
         screenWidth: state.screen.screenWidth,
         userInfo:state.user.userInfo,
+        institute:state.institute
     }
 }
 export default connect(mapStateToProps)(Notification); 

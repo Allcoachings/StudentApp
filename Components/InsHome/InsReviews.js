@@ -27,11 +27,14 @@ class InsReviews extends React.Component {
     reviewsCallBack=(response)=>{
         if(response.status==200)
         {
-            console.log("review res");
             response.json().then(data=>
             {
+                console.log("data", data)
                 this.setState({reviews:data,reviewLoading:false});                   
             })
+        }
+        else{
+            this.setState({reviewLoading: false})
         }
     }
 

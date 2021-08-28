@@ -35,7 +35,7 @@ class FeedText extends Component {
             <View style={{flexDirection: 'column', padding: 5}}>
                 <View style={styles.boxView}>
                     <View style={{flex: 0.1, padding: 5,}}>
-                        <Image source={{ uri: feed.feed.postedBy==2?(serverBaseUrl+posterObject.studentImage):(posterObject.logo)}} style={styles.circleView}/>
+                        <Image source={{ uri: feed.feed.postedBy==2?(serverBaseUrl+posterObject.studentImage):(serverBaseUrl+posterObject.logo)}} style={styles.circleView}/>
                     </View>
                     <View style={styles.innerBoxView}>
                         <View style={styles.rowView}>
@@ -43,7 +43,7 @@ class FeedText extends Component {
                                 
                                 <Text style={styles.coaching}>{posterObject.name}{' • '}<Text style={styles.timeDateText}>{moment(feed.feed.creationTime).fromNow()}</Text></Text>
                             </View>
-                            <TouchableOpacity onPress={()=>this.props.mode=="userProfile"?(this.props.updateEditFeedState(feed.feed.feedType, feed.feed.description, null, null, feed.feed.id, this.props.index)):(null)}>
+                            <TouchableOpacity onPress={()=>this.props.mode=="userProfile"||this.props.mode=="insProfile"?(this.props.updateEditFeedState(feed.feed.feedType, feed.feed.description, null, null, feed.feed.id, this.props.index)):(null)}>
                             <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
                             </TouchableOpacity>
                         </View>

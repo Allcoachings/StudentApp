@@ -1,5 +1,6 @@
 package com.allcoaching.AllCoachingRestApi.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -31,9 +32,12 @@ public class InsTestSeries {
 
 
     @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern="dd/MM/yyyy")
     private Date date;
 
+
     @DateTimeFormat(pattern = "HH:mm")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="HH:mm", timezone = "UTC")
     private Time time;
     private long category;
     private long courseId;

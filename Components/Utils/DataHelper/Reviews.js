@@ -22,8 +22,9 @@ export const fetch_institute_reviews=(insId,offset,dataLimit,callback)=>
     .catch((error)=>{console.log(error)})
 }
 
-export const reply=(id,reply,callback)=>
+export const reply=(id, reply, rating,review,courseId, studentId, insId,callback)=>
 {
+    console.log(id, reply, rating, review, courseId, studentId, insId)
     let headers = new Headers();
 
     headers.append('Content-Type', 'application/json'); 
@@ -37,7 +38,7 @@ export const reply=(id,reply,callback)=>
     {
         method: 'PUT',  
         headers,
-        body:JSON.stringify({id,reply})
+        body:JSON.stringify({id, reply})
     })
     .then((response)=>callback(response)) 
     .catch((error)=>{console.log(error)})

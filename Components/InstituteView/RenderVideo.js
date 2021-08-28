@@ -32,8 +32,8 @@ class RenderVideo extends React.Component {
         return( 
             <View style={styles.videoContainer}>
                 <TouchableOpacity onPress={()=>{
-                    this.props.mode=="institute"?(this.props.addToHistory("video", this.props.item.id)):(null)
-                    this.props.mode=="institute"?(this.props.studentEnrolled?(this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation})):(Toast.show('You Have Not Enrolled For This Course.'))):(this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation}))}
+                    this.props.mode=="student"?(this.props.addToHistory("video", this.props.item.id)):(null)
+                    this.props.mode=="student"?(this.props.studentEnrolled?(this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation})):(Toast.show('You Have Not Enrolled For This Course.'))):(this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation}))}
                 } >
                     <Image source={{uri:this.props.item.videoThumb}} style={styles.videoImage}/>
                 </TouchableOpacity>
