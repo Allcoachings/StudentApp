@@ -29,9 +29,12 @@ class InsReviews extends React.Component {
         {
             response.json().then(data=>
             {
-                console.log(data)
+                console.log("data", data)
                 this.setState({reviews:data,reviewLoading:false});                   
             })
+        }
+        else{
+            this.setState({reviewLoading: false})
         }
     }
 

@@ -79,8 +79,6 @@ class InsHome extends React.Component {
         {
             response.json().then(data=>
                 {
-                    
-
                     data.push({type:'add',bannerImageLink:addBannerImagePlaceholder})
                     this.setState({courseBanners:data});
                 })

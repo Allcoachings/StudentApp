@@ -7,14 +7,17 @@ import { feedData } from '../../FakeDataService/FakeData'
 import {connect } from 'react-redux'
 import CardView from '../Utils/CardView';
 import RenderCourseList from './RenderCourseList';
-import { fetchLeads } from '../Utils/DataHelper/Leads'
+import { fetchLeads, getLeadCount } from '../Utils/DataHelper/Leads'
+import { getCourseCount } from '../Utils/DataHelper/Course'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 class Leads extends React.Component {
     state={
         leads:[],
         offset: 0,
-        courseList: []
+        courseList: [],
+        leadCount: '',
+        courseCount: ''
     }
 
     courses=({item})=>{
@@ -26,19 +29,31 @@ class Leads extends React.Component {
     componentDidMount(){
         fetchLeads(this.props.institute.details.id,this.state.offset, dataLimit,this.fetchLeadsCallback)
         getLeadCount(this.props.institute.details.id, this.leadCountCallBack)
+        getCourseCount(this.props.institute.details.id, this.courseCountCallBack)
     }
 
     leadCountCallBack=(response)=>{
         if(response.status==200)
         {
             response.json().then(data=>{
-                console.log("lead count", data)
                 this.setState({leadCount: data, loadingCount: false})
             })
         }
         else
         {
-            console.log("something went wrong", response.status)
+            this.setState({loadingCount: false})
+        }
+    }
+    courseCountCallBack=(response)=>{
+        if(response.status==200)
+        {
+            response.json().then(data=>{
+                this.setState({courseCount: data, loadingCount: false})
+            })
+        }
+        else
+        {
+            this.setState({loadingCount: false})
         }
     }
 
@@ -48,7 +63,6 @@ class Leads extends React.Component {
             console.log("success leads")
             response.json().then(data=>
             {
-                console.log(data)
                 this.setState({leads: data})
             })
         }
@@ -81,11 +95,11 @@ class Leads extends React.Component {
                         <View style={styles.rowContainer}>
                             <View style={[styles.colContainer, {backgroundColor: theme.redColor+"33"}]}>
                                 <Text style={styles.leadText}>Today Leads</Text>
-                                <Text style={styles.priceText}>220</Text>
+                                <Text style={styles.priceText}>{this.state.leadCount}</Text>
                             </View>
                             <View style={[styles.colContainer, {backgroundColor: theme.yellowColor+"33"}]}>
-                                <Text style={styles.leadText}>Total Leads</Text>
-                                <Text style={styles.priceText}>5000</Text>
+                                <Text style={styles.leadText}>Total Courses</Text>
+                                <Text style={styles.priceText}>{this.state.courseCount}</Text>
                             </View>
                         </View>
 
