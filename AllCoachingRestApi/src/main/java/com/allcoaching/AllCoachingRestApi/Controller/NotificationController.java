@@ -3,6 +3,7 @@ package com.allcoaching.AllCoachingRestApi.Controller;
 import com.allcoaching.AllCoachingRestApi.Entity.Notification;
 import com.allcoaching.AllCoachingRestApi.Service.NotificationService;
 import com.allcoaching.AllCoachingRestApi.dto.NotificationDto;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/v1/notification")
+@Api()
 public class NotificationController {
 
     @Autowired

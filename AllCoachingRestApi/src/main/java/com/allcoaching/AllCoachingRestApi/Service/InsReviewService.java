@@ -71,7 +71,7 @@ public class InsReviewService {
     }
 
     public int setReply(InsReview insReview){
-        return insReviewRepo.setReply(insReview.getInsId(), insReview.getReply());
+        return insReviewRepo.setReply(insReview.getId(), insReview.getReply());
     }
 
     public int addReview(InsReview insReview){
