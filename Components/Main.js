@@ -149,7 +149,7 @@ class Main extends React.Component {
 const styles = StyleSheet.create({
     safeAreaView:
     {
-        // paddingTop:Platform.OS=='android'?StatusBar.currentHeight:0
+        paddingTop:Platform.OS=='android'?StatusBar.currentHeight:0
         // paddingTop:Platform.OS=='android'?0:0
     },
         container: 

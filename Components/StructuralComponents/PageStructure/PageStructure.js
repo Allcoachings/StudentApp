@@ -84,7 +84,7 @@ class PageStructure extends React.Component {
                         return (
                             
                             <>
-                                <View style={[styles.containerHeader,this.props.headerStyle]}> 
+                                <View style={[styles.containerHeader,this.props.headerStyle,]} > 
                                         <Header 
                                             iconName={this.props.iconName}
                                             searchFun={this.props.searchFun}

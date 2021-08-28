@@ -40,7 +40,7 @@ class HeaderMobile extends React.Component {
      
     return (
       // <KeyboardAwareScrollView>
-      <View style={styles.container}>
+      <View style={[styles.container,!this.props.catInHeader?({marginTop: 10,marginBottom:5}):(null)]}>
         {this.props.replaceHeader ? (
           this.props.headerComponent
         ) : (
@@ -49,7 +49,7 @@ class HeaderMobile extends React.Component {
               <>
              
                     <TouchableOpacity
-                    style={{ margin: "1%",marginTop: 2, flex:0.1}}
+                    style={{ margin: "1%", flex:0.1}}
                     onPress={this.props.btnHandler}
                     >
                     <Feather
@@ -190,7 +190,7 @@ class HeaderMobile extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  container: { 
     flex: 1,
     flexDirection: "row",
     backgroundColor: theme.primaryColor,

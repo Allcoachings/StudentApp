@@ -1,15 +1,15 @@
 import React, { useState, useEffect} from 'react';
-import { Text, View ,TouchableOpacity,Image} from 'react-native';
+import { Text, View ,TouchableOpacity,StyleSheet,Image} from 'react-native';
 import {screenMobileWidth, theme, appLogo} from '../config'
 
 const CatView = (props) => {
 
 
         const [isSelected,setSelected] =  useState(false);
-        const [selectedCat,setSelectedCat] =  useState({key:-1});
+        const [selectedCat,setSelectedCat] =  useState({id:-1});
 
         useEffect(() =>{
-            if(props.selectedCat&&props.selectedCat.key != selectedCat.key)
+            if(props.selectedCat&&props.selectedCat.id != selectedCat.id)
             {
                 setSelected(false)
             }
@@ -22,14 +22,27 @@ const CatView = (props) => {
             props.setSelected(item)
         }
     return (
-        <TouchableOpacity style={{backgroundColor:isSelected ? theme.accentColor:theme.primaryColor, flexDirection: 'row', borderWidth: 0.5, borderColor: 'black', borderRadius:20, justifyContent: 'center', alignItems: 'center'}} onPress={()=>onPressHandler(props.item)}>
-            <Image
-                source={appLogo}
-                style={{height: 20, width: 20, marginRight: 5}}
-            />
-            <Text style={{fontFamily:'Raleway_400Regular', fontSize: 18}}>{props.item.label}</Text>
+        <TouchableOpacity style={[styles.container,{ backgroundColor:isSelected ? theme.greyColor:theme.primaryColor,}]} onPress={()=>onPressHandler(props.item)}>
+            
+            <Text style={[styles.text,{color:!isSelected ? theme.black:theme.primaryColor,}]}>{props.item.name}</Text>
         </TouchableOpacity>
     )
 };
+const styles = StyleSheet.create({
+    container:{
+        margin:10, 
+        padding:5,
+        flexDirection: 'row', 
+        borderWidth: 0.5, 
+        borderColor: theme.labelOrInactiveColor, 
+        borderRadius:20,
+        justifyContent: 'center', 
+        alignItems: 'center'
+    },
+    text:{
+        fontFamily:'Raleway_600SemiBold', 
+        fontSize: 18
+    },
 
+})
 export default CatView;
