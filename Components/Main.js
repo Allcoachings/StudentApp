@@ -11,10 +11,10 @@ import {screenWidthConfigChange,setInstituteAuth,userAuthStatus,setUserInfo,setI
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('screen').height; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import * as Font from 'expo-font';
+
 import AppLoading from 'expo-app-loading';
 // import { StatusBar } from 'expo-status-bar';
-import {useFonts,Raleway_400Regular,Raleway_600SemiBold,Raleway_700Bold} from '@expo-google-fonts/raleway';
+
 class Main extends React.Component {
     state = {
         width:windowWidth,
@@ -138,8 +138,7 @@ class Main extends React.Component {
         //             <AppLoading/>
         //         )
         // }
-        return( 
-            
+        return(  
             <SafeAreaProvider  style={styles.safeAreaView}>
                 {this.switchRender(this.state.mode)}
             </SafeAreaProvider>
@@ -150,7 +149,8 @@ class Main extends React.Component {
 const styles = StyleSheet.create({
     safeAreaView:
     {
-        paddingTop:Platform.OS=='android'?StatusBar.currentHeight:0
+        // paddingTop:Platform.OS=='android'?StatusBar.currentHeight:0
+        // paddingTop:Platform.OS=='android'?0:0
     },
         container: 
         {

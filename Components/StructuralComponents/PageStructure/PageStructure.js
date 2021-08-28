@@ -6,6 +6,8 @@ import {connect} from 'react-redux'
 import {screenMobileWidth} from '../../config'
 import BottomTab from '../../BottomTab'
 import CardView from '../../Utils/CardView'
+
+import { StatusBar } from 'expo-status-bar';
 class PageStructure extends React.Component {
     state = {  }
 
@@ -122,7 +124,12 @@ class PageStructure extends React.Component {
     }
     render() {
         return (
-            this.renderContent()
+            <>
+                {/* {this.props.statusBarHidden?(
+                    <StatusBar hidden/>
+                ):(null)}  */}
+                {this.renderContent()}
+            </>
             );
     }
 }
