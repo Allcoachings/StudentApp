@@ -67,11 +67,19 @@ public class InsReviewController {
 
     @CrossOrigin(origins = "*")
     @GetMapping("/{insId}/{studentId}")
-    public Optional<InsReview> findByCourseIdStudentId(
+    public Optional<InsReview> findByInsIdStudentId(
             @PathVariable(name = "insId") long insId,
             @PathVariable(name = "studentId") long studentId)
     {
-        return  insReviewService.findByCourseIdStudentId(insId, studentId);
+        return  insReviewService.findByInsIdStudentId(insId, studentId);
+    }
+    @CrossOrigin(origins = "*")
+    @GetMapping("enrollcheck/{courseId}/{studentId}")
+    public boolean findByCourseIdStudentId(
+            @PathVariable(name = "courseId") long courseId,
+            @PathVariable(name = "studentId") long studentId)
+    {
+        return  insReviewService.findByCourseIdStudentId(courseId, studentId);
     }
     @CrossOrigin(origins = "*")
     @GetMapping("/purchaseList/{studentId}/{offset}/{dataLimit}")

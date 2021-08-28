@@ -19,11 +19,13 @@ public class Category {
     private long id;
     private String name;
     private String icon;
+    private int span;
     private  int sortOrder;
 
-    public Category(String name, String icon, int sortOrder) {
+    public Category(String name, String icon, int sortOrder,int span) {
         this.name = name;
         this.icon = icon;
         this.sortOrder = sortOrder;
+        this.span=span;
     }
 }

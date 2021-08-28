@@ -83,6 +83,7 @@ class index extends React.Component {
                                 noNotificationIcon={this.props.noNotificationIcon}
                                 searchFun={this.props.searchFun}
                                 singleItem={this.props.singleItem}
+                                catInHeader={this.props.catInHeader}
                                 selectedCat={this.props.selectedCat}
                                 />
                             )

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Text, View,Modal,StyleSheet, FlatList, TouchableOpacity, Image, ScrollView } from 'react-native'; 
 import CardView from '../Utils/CardView';
 import {screenMobileWidth, theme, appLogo} from '../config'
-import {fetch_categories} from '../Utils/DataHelper/Categories'
+import {fetch_categories_normalized} from '../Utils/DataHelper/Categories'
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -34,18 +34,17 @@ const ChangeCatModal = (props) => {
 
       useEffect(() => {
 
-        fetch_categories((response)=>{
+        fetch_categories_normalized("category",(response)=>{
                 if(response.status === 200)
                 {
                     response.json().then(response=>
                         { 
                             
-                            let arr=[1,2,3]
-                            let random = getRandomInt(0,2);
-                            let span = arr[random];
-                            response.unshift({key:-1,label:"All",span:3})
-                            let pancham   = response.map(item=>({...item,id:item.key,span:arr[getRandomInt(0,2)]}))
-                            setCategories(pancham);
+                          
+                            response.unshift({id:-1,name:"All",span:1})
+                            // let pancham   = response.map(item=>({...item,id:item.key,span:arr[getRandomInt(0,2)]}))
+                            console.log(response)
+                            setCategories(response);
                             setLoadingCategory(false);
                         })
                         
@@ -153,7 +152,7 @@ return(
 
                             </View>
                             <View style={{justifyContent: 'flex-end', alignItems: 'center', marginTop: '95%'}}>
-                                <TouchableOpacity onPress={handleExplorePress} style={{ backgroundColor: selectedCategory?theme.accentColor:theme.greyColor, padding: 10, width:'50%', justifyContent: 'center', alignItems: 'center',borderRadius: 30}}>
+                                <TouchableOpacity onPress={handleExplorePress} style={{ backgroundColor: theme.greyColor, padding: 10, width:'50%', justifyContent: 'center', alignItems: 'center',borderRadius: 30}}>
                                     <Text style={{fontFamily:'Raleway_700Bold',fontSize:18, color: theme.primaryColor}}>Explore</Text>
                                 </TouchableOpacity>
                             </View>

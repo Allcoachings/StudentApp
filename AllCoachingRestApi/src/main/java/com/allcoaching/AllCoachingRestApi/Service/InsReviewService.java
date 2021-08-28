@@ -47,9 +47,13 @@ public class InsReviewService {
         return insReviewRepo.countByInsId(insId);
     }
 
-    public   Optional<InsReview> findByCourseIdStudentId(long insId, long studentId)
+    public   boolean findByCourseIdStudentId(long courseId, long studentId)
     {
-        return insReviewRepo.findByInsIdAndStudentId(insId, studentId);
+        return insReviewRepo.findByCourseIdAndStudentId(courseId, studentId).isPresent();
+    }
+    public   Optional<InsReview> findByInsIdStudentId(long insId, long studentId)
+    {
+        return insReviewRepo.findByInsIdAndStudentIdAndReviewNotNull(insId, studentId);
     }
 
     public Iterable<StudentPurchaseDto> findByStudentId(long id,int page,int pageSize)
