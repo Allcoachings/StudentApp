@@ -7,6 +7,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeriesPlaylist;
 import com.allcoaching.AllCoachingRestApi.Respository.InsTestSeriesQuestionsRepo;
 import com.allcoaching.AllCoachingRestApi.Respository.InsTestSeriesRepo;
 import com.allcoaching.AllCoachingRestApi.Respository.TestSeriesPlaylistRepo;
+import com.allcoaching.AllCoachingRestApi.dto.TestSeriesQuestionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -63,14 +64,14 @@ public class InsTestSeriesService {
         return extractDataFromPage(insTestSeriesRepo.findByPlaylistIdAndIsAdmin(id,false,PageRequest.of(page,pageSize)));
     }
 
-    public Iterable<InsTestSeriesQuestions> getSeriesQuestion(long id,int page,int pageSize)
+    public Iterable<TestSeriesQuestionDto> getSeriesQuestion(long id, int page, int pageSize)
     {
-        Page<InsTestSeriesQuestions> pagesResult = insTestSeriesQuestionsRepo.findByTestSeriesId(id, PageRequest.of(page,pageSize));
+        Page<TestSeriesQuestionDto> pagesResult = insTestSeriesQuestionsRepo.findByTestSeriesId(id, PageRequest.of(page,pageSize));
         if(pagesResult.hasContent())
         {
             return  pagesResult.getContent();
         }
-        return new ArrayList<InsTestSeriesQuestions>();
+        return new ArrayList<TestSeriesQuestionDto>();
     }
 
 

@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -26,22 +27,14 @@ public class InsTestSeriesUserResponseBrief {
     private String accuracy;
     private String percentile;
     private String timeTaken;
+    private long rank;
 
-    @OneToMany(mappedBy = "brief")
-    private List<InsTestSeriesUserQuestionResponses> userQuestionResponses;
+    @OneToMany(targetEntity = InsTestSeriesUserQuestionResponses.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name="brief_fk",referencedColumnName = "id")
+    private List<InsTestSeriesUserQuestionResponses> userQuestionResponses= new ArrayList<>();
 
-    public void addInsTestSeriesUserQuestionResponses(List<InsTestSeriesUserQuestionResponses> insTestSeriesUserQuestionResponses){
-        insTestSeriesUserQuestionResponses.forEach(item->{
-           item.setBrief(this);
-        });
-        userQuestionResponses=insTestSeriesUserQuestionResponses;
 
-    }
-    public void removeInsTestSeriesUserQuestionResponses(List<InsTestSeriesUserQuestionResponses> insTestSeriesUserQuestionResponses){
-        insTestSeriesUserQuestionResponses.forEach(item->{item.setBrief(null);});
-        userQuestionResponses=insTestSeriesUserQuestionResponses;
 
-    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

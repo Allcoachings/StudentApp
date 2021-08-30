@@ -167,7 +167,7 @@ class Solutions extends React.Component {
         }
     }
     renderSolution=({item,index})=>{
-
+            
         if(this.tabNstatusMatching(item.status))
         {
                 return(
@@ -186,15 +186,15 @@ class Solutions extends React.Component {
                                     {/* <Text style={styles.ansStatement}>
                                          {item.question}
                                     </Text> */}
-                                    {this.renderQuestion(item)}
+                                    {this.renderQuestion(item.question)}
                                     <View style={styles.explanationView}>
                                         <Text style={styles.correctAnswer}>
-                                            Correct answer :  ({item.correctOpt})  {item.optionType==1?item["option"+item.correctOpt]:null}
+                                            Correct answer :  ({item.question.correctOpt})  {item.question.optionType==1?item["option"+item.question.correctOpt]:null}
                                         </Text> 
                                         {item.optionType==2?(
-                                             <Image source={{uri:serverBaseUrl+item["option"+item.correctOpt]}} style={{borderWidth:0.5,borderColor: theme.labelOrInactiveColor,width:'85%',height:150,marginLeft:10}}/>
+                                             <Image source={{uri:serverBaseUrl+item["option"+item.question.correctOpt]}} style={{borderWidth:0.5,borderColor: theme.labelOrInactiveColor,width:'85%',height:150,marginLeft:10}}/>
                                         ):(null)}
-                                        <Text style={styles.explanation}>{item.explanation}</Text>
+                                        <Text style={styles.explanation}>{item.question.explanation}</Text>
                                     </View> 
                                 </View>
                             </View>

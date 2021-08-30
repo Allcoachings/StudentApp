@@ -37,7 +37,7 @@ class TestSeriesView extends React.Component {
             {   
                     response.json().then(data=>
                     {
-                       
+                 
                       this.setState({questions:{...this.state.questions,...data},isFirstTimeLoading:false,loadingQuestions:false})
                     })
             }
@@ -47,7 +47,7 @@ class TestSeriesView extends React.Component {
     {  
         StatusBar.setHidden(true);
         fetch_testSeries_questions(this.state.testSeriesId,this.state.offset,dataLimit,this.questionCallback)
-        this.timer();
+        // this.timer();
     }
 
 
@@ -191,7 +191,7 @@ class TestSeriesView extends React.Component {
           
       }
 
-      setQuestionAttemptStatus=(quesIndex,status) => 
+      setQuestionAttemptStatus=(quesIndex,status,userResponse) => 
       {
              let questions = this.state.questions;  
              let  correctQues  = this.state.correctQues;
@@ -212,6 +212,7 @@ class TestSeriesView extends React.Component {
                 questions[quesIndex]['isAttempted']=true;
              }
              questions[quesIndex]['status'] = status;
+             questions[quesIndex]['userResponse'] = userResponse;
              this.setState({questions,correctQues,wrongQues,attempted})
       }
       bookmarkQuestion=(quesIndex,status)=>
@@ -221,10 +222,9 @@ class TestSeriesView extends React.Component {
             this.setState({questions})
       }
     render(){
-        this.updateComponent() 
+        this.updateComponent()  
         return (
-            <>
-          
+            <> 
             <PageStructure
                 iconName={"arrow-left"}
                 btnHandler={() => {this.props.navigation.goBack()}}
@@ -251,7 +251,7 @@ class TestSeriesView extends React.Component {
                                      
                                 <FlatList 
                                     data={Object.values(this.state.questions)} 
-                                    renderItem={({item,index}) =><Question item={item} index={index} isPractice={true} bookmarkQuestion={this.bookmarkQuestion} setQuestionAttemptStatus={this.setQuestionAttemptStatus}/>}
+                                    renderItem={({item,index}) =><Question item={item.question} index={index} isPractice={true} bookmarkQuestion={this.bookmarkQuestion} setQuestionAttemptStatus={this.setQuestionAttemptStatus}/>}
                                     keyExtractor={(item)=>item.id} 
                                     horizontal={false}
                                     showsHorizontalScrollIndicator={false}
@@ -277,6 +277,7 @@ class TestSeriesView extends React.Component {
                             // isPractice={this.state.testSeries.isPractice}
                             closeModal={this.closeModal}
                             testSeriesDetails={this.state.testSeries}
+                            testSeriesId={this.state.testSeriesId}
                             timeOver ={this.state.timeOver}
                             timeLeft ={this.state.time}
                             intervalRef={this.state.interval}

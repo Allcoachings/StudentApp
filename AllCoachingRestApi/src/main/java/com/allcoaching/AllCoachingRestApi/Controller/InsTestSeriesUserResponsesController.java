@@ -24,9 +24,17 @@ public class InsTestSeriesUserResponsesController {
     @PostMapping("/saveresponse")
     public ResponseEntity<Object> saveResponse(@RequestBody InsTestSeriesUserResponseBrief insTestSeriesUserResponseBrief)
     {
+        long rank = userResponsesService.countRankBy(insTestSeriesUserResponseBrief.getTestSeriesId(),insTestSeriesUserResponseBrief.getScore())+1;
+        System.out.println("student rank "+rank);
+        insTestSeriesUserResponseBrief.setRank(rank);
+        int belowScore = userResponsesService.belowScore(insTestSeriesUserResponseBrief.getTestSeriesId(),insTestSeriesUserResponseBrief.getScore());
+        int count =userResponsesService.totalStudents(insTestSeriesUserResponseBrief.getTestSeriesId());
+        int percen = (belowScore/count)*100;
+        String percentile = String.valueOf(percen);
+        System.out.println("belowScore:"+belowScore+" count:"+count+" percentile:"+percentile+" long:"+percen);
+        insTestSeriesUserResponseBrief.setPercentile(percentile);
         InsTestSeriesUserResponseBrief insTestSeriesUserResponseBrief_saved =  userResponsesService.saveUserResponse(insTestSeriesUserResponseBrief);
-        URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(insTestSeriesUserResponseBrief_saved.getId()).toUri();
-
+        URI location = ServletUriComponentsBuilder.fromPath("{id*percentile*rank}").buildAndExpand(insTestSeriesUserResponseBrief_saved.getId(),percentile,rank).toUri();
 
         return ResponseEntity.created(location).build();
     }
@@ -38,6 +46,5 @@ public class InsTestSeriesUserResponsesController {
     {
         return userResponsesService.userResponseBriefs(responseId);
     }
-
 
 }

@@ -16,13 +16,12 @@ public class InsTestSeriesUserQuestionResponses {
     @GeneratedValue
     private long id;
 
-    private long questionId;
+//    private long questionId;
+    @OneToOne(targetEntity = InsTestSeriesQuestions.class,fetch = FetchType.EAGER,cascade = CascadeType.DETACH)
+    @JoinColumn(name="questionId",referencedColumnName = "id")
+    private InsTestSeriesQuestions question;
     private String userResponse;
-
-    @ManyToOne(optional = true)
-    @JoinColumn(  name = "brief_id"  )
-    private InsTestSeriesUserResponseBrief brief;
-    private String status;//correct , wrong or unattempted
+    private String status;//correct,wrong or unattempted
 
 
 }

@@ -7,6 +7,7 @@ import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
 import com.allcoaching.AllCoachingRestApi.Service.InsTestSeriesService;
 import com.allcoaching.AllCoachingRestApi.dto.QuestionDto;
 import com.allcoaching.AllCoachingRestApi.dto.TestSeriesDto;
+import com.allcoaching.AllCoachingRestApi.dto.TestSeriesQuestionDto;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -82,7 +83,7 @@ public class InsTestSeriesController {
     //fetching questions by series id
     @CrossOrigin(origins = "*")
     @GetMapping("/questions/{seriesId}/{page}/{pagesize}")
-    public Iterable<InsTestSeriesQuestions> findQuestionsBySeriesId(@PathVariable long seriesId,@PathVariable int page,@PathVariable int pagesize)
+    public Iterable<TestSeriesQuestionDto> findQuestionsBySeriesId(@PathVariable long seriesId, @PathVariable int page, @PathVariable int pagesize)
     {
         return insTestSeriesService.getSeriesQuestion(seriesId,page,pagesize);
     }

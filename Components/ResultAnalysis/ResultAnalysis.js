@@ -7,6 +7,7 @@ import {connect } from 'react-redux'
 import Solutions from '../Solutions/Solutions'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
+import { saveTestResult } from '../Utils/DataHelper/TestSeriesResponse';
 class ResultAnalysis extends React.Component {
     state={
        data:[
@@ -141,9 +142,27 @@ class ResultAnalysis extends React.Component {
         }
         return (`${min}:${sec}`)
     }
+    componentDidMount(){     
+        const{testSeriesData} = this.props;
+        let accuracy = (testSeriesData.brief.score/testSeriesData.series.maxMarks)*100
+        let timeTaken = (testSeriesData.series.timeDuration-testSeriesData.brief.timeLeft)
+        let seriesData = {...testSeriesData.brief,studentId:this.props.userInfo.id,accuracy,timeTaken,skippedQues:this.props.testSeriesData.brief.Unattempted,userQuestionResponses:testSeriesData.ques}
+        saveTestResult( seriesData,(response) => {
+            if(response.status==201)
+            {
+                 
+
+                    console.log("savedTestResult",response.headers.map.location)
+                 
+                    
+            }
+        }) 
+    }
+    
     render() {
          
-        const{testSeriesData,userInfo} = this.props; 
+        const{testSeriesData,userInfo} = this.props;
+        console.log("useInfo",userInfo) ;
         return(
             <PageStructure
                 iconName={"menu"}

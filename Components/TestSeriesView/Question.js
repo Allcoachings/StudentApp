@@ -27,7 +27,7 @@ class Question extends Component {
             {
                 this.setState({userOptionIndex:selected,isCorrect:true,isResponded:true})
                  
-                    this.props.setQuestionAttemptStatus(index,"correct")  
+                    this.props.setQuestionAttemptStatus(index,"correct",selected)  
                     
                   
                 
@@ -35,7 +35,7 @@ class Question extends Component {
             {
                 this.setState({userOptionIndex:selected,isCorrect:false,isResponded:true})
                  
-                    this.props.setQuestionAttemptStatus(index,"wrong")  
+                    this.props.setQuestionAttemptStatus(index,"wrong",selected)  
                  
                 
             }
@@ -165,8 +165,7 @@ class Question extends Component {
 
      const {item} = this.props;
      const propsIndex = this.props.index;
-     const  index = propsIndex+1
-     console.log(item);
+     const  index = propsIndex+1 
     return (
         <>
         <View style={styles.quesRowSection}>

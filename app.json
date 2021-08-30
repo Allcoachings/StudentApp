@@ -35,7 +35,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "useNextNotificationsApi": true,
-      "googleServicesFile": "./google-services.json", 
+      "googleServicesFile": "./google-services.json",
       "package": "com.allcoaching"
     },
     "web": {

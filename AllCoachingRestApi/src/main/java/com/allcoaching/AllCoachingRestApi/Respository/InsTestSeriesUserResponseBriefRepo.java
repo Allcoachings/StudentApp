@@ -10,5 +10,7 @@ import javax.transaction.Transactional;
 @Transactional
 public interface InsTestSeriesUserResponseBriefRepo extends CrudRepository<InsTestSeriesUserResponseBrief,Long> {
     Iterable<InsTestSeriesUserResponseBrief> findByStudentIdAndTestSeriesId(long studentId,long testSeriesId);
-
+    long countByTestSeriesIdAndScoreGreaterThanEqual(long testSeriesId,long score);
+    int countByTestSeriesIdAndScoreLessThan(long testSeriesId,long score);
+    int countByTestSeriesId(long testSeriesId);
 }

@@ -74,7 +74,7 @@ class SeriesModal extends React.Component {
   renderQuestionGridItem=({item,index})=>{
 
 
-    this.calculateScore(item.status,item.correctMarks,item.wrongMarks)
+    this.calculateScore(item.status,item.question.correctMarks,item.question.wrongMarks)
     return(
       <TouchableOpacity style={[styles.queView,this.provideQuestionItemStyle(item.status)]}>
         <Text style={styles.queno}>{index+1}</Text>
@@ -94,7 +94,7 @@ class SeriesModal extends React.Component {
         case '3': 
         case 3:
                   return(
-                      <Text style={styles.queno}>{item.question}</Text>
+                    <Text style={styles.queno}>{item.question}</Text>
                   ); 
       case 2:
       case '2': 
@@ -102,15 +102,14 @@ class SeriesModal extends React.Component {
       case '4':
 
           return(
-               <Image source={{uri: serverBaseUrl+item.question}} style={{width:width,height:150,resizeMode:'contain'}} />
+              <Image source={{uri: serverBaseUrl+item.question}} style={{width:width,height:150,resizeMode:'contain'}} />
           ); 
 
     }
 }
   renderQuestionListItem=({item,index})=>
   {
-    this.calculateScore(item.status,item.correctMarks,item.wrongMarks)
-    console.log(item);
+    this.calculateScore(item.status,item.question.correctMarks,item.question.wrongMarks) 
     return(
       <View style={[{flex: 1,flexDirection: 'row',alignItems: 'center',flexWrap:'wrap'},this.provideQuestionItemStyle(item.status)]}>
 
@@ -119,7 +118,8 @@ class SeriesModal extends React.Component {
           </TouchableOpacity>
           <View>
               {/* <Text style={styles.queno}>{item.question}</Text> */}
-              {this.renderQuestion(item)}
+              
+              {this.renderQuestion(item.question)}
           </View>
 
           {item.bookmarked?(
@@ -141,6 +141,7 @@ class SeriesModal extends React.Component {
       Unattempted:this.state.Unattempted,
       attempted:this.state.attempted,
       score:this.score,
+      testSeriesId:this.props.testSeriesId,
       timeLeft:this.props.timeLeft
      }}
      this.props.setTestResultData(data);
