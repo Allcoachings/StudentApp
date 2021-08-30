@@ -153,4 +153,30 @@ public class InsTestSeriesService {
             return new ArrayList<>();
         }
     }
+
+
+    //update api to update direct column and its value by id
+    public void updateQuestionData(String fieldValue,String fieldName,int fieldDbType,long qid)
+    {
+        switch (fieldName)
+        {
+            case "question":
+                insTestSeriesQuestionsRepo.updateQuestionField(fieldValue,fieldDbType,qid);
+                break;
+            case "optionA":
+                insTestSeriesQuestionsRepo.updateOptionAField(fieldValue,fieldDbType,qid);
+                break;
+            case "optionB":
+                insTestSeriesQuestionsRepo.updateOptionBField(fieldValue,fieldDbType,qid);
+                break;
+            case "optionC":
+                insTestSeriesQuestionsRepo.updateOptionCField(fieldValue,fieldDbType,qid);
+                break;
+            case "optionD":
+                insTestSeriesQuestionsRepo.updateOptionDField(fieldValue,fieldDbType,qid);
+                break;
+        }
+
+
+    }
 }

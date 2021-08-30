@@ -5,6 +5,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeriesQuestions;
 import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeriesPlaylist;
 import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
 import com.allcoaching.AllCoachingRestApi.Service.InsTestSeriesService;
+import com.allcoaching.AllCoachingRestApi.dto.EditQuestionDto;
 import com.allcoaching.AllCoachingRestApi.dto.QuestionDto;
 import com.allcoaching.AllCoachingRestApi.dto.TestSeriesDto;
 import com.allcoaching.AllCoachingRestApi.dto.TestSeriesQuestionDto;
@@ -210,6 +211,25 @@ public class InsTestSeriesController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Access-Control-Expose-Headers", "Location");
         return insTestSeriesQuestions_saved;
+    }
+
+    @CrossOrigin(origins = "*")
+    @PutMapping(value="/series/updatequestiondata/{qId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody String updateQuestion(@ModelAttribute EditQuestionDto editQuestionDto, @PathVariable long qId)
+    {
+        String fieldValue = null;
+        switch (editQuestionDto.getType())
+        {
+            case "file":
+                fieldValue = "files/";
+                fieldValue = fileUploadService.storeFile(editQuestionDto.getFile());
+                break;
+            case "text":
+                fieldValue=editQuestionDto.getText();
+                break;
+        }
+        insTestSeriesService.updateQuestionData(fieldValue,editQuestionDto.getFieldName(),editQuestionDto.getFieldDbType(),editQuestionDto.getQuestionId());
+        return  fieldValue;
     }
 
 }
