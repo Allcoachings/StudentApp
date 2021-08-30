@@ -10,6 +10,8 @@ import com.allcoaching.AllCoachingRestApi.dto.TestSeriesDto;
 import com.allcoaching.AllCoachingRestApi.dto.TestSeriesQuestionDto;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -148,12 +150,14 @@ public class InsTestSeriesController {
     {
         InsTestSeries insTestSeries_saved = insTestSeriesService.createTestSeries(insTestSeries);
         URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(insTestSeries_saved.getId()).toUri();
-        return  ResponseEntity.created(location).build();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Expose-Headers", "Location");
+        return  ResponseEntity.created(location).headers(headers).build();
     }
 
     @CrossOrigin(origins = "*")
-    @PostMapping("/series/addquestion/{seriesId}")
-    public ResponseEntity<Object> addQuestion(@ModelAttribute QuestionDto questionDto,@PathVariable long seriesId)
+    @PostMapping(value="/series/addquestion/{seriesId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody InsTestSeriesQuestions addQuestion(@ModelAttribute QuestionDto questionDto,@PathVariable long seriesId)
     {
         String seriesQuestion="";
         switch (questionDto.getQuestionType())
@@ -202,8 +206,10 @@ public class InsTestSeriesController {
             insTestSeriesQuestions.setId(questionDto.getQuestionId());
         }
         InsTestSeriesQuestions insTestSeriesQuestions_saved =  insTestSeriesService.saveSeriesQuestionOneByOne(insTestSeriesQuestions);
-        URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(insTestSeriesQuestions_saved.getId()).toUri();
-        return ResponseEntity.created(location).build();
+        URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(insTestSeriesQuestions_saved).toUri();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Expose-Headers", "Location");
+        return insTestSeriesQuestions_saved;
     }
 
 }
