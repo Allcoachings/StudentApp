@@ -22,9 +22,8 @@ const CatView = (props) => {
             props.setSelected(item)
         }
     return (
-        <TouchableOpacity style={[styles.container,{ backgroundColor:isSelected ? theme.greyColor:theme.primaryColor,}]} onPress={()=>onPressHandler(props.item)}>
-            
-            <Text style={[styles.text,{color:!isSelected ? theme.black:theme.primaryColor,}]}>{props.item.name}</Text>
+        <TouchableOpacity style={[styles.container,{ backgroundColor:isSelected ? theme.accentColor:theme.primaryColor,}]} onPress={()=>onPressHandler(props.item)}>
+            <Text style={[styles.text]}>{props.item.name}</Text>
         </TouchableOpacity>
     )
 };

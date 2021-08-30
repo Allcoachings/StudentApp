@@ -170,8 +170,8 @@ class Home extends React.Component {
              if(response)
              {
                  let obj = JSON.parse(response);
-                 this.setState({selectedCat:obj.key})
-                 if(obj.key==-1)
+                 this.setState({selectedCat:obj.id})
+                 if(obj.id==-1)
                  {
                     this.toggleCatMode(false,obj)
                  }else

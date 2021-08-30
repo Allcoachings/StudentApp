@@ -29,7 +29,9 @@ class Downloads extends Component {
         AsyncStorage.getItem("offline").then((result)=>{
             if(result)
             {
+                
                 let offlineObj = JSON.parse(result)
+                console.log(result);
                 let documentArr = offlineObj[uid][doctype]
                 console.log("documentArr", documentArr)
                 if(documentArr)

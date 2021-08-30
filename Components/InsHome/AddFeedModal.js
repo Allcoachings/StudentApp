@@ -133,8 +133,8 @@ class AddFeedModal extends Component {
 
   handleAddImageFeedBtnClick=()=>
   {
-    if(this.verifyImagePost(this.state))
-    {
+    // if(this.verifyImagePost(this.state))
+    // {
         if(!this.state.addFeedLoading)
         {
             this.setState({addFeedLoading:true})
@@ -161,17 +161,17 @@ class AddFeedModal extends Component {
             this.setState({feedItem:feed})
             addImgeFeed(feed,this.state.feedImageData,this.handleAddFeedCallback)
         }  
-    }
-    else
-    {
-        Toast.show('Please Fill All The Fields.');
-    }
+    // }
+    // else
+    // {
+    //     Toast.show('Please Fill All The Fields.');
+    // }
   } 
-  verifyImagePost=({feedImageData})=>{
+//   verifyImagePost=({feedImageData})=>{
       
  
-    return    feedImageData.filter((item)=>item.type=='success').length==feedImageData.length;
-}
+//     return    feedImageData.filter((item)=>item.type=='success').length==feedImageData.length;
+// }
   
   handleAddTextFeedBtnClick=()=>
   {
@@ -633,7 +633,13 @@ setFeedTypeOption=(postType)=>
                                     <ActivityIndicator size={"large"} color={theme.accentColor}/>
                             ):
                             (
-                                this.renderButton("Post","align-left",()=>this.handleSubmitButtonClick())
+                                <TouchableWithoutFeedback onPress={this.handleSubmitButtonClick}>
+                                        <View style={{flexDirection: 'row',flex:1,padding:10,alignItems: 'center',backgroundColor: theme.accentColor,borderTopLeftRadius:10,borderTopRightRadius:10}}>
+                                            <Text style={{color:theme.primaryColor}}>Post</Text>
+                                            <Feather name="arrow-right" size={20}/>
+                                        </View>
+                                </TouchableWithoutFeedback>
+                                // this.renderButton("Post","align-left",()=>this.handleSubmitButtonClick())
                             )}
                                 
                         </View>

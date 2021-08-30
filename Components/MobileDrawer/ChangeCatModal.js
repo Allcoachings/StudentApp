@@ -152,7 +152,7 @@ return(
 
                             </View>
                             <View style={{justifyContent: 'flex-end', alignItems: 'center', marginTop: '95%'}}>
-                                <TouchableOpacity onPress={handleExplorePress} style={{ backgroundColor: theme.greyColor, padding: 10, width:'50%', justifyContent: 'center', alignItems: 'center',borderRadius: 30}}>
+                                <TouchableOpacity onPress={handleExplorePress} style={{ backgroundColor:  theme.accentColor, padding: 10, width:'50%', justifyContent: 'center', alignItems: 'center',borderRadius: 30}}>
                                     <Text style={{fontFamily:'Raleway_700Bold',fontSize:18, color: theme.primaryColor}}>Explore</Text>
                                 </TouchableOpacity>
                             </View>
