@@ -8,6 +8,7 @@ import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
 import io.swagger.annotations.Api;
 import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,7 +38,9 @@ public class CourseBannersController {
         CourseBanners courseBanners = new CourseBanners(bannerImageLink,courseId);
         CourseBanners courseBanners_saved = courseBannersService.save(courseBanners);
         URI location = ServletUriComponentsBuilder.fromPath("{id}*{addr}").buildAndExpand(courseBanners_saved.getId(),bannerImageLink).toUri();
-        return ResponseEntity.created(location).build();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Expose-Headers", "Location");
+        return ResponseEntity.created(location).headers(headers).build();
     }
     @CrossOrigin(origins = "*")
     @GetMapping("/{id}")
