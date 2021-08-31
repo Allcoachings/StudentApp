@@ -147,6 +147,7 @@ class SeriesModal extends React.Component {
      this.props.setTestResultData(data);
      this.props.navigation.navigate("ResultAnalysis");
      this.props.closeModal()
+     this.props.removeBackListener()
      window.clearInterval(this.props.intervalRef)
   }
 

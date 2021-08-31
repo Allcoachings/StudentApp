@@ -14,6 +14,7 @@ import {fetch_testSeries_questions} from '../Utils/DataHelper/TestSeries'
 import Question from './Question';
 import moment from 'moment' 
 import Timer from './Timer';
+let backhandler;
 class TestSeriesView extends React.Component {
 
     state={
@@ -49,7 +50,7 @@ class TestSeriesView extends React.Component {
         StatusBar.setHidden(true);
         fetch_testSeries_questions(this.state.testSeriesId,this.state.offset,dataLimit,this.questionCallback)
         // this.timer();
-        BackHandler.addEventListener('hardwareBackPress',  ()=> {
+       backhandler =  BackHandler.addEventListener('hardwareBackPress',  ()=> {
             this.showAlert()
             
             return true;
@@ -67,55 +68,7 @@ class TestSeriesView extends React.Component {
         ])
     }
 
-        timer=()=>
-        {
-          
-            
-           let interval =  window.setInterval(()=>{
-                
-                if(this.state.time<=0)
-                {
-                    window.clearInterval(interval);
-                    //alert lagna hai 
-                    // const button1 = {
-                    //     text: "Cancel",
-                    //     onPress: () => { notificationReceivedEvent.complete(); },
-                    //     style: "cancel"
-                    //  };
-                    const button2 = { text: "Submit Test", onPress: () => { this.setState({timeOver:true,isModalVisible:true    })}};
-                    Alert.alert("Alert ", "Time Up", [ button2], { cancelable: false });
-                }else
-                {
-                    this.setState({time:this.state.time-1}) 
-                }
-
-            },1000)
-
-         this.setState({interval})  
-        }
-
-        formatTimer =(seconds)=>
-        {
-            let duration = seconds;
-            let hours = duration/3600;
-            duration = duration % (3600);
-
-            let min = parseInt(duration/60);
-            duration = duration % (60);
-
-            let sec = parseInt(duration);
-
-            if (sec < 10) {
-            sec = `0${sec}`;
-            }
-            if (min < 10) {
-            min = `0${min}`;
-            }
-            if (parseInt(hours, 10) > 0) {
-            return (`${parseInt(hours, 10)}:${min}:${sec}`)
-            }
-            return (`${min}:${sec}`)
-        }
+      
         timeUpAction=(timeUpObj)=>
         {
             this.setState(timeUpObj);
@@ -134,7 +87,7 @@ class TestSeriesView extends React.Component {
                         <View style={styles.pauseBtnView}>
                             {/* <Feather name="pause-circle" size={13} color={theme.greyColor}/> */}
                                 {/* <Text style={styles.pauseBtnText}> {this.formatTimer(this.state.time)}</Text> */}
-                                <Timer time={this.state.time} navigation={this.props.navigation} timeUpAction={this.timeUpAction}/>
+                                <Timer time={this.state.time} refresh={this.refreshQuiz} navigation={this.props.navigation} timeUpAction={this.timeUpAction}/>
                         </View>
                         <TouchableOpacity style={styles.menuIcon} onPress={()=>this.openModal()}>
                             <Feather name="grid" size={25} color={theme.labelOrInactiveColor}/>
@@ -188,15 +141,23 @@ class TestSeriesView extends React.Component {
             )
         )
     }
-
+    removeBackListener=()=>
+    {
+        if(backhandler)
+        {
+            backhandler.remove();
+        }
+    }
     closeModal = () => {
         this.setState({ isModalVisible: false});
       }
       openModal = () => {
         this.setState({ isModalVisible: true });
       }
-        componentWillUnmount() { 
+    componentWillUnmount() { 
             StatusBar.setHidden(false);
+            this.removeBackListener();
+          
         }
       updateComponent=()=>
       {
@@ -208,6 +169,30 @@ class TestSeriesView extends React.Component {
                 fetch_testSeries_questions(this.state.testSeriesId,this.state.offset,dataLimit,this.questionCallback)
             })
           }
+          
+      }
+      
+      refreshQuiz=()=>
+      {
+           
+           
+            this.setState({ 
+                testSeries:this.props.route.params.item,
+                time:this.props.route.params.item.timeDuration*60,
+                testSeriesId:this.props.route.params.item.id,
+                isModalVisible: false,
+                loadingQuestions:true,
+                isFirstTimeLoading:true,
+                offset:0,
+                questions:[],
+                correctQues:0,
+                wrongQues:0,
+                attempted:0,
+                testScore:0},()=>
+            {
+                fetch_testSeries_questions(this.state.testSeriesId,this.state.offset,dataLimit,this.questionCallback)
+            })
+           
           
       }
 
@@ -281,6 +266,7 @@ class TestSeriesView extends React.Component {
                             questions={this.state.questions}
                             attempted={this.state.attempted}
                             isModalVisible={this.state.isModalVisible}
+                            removeBackListener={this.removeBackListener}
                             // isPractice={true}
                             isPractice={this.state.testSeries.isPractice}
                             closeModal={this.closeModal}

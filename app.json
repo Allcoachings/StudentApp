@@ -36,7 +36,23 @@
       },
       "useNextNotificationsApi": true,
       "googleServicesFile": "./google-services.json",
-      "package": "com.allcoaching"
+      "package": "com.allcoaching",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "*.allcoaching.com"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
