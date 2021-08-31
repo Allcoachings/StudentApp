@@ -22,6 +22,9 @@ public class AdminTestSeriesCategory {
     private String image;
     private int sortOrder;
 
-
-
+    public AdminTestSeriesCategory(String name, String image, int sortOrder) {
+        this.name = name;
+        this.image = image;
+        this.sortOrder = sortOrder;
+    }
 }

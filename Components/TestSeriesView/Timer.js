@@ -7,7 +7,7 @@ import { theme } from "../config";
 const getElapsedTime = async () => {
     try {
       const startTime = await AsyncStorage.getItem("@start_time");
-      console.log("Start time: " + startTime);
+ 
       const now = new Date();
       return differenceInSeconds(now, Date.parse(startTime));
     } catch (err) {
@@ -52,6 +52,7 @@ const Timer =(props)=>
     const [elapsed, setElapsed] = useState(0);
     const [time,setTime] = useState(props.time);
     const [interval, setInterval] = useState(null);
+    const [focusCount, setFocusCount] = useState(0)
     useEffect(() => {
         AppState.addEventListener("change", handleAppStateChange);
         return () => AppState.removeEventListener("change", handleAppStateChange);
@@ -63,17 +64,18 @@ const Timer =(props)=>
         // on what we stored in AsyncStorage when we started.
         const elapsed = await getElapsedTime();
         // Update the elapsed seconds state
-        console.log(elapsed);
+      
+        
         setElapsed(elapsed);
     }
     if(appState.current=="active")
     {
         recordStartTime().then(()=>
         {
-            console.log("finished");
+            
         })
     }
-    console.log('AppState', appState.current);
+    
     appState.current = nextAppState;
     };
 
@@ -105,7 +107,40 @@ const Timer =(props)=>
         },1000)
      setInterval(interval)  
     }
+    useEffect(() => {
+        const unsubscribe = props.navigation.addListener('focus', () => {
+          // The screen is focused
+          // Call any action
+          if(props.time-2>time)
+          {
+            console.log("resetRequired Sir ",props.time," time:",time);
+          }
+          setFocusCount(focusCount+1);
+          console.log("details ",props.time," time:",time);
+        });
+    
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return unsubscribe;
+      }, [props.navigation]);
+      useEffect(() => {
+        const unsubscribe = props.navigation.addListener('blur', () => {
+          // The screen is focused
+          // Call any action
+        //   if(props.time-2>time)
+        //   {
+        //     console.log("resetRequired Sir ",props.time," time:",time);
+        //   }
+        //   setFocusCount(focusCount+1);
+          console.log("details blured",time);
+        });
+    
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return unsubscribe;
+      }, [props.navigation]);
 
+      useEffect(() => {
+          console.log(focusCount)
+      },[focusCount])
      useEffect(() => {
          countdown();
          return window.clearInterval(interval)
