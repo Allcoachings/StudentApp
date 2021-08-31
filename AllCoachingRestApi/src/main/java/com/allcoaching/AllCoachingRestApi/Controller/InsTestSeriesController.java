@@ -222,7 +222,7 @@ public class InsTestSeriesController {
         {
             case "file":
                 fieldValue = "files/";
-                fieldValue = fileUploadService.storeFile(editQuestionDto.getFile());
+                fieldValue += fileUploadService.storeFile(editQuestionDto.getFile());
                 break;
             case "text":
                 fieldValue=editQuestionDto.getText();

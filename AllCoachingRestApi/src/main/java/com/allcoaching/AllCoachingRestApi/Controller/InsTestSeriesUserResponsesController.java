@@ -34,7 +34,7 @@ public class InsTestSeriesUserResponsesController {
         System.out.println("belowScore:"+belowScore+" count:"+count+" percentile:"+percentile+" long:"+percen);
         insTestSeriesUserResponseBrief.setPercentile(percentile);
         InsTestSeriesUserResponseBrief insTestSeriesUserResponseBrief_saved =  userResponsesService.saveUserResponse(insTestSeriesUserResponseBrief);
-        URI location = ServletUriComponentsBuilder.fromPath("{id*percentile*rank}").buildAndExpand(insTestSeriesUserResponseBrief_saved.getId(),percentile,rank).toUri();
+        URI location = ServletUriComponentsBuilder.fromPath("{id}*{percentile}*{rank}*{count}").buildAndExpand(insTestSeriesUserResponseBrief_saved.getId(),percentile,rank,count).toUri();
 
         return ResponseEntity.created(location).build();
     }

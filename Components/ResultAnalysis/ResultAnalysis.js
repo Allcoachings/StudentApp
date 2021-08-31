@@ -140,7 +140,7 @@ class ResultAnalysis extends React.Component {
         if (parseInt(hours, 10) > 0) {
         return (`${parseInt(hours, 10)}:${min}:${sec}`)
         }
-        return (`${min}:${sec}`)
+        return (`${min}:${sec}`) 
     }
     componentDidMount(){     
         const{testSeriesData} = this.props;
@@ -149,12 +149,12 @@ class ResultAnalysis extends React.Component {
         let seriesData = {...testSeriesData.brief,studentId:this.props.userInfo.id,accuracy,timeTaken,skippedQues:this.props.testSeriesData.brief.Unattempted,userQuestionResponses:testSeriesData.ques}
         saveTestResult( seriesData,(response) => {
             if(response.status==201)
-            {
-                 
-
+            { 
                     console.log("savedTestResult",response.headers.map.location)
-                 
-                    
+                    let data  = response.headers.map.location.split("*"); 
+                    console.log(data);
+                    this.setState({savedTestResult:true,savedTestResultId:data[0],percentile:data[1],rank:data[2],totalStudent:data[3]})
+
             }
         }) 
     }
@@ -205,9 +205,9 @@ class ResultAnalysis extends React.Component {
                         <View style={styles.rankView}>
                             <Text style={styles.scoreRankText}>RANK</Text>
                             <View style={styles.marksView}>
-                                <Text style={styles.obtainedMarks}>6568</Text>
+                                <Text style={styles.obtainedMarks}>{this.state.rank}</Text>
                                 <Text> / </Text>
-                                <Text style={styles.totalMarks}>7213</Text>
+                                <Text style={styles.totalMarks}>{this.state.totalStudent}</Text>
                             </View>
                         </View>
                     </View>
@@ -230,7 +230,7 @@ class ResultAnalysis extends React.Component {
                                 <Feather name="percent" size={20} style={{color: theme.addMoreButtonColor}}/>
                                 <Text style={styles.titleText}>PERCENTILE</Text>
                             </View>
-                            <Text style={styles.moreText}>8.96%</Text>
+                            <Text style={styles.moreText}>{this.state.percentile}</Text>
                         </View>
                         <View style={styles.rowView}>
                             <View  style={styles.percentileView}>
@@ -246,10 +246,8 @@ class ResultAnalysis extends React.Component {
                             </View>
                             <Text style={styles.moreText}>{this.formatTimer(this.props.testSeriesData.series.timeDuration-this.props.testSeriesData.brief.timeLeft)}</Text>
                         </View>
-                    </View>
-
-                </View>
-
+                    </View> 
+                </View> 
                 <Solutions/>
 
 
