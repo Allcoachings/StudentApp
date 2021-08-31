@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList,BackHandler, Image,Platform, ScrollView} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import { theme, Assets } from '../config';
 import { Feather } from '@expo/vector-icons';
@@ -8,6 +8,7 @@ import Solutions from '../Solutions/Solutions'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import { saveTestResult } from '../Utils/DataHelper/TestSeriesResponse';
+let backhandler;
 class ResultAnalysis extends React.Component {
     state={
        data:[
@@ -77,7 +78,29 @@ class ResultAnalysis extends React.Component {
     }
 
 
-
+        updateCounts=()=>
+        {
+            if((this.state.data[0].que!=this.props.testSeriesData.brief.correctQues)||(this.state.data[1].que!=this.props.testSeriesData.brief.wrongQues)||(this.state.data[2].que!=this.props.testSeriesData.brief.Unattempted))
+            {
+                this.setState({data:[
+                    {
+                        id: '1',
+                        type: 'CORRECT',
+                        que: this.props.testSeriesData.brief.correctQues
+                    },
+                    {
+                        id: '2',
+                        type: 'WRONG',
+                        que: this.props.testSeriesData.brief.wrongQues
+                    },
+                    {
+                        id: '3',
+                        type: 'SKIPPED',
+                        que: this.props.testSeriesData.brief.Unattempted
+                    },
+                ]})
+            }
+        }
 
     renderBoxView=({item})=>{ 
         return(
@@ -142,7 +165,22 @@ class ResultAnalysis extends React.Component {
         }
         return (`${min}:${sec}`) 
     }
+    componentWillUnmount() {
+        if(backhandler)
+        {
+            backhandler.remove()
+        }
+    }
     componentDidMount(){     
+        backhandler =  BackHandler.addEventListener('hardwareBackPress',  ()=> {
+            this.props.navigation.navigate('Home'); 
+            if(backhandler)
+            {
+                backhandler.remove()
+            }
+            return true;
+          });
+        
         const{testSeriesData} = this.props;
         let accuracy = (testSeriesData.brief.score/testSeriesData.series.maxMarks)*100
         let timeTaken = (testSeriesData.series.timeDuration-testSeriesData.brief.timeLeft)
@@ -150,17 +188,14 @@ class ResultAnalysis extends React.Component {
         saveTestResult( seriesData,(response) => {
             if(response.status==201)
             { 
-               
                 let data  = response.headers.map.location.split("*"); 
-               
                 this.setState({savedTestResult:true,savedTestResultId:data[0],percentile:data[1],rank:data[2],totalStudent:data[3]})
-
             }
         }) 
     }
     
     render() {
-         
+        this.updateCounts()
         const{testSeriesData,userInfo} = this.props;
    
         
@@ -190,8 +225,8 @@ class ResultAnalysis extends React.Component {
                             </View> */}
                             
                             <View style={styles.userNameView}>
-                                <Text style={styles.userNameText}>Hi,{userInfo.name}</Text>
-                                <Text style={styles.tryHarderText}>Try harder next time!</Text>
+                                <Text style={styles.userNameHiText}>Hi,</Text>
+                                <Text style={styles.userNameText}>{userInfo.name}</Text>
                             </View>
 
                             {/* <View style={styles.imageView}>
@@ -235,21 +270,23 @@ class ResultAnalysis extends React.Component {
                                         <Feather name="percent" size={20} style={{color: theme.addMoreButtonColor}}/>
                                         <Text style={styles.titleText}>PERCENTILE</Text>
                                     </View>
-                                    <Text style={styles.moreText}>{this.state.percentile}</Text>
+                                    {/* <Text style={styles.moreText}>{this.state.percentile}</Text> */}
+                                    <Text style={styles.moreText}>{'50%'}</Text>
                                 </View>
                                 <View style={styles.rowView}>
                                     <View  style={styles.percentileView}>
                                         <Feather name="crosshair" size={20} style={{color: theme.accentColor}}/>
                                         <Text style={styles.titleText}>ACCURACY</Text>
                                     </View>
-                                    <Text style={styles.moreText}>{(testSeriesData.brief.score/testSeriesData.series.maxMarks)*100}%</Text>
+                                    <Text style={styles.moreText}>{Math.round((testSeriesData.brief.score/testSeriesData.series.maxMarks)*100,3)}%</Text>
                                 </View>
                                 <View style={styles.rowView}>
                                     <View style={styles.percentileView}>
                                         <Feather name="clock" size={20} style={{color: theme.yellowColor}}/>
                                         <Text style={styles.titleText}>TIME TAKEN</Text>
                                     </View>
-                                    <Text style={styles.moreText}>{this.formatTimer(this.props.testSeriesData.series.timeDuration-this.props.testSeriesData.brief.timeLeft)}</Text>
+                                    {/* <Text style={styles.moreText}>{this.formatTimer(this.props.testSeriesData.series.timeDuration-this.props.testSeriesData.brief.timeLeft)}</Text> */}
+                                    <Text style={styles.moreText}>{'00:01:12'}</Text>
                                 </View>
                             </View> 
                         </View> 
@@ -294,20 +331,20 @@ const styles = StyleSheet.create({
         userNameView:
         {
             display: 'flex',
-            flexDirection: 'column',
+            flexDirection: 'row',
             marginTop: '6%',
             marginLeft: 10
         },
-            userNameText:
+            userNameHiText:
             {
-                fontSize: 16,
+                fontSize: 18,
+                fontFamily: 'Raleway_400Regular',
                 color: theme.greyColor
             },
-            tryHarderText:
-            {
-                marginTop: 10,
-                fontSize: 20,
-                fontWeight: '700'
+            userNameText:
+            { 
+                fontSize: 18, 
+                fontFamily: 'Raleway_600SemiBold',
             },
         imageView:
         {

@@ -32,6 +32,23 @@ import AboutCourse from '../AboutCourse/AboutCourse'
 import WebViewCustom from '../WebView/WebViewCustom';
 // import ReviewAndRatings from '../ReviewAndRatings/ReviewAndRatings';
 const Drawer = createDrawerNavigator();
+
+
+const linkingConfig = {
+    screens: {
+        ViewProfile: '/profile/:userName',
+        SingleDiscussion:'/discussion/:id',
+        SingleQuery:'/query/:id',
+        ViewSinglePoll:'/poll/:id', 
+        WebView:'/article/:link',
+        WebView:"*", 
+    },
+  };
+  
+  const linking = {
+    prefixes: linkingPrefixes,
+    config:linkingConfig,
+  };
 class index extends React.Component {
     state = {  }
    

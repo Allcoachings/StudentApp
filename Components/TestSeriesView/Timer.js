@@ -52,7 +52,18 @@ const Timer =(props)=>
     const [elapsed, setElapsed] = useState(0);
     const [time,setTime] = useState(props.time);
     const [interval, setInterval] = useState(null);
-    const [focusCount, setFocusCount] = useState(0)
+    const timeRef = useRef(props.time);
+    const [isRefreshRequired,setIsRefreshRequired] = useState(false)
+    useEffect(() => {
+        if(isRefreshRequired)
+        {
+            setTime(props.time);
+            setIsRefreshRequired(false);
+            timeRef.current=props.time;
+            console.log("props.time",props.time);
+        }
+        
+    },[props.time,isRefreshRequired])
     useEffect(() => {
         AppState.addEventListener("change", handleAppStateChange);
         return () => AppState.removeEventListener("change", handleAppStateChange);
@@ -111,38 +122,25 @@ const Timer =(props)=>
         const unsubscribe = props.navigation.addListener('focus', () => {
           // The screen is focused
           // Call any action
-          if(props.time-2>time)
+          if(props.time-2>timeRef.current)
           {
-            console.log("resetRequired Sir ",props.time," time:",time);
+              props.refresh();
+              setIsRefreshRequired(true)
           }
-          setFocusCount(focusCount+1);
-          console.log("details ",props.time," time:",time);
+          
+           
         });
     
         // Return the function to unsubscribe from the event so it gets removed on unmount
         return unsubscribe;
       }, [props.navigation]);
-      useEffect(() => {
-        const unsubscribe = props.navigation.addListener('blur', () => {
-          // The screen is focused
-          // Call any action
-        //   if(props.time-2>time)
-        //   {
-        //     console.log("resetRequired Sir ",props.time," time:",time);
-        //   }
-        //   setFocusCount(focusCount+1);
-          console.log("details blured",time);
-        });
-    
-        // Return the function to unsubscribe from the event so it gets removed on unmount
-        return unsubscribe;
-      }, [props.navigation]);
+     
 
-      useEffect(() => {
-          console.log(focusCount)
-      },[focusCount])
+      
+
      useEffect(() => {
          countdown();
+         timeRef.current=time;
          return window.clearInterval(interval)
      },[time])
 

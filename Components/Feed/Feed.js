@@ -112,7 +112,7 @@ class Feed extends React.Component {
                 catOnpress={this.toggleCatMode}
                 scrollMode={'scroll'}
                 catInHeader={true}
-                catType="feed"
+          
             >
                 {/* <ScrollView> */}
                     <View style={styles.container}>

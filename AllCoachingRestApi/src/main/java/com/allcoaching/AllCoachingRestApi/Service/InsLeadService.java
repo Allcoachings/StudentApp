@@ -3,6 +3,7 @@ package com.allcoaching.AllCoachingRestApi.Service;
 
 import com.allcoaching.AllCoachingRestApi.Entity.InsLeads;
 import com.allcoaching.AllCoachingRestApi.Respository.InsLeadsRepo;
+import com.allcoaching.AllCoachingRestApi.dto.Graph2dDataDto;
 import com.allcoaching.AllCoachingRestApi.dto.InsLeadsDto;
 import com.allcoaching.AllCoachingRestApi.dto.InsLeadsStudentDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,39 @@ public class InsLeadService {
     }
 
 
+//graph data methods for ins data
+//weekly
+    public Iterable<Graph2dDataDto> getGraphDataWeekly(long insId,int dataTime)
+    {
+        return insLeadsRepo.getGraphDataWeekly(insId,dataTime);
+    }
+//monthly
+    public  Iterable<Graph2dDataDto> getGraphDataMontly(long insId,int dataTime)
+    {
+        return insLeadsRepo.getGraphDataMontly(insId,dataTime);
+    }
+//yearly
+    public Iterable<Graph2dDataDto> getGraphDataYearly(long insId,int dataTime)
+    {
+            return insLeadsRepo.getGraphDataYearly(insId);
+    }
 
+//graph data methods for ins data
+//weekly
+    public Iterable<Graph2dDataDto> adminLeadGraphDataWeekly( int dataTime)
+    {
+        return insLeadsRepo.adminLeadGraphDataWeekly(dataTime);
+    }
+//monthly
+    public  Iterable<Graph2dDataDto> adminLeadGraphDataMonthly(int dataTime)
+    {
+        return insLeadsRepo.adminLeadGraphDataMonthly(dataTime);
+    }
+//yearly
+    public Iterable<Graph2dDataDto> adminLeadGraphDataYearly(int dataTime)
+    {
+            return insLeadsRepo.adminLeadGraphDataYearly();
+    }
 
 
 }
