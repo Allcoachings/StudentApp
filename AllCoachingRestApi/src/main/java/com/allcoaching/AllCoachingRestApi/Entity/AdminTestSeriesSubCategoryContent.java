@@ -23,6 +23,10 @@ public class AdminTestSeriesSubCategoryContent {
     private int sortOrder;
     private long testSeriesSubCategoryId;
 
-
-
+    public AdminTestSeriesSubCategoryContent(String name, String image, int sortOrder, long testSeriesSubCategoryId) {
+        this.name = name;
+        this.image = image;
+        this.sortOrder = sortOrder;
+        this.testSeriesSubCategoryId = testSeriesSubCategoryId;
+    }
 }

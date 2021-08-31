@@ -4,7 +4,7 @@ import {serverApiUrl} from '../../config'
  
 export const saveTestResult=(testSeriesData,callback)=>
 { 
-    console.log("testSeriesData",testSeriesData);
+ 
     // {accuracy,correctQues,wrongQues,percentile,skippedQues,score,studentId,testSeriesId,timeTaken,userQuestionResponses}
     let headers = new Headers(); 
     headers.append('Content-Type', 'application/json');  

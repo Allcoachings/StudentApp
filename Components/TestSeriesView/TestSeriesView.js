@@ -63,7 +63,7 @@ class TestSeriesView extends React.Component {
                 onPress: () => console.log("Cancel Pressed"),
                 style: "cancel"
               },
-              { text: "OK", onPress: () => console.log("OK Pressed")}
+              { text: "OK", onPress: () => this.timeUpAction({isModalVisible:true})}
         ])
     }
 
@@ -134,7 +134,7 @@ class TestSeriesView extends React.Component {
                         <View style={styles.pauseBtnView}>
                             {/* <Feather name="pause-circle" size={13} color={theme.greyColor}/> */}
                                 {/* <Text style={styles.pauseBtnText}> {this.formatTimer(this.state.time)}</Text> */}
-                                <Timer time={this.state.time} timeUpAction={this.timeUpAction}/>
+                                <Timer time={this.state.time} navigation={this.props.navigation} timeUpAction={this.timeUpAction}/>
                         </View>
                         <TouchableOpacity style={styles.menuIcon} onPress={()=>this.openModal()}>
                             <Feather name="grid" size={25} color={theme.labelOrInactiveColor}/>
@@ -195,8 +195,7 @@ class TestSeriesView extends React.Component {
       openModal = () => {
         this.setState({ isModalVisible: true });
       }
-        componentWillUnmount() {
-            console.log("hidden")
+        componentWillUnmount() { 
             StatusBar.setHidden(false);
         }
       updateComponent=()=>
@@ -243,13 +242,12 @@ class TestSeriesView extends React.Component {
             this.setState({questions})
       }
     render(){
-        console.log(this.props.navigation);
+        
         this.updateComponent()  
         return (
             <> 
             <PageStructure
-                iconName={"arrow-left"}
-             
+                iconName={"arrow-left"} 
                 headerComponent={this.header()}
                 replaceHeader={true}
                 replaceBottomTab={true}
@@ -261,30 +259,18 @@ class TestSeriesView extends React.Component {
             >
                 
                 {this.state.isFirstTimeLoading?(
-                    <ActivityIndicator color={theme.accentColor} style={"large"}/>
+                    <CustomActivtiyIndicator mode="questionSkimmer"/>
                 ):(
                     <>
-                    <View style={styles.container}>
-                        {/* <ScrollView> */}
-                            {/* <View style={{flex: 1}}>
-                                {this.header()}
-                            </View> */}
-                              
-                                     
-                                <FlatList 
-                                    data={Object.values(this.state.questions)} 
-                                    renderItem={({item,index}) =><Question item={item.question} index={index} isPractice={true} bookmarkQuestion={this.bookmarkQuestion} setQuestionAttemptStatus={this.setQuestionAttemptStatus}/>}
-                                    keyExtractor={(item)=>item.id} 
-                                    horizontal={false}
-                                    showsHorizontalScrollIndicator={false}
-                                    ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
-                                />
-                                {/* {this.renderQuizQuestion(this.state.questions[0])} */}
-                            
-                        {/* </ScrollView> */}
-                        {/* <View style={{flex: 1,marginTop:'auto'}}>
-                            {this.renderFooter()}
-                        </View> */}
+                    <View style={styles.container}> 
+                        <FlatList 
+                            data={Object.values(this.state.questions)} 
+                            renderItem={({item,index}) =><Question item={item.question} index={index} isPractice={true} bookmarkQuestion={this.bookmarkQuestion} setQuestionAttemptStatus={this.setQuestionAttemptStatus}/>}
+                            keyExtractor={(item)=>item.id} 
+                            horizontal={false}
+                            showsHorizontalScrollIndicator={false}
+                            ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                        />  
                     </View>
                     {this.state.isModalVisible ? (
                         <SeriesModal

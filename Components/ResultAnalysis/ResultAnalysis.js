@@ -150,10 +150,10 @@ class ResultAnalysis extends React.Component {
         saveTestResult( seriesData,(response) => {
             if(response.status==201)
             { 
-                    console.log("savedTestResult",response.headers.map.location)
-                    let data  = response.headers.map.location.split("*"); 
-                    console.log(data);
-                    this.setState({savedTestResult:true,savedTestResultId:data[0],percentile:data[1],rank:data[2],totalStudent:data[3]})
+               
+                let data  = response.headers.map.location.split("*"); 
+               
+                this.setState({savedTestResult:true,savedTestResultId:data[0],percentile:data[1],rank:data[2],totalStudent:data[3]})
 
             }
         }) 
@@ -162,7 +162,8 @@ class ResultAnalysis extends React.Component {
     render() {
          
         const{testSeriesData,userInfo} = this.props;
-        console.log("useInfo",userInfo) ;
+   
+        
         return(
             <PageStructure
                 iconName={"menu"}
@@ -171,86 +172,90 @@ class ResultAnalysis extends React.Component {
                 notificationreplaceshare={"share-2"}
             >
                 <ScrollView>
-                <View style={styles.container}>
-                    {/* <View style={styles.headView}>
-                        <Feather name="chevron-left" size={26} />
-                        <Text style={styles.headText}>
-                            All Coachings
-                        </Text>
-                        <Feather name="share-2" size={24} />
-                    </View> */}
+                    {!this.state.savedTestResult?(
+                        <CustomActivtiyIndicator mode="resultSkimmer"/>
+                    ):(
+                        <>
+                        <View style={styles.container}>
+                            {/* <View style={styles.headView}>
+                                <Feather name="chevron-left" size={26} />
+                                <Text style={styles.headText}>
+                                    All Coachings
+                                </Text>
+                                <Feather name="share-2" size={24} />
+                            </View> */}
 
-                    {/* <View style={styles.resultAnalysisView}>
-                        <Text style={styles.resAnText}>Result Analysis</Text>
-                    </View> */}
-                    
-                    <View style={styles.userNameView}>
-                        <Text style={styles.userNameText}>Hi,{userInfo.name}</Text>
-                        <Text style={styles.tryHarderText}>Try harder next time!</Text>
-                    </View>
-
-                    {/* <View style={styles.imageView}>
-                        <Image style={styles.img} source={{uri: 'https://picsum.photos/200'}}/>
-                    </View> */}
-                    
-                    <View style={styles.rowContainer}>
-                        <View style={styles.scoreView}>
-                            <Text style={styles.scoreRankText}>SCORE</Text>
-                            <View style={styles.marksView}>
-                                <Text style={styles.obtainedMarks}>{testSeriesData.brief.score}</Text>
-                                <Text> / </Text>
-                                <Text style={styles.totalMarks}>{testSeriesData.series.maxMarks}</Text>
+                            {/* <View style={styles.resultAnalysisView}>
+                                <Text style={styles.resAnText}>Result Analysis</Text>
+                            </View> */}
+                            
+                            <View style={styles.userNameView}>
+                                <Text style={styles.userNameText}>Hi,{userInfo.name}</Text>
+                                <Text style={styles.tryHarderText}>Try harder next time!</Text>
                             </View>
-                        </View>
-                        <View style={styles.rankView}>
-                            <Text style={styles.scoreRankText}>RANK</Text>
-                            <View style={styles.marksView}>
-                                <Text style={styles.obtainedMarks}>{this.state.rank}</Text>
-                                <Text> / </Text>
-                                <Text style={styles.totalMarks}>{this.state.totalStudent}</Text>
+
+                            {/* <View style={styles.imageView}>
+                                <Image style={styles.img} source={{uri: 'https://picsum.photos/200'}}/>
+                            </View> */}
+                            
+                            <View style={styles.rowContainer}>
+                                <View style={styles.scoreView}>
+                                    <Text style={styles.scoreRankText}>SCORE</Text>
+                                    <View style={styles.marksView}>
+                                        <Text style={styles.obtainedMarks}>{testSeriesData.brief.score}</Text>
+                                        <Text> / </Text>
+                                        <Text style={styles.totalMarks}>{testSeriesData.series.maxMarks}</Text>
+                                    </View>
+                                </View>
+                                <View style={styles.rankView}>
+                                    <Text style={styles.scoreRankText}>RANK</Text>
+                                    <View style={styles.marksView}>
+                                        <Text style={styles.obtainedMarks}>{this.state.rank}</Text>
+                                        <Text> / </Text>
+                                        <Text style={styles.totalMarks}>{this.state.totalStudent}</Text>
+                                    </View>
+                                </View>
                             </View>
-                        </View>
-                    </View>
 
-                    <View style={{borderWidth:0.3, borderStyle:'dashed', borderRadius:1,borderColor:'black', marginTop: 10, marginBottom: 10}}></View>
+                            <View style={{borderWidth:0.3, borderStyle:'dashed', borderRadius:1,borderColor:'black', marginTop: 10, marginBottom: 10}}></View>
 
-                    <View style={styles.outerBoxView}>
-                        <FlatList 
-                            data={this.state.data} 
-                            renderItem={this.renderBoxView}
-                            keyExtractor={(item)=>item.id} 
-                            numColumns={3}
-                            ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
-                        />
-                    </View>
-
-                    <View style={styles.colContainer}>
-                        <View style={styles.rowView}>
-                            <View style={styles.percentileView}>
-                                <Feather name="percent" size={20} style={{color: theme.addMoreButtonColor}}/>
-                                <Text style={styles.titleText}>PERCENTILE</Text>
+                            <View style={styles.outerBoxView}>
+                                <FlatList 
+                                    data={this.state.data} 
+                                    renderItem={this.renderBoxView}
+                                    keyExtractor={(item)=>item.id} 
+                                    numColumns={3}
+                                    ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                                />
                             </View>
-                            <Text style={styles.moreText}>{this.state.percentile}</Text>
-                        </View>
-                        <View style={styles.rowView}>
-                            <View  style={styles.percentileView}>
-                                <Feather name="crosshair" size={20} style={{color: theme.accentColor}}/>
-                                <Text style={styles.titleText}>ACCURACY</Text>
-                            </View>
-                            <Text style={styles.moreText}>{(testSeriesData.brief.score/testSeriesData.series.maxMarks)*100}%</Text>
-                        </View>
-                        <View style={styles.rowView}>
-                            <View style={styles.percentileView}>
-                                <Feather name="clock" size={20} style={{color: theme.yellowColor}}/>
-                                <Text style={styles.titleText}>TIME TAKEN</Text>
-                            </View>
-                            <Text style={styles.moreText}>{this.formatTimer(this.props.testSeriesData.series.timeDuration-this.props.testSeriesData.brief.timeLeft)}</Text>
-                        </View>
-                    </View> 
-                </View> 
-                <Solutions/>
 
-
+                            <View style={styles.colContainer}>
+                                <View style={styles.rowView}>
+                                    <View style={styles.percentileView}>
+                                        <Feather name="percent" size={20} style={{color: theme.addMoreButtonColor}}/>
+                                        <Text style={styles.titleText}>PERCENTILE</Text>
+                                    </View>
+                                    <Text style={styles.moreText}>{this.state.percentile}</Text>
+                                </View>
+                                <View style={styles.rowView}>
+                                    <View  style={styles.percentileView}>
+                                        <Feather name="crosshair" size={20} style={{color: theme.accentColor}}/>
+                                        <Text style={styles.titleText}>ACCURACY</Text>
+                                    </View>
+                                    <Text style={styles.moreText}>{(testSeriesData.brief.score/testSeriesData.series.maxMarks)*100}%</Text>
+                                </View>
+                                <View style={styles.rowView}>
+                                    <View style={styles.percentileView}>
+                                        <Feather name="clock" size={20} style={{color: theme.yellowColor}}/>
+                                        <Text style={styles.titleText}>TIME TAKEN</Text>
+                                    </View>
+                                    <Text style={styles.moreText}>{this.formatTimer(this.props.testSeriesData.series.timeDuration-this.props.testSeriesData.brief.timeLeft)}</Text>
+                                </View>
+                            </View> 
+                        </View> 
+                        <Solutions/>
+                        </>
+                    )}
             </ScrollView>
             </PageStructure>
         )

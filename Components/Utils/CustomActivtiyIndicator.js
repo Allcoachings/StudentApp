@@ -55,6 +55,10 @@ class CustomActivtiyIndicator extends React.Component {
                 )
                 case 'homeShimmer':
                     return(<ShimmerHome />)
+                case 'questionSkimmer':
+                    return(<ShimmerHome />)
+                case 'resultSkimmer':
+                    return(<ShimmerHome />)
 
                 default:
                     return (

@@ -5,16 +5,14 @@ import com.allcoaching.AllCoachingRestApi.Entity.AdminTestSeriesCategory;
 import com.allcoaching.AllCoachingRestApi.Entity.AdminTestSeriesSubCategoryContent;
 import com.allcoaching.AllCoachingRestApi.Entity.AdminTestSubCategories;
 import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeries;
-import com.allcoaching.AllCoachingRestApi.Service.AdminTestSeriesCategoryService;
-import com.allcoaching.AllCoachingRestApi.Service.AdminTestSeriesSubCategoryContentService;
-import com.allcoaching.AllCoachingRestApi.Service.AdminTestSubCategoriesService;
-import com.allcoaching.AllCoachingRestApi.Service.InsTestSeriesService;
+import com.allcoaching.AllCoachingRestApi.Service.*;
 import com.allcoaching.AllCoachingRestApi.dto.AdminTestCategoriesDto;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -36,11 +34,15 @@ public class AdminTestSeriesController {
     @Autowired
     private InsTestSeriesService insTestSeriesService;
 
+    @Autowired
+    private FileUploadService fileUploadService;
     @CrossOrigin(origins = "*")
     @PostMapping("/addCategory")
-    public ResponseEntity<Object> createTestSeriseCategory(@RequestBody AdminTestSeriesCategory adminTestSeriesCategory)
+    public ResponseEntity<Object> createTestSeriseCategory(@RequestParam MultipartFile file,@RequestParam String name,@RequestParam int sortOrder)
     {
-        AdminTestSeriesCategory adminTestSeriesCategory_saved =  adminTestSeriesCategoryService.save(adminTestSeriesCategory);
+        String image = "files/";
+        image += fileUploadService.storeFile(file);
+        AdminTestSeriesCategory adminTestSeriesCategory_saved =  adminTestSeriesCategoryService.save(new AdminTestSeriesCategory(name,image,sortOrder));
         URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(adminTestSeriesCategory_saved.getId()).toUri();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Access-Control-Expose-Headers", "Location");
@@ -51,9 +53,11 @@ public class AdminTestSeriesController {
 
     @CrossOrigin(origins = "*")
     @PostMapping("/subcategory/add")
-    public ResponseEntity<Object> createSubCategory(@RequestBody AdminTestSubCategories adminTestSubCategories)
+    public ResponseEntity<Object> createSubCategory(@RequestParam MultipartFile file,@RequestParam String name,@RequestParam int sortOrder,@RequestParam long categoryId)
     {
-       AdminTestSubCategories adminTestSubCategories_saved =  adminTestSubCategoriesService.save(adminTestSubCategories);
+        String image = "files/";
+        image += fileUploadService.storeFile(file);
+       AdminTestSubCategories adminTestSubCategories_saved =  adminTestSubCategoriesService.save(new AdminTestSubCategories(name,image,sortOrder,categoryId));
         URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(adminTestSubCategories_saved.getId()).toUri();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Access-Control-Expose-Headers", "Location");
@@ -69,9 +73,11 @@ public class AdminTestSeriesController {
 
     @CrossOrigin(origins = "*")
     @PostMapping("/subcategory/content/add")
-    public ResponseEntity<Object> addSubCategoryContent(@RequestBody AdminTestSeriesSubCategoryContent adminTestSeriesSubCategoryContent)
+    public ResponseEntity<Object> addSubCategoryContent(@RequestParam MultipartFile file,@RequestParam String name,@RequestParam int sortOrder,@RequestParam long subcategoryId)
     {
-        AdminTestSeriesSubCategoryContent adminTestSeriesSubCategoryContent_saved = adminTestSeriesSubCategoryContentService.addSubCategoryItem(adminTestSeriesSubCategoryContent);
+        String image="files/";
+        image += fileUploadService.storeFile(file);
+        AdminTestSeriesSubCategoryContent adminTestSeriesSubCategoryContent_saved = adminTestSeriesSubCategoryContentService.addSubCategoryItem(new AdminTestSeriesSubCategoryContent(name,image,sortOrder,subcategoryId));
         URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(adminTestSeriesSubCategoryContent_saved.getId()).toUri();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Access-Control-Expose-Headers", "Location");

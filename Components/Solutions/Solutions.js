@@ -123,7 +123,8 @@ class Solutions extends React.Component {
 
     questionStatusStyle=(status)=>
     {
-        console.log(status)
+        
+        
         switch(status)
         {
             case 'correct':
