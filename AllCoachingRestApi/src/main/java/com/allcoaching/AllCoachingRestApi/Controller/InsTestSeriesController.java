@@ -214,7 +214,7 @@ public class InsTestSeriesController {
     }
 
     @CrossOrigin(origins = "*")
-    @PutMapping(value="/series/updatequestiondata/{qId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value="/series/updatequestiondata",produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody String updateQuestion(@ModelAttribute EditQuestionDto editQuestionDto, @PathVariable long qId)
     {
         String fieldValue = null;
@@ -222,7 +222,7 @@ public class InsTestSeriesController {
         {
             case "file":
                 fieldValue = "files/";
-                fieldValue = fileUploadService.storeFile(editQuestionDto.getFile());
+                fieldValue += fileUploadService.storeFile(editQuestionDto.getFile());
                 break;
             case "text":
                 fieldValue=editQuestionDto.getText();

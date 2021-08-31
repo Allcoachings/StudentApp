@@ -216,7 +216,7 @@ class Home extends React.Component {
                     <View style={styles.mainContent}> 
                     {this.state.loadingData?(
                         <View style={{margin:10,padding:10}}>
-                            <CustomActivtiyIndicator mode="skimmer"/>
+                            <CustomActivtiyIndicator mode="homeShimmer" />
                         </View>
                     ):(
                         this.state.catMode?(

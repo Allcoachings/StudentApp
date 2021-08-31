@@ -1,7 +1,11 @@
 import React from 'react';
 import { Dimensions, Text, View, StyleSheet,ActivityIndicator } from 'react-native';
-import Shimmer from './Shimmer';
+import Shimmer from './Shimmer'; 
 import { theme } from '../config';
+import ShimmerHome from './ShimmerHome';
+import ShimmerInstituteViewHeader from './ShimmerInstituteViewHeader';
+import ShimmerProfile from './ShimmerProfile';
+import ShimmerTestSeries from './ShimmerTestSeries';
 
 const WIDTH = Dimensions.get('screen').width;
 
@@ -49,6 +53,8 @@ class CustomActivtiyIndicator extends React.Component {
                         <Shimmer width={WIDTH} height={140} />
                     </View>
                 )
+                case 'homeShimmer':
+                    return(<ShimmerHome />)
 
                 default:
                     return (

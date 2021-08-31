@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,StatusBar,FlatList, Image,Platform, ScrollView,ActivityIndicator,Alert} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,StatusBar,FlatList, Image,Platform, BackHandler,ScrollView,ActivityIndicator,Alert} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
@@ -13,6 +13,7 @@ import SeriesModal from './SeriesModal';
 import {fetch_testSeries_questions} from '../Utils/DataHelper/TestSeries'
 import Question from './Question';
 import moment from 'moment' 
+import Timer from './Timer';
 class TestSeriesView extends React.Component {
 
     state={
@@ -48,8 +49,23 @@ class TestSeriesView extends React.Component {
         StatusBar.setHidden(true);
         fetch_testSeries_questions(this.state.testSeriesId,this.state.offset,dataLimit,this.questionCallback)
         // this.timer();
+        BackHandler.addEventListener('hardwareBackPress',  ()=> {
+            this.showAlert()
+            
+            return true;
+          });
     }
-
+    showAlert=()=>
+    {
+        Alert.alert("Warning!","Are you sure to quit quiz",[ 
+            {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel"
+              },
+              { text: "OK", onPress: () => console.log("OK Pressed")}
+        ])
+    }
 
         timer=()=>
         {
@@ -100,27 +116,32 @@ class TestSeriesView extends React.Component {
             }
             return (`${min}:${sec}`)
         }
+        timeUpAction=(timeUpObj)=>
+        {
+            this.setState(timeUpObj);
+        }
     header=()=>{
         return(
             // CardView(
                 <View style={styles.headerSection}>
                     <View style={styles.headerRowSection}>
                         <View style={{marginLeft:10}}>
-                            <Feather name="arrow-left" size={20} onPress={()=>this.props.navigation.goBack()}/>
+                            <Feather name="arrow-left" size={20} onPress={()=>this.showAlert()}/>
                         </View> 
                         <View style={styles.quizNameView}>
                             <Text style={styles.quizName}>{this.state.testSeries.title}</Text>
                         </View>
                         <View style={styles.pauseBtnView}>
-                            <Feather name="pause-circle" size={13} color={theme.greyColor}/>
-                                <Text style={styles.pauseBtnText}> {this.formatTimer(this.state.time)}</Text>
+                            {/* <Feather name="pause-circle" size={13} color={theme.greyColor}/> */}
+                                {/* <Text style={styles.pauseBtnText}> {this.formatTimer(this.state.time)}</Text> */}
+                                <Timer time={this.state.time} timeUpAction={this.timeUpAction}/>
                         </View>
                         <TouchableOpacity style={styles.menuIcon} onPress={()=>this.openModal()}>
                             <Feather name="grid" size={25} color={theme.labelOrInactiveColor}/>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{marginLeft:5,marginRight:5}} >
+                        {/* <TouchableOpacity style={{marginLeft:5,marginRight:5}} >
                             <Feather name="more-vertical" size={25} color={theme.labelOrInactiveColor}/>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     </View>
                     {/* <View style={styles.headerRowSection2}>
                         <View style={styles.sectionView}>
@@ -222,12 +243,13 @@ class TestSeriesView extends React.Component {
             this.setState({questions})
       }
     render(){
+        console.log(this.props.navigation);
         this.updateComponent()  
         return (
             <> 
             <PageStructure
                 iconName={"arrow-left"}
-                btnHandler={() => {this.props.navigation.goBack()}}
+             
                 headerComponent={this.header()}
                 replaceHeader={true}
                 replaceBottomTab={true}
@@ -273,8 +295,8 @@ class TestSeriesView extends React.Component {
                             questions={this.state.questions}
                             attempted={this.state.attempted}
                             isModalVisible={this.state.isModalVisible}
-                            isPractice={true}
-                            // isPractice={this.state.testSeries.isPractice}
+                            // isPractice={true}
+                            isPractice={this.state.testSeries.isPractice}
                             closeModal={this.closeModal}
                             testSeriesDetails={this.state.testSeries}
                             testSeriesId={this.state.testSeriesId}
@@ -353,6 +375,8 @@ const styles = StyleSheet.create({
                     },
                 menuIcon:{ 
                         marginLeft:'auto',
+                        marginRight:5,
+                         
                         alignSelf: 'flex-end'
                 },
             headerRowSection2:{
