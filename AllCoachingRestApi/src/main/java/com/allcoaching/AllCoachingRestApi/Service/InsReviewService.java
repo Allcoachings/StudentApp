@@ -2,6 +2,7 @@ package com.allcoaching.AllCoachingRestApi.Service;
 import com.allcoaching.AllCoachingRestApi.Entity.InsReview;
 import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Respository.InsReviewRepo;
+import com.allcoaching.AllCoachingRestApi.Respository.InstituteRepo;
 import com.allcoaching.AllCoachingRestApi.dto.InsReviewDto;
 import com.allcoaching.AllCoachingRestApi.dto.StudentPurchaseDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,8 @@ public class InsReviewService {
     @Autowired
     private InsReviewRepo insReviewRepo;
 
-
+    @Autowired
+    private InstituteRepo instituteRepo;
 
     //fetch all reviews
     public  Iterable<InsReviewDto> getAllReviews(Integer pageNo, Integer pageSize, String sortBy,long insId)
@@ -78,12 +80,76 @@ public class InsReviewService {
     }
 
     public int addReview(InsReview insReview){
+
+        switch (insReview.getRating())
+        {
+            case 1:
+                instituteRepo.increaseOneStarCount(insReview.getInsId());
+
+                break;
+            case 2:
+                instituteRepo.increaseTwoStarCount(insReview.getInsId());
+                break;
+            case 3:
+                instituteRepo.increaseThreeStarCount(insReview.getInsId());
+                break;
+            case 4:
+                instituteRepo.increaseFourStarCount(insReview.getInsId());
+                break;
+            case 5:
+                instituteRepo.increaseFiveStarCount(insReview.getInsId());
+                break;
+        }
+        instituteRepo.increaseTotalRating(insReview.getInsId(),insReview.getRating());
+        instituteRepo.increaseTotalRatingCount(insReview.getInsId());
         return insReviewRepo.addReview(insReview.getCourseId(), insReview.getStudentId(), insReview.getReview(), insReview.getRating());
     }
 
 
     public void updateReviewById(InsReview insReview)
     {
+        InsReview insReview_old = insReviewRepo.findById(insReview.getId()).get();
+        //reversing previously added review changes
+        switch (insReview_old.getRating())
+        {
+            case 1:
+                instituteRepo.decreaseOneStarCount(insReview.getInsId());
+                break;
+            case 2:
+                instituteRepo.decreaseTwoStarCount(insReview.getInsId());
+                break;
+            case 3:
+                instituteRepo.decreaseThreeStarCount(insReview.getInsId());
+                break;
+            case 4:
+                instituteRepo.decreaseFourStarCount(insReview.getInsId());
+                break;
+            case 5:
+                instituteRepo.decreaseFiveStarCount(insReview.getInsId());
+                break;
+        }
+
+        //updating new values
+        switch (insReview.getRating())
+        {
+            case 1:
+                instituteRepo.increaseOneStarCount(insReview.getInsId());
+                break;
+            case 2:
+                instituteRepo.increaseTwoStarCount(insReview.getInsId());
+                break;
+            case 3:
+                instituteRepo.increaseThreeStarCount(insReview.getInsId());
+                break;
+            case 4:
+                instituteRepo.increaseFourStarCount(insReview.getInsId());
+                break;
+            case 5:
+                instituteRepo.increaseFiveStarCount(insReview.getInsId());
+                break;
+        }
+        instituteRepo.increaseTotalRating(insReview.getInsId(),insReview.getRating()-insReview_old.getRating());
+
           insReviewRepo.updateReviewById(insReview.getId(), insReview.getReview(), insReview.getRating());
     }
 }

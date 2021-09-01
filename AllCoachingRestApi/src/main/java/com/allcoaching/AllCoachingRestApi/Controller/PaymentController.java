@@ -101,6 +101,7 @@ public class PaymentController {
         String gatewayResponseMsg = parameters.get("RESPMSG");
         boolean isValideChecksum = false;
         System.out.println("RESULT : "+txnStatus+" id:"+txnId);
+        transactionService.compeleteTransaction(txnStatus,txnId,gatewayResponseMsg,orderId);
         try {
             isValideChecksum = validateCheckSum(parameters, paytmChecksum);
             if (isValideChecksum && parameters.containsKey("RESPCODE")) {
@@ -118,7 +119,7 @@ public class PaymentController {
         } catch (Exception e) {
             result = e.toString();
         }
-        transactionService.compeleteTransaction(txnStatus,txnId,gatewayResponseMsg,orderId);
+
         model.addAttribute("result",result);
         parameters.remove("CHECKSUMHASH");
         model.addAttribute("parameters",parameters);

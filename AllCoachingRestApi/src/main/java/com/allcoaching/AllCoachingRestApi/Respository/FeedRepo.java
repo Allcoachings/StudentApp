@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -26,16 +27,16 @@ public interface FeedRepo extends PagingAndSortingRepository<Feed,Long> {
     void likeFeedIns(long id,long insId);
 
     @Modifying
-    @Query("UPDATE Feed set likes=likes-1 where id=:id")
-    void unlikeFeedIns(long id);
+    @Query(value = "UPDATE feed set likes=likes-1,feed_liker_ins=REPLACE(feed_liker_ins,CONCAT('',?2,','),'') where id=?1",nativeQuery = true)
+    void unlikeFeedIns(long id, long insId);
 
     @Modifying
     @Query("UPDATE Feed set likes=likes+1,feedLikerStudent = feedLikerStudent||:studentId||',' where id=:id")
     void likeFeedStu(long id,long studentId);
 
     @Modifying
-    @Query("UPDATE Feed set likes=likes-1 where id=:id")
-    void unlikeFeedStu(long id);
+    @Query(value = "UPDATE feed set likes=likes-1,feed_liker_student=REPLACE(feed_liker_student,CONCAT('',?2,','),'') where id=?1",nativeQuery = true)
+    void unlikeFeedStu(long id, long studentId);
 
 
     @Modifying

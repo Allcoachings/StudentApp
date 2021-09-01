@@ -48,4 +48,62 @@ public interface InstituteRepo extends PagingAndSortingRepository<Institute,Long
     @Modifying
     @Query("UPDATE Institute set expoToken=:token where id=:id")
     void updatePushToken(long id,String token);
+
+    @Modifying
+    @Query("UPDATE Institute set fiveStarCount=fiveStarCount+1 where id=:id ")
+    int increaseFiveStarCount(long id);
+
+    @Modifying
+    @Query("UPDATE Institute set fiveStarCount=fiveStarCount-1 where id=:id ")
+    int decreaseFiveStarCount(long id);
+
+    @Modifying
+    @Query("UPDATE Institute set fourStarCount=fourStarCount+1 where id=:id ")
+    int increaseFourStarCount(long id);
+
+    @Modifying
+    @Query("UPDATE Institute set fourStarCount=fourStarCount-1 where id=:id ")
+    int decreaseFourStarCount(long id);
+
+    @Modifying
+    @Query("UPDATE Institute set threeStarCount=threeStarCount+1 where id=:id ")
+    int increaseThreeStarCount(long id);
+
+    @Modifying
+    @Query("UPDATE Institute set threeStarCount=threeStarCount-1 where id=:id ")
+    int decreaseThreeStarCount(long id);
+
+    @Modifying
+    @Query("UPDATE Institute set twoStarCount=twoStarCount+1 where id=:id ")
+    int increaseTwoStarCount(long id);
+
+    @Modifying
+    @Query("UPDATE Institute set twoStarCount=twoStarCount-1 where id=:id ")
+    int decreaseTwoStarCount(long id);
+
+    @Modifying
+    @Query("UPDATE Institute set oneStarCount=oneStarCount+1 where id=:id ")
+    int increaseOneStarCount(long id);
+
+    @Modifying
+    @Query("UPDATE Institute set oneStarCount=oneStarCount-1 where id=:id ")
+    int decreaseOneStarCount(long id);
+
+    @Modifying
+    @Query("UPDATE Institute set totalRatingCount=totalRatingCount+1 where id=:id ")
+    int increaseTotalRatingCount(long id);
+
+    @Modifying
+    @Query("UPDATE Institute set totalRatingCount=totalRatingCount-1 where id=:id ")
+    int decreaseTotalRatingCount(long id);
+
+    @Modifying
+    @Query("UPDATE Institute set totalRating=totalRating+:rating where id=:id ")
+    int increaseTotalRating(long id,int rating);
+
+    @Modifying
+    @Query("UPDATE Institute set totalRating=totalRating-:rating where id=:id ")
+    int decreaseTotalRating(long id,int rating);
+
+
 }

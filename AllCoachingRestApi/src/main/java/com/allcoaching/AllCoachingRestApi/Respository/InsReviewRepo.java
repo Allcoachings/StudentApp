@@ -40,6 +40,7 @@ public interface InsReviewRepo extends PagingAndSortingRepository<InsReview,Long
     @Query("UPDATE InsReview set review=:review, rating=:rating where courseId=:courseId and studentId=:studentId")
     int addReview(long courseId, long studentId, String review, int rating);
 
+
     @Modifying
     @Query("UPDATE InsReview set review=:review, rating=:rating where id=:id")
     int updateReviewById(long id, String review, int rating);
