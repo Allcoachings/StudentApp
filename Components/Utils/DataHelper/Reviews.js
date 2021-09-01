@@ -46,7 +46,6 @@ export const reply=(id, reply, rating,review,courseId, studentId, insId,callback
 
 export const addStudentReview=(studentId,courseId,review,rating,callback)=>
 {
-    
     console.log('addStudentReview',courseId,review,studentId,rating)
     let headers = new Headers();
 

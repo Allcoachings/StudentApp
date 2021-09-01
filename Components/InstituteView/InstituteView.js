@@ -85,6 +85,7 @@ class InstituteView extends React.Component {
         {
             response.json().then((data)=>
             {
+                console.log("data[0].id", data[0].id)
                 this.setState({courses:data, courseId: data[0].id, activeCourse: data[0].id, activeCourseDetail: data[0]},()=>{
                     checkUserEnrollment(this.state.courseId, this.state.studentId, this.checkEnrollCallBack)
                     fetch_courses_banners(this.state.activeCourse,this.courseBannerCallback)
@@ -306,7 +307,7 @@ class InstituteView extends React.Component {
                 {
                     if(data.length>0)
                     {
-                        this.setState({courseTimeTable:[...this.state.courseTimeTable,...data],courseTimetableLoaded:true,isCourseTimetableLoading:false, showLoadMore: true, loadingFooter: false});               
+                        this.setState({courseTimeTable:[...this.state.courseTimeTable,...data],courseTimetableLoaded:true,isCourseTimetableLoading:false, showLoadMore: false, loadingFooter: false});               
                     }
                     else
                     {
@@ -432,23 +433,23 @@ class InstituteView extends React.Component {
     {
         return(
             <View style={styles.accordianHeader}>
-                        <View style={styles.accordianLeft}>
-                            <Text style={styles.accordianTitle}>{title}</Text>
-                            <Text style={styles.accordianTestCount}>{testCount}</Text> 
-                        </View>
-                        <View style={styles.accordianMiddle}>
-                           
-                        </View>
-                        <View style={styles.accordianRight}>
-                         
-                        </View> 
+                <View style={styles.accordianLeft}>
+                    <Text style={styles.accordianTitle}>{title}</Text>
+                    <Text style={styles.accordianTestCount}>{testCount}</Text> 
+                </View>
+                <View style={styles.accordianMiddle}>
+                    
+                </View>
+                <View style={styles.accordianRight}>
+                    
+                </View> 
             </View>
         )
     }
 
     renderTestItem=(item)=>{
         return(
-            <View style={{margin:10}}>
+            <View style={{width: width-10}}>
             <Accordian
             header={this.accordianHeader(item.name," ","chevron-down")}
         > 
@@ -659,7 +660,7 @@ class InstituteView extends React.Component {
             case 'timeTable':    
                         if(!this.state.courseTimetableLoaded&&!this.state.isCourseTimeTableLoading&&this.state.activeCourse)
                         {
-                            this.setState({isCourseTimeTableLoading:true})
+                            this.setState({isCourseTimeTableLoading:true, shoeLoadMore: false})
                             fetch_courses_timetable(this.state.offset, dataLimit,this.state.activeCourseDetail.id,this.courseTimeTableCallback);
                         }
                             return(
@@ -723,7 +724,7 @@ class InstituteView extends React.Component {
         }
         else if(this.state.activeTab=='timeTable')
         {
-            this.setState({offset: parseInt(this.state.offset)+1},()=>{fetch_courses_timetable(this.state.offset, dataLimit,this.state.activeCourse,this.courseTimeTableCallback);})
+            this.setState({offset: parseInt(this.state.offset)+1, showLoadMore: false},()=>{fetch_courses_timetable(this.state.offset, dataLimit,this.state.activeCourse,this.courseTimeTableCallback);})
         }
         else if(this.state.activeTab=='videos')
         {
@@ -853,7 +854,6 @@ class InstituteView extends React.Component {
         
 
     render() {
-        console.log("this.state.studentEnrolled",this.state.studentEnrolled)
       this.updateComponent()
         const  {institute,loadingInstitute} = this.state;
         return (
@@ -1561,21 +1561,21 @@ const styles = StyleSheet.create({
                 },
                 accordianHeader:
                 {
-                    // flex:1,
                     flexDirection: 'row',
-                    width: '100%', 
-                    // justifyContent: 'space-between'
-                    
+                    justifyContent: 'center',
+                    width: '90%',
+                    alignItems: 'center'
                 },
                     accordianLeft:
                     {
-                        
-                        justifyContent: 'flex-start',
-                        margin:5
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding:5,
                     },
                         accordianTitle:
                         {
                             fontSize:14,
+                            marginTop: 5,
                             fontWeight:'bold',
                         },
                         accordianTestCount:
@@ -1586,8 +1586,6 @@ const styles = StyleSheet.create({
                         },
                     accordianMiddle:
                     { 
-                        
-                        margin:5,
                         alignSelf: 'flex-end',
                     },
                     accordianRight:
