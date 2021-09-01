@@ -83,7 +83,7 @@ public class AdminTestSeriesController {
         headers.add("Access-Control-Expose-Headers", "Location");
         return  ResponseEntity.created(location).headers(headers).build();
     }
-
+    
     @CrossOrigin(origins = "*")
     @GetMapping("/subcategory/content/bysubcategory/{offset}/{dataLimit}/{subId}")
     public Iterable<AdminTestSeriesSubCategoryContent> adminTestSeriesSubCategoryContents(@PathVariable int offset,

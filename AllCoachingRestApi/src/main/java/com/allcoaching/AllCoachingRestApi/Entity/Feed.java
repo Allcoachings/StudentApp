@@ -21,7 +21,6 @@ public class Feed {
     private int feedType;//1-imagesPost,2-Poll post,3-text post
     private String photoLocation;
     private String description;
-
     private String pollQuestion;
     private int totalPollVotes;
     private int voterType;//1-institute,2-student

@@ -182,14 +182,14 @@ class ResultAnalysis extends React.Component {
           });
         
         const{testSeriesData} = this.props;
-        let accuracy = (testSeriesData.brief.score/testSeriesData.series.maxMarks)*100
+        let accuracy = Math.round((testSeriesData.brief.score/testSeriesData.series.maxMarks)*100,3)
         let timeTaken = (testSeriesData.series.timeDuration-testSeriesData.brief.timeLeft)
         let seriesData = {...testSeriesData.brief,studentId:this.props.userInfo.id,accuracy,timeTaken,skippedQues:this.props.testSeriesData.brief.Unattempted,userQuestionResponses:testSeriesData.ques}
         saveTestResult( seriesData,(response) => {
             if(response.status==201)
             { 
                 let data  = response.headers.map.location.split("*"); 
-                this.setState({savedTestResult:true,savedTestResultId:data[0],percentile:data[1],rank:data[2],totalStudent:data[3]})
+                this.setState({accuracy,savedTestResult:true,savedTestResultId:data[0],percentile:data[1],rank:data[2],totalStudent:data[3]})
             }
         }) 
     }
@@ -197,8 +197,7 @@ class ResultAnalysis extends React.Component {
     render() {
         this.updateCounts()
         const{testSeriesData,userInfo} = this.props;
-   
-        
+        let timeTaken = (this.props.testSeriesData.series.timeDuration*60)-this.props.testSeriesData.brief.timeLeft 
         return(
             <PageStructure
                 iconName={"menu"}
@@ -270,23 +269,23 @@ class ResultAnalysis extends React.Component {
                                         <Feather name="percent" size={20} style={{color: theme.addMoreButtonColor}}/>
                                         <Text style={styles.titleText}>PERCENTILE</Text>
                                     </View>
-                                    {/* <Text style={styles.moreText}>{this.state.percentile}</Text> */}
-                                    <Text style={styles.moreText}>{'50%'}</Text>
+                                    <Text style={styles.moreText}>{this.state.percentile}%</Text>
+                                    {/* <Text style={styles.moreText}>{'50%'}</Text> */}
                                 </View>
                                 <View style={styles.rowView}>
                                     <View  style={styles.percentileView}>
                                         <Feather name="crosshair" size={20} style={{color: theme.accentColor}}/>
                                         <Text style={styles.titleText}>ACCURACY</Text>
-                                    </View>
-                                    <Text style={styles.moreText}>{Math.round((testSeriesData.brief.score/testSeriesData.series.maxMarks)*100,3)}%</Text>
+                                    </View>  
+                                    <Text style={styles.moreText}>{this.state.accuracy}%</Text>
                                 </View>
                                 <View style={styles.rowView}>
                                     <View style={styles.percentileView}>
                                         <Feather name="clock" size={20} style={{color: theme.yellowColor}}/>
                                         <Text style={styles.titleText}>TIME TAKEN</Text>
                                     </View>
-                                    {/* <Text style={styles.moreText}>{this.formatTimer(this.props.testSeriesData.series.timeDuration-this.props.testSeriesData.brief.timeLeft)}</Text> */}
-                                    <Text style={styles.moreText}>{'00:01:12'}</Text>
+                                    <Text style={styles.moreText}>{this.formatTimer(timeTaken)}</Text>
+                                    {/* <Text style={styles.moreText}>{'00:01:12'}</Text> */}
                                 </View>
                             </View> 
                         </View> 
