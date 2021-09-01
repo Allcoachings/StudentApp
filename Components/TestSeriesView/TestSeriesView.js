@@ -73,6 +73,10 @@ class TestSeriesView extends React.Component {
         {
             this.setState(timeUpObj);
         }
+        updateTimeInParent=(time)=>
+        {
+            this.setState({timeLeft:time});
+        }
     header=()=>{
         return(
             // CardView(
@@ -87,7 +91,7 @@ class TestSeriesView extends React.Component {
                         <View style={styles.pauseBtnView}>
                             {/* <Feather name="pause-circle" size={13} color={theme.greyColor}/> */}
                                 {/* <Text style={styles.pauseBtnText}> {this.formatTimer(this.state.time)}</Text> */}
-                                <Timer time={this.state.time} refresh={this.refreshQuiz} navigation={this.props.navigation} timeUpAction={this.timeUpAction}/>
+                                <Timer time={this.state.time} updateTimeInParent={this.updateTimeInParent} refresh={this.refreshQuiz} navigation={this.props.navigation} timeUpAction={this.timeUpAction}/>
                         </View>
                         <TouchableOpacity style={styles.menuIcon} onPress={()=>this.openModal()}>
                             <Feather name="grid" size={25} color={theme.labelOrInactiveColor}/>
@@ -273,7 +277,7 @@ class TestSeriesView extends React.Component {
                             testSeriesDetails={this.state.testSeries}
                             testSeriesId={this.state.testSeriesId}
                             timeOver ={this.state.timeOver}
-                            timeLeft ={this.state.time}
+                            timeLeft ={this.state.timeLeft}
                             intervalRef={this.state.interval}
                         />
                     ) : (null)}

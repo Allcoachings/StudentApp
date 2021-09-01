@@ -5,7 +5,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';  
 import Auth from '../Auth/Auth'
 import Home from '../Home/Home'
-import{theme} from '../config'
+import{linkingPrefixes, theme} from '../config'
 import InstituteView from '../InstituteView/InstituteView';
 import Payment from '../InstituteView/Payment';
 import Subscription from '../Subscription/Subscription';
@@ -74,10 +74,8 @@ class index extends React.Component {
                             <Drawer.Screen name="Category" component={CategoryList} /> 
                             <Drawer.Screen name="EditProfile" component={Profile} />  
                             <Drawer.Screen name="Notification" component={Notification} />   
-                            <Drawer.Screen name="AboutCourse" component={AboutCourse} />    
-
+                            <Drawer.Screen name="AboutCourse" component={AboutCourse} />     
                             {/* <Drawer.Screen name="SingleTestSeries" component={SingleTestSeries} /> */}
-
                             <Drawer.Screen name="SingleTestSeries" component={TestSeriesView} />
                             <Drawer.Screen name="ViewInsTestSeriesList" component={InsTestSeriesList} /> 
                             <Drawer.Screen name="SeriesList" component={SeriesList} />

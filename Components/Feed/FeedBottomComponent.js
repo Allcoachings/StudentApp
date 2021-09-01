@@ -4,24 +4,8 @@ import {theme} from '../config';
 import { AntDesign, FontAwesome} from '@expo/vector-icons';
 import { connect } from 'react-redux'
 import CommentModal from './CommentModal'
-const onShare = async () => {
-    try {
-      const result = await Share.share({
-        message: 'Share Feed Post',
-      });
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          // shared with activity type of result.activityType
-        } else {
-          // shared
-        }
-      } else if (result.action === Share.dismissedAction) {
-        // dismissed
-      }
-    } catch (error) {
-      alert(error.message);
-    }
-  };
+import onShare from '../Utils/Share';
+  
 class FeedBottomComponent extends Component {
   
     state={
@@ -53,7 +37,7 @@ class FeedBottomComponent extends Component {
                 <FontAwesome name="comments" size={22} color={theme.greyColor} />
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.likeView} onPress={onShare}>
+            <TouchableOpacity style={styles.likeView} onPress={()=>onShare("TEset Me")}>
                 <AntDesign name="sharealt" size={22} color={theme.greyColor} />
             </TouchableOpacity>
 

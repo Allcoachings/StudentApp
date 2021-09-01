@@ -141,6 +141,7 @@ const Timer =(props)=>
      useEffect(() => {
          countdown();
          timeRef.current=time;
+         props.updateTimeInParent(time)
          return window.clearInterval(interval)
      },[time])
 
