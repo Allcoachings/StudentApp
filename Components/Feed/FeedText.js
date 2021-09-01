@@ -4,7 +4,7 @@ import {Feather, AntDesign, FontAwesome} from '@expo/vector-icons';
 import {theme,serverBaseUrl} from '../config'
 import CardView from '../Utils/CardView'
 import { connect } from 'react-redux'
-import {like_feed} from "../Utils/DataHelper/Feed"
+import {like_feed, unLike_feed} from "../Utils/DataHelper/Feed"
 import FeedBottomComponent from './FeedBottomComponent'
 import moment from 'moment'
 class FeedText extends Component {
@@ -19,6 +19,7 @@ class FeedText extends Component {
         })
     }
 
+
     likeFeedCallBack=(response)=>{
         if(response.status==200)
         {
@@ -27,6 +28,22 @@ class FeedText extends Component {
         else{
             console.log("failed")
         }
+    }
+
+    unLikeFeedCallBack=(response)=>{
+        if(response.status==200)
+        {
+            console.log("ok")
+        }
+        else{
+            console.log("failed")
+        }
+    }
+
+    unLikeFeed=(feedId)=>{
+        this.setState({canUserLike: !this.state.canUserLike},()=>{
+            unLike_feed(feedId,this.props.type,this.props.type==1?(this.props.institute.details.id):(this.props.userInfo.id),this.unLikeFeedCallBack)
+        })
     }
 
     
@@ -50,7 +67,7 @@ class FeedText extends Component {
                             </TouchableOpacity>
                         </View>
                         <Text style={{fontFamily:'Raleway_400Regular', marginVertical: 10}}>{feed.feed.description}</Text>
-                        <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation} changeCanUserLike={this.changeCanUserLike}/>
+                        <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation} changeCanUserLike={this.changeCanUserLike} unLikeFeed={this.unLikeFeed}/>
                     </View>
                 </View>
                 <View style={{borderTopWidth: 0.8, borderColor: theme.labelOrInactiveColor, marginVertical: 10, width: '100%'}}/>

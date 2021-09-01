@@ -44,7 +44,7 @@ export const reply=(id, reply, rating,review,courseId, studentId, insId,callback
     .catch((error)=>{console.log(error)})
 }
 
-export const addStudentReview=(studentId,courseId,review,rating,callback)=>
+export const addStudentReview=(studentId,insId,courseId,review,rating,callback)=>
 {
     console.log('addStudentReview',courseId,review,studentId,rating)
     let headers = new Headers();
@@ -60,7 +60,7 @@ export const addStudentReview=(studentId,courseId,review,rating,callback)=>
     {
         method: 'PUT',  
         headers,
-        body:JSON.stringify({courseId,review,studentId,rating})
+        body:JSON.stringify({courseId,review,studentId,rating,insId})
     })
     .then((response)=>callback(response)) 
     .catch((error)=>{console.log(error)})

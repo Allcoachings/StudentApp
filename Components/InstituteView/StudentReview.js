@@ -71,7 +71,7 @@ class StudentReview extends React.Component {
      addReview=()=>{
         if(this.state.review!=''&&this.state.rating!=0)
         {
-           addStudentReview(this.state.studentId, this.props.courseId, this.state.review, this.state.rating, this.addReviewCallBack)
+           addStudentReview(this.state.studentId, this.props.instituteId, this.props.courseId, this.state.review, this.state.rating, this.addReviewCallBack)
         }
         else
         {
@@ -117,6 +117,7 @@ class StudentReview extends React.Component {
             Toast.show("Review Added successfully!!")
             var obj={"insName": 'Cyberflow', "insReview":{"id": 3, "courseId": 1, "insId": 1,  "reply": '', "review": this.state.review, "rating": this.state.rating,"studentId": 1}, "studentImage": "sdfghj", "studentName": "DU BUDDY"}
             this.setState({ reviews: this.state.reviews.concat(obj), showAddReview: false })
+            this.props.increseRating(this.state.rating)
         }
         else
         {
