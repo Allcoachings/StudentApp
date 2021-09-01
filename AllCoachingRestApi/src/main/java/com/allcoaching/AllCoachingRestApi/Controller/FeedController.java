@@ -110,14 +110,14 @@ public class FeedController {
          return ResponseEntity.ok().build();
     }
     //to unlike feed
-//    @CrossOrigin(origins = "*")
-//    @GetMapping("/unlike/feed/{feedId}/{likerType}/{likerId}")
-//    public ResponseEntity<Object> unlikeFeed(@PathVariable long feedId,@PathVariable int likerType,@PathVariable long likerId)
-//    {
-//
-//         feedService.unlikeFeed(feedId,likerType,likerId);
-//         return ResponseEntity.ok().build();
-//    }
+    @CrossOrigin(origins = "*")
+    @GetMapping("/unlike/feed/{feedId}/{likerType}/{likerId}")
+    public ResponseEntity<Object> unlikeFeed(@PathVariable long feedId,@PathVariable int likerType,@PathVariable long likerId)
+    {
+
+         feedService.unlikeFeed(feedId,likerType,likerId);
+         return ResponseEntity.ok().build();
+    }
 
 
     //feed comment section

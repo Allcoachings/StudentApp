@@ -41,8 +41,6 @@ public class InsReviewController {
     public ResponseEntity<Object> updateReview(@RequestBody InsReview insReview)
     {
         int rowCount= insReviewService.setReply(insReview);
-
-
         return ResponseEntity.ok().build();
     }
 

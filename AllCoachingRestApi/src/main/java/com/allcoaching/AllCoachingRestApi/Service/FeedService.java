@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -295,9 +296,18 @@ public class FeedService {
         }
     }
     //unlike feed long id
-    public  void unlikeFeed(long id)
+
+    public  void unlikeFeed(long id,int type,long likerId)
     {
-//        feedRepo.unlikeFeed(id);
+        if(type==1)
+        {
+            feedRepo.unlikeFeedIns(id,likerId);
+
+        }else
+        {
+            feedRepo.unlikeFeedStu(id,likerId);
+
+        }
     }
 
 }
