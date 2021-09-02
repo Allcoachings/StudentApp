@@ -232,7 +232,7 @@ class InsHome extends React.Component {
       
         return(
             <View style={styles.videoContainer}>
-                <TouchableOpacity onPress={()=>this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+item.videoLocation})}>
+                <TouchableOpacity onPress={()=>this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+item.videoLocation,videoTitle:item.name,postingTime:item.date})}>
                     <Image source={{uri:item.videoThumb}} style={styles.videoImage}/>
                 </TouchableOpacity>
                 <View style={styles.videoColumn}>

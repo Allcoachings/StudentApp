@@ -6,7 +6,9 @@ import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 @Data
@@ -29,7 +31,9 @@ public class CourseVideo {
     private long playlistId;
     private boolean published;
     private boolean hidden;
+    private long views;
     private String videoThumb="https://i.stack.imgur.com/PtbGQ.png";
+
 
 
     @CreationTimestamp
@@ -38,6 +42,8 @@ public class CourseVideo {
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date time_stamp;
+
+
 
 
 //    @ManyToOne
@@ -52,6 +58,17 @@ public class CourseVideo {
         this.demoLenght = demoLenght;
         this.courseId = courseId;
         this.playlistId = playlistId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof InsTestSeriesQuestions )) return false;
+        return id ==(((InsTestSeriesQuestions) o).getId());
+    }
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 
 

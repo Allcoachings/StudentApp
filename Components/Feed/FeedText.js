@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,FlatList,Image, TouchableOpacity } from 'react-native';
+import { View, Text,StyleSheet,FlatList,Image,findNodeHandle,UIManager, TouchableOpacity } from 'react-native';
 import {Feather, AntDesign, FontAwesome} from '@expo/vector-icons';
 import {theme,serverBaseUrl} from '../config'
 import CardView from '../Utils/CardView'
@@ -10,6 +10,30 @@ import moment from 'moment'
 class FeedText extends Component {
   state = {
     // canUserLike: this.props.type==1?(this.props.item.feed.feed.feedLikerIns.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.feedLikerStudent.includes(`,${this.props.userInfo.id},`)?(false):(true)):(true)),
+  }
+  showThreeMenu=()=>
+  {
+       
+          UIManager.showPopupMenu(
+              findNodeHandle(this.state.icon),
+              ["Edit"],
+              this.onError,
+              this.onPopupEvent
+          )
+      
+  }
+  
+  onPopupEvent = (eventName, index) => {
+    if (eventName !== 'itemSelected') return 
+      switch (index)
+      {
+          case 0:
+                    this.editFeedPressHandler()
+              break;
+          case 1: 
+
+            break;
+      }
   }
 
     likeFeed=(feedId)=>{
@@ -28,7 +52,13 @@ class FeedText extends Component {
             console.log("failed")
         }
     }
-
+    onRef = icon => {
+        if (!this.state.icon) {
+          this.setState({icon})
+        }
+      }
+    
+editFeedPressHandler=()=>this.props.mode=="userProfile"||this.props.mode=="insProfile"?(this.props.updateEditFeedState(feed.feed.feedType, feed.feed.description, null, null, feed.feed.id, this.props.index)):(null)
     
   render() {
     const{feed,posterObject} = this.props.item
@@ -45,8 +75,8 @@ class FeedText extends Component {
                                 
                                 <Text style={styles.coaching}>{posterObject.name}{' • '}<Text style={styles.timeDateText}>{moment(feed.feed.creationTime).fromNow()}</Text></Text>
                             </View>
-                            <TouchableOpacity onPress={()=>this.props.mode=="userProfile"||this.props.mode=="insProfile"?(this.props.updateEditFeedState(feed.feed.feedType, feed.feed.description, null, null, feed.feed.id, this.props.index)):(null)}>
-                            <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
+                            <TouchableOpacity onPress={()=>this.showThreeMenu()}>
+                                <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
                             </TouchableOpacity>
                         </View>
                         <Text style={{fontFamily:'Raleway_400Regular', marginVertical: 10}}>{feed.feed.description}</Text>

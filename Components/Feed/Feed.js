@@ -54,6 +54,8 @@ class Feed extends React.Component {
         )
     }
 
+   
+    
     toggleCatMode=(mode,item)=>
     {
         switch(mode)

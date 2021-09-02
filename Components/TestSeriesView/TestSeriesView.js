@@ -14,6 +14,7 @@ import {fetch_testSeries_questions} from '../Utils/DataHelper/TestSeries'
 import Question from './Question';
 import moment from 'moment' 
 import Timer from './Timer';
+import {setStatusBarHidden} from '../Actions'
 let backhandler;
 class TestSeriesView extends React.Component {
 
@@ -39,7 +40,8 @@ class TestSeriesView extends React.Component {
             {   
                     response.json().then(data=>
                     {
-                 
+                        StatusBar.setHidden(true);
+                        this.props.setStatusBarHidden(true)
                       this.setState({questions:{...this.state.questions,...data},isFirstTimeLoading:false,loadingQuestions:false})
                     })
             }
@@ -47,9 +49,10 @@ class TestSeriesView extends React.Component {
 
     componentDidMount() 
     {  
-        StatusBar.setHidden(true);
+       
         fetch_testSeries_questions(this.state.testSeriesId,this.state.offset,dataLimit,this.questionCallback)
         // this.timer();
+
        backhandler =  BackHandler.addEventListener('hardwareBackPress',  ()=> {
             this.showAlert()
             
@@ -72,6 +75,8 @@ class TestSeriesView extends React.Component {
         timeUpAction=(timeUpObj)=>
         {
             this.setState(timeUpObj);
+            StatusBar.setHidden(false);
+            this.props.setStatusBarHidden(false)
         }
         updateTimeInParent=(time)=>
         {
@@ -159,7 +164,7 @@ class TestSeriesView extends React.Component {
         this.setState({ isModalVisible: true });
       }
     componentWillUnmount() { 
-            StatusBar.setHidden(false);
+            
             this.removeBackListener();
           
         }
@@ -527,4 +532,4 @@ const styles = StyleSheet.create({
 })
 
 
-export default TestSeriesView;
+export default connect(null,{setStatusBarHidden})( TestSeriesView);

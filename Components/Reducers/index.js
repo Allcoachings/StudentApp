@@ -88,7 +88,8 @@ const user_reducer=(state=initial_user_state,action)=>
 //screen reducers starts
 const initial_screen_state=
 {
-    screenWidth:0
+    screenWidth:0,
+    statusBarHidden:false
 }
 const screen_reducer=(state=initial_screen_state,action)=>
 {
@@ -98,6 +99,11 @@ const screen_reducer=(state=initial_screen_state,action)=>
             return {
                 ...state,
                 screenWidth: action.payload.screenWidth
+            }
+        case actionTypes.SET_STATUS_BAR_HIDDEN:
+            return {
+                ...state,
+                statusBarHidden: action.payload
             }
         default:
             return state

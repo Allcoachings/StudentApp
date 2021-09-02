@@ -1,9 +1,7 @@
 package com.allcoaching.AllCoachingRestApi.Controller;
 
-import com.allcoaching.AllCoachingRestApi.Entity.Course;
-import com.allcoaching.AllCoachingRestApi.Entity.CourseBanners;
-import com.allcoaching.AllCoachingRestApi.Entity.CourseVideo;
-import com.allcoaching.AllCoachingRestApi.Entity.VideoPlaylist;
+import com.allcoaching.AllCoachingRestApi.Entity.*;
+import com.allcoaching.AllCoachingRestApi.Service.CourseVideoCommentsService;
 import com.allcoaching.AllCoachingRestApi.Service.CourseVideoService;
 import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
 import io.swagger.annotations.Api;
@@ -26,6 +24,10 @@ public class CourseVideoController {
     private FileUploadService fileUploadService;
     @Autowired
     private CourseVideoService courseVideoService;
+
+    @Autowired
+    private CourseVideoCommentsService courseVideoCommentsService;
+
     @PostMapping("/")
     public ResponseEntity<Object> saveVideo(@RequestParam("file")MultipartFile video,
                                             @RequestParam("name") String name,
@@ -121,4 +123,21 @@ public class CourseVideoController {
     {
         return courseVideoService.countCourseVideo(courseId);
     }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/comment/add")
+    public ResponseEntity<Object> addComment(@RequestBody CourseVideoComments courseVideoComments)
+    {
+        CourseVideoComments courseVideoComments_saved = courseVideoCommentsService.addComment(courseVideoComments);
+        URI location  = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(courseVideoComments_saved.getId()).toUri();
+        return ResponseEntity.created(location).build();
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/comment/{v_id}/{page}/{page_size}")
+    public Iterable<CourseVideoComments> fetch_comments(@PathVariable long v_id,@PathVariable int page,@PathVariable int page_size)
+    {
+        return  courseVideoCommentsService.fetch_comments(v_id,page,page_size);
+    }
+
 }

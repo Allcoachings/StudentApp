@@ -139,7 +139,7 @@ class Main extends React.Component {
         //         )
         // }
         return(  
-            <SafeAreaProvider  style={styles.safeAreaView}>
+            <SafeAreaProvider  style={[styles.safeAreaView,this.props.statusBarHidden?{paddingTop:0}:null]}>
                 {this.switchRender(this.state.mode)}
             </SafeAreaProvider>
             )
@@ -224,6 +224,7 @@ const mapStateToProps = (state)=>
         userAuth: state.user.userAuthStatus,
         insAuth:state.institute.authStatus,
         userInfo:state.user.userInfo,
+        statusBarHidden:state.screen.statusBarHidden,
     }
 }
 export default connect(mapStateToProps,{screenWidthConfigChange,userAuthStatus,setInstituteAuth,setUserInfo,setInstituteDetails})(Main);

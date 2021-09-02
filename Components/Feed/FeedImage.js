@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text,Image,StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text,Image,StyleSheet,findNodeHandle,UIManager, TouchableOpacity } from 'react-native';
 import {serverBaseUrl, theme} from '../config';
 import {Feather, AntDesign, FontAwesome} from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
@@ -17,7 +17,35 @@ class FeedImage extends Component {
     imageArr:[],
     type: ''
   }
+  showThreeMenu=()=>
+  {
+       
+          UIManager.showPopupMenu(
+              findNodeHandle(this.state.icon),
+              ["action","edit"],
+              this.onError,
+              this.onPopupEvent
+          )
+      
+  }
+  onRef = icon => {
+    if (!this.state.icon) {
+      this.setState({icon})
+    }
+  }
+  onPopupEvent = (eventName, index) => {
 
+    if (eventName !== 'itemSelected') return 
+    switch (index)
+    {
+        case 0:
+                  this.editFeedPressHandler()
+            break;
+        case 1: 
+
+          break;
+    }
+  }
   likeFeed=(feedId)=>{
     console.log("like feed")
     this.setState({canUserLike: !this.state.canUserLike},()=>{
@@ -51,7 +79,7 @@ addImage=(link, type)=>{
   }
 
 
-
+    editFeedPressHandler=()=>this.props.mode=="userProfile"||this.props.mode=="insProfile"?(this.props.updateEditFeedState(feed.feed.feedType, feed.feed.description, feed.feedImages, null, feed.feed.id, this.props.index)):(null)
 
   render() {
     const{feed,posterObject} = this.props.item
@@ -67,8 +95,8 @@ addImage=(link, type)=>{
                             <View  style={{flexDirection: 'row',alignItems: 'center'}}>
                                 <Text style={styles.coaching}>{posterObject.name}{' • '}<Text style={styles.timeDateText}>{moment(feed.feed.creationTime).fromNow()}</Text></Text>
                             </View> 
-                            <TouchableOpacity onPress={()=>this.props.mode=="userProfile"||this.props.mode=="insProfile"?(this.props.updateEditFeedState(feed.feed.feedType, feed.feed.description, feed.feedImages, null, feed.feed.id, this.props.index)):(null)}>
-                                <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
+                            <TouchableOpacity onPress={()=>this.showThreeMenu()}>
+                                <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
                             </TouchableOpacity>
                         </View>
                         

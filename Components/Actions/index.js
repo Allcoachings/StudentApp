@@ -50,6 +50,15 @@ export const screenWidthConfigChange=(width)=>
     }
 }
 
+export const setStatusBarHidden =(status)=>
+{
+    return{
+        type:actionTypes.SET_STATUS_BAR_HIDDEN, //this type will be used to match
+        payload:status
+
+    }
+}
+
 //screen reducer actions ends
 
 //institute reducer
@@ -106,3 +115,5 @@ export const setNavigation = (navigation)=>
 }
 
 //stacknavigation reducer actions ends
+
+

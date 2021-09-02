@@ -7,7 +7,7 @@ import RootReducer from './Components/Reducers'
 import Main from './Components/Main'
 // import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
- 
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import {
   useFonts,
   Raleway_100Thin,
@@ -58,9 +58,11 @@ let store = createStore(RootReducer)
     //   return <AppLoading />;
     // }
     return (
-      <Provider store={store}>
-          <Main/>
-      </Provider>
+      <SafeAreaProvider>
+        <Provider store={store}>
+            <Main/>
+        </Provider>
+      </SafeAreaProvider>
     );
   }
 

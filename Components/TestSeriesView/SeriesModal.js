@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,Dimensions,FlatList, Image,Platform, ScrollView, Modal,TouchableWithoutFeedback} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,Dimensions,FlatList,StatusBar, Image,Platform, ScrollView, Modal,TouchableWithoutFeedback} from 'react-native';
 import { theme , Assets, serverBaseUrl} from '../config';
 import { Feather, FontAwesome } from '@expo/vector-icons';
 import {connect } from 'react-redux'
@@ -148,6 +148,7 @@ class SeriesModal extends React.Component {
      this.props.navigation.navigate("ResultAnalysis");
      this.props.closeModal()
      this.props.removeBackListener()
+     StatusBar.setHidden(false);
      window.clearInterval(this.props.intervalRef)
   }
 

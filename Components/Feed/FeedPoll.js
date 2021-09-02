@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,FlatList,Image, TouchableOpacity } from 'react-native';
+import { View, Text,StyleSheet,FlatList,Image,findNodeHandle,UIManager, TouchableOpacity } from 'react-native';
 import {Feather, AntDesign, FontAwesome} from '@expo/vector-icons';
 import CardView from '../Utils/CardView'; 
 import {theme,serverBaseUrl} from '../config'
@@ -52,7 +52,36 @@ class FeedPoll extends Component {
     }
 
 
+    showThreeMenu=()=>
+    {
+         
+            UIManager.showPopupMenu(
+                findNodeHandle(this.state.icon),
+                ["action","edit"],
+                this.onError,
+                this.onPopupEvent
+            )
+        
+    }
+    onRef = icon => {
+        if (!this.state.icon) {
+          this.setState({icon})
+        }
+      }
+    onPopupEvent = (eventName, index) => {
 
+        if (eventName !== 'itemSelected') return 
+      switch (index)
+      {
+          case 0:
+                    this.editFeedPressHandler()
+              break;
+          case 1: 
+
+            break;
+      }
+    }
+    editFeedPressHandler =()=>this.props.mode=="userProfile"||this.props.mode=="insProfile"?(this.props.updateEditFeedState(feed.feed.feedType, feed.feed.pollQuestion, null, this.state.optionData, feed.feed.id, this.props.index)):(null)
     render() {
     console.log("this.state.canUserLike", this.state.optionData)
     const{feed,posterObject} = this.props.item 
@@ -75,8 +104,8 @@ class FeedPoll extends Component {
                                 
                                 <Text style={styles.coaching}>{posterObject.name}{' • '}<Text style={styles.timeDateText}>{moment(feed.feed.creationTime).fromNow()}</Text></Text>
                             </View>
-                            <TouchableOpacity onPress={()=>this.props.mode=="userProfile"||this.props.mode=="insProfile"?(this.props.updateEditFeedState(feed.feed.feedType, feed.feed.pollQuestion, null, this.state.optionData, feed.feed.id, this.props.index)):(null)}>
-                                <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
+                            <TouchableOpacity onPress={()=>this.showThreeMenu()}>
+                                <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
                             </TouchableOpacity>
                         </View>
                         <Text style={{ fontFamily:'Raleway_400Regular',marginTop: 10,}}>{feed.feed.pollQuestion}</Text>
