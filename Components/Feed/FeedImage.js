@@ -4,7 +4,7 @@ import {serverBaseUrl, theme} from '../config';
 import {Feather, AntDesign, FontAwesome} from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
 import { connect } from 'react-redux'
-import {like_feed} from "../Utils/DataHelper/Feed"
+import {like_feed, unLike_feed} from "../Utils/DataHelper/Feed"
 import moment from 'moment'
 import { FlatListSlider } from '../Utils/ImageSlider';
 import FeedBottomComponent from './FeedBottomComponent'
@@ -52,6 +52,21 @@ class FeedImage extends Component {
         like_feed(feedId,this.props.type,this.props.type==1?(this.props.institute.details.id):(this.props.userInfo.id),this.likeFeedCallBack)
     })
 }
+unLikeFeed=(feedId)=>{
+    this.setState({canUserLike: !this.state.canUserLike},()=>{
+        unLike_feed(feedId,this.props.type,this.props.type==1?(this.props.institute.details.id):(this.props.userInfo.id),this.likeFeedCallBack)
+    })
+}
+unLikeFeedCallBack=(response)=>{
+    if(response.status==200)
+    {
+        console.log("ok")
+    }
+    else{
+        console.log("failed")
+    }
+}
+
 
 likeFeedCallBack=(response)=>{
     if(response.status==200)
@@ -128,7 +143,7 @@ addImage=(link, type)=>{
                                     serverBaseUrl={serverBaseUrl}
                             />
                         )}
-                        <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation} changeCanUserLike={this.changeCanUserLike}/>
+                        <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation} changeCanUserLike={this.changeCanUserLike} unLikeFeed={this.unLikeFeed}/>
                                                 
                     </View>
                     

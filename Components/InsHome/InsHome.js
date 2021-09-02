@@ -53,6 +53,10 @@ class InsHome extends React.Component {
         courseTestSeries:[],
         courseId: '',
         activeCourse: '',
+        vidoffset: 0,
+        docoffset: 0,
+        ttoffset: 0,
+        tsoffset: 0
      }
 
      coursesCallBack=(response)=>
@@ -180,12 +184,7 @@ class InsHome extends React.Component {
     {
         return(
             <TouchableOpacity 
-                onPress={()=>{this.setState({offset: 0, activeFilterId: -1, showLoadMore: true,courseTimetableLoaded:false,isCourseTimeTableLoading:false,courseTimeTable:[],
-                courseDocumentPlaylistLoaded:false,isCourseDocumentPlaylistLoading:false,courseDocumentPlaylist:[],courseDocumentLoaded:false,isCourseDocumentLoading:false,courseDocuments:[],
-                courseTestSeriesLoaded:false,isCourseTestSeriesLoading:false,courseTestSeries:[],
-                courseTestSeriesPlaylistLoaded:false,isCourseTestSeriesPlaylistLoading:false,courseTestSeriesPlaylist:[],
-                courseVideoPlaylistLoaded:false,isCourseVideoPlaylistLoading:false,courseVideosPlaylist:[],
-                courseVideoLoaded:false,isCourseVideoLoading:false,courseVideos:[] },()=>this.activeTab(link))}}  
+                onPress={()=>{this.setState({showLoadMore: link=='timeTable'?(false):(true)},()=>this.activeTab(link))}}  
                 style={[styles.setList,this.state.activeTab==link?({backgroundColor:theme.secondaryColor}):(null)]}
             >
                     <Feather name={icon} size={12} color={this.state.activeTab==link?(theme.primaryColor):(theme.secondaryColor)}/>
@@ -209,21 +208,21 @@ class InsHome extends React.Component {
         switch(this.state.activeTab)
         {
             case 'videos':  
-            this.setState({activeFilter: item.name, isCourseVideoLoading:true,courseVideoLoaded:false, activeFilterId: item.id, offset: 0, showLoadMore: true,courseVideos: []},()=>
+            this.setState({activeFilter: item.name, isCourseVideoLoading:true,courseVideoLoaded:false, activeFilterId: item.id, vidoffset: 0, showLoadMore: true,courseVideos: []},()=>
             {
-                fetch_courses_videos(this.state.offset, dataLimit,this.state.activeCourse,this.courseVideoCallback,item.id);
+                fetch_courses_videos(this.state.vidoffset, dataLimit,this.state.activeCourse,this.courseVideoCallback,item.id);
             }) 
             break;
             case 'document':
-                this.setState({activeFilter: item.name, isCourseDocumentLoading:true,courseDocumentLoaded:false, activeFilterId: item.id, offset: 0, showLoadMore: true, courseDocuments:[]},()=>
+                this.setState({activeFilter: item.name, isCourseDocumentLoading:true,courseDocumentLoaded:false, activeFilterId: item.id, docoffset: 0, showLoadMore: true, courseDocuments:[]},()=>
                 {
-                    fetch_courses_documents(this.state.offset, dataLimit, this.state.activeCourse,this.courseDocumentCallback,item.id);
+                    fetch_courses_documents(this.state.docoffset, dataLimit, this.state.activeCourse,this.courseDocumentCallback,item.id);
                 }) 
                 break;
             case 'testSeries':
-                this.setState({activeFilter: item.name, isCourseTestSeriesLoading:true,courseTestSeriesLoaded:false, activeFilterId: item.id, offset: 0, showLoadMore: true, courseTestSeries: []},()=>
+                this.setState({activeFilter: item.name, isCourseTestSeriesLoading:true,courseTestSeriesLoaded:false, activeFilterId: item.id, tsoffset: 0, showLoadMore: true, courseTestSeries: []},()=>
                 {
-                    fetch_testSeries(this.state.offset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback,item.id);
+                    fetch_testSeries(this.state.tsoffset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback,item.id);
                 }) 
                 break;
         } 
@@ -264,22 +263,22 @@ class InsHome extends React.Component {
         )
     }
 
-    itemList=({item})=>{
-        return(
-            <Accordian
-                header={this.accordianHeader("folder",item.subject,"chevron-down")}
-            >
-                 <FlatList 
-                    data={item.date} 
-                    renderItem={this.timeTableView}
-                    keyExtractor={(item)=>item.id} 
-                    horizontal={false}
-                    showsHorizontalScrollIndicator={false}
-                    ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
-                    />
-        </Accordian>  
-        )
-    }
+    // itemList=({item})=>{
+    //     return(
+    //         <Accordian
+    //             header={this.accordianHeader("folder",item.subject,"chevron-down")}
+    //         >
+    //              <FlatList 
+    //                 data={item.date} 
+    //                 renderItem={this.timeTableView}
+    //                 keyExtractor={(item)=>item.id} 
+    //                 horizontal={false}
+    //                 showsHorizontalScrollIndicator={false}
+    //                 ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+    //                 />
+    //     </Accordian>  
+    //     )
+    // }
 
     accordianHeader = (leftIcon,title,rightIcon) =>
     {
@@ -378,34 +377,30 @@ class InsHome extends React.Component {
     accordianHeader = (title,testCount,rightIcon) =>
     {
         return(
-            CardView(<View style={styles.accordianHeader}>
-                        <View style={styles.accordianLeft}>
-                            <Text style={styles.accordianTitle}>{title}</Text>
-                            <Text style={styles.accordianTestCount}>{testCount}</Text> 
-                        </View>
-                        <View style={styles.accordianMiddle}>
-                           
-                        </View>
-                        <View style={styles.accordianRight}>
-                            <Feather name={rightIcon} size={20}/>
-                        </View> 
-            </View>,
-            {
-                width:'95%', 
-                padding:5,
-                margin:5
-            }
-            )
-        )
+            <View style={styles.accordianHeader}>
+                <View style={styles.accordianLeft}>
+                    <Text style={styles.accordianTitle}>{title}</Text>
+                    <Text style={styles.accordianTestCount}>{testCount}</Text> 
+                </View>
+                <View style={styles.accordianMiddle}>
+                    
+                </View>
+                <View style={styles.accordianRight}>
+          
+                </View> 
+            </View>     
+       )
     }
 
     renderTestItem=(item)=>{
         return(
+            <View style={{width: width-10}}>
             <Accordian
                 header={this.accordianHeader(item.name," ","chevron-down")}
             > 
                 <MockTest data={item.courseTimeTableItem} insId={this.props.institute.details.id} subjectId={item.id} />
             </Accordian>
+            </View>
         )
     }
     renderTimeTable=(item)=>{
@@ -497,7 +492,7 @@ class InsHome extends React.Component {
                 {
                     if(data.length>0)
                     {
-                        this.setState({courseTimeTable:[...this.state.courseTimeTable,...data],courseTimetableLoaded:true,isCourseTimetableLoading:false, showLoadMore: true, loadingFooter: false});               
+                        this.setState({courseTimeTable:[...this.state.courseTimeTable,...data],courseTimetableLoaded:true,isCourseTimetableLoading:false, showLoadMore: false, loadingFooter: false});               
                     }
                     else
                     {
@@ -613,7 +608,7 @@ class InsHome extends React.Component {
                     if(!this.state.courseVideoLoaded&&!this.state.isCourseVideoLoading)
                     {
                         this.setState({isCourseVideoLoading:true})
-                        fetch_courses_videos(this.state.offset, dataLimit,this.state.activeCourseDetail.id,this.courseVideoCallback);
+                        fetch_courses_videos(this.state.vidoffset, dataLimit,this.state.activeCourseDetail.id,this.courseVideoCallback);
                     }
                     if(!this.state.courseVideoPlaylistLoaded&&!this.state.isCourseVideoPlaylistLoading)
                     {
@@ -650,7 +645,7 @@ class InsHome extends React.Component {
                         if(!this.state.courseTestseriesLoaded&&!this.state.isCourseTestseriesLoading)
                         {
                             this.setState({isCourseTestseriesLoading:true})
-                            fetch_testSeries(this.state.offset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback, this.state.activeFilterId);
+                            fetch_testSeries(this.state.tsoffset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback, this.state.activeFilterId);
                         }
                         if(!this.state.courseTestSeriesPlaylistLoaded&&!this.state.isCourseTestSeriesPlaylistLoading&&this.state.activeCourse)
                         {
@@ -680,7 +675,7 @@ class InsHome extends React.Component {
                         if(!this.state.courseDocumentLoaded&&!this.state.isCourseDocumentLoading)
                         {
                             this.setState({isCourseDocumentLoading:true})
-                            fetch_courses_documents(this.state.offset, dataLimit, this.state.activeCourseDetail.id,this.courseDocumentCallback);
+                            fetch_courses_documents(this.state.docoffset, dataLimit, this.state.activeCourseDetail.id,this.courseDocumentCallback);
                         }
                         if(!this.state.courseDocumentPlaylistLoaded&&!this.state.isCourseDocumentPlaylistLoading)
                         {
@@ -787,7 +782,7 @@ class InsHome extends React.Component {
                         {
                            
                             this.setState({isCourseTimeTableLoading:true})
-                            fetch_courses_timetable(this.state.offset, dataLimit, this.state.activeCourseDetail.id,this.courseTimeTableCallback);
+                            fetch_courses_timetable(this.state.ttoffset, dataLimit, this.state.activeCourseDetail.id,this.courseTimeTableCallback);
                         }
                        
             
@@ -855,21 +850,21 @@ class InsHome extends React.Component {
     loadMoreOnPress=()=>{
         if(this.state.activeTab=='document')
         {
-            this.setState({offset: parseInt(this.state.offset)+1},()=>{fetch_courses_documents(this.state.offset, dataLimit, this.state.activeCourse,this.courseDocumentCallback,this.state.activeFilterId);})
+            this.setState({docoffset: parseInt(this.state.docoffset)+1},()=>{fetch_courses_documents(this.state.docoffset, dataLimit, this.state.activeCourse,this.courseDocumentCallback,this.state.activeFilterId);})
         }
         else if(this.state.activeTab=='timeTable')
         {
-            this.setState({offset: parseInt(this.state.offset)+1},()=>{fetch_courses_timetable(this.state.offset, dataLimit,this.state.activeCourse,this.courseTimeTableCallback);})
+            this.setState({ttoffset: parseInt(this.state.ttoffset)+1},()=>{fetch_courses_timetable(this.state.ttoffset, dataLimit,this.state.activeCourse,this.courseTimeTableCallback);})
         }
         else if(this.state.activeTab=='videos')
         {
-            this.setState({offset: parseInt(this.state.offset)+1},()=>
-                fetch_courses_videos(this.state.offset, dataLimit,this.state.activeCourse,this.courseVideoCallback,this.state.activeFilterId)
+            this.setState({vidoffset: parseInt(this.state.vidoffset)+1},()=>
+                fetch_courses_videos(this.state.vidoffset, dataLimit,this.state.activeCourse,this.courseVideoCallback,this.state.activeFilterId)
             )
         }
         else if(this.state.activeTab=='testSeries')
         {
-            this.setState({offset: parseInt(this.state.offset)+1},()=>{fetch_testSeries(this.state.offset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback,this.state.activeFilterId)})
+            this.setState({tsoffset: parseInt(this.state.tsoffset)+1},()=>{fetch_testSeries(this.state.tsoffset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback,this.state.activeFilterId)})
         }
     }
 
@@ -922,7 +917,7 @@ class InsHome extends React.Component {
                                     </View>
                                     <View style={styles.content}>
                                     <TouchableOpacity 
-                                        onPress={()=>{this.activeTab('liveClass')}} style={[styles.liveClassOuter,this.state.activeTab=='liveClass'?({backgroundColor:'red'}):({backgroundColor: theme.primaryColor})]}>
+                                        onPress={()=>this.setState({showLoadMore: false},()=>this.activeTab('liveClass'))} style={[styles.liveClassOuter,this.state.activeTab=='liveClass'?({backgroundColor:'red'}):({backgroundColor: theme.primaryColor})]}>
                                         <View style={styles.liveClassInner}>
                                             <Feather name="disc" size={13} color={theme.primaryColor}/>
                                             <Text style={styles.liveClassText}>Live Now</Text>
@@ -1381,10 +1376,10 @@ const styles = StyleSheet.create({
                 },
                     accordianHeader:
                     {
-                        // flex:1,
                         flexDirection: 'row',
-                        width: '100%', 
-                        // justifyContent: 'space-between'
+                        justifyContent: 'center',
+                        width: '90%',
+                        alignItems: 'center'
                         
                     },
                         accordianLeft:
@@ -1630,10 +1625,10 @@ const styles = StyleSheet.create({
                         },
                     accordianHeader:
                     {
-                        // flex:1,
                         flexDirection: 'row',
-                        width: '100%', 
-                        // justifyContent: 'space-between'
+                        justifyContent: 'center',
+                        width: '90%',
+                        alignItems: 'center'
                         
                     },
                         accordianLeft:

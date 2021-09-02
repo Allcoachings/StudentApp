@@ -59,7 +59,10 @@ class InstituteView extends React.Component {
         activeCourse: '',
         insName:'',
         insNumber:'',
-        offset: 0,
+        docoffset: 0,
+        vidoffset: 0,
+        ttoffset: 0,
+        tsoffset: 0,
         activeFilterId: -1,
         showLoadMore: true,
         courseDocuments:[],
@@ -106,12 +109,10 @@ class InstituteView extends React.Component {
         if(response.status==200)
         {
             response.json().then(data=>{
-
                 var startDate = new Date(); 
                 var endDate   = new Date(data.dateTime);
                 var seconds = (endDate.getTime() - startDate.getTime()) / 1000;
-                this.setState({liveDataLoaded:true,liveData:data,eventSeconds:seconds});
-                
+                this.setState({liveDataLoaded:true,liveData:data,eventSeconds:seconds}); 
             })
         }
             
@@ -284,13 +285,7 @@ class InstituteView extends React.Component {
     {
         return(
             <TouchableOpacity 
-                onPress={()=>{this.setState({offset: 0, activeFilterId: -1, showLoadMore: true,courseTimetableLoaded:false,isCourseTimeTableLoading:false,courseTimeTable:[],
-                    courseDocumentPlaylistLoaded:false,isCourseDocumentPlaylistLoading:false,courseDocumentPlaylist:[],
-                    courseDocumentLoaded:false,isCourseDocumentLoading:false,courseDocuments:[],
-                    courseTestSeriesLoaded:false,isCourseTestSeriesLoading:false,courseTestSeries:[],
-                    courseTestSeriesPlaylistLoaded:false,isCourseTestSeriesPlaylistLoading:false,courseTestSeriesPlaylist:[],
-                    courseVideoPlaylistLoaded:false,isCourseVideoPlaylistLoading:false,courseVideosPlaylist:[],
-                    courseVideoLoaded:false,isCourseVideoLoading:false,courseVideos:[] },()=>this.activeTab(link))}} 
+                onPress={()=>this.setState({showLoadMore: link=='timeTable'?(false):(true)},()=>this.activeTab(link))} 
                 style={[styles.setList,this.state.activeTab==link?({backgroundColor:theme.secondaryColor}):(null)]}
             >
                     <Feather name={icon} size={12} color={this.state.activeTab==link?(theme.primaryColor):(theme.secondaryColor)}/>
@@ -306,7 +301,7 @@ class InstituteView extends React.Component {
                 {
                     if(data.length>0)
                     {
-                        this.setState({courseTimeTable:[...this.state.courseTimeTable,...data],courseTimetableLoaded:true,isCourseTimetableLoading:false, showLoadMore: true, loadingFooter: false});               
+                        this.setState({courseTimeTable:[...this.state.courseTimeTable,...data],courseTimetableLoaded:true,isCourseTimetableLoading:false, showLoadMore: false, loadingFooter: false});               
                     }
                     else
                     {
@@ -317,12 +312,10 @@ class InstituteView extends React.Component {
     }
     courseTestseriesCallback=(response)=>
     {
-        console.log(response.status)
         if(response.status==200)
         {
             response.json().then(data=>
                 {
-                    console.log(data)
                     if(data.length>0)
                     {
                         this.setState({courseTestSeries:[...this.state.courseTestSeries,...data],courseTestSeriesLoaded:true,isCourseTestSeriesLoading:false, showLoadMore: true, loadingFooter: false});
@@ -432,23 +425,23 @@ class InstituteView extends React.Component {
     {
         return(
             <View style={styles.accordianHeader}>
-                        <View style={styles.accordianLeft}>
-                            <Text style={styles.accordianTitle}>{title}</Text>
-                            <Text style={styles.accordianTestCount}>{testCount}</Text> 
-                        </View>
-                        <View style={styles.accordianMiddle}>
-                           
-                        </View>
-                        <View style={styles.accordianRight}>
-                         
-                        </View> 
+                <View style={styles.accordianLeft}>
+                    <Text style={styles.accordianTitle}>{title}</Text>
+                    <Text style={styles.accordianTestCount}>{testCount}</Text> 
+                </View>
+                <View style={styles.accordianMiddle}>
+                    
+                </View>
+                <View style={styles.accordianRight}>
+                    
+                </View> 
             </View>
         )
     }
 
     renderTestItem=(item)=>{
         return(
-            <View style={{margin:10}}>
+            <View style={{width: width-10}}>
             <Accordian
             header={this.accordianHeader(item.name," ","chevron-down")}
         > 
@@ -486,21 +479,21 @@ class InstituteView extends React.Component {
         switch(this.state.activeTab)
         {
           case 'videos':  
-                this.setState({activeFilter: item.name, isCourseVideoLoading:true,courseVideoLoaded:false, activeFilterId: item.id, offset: 0, showLoadMore: true,courseVideos: []},()=>
+                this.setState({activeFilter: item.name, isCourseVideoLoading:true,courseVideoLoaded:false, activeFilterId: item.id, vidoffset: 0, showLoadMore: true,courseVideos: []},()=>
                 {
-                    fetch_courses_videos(this.state.offset, dataLimit,this.state.activeCourse,this.courseVideoCallback,item.id);
+                    fetch_courses_videos(this.state.vidoffset, dataLimit,this.state.activeCourse,this.courseVideoCallback,item.id);
                 }) 
                 break;
            case 'document':
-                this.setState({activeFilter: item.name, isCourseDocumentLoading:true,courseDocumentLoaded:false, activeFilterId: item.id, offset: 0, showLoadMore: true, courseDocuments:[]},()=>
+                this.setState({activeFilter: item.name, isCourseDocumentLoading:true,courseDocumentLoaded:false, activeFilterId: item.id, docoffset: 0, showLoadMore: true, courseDocuments:[]},()=>
                 {
-                    fetch_courses_documents(this.state.offset, dataLimit, this.state.activeCourse,this.courseDocumentCallback,item.id);
+                    fetch_courses_documents(this.state.docoffset, dataLimit, this.state.activeCourse,this.courseDocumentCallback,item.id);
                 }) 
                 break;
             case 'testSeries':
-                this.setState({activeFilter: item.name, isCourseTestSeriesLoading:true,courseTestSeriesLoaded:false, activeFilterId: item.id, offset: 0, showLoadMore: true, courseTestSeries: []},()=>
+                this.setState({activeFilter: item.name, isCourseTestSeriesLoading:true,courseTestSeriesLoaded:false, activeFilterId: item.id, tsoffset: 0, showLoadMore: true, courseTestSeries: []},()=>
                 {
-                    fetch_testSeries(this.state.offset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback,item.id);
+                    fetch_testSeries(this.state.tsoffset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback,item.id);
                 }) 
                 break;
 
@@ -514,7 +507,7 @@ class InstituteView extends React.Component {
                     if(!this.state.courseVideoLoaded&&!this.state.isCourseVideoLoading&&this.state.activeCourse)
                     {
                         this.setState({isCourseVideoLoading:true, activeFilterId: -1})
-                        fetch_courses_videos(this.state.offset, dataLimit,this.state.activeCourse,this.courseVideoCallback);
+                        fetch_courses_videos(this.state.vidoffset, dataLimit,this.state.activeCourse,this.courseVideoCallback);
                     }
                     if(!this.state.courseVideoPlaylistLoaded&&!this.state.isCourseVideoPlaylistLoading&&this.state.activeCourse)
                     {
@@ -546,7 +539,7 @@ class InstituteView extends React.Component {
                         if(!this.state.courseTestseriesLoaded&&!this.state.isCourseTestseriesLoading&&this.state.activeCourse)
                         {
                             this.setState({isCourseTestseriesLoading:true, activeFilterId: -1})
-                            fetch_testSeries(this.state.offset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback,this.state.activeFilterId);
+                            fetch_testSeries(this.state.tsoffset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback,this.state.activeFilterId);
                         }
                         if(!this.state.courseTestSeriesPlaylistLoaded&&!this.state.isCourseTestSeriesPlaylistLoading&&this.state.activeCourse)
                         {
@@ -568,7 +561,7 @@ class InstituteView extends React.Component {
                         if(!this.state.courseDocumentLoaded&&!this.state.isCourseDocumentLoading&&this.state.activeCourse)
                         {
                             this.setState({isCourseDocumentLoading:true})
-                            fetch_courses_documents(this.state.offset, dataLimit,this.state.activeCourse,this.courseDocumentCallback,this.state.activeFilterId);
+                            fetch_courses_documents(this.state.docoffset, dataLimit,this.state.activeCourse,this.courseDocumentCallback,this.state.activeFilterId);
                         }
                         if(!this.state.courseDocumentPlaylistLoaded&&!this.state.isCourseDocumentPlaylistLoading&&this.state.activeCourse)
                         {
@@ -659,8 +652,8 @@ class InstituteView extends React.Component {
             case 'timeTable':    
                         if(!this.state.courseTimetableLoaded&&!this.state.isCourseTimeTableLoading&&this.state.activeCourse)
                         {
-                            this.setState({isCourseTimeTableLoading:true})
-                            fetch_courses_timetable(this.state.offset, dataLimit,this.state.activeCourseDetail.id,this.courseTimeTableCallback);
+                            this.setState({isCourseTimeTableLoading:true, shoeLoadMore: false})
+                            fetch_courses_timetable(this.state.ttoffset, dataLimit,this.state.activeCourseDetail.id,this.courseTimeTableCallback);
                         }
                             return(
                                 this.renderTimeTable(this.state.courseTimeTable)
@@ -678,6 +671,33 @@ class InstituteView extends React.Component {
                     this.setState({feeds: data})
                 })
             }
+    }
+
+    increseRating=(rating)=>{
+            var obj = this.state.institute
+            if(rating=='1')
+            {
+                obj.oneStarCount=parseInt(obj.oneStarCount)+1
+            }
+            else if(rating=='2')
+            {
+                obj.twoStarCount=parseInt(obj.twoStarCount)+1
+            }
+            else if(rating=='3')
+            {
+                obj.threeStarCount=parseInt(obj.threeStarCount)+1
+            }
+            else if(rating=='4')
+            {
+                obj.fourStarCount=parseInt(obj.fourStarCount)+1
+            }
+            else if(rating=='5')
+            {
+                obj.fiveStarCount=parseInt(obj.fiveStarCount)+1
+            }
+            obj.totalRating = parseInt(obj.totalRating)+rating;
+            obj.totalRatingCount=parseInt(obj.totalRatingCount)+1
+            this.setState({institute: obj})
     }
 
     handleFeedTabBtnClick=()=>
@@ -719,21 +739,21 @@ class InstituteView extends React.Component {
     loadMoreOnPress=()=>{
         if(this.state.activeTab=='document')
         {
-            this.setState({offset: parseInt(this.state.offset)+1},()=>{fetch_courses_documents(this.state.offset, dataLimit, this.state.activeCourse,this.courseDocumentCallback,this.state.activeFilterId);})
+            this.setState({docoffset: parseInt(this.state.docoffset)+1},()=>{fetch_courses_documents(this.state.docoffset, dataLimit, this.state.activeCourse,this.courseDocumentCallback,this.state.activeFilterId);})
         }
         else if(this.state.activeTab=='timeTable')
         {
-            this.setState({offset: parseInt(this.state.offset)+1},()=>{fetch_courses_timetable(this.state.offset, dataLimit,this.state.activeCourse,this.courseTimeTableCallback);})
+            this.setState({ttoffset: parseInt(this.state.ttoffset)+1, showLoadMore: false},()=>{fetch_courses_timetable(this.state.ttoffset, dataLimit,this.state.activeCourse,this.courseTimeTableCallback);})
         }
         else if(this.state.activeTab=='videos')
         {
-            this.setState({offset: parseInt(this.state.offset)+1},()=>
-                fetch_courses_videos(this.state.offset, dataLimit,this.state.activeCourse,this.courseVideoCallback,this.state.activeFilterId)
+            this.setState({vidoffset: parseInt(this.state.vidoffset)+1},()=>
+                fetch_courses_videos(this.state.vidoffset, dataLimit,this.state.activeCourse,this.courseVideoCallback,this.state.activeFilterId)
             )
         }
         else if(this.state.activeTab=='testSeries')
         {
-            this.setState({offset: parseInt(this.state.offset)+1},()=>{fetch_testSeries(this.state.offset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback,this.state.activeFilterId)})
+            this.setState({tsoffset: parseInt(this.state.tsoffset)+1},()=>{fetch_testSeries(this.state.tsoffset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback,this.state.activeFilterId)})
         }
     }
 
@@ -789,7 +809,7 @@ class InstituteView extends React.Component {
                             </View>
                             <View style={styles.content}>
                                 <TouchableOpacity 
-                                    onPress={()=>{this.setState({offset: 0, activeFilterId: -1, showLoadMore: true, courseDocuments:[], courseVideos: [], courseTimeTable: [], courseTestSeries: []},()=>this.activeTab('liveClass'))}} style={[styles.liveClassOuter,this.state.activeTab=='liveClass'?({backgroundColor:'red'}):({backgroundColor: theme.primaryColor})]}>
+                                    onPress={()=>{this.setState({ activeFilterId: -1, showLoadMore: false},()=>this.activeTab('liveClass'))}} style={[styles.liveClassOuter,this.state.activeTab=='liveClass'?({backgroundColor:'red'}):({backgroundColor: theme.primaryColor})]}>
                                     <View style={styles.liveClassInner}>
                                         <Feather name="disc" size={13} color={theme.primaryColor}/>
                                         <Text style={styles.liveClassText}>Live Now</Text>
@@ -853,7 +873,6 @@ class InstituteView extends React.Component {
         
 
     render() {
-        console.log("this.state.studentEnrolled",this.state.studentEnrolled)
       this.updateComponent()
         const  {institute,loadingInstitute} = this.state;
         return (
@@ -941,6 +960,7 @@ class InstituteView extends React.Component {
                         five_star_count={institute.fiveStarCount}
                         inslogo={serverBaseUrl+institute.logo}
                         institle={institute.name}
+                        increseRating={this.increseRating}
                     />
                    
                     <View style = {styles.container}>
@@ -1561,21 +1581,21 @@ const styles = StyleSheet.create({
                 },
                 accordianHeader:
                 {
-                    // flex:1,
                     flexDirection: 'row',
-                    width: '100%', 
-                    // justifyContent: 'space-between'
-                    
+                    justifyContent: 'center',
+                    width: '90%',
+                    alignItems: 'center'
                 },
                     accordianLeft:
                     {
-                        
-                        justifyContent: 'flex-start',
-                        margin:5
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding:5,
                     },
                         accordianTitle:
                         {
                             fontSize:14,
+                            marginTop: 5,
                             fontWeight:'bold',
                         },
                         accordianTestCount:
@@ -1586,8 +1606,6 @@ const styles = StyleSheet.create({
                         },
                     accordianMiddle:
                     { 
-                        
-                        margin:5,
                         alignSelf: 'flex-end',
                     },
                     accordianRight:

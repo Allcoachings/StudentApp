@@ -214,8 +214,8 @@ public class InsTestSeriesController {
     }
 
     @CrossOrigin(origins = "*")
-    @PutMapping(value="/series/updatequestiondata",produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody String updateQuestion(@ModelAttribute EditQuestionDto editQuestionDto, @PathVariable long qId)
+    @PutMapping(value="/series/updatequestiondata/",produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody String updateQuestion(@ModelAttribute EditQuestionDto editQuestionDto)
     {
         String fieldValue = null;
         switch (editQuestionDto.getType())

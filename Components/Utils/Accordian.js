@@ -26,7 +26,7 @@ const width = Dimensions.get('window').width
           <View style={styles.accordianHeader}>
               <TouchableWithoutFeedback   onPress={()=>this.accordionOnPress()}>
                   <View style={{flexDirection: 'row',justifyContent: 'space-between', alignItems: 'center'}}>
-                    <View>
+                    <View style={{justifyContent: 'center'}}>
                       {this.props.header}
                     </View>
                     <View >
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     },
         accordianHeader:
         {
-            alignItems: 'center'
+            alignItems: 'center',
         }
 
 });

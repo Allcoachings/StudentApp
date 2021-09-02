@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text,Image,StyleSheet,Share, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { View, Text,Image,StyleSheet,Share, TouchableOpacity } from 'react-native';
 import {theme} from '../config';
 import { AntDesign, FontAwesome} from '@expo/vector-icons';
 import { connect } from 'react-redux'
@@ -28,9 +28,9 @@ class FeedBottomComponent extends Component {
                     <AntDesign name="hearto" size={22} color={theme.greyColor} />
                 </TouchableOpacity>
             ):(
-                <TouchableWithoutFeedback style={styles.likeView}>
+                <TouchableOpacity style={styles.likeView} onPress={()=>this.props.unLikeFeed(this.state.feedId)}>
                     <AntDesign name="heart" size={22} color={theme.greyColor}/>
-                </TouchableWithoutFeedback>
+                </TouchableOpacity>
             )}
 
             <TouchableOpacity style={styles.likeView} onPress={()=>this.setState({showCommentModal: true})}>

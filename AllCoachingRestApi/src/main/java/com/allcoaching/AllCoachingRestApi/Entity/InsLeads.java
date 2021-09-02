@@ -15,107 +15,62 @@ import java.util.Date;
 @Entity
 @NamedNativeQuery(
         name = "insLeadGraphDataWeekly",
-        query ="SELECT WEEK(time) as y,COUNT(*) as x FROM ins_leads "+
+        query ="SELECT WEEK(time) as x,COUNT(*) as y FROM ins_leads "+
                 "WHERE ins_id=:insId and MONTH(time)=:dataMonth GROUP BY MONTH(time),WEEK(time)"
         ,
-        resultSetMapping = "insLeadGraphDataWeekly"
+        resultSetMapping = "GraphDataDto"
 )
-@SqlResultSetMapping(
-        name = "insLeadGraphDataWeekly",
-        classes = @ConstructorResult(
-                targetClass = Graph2dDataDto.class,
-                columns = {
-                        @ColumnResult(name = "x", type = String.class),
-                        @ColumnResult(name = "y", type = String.class),
-                }
-        )
-)
+
 
 @NamedNativeQuery(
         name = "insLeadGraphDataMonthly",
-        query ="SELECT MONTH(time) as y,COUNT(*) as x FROM ins_leads "+
+        query ="SELECT MONTH(time) as x,COUNT(*) as y FROM ins_leads "+
                 "WHERE ins_id=:insId and YEAR(time)=:dataYear GROUP BY YEAR(time),MONTH(time)"
         ,
-        resultSetMapping = "insLeadGraphDataMonthly"
-)
-@SqlResultSetMapping(
-        name = "insLeadGraphDataMonthly",
-        classes = @ConstructorResult(
-                targetClass = Graph2dDataDto.class,
-                columns = {
-                        @ColumnResult(name = "x", type = String.class),
-                        @ColumnResult(name = "y", type = String.class),
-                }
-        )
+        resultSetMapping = "GraphDataDto"
 )
 
 @NamedNativeQuery(
         name = "insLeadGraphDataYearly",
-        query ="SELECT YEAR(time) as y,COUNT(*) as x FROM ins_leads "+
+        query ="SELECT YEAR(time) as x,COUNT(*) as y FROM ins_leads "+
                 "WHERE ins_id=:insId   GROUP BY YEAR(time)"
         ,
-        resultSetMapping = "insLeadGraphDataYearly"
+        resultSetMapping = "GraphDataDto"
 )
-@SqlResultSetMapping(
-        name = "insLeadGraphDataYearly",
-        classes = @ConstructorResult(
-                targetClass = Graph2dDataDto.class,
-                columns = {
-                        @ColumnResult(name = "x", type = String.class),
-                        @ColumnResult(name = "y", type = String.class),
-                }
-        )
-)
+
 @NamedNativeQuery(
         name = "adminLeadGraphDataWeekly",
-        query ="SELECT WEEK(time) as y,COUNT(*) as x FROM ins_leads "+
+        query ="SELECT WEEK(time) as x,COUNT(*) as y FROM ins_leads "+
                 "WHERE   MONTH(time)=:dataMonth GROUP BY MONTH(time),WEEK(time)"
         ,
-        resultSetMapping = "adminLeadGraphDataWeekly"
+        resultSetMapping = "GraphDataDto"
 )
-@SqlResultSetMapping(
-        name = "adminLeadGraphDataWeekly",
-        classes = @ConstructorResult(
-                targetClass = Graph2dDataDto.class,
-                columns = {
-                        @ColumnResult(name = "x", type = String.class),
-                        @ColumnResult(name = "y", type = String.class),
-                }
-        )
-)
+
 
 @NamedNativeQuery(
         name = "adminLeadGraphDataMonthly",
-        query ="SELECT MONTH(time) as y,COUNT(*) as x FROM ins_leads "+
+        query ="SELECT MONTH(time) as x,COUNT(*) as y FROM ins_leads "+
                 "WHERE   YEAR(time)=:dataYear GROUP BY YEAR(time),MONTH(time)"
         ,
-        resultSetMapping = "adminLeadGraphDataMonthly"
+        resultSetMapping = "GraphDataDto"
 )
-@SqlResultSetMapping(
-        name = "adminLeadGraphDataMonthly",
-        classes = @ConstructorResult(
-                targetClass = Graph2dDataDto.class,
-                columns = {
-                        @ColumnResult(name = "x", type = String.class),
-                        @ColumnResult(name = "y", type = String.class),
-                }
-        )
-)
+
 
 @NamedNativeQuery(
         name = "adminLeadGraphDataYearly",
-        query ="SELECT YEAR(time) as y,COUNT(*) as x FROM ins_leads "+
+        query ="SELECT YEAR(time) as x,COUNT(*) as y FROM ins_leads "+
                 " GROUP BY YEAR(time)"
         ,
-        resultSetMapping = "adminLeadGraphDataYearly"
+        resultSetMapping = "GraphDataDto"
 )
 @SqlResultSetMapping(
-        name = "adminLeadGraphDataYearly",
+        name = "GraphDataDto",
         classes = @ConstructorResult(
                 targetClass = Graph2dDataDto.class,
                 columns = {
                         @ColumnResult(name = "x", type = String.class),
                         @ColumnResult(name = "y", type = String.class),
+
                 }
         )
 )
