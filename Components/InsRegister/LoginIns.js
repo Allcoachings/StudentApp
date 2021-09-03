@@ -235,5 +235,10 @@ const styles = StyleSheet.create({
 
 })
 
-
-export default connect(null,{setInstituteDetails,setInstituteAuth})(LoginIns)
+const mapStateToProps = (state)=>
+{
+    return {
+        keyboardHeight: state.screen.keyboardHeight
+    }
+}
+export default connect(mapStateToProps,{setInstituteDetails,setInstituteAuth})(LoginIns)

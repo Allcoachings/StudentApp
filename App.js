@@ -7,7 +7,7 @@ import RootReducer from './Components/Reducers'
 import Main from './Components/Main'
 // import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+// import { SafeAreaProvider } from 'react-native-safe-area-context';
 import {
   useFonts,
   Raleway_100Thin,
@@ -29,9 +29,7 @@ import {
   Raleway_800ExtraBold_Italic,
   Raleway_900Black_Italic,
 } from '@expo-google-fonts/raleway';
-let store = createStore(RootReducer)
-
-
+let store = createStore(RootReducer) 
   
   const App= ()=> {
     let [fontsLoaded] = useFonts({
@@ -58,11 +56,11 @@ let store = createStore(RootReducer)
     //   return <AppLoading />;
     // }
     return (
-      <SafeAreaProvider>
+      // <SafeAreaProvider>
         <Provider store={store}>
             <Main/>
         </Provider>
-      </SafeAreaProvider>
+      // </SafeAreaProvider>
     );
   }
 

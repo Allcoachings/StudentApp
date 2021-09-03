@@ -172,7 +172,7 @@ class InfoModal extends React.Component {
                                         </Picker>
                                 </View>
                                 <View 
-                                    style={{flexDirection:'row',justifyContent:'center',marginTop:'auto',marginBottom:20,alignItems: 'center',width:width,borderTopWidth:1,borderTopColor:theme.labelOrInactiveColor,paddingTop:10}}
+                                    style={{flexDirection:'row',justifyContent:'center',marginTop:'auto',marginBottom:this.props.keyboardHeight?this.props.keyboardHeight+50:15,alignItems: 'center',width:width,borderTopWidth:1,borderTopColor:theme.labelOrInactiveColor,paddingTop:10}}
                                 >  
                                 
                                     <TouchableWithoutFeedback onPress={this.handleSubmitButtonClick}>
@@ -297,5 +297,10 @@ const styles = StyleSheet.create({
                 
 
 })
-
-export default connect(null,{setUserInfo,userAuthStatus})(InfoModal);
+const mapStateToProps = (state)=>
+{
+    return {
+        keyboardHeight: state.screen.keyboardHeight
+    }
+}
+export default connect(mapStateToProps,{setUserInfo,userAuthStatus})(InfoModal); 
