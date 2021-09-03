@@ -167,8 +167,7 @@ const styles = StyleSheet.create({
                 marginRight:"2%"
             },
             pageContent:
-            {
-                 
+            {  
                 flex:1,
                 flexDirection: 'column'
             },

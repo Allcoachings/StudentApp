@@ -107,7 +107,7 @@ const LoginIns=(props)=>
 
 
                 <View 
-                    style={{justifyContent:'center',marginTop:'auto',marginBottom:20,alignItems: 'center',width:width,paddingTop:10}}
+                    style={{justifyContent:'center',marginTop:'auto',marginBottom:props.keyboardHeight?props.keyboardHeight+50:20,alignItems: 'center',width:width,paddingTop:10}}
                 >  
                         <View style={{margin:10}}>
                             <TouchableWithoutFeedback onPress={()=>{props.changeAuthMode(2)}}>

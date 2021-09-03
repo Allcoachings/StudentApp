@@ -35,6 +35,7 @@ class InsRegister extends React.Component {
         open:false,
         registerLoader:false,
         indianStates:[
+            "Select State",
             "Andaman and Nicobar Islands",
             "Andhra Pradesh",
             "Arunachal Pradesh",
@@ -182,7 +183,7 @@ class InsRegister extends React.Component {
     
     verifyFields =({insName,dirName,phone,email,pass,addr,city,state,about,selectedCategory,logo})=>{
         
-        return insName&&dirName&&phone&&email&&pass&&addr&&city&&state&&about&&selectedCategory!=-1&&logo.type=="success"
+        return insName&&dirName&&phone&&email&&pass&&addr&&city&&state!=this.state.indianStates[0]&&about&&selectedCategory!=-1&&logo.type=="success"
     }
 
     handleImageBtnClick=()=>

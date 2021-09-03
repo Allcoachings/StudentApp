@@ -182,8 +182,7 @@ class OtpVerification extends React.Component {
                             withDarkTheme
                             defaultCode='IN'
                             withShadow 
-                            // autoFocus
-                             
+                            autoFocus
                         />):(
                             <OTPInputView
                                 style={{width: '100%', height: 80,color: theme.secondaryColor, marginLeft:20,borderRadius:10}}
@@ -287,10 +286,12 @@ class OtpVerification extends React.Component {
                 {CardView(
                     <View style={styles.container}>
                         
-                                <View style={styles.header}>
-                                    {/* <AuthHeader/>                         */}
-                                    <Feather name="chevron-left" size={20} color={theme.greyColor}/>
-                                </View>
+                                <TouchableWithoutFeedback onPress={()=>this.props.closeModal() }>
+                                    <View style={styles.header}>
+                                        {/* <AuthHeader/>                         */}
+                                        <Feather name="chevron-left" size={20} color={theme.greyColor}/>
+                                    </View>
+                                </TouchableWithoutFeedback>
                             {this.renderContent()}
                     </View>,{width: width, height: height, }
                 )}
