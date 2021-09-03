@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Modal} from 'react-native';
 // import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import {theme,screenMobileWidth, dataLimit,serverBaseUrl} from '../config'
+import {theme,screenMobileWidth, dataLimit,serverBaseUrl, imageProvider} from '../config'
 import { Feather } from '@expo/vector-icons';
 import {connect } from 'react-redux'
 import {subscriptionNew} from '../../FakeDataService/FakeData'
@@ -62,7 +62,7 @@ class RenderSingleSubsInstitute extends React.Component {
                 <View style={{marginBottom: '5%'}}>
                     <View style={styles.instituteheader}>
                         {CardView(
-                            <Image source={{uri:serverBaseUrl+this.props.item.logo}} style={styles.instituteheaderLogo}/>
+                            <Image source={{uri:imageProvider(this.props.item.logo)}} style={styles.instituteheaderLogo}/>
                             ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:100,borderRadius:15}):({width:200,height:150})])
                         } 
                         <View style={styles.instituteheaderMeta}>

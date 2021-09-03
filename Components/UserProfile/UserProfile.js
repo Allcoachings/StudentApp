@@ -2,7 +2,7 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image, Platform, ScrollView, Modal, ActivityIndicator} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 // import {connect} from 'react-redux'
-import { theme,dataLimit,screenMobileWidth,serverBaseUrl,documentPlaceholder, Assets } from '../config';
+import { theme,dataLimit,screenMobileWidth,serverBaseUrl,documentPlaceholder, Assets,imageProvider } from '../config';
 import AddFeedModal from '../InsHome/AddFeedModal';
 import { Feather } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
@@ -23,6 +23,7 @@ import RenderDocument from '../InstituteView/RenderDocument';
 import RenderVideo from '../InstituteView/RenderVideo';
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
+import { isThisSecond } from 'date-fns/esm';
 // import {Feed} from "../Feed/Feed"
 
 class UserProfile extends React.Component {
@@ -39,7 +40,16 @@ class UserProfile extends React.Component {
         subActiveTab: "video", 
         purchase:[],
         modalVisible: false,
+        loadingUserEnrollments: true,
         item:{},
+        testSeries: [],
+        video: [],
+        document: [],
+        vidOffset:0,
+        docOffset:0,
+        tsOffset:0,
+        showLoadMore: true,
+        loadingFooter: false,
     }
 
     closeModal = () => {
@@ -57,12 +67,11 @@ class UserProfile extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({loadingData: true});
         fetch_student_purchase(this.props.userInfo.id, this.state.offset, dataLimit,this.purchaseCallback)
     }
 
     purchaseCallback=(response)=>{
-        this.setState({loadingData:false})
+        this.setState({loadingUserEnrollments:false})
         console.log(response.status)
         if(response.status==200)
         {   
@@ -98,12 +107,10 @@ class UserProfile extends React.Component {
 
     renderPurchageCourse=(item)=>{
         return(
-        <PurchageListRow item={item} navigation={this.props.navigation}/>
+            <PurchageListRow item={item} navigation={this.props.navigation}/>
         )
     }
 
-
-    //   hadle history wala
     renderList=(text, icon, link)=>
     {
         return(
@@ -152,6 +159,19 @@ class UserProfile extends React.Component {
         }
     }
 
+    renderFooter = () => {
+        try {
+       
+          if (this.state.loadingFooter) {
+            return <CustomActivtiyIndicator/>;
+          } else {
+            return null;
+          }
+        } catch (error) {
+          console.log(error);
+        }
+    };
+
     updateSingleFeed=(item, index)=>{
         var obj=this.state.feeds
         obj[index]=item;
@@ -176,19 +196,134 @@ class UserProfile extends React.Component {
         }    
     }
 
+
+    switchTab=(tab)=>{
+        switch(tab)
+        {
+            case "video":   if(!this.state.isVideoLoaded&&!this.state.isVideoLoading)
+                            {
+                                this.setState({isVideoLoading: true},()=>
+                                fetch_student_history(this.props.userInfo.id, this.state.subActiveTab, this.state.vidOffset, dataLimit, this.studentHistoryCallBack))
+                            }
+            
+                            return(
+                                !this.state.isVideoLoaded?(
+                                    <CustomActivtiyIndicator mode="video"/>
+                                ):(<FlatList
+                                    data={this.state.video}
+                                    renderItem={({item}) => this.displayItems(item)}
+                                    keyExtractor={(item,index)=>index}
+                                    ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                                    onEndReachedThreshold={0.1}
+                                    refreshing={this.state.refreshing}
+                                    ListFooterComponent={this.renderFooter}
+                                    onEndReached={() => 
+                                    {
+                                        if(this.state.showLoadMore&&!this.state.loadingFooter)
+                                        {
+                                            console.log("end video")
+                                            this.setState({ refreshing: true,loadingFooter:true,vidOffset:parseInt(this.state.vidOffset)+1},()=>this.loadMoreOnPress())
+                                                
+                                        }
+                                    
+                                    }}
+                                />)
+                        )
+                        break;
+            case "document": 
+                            if(!this.state.isDocumentLoaded&&!this.state.isDocumentLoading)
+                            {
+                                this.setState({isDocumentLoading: true},()=>
+                                fetch_student_history(this.props.userInfo.id, this.state.subActiveTab, this.state.docOffset, dataLimit, this.studentHistoryCallBack))
+                            }
+                            return(
+                                !this.state.isDocumentLoaded?(
+                                    <CustomActivtiyIndicator mode="document"/>
+                                ):(<FlatList
+                                    data={this.state.document}
+                                    renderItem={({item}) => this.displayItems(item)}
+                                    keyExtractor={(item,index)=>index}
+                                    ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                                    onEndReachedThreshold={0.1}
+                                    refreshing={this.state.refreshing}
+                                    ListFooterComponent={this.renderFooter}
+                                    onEndReached={() => 
+                                    {
+                                        if(this.state.showLoadMore&&!this.state.loadingFooter)
+                                        {
+                                            console.log("enddoc")
+                                            this.setState({ refreshing: true,loadingFooter:true,docOffset:parseInt(this.state.docOffset)+1},()=>this.loadMoreOnPress())
+                                                
+                                        }
+                                    
+                                    }}
+                                />)
+                        )
+                        break;
+            case "testSeries": 
+                            if(!this.state.isTestSeriesLoaded&&!this.state.isTestSeriesLoading)
+                            {
+                                this.setState({isTestSeriesLoading: true},()=>
+                                fetch_student_history(this.props.userInfo.id, this.state.subActiveTab, this.state.tsOffset, dataLimit, this.studentHistoryCallBack))
+                            }
+                            return(
+                                !this.state.isTestSeriesLoaded?(
+                                    <CustomActivtiyIndicator mode="testSeries"/>
+                                ):(<FlatList
+                                    data={this.state.testSeries}
+                                    renderItem={({item}) => this.displayItems(item)}
+                                    keyExtractor={(item,index)=>index}
+                                    ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                                    onEndReachedThreshold={0.1}
+                                    refreshing={this.state.refreshing}
+                                    ListFooterComponent={this.renderFooter}
+                                    onEndReached={() => 
+                                    {
+                                        if(this.state.showLoadMore&&!this.state.loadingFooter)
+                                        {
+                                            console.log("end test")
+                                            this.setState({ refreshing: true,loadingFooter:true,tsOffset:parseInt(this.state.tsOffset)+1},()=>this.loadMoreOnPress())
+                                                
+                                        }
+                                    
+                                    }}
+                                />)
+                        )
+                        break;
+        }
+    }
+
+    loadMoreOnPress=()=>{
+        if(this.state.subActiveTab=="video")
+        {
+            fetch_student_history(this.props.userInfo.id, this.state.subActiveTab, this.state.vidOffset, dataLimit, this.studentHistoryCallBack)
+        }
+        else if(this.state.subActiveTab=="document")
+        {
+           fetch_student_history(this.props.userInfo.id, this.state.subActiveTab, this.state.docOffset, dataLimit, this.studentHistoryCallBack)
+        }
+        else if(this.state.subActiveTab=="testSeries")
+        {
+            fetch_student_history(this.props.userInfo.id, this.state.subActiveTab, this.state.tsOffset, dataLimit, this.studentHistoryCallBack)
+        }
+    }
+
+
     switchTabRender=(activeTab)=>{
         switch (activeTab) {
             case 1:
                 return(
                    
                     <View style={{marginBottom: 50}}>
-                    <FlatList
+                    {this.state.loadingUserEnrollments?(
+                        <CustomActivtiyIndicator mode="skimmer"/>
+                    ):(<FlatList
                         data={this.state.purchase}
                         renderItem={({item}) => this.renderPurchageCourse(item)}
                         keyExtractor={(item,index)=>index}
                         ListEmptyComponent={<EmptyList />}
                         ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
-                    />
+                    />)}
                     </View>
 
                 )
@@ -196,42 +331,15 @@ class UserProfile extends React.Component {
                 return(
                     <View>
                             <View style={styles.content}>
-                                {/* <TouchableOpacity 
-                                    onPress={()=>{this.activeTab('liveClass')}} style={[styles.liveClassOuter,this.state.activeTab=='liveClass'?({backgroundColor:'red'}):({backgroundColor: theme.primaryColor})]}>
-                                    <View style={styles.liveClassInner}>
-                                        <Feather name="disc" size={13} color={theme.primaryColor}/>
-                                        <Text style={styles.liveClassText}>Live Now</Text>
-                                    </View>
-                                </TouchableOpacity> */}
                                 {this.renderList('Videos', 'play-circle', 'video')}
                                 {this.renderList('Test Series', 'copy', 'testSeries')}
                                 {this.renderList('Document', 'file', 'document')}
                             </View>
                             <View style={styles.dataContainer}>
-                                {this.state.loadingData?(
-                                    <CustomActivtiyIndicator mode="skimmer"/>
-                                ):(
-                                    <FlatList
-                                        data={this.state.history}
-                                        renderItem={({item}) => this.displayItems(item)}
-                                        keyExtractor={(item,index)=>index}
-                                        ListEmptyComponent={<EmptyList />}
-                                        ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
-                                    />
-                                )}
+                                    {this.switchTab(this.state.subActiveTab)}
                             </View>
                             
-                            {/* <View style={styles.purchage_coursewrapper}>
-                            <View>
-                                <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.curvedimage}/>
-                            </View>
-                           
-                                <View>
-                                    <Text>The Course-2</Text>
-                                    <Text>Chapter two realease</Text>
-                                    <Text>Module-3</Text>
-                                </View>
-                            </View> */}
+                            
                     </View>
                 )
             case 3:
@@ -251,7 +359,7 @@ class UserProfile extends React.Component {
                             setUpdateFun={this.setUpdateEditFeedState}
                             updateSingleFeed={this.updateSingleFeed}
                     />
-                    {this.state.loadingData?(
+                    {this.state.isFeedLoading?(
                             <CustomActivtiyIndicator mode="skimmer"/>
                     ):(
                         <FlatList
@@ -281,7 +389,7 @@ class UserProfile extends React.Component {
             response.json().then(data=>
             {
 
-                this.setState({feeds: data})
+                this.setState({feeds: data, isFeedLoading: false})
             })
         }
         else
@@ -291,12 +399,43 @@ class UserProfile extends React.Component {
     }
 
     studentHistoryCallBack=(response)=>{
-        this.setState({loadingData:false})
         if(response.status==200)
         {
             response.json().then(data=>
             {
-                this.setState({history: data})
+                if(this.state.subActiveTab=="video")
+                {
+                    if(data.length>0)
+                    {    
+                        this.setState({video: [...this.state.video,...data], isVideoLoading: false, isVideoLoaded: true, showLoadMore: true, loadingFooter: false})
+                    }
+                    else
+                    {
+                        this.setState({video: this.state.video, isVideoLoading: false, isVideoLoaded: true, showLoadMore: false, loadingFooter: false})
+                    }
+                }
+                else if(this.state.subActiveTab=="document")
+                {
+                    if(data.length>0)
+                    { 
+                        this.setState({document: [...this.state.document,...data], isDocumentLoading: false, isDocumentLoaded: true, showLoadMore: true, loadingFooter: false})
+                    }
+                    else
+                    {
+                        this.setState({document: this.state.document, isDocumentLoading: false, isDocumentLoaded: true, showLoadMore: false, loadingFooter: false})
+                    }
+                }
+                else if(this.state.subActiveTab=="testSeries")
+                {
+                    if(data.length>0)
+                    { 
+                        this.setState({testSeries: [...this.state.testSeries,...data], isTestSeriesLoading: false, isTestSeriesLoaded: true, showLoadMore: true, loadingFooter: false})
+                    }
+                    else
+                    {
+                        this.setState({testSeries: [...this.state.testSeries,...data], isTestSeriesLoading: false, isTestSeriesLoaded: true, showLoadMore: false, loadingFooter: false})
+                    }
+                }
             })
         }
         else
@@ -326,7 +465,7 @@ class UserProfile extends React.Component {
                     <View style={styles.container}>
                         <View style={styles.userInfoSecView}>
                             <View style={styles.imageView}>
-                                <Image source={{ uri: serverBaseUrl+this.props.userInfo.studentImage }} style={styles.image}/>
+                                <Image source={{ uri: imageProvider(this.props.userInfo.studentImage) }} style={styles.image}/>
                             </View>
                             <View style={styles.nameView}>
                                 <Text style={styles.name}>{this.props.userInfo.name}</Text>
@@ -345,8 +484,7 @@ class UserProfile extends React.Component {
 
 
                                 <View style={[styles.btnView1,this.state.activeTab==2?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor})]}>
-                                    <Text style={[styles.btnText,{color:this.state.activeTab==2?theme.primaryColor:theme.greyColor}]} onPress={()=>{ this.activeTab(2)
-                                        this.setState({loadingData: true, offset: 0},()=>fetch_student_history(this.props.userInfo.id, this.state.offset, dataLimit, this.studentHistoryCallBack))}}>Recents</Text>
+                                    <Text style={[styles.btnText,{color:this.state.activeTab==2?theme.primaryColor:theme.greyColor}]} onPress={()=>this.activeTab(2) }>Recents</Text>
                                 </View>
                                
 
@@ -354,7 +492,7 @@ class UserProfile extends React.Component {
 
                                 <View style={[styles.btnView1,this.state.activeTab==3?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor})]}>
                                     <Text style={[styles.btnText,{color:this.state.activeTab==3?theme.primaryColor:theme.greyColor}]} onPress={()=>{    this.activeTab(3),
-                                        this.setState({loadingData:true, offset: 0},()=>fetch_student_feed(this.props.userInfo.id,this.state.offset,dataLimit, this.fetchFeedCallback))}}>Feed</Text>
+                                        this.setState({isFeedLoading:true, offset: 0},()=>fetch_student_feed(this.props.userInfo.id,this.state.offset,dataLimit, this.fetchFeedCallback))}}>Feed</Text>
                                 </View>
                                  
                         </View>

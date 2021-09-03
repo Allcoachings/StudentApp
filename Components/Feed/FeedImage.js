@@ -8,6 +8,7 @@ import {like_feed, unLike_feed} from "../Utils/DataHelper/Feed"
 import moment from 'moment'
 import { FlatListSlider } from '../Utils/ImageSlider';
 import FeedBottomComponent from './FeedBottomComponent'
+import FeedHeader from './FeedHeader'
 import ImageZoomModal from '../InstituteView/ImageZoomModal'
 
 class FeedImage extends Component {
@@ -94,7 +95,7 @@ addImage=(link, type)=>{
   }
 
 
-    editFeedPressHandler=()=>this.props.mode=="userProfile"||this.props.mode=="insProfile"?(this.props.updateEditFeedState(feed.feed.feedType, feed.feed.description, feed.feedImages, null, feed.feed.id, this.props.index)):(null)
+    editFeedPressHandler=()=>this.props.mode=="userProfile"||this.props.mode=="insProfile"?(this.props.updateEditFeedState(this.props.item.feed.feed.feedType, this.props.item.feed.feed.description, this.props.item.feed.feedImages, null, this.props.item.feed.feed.id, this.props.index)):(null)
 
   render() {
     const{feed,posterObject} = this.props.item
@@ -102,18 +103,8 @@ addImage=(link, type)=>{
         // CardView(
             <View style={{flexDirection: 'column', padding: 5}}>
                 <View style={styles.boxView}>
-                    <View style={styles.rowView}>
-                        <Image source={{ uri: feed.feed.postedBy==2?(imageProvider(posterObject.studentImage)):(imageProvider(posterObject.logo))}} style={styles.circleView}/>  
-                        <View style={{width: '78%'}}>
-                            <Text style={styles.coaching}>{posterObject.name}</Text> 
-                            <Text style={styles.timeDateText}>{moment(feed.feed.creationTime).fromNow()}</Text>
-                        </View>
-                        <TouchableOpacity onPress={()=>this.showThreeMenu()}>
-                            <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
-                        </TouchableOpacity>
-                    </View>
+                    <FeedHeader editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime}/>
                     <View style={styles.innerBoxView}>
-                        
                         
                         {feed.feed.description?( 
                             <View style={{marginVertical:10}}>
@@ -143,7 +134,7 @@ addImage=(link, type)=>{
                                     serverBaseUrl={serverBaseUrl}
                             />
                         )}
-                        <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation} changeCanUserLike={this.changeCanUserLike} unLikeFeed={this.unLikeFeed}/>
+                        <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation} changeCanUserLike={this.changeCanUserLike} unLikeFeed={this.unLikeFeed} likes={feed.feed.likes}/>
                                                 
                     </View>
                     
@@ -174,36 +165,7 @@ const styles = StyleSheet.create({
         borderColor: theme.labelOrInactiveColor,
         // padding: 2
     },
-        rowView:
-        {
-            display: 'flex',
-            flexDirection: 'row',
-            // justifyContent: 'space-between',
-            alignItems: 'center',
-            marginTop: 10
-        },
-            circleView:
-            {
-                height: 50,
-                width: 50,
-                borderRadius: 25,
-                backgroundColor:theme.secondaryColor
-                 
-            },
-            coaching:
-            {
-                fontSize: 15,
-                marginLeft:10,
-                fontFamily: 'Raleway_600SemiBold',
-                width:'78%',
-                color: theme.secondaryColor
-            },
-                timeDateText:
-                {
-                    fontSize: 13,
-                    marginLeft:10,
-                    color: theme.greyColor
-                }, 
+        
         innerBoxView:
         {
             flex: 0.85,

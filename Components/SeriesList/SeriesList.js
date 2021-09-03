@@ -2,7 +2,7 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {insTestSeries} from '../../FakeDataService/FakeData'
-import { theme, dataLimit, serverBaseUrl, Assets } from '../config';
+import { theme, dataLimit, serverBaseUrl, Assets,imageProvider } from '../config';
 import { Feather } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
@@ -95,7 +95,7 @@ class SeriesList extends React.Component {
     {
         return(
             <TouchableOpacity style={styles.bannerItemContainer}>
-                    <Image source={{uri: serverBaseUrl+item.bannerImageLink}} style={styles.bannerImage}/>
+                    <Image source={{uri: imageProvider(item.bannerImageLink)}} style={styles.bannerImage}/>
             </TouchableOpacity  >
         )
     }
@@ -115,7 +115,7 @@ class SeriesList extends React.Component {
                         <View 
                             style={{justifyContent: 'center', alignItems: 'center', marginTop: 10, marginBottom: 10}}>
                             <Image 
-                                source={{uri: serverBaseUrl+this.props.route.params.image}} 
+                                source={{uri: imageProvider(this.props.route.params.image)}} 
                                 style={{height: 60, width: 60, borderRadius: 30}}
                             />
                         </View>

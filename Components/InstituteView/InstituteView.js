@@ -3,7 +3,7 @@ import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity, Moda
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {instituteData} from '../../FakeDataService/FakeData'
 import { AirbnbRating,Rating } from 'react-native-ratings';
-import {theme,screenMobileWidth,serverBaseUrl,documentPlaceholder,dataLimit, Assets} from '../config'
+import {theme,screenMobileWidth,serverBaseUrl,documentPlaceholder,dataLimit, Assets, imageProvider} from '../config'
 
 import CardView from '../Utils/CardView';
 import MarqueeText from 'react-native-marquee';
@@ -256,7 +256,7 @@ class InstituteView extends React.Component {
     {
         return(
             <TouchableOpacity style={styles.bannerItemContainer} onPress={()=>this.openZoomModal(serverBaseUrl+item.bannerImageLink)}>
-                <Image source={{uri:serverBaseUrl+item.bannerImageLink}} style={styles.bannerImage}/>
+                <Image source={{uri:imageProvider(item.bannerImageLink)}} style={styles.bannerImage}/>
             </TouchableOpacity  >
         )
     }
@@ -549,13 +549,14 @@ class InstituteView extends React.Component {
                         }
 
                                 return(
-                                    <FlatList 
-                                        data={this.state.courseTestSeriesPlaylist} 
-                                        renderItem={this.renderSubjectOptions}
-                                        keyExtractor={(item)=>item.id} 
-                                        horizontal={true}
-                                        showsHorizontalScrollIndicator={false}
-                                    />)
+                                        <FlatList 
+                                            data={this.state.courseTestSeriesPlaylist} 
+                                            renderItem={this.renderSubjectOptions}
+                                            keyExtractor={(item)=>item.id} 
+                                            horizontal={true}
+                                            showsHorizontalScrollIndicator={false}
+                                        />
+                                    )
 
             case 'document':                
                         if(!this.state.courseDocumentLoaded&&!this.state.isCourseDocumentLoading&&this.state.activeCourse)
@@ -627,11 +628,11 @@ class InstituteView extends React.Component {
                                         ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                                     />
                                     ):(
-                                        <CustomActivtiyIndicator mode="skimmer"/>
+                                        <CustomActivtiyIndicator mode="video"/>
                                     ))
             case 'testSeries':  return(
                                      this.state.isCourseDocumentLoading?(
-                                     <CustomActivtiyIndicator mode="skimmer"/>):(
+                                     <CustomActivtiyIndicator mode="testSeries"/>):(
                                      <FlatList 
                                         data={this.state.courseTestSeries} 
                                         renderItem={({item})=><RenderSingleTestSeries item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="student" studentEnrolled={this.state.studentEnrolled} />}
@@ -648,7 +649,7 @@ class InstituteView extends React.Component {
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
                                         ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
-                                    />):(<CustomActivtiyIndicator mode="skimmer"/>))
+                                    />):(<CustomActivtiyIndicator mode="document"/>))
             case 'timeTable':    
                         if(!this.state.courseTimetableLoaded&&!this.state.isCourseTimeTableLoading&&this.state.activeCourse)
                         {
@@ -668,7 +669,7 @@ class InstituteView extends React.Component {
             {
                 response.json().then(data=>
                 {
-                    this.setState({feeds: data})
+                    this.setState({feeds: data, isFeedLoading: false, isFeedLoaded: true})
                 })
             }
     }
@@ -705,7 +706,7 @@ class InstituteView extends React.Component {
         this.tabtoshow(3)
         if(!this.state.isFeedLoaded&&!this.state.isFeedLoading)
         {
-            this.setState({isFeedLoading:true})
+            this.setState({isFeedLoading:true, isFeedLoaded:false})
             fetch_institute_feed(this.state.instituteId,this.state.feedOffset,dataLimit,this.handleFeedCallBack)
         }
     }
@@ -841,12 +842,14 @@ class InstituteView extends React.Component {
             case 3:
                 return(
                     <View style={styles.container}>
-                            <FlatList
+                           {this.state.isFeedLoading?(
+                               <CustomActivtiyIndicator mode="skimmer"/>
+                           ):( <FlatList
                             data={this.state.feeds}
                             renderItem={({item}) => this.renderFeedItem(item)}
                             keyExtractor={(item,index)=>index}
                             ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
-                        />
+                        />)}
                     </View>
                 )
                 
@@ -888,17 +891,16 @@ class InstituteView extends React.Component {
             > 
             {loadingInstitute?
             (
-                <CustomActivtiyIndicator mode="skimmer"/>
+                <CustomActivtiyIndicator mode="instituteView"/>
             ):(
             <ScrollView >
                 <View style={styles.container}>
-
                         {/* <View style={styles.headerView}>
                             <Text style={styles.headText}>{instituteData.category}</Text>
                         </View> */}
                         <View style={styles.instituteheader}>
                             {CardView(
-                                <Image source={{uri:serverBaseUrl+institute.logo}} style={styles.instituteheaderLogo}/>
+                                <Image source={{uri:imageProvider(institute.logo)}} style={styles.instituteheaderLogo}/>
                             ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:100}):({width:200,height:150})])
                             }
                             <View style={styles.instituteheaderMeta}>

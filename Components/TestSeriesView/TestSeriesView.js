@@ -259,7 +259,7 @@ class TestSeriesView extends React.Component {
                     <View style={styles.container}> 
                         <FlatList 
                             data={Object.values(this.state.questions)} 
-                            renderItem={({item,index}) =><Question item={item.question} index={index} isPractice={true} bookmarkQuestion={this.bookmarkQuestion} setQuestionAttemptStatus={this.setQuestionAttemptStatus}/>}
+                            renderItem={({item,index}) =><Question item={item.question} index={index} isPractice={this.state.testSeries.isPractice} bookmarkQuestion={this.bookmarkQuestion} setQuestionAttemptStatus={this.setQuestionAttemptStatus}/>}
                             keyExtractor={(item)=>item.id} 
                             horizontal={false}
                             showsHorizontalScrollIndicator={false}

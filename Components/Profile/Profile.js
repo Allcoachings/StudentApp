@@ -2,7 +2,7 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image, Platform, ScrollView, Modal, ActivityIndicator, TextInput} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 // import {connect} from 'react-redux'
-import { theme,dataLimit,screenMobileWidth,serverBaseUrl,documentPlaceholder } from '../config';
+import { theme,dataLimit,screenMobileWidth,serverBaseUrl,documentPlaceholder,imageProvider } from '../config';
 import { Feather } from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
@@ -116,7 +116,7 @@ class Profile extends React.Component {
                 <ScrollView>
                     <View style={styles.container}>
                         <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center'}} onPress={this.handleImageBtnClick}>
-                            <Image source={{uri: this.state.studentImage==this.props.userInfo.studentImage?(serverBaseUrl+this.state.studentImage):(this.state.studentImage)}} style={{height: 100, width: 100, borderRadius: 50}}/>
+                            <Image source={{uri: imageProvider(this.state.studentImage)}} style={{height: 100, width: 100, borderRadius: 50}}/>
                         </TouchableOpacity>
 
                         {this.renderTextInput('Name*',this.props.userInfo.name, (text)=>this.setState({name: text}))}

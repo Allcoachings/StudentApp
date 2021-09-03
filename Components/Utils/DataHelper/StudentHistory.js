@@ -2,7 +2,7 @@
 import {serverApiUrl} from '../../config'
 // import {Base64} from '../../Base64' 
  
-    export const fetch_student_history=(studentId,offset,dataLimit,callback)=>
+    export const fetch_student_history=(studentId,type,offset,dataLimit,callback)=>
     {
 
             // var formData   = new FormData(); 
@@ -15,7 +15,7 @@ import {serverApiUrl} from '../../config'
             headers.append('Access-Control-Allow-Credentials', 'true'); 
             headers.append('GET', 'POST', 'OPTIONS'); 
 
-             fetch(serverApiUrl+"student/history/fetch/"+studentId+"/"+offset+"/"+dataLimit+"/",
+             fetch(serverApiUrl+"student/history/fetch/"+studentId+"/"+type+"/"+offset+"/"+dataLimit+"/",
             {
                 method: 'GET',  
                 headers,

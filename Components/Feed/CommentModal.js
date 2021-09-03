@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text,Image,StyleSheet, TouchableOpacity, Dimensions, Modal, FlatList, TextInput, ScrollView } from 'react-native';
-import {serverBaseUrl, theme, dataLimit, appLogo, Assets} from '../config';
+import {serverBaseUrl, theme, dataLimit, appLogo, Assets, imageProvider} from '../config';
 import {Feather, AntDesign, FontAwesome} from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
 import { connect } from 'react-redux'
@@ -98,19 +98,22 @@ class CommentModal extends Component {
 
   renderSingleComment=(item)=>{
       return(
-          <View style={{ flex:1, flexDirection: 'row', margin: 5, padding: 10}}>
-              <TouchableOpacity style={{flex: 0.15}} onPress={()=>this.addImage(serverBaseUrl+item.commenterObject.studentImage)}>
-                  <Image source={{uri: serverBaseUrl+item.commenterObject.studentImage}} style={{height: 50, width: 50, borderRadius: 25, borderWidth: 0.6, borderColor:theme.greyColor,}}/>
-              </TouchableOpacity>
-              <View style={{flex: 0.85, flexDirection: 'column', marginLeft: 10, marginTop: 2}}>
-                  <View style={{ flexDirection: 'row'}}>
-                      <Text style={{fontFamily:'Raleway_700Bold', fontSize: 16}}>{item.commenterObject.name} {' • '}</Text>
-                      <Text style={{fontFamily:'Raleway_700Bold', fontSize: 15}}>{moment(item.feedComments.timeStamp).fromNow()}</Text>
-                  </View>
-                  <View style={{flexShrink: 1}}>
-                      <Text style={{fontFamily: 'Raleway_600SemiBold',  flexWrap: 'wrap'}}>{item.feedComments.comment}</Text>
-                  </View>
-              </View>
+          <View>
+            <View style={{ flex:1, flexDirection: 'row', margin: 5, padding: 10}}>
+                <TouchableOpacity style={{flex: 0.15}} onPress={()=>this.addImage(serverBaseUrl+item.commenterObject.studentImage)}>
+                    <Image source={{uri: imageProvider(item.commenterObject.studentImage)}} style={{height: 50, width: 50, borderRadius: 25, borderWidth: 0.6, borderColor:theme.greyColor,}}/>
+                </TouchableOpacity>
+                <View style={{flex: 0.85, flexDirection: 'column', marginLeft: 10, marginTop: 2}}>
+                    <View style={{ flexDirection: 'row'}}>
+                        <Text style={{fontFamily:'Raleway_700Bold', fontSize: 16}}>{item.commenterObject.name} {' • '}</Text>
+                        <Text style={{fontFamily:'Raleway_700Bold', fontSize: 15}}>{moment(item.feedComments.timeStamp).fromNow()}</Text>
+                    </View>
+                    <View style={{flexShrink: 1}}>
+                        <Text style={{fontFamily: 'Raleway_400Regular',  flexWrap: 'wrap'}}>{item.feedComments.comment}</Text>
+                    </View>
+                </View>
+            </View>
+            <View style={{borderBottomWidth: 1, borderBottomColor: theme.labelOrInactiveColor, marginVertical: 5, marginHorizontal: 15}}/>
           </View>
       )
   }
@@ -125,26 +128,25 @@ class CommentModal extends Component {
           onRequestClose={this.closeModal}
         >
             <View style={styles.container}>
-                <View style={{ flexDirection: 'row', borderBottomWidth:1,borderBottomColor:theme.labelOrInactiveColor,padding:10,}}>
+                <View style={{ flexDirection: 'row', borderBottomColor:theme.labelOrInactiveColor,padding:10,}}>
                     <TouchableOpacity onPress={()=>this.props.closeModal()}>
                         <AntDesign name="left" size={24} color="black" />
                     </TouchableOpacity>
                     <Text style={{fontFamily:'Raleway_700Bold',fontSize:20, marginLeft: 10}}>Comments</Text>
                 </View>
-                <View style={{flexDirection:'row', backgroundColor: 'white', width: width, marginTop: 15}}>  
-                <View style={{flex: 1,  flexDirection: 'row',borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor}}>        
+                <View style={{flexDirection:'row', backgroundColor: 'white', width: width}}>  
+                <View style={{flex: 1,  flexDirection: 'row',borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, justifyContent: 'space-between'}}>    
                     <TextInput 
-                        style={{flex:0.9,borderRadius:10, paddingLeft: 6, justifyContent: 'flex-end'}} 
+                        style={{ flex: 0.85, padding: 10, fontFamily: 'Raleway_400Regular'}} 
                         onChangeText={(text)=>this.setState({comment: text})}
                         placeholder="Write a Comment" placeholderTextColor='grey'
                         ref={input => { this.textInput = input }}
-                    >
-
-                    </TextInput>
+                    />
                     {this.state.comment!=''?(
-                    <TouchableOpacity onPress={()=>this.add()} style={{flex: 0.1}}>
-                        <AntDesign name="arrowright" size={24} color={theme.labelOrInactiveColor} />
-                    </TouchableOpacity>):(null)}
+                    <TouchableOpacity onPress={()=>this.add()} style={{flex: 0.15,  backgroundColor: theme.accentColor, justifyContent: 'center', alignItems: 'center', padding: 10}}>
+                        <AntDesign name="check" size={24} color={theme.primaryColor} />
+                    </TouchableOpacity>
+                    ):(null)} 
                     </View>  
                 </View>
                 <ScrollView>

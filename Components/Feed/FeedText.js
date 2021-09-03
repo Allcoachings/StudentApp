@@ -6,6 +6,7 @@ import CardView from '../Utils/CardView'
 import { connect } from 'react-redux'
 import {like_feed, unLike_feed} from "../Utils/DataHelper/Feed"
 import FeedBottomComponent from './FeedBottomComponent'
+import FeedHeader from './FeedHeader'
 import moment from 'moment'
 class FeedText extends Component {
   state = {
@@ -59,7 +60,7 @@ class FeedText extends Component {
         }
       }
     
-editFeedPressHandler=()=>this.props.mode=="userProfile"||this.props.mode=="insProfile"?(this.props.updateEditFeedState(feed.feed.feedType, feed.feed.description, null, null, feed.feed.id, this.props.index)):(null)
+editFeedPressHandler=()=>this.props.mode=="userProfile"||this.props.mode=="insProfile"?(this.props.updateEditFeedState(this.props.item.feed.feed.feedType, this.props.item.feed.feed.description, null, null, this.props.item.feed.feed.id, this.props.index)):(null)
 
     unLikeFeedCallBack=(response)=>{
         if(response.status==200)
@@ -84,20 +85,11 @@ editFeedPressHandler=()=>this.props.mode=="userProfile"||this.props.mode=="insPr
         // CardView(
             <View style={{flexDirection: 'column', padding: 5}}>
                 <View style={styles.boxView}>
-                    <View style={styles.rowView}>
-                        <Image source={{ uri: feed.feed.postedBy==2?(imageProvider(posterObject.studentImage)):(imageProvider(posterObject.logo))}} style={styles.circleView}/>   
-                            <View style={{width: '78%'}}>
-                                <Text style={styles.coaching}>{posterObject.name}</Text> 
-                                <Text style={styles.timeDateText}>{moment(feed.feed.creationTime).fromNow()}</Text>
-                            </View>
-                            <TouchableOpacity onPress={()=>this.showThreeMenu()}>
-                                <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
-                            </TouchableOpacity>
-                    </View>
+                    <FeedHeader editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime}/>
                     <View style={styles.innerBoxView}>
                          
                         <Text style={{fontFamily:'Raleway_400Regular', marginVertical: 10,fontSize:17}}>{feed.feed.description}</Text>
-                        <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation} changeCanUserLike={this.changeCanUserLike} unLikeFeed={this.unLikeFeed}/>
+                        <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation} changeCanUserLike={this.changeCanUserLike} unLikeFeed={this.unLikeFeed} likes={feed.feed.likes}/>
                     </View>
                 </View>
                 <View style={{borderTopWidth: 0.8, borderColor: theme.labelOrInactiveColor, marginVertical: 10, width: '100%'}}/>

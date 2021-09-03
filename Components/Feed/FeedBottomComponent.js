@@ -34,7 +34,7 @@ class FeedBottomComponent extends Component {
                     </TouchableOpacity>
                 )}
                 <View style={{marginLeft:5}}>
-                    <Text>{'1.5'}K</Text>
+                    <Text>{this.props.likes}</Text>
                 </View>
             </View>
             <View style={{flexDirection:'row',alignItems: 'center'}}>
