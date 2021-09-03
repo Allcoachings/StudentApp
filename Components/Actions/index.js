@@ -57,6 +57,16 @@ export const setStatusBarHidden =(status)=>
         payload:status
 
     }
+
+}
+
+export const setKeyboardHeight =(height)=>
+{
+    return{
+        type:actionTypes.SET_KEYBOARD_HEIGHT, //this type will be used to match
+        payload:height
+
+    }
 }
 
 //screen reducer actions ends

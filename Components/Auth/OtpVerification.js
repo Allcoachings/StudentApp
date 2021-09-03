@@ -1,6 +1,6 @@
 import React, { Component ,useState,useRef} from 'react';
 import { Feather } from '@expo/vector-icons';
-import { View, Text,StyleSheet,ScrollView,TouchableOpacity,Dimensions,Image,TouchableWithoutFeedback, Modal, TextInput, ImageBackground,ToastAndroid} from 'react-native';
+import { View, Text,StyleSheet,ScrollView,TouchableOpacity,Keyboard,Dimensions,Image,TouchableWithoutFeedback, Modal, TextInput, ImageBackground,ToastAndroid} from 'react-native';
 import CardView from '../Utils/CardView';
 import AuthHeader from './AuthHeader';
 import {theme, Assets} from '../config'
@@ -63,6 +63,7 @@ class OtpVerification extends React.Component {
         
         // this.props.openModal()
     }
+    
     findStudentByMobileCallBack=(response)=>
     {
         console.log(response.status)
@@ -196,7 +197,7 @@ class OtpVerification extends React.Component {
                             />
                         )}
                     </View>
-                    <View style={{alignItems: 'center',width: width,marginTop:'auto',marginBottom:15}}>
+                    <View style={{alignItems: 'center',width: width,marginTop: 'auto',marginBottom:this.props.keyboardHeight?this.props.keyboardHeight+50:15}}>
 
                         <View style={{margin:20}}>
                             <TouchableWithoutFeedback onPress={()=>{this.props.changeMode(2)}}>
@@ -274,6 +275,7 @@ class OtpVerification extends React.Component {
         // }
     }
     render() {
+       
         return(
             <Modal
             animationType="fade"
@@ -387,5 +389,10 @@ const styles = StyleSheet.create({
                 
 
 })
- 
-export default connect(null,{setUserInfo,userAuthStatus})(OtpVerification);
+ const mapStateToProps = (state)=>
+ {
+     return {
+         keyboardHeight: state.screen.keyboardHeight
+     }
+ }
+export default connect(mapStateToProps,{setUserInfo,userAuthStatus})(OtpVerification);

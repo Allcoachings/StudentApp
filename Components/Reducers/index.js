@@ -89,7 +89,8 @@ const user_reducer=(state=initial_user_state,action)=>
 const initial_screen_state=
 {
     screenWidth:0,
-    statusBarHidden:false
+    statusBarHidden:false,
+    keyboardHeight:null,
 }
 const screen_reducer=(state=initial_screen_state,action)=>
 {
@@ -104,6 +105,11 @@ const screen_reducer=(state=initial_screen_state,action)=>
             return {
                 ...state,
                 statusBarHidden: action.payload
+            }
+        case actionTypes.SET_KEYBOARD_HEIGHT:
+            return {
+                ...state,
+                keyboardHeight: action.payload
             }
         default:
             return state

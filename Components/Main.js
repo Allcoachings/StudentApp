@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,Dimensions,Platform,StyleSheet,View, TouchableOpacity, Image,StatusBar } from 'react-native';
+import { Text,Dimensions,Platform,StyleSheet,View, TouchableOpacity,Keyboard, Image,StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import {screenMobileWidth, theme, appLogo} from './config'
 import {connect } from 'react-redux'; 
@@ -7,7 +7,7 @@ import MobileViewController from './MobileViewController/MobileViewController'
 import WebViewController from './WebViewController/WebViewController'
 import MobileViewControllerIns from './MobileViewControllerIns/MobileViewControllerIns' 
 import WebViewControllerIns from './WebViewControllerIns/WebViewControllerIns'
-import {screenWidthConfigChange,setInstituteAuth,userAuthStatus,setUserInfo,setInstituteDetails} from './Actions'
+import {screenWidthConfigChange,setInstituteAuth,userAuthStatus,setUserInfo,setInstituteDetails,setKeyboardHeight} from './Actions'
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('screen').height; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -22,7 +22,37 @@ class Main extends React.Component {
 
         mode:3
       } 
+  
+      _keyboardDidShow(e) {
+          // this.props.navigation.setParams({
+          //     keyboardHeight: e.endCoordinates.height,
+          //     normalHeight: Dimensions.get('window').height, 
+          //     shortHeight: Dimensions.get('window').height - e.endCoordinates.height, 
+          // }); 
+          let marginTop=Dimensions.get('window').height - e.endCoordinates.height;
+          console.log("keyboard Open",marginTop," ",e.endCoordinates.height," ",Dimensions.get('window').height);
+          this.props.setKeyboardHeight(e.endCoordinates.height)
+      }
+      _keyboardDidHide(e) {
+          // this.props.navigation.setParams({
+          //     keyboardHeight: e.endCoordinates.height,
+          //     normalHeight: Dimensions.get('window').height, 
+          //     shortHeight: Dimensions.get('window').height - e.endCoordinates.height, 
+          // }); 
+          console.log("keyboard hidden");
 
+          this.props.setKeyboardHeight(null)
+      }
+      componentWillUnmount() {
+          if(this.keyboardDidShowListener)
+          {
+              this.keyboardDidShowListener.remove();
+          }
+          if(this.keyboardDidHideListener)
+          {
+              this.keyboardDidHideListener.remove();
+          }
+      }
     componentDidMount()
     {
 
@@ -62,6 +92,8 @@ class Main extends React.Component {
             this.setState({width: window.width, height:screen.height})
             this.props.screenWidthConfigChange(window.width)
         });
+        this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (e)=>this._keyboardDidShow(e));
+        this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', (e)=>this._keyboardDidHide(2));
     } 
  
     renderViewport=(screenWidth)=>
@@ -227,4 +259,4 @@ const mapStateToProps = (state)=>
         statusBarHidden:state.screen.statusBarHidden,
     }
 }
-export default connect(mapStateToProps,{screenWidthConfigChange,userAuthStatus,setInstituteAuth,setUserInfo,setInstituteDetails})(Main);
+export default connect(mapStateToProps,{setKeyboardHeight,screenWidthConfigChange,userAuthStatus,setInstituteAuth,setUserInfo,setInstituteDetails})(Main);
