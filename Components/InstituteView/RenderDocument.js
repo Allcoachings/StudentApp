@@ -14,8 +14,13 @@ class RenderDocument extends React.Component {
     documentOnClick = ()=>
     {
 
-        this.props.mode=="student"?(this.props.addToHistory("document", this.props.item.id)):(null)
-        this.props.mode=="student"?(this.props.studentEnrolled?(this.props.navigation.navigate('pdfViewer',{pdf:serverBaseUrl+this.props.item.fileAddress, insName: this.props.insName, insNumber: this.props.insNumber})):(Toast.show('You Have Not Enrolled For This Course.'))):(this.props.navigation.navigate('pdfViewer',{pdf:serverBaseUrl+this.props.item.fileAddress, insName: this.props.insName, insNumber: this.props.insNumber}))
+        // this.props.mode=="student"?():(null)
+        this.props.mode=="student"?(this.props.studentEnrolled?(
+            <>
+                {this.props.navigation.navigate('pdfViewer',{pdf:serverBaseUrl+this.props.item.fileAddress, insName: this.props.insName, insNumber: this.props.insNumber})}
+                {this.props.addToHistory("document", this.props.item.id)}
+            </>
+        ):(Toast.show('You Have Not Enrolled For This Course.'))):(this.props.navigation.navigate('pdfViewer',{pdf:serverBaseUrl+this.props.item.fileAddress, insName: this.props.insName, insNumber: this.props.insNumber}))
         // downloadFile(this.props.item,this.props.userId,'document',(response)=>{console.log(response)})
     }
 
