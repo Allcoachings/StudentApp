@@ -165,11 +165,13 @@ class UserProfile extends React.Component {
             switch(item.type)
             {
                 case 'video': return <RenderVideo item={item.data} mode="Profile" navigation={this.props.navigation}/>
-                                break;
+                                
                 case 'document': return <RenderDocument item={item.data} mode="Profile" navigation={this.props.navigation}/>
-                                break;
-                case 'testSeries': return <RenderSingleTestSeries item={item.data} mode="Profile" navigation={this.props.navigation}/>
-                                break;
+                                
+                case 'testSeries':  
+                 
+                return <RenderSingleTestSeries item={item.data} mode="Profile" navigation={this.props.navigation}/>
+                                 
             }
         }    
     }
@@ -243,6 +245,7 @@ class UserProfile extends React.Component {
                             isAddFeedModalVisible={this.state.isAddFeedModalVisible} 
                             closeModal={this.closeAddFeedModal}
                             posterId={this.props.userInfo.id} 
+                            posterImage={this.props.userInfo.studentImage}
                             postedBy={2}
                             instituteDetails={this.props.userInfo}
                             setUpdateFun={this.setUpdateEditFeedState}

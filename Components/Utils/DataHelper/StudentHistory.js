@@ -15,7 +15,7 @@ import {serverApiUrl} from '../../config'
             headers.append('Access-Control-Allow-Credentials', 'true'); 
             headers.append('GET', 'POST', 'OPTIONS'); 
 
-             fetch(serverApiUrl+"student/history/fetch/"+studentId+"/"+offset+"/"+dataLimit,
+             fetch(serverApiUrl+"student/history/fetch/"+studentId+"/"+offset+"/"+dataLimit+"/",
             {
                 method: 'GET',  
                 headers,

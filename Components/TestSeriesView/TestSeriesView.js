@@ -67,7 +67,7 @@ class TestSeriesView extends React.Component {
                 onPress: () => console.log("Cancel Pressed"),
                 style: "cancel"
               },
-              { text: "OK", onPress: () => this.timeUpAction({isModalVisible:true})}
+              { text: "OK", onPress: () =>  this.props.navigation.goBack() },
         ])
     }
 

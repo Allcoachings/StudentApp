@@ -1,6 +1,6 @@
 import React from 'react';
 import {theme} from '../config'
-import { View,Text ,StyleSheet, TouchableOpacity} from 'react-native';
+import { View,Text ,StyleSheet, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import RatingBar from '../Utils/RatingBar'; 
 import {votePoll} from "../Utils/DataHelper/Feed"
 import { connect } from 'react-redux';
@@ -27,7 +27,7 @@ class RenderPollOption extends React.Component {
         }
     }
 
-    switchCanUserVote=(status)=>
+    switchCanUserVote=(status,index)=>
     {
          
         switch(status)
@@ -35,14 +35,16 @@ class RenderPollOption extends React.Component {
             case true:
                 return(
                     <TouchableOpacity onPress={()=>this.voteForPoll(this.props.item.feedId,this.props.item.id)}>
-                        <RatingBar progressColor={theme.accentColor} duration={2000} backgroundColor={theme.primaryColor} height={20} label={this.props.item.pollOption} progress={0} borderRadius={10} style={{borderWidth:1,padding:10}}/>
+                        <RatingBar progressColor={theme.greyColor+"1A"} duration={2000} backgroundColor={theme.primaryColor} height={40} label={this.props.item.pollOption} progress={0} borderRadius={5} style={{borderWidth:1,padding:10}}/>
                     </TouchableOpacity>
                 )
             case false:
                 return(
-                    <View>
-                        <RatingBar progressColor={theme.accentColor} duration={2000} backgroundColor={theme.primaryColor} height={20} label={this.props.item.pollOption} progress={this.percentage()} borderRadius={10}/>
-                    </View>
+                    <TouchableWithoutFeedback onPress={()=>this.props.setFocusedOptionIndex(index)}>
+                        <View style={this.props.focusedOptionIndex==index?{borderWidth:1,borderColor:theme.blueColor,borderRadius:5}:{borderWidth:1,borderColor:theme.labelOrInactiveColor,borderRadius:5}}>
+                            <RatingBar labelStyle={{color:this.props.focusedOptionIndex==index?theme.blueColor :theme.greyColor}} progressStyle={{color:this.props.focusedOptionIndex==index?theme.blueColor :theme.greyColor} } progressColor={this.props.focusedOptionIndex==index?theme.blueColor+'1A':theme.greyColor+"1A"} duration={1000} backgroundColor={theme.primaryColor} height={40} label={this.props.item.pollOption} showProgress={true} progress={this.percentage()} borderRadius={this.props.focusedOptionIndex==index?5:0}/>
+                        </View>
+                    </TouchableWithoutFeedback>
                 )
         }
     }
@@ -53,13 +55,13 @@ class RenderPollOption extends React.Component {
         return(
             <>
                 {/* <Text style={styles.optionText}>{this.props.item.pollOption}</Text> */}
-                {this.switchCanUserVote(this.props.canUserVote)}
+                {this.switchCanUserVote(this.props.canUserVote,this.props.index)}
             </>
         )
     }
     render() {
-        console.log(this.props.item)
-
+       
+console.log(this.props.focusedOptionIndex);
         return (
             <View style={styles.container}>
                 {this.renderOption()} 

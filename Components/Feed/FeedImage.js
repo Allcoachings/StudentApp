@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text,Image,StyleSheet,findNodeHandle,UIManager, TouchableOpacity } from 'react-native';
-import {serverBaseUrl, theme} from '../config';
+import {imageProvider, serverBaseUrl, theme} from '../config';
 import {Feather, AntDesign, FontAwesome} from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
 import { connect } from 'react-redux'
@@ -102,18 +102,18 @@ addImage=(link, type)=>{
         // CardView(
             <View style={{flexDirection: 'column', padding: 5}}>
                 <View style={styles.boxView}>
-                    <View style={{flex: 0.1, padding: 5}} >
-                        <Image source={{ uri: feed.feed.postedBy==2?(serverBaseUrl+posterObject.studentImage):(serverBaseUrl+posterObject.logo)}} style={styles.circleView}/> 
+                    <View style={styles.rowView}>
+                        <Image source={{ uri: feed.feed.postedBy==2?(imageProvider(posterObject.studentImage)):(imageProvider(posterObject.logo))}} style={styles.circleView}/>  
+                        <View style={{width: '78%'}}>
+                            <Text style={styles.coaching}>{posterObject.name}</Text> 
+                            <Text style={styles.timeDateText}>{moment(feed.feed.creationTime).fromNow()}</Text>
+                        </View>
+                        <TouchableOpacity onPress={()=>this.showThreeMenu()}>
+                            <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.innerBoxView}>
-                        <View style={styles.rowView}>
-                            <View  style={{flexDirection: 'row',alignItems: 'center'}}>
-                                <Text style={styles.coaching}>{posterObject.name}{' • '}<Text style={styles.timeDateText}>{moment(feed.feed.creationTime).fromNow()}</Text></Text>
-                            </View> 
-                            <TouchableOpacity onPress={()=>this.showThreeMenu()}>
-                                <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
-                            </TouchableOpacity>
-                        </View>
+                        
                         
                         {feed.feed.description?( 
                             <View style={{marginVertical:10}}>
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     boxView:
     {
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         flex: 1,
         justifyContent: 'space-between',
         borderColor: theme.labelOrInactiveColor,
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
         {
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'space-between',
+            // justifyContent: 'space-between',
             alignItems: 'center',
             marginTop: 10
         },
@@ -193,15 +193,16 @@ const styles = StyleSheet.create({
             coaching:
             {
                 fontSize: 15,
-                // marginLeft:10,
-                fontWeight: 'bold',
+                marginLeft:10,
+                fontFamily: 'Raleway_600SemiBold',
+                width:'78%',
                 color: theme.secondaryColor
             },
                 timeDateText:
                 {
-                    fontSize: 16,
-                    fontWeight: '400',
-                    color: theme.secondaryColor
+                    fontSize: 13,
+                    marginLeft:10,
+                    color: theme.greyColor
                 }, 
         innerBoxView:
         {

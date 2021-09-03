@@ -231,7 +231,7 @@ class InsHome extends React.Component {
       
         return(
             <View style={styles.videoContainer}>
-                <TouchableOpacity onPress={()=>this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+item.videoLocation,videoTitle:item.name,postingTime:item.date})}>
+                <TouchableOpacity onPress={()=>this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+item.videoLocation,videoTitle:item.name,postingTime:item.date,item})}>
                     <Image source={{uri:item.videoThumb}} style={styles.videoImage}/>
                 </TouchableOpacity>
                 <View style={styles.videoColumn}>
@@ -956,6 +956,7 @@ class InsHome extends React.Component {
                             isAddFeedModalVisible={this.state.isAddFeedModalVisible} 
                             closeModal={this.closeAddFeedModal}
                             posterId={this.props.institute.details.id} 
+                            posterImage={this.props.institute.details.logo}
                             postedBy={1}
                             instituteDetails={this.props.institute.details}
                             setUpdateFun={this.setUpdateEditFeedState}

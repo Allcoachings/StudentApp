@@ -38,6 +38,7 @@ const RatingBar = (props) => {
   useEffect(() => {
     Animated.timing(animation.current, {
       toValue: progress,
+       
       duration: props.duration||100
     }).start();
   },[progress])
@@ -56,7 +57,12 @@ const RatingBar = (props) => {
         {props.label?( 
             <Text style={[styles.ratingLabel,props.labelStyle]} onTextLayout={onTextLayout}>{props.label}</Text>
         ):(null)}
-      
+        
+        {props.showProgress?( 
+            <Text style={[styles.ratingProgress,props.progressStyle]}>{props.progress}%</Text>
+        ):(null)}
+
+          
         <Animated.View style={[StyleSheet.absoluteFill], {backgroundColor: props.progressColor, width ,borderRadius: props.borderRadius}}/>
       </View> 
     </View>
@@ -86,10 +92,22 @@ const styles = StyleSheet.create({
       position: 'absolute',
       left:0,
       paddingHorizontal:10,
-      top:0,
+      top:'25%',
+      alignSelf:'center',
       color:theme.greyColor,
       flexWrap:'wrap',
       width:'100%'
+    },
+    ratingProgress:
+    {
+      zIndex: 2000,
+      position: 'absolute',
+      right:0,
+      paddingHorizontal:10,
+      top:'25%',
+      alignSelf:'center',
+      color:theme.greyColor,
+      flexWrap:'wrap', 
     }
 
 });

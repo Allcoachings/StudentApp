@@ -23,20 +23,28 @@ class FeedBottomComponent extends Component {
   render() {
     return(
         <View style={styles.bottomRowContainer}>
-            {this.props.canUserLike?(
-                <TouchableOpacity style={styles.likeView}  onPress={()=>this.props.likeFeed(this.state.feedId)}>
-                    <AntDesign name="hearto" size={22} color={theme.greyColor} />
+            <View style={{flexDirection: 'row'}}>
+                {this.props.canUserLike?(
+                    <TouchableOpacity style={styles.likeView}  onPress={()=>this.props.likeFeed(this.state.feedId)}>
+                        <AntDesign name="hearto" size={22} color={theme.greyColor} />
+                    </TouchableOpacity>
+                ):(
+                    <TouchableOpacity style={styles.likeView} onPress={()=>this.props.unLikeFeed(this.state.feedId)}>
+                        <AntDesign name="heart" size={22} color={theme.greyColor}/>
+                    </TouchableOpacity>
+                )}
+                <View style={{marginLeft:5}}>
+                    <Text>{'1.5'}K</Text>
+                </View>
+            </View>
+            <View style={{flexDirection:'row',alignItems: 'center'}}>
+                <TouchableOpacity style={styles.likeView} onPress={()=>this.setState({showCommentModal: true})}>
+                    <FontAwesome name="comments" size={22} color={theme.greyColor} />
                 </TouchableOpacity>
-            ):(
-                <TouchableOpacity style={styles.likeView} onPress={()=>this.props.unLikeFeed(this.state.feedId)}>
-                    <AntDesign name="heart" size={22} color={theme.greyColor}/>
-                </TouchableOpacity>
-            )}
-
-            <TouchableOpacity style={styles.likeView} onPress={()=>this.setState({showCommentModal: true})}>
-                <FontAwesome name="comments" size={22} color={theme.greyColor} />
-            </TouchableOpacity>
-
+                <View style={{marginLeft:5}}>
+                    <Text>{'1.5'}K</Text>
+                </View>
+            </View> 
             <TouchableOpacity style={styles.likeView} onPress={()=>onShare("TEset Me")}>
                 <AntDesign name="sharealt" size={22} color={theme.greyColor} />
             </TouchableOpacity>

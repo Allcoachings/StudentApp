@@ -6,7 +6,8 @@ import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import Toast from 'react-native-simple-toast';
 import {downloadFile} from '../Utils/DownloadFile'
-
+import moment from 'moment';
+ 
 class RenderVideo extends React.Component {
     state = {
         
@@ -33,7 +34,7 @@ class RenderVideo extends React.Component {
             <View style={styles.videoContainer}>
                 <TouchableOpacity onPress={()=>{
                     this.props.mode=="student"?(this.props.addToHistory("video", this.props.item.id)):(null)
-                    this.props.mode=="student"?(this.props.studentEnrolled?(this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation,videoTitle:this.props.item.name,postingTime:this.props.item.date})):(Toast.show('You Have Not Enrolled For This Course.'))):(this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation,videoTitle:this.props.item.name,postingTime:this.props.item.date}))}
+                    this.props.mode=="student"?(this.props.studentEnrolled?(this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation,videoTitle:this.props.item.name,postingTime:this.props.item.date,item:this.props.item})):(Toast.show('You Have Not Enrolled For This Course.'))):(this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation,videoTitle:this.props.item.name,postingTime:this.props.item.date,item:this.props.item}))}
                 } >
                     <Image source={{uri:this.props.item.videoThumb}} style={styles.videoImage}/>
                 </TouchableOpacity>
@@ -45,7 +46,7 @@ class RenderVideo extends React.Component {
                         <Text style={styles.videoText}>{this.props.item.description}</Text>
                     </View>
                     <View>
-                        <Text style={styles.videoText}>{this.props.item.date}</Text>
+                        <Text style={styles.videoText}>{moment(this.props.item.date).fromNow()}</Text>
                     </View>
                 </View>
                 {this.props.downloadMode?(

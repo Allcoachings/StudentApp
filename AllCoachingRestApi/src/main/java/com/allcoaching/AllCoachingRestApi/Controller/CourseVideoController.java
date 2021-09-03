@@ -134,6 +134,16 @@ public class CourseVideoController {
     }
 
     @CrossOrigin(origins = "*")
+    @PostMapping("/video/views/{v_id}")
+    public ResponseEntity<Object> videoView(@PathVariable long v_id )
+    {
+        CourseVideoComments courseVideoComments_saved = courseVideoCommentsService.addComment(courseVideoComments);
+        URI location  = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(courseVideoComments_saved.getId()).toUri();
+
+        return ResponseEntity.created(location).build();
+    }
+
+    @CrossOrigin(origins = "*")
     @GetMapping("/comment/{v_id}/{page}/{page_size}")
     public Iterable<CourseVideoComments> fetch_comments(@PathVariable long v_id,@PathVariable int page,@PathVariable int page_size)
     {

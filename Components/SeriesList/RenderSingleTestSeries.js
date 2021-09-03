@@ -13,7 +13,7 @@ class RenderSingleTestSeries extends React.Component {
     }
 
     closeModal = () =>{
-        this.setState({modalVisible: false})
+        this.setState({modalVisible: false})                                                    
     }
 
     

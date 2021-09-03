@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text,StyleSheet,FlatList,Image,findNodeHandle,UIManager, TouchableOpacity } from 'react-native';
 import {Feather, AntDesign, FontAwesome} from '@expo/vector-icons';
-import {theme,serverBaseUrl} from '../config'
+import {imageProvider, serverBaseUrl, theme} from '../config';
 import CardView from '../Utils/CardView'
 import { connect } from 'react-redux'
 import {like_feed, unLike_feed} from "../Utils/DataHelper/Feed"
@@ -84,20 +84,19 @@ editFeedPressHandler=()=>this.props.mode=="userProfile"||this.props.mode=="insPr
         // CardView(
             <View style={{flexDirection: 'column', padding: 5}}>
                 <View style={styles.boxView}>
-                    <View style={{flex: 0.1, padding: 5,}}>
-                        <Image source={{ uri: feed.feed.postedBy==2?(serverBaseUrl+posterObject.studentImage):(serverBaseUrl+posterObject.logo)}} style={styles.circleView}/>
-                    </View>
-                    <View style={styles.innerBoxView}>
-                        <View style={styles.rowView}>
-                            <View  style={{flexDirection: 'row',alignItems: 'center'}}>
-                                
-                                <Text style={styles.coaching}>{posterObject.name}{' • '}<Text style={styles.timeDateText}>{moment(feed.feed.creationTime).fromNow()}</Text></Text>
+                    <View style={styles.rowView}>
+                        <Image source={{ uri: feed.feed.postedBy==2?(imageProvider(posterObject.studentImage)):(imageProvider(posterObject.logo))}} style={styles.circleView}/>   
+                            <View style={{width: '78%'}}>
+                                <Text style={styles.coaching}>{posterObject.name}</Text> 
+                                <Text style={styles.timeDateText}>{moment(feed.feed.creationTime).fromNow()}</Text>
                             </View>
                             <TouchableOpacity onPress={()=>this.showThreeMenu()}>
                                 <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
                             </TouchableOpacity>
-                        </View>
-                        <Text style={{fontFamily:'Raleway_400Regular', marginVertical: 10}}>{feed.feed.description}</Text>
+                    </View>
+                    <View style={styles.innerBoxView}>
+                         
+                        <Text style={{fontFamily:'Raleway_400Regular', marginVertical: 10,fontSize:17}}>{feed.feed.description}</Text>
                         <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation} changeCanUserLike={this.changeCanUserLike} unLikeFeed={this.unLikeFeed}/>
                     </View>
                 </View>
@@ -113,7 +112,7 @@ const styles = StyleSheet.create({
     boxView:
     {
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         flex: 1,
         justifyContent: 'space-between',
         borderColor: theme.labelOrInactiveColor,
@@ -123,7 +122,7 @@ const styles = StyleSheet.create({
         {
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'space-between',
+            // justifyContent: 'space-between',
             alignItems: 'center',
             marginTop: 10
         },
@@ -133,20 +132,20 @@ const styles = StyleSheet.create({
                 width: 50,
                 borderRadius: 25,
                 backgroundColor:theme.secondaryColor
-                
+                 
             },
             coaching:
             {
                 fontSize: 15,
-                // marginLeft:10,
-                fontWeight: 'bold',
+                marginLeft:10,
+                fontFamily: 'Raleway_600SemiBold',
                 color: theme.secondaryColor
             },
                 timeDateText:
                 {
-                    fontSize: 16,
-                    fontWeight: '400',
-                    color: theme.secondaryColor
+                    fontSize: 13,
+                    marginLeft:10,
+                    color: theme.greyColor
                 }, 
         innerBoxView:
         {
@@ -176,7 +175,8 @@ const styles = StyleSheet.create({
                     text:
                     {
                         fontSize: 18,
-                        color: theme.greyColor
+                        fontFamily: 'Raleway_600SemiBold'
+                        // color: theme.labelOrInactiveColor, 
                     },
             // feed wala end
                             

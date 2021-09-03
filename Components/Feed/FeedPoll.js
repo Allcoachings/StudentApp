@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text,StyleSheet,FlatList,Image,findNodeHandle,UIManager, TouchableOpacity } from 'react-native';
 import {Feather, AntDesign, FontAwesome} from '@expo/vector-icons';
 import CardView from '../Utils/CardView'; 
-import {theme,serverBaseUrl} from '../config'
+import {imageProvider, serverBaseUrl, theme} from '../config';
 import RenderPollOption from './RenderPollOption'
 import {like_feed, unLike_feed} from "../Utils/DataHelper/Feed"
 import moment from 'moment' 
@@ -14,11 +14,14 @@ class FeedPoll extends Component {
         canUserVote: this.props.type==1?(this.props.item.feed.feed.pollVotedInstitutes.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.pollVotedStudents.includes(`,${this.props.userInfo.id},`)?(false):(true)):(true)),
 
         optionData: this.props.item.feed.feedPollOptions,
-
+        focusedOptionIndex:-1,
         totalPollVotes: this.props.item.feed.feed.totalPollVotes,
         canUserLike:this.props.type==1?(this.props.item.feed.feed.feedLikerIns&&this.props.item.feed.feed.feedLikerIns.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.feedLikerStudent&&this.props.item.feed.feed.feedLikerStudent.includes(`,${this.props.userInfo.id},`)?(false):(true)):(true)),
     }
-
+    setFocusedOptionIndex=(focusedOptionIndex)=>
+    {
+        this.setState({focusedOptionIndex})
+    }
     updateVote=(option_id)=>
     {
         let optionData = this.props.item.feed.feedPollOptions.map((item)=>{
@@ -106,26 +109,23 @@ class FeedPoll extends Component {
     return(
         // CardView(
             <View style={{flexDirection: 'column', padding: 5}}>
-                <View style={styles.boxView}>
-                    <View style={{flex: 0.1, padding: 5,}}>
-                        <Image source={{ uri: feed.feed.postedBy==2?(serverBaseUrl+posterObject.studentImage):(serverBaseUrl+posterObject.logo)}} style={styles.circleView}/>
-                    </View>
-                    
-                    
-                    <View style={styles.innerBoxView}>
-                        <View style={styles.rowView}>
-                            <View  style={{flexDirection: 'row',alignItems: 'center'}}>
-                                
-                                <Text style={styles.coaching}>{posterObject.name}{' • '}<Text style={styles.timeDateText}>{moment(feed.feed.creationTime).fromNow()}</Text></Text>
-                            </View>
-                            <TouchableOpacity onPress={()=>this.showThreeMenu()}>
-                                <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
-                            </TouchableOpacity>
+                <View style={styles.boxView}> 
+                    <View style={styles.rowView}>
+                        <Image source={{ uri: feed.feed.postedBy==2?(imageProvider(posterObject.studentImage)):(imageProvider(posterObject.logo))}} style={styles.circleView}/>  
+                        <View style={{width: '78%'}}>
+                            <Text style={styles.coaching}>{posterObject.name}</Text> 
+                            <Text style={styles.timeDateText}>{moment(feed.feed.creationTime).fromNow()}</Text>
                         </View>
+                        <TouchableOpacity onPress={()=>this.showThreeMenu()}>
+                            <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.innerBoxView}>
+                        
                         <Text style={{ fontFamily:'Raleway_400Regular',marginTop: 10,}}>{feed.feed.pollQuestion}</Text>
                         <FlatList
                             data={this.state.optionData}
-                            renderItem={({item})=><RenderPollOption updateVote={this.updateVote} item={item} canUserVote={this.state.canUserVote} totalVote={this.state.totalPollVotes} userType={this.props.type}/>}
+                            renderItem={({item,index})=><RenderPollOption setFocusedOptionIndex={this.setFocusedOptionIndex} focusedOptionIndex={this.state.focusedOptionIndex} updateVote={this.updateVote} item={item} canUserVote={this.state.canUserVote} totalVote={this.state.totalPollVotes} userType={this.props.type} index={index}/>}
                             keyExtractor={(item)=>item.id}
                         />
                         {/* <View Style={{display: 'flex', flexDirection: 'column'}}>
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     boxView:
     {
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         flex: 1,
         justifyContent: 'space-between',
         borderColor: theme.labelOrInactiveColor,
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
         {
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'space-between',
+            // justifyContent: 'space-between',
             alignItems: 'center',
             marginTop: 10
         },
@@ -169,25 +169,26 @@ const styles = StyleSheet.create({
                 width: 50,
                 borderRadius: 25,
                 backgroundColor:theme.secondaryColor
-                
+                 
             },
             coaching:
             {
                 fontSize: 15,
-                // marginLeft:10,
-                fontWeight: 'bold',
+                marginLeft:10, 
+                fontFamily: 'Raleway_600SemiBold',
+                width:'78%',
                 color: theme.secondaryColor
             },
                 timeDateText:
                 {
-                    fontSize: 16,
-                    fontWeight: '400',
-                    color: theme.secondaryColor
-                }, 
+                    fontSize: 13,
+                    marginLeft:10,
+                    color: theme.greyColor
+                },
         innerBoxView:
         {
-            flexDirection: 'column',
             flex: 0.85,
+            flexDirection: 'column',
             borderColor: theme.labelOrInactiveColor,
             borderRadius: 2,
             // marginTop: 10,
@@ -203,16 +204,16 @@ const styles = StyleSheet.create({
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                marginTop: 10,
+                marginTop: 10
             },
                 likeView:
                 {
-                //   marginRight: 30
+                    // marginRight: 15
                 },
                     text:
                     {
                         fontSize: 18,
-                        color: theme.greyColor
+                        color: theme.labelOrInactiveColor, 
                     },
             // feed wala end
                             

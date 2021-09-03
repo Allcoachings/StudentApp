@@ -1,16 +1,17 @@
 import { Video } from 'expo-av'
 import VideoPlayer from '../Utils/expo-video-player'
 import React,{ useRef,useState,useEffect } from 'react'
-import {Dimensions,BackHandler,findNodeHandle,UIManager,View,Text} from 'react-native'
+import {Dimensions,BackHandler,findNodeHandle,UIManager,View,Text, FlatList} from 'react-native'
 import * as ScreenOrientation from 'expo-screen-orientation'
 import { setStatusBarHidden } from 'expo-status-bar'
 import { SafeAreaView } from "react-navigation";
 import { SET_STATUS_BAR_HIDDEN } from '../Actions/types'
 import { useDispatch } from 'react-redux'
-import { theme } from '../config'
+import { theme,dataLimit } from '../config'
 import moment from 'moment'
 import VideoCommentItem from './VideoCommentItem'
 import AddComment from './AddComment'
+import { fetchVideoComments } from '../Utils/DataHelper/CourseVideos'
 
 export default VideoPlayerCustom=(props)=>
 {
@@ -19,13 +20,32 @@ export default VideoPlayerCustom=(props)=>
     const [inFullscreen, setInFullsreen] = useState(false)
     const [shouldPlay, setShouldPlay] = useState(true);
     const [playbackSpeed, setPlaybackSpeed] = useState(1.0) 
+    const [comments,setComments] = useState([]);
+    const [offset, setOffset] = useState(0)
     const playbackButtonRef = useRef(null)
     const refVideo = useRef(null)
     const dispatch = useDispatch()
+
+    const unshiftCommets=(commentObj)=>
+    {
+
+        setComments([commentObj,...comments])
+    }
     useEffect(() => {
-        const unsubscribe = props.navigation.addListener('blur', () => {
-          
-            
+        fetchVideoComments(props.route.params.item.id,offset,dataLimit,(response)=>{
+
+            if(response.status ==200)
+            {
+                response.json().then(data=>
+                {
+                    setComments(data);
+                    console.log(data);
+                })
+            }
+        })
+    },[])
+    useEffect(() => {
+        const unsubscribe = props.navigation.addListener('blur', () => { 
             // refVideo.current.setStatusAsync({
             //     shouldPlay: false,
             //   })
@@ -159,10 +179,17 @@ export default VideoPlayerCustom=(props)=>
                     <Text style={{fontFamily: 'Raleway_600SemiBold' ,fontSize:15}}>Comments</Text> 
                 </View>
 
-                    <AddComment/>
+                    <AddComment videoId={props.route.params.item.id} unshiftCommets={unshiftCommets}/>
+                    <FlatList
+                        data={comments} 
+                        renderItem={({item})=> <VideoCommentItem item={item}/>}
+                        keyExtractor={(item)=>item.id}
+                        
+
+                    />
+                    {/* <VideoCommentItem/>
                     <VideoCommentItem/>
-                    <VideoCommentItem/>
-                    <VideoCommentItem/>
+                    <VideoCommentItem/> */}
                 
             </View>
 

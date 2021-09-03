@@ -77,6 +77,8 @@ public class InsTestSeriesService {
 
     public Optional<InsTestSeries> findById(long id)
     {
+
+        System.out.println("testseriesId"+id);
         return insTestSeriesRepo.findById(id);
     }
 

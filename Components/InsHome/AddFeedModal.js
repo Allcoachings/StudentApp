@@ -1,7 +1,7 @@
 import { Feather } from '@expo/vector-icons';
 import React, { Component } from 'react';
 import { View, Text,StyleSheet,Modal,TouchableOpacity,TouchableWithoutFeedback,ActivityIndicator,ScrollView,Image,TextInput,FlatList } from 'react-native';
-import { addBannerImagePlaceholder, theme, serverBaseUrl } from '../config';
+import { addBannerImagePlaceholder, theme, serverBaseUrl, imageProvider } from '../config';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure';
 import CardView from '../Utils/CardView';
 import {addImgeFeed,saveFeed} from '../Utils/DataHelper/Feed'
@@ -29,7 +29,8 @@ class AddFeedModal extends Component {
       feedItem:{},
       id: '',
       mode: "add",
-      index: ''
+      index: '',
+      showFeedTypeOptions:false
   }
 
   updateState=(type, description, feedImages, pollOptions, id, index)=>{
@@ -336,8 +337,7 @@ setFeedTypeOption=(postType)=>
   {
         return (
             <View style={styles.inputView}>
-                <Text style={styles.labelText}>Poll Option {index+1}</Text>
-                 
+                <Text style={styles.labelText}>Poll Option {index+1}</Text> 
                     <TextInput 
                         placeholderTextColor={theme.greyColor} 
                         placeholder={"Option "+(index+1)} 
@@ -346,8 +346,7 @@ setFeedTypeOption=(postType)=>
                         numberOfLines={2} 
                         style={styles.inputField}
                         defaultValue={item.pollOption}
-                    /> 
-                
+                    />  
             </View> 
         )
   }
@@ -495,12 +494,12 @@ setFeedTypeOption=(postType)=>
   renderButton=(name,icon,onPress)=>
   {
     return(
-        <TouchableOpacity style={{flex:1,flexDirection:'column',padding:10,alignItems: 'center'}} onPress={onPress}> 
-            <View style={{}}>
-                <Feather name={icon} color={theme.accentColor} size={20}/>
+        <TouchableOpacity style={{flex:1,flexDirection:'row',padding:10,alignItems: 'center'}} onPress={onPress}> 
+            <View style={{marginTop:1}}>
+                <Feather name={icon} color={theme.greyColor} size={17}/>
             </View>
             <View>
-                <Text>{name}</Text>
+                <Text style={{fontFamily:'Raleway_600SemiBold',color: theme.greyColor,fontSize:14}}>{name}</Text>
             </View>
         </TouchableOpacity>
     )
@@ -585,6 +584,10 @@ setFeedTypeOption=(postType)=>
         </View> 
         );
   }
+  onFocus=()=>
+  {
+      this.setState({showFeedTypeOptions: true})
+  }
   render() {
     return (
         // <Modal 
@@ -593,59 +596,56 @@ setFeedTypeOption=(postType)=>
         //     visible = {this.props.isAddCourseModalVisible}
         //     onRequestClose = {() => this.props.closeModal()}>
     
-            <ScrollView  >
-                {/* <View style={styles.headView}> 
-                   <Text style={styles.headText}>Add Feed</Text>
-                </View> */}
-                {/* {this.renderFeedSteps(this.state.stepCheck)} */}
+            <ScrollView>
+                <View style={{flexDirection:'row',alignItems: 'center'}} >
+                    <Image source={{uri: imageProvider(this.props.posterImage)}} style={{height: 50, width: 50, borderRadius: 25, borderWidth: 0.6, borderColor:theme.greyColor,}}/>
+                    <View style={{borderWidth:1,flex:1,borderColor:theme.labelOrInactiveColor,margin:10,borderRadius:10}}>
+                        <TextInput
+                            style={{height:50,fontFamily:'Raleway_400Regular',marginHorizontal:10}}
+                            placeholder="Write Something...."
+                            multiline={true}  
+                            defaultValue={this.state.description}
+                            onFocus={ () => this.onFocus() }
+                            onChangeText={(text)=>this.setState({description:text})}
 
-
-
-                <View style={{borderWidth:1,borderColor:theme.labelOrInactiveColor,margin:10,borderRadius:10}}>
-                    <TextInput
-                        style={{height:50,fontFamily:'Raleway_400Regular',marginHorizontal:10}}
-                        placeholder="Write Something...."
-                        multiline={true}  
-                        defaultValue={this.state.description}
-                        onChangeText={(text)=>this.setState({description:text})}
-
-                    />
-                    {this.state.postType==1?(
-                        <View style={{}}>
-                            {this.renderAddImageSection()} 
-                        </View>
-                    ):(null)}
-                    {this.state.postType==2?(
-                        <View style={{}}>
-                            {this.renderPollOPtionsSection()} 
-                        </View>
-                    ):(null)}
-                    
-                    <View style={{flex:1,flexDirection:'row',justifyContent: 'flex-end'}}>
-                        <View style={[styles.feedOption]}>
-                        {this.renderButton("Poll","bar-chart-2",()=>this.setFeedTypeOption(2))} 
-                        </View>
-                        <View style={[styles.feedOption]}>
-                        {this.renderButton("Image","image",this.handleImageBtnClick)} 
-                        </View>
-                        <View style={[styles.feedOption]}>
-                            {this.state.addFeedLoading?(
-                                    <ActivityIndicator size={"large"} color={theme.accentColor}/>
-                            ):
-                            (
-                                <TouchableWithoutFeedback onPress={this.handleSubmitButtonClick}>
-                                        <View style={{flexDirection: 'row',flex:1,padding:10,alignItems: 'center',backgroundColor: theme.accentColor,borderTopLeftRadius:10,borderTopRightRadius:10}}>
-                                            <Text style={{color:theme.primaryColor}}>Post</Text>
-                                            <Feather name="arrow-right" size={20}/>
+                        />
+                        {this.state.postType==1?(
+                            <View style={{}}>
+                                {this.renderAddImageSection()} 
+                            </View>
+                        ):(null)}
+                        {this.state.postType==2?(
+                            <View style={{}}>
+                                {this.renderPollOPtionsSection()} 
+                            </View>
+                        ):(null)}
+                        
+                    {this.state.showFeedTypeOptions?( <View style={{flex:1,flexDirection:'row',justifyContent: 'flex-end'}}>
+                            <View style={[styles.feedOption]}>
+                            {this.renderButton("POLL","bar-chart-2",()=>this.setFeedTypeOption(2))} 
+                            </View>
+                            <View style={[styles.feedOption]}>
+                            {this.renderButton("IMAGE","image",this.handleImageBtnClick)} 
+                            </View>
+                            <View style={[styles.feedOption]}>
+                                {this.state.addFeedLoading?(
+                                        <ActivityIndicator size={"large"} color={theme.accentColor}/>
+                                ):
+                                (
+                                    <TouchableWithoutFeedback onPress={this.handleSubmitButtonClick}>
+                                        <View style={[{flexDirection: 'row',padding:5,marginVertical:5,alignItems: 'center',borderRadius:3,marginTop:'auto',borderWidth: 1,borderColor:this.state.description?theme.accentColor:theme.labelOrInactiveColor},this.state.description?{backgroundColor: theme.accentColor}:{}]}>
+                                            <Text style={{color:this.state.description?theme.primaryColor:theme.greyColor,fontSize:16}}>Post</Text>
+                                            <Feather name="arrow-right" size={18} color={this.state.description?theme.primaryColor:theme.greyColor}/>
                                         </View>
-                                </TouchableWithoutFeedback>
-                                // this.renderButton("Post","align-left",()=>this.handleSubmitButtonClick())
-                            )}
-                                
-                        </View>
-                    </View>
+                                    </TouchableWithoutFeedback>
+                                    // this.renderButton("Post","align-left",()=>this.handleSubmitButtonClick())
+                                )}
+                                    
+                            </View>
+                        </View>):(null)}
 
-                
+                    
+                    </View>
                 </View>
                 {/* <TouchableWithoutFeedback onPress={this.handleSubmitButtonClick}>
                     <View style={{backgroundColor:theme.accentColor,padding:15,borderRadius:10,alignItems: 'center',width:'95%',alignSelf: 'center'}}> 
