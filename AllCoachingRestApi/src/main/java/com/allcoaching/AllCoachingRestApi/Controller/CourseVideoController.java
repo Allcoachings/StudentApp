@@ -137,10 +137,8 @@ public class CourseVideoController {
     @PostMapping("/video/views/{v_id}")
     public ResponseEntity<Object> videoView(@PathVariable long v_id )
     {
-        CourseVideoComments courseVideoComments_saved = courseVideoCommentsService.addComment(courseVideoComments);
-        URI location  = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(courseVideoComments_saved.getId()).toUri();
-
-        return ResponseEntity.created(location).build();
+         courseVideoService.updateVideoViewsById(v_id);
+        return ResponseEntity.ok().build();
     }
 
     @CrossOrigin(origins = "*")

@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface StudentHistoryRepo extends PagingAndSortingRepository<StudentHistory,Long> {
 
 
-    Page<StudentHistory> findByStudentId(long studentId,Pageable pageable);
+    Page<StudentHistory> findByStudentIdAndType(long studentId,String type,Pageable pageable);
 }

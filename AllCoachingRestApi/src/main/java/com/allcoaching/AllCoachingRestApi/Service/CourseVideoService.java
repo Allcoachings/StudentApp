@@ -62,6 +62,12 @@ public class CourseVideoService {
         courseVideoRepo.updatePublishedStatus(status,id);
     }
 
+    //updating video views
+    public void updateVideoViewsById(long id)
+    {
+        courseVideoRepo.updateCourseVideoViews(id);
+    }
+
     //updating hidden Status
     public void updateHiddenStatusById(boolean status,long id)
     {

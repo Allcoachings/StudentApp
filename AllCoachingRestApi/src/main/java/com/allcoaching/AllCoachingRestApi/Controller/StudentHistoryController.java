@@ -22,10 +22,10 @@ public class StudentHistoryController {
     private StudentHistoryService studentHistoryService;
 
     @CrossOrigin(origins = "*")
-    @GetMapping("fetch/{studentId}/{offset}/{data_limit}")
-    public   Iterable<StudentHistoryDto> findStudentHistory(@PathVariable long studentId,@PathVariable int offset,@PathVariable  int data_limit)
+    @GetMapping("fetch/{studentId}/{type}/{offset}/{data_limit}")
+    public   Iterable<StudentHistoryDto> findStudentHistory(@PathVariable long studentId,@PathVariable String type,@PathVariable int offset,@PathVariable  int data_limit)
     {
-        return studentHistoryService.findAllByStudentId(studentId,offset,data_limit);
+        return studentHistoryService.findAllByStudentId(studentId,type,offset,data_limit);
     }
 
     @CrossOrigin(origins = "*")
