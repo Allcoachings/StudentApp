@@ -2,7 +2,7 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,TouchableWithoutFeedback,FlatList, Image,Platform,Dimensions,ActivityIndicator} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {storyLine,homeFeaturesData} from '../../FakeDataService/FakeData'
-import { theme ,serverBaseUrl,dataLimit, paytmConfig, Assets} from '../config';
+import { theme ,serverBaseUrl,dataLimit, paytmConfig, Assets, imageProvider} from '../config';
 import { Feather } from '@expo/vector-icons';
 import { AirbnbRating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
@@ -107,7 +107,7 @@ class Home extends React.Component {
                 <View style={styles.instituteItemContainer}>
                 <View style={styles.instituteItemImageView}>
                     {CardView(
-                        <Image source={{uri:serverBaseUrl+item.logo}} style={styles.instituteItemImage}/> 
+                        <Image source={{uri:imageProvider(item.logo)}} style={styles.instituteItemImage}/> 
                         ,{width:'100%',borderRadius:15}
                     )}
                     
@@ -141,7 +141,7 @@ class Home extends React.Component {
         return(
             <TouchableWithoutFeedback onPress={()=>item.bannerLink?(this.props.navigation.navigate('webview',{link:item.bannerLink,mode:'defaultAppHeader'})):(console.log("nolink"))}>
                 <View style={styles.bannerItemContainer} >
-                    <Image source={{uri:serverBaseUrl+item.bannerImageLink}} style={styles.bannerImage}/>
+                    <Image source={{uri:imageProvider(item.bannerImageLink)}} style={styles.bannerImage}/>
                 </View>
             </TouchableWithoutFeedback  >
         )

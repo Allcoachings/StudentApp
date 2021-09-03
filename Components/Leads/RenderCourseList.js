@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions, ActivityIndicator} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import { theme, dataLimit, Assets, serverBaseUrl } from '../config';
+import { theme, dataLimit, Assets, serverBaseUrl,imageProvider } from '../config';
 import { Feather } from '@expo/vector-icons';
 import { feedData } from '../../FakeDataService/FakeData' 
 import {connect } from 'react-redux'
@@ -52,7 +52,7 @@ class RenderCourseList extends React.Component {
             CardView(
                 <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                     <View style={{marginHorizontal: 10}}>
-                        <Image source={{uri: serverBaseUrl+item.studentImage}} style={{height: 50, width:50, borderRadius: 25}} />
+                        <Image source={{uri: imageProvider(item.studentImage)}} style={{height: 50, width:50, borderRadius: 25}} />
                     </View>
                     <View style={{display: 'flex', flexDirection: 'column', marginHorizontal: 10}}>
                         <Text>{item.studentName}</Text>

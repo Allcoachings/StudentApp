@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,Dimensions,FlatList,StatusBar, Image,Platform, ScrollView, Modal,TouchableWithoutFeedback} from 'react-native';
-import { theme , Assets, serverBaseUrl} from '../config';
+import { theme , Assets, serverBaseUrl, imageProvider} from '../config';
 import { Feather, FontAwesome } from '@expo/vector-icons';
 import {connect } from 'react-redux'
 import {singlequedata} from '../../FakeDataService/FakeData'
@@ -102,7 +102,7 @@ class SeriesModal extends React.Component {
       case '4':
 
           return(
-              <Image source={{uri: serverBaseUrl+item.question}} style={{width:width,height:150,resizeMode:'contain'}} />
+              <Image source={{uri: imageProvider(item.question)}} style={{width:width,height:150,resizeMode:'contain'}} />
           ); 
 
     }

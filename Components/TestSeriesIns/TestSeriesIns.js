@@ -2,7 +2,7 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {insTestSeries} from '../../FakeDataService/FakeData'
-import { theme, dataLimit,serverBaseUrl, Assets } from '../config';
+import { theme, dataLimit,serverBaseUrl, Assets,imageProvider } from '../config';
 import { Feather } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
@@ -46,7 +46,7 @@ class TestSeriesIns extends React.Component {
             CardView(
                     <View  style={styles.singleItem}>
                         <View style={styles.imageView}>
-                            <Image source={{uri: serverBaseUrl+item.image}} style={styles.itemImage}/>
+                            <Image source={{uri: imageProvider(item.image)}} style={styles.itemImage}/>
                         </View>
                         <View style={styles.titleView}>
                             <Text style={styles.itemTitle}>{item.name}</Text>

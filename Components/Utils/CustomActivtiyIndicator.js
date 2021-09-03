@@ -59,6 +59,16 @@ class CustomActivtiyIndicator extends React.Component {
                     return(<ShimmerHome />)
                 case 'resultSkimmer':
                     return(<ShimmerHome />)
+                case 'testSeries':
+                    return(<ShimmerTestSeries />)
+                case 'profile':
+                    return(<ShimmerProfile />)
+                case 'instituteView':
+                    return(<ShimmerInstituteViewHeader />)
+                case 'document':
+                    return(<ShimmerInstituteViewHeader />)
+                case 'video':
+                    return(<ShimmerInstituteViewHeader />)
 
                 default:
                     return (

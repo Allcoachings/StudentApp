@@ -550,7 +550,7 @@ setFeedTypeOption=(postType)=>
                         <Feather name="x" size={20} color={theme.featureNoColor}/>
                     </View>
                 </TouchableWithoutFeedback> 
-                <Image source={{uri: this.state.mode=='add'?(item.uri):(serverBaseUrl+item.feedImage)}} style={styles.feedImage}/>
+                <Image source={{uri: this.state.mode=='add'?(item.uri):(imageProvider(item.feedImage))}} style={styles.feedImage}/>
             </View>
         )
      

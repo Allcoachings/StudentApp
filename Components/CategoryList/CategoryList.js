@@ -2,7 +2,7 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform,Dimensions, ScrollView} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {homeFeaturesData} from '../../FakeDataService/FakeData'
-import { theme,dataLimit, serverBaseUrl, Assets } from '../config';
+import { theme,dataLimit, serverBaseUrl, Assets, imageProvider } from '../config';
 import { Feather } from '@expo/vector-icons';
 import { Rating ,AirbnbRating} from 'react-native-ratings';
 import { Redirect } from 'react-router';
@@ -45,7 +45,7 @@ class CategoryList extends React.Component {
         return (
                 <TouchableOpacity style={styles.instituteItemContainer} onPress={()=> this.props.navigation.navigate('Institute') }>
                     <View style={styles.instituteItemImageView}>
-                        <Image source={{uri:serverBaseUrl+item.logo}} style={styles.instituteItemImage}/> 
+                        <Image source={{uri: imageProvider(item.logo)}} style={styles.instituteItemImage}/> 
                     </View>
                     <View style={styles.instituteMetaContainer}>
                         <View style={{display:'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginLeft: 2}}>

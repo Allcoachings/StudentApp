@@ -3,7 +3,7 @@ import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity,Touch
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {instituteData, insBanners} from '../../FakeDataService/FakeData'
 import { Rating } from 'react-native-ratings';
-import {theme,screenMobileWidth, serverBaseUrl,documentPlaceholder,dataLimit,addBannerImagePlaceholder, Assets} from '../config'
+import {theme,screenMobileWidth, serverBaseUrl,documentPlaceholder,dataLimit,addBannerImagePlaceholder, Assets, imageProvider} from '../config'
 import CardView from '../Utils/CardView';
 import MarqueeText from 'react-native-marquee';
 import { Feather } from '@expo/vector-icons';
@@ -158,7 +158,7 @@ class InsHome extends React.Component {
         return(
             <TouchableWithoutFeedback style={styles.bannerItemContainer} >
                     <View style={styles.bannerItemContainer}>
-                        <Image source={{uri:serverBaseUrl+item.bannerImageLink}} style={styles.bannerImage}/>
+                        <Image source={{uri:imageProvider(item.bannerImageLink)}} style={styles.bannerImage}/>
                     </View>
             </TouchableWithoutFeedback  >
         )
@@ -1030,7 +1030,7 @@ class InsHome extends React.Component {
                 <View style={styles.container}>
                         <View style={styles.instituteheader}>
                             {CardView(
-                                <Image source={{uri:serverBaseUrl+institute.logo}} style={styles.instituteheaderLogo}/>
+                                <Image source={{uri:imageProvider(institute.logo)}} style={styles.instituteheaderLogo}/>
                             ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:100}):({width:200,height:150})])
                             } 
                             <View style={styles.instituteheaderMeta}>

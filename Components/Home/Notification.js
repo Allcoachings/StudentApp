@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
 // import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import {theme,screenMobileWidth, dataLimit,serverBaseUrl, Assets} from '../config'
+import {theme,screenMobileWidth, dataLimit,serverBaseUrl, Assets, imageProvider} from '../config'
 import { Feather } from '@expo/vector-icons';
 import {connect } from 'react-redux'
 import CardView from '../Utils/CardView'
@@ -58,7 +58,7 @@ class Notification extends React.Component {
                 <View style={{marginBottom: '5%'}}>
                     <View style={styles.instituteheader}>
                         {CardView(
-                            <Image source={{ uri: serverBaseUrl+item.senderObject.image }} style={styles.instituteheaderLogo}/>
+                            <Image source={{ uri: imageProvider(item.senderObject.image) }} style={styles.instituteheaderLogo}/>
                             ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:80,borderRadius:15}):({width:80,height:80, borderRadius:40})])
                         } 
                         <View style={styles.instituteheaderMeta}>

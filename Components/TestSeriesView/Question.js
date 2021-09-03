@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text,StyleSheet,Image,TouchableOpacity,TouchableWithoutFeedback,Dimensions } from 'react-native';
-import {serverBaseUrl, theme} from '../config'
+import {serverBaseUrl, theme, imageProvider} from '../config'
 import {Feather, FontAwesome} from '@expo/vector-icons';
  const width = Dimensions.get('window').width
 class Question extends Component {
@@ -132,7 +132,7 @@ class Question extends Component {
                         {optionType==1?(
                             <Text style={styles.optionText}>{text}</Text>
                         ):(
-                            <Image source={{uri:serverBaseUrl+text}} style={{borderWidth:0.5,borderColor: theme.labelOrInactiveColor,width:'85%',height:150}}/>
+                            <Image source={{uri:imageProvider(text)}} style={{borderWidth:0.5,borderColor: theme.labelOrInactiveColor,width:'85%',height:150}}/>
                         )} 
                     </View>
                 </TouchableWithoutFeedback>
@@ -155,7 +155,7 @@ class Question extends Component {
         case '4':
 
             return(
-                 <Image source={{uri: serverBaseUrl+item.question}} style={{width:width,height:150,resizeMode:'contain'}} />
+                 <Image source={{uri: imageProvider(item.question)}} style={{width:width,height:150,resizeMode:'contain'}} />
             ); 
 
       }

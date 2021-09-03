@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView,Dimensions} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import { theme , Assets, serverBaseUrl} from '../config';
+import { theme , Assets, serverBaseUrl, imageProvider} from '../config';
 import { MaterialIcons } from '@expo/vector-icons';
 import EmptyList from '../Utils/EmptyList'
 import { connect } from 'react-redux';
@@ -162,7 +162,7 @@ class Solutions extends React.Component {
           case '4':
   
               return(
-                   <Image source={{uri: serverBaseUrl+item.question}} style={{width:'100%',height:150,resizeMode:'contain'}} />
+                   <Image source={{uri: imageProvider(item.question)}} style={{width:'100%',height:150,resizeMode:'contain'}} />
               ); 
   
         }
@@ -193,7 +193,7 @@ class Solutions extends React.Component {
                                             Correct answer :  ({item.question.correctOpt})  {item.question.optionType==1?item["option"+item.question.correctOpt]:null}
                                         </Text> 
                                         {item.optionType==2?(
-                                             <Image source={{uri:serverBaseUrl+item["option"+item.question.correctOpt]}} style={{borderWidth:0.5,borderColor: theme.labelOrInactiveColor,width:'85%',height:150,marginLeft:10}}/>
+                                             <Image source={{uri:imageProvider(item["option"+item.question.correctOpt])}} style={{borderWidth:0.5,borderColor: theme.labelOrInactiveColor,width:'85%',height:150,marginLeft:10}}/>
                                         ):(null)}
                                         <Text style={styles.explanation}>{item.question.explanation}</Text>
                                     </View> 

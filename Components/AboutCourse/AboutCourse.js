@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity, Modal, TextInput,ActivityIndicator} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import { SliderBox } from 'react-native-image-slider-box';
-import {theme, serverBaseUrl} from '../config'
+import {theme, serverBaseUrl, imageProvider} from '../config'
 import {fetch_courses_banners } from '../Utils/DataHelper/Course'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 class AboutCourse extends React.Component {
@@ -23,7 +23,7 @@ class AboutCourse extends React.Component {
         {
             response.json().then(data=>
                 { 
-                    var images = data.map((item, key) =>serverBaseUrl+item.bannerImageLink)
+                    var images = data.map((item, key) => imageProvider(item.bannerImageLink))
                     this.setState({sliderImg: images, loading:false})
                 })
         }
