@@ -4,6 +4,7 @@ import {serverApiUrl} from '../../config'
 
     export const fetchNotifications=(receiverId, receiverType, page, pageSize, callback)=>
     {
+        console.log(receiverId, receiverType, page, pageSize)
             let headers = new Headers(); 
             headers.append('Content-Type', 'application/json');  
             headers.append('Access-Control-Allow-Origin', serverApiUrl);

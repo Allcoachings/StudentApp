@@ -114,7 +114,6 @@ class Feed extends React.Component {
     };
 
     render() {
-     
         return(
             <PageStructure
                 iconName={"menu"}

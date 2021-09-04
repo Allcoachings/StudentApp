@@ -38,11 +38,11 @@ class FeedBottomComponent extends Component {
                 </View>
             </View>
             <View style={{flexDirection:'row',alignItems: 'center'}}>
-                <TouchableOpacity style={styles.likeView} onPress={()=>this.setState({showCommentModal: true})}>
+                <TouchableOpacity style={styles.likeView} onPress={()=>this.props.mode=="single"?(console.log("no")):(this.setState({showCommentModal: true}))}>
                     <FontAwesome name="comments" size={22} color={theme.greyColor} />
                 </TouchableOpacity>
                 <View style={{marginLeft:5}}>
-                    <Text>{'1.5'}K</Text>
+                    <Text>{this.props.comments}</Text>
                 </View>
             </View> 
             <TouchableOpacity style={styles.likeView} onPress={()=>onShare("TEset Me")}>
@@ -50,7 +50,7 @@ class FeedBottomComponent extends Component {
             </TouchableOpacity>
 
             {this.state.showCommentModal?(
-                <CommentModal feedId={this.state.feedId} modalVisible={this.state.showCommentModal} navigation={this.props.navigation} closeModal={this.closeModal}/>
+                <CommentModal feedId={this.state.feedId} modalVisible={this.state.showCommentModal} navigation={this.props.navigation} closeModal={this.closeModal} comments={this.props.comments}/>
             ):(null)}
         </View>
     )

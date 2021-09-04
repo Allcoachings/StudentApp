@@ -17,6 +17,7 @@ import VideoPlayerCustom from '../VideoPLayer/VideoPlayerCustom';
 import AboutCourse from '../AboutCourse/AboutCourse'
 import AuthIns from '../InsRegister/AuthIns';
 import Notification from '../Home/Notification'
+import RenderSingleFeed from '../Feed/RenderSingleFeed'
 
 const Drawer = createDrawerNavigator();
 class indexIns extends React.Component {
@@ -41,6 +42,7 @@ class indexIns extends React.Component {
                                 <Drawer.Screen name="videoplayer" component={VideoPlayerCustom} />
                                 <Drawer.Screen name="accountDetails" component={AccountDetails} />
                                 <Drawer.Screen name="Notification" component={Notification} />
+                                <Drawer.Screen name="RenderSingleFeed" component={RenderSingleFeed} />
                             </>
                        ):(
                                 <Drawer.Screen name="Register" component={AuthIns}  initialParams={{changeMode:this.props.changeMode}}  />    

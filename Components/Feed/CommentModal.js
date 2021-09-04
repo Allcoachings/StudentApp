@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text,Image,StyleSheet, TouchableOpacity, Dimensions, Modal, FlatList, TextInput, ScrollView } from 'react-native';
 import {serverBaseUrl, theme, dataLimit, appLogo, Assets, imageProvider} from '../config';
-import {Feather, AntDesign, FontAwesome} from '@expo/vector-icons';
+import {Feather, AntDesign, Entypo} from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
 import { connect } from 'react-redux'
 import {fetch_comments, add_comment} from "../Utils/DataHelper/Feed"
@@ -11,6 +11,8 @@ import { ActivityIndicator } from 'react-native-paper';
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import ImageZoomModal from '../InstituteView/ImageZoomModal'
+import RenderSingleComment from './RenderSingleComment'
+import RenderAddCommentBox from './RenderAddCommentBox'
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 
@@ -42,9 +44,10 @@ class CommentModal extends Component {
       }
   }
 
-  add=()=>{
+  add=(comment)=>{
         Toast.show("Please Wait...")
-        add_comment(this.state.comment, 2, this.props.feedId, 0, this.props.userInfo.id, this.addCallback)
+        this.setState({comment: comment},()=>
+        add_comment(this.state.comment, 2, this.props.feedId, 0, this.props.userInfo.id, this.addCallback))
   }
 
   openZoomModal=() => {
@@ -81,7 +84,7 @@ class CommentModal extends Component {
               },
             }
         this.state.commentData.push(obj)
-        this.setState({comment: ''},()=>this.textInput.clear())
+        this.setState({comment: ''})
       }
       else
       {
@@ -98,23 +101,27 @@ class CommentModal extends Component {
 
   renderSingleComment=(item)=>{
       return(
-          <View>
-            <View style={{ flex:1, flexDirection: 'row', margin: 5, padding: 10}}>
-                <TouchableOpacity style={{flex: 0.15}} onPress={()=>this.addImage(serverBaseUrl+item.commenterObject.studentImage)}>
-                    <Image source={{uri: imageProvider(item.commenterObject.studentImage)}} style={{height: 50, width: 50, borderRadius: 25, borderWidth: 0.6, borderColor:theme.greyColor,}}/>
-                </TouchableOpacity>
-                <View style={{flex: 0.85, flexDirection: 'column', marginLeft: 10, marginTop: 2}}>
-                    <View style={{ flexDirection: 'row'}}>
-                        <Text style={{fontFamily:'Raleway_700Bold', fontSize: 16}}>{item.commenterObject.name} {' • '}</Text>
-                        <Text style={{fontFamily:'Raleway_700Bold', fontSize: 15}}>{moment(item.feedComments.timeStamp).fromNow()}</Text>
-                    </View>
-                    <View style={{flexShrink: 1}}>
-                        <Text style={{fontFamily: 'Raleway_400Regular',  flexWrap: 'wrap'}}>{item.feedComments.comment}</Text>
+            <View>
+                <View style={{ flex:1, flexDirection: 'row', margin: 5, padding: 10}}>
+                    <TouchableOpacity style={{flex: 0.15}} onPress={()=>this.addImage(serverBaseUrl+item.commenterObject.studentImage)}>
+                        <Image source={{uri: imageProvider(item.commenterObject.studentImage)}} style={{height: 50, width: 50, borderRadius: 25, borderWidth: 0.6, borderColor:theme.greyColor,}}/>
+                    </TouchableOpacity>
+                    <View style={{flex: 0.85, flexDirection: 'column', marginLeft: 10, marginTop: 2}}>
+                        <View style={{ flexDirection: 'row'}}>
+                            <Text style={{fontFamily:'Raleway_700Bold', fontSize: 16}}>{item.commenterObject.name} {' • '}</Text>
+                            <Text style={{fontFamily:'Raleway_700Bold', fontSize: 15}}>{moment(item.feedComments.timeStamp).fromNow()}</Text>
+                        </View>
+                        <View style={{flexShrink: 1}}>
+                            <Text style={{fontFamily: 'Raleway_400Regular',  flexWrap: 'wrap'}}>{item.feedComments.comment}</Text>
+                        </View>
                     </View>
                 </View>
+                <View style={{flexDirection: 'row'}}>
+                    <View style={{flex: 0.15}}>
+                    </View>
+                    <View style={{flex: 0.85,borderBottomWidth: 1, borderBottomColor: theme.labelOrInactiveColor, marginVertical: 5, marginHorizontal: 15}}/>
+                </View>
             </View>
-            <View style={{borderBottomWidth: 1, borderBottomColor: theme.labelOrInactiveColor, marginVertical: 5, marginHorizontal: 15}}/>
-          </View>
       )
   }
 
@@ -132,23 +139,9 @@ class CommentModal extends Component {
                     <TouchableOpacity onPress={()=>this.props.closeModal()}>
                         <AntDesign name="left" size={24} color="black" />
                     </TouchableOpacity>
-                    <Text style={{fontFamily:'Raleway_700Bold',fontSize:20, marginLeft: 10}}>Comments</Text>
+                    <Text style={{fontFamily:'Raleway_700Bold',fontSize:20, marginLeft: 10}}>Comments ({this.props.comments})</Text>
                 </View>
-                <View style={{flexDirection:'row', backgroundColor: 'white', width: width}}>  
-                <View style={{flex: 1,  flexDirection: 'row',borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, justifyContent: 'space-between'}}>    
-                    <TextInput 
-                        style={{ flex: 0.85, padding: 10, fontFamily: 'Raleway_400Regular'}} 
-                        onChangeText={(text)=>this.setState({comment: text})}
-                        placeholder="Write a Comment" placeholderTextColor='grey'
-                        ref={input => { this.textInput = input }}
-                    />
-                    {this.state.comment!=''?(
-                    <TouchableOpacity onPress={()=>this.add()} style={{flex: 0.15,  backgroundColor: theme.accentColor, justifyContent: 'center', alignItems: 'center', padding: 10}}>
-                        <AntDesign name="check" size={24} color={theme.primaryColor} />
-                    </TouchableOpacity>
-                    ):(null)} 
-                    </View>  
-                </View>
+                
                 <ScrollView>
                 <View>
                     
@@ -156,12 +149,26 @@ class CommentModal extends Component {
                         <CustomActivtiyIndicator mode="skimmer"/>
                     ):(<FlatList
                         data={this.state.commentData}
-                        renderItem={({item}) => this.renderSingleComment(item)}
+                        renderItem={({item}) => <RenderSingleComment item={item} addImage={this.addImage} mode="all"/>}
                         keyExtractor={(item,index)=>index}
                         ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                     />)}
                 </View>
                 </ScrollView>
+                <RenderAddCommentBox add={this.add}/>
+                {/* <View style={{flexDirection:'row', width: width, marginTop: 'auto',marginBottom:this.props.keyboardHeight?this.props.keyboardHeight+40:10}}>  
+                    <View style={{flex: 1,  flexDirection: 'row',borderTopWidth: 1, borderColor: this.state.comment!=''?(theme.accentColor):(theme.labelOrInactiveColor), justifyContent: 'space-between'}}>    
+                        <TextInput 
+                            style={{ flex: 0.85, padding: 10, fontFamily: 'Raleway_400Regular'}} 
+                            onChangeText={(text)=>this.setState({comment: text})}
+                            placeholder="Write a Comment" placeholderTextColor='grey'
+                            ref={input => { this.textInput = input }}
+                        />
+                            <TouchableOpacity onPress={()=>this.state.comment!=''?(this.add(this.state.comment)):(Toast.show("Please Enter The Comment."))} style={{flex: 0.15,  backgroundColor: this.state.comment!=''?(theme.accentColor):(theme.labelOrInactiveColor), justifyContent: 'center', alignItems: 'center', padding: 15}}>
+                                <Entypo name="check" size={24} color={theme.primaryColor} />
+                            </TouchableOpacity>
+                    </View>  
+                </View> */}
                 
             </View>
             
@@ -182,8 +189,6 @@ class CommentModal extends Component {
 }
 const styles = StyleSheet.create({
       container: {
-          height: height, 
-          width: width,
           flexDirection: 'column',
       }                       
                 
@@ -194,6 +199,7 @@ const  mapStateToProps = (state)=>
     return {
         screenWidth: state.screen.screenWidth,
         userInfo:state.user.userInfo,
+        keyboardHeight: state.screen.keyboardHeight
     }
 }
 export default connect(mapStateToProps)(CommentModal);

@@ -115,4 +115,79 @@ import {serverApiUrl} from '../../config'
         .catch((error)=>{console.log(error)})
     }
 
+    export const pinInstitute=(obj,callback)=>
+    {
+        let headers = new Headers(); 
+        headers.append('Content-Type', 'application/json');  
+        headers.append('Access-Control-Allow-Origin', serverApiUrl);
+        headers.append('Access-Control-Allow-Credentials', 'true'); 
+        headers.append('GET', 'POST', 'OPTIONS'); 
+
+            fetch(serverApiUrl+"student/pin/",
+        {
+            method: 'POST',  
+            headers,
+            body:JSON.stringify(obj)
+        })
+        .then((response)=>callback(response)) 
+        .catch((error)=>{console.log(error)})
+    }
+
+    export const unPinInstitute=(id,callback)=>
+    {
+        let headers = new Headers(); 
+        headers.append('Content-Type', 'application/json');  
+        headers.append('Access-Control-Allow-Origin', serverApiUrl);
+        headers.append('Access-Control-Allow-Credentials', 'true'); 
+        headers.append('GET', 'POST', 'OPTIONS'); 
+
+            fetch(serverApiUrl+"student/pin/delete/"+id,
+        {
+            method: 'DELETE',  
+            headers,
+            // body:JSON.stringify({student, institute})
+        })
+        .then((response)=>callback(response)) 
+        .catch((error)=>{console.log(error)})
+    }
+
+
+    export const checkForPin=(obj,callback)=>
+    {
+
+        let headers = new Headers(); 
+        headers.append('Content-Type', 'application/json');  
+        headers.append('Access-Control-Allow-Origin', serverApiUrl);
+        headers.append('Access-Control-Allow-Credentials', 'true'); 
+        headers.append('GET', 'POST', 'OPTIONS'); 
+
+            fetch(serverApiUrl+"student/pin/check",
+        {
+            method: 'POST',  
+            headers,
+            body:JSON.stringify(obj)
+        })
+        .then((response)=>callback(response)) 
+        .catch((error)=>{console.log(error)})
+    }
+
+
+    export const pinnedInstituteList=(id,page, pageSize, callback)=>
+    {
+        let headers = new Headers(); 
+        headers.append('Content-Type', 'application/json');  
+        headers.append('Access-Control-Allow-Origin', serverApiUrl);
+        headers.append('Access-Control-Allow-Credentials', 'true'); 
+        headers.append('GET', 'POST', 'OPTIONS'); 
+
+        fetch(serverApiUrl+'student/pin/student/'+page+'/'+pageSize,
+        {
+            method: 'POST',  
+            headers,
+            body:JSON.stringify({id})
+        })
+        .then((response)=>callback(response)) 
+        .catch((error)=>{console.log(error)})
+    }
+
 

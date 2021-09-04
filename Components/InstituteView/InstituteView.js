@@ -26,7 +26,7 @@ import FeedPoll from '../Feed/FeedPoll';
 import {tabListInstitute} from '../../FakeDataService/FakeData'
 import {addLead} from '../Utils/DataHelper/Leads'
 import ImageZoomModal from './ImageZoomModal';
-import { checkSubscription, subscribe, unsubscribe }  from '../Utils/DataHelper/Subscription'
+import { checkSubscription, subscribe, unsubscribe, pinInstitute, unPinInstitute,checkForPin }  from '../Utils/DataHelper/Subscription'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import RenderSingleTestSeries from '../SeriesList/RenderSingleTestSeries'
@@ -35,6 +35,7 @@ import RenderDocument from './RenderDocument'
 import RenderVideo from './RenderVideo'
 import { LinearGradient } from "expo-linear-gradient";
 import {fetch_institute_feed} from '../Utils/DataHelper/Feed'
+import { throwIfAudioIsDisabled } from 'expo-av/build/Audio/AudioAvailability';
 
 const width = Dimensions.get('window').width
 class InstituteView extends React.Component {
@@ -68,7 +69,9 @@ class InstituteView extends React.Component {
         courseDocuments:[],
         courseVideos:[], 
         courseTimeTable:[],
-        courseTestSeries:[]
+        courseTestSeries:[],
+        pinId: '',
+        checkPinned: ''
      }
 
      
@@ -122,6 +125,29 @@ class InstituteView extends React.Component {
          fetch_institute_courses(this.state.instituteId,this.coursesCallBack)
          checkSubscription(this.state.studentId,this.state.instituteId,this.checkSubscriptionCallback) 
          fetch_latestUpcomingSchedule(this.state.instituteId,this.liveDataCallback)
+         checkForPin({"institute":{id: this.state.instituteId},"student":{id: this.props.userInfo.id}}, this.checkPinCallBack)
+    }
+
+    checkPinCallBack=(response)=>{
+        if(response.status==200)
+        {
+            response.json().then(data=>{
+                console.log("pindata success", data)
+                if(data.id)
+                {
+                    this.setState({checkPinned: true, pinId: data.id})
+                }
+                else if(data==null)
+                {
+                    this.setState({checkPinned: false})
+                }
+            })
+            
+        }
+        else
+        {
+            console.log("not pinned", response.status)
+        }
     }
 
     checkSubscriptionCallback=(response)=>{
@@ -872,8 +898,32 @@ class InstituteView extends React.Component {
 
     closeModal = () => {
         this.setState({ zoomModal: false });
-      }
+    }
         
+    pinCallBack=(response)=>{
+        if(response.status==201)
+        {
+            console.log("pin success")
+            console.log(response.headers.map.location)
+            this.setState({pinId: response.headers.map.location, checkPinned: true})
+        }
+        else
+        {
+            console.log("pin error", response.status)
+        }
+    }
+
+    unPinCallBack=(response)=>{
+        if(response.status==200)
+        {
+            console.log("unpinned success")
+            this.setState({checkPinned: false})
+        }
+        else
+        {
+            console.log("unpin error", response.status)
+        }
+    }
 
     render() {
       this.updateComponent()
@@ -985,10 +1035,18 @@ class InstituteView extends React.Component {
                                                 <Feather name="share" size={20}/>
                                                 <Text style={{marginLeft:5}}>Follow</Text>
                                             </TouchableOpacity>)}
-                                            <View style={{flexDirection: 'row',margin:5}}>
-                                                <Feather name="share" size={20}/>
-                                                <Text style={{marginLeft:5}}>Add to wishlist</Text>
-                                            </View>
+                                            
+                                            {!this.state.checkPinned?(
+                                                    <TouchableOpacity onPress={()=>pinInstitute({"institute":{id: this.state.instituteId},"student":{id: this.props.userInfo.id}}, this.pinCallBack)} style={{flexDirection: 'row',margin:5}}>
+                                                        <Feather name="share" size={20}/>
+                                                        <Text style={{marginLeft:5}}>Pin</Text>
+                                                    </TouchableOpacity>
+                                            ):(
+                                                    <TouchableOpacity onPress={()=>unPinInstitute(this.state.pinId, this.unPinCallBack)} style={{flexDirection: 'row',margin:5}}>
+                                                        <Feather name="share" size={20}/>
+                                                        <Text style={{marginLeft:5}}>UnPin</Text>
+                                                    </TouchableOpacity>
+                                            )}
                                             <View style={{flexDirection: 'row',margin:5}}>
                                                 <Feather name="share" size={20}/>
                                                 <Text style={{marginLeft:5}}>Flag as inappropriate</Text>
