@@ -58,15 +58,23 @@ class Feed extends React.Component {
     
     toggleCatMode=(mode,item)=>
     {
+        console.log("feed modes ",mode,item)
         switch(mode)
         {
             case true:
-                this.setState({offset:0,loadingData:true,},()=>
+                this.setState({offset:0,loadingData:true,feeds:[]},()=>
                 {
-                    fetch_feed_by_category(item.name,this.state.offset,dataLimit,this.handleFeedCallBack)
+                    fetch_feed_by_category(item.id,this.state.offset,dataLimit,this.handleFeedCallBack)
                 })
                 break;
+                
             case false:
+
+                this.setState({offset:0,loadingData:true,feeds:[]},()=>
+                {
+                    fetch_feed_all(this.state.offset,dataLimit,this.handleFeedCallBack);
+                })
+                
             break;
         }
         

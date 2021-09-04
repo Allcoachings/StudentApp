@@ -34,7 +34,7 @@ class AddFeedModal extends Component {
   }
 
   updateState=(type, description, feedImages, pollOptions, id, index,date)=>{
-      console.log(date);
+     
     if(type==1)
     {
         this.setState({postType: type,creationTime: date, feedImageData: feedImages, description: description, mode: "edit", id: id, index: index})
@@ -132,6 +132,7 @@ class AddFeedModal extends Component {
                     pollVoterList: ",",
                     feedLikerIns: ",",
                     feedLikerStudent: ",", 
+                    categoryId:this.props.categoryId?this.props.categoryId:-1
                 },
                 feedPollOptions:this.state.pollOptions
             }
@@ -171,7 +172,8 @@ class AddFeedModal extends Component {
                     pollVotedStudents: ",",
                     pollVoterList: ",",
                     feedLikerIns: ",",
-                    feedLikerStudent: ",",   
+                    feedLikerStudent: ",",  
+                    categoryId:this.props.categoryId?this.props.categoryId:-1 
                 },
                 feedPollOptions:null
             }
@@ -206,6 +208,7 @@ class AddFeedModal extends Component {
                     pollVoterList: ",",
                     feedLikerIns: ",",
                     feedLikerStudent: ",",  
+                    categoryId:this.props.categoryId?this.props.categoryId:-1
                 },
                 feedPollOptions:null
             }
@@ -404,7 +407,7 @@ setFeedTypeOption=(postType)=>
       this.setState({showFeedTypeOptions: true})
   }
   render() {
-      
+        console.log("feed categoryID",this.props.categoryId)
     return (
         // <Modal 
         //     animationType = {"fade"} 

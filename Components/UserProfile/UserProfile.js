@@ -24,6 +24,7 @@ import RenderVideo from '../InstituteView/RenderVideo';
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import { isThisSecond } from 'date-fns/esm';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // import {Feed} from "../Feed/Feed"
 
 class UserProfile extends React.Component {
@@ -68,6 +69,7 @@ class UserProfile extends React.Component {
 
     componentDidMount() {
         fetch_student_purchase(this.props.userInfo.id, this.state.offset, dataLimit,this.purchaseCallback)
+        this.checkForUserCat()
     }
 
     purchaseCallback=(response)=>{
@@ -293,7 +295,21 @@ class UserProfile extends React.Component {
                         break;
         }
     }
-
+    checkForUserCat=()=>
+    {
+        AsyncStorage.getItem("userCat").then((response)=>{
+            console.log(response)
+             if(response)
+             {
+                 console.log(response)
+                 let obj = JSON.parse(response);
+                 this.setState({categoryId:obj.id}) 
+             }else
+             {
+                this.setState({categoryId:null}) 
+             }
+        })
+    }
     loadMoreOnPress=()=>{
         if(this.state.subActiveTab=="video")
         {
@@ -356,6 +372,7 @@ class UserProfile extends React.Component {
                             posterId={this.props.userInfo.id} 
                             posterImage={this.props.userInfo.studentImage}
                             postedBy={2}
+                            categoryId={this.state.categoryId}
                             instituteDetails={this.props.userInfo}
                             setUpdateFun={this.setUpdateEditFeedState}
                             updateSingleFeed={this.updateSingleFeed}
