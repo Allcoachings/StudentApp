@@ -4,6 +4,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Entity.Student;
 import com.allcoaching.AllCoachingRestApi.Entity.StudentPinList;
 import com.allcoaching.AllCoachingRestApi.Service.StudentPinListService;
+import com.allcoaching.AllCoachingRestApi.dto.CheckPinInputDto;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -48,9 +49,10 @@ public class StudentPinListController {
 
     @CrossOrigin(origins = "*")
     @PostMapping("/check")
-    public Optional<StudentPinList> deleteById(@RequestBody Student student, Institute institute)
+    public Optional<StudentPinList> deleteById(@RequestBody CheckPinInputDto checkPinInputDto)
     {
-       return studentPinListService.checkPin(student,institute);
+       return studentPinListService.checkPin(checkPinInputDto.getStudent(),checkPinInputDto.getInstitute());
+
     }
 
 
