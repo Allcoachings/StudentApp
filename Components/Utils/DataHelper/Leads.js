@@ -42,8 +42,7 @@ import mime from "mime";
             fetch(serverApiUrl+"institute/leads/"+insId+"/"+offset+"/"+dataLimit,
             {
                 method: 'GET', 
-                headers,
-                // body:JSON.stringify({title,description,fees,instId})
+                headers, 
             })
             .then((response)=>callback(response)) 
             .catch((error)=>{console.log(error)})
