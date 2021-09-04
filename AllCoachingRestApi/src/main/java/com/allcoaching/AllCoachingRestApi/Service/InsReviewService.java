@@ -4,6 +4,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Respository.InsReviewRepo;
 import com.allcoaching.AllCoachingRestApi.Respository.InstituteRepo;
 import com.allcoaching.AllCoachingRestApi.dto.InsReviewDto;
+import com.allcoaching.AllCoachingRestApi.dto.SalesOverViewDataDto;
 import com.allcoaching.AllCoachingRestApi.dto.StudentPurchaseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -151,5 +152,11 @@ public class InsReviewService {
         instituteRepo.increaseTotalRating(insReview.getInsId(),insReview.getRating()-insReview_old.getRating());
 
           insReviewRepo.updateReviewById(insReview.getId(), insReview.getReview(), insReview.getRating());
+    }
+
+
+    public  Iterable<SalesOverViewDataDto> salesOverViewDataData(long insId)
+    {
+        return  insReviewRepo.findAllGroupedByCourseId(insId);
     }
 }

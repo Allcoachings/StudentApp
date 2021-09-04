@@ -6,7 +6,7 @@ import {votePoll} from "../Utils/DataHelper/Feed"
 import { connect } from 'react-redux';
 class RenderPollOption extends React.Component {
     state = {  }
-    percentage =()=> (this.props.item.upVotes/this.props.totalVote)*100 
+    percentage =()=> Math.round((this.props.item.upVotes/this.props.totalVote)*100,0 )
 
 
     voteForPoll=(poll_id,option_id)=>

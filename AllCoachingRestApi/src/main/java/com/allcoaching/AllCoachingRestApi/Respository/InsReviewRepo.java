@@ -1,15 +1,13 @@
 package com.allcoaching.AllCoachingRestApi.Respository;
 
 import com.allcoaching.AllCoachingRestApi.Entity.InsReview;
-import com.allcoaching.AllCoachingRestApi.dto.InsLeadsDto;
-import com.allcoaching.AllCoachingRestApi.dto.InsLeadsStudentDto;
-import com.allcoaching.AllCoachingRestApi.dto.InsReviewDto;
-import com.allcoaching.AllCoachingRestApi.dto.StudentPurchaseDto;
+import com.allcoaching.AllCoachingRestApi.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -45,11 +43,14 @@ public interface InsReviewRepo extends PagingAndSortingRepository<InsReview,Long
     @Query("UPDATE InsReview set review=:review, rating=:rating where id=:id")
     int updateReviewById(long id, String review, int rating);
 
-    @Query("Select new com.allcoaching.AllCoachingRestApi.dto.InsLeadsDto(c.id,c.title,c.leads) from Course c , InsReview ir where c.id = ir.courseId and ir.insId=:id")
-    Page<InsLeadsDto> findAllByInsId(long id, Pageable pageable);
+
+
+    @Query(name="salesOverview", nativeQuery = true)
+    Iterable<SalesOverViewDataDto> findAllGroupedByCourseId(@Param("insId") long insId);
 
     @Query("Select new com.allcoaching.AllCoachingRestApi.dto.InsLeadsStudentDto(s.id,s.name,s.studentImage,s.userId) from Student s , InsReview ir where s.id = ir.studentId and ir.courseId=:id")
     Page<InsLeadsStudentDto> findAllByCourseId(long id, Pageable pageable);
+
 
 
     long countByCourseId(long courseId);

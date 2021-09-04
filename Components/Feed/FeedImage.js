@@ -109,7 +109,7 @@ addImage=(link, type)=>{
                         
                         {feed.feed.description?( 
                             <View style={{marginVertical:10}}>
-                                <Text style={{color: theme.greyColor,fontFamily:'Raleway_400Regular'}}>
+                                <Text style={{fontFamily:'Raleway_400Regular', marginVertical: 10,fontSize:17}}>
                                     {feed.feed.description}
                                 </Text>
                             </View>
