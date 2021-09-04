@@ -1,6 +1,8 @@
 package com.allcoaching.AllCoachingRestApi.Entity;
 
 import com.allcoaching.AllCoachingRestApi.dto.Graph2dDataDto;
+import com.allcoaching.AllCoachingRestApi.dto.InsLeadsDto;
+import com.allcoaching.AllCoachingRestApi.dto.SalesOverViewDataDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -71,6 +73,26 @@ import java.util.Date;
                         @ColumnResult(name = "x", type = String.class),
                         @ColumnResult(name = "y", type = String.class),
 
+                }
+        )
+)
+
+
+@NamedNativeQuery(
+        name = "leadsData",
+        query ="SELECT course_id,c.title as name,COUNT(course_id) as leads  FROM ins_leads il,course c "+
+                " WHERE c.id=il.course_id and  ins_id=:insId GROUP BY course_id,ins_id"
+        ,
+        resultSetMapping = "leadsDataDto"
+)
+@SqlResultSetMapping(
+        name = "leadsDataDto",
+        classes = @ConstructorResult(
+                targetClass = InsLeadsDto.class,
+                columns = {
+                        @ColumnResult(name = "course_id", type = Long.class),
+                        @ColumnResult(name = "leads", type = Long.class),
+                        @ColumnResult(name = "name", type = String.class),
                 }
         )
 )

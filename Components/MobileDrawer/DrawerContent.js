@@ -35,6 +35,7 @@ export function DrawerContent(props){
     const dispatch = useDispatch();
     const userLogoutButton =()=>
     {
+         props.navigation.closeDrawer();
         AsyncStorage.clear().then(()=>{
             dispatch({type:USER_AUTH_STATUS,payload:{authStatus:false}})
         })
