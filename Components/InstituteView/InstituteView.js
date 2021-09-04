@@ -26,7 +26,7 @@ import FeedPoll from '../Feed/FeedPoll';
 import {tabListInstitute} from '../../FakeDataService/FakeData'
 import {addLead} from '../Utils/DataHelper/Leads'
 import ImageZoomModal from './ImageZoomModal';
-import { checkSubscription, subscribe, unsubscribe }  from '../Utils/DataHelper/Subscription'
+import { checkSubscription, subscribe, unsubscribe, pinInstitute, unPinInstitute }  from '../Utils/DataHelper/Subscription'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import RenderSingleTestSeries from '../SeriesList/RenderSingleTestSeries'
@@ -872,8 +872,29 @@ class InstituteView extends React.Component {
 
     closeModal = () => {
         this.setState({ zoomModal: false });
-      }
+    }
         
+    pinCallBack=(response)=>{
+        if(response.status==200)
+        {
+            console.log("pinned")
+        }
+        else
+        {
+            console.log("pin", response.status)
+        }
+    }
+
+    unPinCallBack=(response)=>{
+        if(response.status==200)
+        {
+            console.log("unpinned")
+        }
+        else
+        {
+            console.log("unpin", response.status)
+        }
+    }
 
     render() {
       this.updateComponent()
@@ -985,10 +1006,10 @@ class InstituteView extends React.Component {
                                                 <Feather name="share" size={20}/>
                                                 <Text style={{marginLeft:5}}>Follow</Text>
                                             </TouchableOpacity>)}
-                                            <View style={{flexDirection: 'row',margin:5}}>
+                                            <TouchableOpacity onPress={()=>pinInstitute({"institute":{id: this.state.instituteId},"student":{id: this.props.userInfo.id}}, this.pinCallBack)} style={{flexDirection: 'row',margin:5}}>
                                                 <Feather name="share" size={20}/>
-                                                <Text style={{marginLeft:5}}>Add to wishlist</Text>
-                                            </View>
+                                                <Text style={{marginLeft:5}}>Pin</Text>
+                                            </TouchableOpacity>
                                             <View style={{flexDirection: 'row',margin:5}}>
                                                 <Feather name="share" size={20}/>
                                                 <Text style={{marginLeft:5}}>Flag as inappropriate</Text>

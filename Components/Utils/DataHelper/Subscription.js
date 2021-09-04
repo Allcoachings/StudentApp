@@ -115,24 +115,37 @@ import {serverApiUrl} from '../../config'
         .catch((error)=>{console.log(error)})
     }
 
-    export const institutePinUnpin=(studentId,insId,callback)=>
+    export const pinInstitute=(student, institute,callback)=>
     {
-
-        // var formData   = new FormData(); 
-        // formData.append("fetch_banners",'true') 
-        // formData.append("offset",offset) 
-        // formData.append("data_limit",limit)  
         let headers = new Headers(); 
         headers.append('Content-Type', 'application/json');  
         headers.append('Access-Control-Allow-Origin', serverApiUrl);
         headers.append('Access-Control-Allow-Credentials', 'true'); 
         headers.append('GET', 'POST', 'OPTIONS'); 
 
-            fetch(serverApiUrl+"subscription/unsubscribe",
+            fetch(serverApiUrl+"student/pin/",
         {
             method: 'POST',  
             headers,
-            body:JSON.stringify({studentId,insId})
+            body:JSON.stringify({student, institute})
+        })
+        .then((response)=>callback(response)) 
+        .catch((error)=>{console.log(error)})
+    }
+
+    export const unPinInstitute=(id,callback)=>
+    {
+        let headers = new Headers(); 
+        headers.append('Content-Type', 'application/json');  
+        headers.append('Access-Control-Allow-Origin', serverApiUrl);
+        headers.append('Access-Control-Allow-Credentials', 'true'); 
+        headers.append('GET', 'POST', 'OPTIONS'); 
+
+            fetch(serverApiUrl+"student/pin/delete/"+id,
+        {
+            method: 'DELETE',  
+            headers,
+            // body:JSON.stringify({student, institute})
         })
         .then((response)=>callback(response)) 
         .catch((error)=>{console.log(error)})
