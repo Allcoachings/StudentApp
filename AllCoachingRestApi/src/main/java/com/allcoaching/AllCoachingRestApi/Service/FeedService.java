@@ -52,6 +52,7 @@ public class FeedService {
 
             feedImages.forEach(item->item.setFeedId(feed_saved.getId()));
             System.out.println("feed Images "+feedImages);
+            feedImageRepo.deleteByFeedId(feed_saved.getId());
             feedImageRepo.saveAll(feedImages);
         }
         return feed_saved;

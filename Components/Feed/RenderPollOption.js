@@ -27,44 +27,42 @@ class RenderPollOption extends React.Component {
         }
     }
 
-    switchCanUserVote=(status,index)=>
-    {
-         
+    switchCanUserVote=(status,index,item)=>
+    { 
         switch(status)
         {
             case true:
                 return(
-                    <TouchableOpacity onPress={()=>this.voteForPoll(this.props.item.feedId,this.props.item.id)}>
-                        <RatingBar progressColor={theme.greyColor+"1A"} duration={2000} backgroundColor={theme.primaryColor} height={40} label={this.props.item.pollOption} progress={0} borderRadius={5} style={{borderWidth:1,padding:10}}/>
+                    <TouchableOpacity onPress={()=>this.voteForPoll(item.feedId,item.id)}>
+                        <RatingBar progressColor={theme.greyColor+"1A"} duration={2000} backgroundColor={theme.primaryColor} height={40} label={item.pollOption} progress={0} borderRadius={5} style={{borderWidth:1,padding:10}}/>
                     </TouchableOpacity>
                 )
             case false:
                 return(
                     <TouchableWithoutFeedback onPress={()=>this.props.setFocusedOptionIndex(index)}>
                         <View style={this.props.focusedOptionIndex==index?{borderWidth:1,borderColor:theme.blueColor,borderRadius:5}:{borderWidth:1,borderColor:theme.labelOrInactiveColor,borderRadius:5}}>
-                            <RatingBar labelStyle={{color:this.props.focusedOptionIndex==index?theme.blueColor :theme.greyColor}} progressStyle={{color:this.props.focusedOptionIndex==index?theme.blueColor :theme.greyColor} } progressColor={this.props.focusedOptionIndex==index?theme.blueColor+'1A':theme.greyColor+"1A"} duration={1000} backgroundColor={theme.primaryColor} height={40} label={this.props.item.pollOption} showProgress={true} progress={this.percentage()} borderRadius={this.props.focusedOptionIndex==index?5:0}/>
+                            <RatingBar labelStyle={{color:this.props.focusedOptionIndex==index?theme.blueColor :theme.greyColor}} progressStyle={{color:this.props.focusedOptionIndex==index?theme.blueColor :theme.greyColor} } progressColor={this.props.focusedOptionIndex==index?theme.blueColor+'1A':theme.greyColor+"1A"} duration={1000} backgroundColor={theme.primaryColor} height={40} label={item.pollOption} showProgress={true} progress={this.percentage()} borderRadius={this.props.focusedOptionIndex==index?5:0}/>
                         </View>
                     </TouchableWithoutFeedback>
                 )
         }
     }
 
-    renderOption=()=>
+    renderOption=(item)=>
     {
 
         return(
             <>
                 {/* <Text style={styles.optionText}>{this.props.item.pollOption}</Text> */}
-                {this.switchCanUserVote(this.props.canUserVote,this.props.index)}
+                {this.switchCanUserVote(this.props.canUserVote,this.props.index,item)}
             </>
         )
     }
     render() {
-       
-console.log(this.props.focusedOptionIndex);
+        
         return (
             <View style={styles.container}>
-                {this.renderOption()} 
+                {this.renderOption(this.props.item)} 
             </View>
         );
     }

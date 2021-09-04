@@ -36,6 +36,7 @@ export default class FlatListSlider extends Component {
     onPress: {},
     contentContainerStyle: {},
     component: <ChildItem/>,
+    imageProvider:(i)=>i
   };
 
   constructor(props) {
@@ -100,7 +101,8 @@ export default class FlatListSlider extends Component {
               active: index === this.state.index,
               local: this.props.local,
               height: this.props.height,
-              serverBaseUrl: this.props.serverBaseUrl
+              serverBaseUrl: this.props.serverBaseUrl,
+              imageProvider: this.props.imageProvider,
             })}
           }
           ItemSeparatorComponent={() => (

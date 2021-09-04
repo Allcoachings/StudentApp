@@ -19,6 +19,19 @@ class FeedPoll extends Component {
         totalPollVotes: this.props.item.feed.feed.totalPollVotes,
         canUserLike:this.props.type==1?(this.props.item.feed.feed.feedLikerIns&&this.props.item.feed.feed.feedLikerIns.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.feedLikerStudent&&this.props.item.feed.feed.feedLikerStudent.includes(`,${this.props.userInfo.id},`)?(false):(true)):(true)),
     }
+    componentDidUpdate = (prevProps, prevState) => {
+      
+    //   let cond = JSON.stringify(this.props.item.feed.feedPollOptions) != JSON.stringify(this.state.optionData) 
+    //   console.log("after after after after",cond);
+    //   if(cond)
+    //   {
+    //         this.setState({optionData:this.props.item.feed.feedPollOptions})
+    //   }else
+    //   {
+    //       console.log(this.props.item.feed.feedPollOptions,"state",this.state.optionData)
+    //   }
+    };
+    
     setFocusedOptionIndex=(focusedOptionIndex)=>
     {
         this.setState({focusedOptionIndex})
@@ -99,19 +112,20 @@ class FeedPoll extends Component {
             break;
       }
     }
-    editFeedPressHandler =()=>this.props.mode=="userProfile"||this.props.mode=="insProfile"?(this.props.updateEditFeedState(this.props.item.feed.feed.feedType, this.props.item.feed.feed.pollQuestion, null, this.state.optionData, this.props.item.feed.feed.id, this.props.index)):(null)
+    editFeedPressHandler =()=>this.props.mode=="userProfile"||this.props.mode=="insProfile"?(this.props.updateEditFeedState(this.props.item.feed.feed.feedType, this.props.item.feed.feed.pollQuestion, null, this.state.optionData, this.props.item.feed.feed.id, this.props.index,this.props.item.feed.feed.creationTime)):(null)
     render() {
-    console.log("this.state.canUserLike", this.state.optionData)
+    // console.log("this.state.canUserLike", this.state.optionData)
     const{feed,posterObject} = this.props.item 
-    if(!posterObject)
-    {
-        console.log(this.props.item)
-    }
+    // if(!posterObject)
+    // {
+    //     console.log(this.props.item)
+    // }
+  
     return(
         // CardView(
             <View style={{flexDirection: 'column', padding: 5}}>
                 <View style={styles.boxView}> 
-                    <FeedHeader editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime}/>
+                    <FeedHeader  mode={this.props.mode} editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime}/>
                     <View style={styles.innerBoxView}>
                         
                         <Text style={{ fontFamily:'Raleway_400Regular',marginTop: 10,}}>{feed.feed.pollQuestion}</Text>
@@ -119,6 +133,7 @@ class FeedPoll extends Component {
                             data={this.state.optionData}
                             renderItem={({item,index})=><RenderPollOption setFocusedOptionIndex={this.setFocusedOptionIndex} focusedOptionIndex={this.state.focusedOptionIndex} updateVote={this.updateVote} item={item} canUserVote={this.state.canUserVote} totalVote={this.state.totalPollVotes} userType={this.props.type} index={index}/>}
                             keyExtractor={(item)=>item.id}
+                            
                         />
                         {/* <View Style={{display: 'flex', flexDirection: 'column'}}>
                             <Text style={{fontSize: 16, marginTop: 3}}>Pacific Ocean</Text>

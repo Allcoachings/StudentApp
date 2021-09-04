@@ -22,6 +22,10 @@ public interface FeedRepo extends PagingAndSortingRepository<Feed,Long> {
 
     Page<Feed> findByTagsContaining(String tags,Pageable page);
 
+
+    @Modifying
+    @Query("UPDATE Feed set commentCount=commentCount+1 where id=:id")
+    void increaseFeedCommentCount(long id);
     @Modifying
     @Query("UPDATE Feed set likes=likes+1,feedLikerIns = CONCAT(feedLikerIns,:insId,',') where id=:id")
     void likeFeedIns(long id,long insId);

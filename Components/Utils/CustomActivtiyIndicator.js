@@ -6,6 +6,12 @@ import ShimmerHome from './ShimmerHome';
 import ShimmerInstituteViewHeader from './ShimmerInstituteViewHeader';
 import ShimmerProfile from './ShimmerProfile';
 import ShimmerTestSeries from './ShimmerTestSeries';
+import ShimmerVideo from './ShimmerVideo';
+import ShimmerDocument from './ShimmerDocument';
+import ShimmerLiveNow from './ShimmerLiveNow';
+import ShimmerTestItem from './ShimmerTestItem';
+import ShimmerResult from './ShimmerResult';
+import ShimmerQuestion from './ShimmerQuestion';
 
 const WIDTH = Dimensions.get('screen').width;
 
@@ -53,12 +59,12 @@ class CustomActivtiyIndicator extends React.Component {
                         <Shimmer width={WIDTH} height={140} />
                     </View>
                 )
-                case 'homeShimmer':
+                case 'homeShimmer': 
                     return(<ShimmerHome />)
                 case 'questionSkimmer':
-                    return(<ShimmerHome />)
+                    return(<ShimmerQuestion />)
                 case 'resultSkimmer':
-                    return(<ShimmerHome />)
+                    return(<ShimmerResult/>)
                 case 'testSeries':
                     return(<ShimmerTestSeries />)
                 case 'profile':
@@ -66,9 +72,9 @@ class CustomActivtiyIndicator extends React.Component {
                 case 'instituteView':
                     return(<ShimmerInstituteViewHeader />)
                 case 'document':
-                    return(<ShimmerInstituteViewHeader />)
+                    return(<ShimmerVideo />)
                 case 'video':
-                    return(<ShimmerInstituteViewHeader />)
+                    return(<ShimmerDocument />)
 
                 default:
                     return (

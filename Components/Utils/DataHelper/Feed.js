@@ -57,6 +57,12 @@ import mime from "mime";
 
             export const uploadFeedImage=(image,callback)=>
             {
+                console.log("Upload",typeof image)
+                if(typeof image == 'object'&&image.feedImage&&image.feedImage.startsWith("files/"))
+                {
+                    callback({status:201,headers:{map:{location:image}}})
+                    return;
+                }
                 const newImageUri =  "file:///" + image.uri.split("file:/").join("");
                 var formData   = new FormData();  
                 formData.append("image",{ 

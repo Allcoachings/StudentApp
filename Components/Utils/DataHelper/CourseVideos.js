@@ -38,15 +38,11 @@ export   const addVideoComment=(comment,studentId,videoId,callback)=>
             // formData.append("fetch_banners",'true') 
             // formData.append("offset",offset) 
             // formData.append("data_limit",limit)  
-            let headers = new Headers();
-
-            headers.append('Content-Type', 'application/json'); 
-
+            let headers = new Headers(); 
+            headers.append('Content-Type', 'application/json');  
             headers.append('Access-Control-Allow-Origin', serverApiUrl);
-            headers.append('Access-Control-Allow-Credentials', 'true');
-
-            headers.append('GET', 'POST', 'OPTIONS'); 
-
+            headers.append('Access-Control-Allow-Credentials', 'true'); 
+            headers.append('GET', 'POST', 'OPTIONS');  
              fetch(serverApiUrl+'/institute/course/video/comment/add',
             {
                 method: 'POST',  
@@ -87,5 +83,23 @@ export   const fetchVideoComments =( videoId,offset,dataLimit,callback)=>
             .catch((error)=>{console.log(error)}) 
 } 
 
+//video views
 
+export const updateVideoView =( videoId,callback)=>
+{
+    let headers = new Headers(); 
+    headers.append('Content-Type', 'application/json');  
+    headers.append('Access-Control-Allow-Origin', serverApiUrl);
+    headers.append('Access-Control-Allow-Credentials', 'true'); 
+    headers.append('GET', 'POST', 'OPTIONS');  
+    console.log(serverApiUrl+'institute/course/video/views/'+videoId)
+     fetch(serverApiUrl+'institute/course/video/views/'+videoId,
+    {
+        method: 'POST',  
+        headers,
+        // body:JSON.stringify({comment,student:{id:studentId},videoId})
+    })
+    .then((response)=>callback(response)) 
+    .catch((error)=>{console.log(error)})
+}
 

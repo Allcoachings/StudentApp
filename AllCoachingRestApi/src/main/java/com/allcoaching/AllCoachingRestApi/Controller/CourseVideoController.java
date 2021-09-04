@@ -134,7 +134,7 @@ public class CourseVideoController {
     }
 
     @CrossOrigin(origins = "*")
-    @PostMapping("/video/views/{v_id}")
+    @PostMapping("/views/{v_id}")
     public ResponseEntity<Object> videoView(@PathVariable long v_id )
     {
          courseVideoService.updateVideoViewsById(v_id);

@@ -30,7 +30,7 @@ class Main extends React.Component {
           //     shortHeight: Dimensions.get('window').height - e.endCoordinates.height, 
           // }); 
           let marginTop=Dimensions.get('window').height - e.endCoordinates.height;
-          console.log("keyboard Open",marginTop," ",e.endCoordinates.height," ",Dimensions.get('window').height);
+        //   console.log("keyboard Open",marginTop," ",e.endCoordinates.height," ",Dimensions.get('window').height);
           this.props.setKeyboardHeight(e.endCoordinates.height)
       }
       _keyboardDidHide(e) {
@@ -39,7 +39,7 @@ class Main extends React.Component {
           //     normalHeight: Dimensions.get('window').height, 
           //     shortHeight: Dimensions.get('window').height - e.endCoordinates.height, 
           // }); 
-          console.log("keyboard hidden");
+        //   console.log("keyboard hidden");
 
           this.props.setKeyboardHeight(null)
       }
@@ -81,9 +81,11 @@ class Main extends React.Component {
                         this.props.setUserInfo(data)
                     break;
                 }
-                console.log(data)
+            
+                
+                
             }
-            console.log("nodata")
+            // console.log("nodata")
         }) 
 
       

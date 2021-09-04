@@ -69,6 +69,14 @@ export const setKeyboardHeight =(height)=>
     }
 }
 
+export const setActiveBottomTab =(tabIndex) => 
+{
+    return{
+        type:actionTypes.SET_ACTIVE_BOTTOM_TAB, //this type will be used to match
+        payload:tabIndex
+
+    }
+}
 //screen reducer actions ends
 
 //institute reducer

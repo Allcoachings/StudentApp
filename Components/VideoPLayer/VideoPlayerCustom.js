@@ -11,7 +11,7 @@ import { theme,dataLimit } from '../config'
 import moment from 'moment'
 import VideoCommentItem from './VideoCommentItem'
 import AddComment from './AddComment'
-import { fetchVideoComments } from '../Utils/DataHelper/CourseVideos'
+import { fetchVideoComments, updateVideoView } from '../Utils/DataHelper/CourseVideos'
 
 export default VideoPlayerCustom=(props)=>
 {
@@ -32,14 +32,21 @@ export default VideoPlayerCustom=(props)=>
         setComments([commentObj,...comments])
     }
     useEffect(() => {
+
+        updateVideoView(props.route.params.item.id,(response)=>{
+            console.log(response.status)
+            if(response.status==200)
+            {
+                 console.log("updates video views")
+            }
+        })
         fetchVideoComments(props.route.params.item.id,offset,dataLimit,(response)=>{
 
             if(response.status ==200)
             {
                 response.json().then(data=>
                 {
-                    setComments(data);
-                    console.log(data);
+                    setComments(data); 
                 })
             }
         })
@@ -57,7 +64,7 @@ export default VideoPlayerCustom=(props)=>
       
         useEffect(() => {
             
-        
+            
             const backHandler = BackHandler.addEventListener(
               "hardwareBackPress",
               ()=>{
@@ -94,7 +101,7 @@ export default VideoPlayerCustom=(props)=>
           const onPlaybackRatePopupIconRef = icon => {
             
               if (!playbackButtonRef.current) {
-                console.log("ref play",icon)
+            
               
                 playbackButtonRef.current=icon
               }
@@ -134,6 +141,7 @@ export default VideoPlayerCustom=(props)=>
                     ref: refVideo,
                     source: {
                         uri: props.route.params.videoUrl,
+                        // uri:"https://youtu.be/uxk9wkR-ik0"
                     },
                     rate:playbackSpeed,
                     shouldCorrectPitch:true, 

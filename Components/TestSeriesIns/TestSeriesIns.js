@@ -188,9 +188,7 @@ const styles = StyleSheet.create({
                             marginRight: 3, 
                             color: theme.primaryColor,
                             flexShrink: 1
-                        }
-
-
+                        } 
 })
 
 const mapStateToProps = (state)=>{

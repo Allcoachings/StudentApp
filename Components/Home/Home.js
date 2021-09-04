@@ -29,12 +29,12 @@ class Home extends React.Component {
     }
 
     handleHomeDataCallBack=(response) => {
-        console.log("data",response.status)
+      
             if(response.status==200)
             {
                     response.json().then(data=>
                         {
-                            console.log("data",data)
+                          
                             this.setState({loadingData:false,homeMainContent:data});
                         })
             }else

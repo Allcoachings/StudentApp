@@ -60,7 +60,7 @@ class FeedText extends Component {
         }
       }
     
-editFeedPressHandler=()=>this.props.mode=="userProfile"||this.props.mode=="insProfile"?(this.props.updateEditFeedState(this.props.item.feed.feed.feedType, this.props.item.feed.feed.description, null, null, this.props.item.feed.feed.id, this.props.index)):(null)
+editFeedPressHandler=()=>this.props.mode=="userProfile"||this.props.mode=="insProfile"?(this.props.updateEditFeedState(this.props.item.feed.feed.feedType, this.props.item.feed.feed.description, null, null, this.props.item.feed.feed.id, this.props.index,this.props.item.feed.feed.creationTime)):(null)
 
     unLikeFeedCallBack=(response)=>{
         if(response.status==200)
@@ -85,9 +85,8 @@ editFeedPressHandler=()=>this.props.mode=="userProfile"||this.props.mode=="insPr
         // CardView(
             <View style={{flexDirection: 'column', padding: 5}}>
                 <View style={styles.boxView}>
-                    <FeedHeader editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime}/>
-                    <View style={styles.innerBoxView}>
-                         
+                    <FeedHeader editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime} mode={this.props.mode}/>
+                    <View style={styles.innerBoxView}> 
                         <Text style={{fontFamily:'Raleway_400Regular', marginVertical: 10,fontSize:17}}>{feed.feed.description}</Text>
                         <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation} changeCanUserLike={this.changeCanUserLike} unLikeFeed={this.unLikeFeed} likes={feed.feed.likes}/>
                     </View>

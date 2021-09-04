@@ -91,6 +91,7 @@ const initial_screen_state=
     screenWidth:0,
     statusBarHidden:false,
     keyboardHeight:null,
+    activeBottomTab:'Home'
 }
 const screen_reducer=(state=initial_screen_state,action)=>
 {
@@ -110,6 +111,11 @@ const screen_reducer=(state=initial_screen_state,action)=>
             return {
                 ...state,
                 keyboardHeight: action.payload
+            }
+        case actionTypes.SET_ACTIVE_BOTTOM_TAB:
+            return {
+                ...state,
+                activeBottomTab: action.payload
             }
         default:
             return state

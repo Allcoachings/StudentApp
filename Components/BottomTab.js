@@ -8,6 +8,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Text, View,StyleSheet,TouchableOpacity, FlatList} from 'react-native';
 import CardView from './Utils/CardView'
+import {setActiveBottomTab} from './Actions'
 import { connect } from 'react-redux'
 class BottomTab extends React.Component {
     tabs = [
@@ -66,6 +67,7 @@ class BottomTab extends React.Component {
     clickHandler=(key, params)=>{
       this.setState({activeTab:key})
       this.props.stackNavigation.navigate(key, params)
+      this.props.setActiveBottomTab(key)
     }
  
     renderTab=(tab,isActive)=>
@@ -82,7 +84,8 @@ class BottomTab extends React.Component {
         )
     }
 
-  render() {       
+  render() { 
+    console.log("bottom tab value:",this.props.activeBottomTab)      
     return ( 
      
         <View style={styles.container}>
@@ -93,7 +96,7 @@ class BottomTab extends React.Component {
                 ):(
                   <FlatList 
                       data={this.tabs} 
-                      renderItem={({item})=>this.renderTab(item,this.state.activeTab==item.key)}
+                      renderItem={({item})=>this.renderTab(item,this.props.activeBottomTab==item.key)}
                       keyExtractor={(item)=>item.key} 
                       numColumns={this.tabs.length}
                       columnWrapperStyle={{justifyContent:'space-between',flexDirection:'row'}}
@@ -123,7 +126,8 @@ const styles = StyleSheet.create({
 const mapStateToProps =(state) =>
 {
     return {
-       stackNavigation:state.layout.stackNavigation
+       stackNavigation:state.layout.stackNavigation,
+       activeBottomTab:state.screen.activeBottomTab
     }
 }
-export default connect(mapStateToProps)(BottomTab);
+export default connect(mapStateToProps,{setActiveBottomTab})(BottomTab);

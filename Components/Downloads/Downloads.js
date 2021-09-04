@@ -83,9 +83,22 @@ class Downloads extends Component {
 
     }
     componentDidMount() {
-        this.extractSavedItems(this.props.userInfo.id,this.state.activeTab==2?'document':'video');
-    }
+        
+        this.didFocusListener = this.props.navigation.addListener(
+            'focus',
+            (obj) => {
+                this.extractSavedItems(this.props.userInfo.id,this.state.activeTab==2?'document':'video');
 
+            }
+            );
+    }
+componentWillUnmount() {
+    console.log(this.didFocusListener)
+    if(this.didFocusListener)
+    {
+        this.didFocusListener.remove()
+    }
+}
   render() {
     return (
         <PageStructure 
@@ -100,19 +113,17 @@ class Downloads extends Component {
             noNotificationIcon={true}
         >
             <View>
-                    <View style={{borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}/> 
-                    <View style={styles.profile_navigation}>
-                            <View>
-                                <Text style={[styles.navlink,{color:this.state.activeTab==1?theme.accentColor:theme.labelOrInactiveColor}]} onPress={()=>{this.activeTab(1)}}>Videos</Text>
-                            </View>
-                            <View>
-                                <Text style={[styles.navlink,{color:this.state.activeTab==2?theme.accentColor:theme.labelOrInactiveColor}]} onPress={()=>{this.activeTab(2)}}>Documents</Text>
-                            </View> 
-                    </View> 
-                    <View style={{borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}/>
-
-
-                    {this.switchTabRender(this.state.activeTab)}
+                <View style={{borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}/> 
+                <View style={styles.profile_navigation}>
+                        <View>
+                            <Text style={[styles.navlink,{color:this.state.activeTab==1?theme.accentColor:theme.labelOrInactiveColor}]} onPress={()=>{this.activeTab(1)}}>Videos</Text>
+                        </View>
+                        <View>
+                            <Text style={[styles.navlink,{color:this.state.activeTab==2?theme.accentColor:theme.labelOrInactiveColor}]} onPress={()=>{this.activeTab(2)}}>Documents</Text>
+                        </View> 
+                </View> 
+                <View style={{borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}/>
+                {this.switchTabRender(this.state.activeTab)}
             </View>
       </PageStructure>
     );

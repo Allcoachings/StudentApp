@@ -7,12 +7,14 @@ class FeedHeader extends Component {
   state={
     
   }
+
+  actions = ['Edit'];
   showThreeMenu=()=>
   {
        
     UIManager.showPopupMenu(
         findNodeHandle(this.state.icon),
-        ["action","edit"],
+        this.actions,
         this.onError,
         this.onPopupEvent
     )
@@ -28,12 +30,12 @@ class FeedHeader extends Component {
   onPopupEvent = (eventName, index) => {
 
     if (eventName !== 'itemSelected') return 
-    switch (index)
+    switch (this.actions[index])
     {
-        case 0:
+        case "Edit":
                   this.props.editFeedPressHandler()
             break;
-        case 1: 
+        case "Share": 
 
           break;
     }
@@ -48,9 +50,12 @@ class FeedHeader extends Component {
                     <Text style={styles.coaching}>{posterObject.name}</Text> 
                     <Text style={styles.timeDateText}>{moment(creationTime).fromNow()}</Text>
                 </View>
-                <TouchableOpacity onPress={()=>this.showThreeMenu()}>
-                    <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
-                </TouchableOpacity>
+                {this.props.mode=="userProfile"||this.props.mode=="insProfile"?( 
+                    <TouchableOpacity onPress={()=>this.showThreeMenu()}>
+                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
+                    </TouchableOpacity>
+                ):(null)}
+                
             </View>
         )
     }

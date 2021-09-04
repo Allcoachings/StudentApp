@@ -174,8 +174,9 @@ class UserProfile extends React.Component {
 
     updateSingleFeed=(item, index)=>{
         var obj=this.state.feeds
+        // console.log("obj before ", obj[index])
         obj[index]=item;
-        console.log("obj ", obj)
+        // console.log("obj after ", obj[index])
         this.setState({feeds: obj})
     }
 
@@ -251,7 +252,7 @@ class UserProfile extends React.Component {
                                     {
                                         if(this.state.showLoadMore&&!this.state.loadingFooter)
                                         {
-                                            console.log("enddoc")
+                                           
                                             this.setState({ refreshing: true,loadingFooter:true,docOffset:parseInt(this.state.docOffset)+1},()=>this.loadMoreOnPress())
                                                 
                                         }

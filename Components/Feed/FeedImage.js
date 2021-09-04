@@ -95,15 +95,16 @@ addImage=(link, type)=>{
   }
 
 
-    editFeedPressHandler=()=>this.props.mode=="userProfile"||this.props.mode=="insProfile"?(this.props.updateEditFeedState(this.props.item.feed.feed.feedType, this.props.item.feed.feed.description, this.props.item.feed.feedImages, null, this.props.item.feed.feed.id, this.props.index)):(null)
+    editFeedPressHandler=()=>this.props.mode=="userProfile"||this.props.mode=="insProfile"?(this.props.updateEditFeedState(this.props.item.feed.feed.feedType, this.props.item.feed.feed.description, this.props.item.feed.feedImages, null, this.props.item.feed.feed.id, this.props.index,this.props.item.feed.feed.creationTime)):(null)
 
   render() {
     const{feed,posterObject} = this.props.item
+    console.log("data image of feed pancham sheroan",feed.feedImages)
     return(
         // CardView(
             <View style={{flexDirection: 'column', padding: 5}}>
                 <View style={styles.boxView}>
-                    <FeedHeader editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime}/>
+                    <FeedHeader  mode={this.props.mode} editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime}/>
                     <View style={styles.innerBoxView}>
                         
                         {feed.feed.description?( 
@@ -115,8 +116,8 @@ addImage=(link, type)=>{
                         ):(null)}
 
                         {feed.feedImages.length == 1?(
-                            <TouchableOpacity onPress={()=>this.addImage(serverBaseUrl + feed.feedImages[0].feedImage, "normal")}>
-                                <Image source={{uri:serverBaseUrl + feed.feedImages[0].feedImage}} style={styles.img}/>
+                            <TouchableOpacity onPress={()=>this.addImage(imageProvider(feed.feedImages[0].feedImage), "normal")}>
+                                <Image source={{uri:imageProvider(feed.feedImages[0].feedImage)}} style={styles.img}/>
                             </TouchableOpacity>
                         ):( 
                             <FlatListSlider
@@ -132,6 +133,7 @@ addImage=(link, type)=>{
                                     animation 
                                     autoscroll={false}
                                     serverBaseUrl={serverBaseUrl}
+                                    imageProvider={imageProvider}
                             />
                         )}
                         <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation} changeCanUserLike={this.changeCanUserLike} unLikeFeed={this.unLikeFeed} likes={feed.feed.likes}/>

@@ -9,7 +9,8 @@ const ChildItem = ({
   imageKey,
   local,
   height,
-  serverBaseUrl
+  serverBaseUrl,
+  imageProvider
 }) => {
   return (
     <TouchableWithoutFeedback
@@ -18,7 +19,7 @@ const ChildItem = ({
         <View>
           <Image
             style={[styles.image, style, {height: height}]}
-            source={local ? item[imageKey] : {uri: serverBaseUrl+item[imageKey]}}
+            source={local ? item[imageKey] : {uri: imageProvider(item[imageKey])}}
           />
       </View>
     </TouchableWithoutFeedback>

@@ -2,6 +2,7 @@ package com.allcoaching.AllCoachingRestApi.Service;
 
 import com.allcoaching.AllCoachingRestApi.Entity.FeedComments;
 import com.allcoaching.AllCoachingRestApi.Respository.FeedCommentRepo;
+import com.allcoaching.AllCoachingRestApi.Respository.FeedRepo;
 import com.allcoaching.AllCoachingRestApi.dto.FeedCommentDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,9 +22,12 @@ public class FeedCommentService {
     private StudentService studentService;
     @Autowired InstituteService instituteService;
 
+    @Autowired
+    private FeedRepo feedRepo;
     //saving comment to database
     public FeedComments saveComment(FeedComments  feedComments)
     {
+        feedRepo.increaseFeedCommentCount(feedComments.getFeedId());
         return feedCommentRepo.save(feedComments);
     }
 

@@ -29,6 +29,7 @@ public class Feed {
 
     private String feedLikerIns=",";
     private String feedLikerStudent=",";
+    private long commentCount;
     private int likes;
 
     @CreationTimestamp
