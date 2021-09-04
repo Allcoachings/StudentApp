@@ -10,7 +10,9 @@ import FeedHeader from './FeedHeader'
 import moment from 'moment'
 class FeedText extends Component {
   state = {
-    // canUserLike: this.props.type==1?(this.props.item.feed.feed.feedLikerIns.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.feedLikerStudent.includes(`,${this.props.userInfo.id},`)?(false):(true)):(true)),
+    canUserLike:this.props.type==1?(this.props.item.feed.feed.feedLikerIns&&this.props.item.feed.feed.feedLikerIns.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.feedLikerStudent&&this.props.item.feed.feed.feedLikerStudent.includes(`,${this.props.userInfo.id},`)?(false):(true)):(true)),
+
+    likes: this.props.item.feed.feed.likes,
   }
   showThreeMenu=()=>
   {
@@ -48,7 +50,7 @@ class FeedText extends Component {
     likeFeedCallBack=(response)=>{
         if(response.status==200)
         {
-            console.log("ok")
+            this.setState({likes: parseInt(this.state.likes)+1})
         }
         else{
             console.log("failed")
@@ -65,7 +67,7 @@ editFeedPressHandler=()=>this.props.mode=="userProfile"||this.props.mode=="insPr
     unLikeFeedCallBack=(response)=>{
         if(response.status==200)
         {
-            console.log("ok")
+            this.setState({likes: this.state.likes-1})
         }
         else{
             console.log("failed")
@@ -80,6 +82,7 @@ editFeedPressHandler=()=>this.props.mode=="userProfile"||this.props.mode=="insPr
 
     
   render() {
+      
     const{feed,posterObject} = this.props.item
     return(
         // CardView(
@@ -88,7 +91,7 @@ editFeedPressHandler=()=>this.props.mode=="userProfile"||this.props.mode=="insPr
                     <FeedHeader editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime} mode={this.props.mode}/>
                     <View style={styles.innerBoxView}> 
                         <Text style={{fontFamily:'Raleway_400Regular', marginVertical: 10,fontSize:17}}>{feed.feed.description}</Text>
-                        <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation} changeCanUserLike={this.changeCanUserLike} unLikeFeed={this.unLikeFeed} likes={feed.feed.likes}/>
+                        <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation} changeCanUserLike={this.changeCanUserLike} unLikeFeed={this.unLikeFeed} likes={this.state.likes} comments={feed.feed.commentCount}/>
                     </View>
                 </View>
                 <View style={{borderTopWidth: 0.8, borderColor: theme.labelOrInactiveColor, marginVertical: 10, width: '100%'}}/>

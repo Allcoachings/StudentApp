@@ -16,7 +16,9 @@ class FeedImage extends Component {
     zoomModal: false,
     index: 0,
     imageArr:[],
-    type: ''
+    type: '',
+    likes: this.props.item.feed.feed.likes,
+    canUserLike:this.props.type==1?(this.props.item.feed.feed.feedLikerIns&&this.props.item.feed.feed.feedLikerIns.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.feedLikerStudent&&this.props.item.feed.feed.feedLikerStudent.includes(`,${this.props.userInfo.id},`)?(false):(true)):(true)),
   }
   showThreeMenu=()=>
   {
@@ -55,13 +57,13 @@ class FeedImage extends Component {
 }
 unLikeFeed=(feedId)=>{
     this.setState({canUserLike: !this.state.canUserLike},()=>{
-        unLike_feed(feedId,this.props.type,this.props.type==1?(this.props.institute.details.id):(this.props.userInfo.id),this.likeFeedCallBack)
+        unLike_feed(feedId,this.props.type,this.props.type==1?(this.props.institute.details.id):(this.props.userInfo.id),this.unLikeFeedCallBack)
     })
 }
 unLikeFeedCallBack=(response)=>{
     if(response.status==200)
     {
-        console.log("ok")
+        this.setState({likes: this.state.likes-1})
     }
     else{
         console.log("failed")
@@ -72,7 +74,7 @@ unLikeFeedCallBack=(response)=>{
 likeFeedCallBack=(response)=>{
     if(response.status==200)
     {
-        console.log("ok")
+        this.setState({likes: parseInt(this.state.likes)+1})
     }
     else{
         console.log("failed")
@@ -99,7 +101,7 @@ addImage=(link, type)=>{
 
   render() {
     const{feed,posterObject} = this.props.item
-    console.log("data image of feed pancham sheroan",feed.feedImages)
+    
     return(
         // CardView(
             <View style={{flexDirection: 'column', padding: 5}}>
@@ -136,7 +138,7 @@ addImage=(link, type)=>{
                                     imageProvider={imageProvider}
                             />
                         )}
-                        <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation} changeCanUserLike={this.changeCanUserLike} unLikeFeed={this.unLikeFeed} likes={feed.feed.likes}/>
+                        <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation} changeCanUserLike={this.changeCanUserLike} unLikeFeed={this.unLikeFeed} likes={this.state.likes} comments={feed.feed.commentCount}/>
                                                 
                     </View>
                     

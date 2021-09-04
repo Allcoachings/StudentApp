@@ -25,7 +25,7 @@ class Notification extends React.Component {
     }
 
     fetch=() => {
-        if(this.props.mode=="student")
+        if(this.props.route.params.mode=="student")
         {
             fetchNotifications(this.props.userInfo.id, 2, this.state.offset, dataLimit, this.notificationCallback)
         }
@@ -36,10 +36,12 @@ class Notification extends React.Component {
     }
 
     notificationCallback=(response)=>{
+        console.log(response.status)
         if(response.status==200)
         {
             response.json().then(data=>
             {
+                console.log(data)
                 if(data.length>0)
                 {
                     this.setState({notifications:[...this.state.notifications,...data],isNotificationLoading:false, showLoadMore: true, loadingFooter:false});  
@@ -88,6 +90,7 @@ class Notification extends React.Component {
     };
 
     render() {
+        
         return(
             <PageStructure
                 iconName={"menu"}

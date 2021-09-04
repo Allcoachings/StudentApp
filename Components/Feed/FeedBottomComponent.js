@@ -42,7 +42,7 @@ class FeedBottomComponent extends Component {
                     <FontAwesome name="comments" size={22} color={theme.greyColor} />
                 </TouchableOpacity>
                 <View style={{marginLeft:5}}>
-                    <Text>{'1.5'}K</Text>
+                    <Text>{this.props.comments}</Text>
                 </View>
             </View> 
             <TouchableOpacity style={styles.likeView} onPress={()=>onShare("TEset Me")}>
@@ -50,7 +50,7 @@ class FeedBottomComponent extends Component {
             </TouchableOpacity>
 
             {this.state.showCommentModal?(
-                <CommentModal feedId={this.state.feedId} modalVisible={this.state.showCommentModal} navigation={this.props.navigation} closeModal={this.closeModal}/>
+                <CommentModal feedId={this.state.feedId} modalVisible={this.state.showCommentModal} navigation={this.props.navigation} closeModal={this.closeModal} comments={this.props.comments}/>
             ):(null)}
         </View>
     )
