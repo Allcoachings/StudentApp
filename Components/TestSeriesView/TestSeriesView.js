@@ -15,7 +15,7 @@ import Question from './Question';
 import moment from 'moment' 
 import Timer from './Timer';
 import {setStatusBarHidden} from '../Actions'
-let backhandler;
+ 
 class TestSeriesView extends React.Component {
 
     state={
@@ -30,7 +30,8 @@ class TestSeriesView extends React.Component {
         correctQues:0,
         wrongQues:0,
         attempted:0,
-        testScore:0
+        testScore:0,
+        backhandler:null
     }
 
     questionCallback=(response) => 
@@ -53,11 +54,20 @@ class TestSeriesView extends React.Component {
         fetch_testSeries_questions(this.state.testSeriesId,this.state.offset,dataLimit,this.questionCallback)
         // this.timer();
 
-       backhandler =  BackHandler.addEventListener('hardwareBackPress',  ()=> {
-            this.showAlert()
-            
-            return true;
-          });
+        this.backHandlerListener() 
+    }
+    backHandlerListener  =()=> { 
+        
+        let backhandler =  BackHandler.addEventListener('hardwareBackPress',  ()=> 
+                {
+                    this.showAlert()
+                    
+                    return true;
+                });
+                this.setState({backhandler});
+
+
+
     }
     showAlert=()=>
     {
@@ -96,7 +106,7 @@ class TestSeriesView extends React.Component {
                         <View style={styles.pauseBtnView}>
                             {/* <Feather name="pause-circle" size={13} color={theme.greyColor}/> */}
                                 {/* <Text style={styles.pauseBtnText}> {this.formatTimer(this.state.time)}</Text> */}
-                                <Timer time={this.state.time} updateTimeInParent={this.updateTimeInParent} refresh={this.refreshQuiz} navigation={this.props.navigation} timeUpAction={this.timeUpAction}/>
+                                <Timer time={this.state.time} removeBackListener={this.removeBackListener} backHandlerListener={this.backHandlerListener} updateTimeInParent={this.updateTimeInParent} refresh={this.refreshQuiz} navigation={this.props.navigation} timeUpAction={this.timeUpAction}/>
                         </View>
                         <TouchableOpacity style={styles.menuIcon} onPress={()=>this.openModal()}>
                             <Feather name="grid" size={25} color={theme.labelOrInactiveColor}/>
@@ -152,9 +162,11 @@ class TestSeriesView extends React.Component {
     }
     removeBackListener=()=>
     {
-        if(backhandler)
+        
+        if(this.state.backhandler)
         {
-            backhandler.remove();
+            console.log("remove back listener",this.state.backhandler)
+            this.state.backhandler.remove();
         }
     }
     closeModal = () => {

@@ -13,6 +13,9 @@ import lombok.ToString;
 public class InsLeadsDto {
 
      private long courseId;
-     private String courseName;
      private long leads;
+
+     private String courseName;
+
+
 }

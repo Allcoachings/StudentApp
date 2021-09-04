@@ -52,7 +52,7 @@ const Timer =(props)=>
     const [elapsed, setElapsed] = useState(0);
     const [time,setTime] = useState(props.time);
     const [interval, setInterval] = useState(null);
-    const timeRef = useRef(props.time);
+    const timeRef = useRef(props.time); 
     const [isRefreshRequired,setIsRefreshRequired] = useState(false)
     useEffect(() => {
         if(isRefreshRequired)
@@ -93,6 +93,7 @@ const Timer =(props)=>
     useEffect(() =>{
         setTime(time-elapsed)
     },[elapsed])
+     
     const countdown=()=>
     {
       
@@ -127,8 +128,27 @@ const Timer =(props)=>
               props.refresh();
               setIsRefreshRequired(true)
           }
+         
+          props.removeBackListener() 
+            props.backHandlerListener()
+        
+ 
           
            
+        });
+    
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return unsubscribe;
+      }, [props.navigation]);
+     
+      useEffect(() => {
+        const unsubscribe = props.navigation.addListener('blur', () => {
+          // The screen is focused
+          // Call any action
+          
+          props.removeBackListener() 
+          
+           console.log("blurred",props)
         });
     
         // Return the function to unsubscribe from the event so it gets removed on unmount

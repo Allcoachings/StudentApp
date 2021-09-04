@@ -48,7 +48,7 @@ public class StudentPinListController {
 
     @CrossOrigin(origins = "*")
     @PostMapping("/check")
-    public Optional<StudentPinList> deleteById(@RequestBody Student student, Institute institute)   
+    public Optional<StudentPinList> deleteById(@RequestBody Student student, Institute institute)
     {
        return studentPinListService.checkPin(student,institute);
     }
