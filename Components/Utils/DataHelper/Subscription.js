@@ -154,6 +154,7 @@ import {serverApiUrl} from '../../config'
 
     export const checkForPin=(obj,callback)=>
     {
+
         let headers = new Headers(); 
         headers.append('Content-Type', 'application/json');  
         headers.append('Access-Control-Allow-Origin', serverApiUrl);
@@ -164,7 +165,26 @@ import {serverApiUrl} from '../../config'
         {
             method: 'POST',  
             headers,
-            body:JSON.stringify({obj})
+            body:JSON.stringify(obj)
+        })
+        .then((response)=>callback(response)) 
+        .catch((error)=>{console.log(error)})
+    }
+
+
+    export const pinnedInstituteList=(id,page, pageSize, callback)=>
+    {
+        let headers = new Headers(); 
+        headers.append('Content-Type', 'application/json');  
+        headers.append('Access-Control-Allow-Origin', serverApiUrl);
+        headers.append('Access-Control-Allow-Credentials', 'true'); 
+        headers.append('GET', 'POST', 'OPTIONS'); 
+
+        fetch(serverApiUrl+'student/pin/student/'+page+'/'+pageSize,
+        {
+            method: 'POST',  
+            headers,
+            body:JSON.stringify({id})
         })
         .then((response)=>callback(response)) 
         .catch((error)=>{console.log(error)})

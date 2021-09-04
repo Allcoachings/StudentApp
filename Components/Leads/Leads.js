@@ -60,7 +60,6 @@ class Leads extends React.Component {
     fetchLeadsCallback=(response)=>{
         if(response.status==200)
         {
-            console.log("success leads")
             response.json().then(data=>
             {
                 this.setState({leads: data})

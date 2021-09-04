@@ -57,7 +57,7 @@ class RenderVideo extends React.Component {
                 {this.props.downloadMode?(
                     <View style={{flexDirection: 'row',  marginLeft: 'auto', marginTop: 'auto', marginRight: 10, marginBottom: 15}}>
                         <View></View>
-                        <TouchableOpacity onPress={()=>this.download(this.props.item, 'video')}>
+                        <TouchableOpacity onPress={()=>this.props.studentEnrolled?(this.download(this.props.item, 'video')):(Toast.show('You Have Not Enrolled For This Course.'))}>
                             <View>
                                 <Image source={downloadIcon} style={{height: 25, width: 25}} />
                             </View>

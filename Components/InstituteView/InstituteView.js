@@ -35,6 +35,7 @@ import RenderDocument from './RenderDocument'
 import RenderVideo from './RenderVideo'
 import { LinearGradient } from "expo-linear-gradient";
 import {fetch_institute_feed} from '../Utils/DataHelper/Feed'
+import { throwIfAudioIsDisabled } from 'expo-av/build/Audio/AudioAvailability';
 
 const width = Dimensions.get('window').width
 class InstituteView extends React.Component {
@@ -130,8 +131,18 @@ class InstituteView extends React.Component {
     checkPinCallBack=(response)=>{
         if(response.status==200)
         {
-            console.log("pin")
-
+            response.json().then(data=>{
+                console.log("pindata success", data)
+                if(data.id)
+                {
+                    this.setState({checkPinned: true, pinId: data.id})
+                }
+                else if(data==null)
+                {
+                    this.setState({checkPinned: false})
+                }
+            })
+            
         }
         else
         {
@@ -890,26 +901,27 @@ class InstituteView extends React.Component {
     }
         
     pinCallBack=(response)=>{
-        if(response.status==200)
+        if(response.status==201)
         {
-            console.log("pinned")
+            console.log("pin success")
             console.log(response.headers.map.location)
-            this.setState({pinId: response.headers.map.location})
+            this.setState({pinId: response.headers.map.location, checkPinned: true})
         }
         else
         {
-            console.log("pin", response.status)
+            console.log("pin error", response.status)
         }
     }
 
     unPinCallBack=(response)=>{
         if(response.status==200)
         {
-            console.log("unpinned")
+            console.log("unpinned success")
+            this.setState({checkPinned: false})
         }
         else
         {
-            console.log("unpin", response.status)
+            console.log("unpin error", response.status)
         }
     }
 
@@ -1023,10 +1035,18 @@ class InstituteView extends React.Component {
                                                 <Feather name="share" size={20}/>
                                                 <Text style={{marginLeft:5}}>Follow</Text>
                                             </TouchableOpacity>)}
-                                            <TouchableOpacity onPress={()=>pinInstitute({"institute":{id: this.state.instituteId},"student":{id: this.props.userInfo.id}}, this.pinCallBack)} style={{flexDirection: 'row',margin:5}}>
-                                                <Feather name="share" size={20}/>
-                                                <Text style={{marginLeft:5}}>Pin</Text>
-                                            </TouchableOpacity>
+                                            
+                                            {!this.state.checkPinned?(
+                                                    <TouchableOpacity onPress={()=>pinInstitute({"institute":{id: this.state.instituteId},"student":{id: this.props.userInfo.id}}, this.pinCallBack)} style={{flexDirection: 'row',margin:5}}>
+                                                        <Feather name="share" size={20}/>
+                                                        <Text style={{marginLeft:5}}>Pin</Text>
+                                                    </TouchableOpacity>
+                                            ):(
+                                                    <TouchableOpacity onPress={()=>unPinInstitute(this.state.pinId, this.unPinCallBack)} style={{flexDirection: 'row',margin:5}}>
+                                                        <Feather name="share" size={20}/>
+                                                        <Text style={{marginLeft:5}}>UnPin</Text>
+                                                    </TouchableOpacity>
+                                            )}
                                             <View style={{flexDirection: 'row',margin:5}}>
                                                 <Feather name="share" size={20}/>
                                                 <Text style={{marginLeft:5}}>Flag as inappropriate</Text>
