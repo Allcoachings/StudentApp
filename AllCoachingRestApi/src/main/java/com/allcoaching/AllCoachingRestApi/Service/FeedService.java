@@ -35,6 +35,51 @@ public class FeedService {
     @Autowired
     private FeedImageRepo feedImageRepo;
 
+    public FeedDto getById(long id)
+    {
+        //fetching data from repo pagination implemented
+        Optional<Feed> opFeed = feedRepo.findById(id);
+        if(opFeed.isPresent())
+        {
+
+
+
+               Feed f = opFeed.get();
+                    FeedContentDto feedContentDto = new FeedContentDto(f);
+                    FeedDto feedDto = new FeedDto(feedContentDto);
+
+                    //detecting poster type is it a institute or a student
+                    switch (f.getPostedBy())
+                    {
+                        case 1: //it is a institute
+                            feedDto.setPosterObject( instituteRepo.findById(f.getInsId()));
+                            break;
+                        case 2://it is a student
+                            feedDto.setPosterObject( studentRepo.findById(f.getStudentId()));
+                            break;
+                    }
+                    //checking if it is a poll feed
+                    if(f.getFeedType()==2)
+                    {
+                        //if yes then fetching poll options for that feed
+                        feedContentDto.setFeedPollOptions(pollOptionsRepo.findByFeedId(f.getId()));
+
+                    }
+
+                    //checking if it is a image feed
+                    if(f.getFeedType()==1)
+                    {
+
+                        feedContentDto.setFeedImages(feedImageRepo.findByFeedId(f.getId()));
+
+                    }
+                return feedDto;
+
+        }
+        //created list for returing multiple FeedDtos
+        return  new FeedDto();
+
+    }
     //saving feed to repo
     public Feed saveFeed(FeedContentDto feedContentDto)
     {
@@ -49,7 +94,6 @@ public class FeedService {
         if(feed.getFeedType()==1)
         {
             Iterable<FeedImages> feedImages = feedContentDto.getFeedImages();
-
             feedImages.forEach(item->item.setFeedId(feed_saved.getId()));
             System.out.println("feed Images "+feedImages);
             feedImageRepo.deleteByFeedId(feed_saved.getId());
@@ -250,6 +294,58 @@ public class FeedService {
                     //if yes then fetching poll options for that feed
                     feedContentDto.setFeedPollOptions(pollOptionsRepo.findByFeedId(item.getId()));
 
+                }
+
+                //checking if it is a image feed
+                if(item.getFeedType()==1)
+                {
+                    //if yes then fetching poll options for that feed
+                    feedContentDto.setFeedImages(feedImageRepo.findByFeedId(item.getId()));
+
+                }
+                //adding to list of feeddtos
+                feedDtos.add(feedDto);
+            });
+
+            return feedDtos;
+        }else
+        {
+                    return new ArrayList<FeedDto>();
+        }
+    }
+    //fetching All Feed items of having a particular tag
+    public Iterable<FeedDto> getAllFeedByCatContaining(int page, int pageSize,long cat)
+    {
+
+        //fetching data from repo pagination implemented
+        Page<Feed> pagedFeeds = feedRepo.findByCategoryId(cat,PageRequest.of(page,pageSize,Sort.by(Sort.Direction.DESC,"creationTime")));
+
+        //created list for returing multiple FeedDtos
+        List<FeedDto> feedDtos = new ArrayList<>();
+
+        if(pagedFeeds.hasContent())
+        {
+            pagedFeeds.forEach(item->{
+
+
+                FeedContentDto feedContentDto = new FeedContentDto(item);
+                FeedDto feedDto = new FeedDto(feedContentDto);
+
+                //detecting poster type is it a institute or a student
+                switch (item.getPostedBy())
+                {
+                    case 1: //it is a institute
+                        feedDto.setPosterObject( instituteRepo.findById(item.getInsId()));
+                        break;
+                    case 2://it is a student
+                        feedDto.setPosterObject( studentRepo.findById(item.getStudentId()));
+                        break;
+                }
+                //checking if it is a poll feed
+                if(item.getFeedType()==2)
+                {
+                    //if yes then fetching poll options for that feed
+                    feedContentDto.setFeedPollOptions(pollOptionsRepo.findByFeedId(item.getId()));
                 }
 
                 //checking if it is a image feed

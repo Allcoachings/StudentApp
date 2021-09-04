@@ -958,6 +958,7 @@ class InsHome extends React.Component {
                             posterId={this.props.institute.details.id} 
                             posterImage={this.props.institute.details.logo}
                             postedBy={1}
+                            categoryId={this.props.institute.details.category}
                             instituteDetails={this.props.institute.details}
                             setUpdateFun={this.setUpdateEditFeedState}
                             updateSingleFeed={this.updateSingleFeed}

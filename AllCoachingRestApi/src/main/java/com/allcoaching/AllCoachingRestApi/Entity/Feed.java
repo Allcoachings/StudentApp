@@ -40,9 +40,10 @@ public class Feed {
     private long studentId;
     private long insId;
     private String tags="#all";
+    private long categoryId;
 
 
-    public Feed(int feedType, String photoLocation, String description, String pollQuestion, int totalPollVotes, int voterType, String pollVotedStudents, String pollVotedInstitutes, int likes, Date creationTime, int postedBy, long studentId, long insId,String tags) {
+    public Feed(int feedType, String photoLocation, String description, String pollQuestion, int totalPollVotes, int voterType, String pollVotedStudents, String pollVotedInstitutes, int likes, Date creationTime, int postedBy, long studentId, long insId,String tags,long categoryId) {
         this.feedType = feedType;
         this.photoLocation = photoLocation;
         this.description = description;
@@ -57,6 +58,24 @@ public class Feed {
         this.studentId = studentId;
         this.insId = insId;
         this.tags = this.tags+""+tags;
+        this.categoryId=categoryId;
+
+    }
+
+    public long getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(long commentCount) {
+        this.commentCount = commentCount;
+    }
+
+    public long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public long getId() {

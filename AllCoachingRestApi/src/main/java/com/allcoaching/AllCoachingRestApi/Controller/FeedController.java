@@ -46,6 +46,20 @@ public class FeedController {
         return feedService.getAllFeedByTagContaining(page, pageSize,"#"+tag);
     }
 
+    //for fetching feed by tags (the feed categories are special tags saved by admin)
+    @CrossOrigin(origins = "*")
+    @GetMapping("/bycat/{page}/{pageSize}/{tag}")
+    public Iterable<FeedDto> getAllFeedByCatContaining(@PathVariable int page,@PathVariable int pageSize,@PathVariable long tag)
+    {
+        return feedService.getAllFeedByCatContaining(page, pageSize,tag);
+    }
+    @CrossOrigin(origins = "*")
+    @GetMapping("/byid/{id}")
+    public  FeedDto getAllFeedByCatContaining(@PathVariable long id)
+    {
+        return feedService.getById(id);
+    }
+
     //for fetching institute paged feed
     @CrossOrigin(origins = "*")
     @GetMapping("/ins/{insId}/{page}/{pageSize}")

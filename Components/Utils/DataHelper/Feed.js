@@ -154,7 +154,7 @@ import mime from "mime";
 
                 headers.append('GET', 'POST', 'OPTIONS'); 
     
-                fetch(serverApiUrl+"feed/bytag/"+offset+"/"+dataLimit+"/"+cat,
+                fetch(serverApiUrl+"feed/bycat/"+offset+"/"+dataLimit+"/"+cat,
                 {
                     method: 'GET',  
                     headers,
