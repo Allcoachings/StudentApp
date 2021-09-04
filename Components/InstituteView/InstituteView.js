@@ -26,7 +26,7 @@ import FeedPoll from '../Feed/FeedPoll';
 import {tabListInstitute} from '../../FakeDataService/FakeData'
 import {addLead} from '../Utils/DataHelper/Leads'
 import ImageZoomModal from './ImageZoomModal';
-import { checkSubscription, subscribe, unsubscribe, pinInstitute, unPinInstitute }  from '../Utils/DataHelper/Subscription'
+import { checkSubscription, subscribe, unsubscribe, pinInstitute, unPinInstitute,checkForPin }  from '../Utils/DataHelper/Subscription'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import RenderSingleTestSeries from '../SeriesList/RenderSingleTestSeries'
@@ -124,6 +124,19 @@ class InstituteView extends React.Component {
          fetch_institute_courses(this.state.instituteId,this.coursesCallBack)
          checkSubscription(this.state.studentId,this.state.instituteId,this.checkSubscriptionCallback) 
          fetch_latestUpcomingSchedule(this.state.instituteId,this.liveDataCallback)
+         checkForPin({"institute":{id: this.state.instituteId},"student":{id: this.props.userInfo.id}}, this.checkPinCallBack)
+    }
+
+    checkPinCallBack=(response)=>{
+        if(response.status==200)
+        {
+            console.log("pin")
+
+        }
+        else
+        {
+            console.log("not pinned", response.status)
+        }
     }
 
     checkSubscriptionCallback=(response)=>{

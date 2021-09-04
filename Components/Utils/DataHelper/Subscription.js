@@ -160,11 +160,11 @@ import {serverApiUrl} from '../../config'
         headers.append('Access-Control-Allow-Credentials', 'true'); 
         headers.append('GET', 'POST', 'OPTIONS'); 
 
-            fetch(serverApiUrl+"student/pin/delete/"+id,
+            fetch(serverApiUrl+"student/pin/check",
         {
-            method: 'DELETE',  
+            method: 'POST',  
             headers,
-            // body:JSON.stringify({student, institute})
+            body:JSON.stringify({obj})
         })
         .then((response)=>callback(response)) 
         .catch((error)=>{console.log(error)})
