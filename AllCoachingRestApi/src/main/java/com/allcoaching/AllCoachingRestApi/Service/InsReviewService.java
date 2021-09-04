@@ -37,10 +37,7 @@ public class InsReviewService {
         }
     }
 
-    public  Iterable<InsReview> findAllByInsId(long insId)
-    {
-        return insReviewRepo.findAllByInsId(insId);
-    }
+
     //count course reviews
     public  long countCourseReviews(long courseId)
     {

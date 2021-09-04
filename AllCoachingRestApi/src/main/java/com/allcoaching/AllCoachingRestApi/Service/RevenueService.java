@@ -15,13 +15,13 @@ public class RevenueService {
   @Autowired
   private CourseService courseService;
 
-  public long findTotalInsRevenue(long ins)
-  {
-      Iterable<InsReview> insReviewList = insReviewService.findAllByInsId(ins);
-//      insReviewList.forEach();
-
-
-  }
+//  public long findTotalInsRevenue(long ins)
+//  {
+//      Iterable<InsReview> insReviewList = insReviewService.findAllByInsId(ins);
+////      insReviewList.forEach();
+//
+//
+//  }
 
 
 
