@@ -68,7 +68,9 @@ class InstituteView extends React.Component {
         courseDocuments:[],
         courseVideos:[], 
         courseTimeTable:[],
-        courseTestSeries:[]
+        courseTestSeries:[],
+        pinId: '',
+        checkPinned: ''
      }
 
      
@@ -878,6 +880,8 @@ class InstituteView extends React.Component {
         if(response.status==200)
         {
             console.log("pinned")
+            console.log(response.headers.map.location)
+            this.setState({pinId: response.headers.map.location})
         }
         else
         {
