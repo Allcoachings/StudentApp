@@ -38,7 +38,7 @@ class FeedBottomComponent extends Component {
                 </View>
             </View>
             <View style={{flexDirection:'row',alignItems: 'center'}}>
-                <TouchableOpacity style={styles.likeView} onPress={()=>this.setState({showCommentModal: true})}>
+                <TouchableOpacity style={styles.likeView} onPress={()=>this.props.mode=="single"?(console.log("no")):(this.setState({showCommentModal: true}))}>
                     <FontAwesome name="comments" size={22} color={theme.greyColor} />
                 </TouchableOpacity>
                 <View style={{marginLeft:5}}>

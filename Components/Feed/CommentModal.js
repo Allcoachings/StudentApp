@@ -11,6 +11,8 @@ import { ActivityIndicator } from 'react-native-paper';
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import ImageZoomModal from '../InstituteView/ImageZoomModal'
+import RenderSingleComment from './RenderSingleComment'
+import RenderAddCommentBox from './RenderAddCommentBox'
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 
@@ -42,9 +44,10 @@ class CommentModal extends Component {
       }
   }
 
-  add=()=>{
+  add=(comment)=>{
         Toast.show("Please Wait...")
-        add_comment(this.state.comment, 2, this.props.feedId, 0, this.props.userInfo.id, this.addCallback)
+        this.setState({comment: comment},()=>
+        add_comment(this.state.comment, 2, this.props.feedId, 0, this.props.userInfo.id, this.addCallback))
   }
 
   openZoomModal=() => {
@@ -81,7 +84,7 @@ class CommentModal extends Component {
               },
             }
         this.state.commentData.push(obj)
-        this.setState({comment: ''},()=>this.textInput.clear())
+        this.setState({comment: ''})
       }
       else
       {
@@ -146,13 +149,14 @@ class CommentModal extends Component {
                         <CustomActivtiyIndicator mode="skimmer"/>
                     ):(<FlatList
                         data={this.state.commentData}
-                        renderItem={({item}) => this.renderSingleComment(item)}
+                        renderItem={({item}) => <RenderSingleComment item={item} addImage={this.addImage} mode="all"/>}
                         keyExtractor={(item,index)=>index}
                         ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                     />)}
                 </View>
                 </ScrollView>
-                <View style={{flexDirection:'row', width: width, marginTop: 'auto',marginBottom:this.props.keyboardHeight?this.props.keyboardHeight+40:10}}>  
+                <RenderAddCommentBox add={this.add}/>
+                {/* <View style={{flexDirection:'row', width: width, marginTop: 'auto',marginBottom:this.props.keyboardHeight?this.props.keyboardHeight+40:10}}>  
                     <View style={{flex: 1,  flexDirection: 'row',borderTopWidth: 1, borderColor: this.state.comment!=''?(theme.accentColor):(theme.labelOrInactiveColor), justifyContent: 'space-between'}}>    
                         <TextInput 
                             style={{ flex: 0.85, padding: 10, fontFamily: 'Raleway_400Regular'}} 
@@ -160,11 +164,11 @@ class CommentModal extends Component {
                             placeholder="Write a Comment" placeholderTextColor='grey'
                             ref={input => { this.textInput = input }}
                         />
-                            <TouchableOpacity onPress={()=>this.state.comment!=''?(this.add()):(Toast.show("Please Enter The Comment."))} style={{flex: 0.15,  backgroundColor: this.state.comment!=''?(theme.accentColor):(theme.labelOrInactiveColor), justifyContent: 'center', alignItems: 'center', padding: 15}}>
+                            <TouchableOpacity onPress={()=>this.state.comment!=''?(this.add(this.state.comment)):(Toast.show("Please Enter The Comment."))} style={{flex: 0.15,  backgroundColor: this.state.comment!=''?(theme.accentColor):(theme.labelOrInactiveColor), justifyContent: 'center', alignItems: 'center', padding: 15}}>
                                 <Entypo name="check" size={24} color={theme.primaryColor} />
                             </TouchableOpacity>
                     </View>  
-                </View>
+                </View> */}
                 
             </View>
             
@@ -185,8 +189,6 @@ class CommentModal extends Component {
 }
 const styles = StyleSheet.create({
       container: {
-          height: height, 
-          width: width,
           flexDirection: 'column',
       }                       
                 

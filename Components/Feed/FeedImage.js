@@ -107,7 +107,7 @@ addImage=(link, type)=>{
             <View style={{flexDirection: 'column', padding: 5}}>
                 <View style={styles.boxView}>
                     <FeedHeader  mode={this.props.mode} editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime}/>
-                    <View style={styles.innerBoxView}>
+                    <TouchableOpacity style={styles.innerBoxView} onPress={()=>this.props.navigation.navigate("RenderSingleFeed",{id: feed.feed.id})}>
                         
                         {feed.feed.description?( 
                             <View style={{marginVertical:10}}>
@@ -138,9 +138,9 @@ addImage=(link, type)=>{
                                     imageProvider={imageProvider}
                             />
                         )}
-                        <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation} changeCanUserLike={this.changeCanUserLike} unLikeFeed={this.unLikeFeed} likes={this.state.likes} comments={feed.feed.commentCount}/>
+                        <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation} changeCanUserLike={this.changeCanUserLike} unLikeFeed={this.unLikeFeed} likes={this.state.likes} comments={feed.feed.commentCount} mode={this.props.mode}/>
                                                 
-                    </View>
+                    </TouchableOpacity>
                     
                 </View>
                 <View style={{borderTopWidth: 0.8, borderColor: theme.labelOrInactiveColor, marginVertical: 10, width: '100%'}}/>
