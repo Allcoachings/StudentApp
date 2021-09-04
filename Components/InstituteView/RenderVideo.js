@@ -33,8 +33,13 @@ class RenderVideo extends React.Component {
         return( 
             <View style={styles.videoContainer}>
                 <TouchableOpacity onPress={()=>{
-                    this.props.mode=="student"?(this.props.addToHistory("video", this.props.item.id)):(null)
-                    this.props.mode=="student"?(this.props.studentEnrolled?(this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation,videoTitle:this.props.item.name,postingTime:this.props.item.date,item:this.props.item})):(Toast.show('You Have Not Enrolled For This Course.'))):(this.props.navigation.navigate("videoplayer",{videoUrl:imageProvider(this.props.item.fileAddress||this.props.item.videoLocation),videoTitle:this.props.item.name,postingTime:this.props.item.date,item:this.props.item}))}
+        
+                    this.props.mode=="student"?(this.props.studentEnrolled?(
+                        <>
+                        {this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation,videoTitle:this.props.item.name,postingTime:this.props.item.date,item:this.props.item})}
+                        {this.props.addToHistory("video", this.props.item.id)}
+                        </>
+                    ):(Toast.show('You Have Not Enrolled For This Course.'))):(this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation,videoTitle:this.props.item.name,postingTime:this.props.item.date,item:this.props.item}))}
                 } >
                     <Image source={{uri:imageProvider(this.props.item.videoThumb)}} style={styles.videoImage}/>
                 </TouchableOpacity>
