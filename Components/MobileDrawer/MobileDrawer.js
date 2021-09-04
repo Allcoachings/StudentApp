@@ -36,12 +36,12 @@ const Drawer = createDrawerNavigator();
 
 const linkingConfig = {
     screens: {
-        ViewProfile: '/profile/:userName',
-        SingleDiscussion:'/discussion/:id',
-        SingleQuery:'/query/:id',
-        ViewSinglePoll:'/poll/:id', 
-        WebView:'/article/:link',
-        WebView:"*", 
+        Feed: '/feed/:userName',
+        Feed:'/discussion/:id',
+        Feed:'/query/:id',
+        Feed:'/poll/:id', 
+        Feed:'/article/:link',
+        Feed:"*", 
     },
   };
   

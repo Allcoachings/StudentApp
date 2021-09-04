@@ -4,16 +4,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @ToString
 @NoArgsConstructor
 @Entity
+@Table(uniqueConstraints={
+        @UniqueConstraint(columnNames = {"type", "itemId","studentId"})})
 public class StudentHistory {
-
     @Id
     @GeneratedValue
     private long id;
