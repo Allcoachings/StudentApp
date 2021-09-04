@@ -1,5 +1,6 @@
 package com.allcoaching.AllCoachingRestApi.Controller;
 
+import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Entity.Student;
 import com.allcoaching.AllCoachingRestApi.Entity.StudentPinList;
 import com.allcoaching.AllCoachingRestApi.Service.StudentPinListService;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/student/pin")
@@ -42,6 +44,13 @@ public class StudentPinListController {
     public void deleteById(@PathVariable long id)
     {
         studentPinListService.deleteById(id);
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/check/{id}")
+    public Optional<StudentPinList> deleteById(@RequestBody Student student, Institute institute)
+    {
+       return studentPinListService.checkPin(student,institute);
     }
 
 

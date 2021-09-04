@@ -6,6 +6,9 @@ import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import  Icon  from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Feather } from '@expo/vector-icons';
 import ChangeCatModal from './ChangeCatModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
+import { USER_AUTH_STATUS } from '../Actions/types';
 
 const renderDrawerItem=(label,icon,onPress)=>
 {
@@ -29,7 +32,13 @@ export function DrawerContent(props){
 
 
     const [isCatModalOpen,setCatModalOpen] = useState(false);
-    
+    const dispatch = useDispatch();
+    const userLogoutButton =()=>
+    {
+        AsyncStorage.clear().then(()=>{
+            dispatch({type:USER_AUTH_STATUS,payload:{authStatus:false}})
+        })
+    }
     return(
         <View style={{flex: 1, width: '100%'}}>
             <DrawerContentScrollView {...props}>
@@ -67,6 +76,7 @@ export function DrawerContent(props){
                     {renderDrawerItem('Feed','user',()=>props.navigation.navigate("Feed",{item: false}))} */}
                         {renderDrawerItem('Night Mode','user',()=>props.navigation.navigate("NightMode"))}
                         {renderDrawerItem('Settings','user',()=>props.navigation.navigate("Settings"))}
+                        {renderDrawerItem('Logout','user',()=>userLogoutButton)}
                         
                         
                     </Drawer.Section> 

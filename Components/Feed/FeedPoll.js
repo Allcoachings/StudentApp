@@ -130,7 +130,7 @@ class FeedPoll extends Component {
                     <FeedHeader  mode={this.props.mode} editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime}/>
                     <TouchableOpacity onPress={()=>this.props.navigation.navigate("RenderSingleFeed",{id: feed.feed.id})} style={styles.innerBoxView}>
                         
-                        <Text style={{ fontFamily:'Raleway_400Regular',marginTop: 10,}}>{feed.feed.pollQuestion}</Text>
+                        <Text style={{fontFamily:'Raleway_400Regular', marginVertical: 10,fontSize:17}}>{feed.feed.pollQuestion}</Text>
                         <FlatList
                             data={this.state.optionData}
                             renderItem={({item,index})=><RenderPollOption setFocusedOptionIndex={this.setFocusedOptionIndex} focusedOptionIndex={this.state.focusedOptionIndex} updateVote={this.updateVote} item={item} canUserVote={this.state.canUserVote} totalVote={this.state.totalPollVotes} userType={this.props.type} index={index}/>}

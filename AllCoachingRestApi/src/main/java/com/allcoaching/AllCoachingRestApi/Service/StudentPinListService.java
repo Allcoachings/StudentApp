@@ -1,5 +1,6 @@
 package com.allcoaching.AllCoachingRestApi.Service;
 
+import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Entity.Student;
 import com.allcoaching.AllCoachingRestApi.Entity.StudentPinList;
 import com.allcoaching.AllCoachingRestApi.Respository.StudentPinListRepo;
@@ -44,5 +45,10 @@ public class StudentPinListService {
     public  void  deleteById(long id)
     {
         studentPinListRepo.deleteById(id);
+    }
+
+    public Optional<StudentPinList> checkPin(Student student, Institute institute)
+    {
+        return studentPinListRepo.findByStudentAndInstitute(student,institute);
     }
 }

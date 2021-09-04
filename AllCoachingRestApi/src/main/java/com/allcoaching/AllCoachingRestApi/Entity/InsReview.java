@@ -1,20 +1,37 @@
 package com.allcoaching.AllCoachingRestApi.Entity;
 
 
+import com.allcoaching.AllCoachingRestApi.dto.Graph2dDataDto;
+import com.allcoaching.AllCoachingRestApi.dto.SalesOverViewDataDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @ToString
 @NoArgsConstructor
 @Entity
 @DynamicUpdate
+@NamedNativeQuery(
+        name = "salesOverview",
+        query ="SELECT course_id,COUNT(course_id) as total  FROM ins_review "+
+                " WHERE   ins_id=:insId GROUP BY course_id,ins_id"
+        ,
+        resultSetMapping = "salesOverViewDataDto"
+)
+@SqlResultSetMapping(
+        name = "salesOverViewDataDto",
+        classes = @ConstructorResult(
+                targetClass = SalesOverViewDataDto.class,
+                columns = {
+                        @ColumnResult(name = "course_id", type = Long.class),
+                        @ColumnResult(name = "total", type = Long.class),
+                }
+        )
+)
 public class InsReview {
 
     @Id
