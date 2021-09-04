@@ -49,7 +49,7 @@ public class StudentPinListController {
 
     @CrossOrigin(origins = "*")
     @PostMapping("/check")
-    public Optional<StudentPinList> deleteById(@RequestBody CheckPinInputDto checkPinInputDto)
+    public Optional<StudentPinList> checkForPin(@RequestBody CheckPinInputDto checkPinInputDto)
     {
        return studentPinListService.checkPin(checkPinInputDto.getStudent(),checkPinInputDto.getInstitute());
 
