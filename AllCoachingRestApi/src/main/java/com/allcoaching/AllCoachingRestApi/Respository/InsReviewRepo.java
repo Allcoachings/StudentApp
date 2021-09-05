@@ -1,6 +1,7 @@
 package com.allcoaching.AllCoachingRestApi.Respository;
 
 import com.allcoaching.AllCoachingRestApi.Entity.InsReview;
+import com.allcoaching.AllCoachingRestApi.Entity.Student;
 import com.allcoaching.AllCoachingRestApi.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,9 @@ public interface InsReviewRepo extends PagingAndSortingRepository<InsReview,Long
 
     Optional<InsReview> findByInsIdAndStudentIdAndReviewNotNull(long insId, long studentId);
     Optional<InsReview> findByCourseIdAndStudentId(long courseId, long studentId);
+
+    @Query("Select new com.allcoaching.AllCoachingRestApi.dto.InsLeadsStudentDto(s.id,s.name,s.studentImage,s.userId) from InsReview r,Student s where r.studentId=s.id and r.courseId=:courseId")
+    Page<InsLeadsStudentDto> findByCourseId(long courseId, Pageable pageable);
 
     @Query("SELECT new com.allcoaching.AllCoachingRestApi.dto.InsReviewDto(s.name,i.name, s.studentImage, r) from Institute i, InsReview r, Student s where r.insId=i.id and i.id = :id and r.studentId=s.id")
     Page<InsReviewDto> findByInsId(long id, Pageable pageable);

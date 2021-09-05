@@ -13,12 +13,13 @@ import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import ImageZoomModal from '../InstituteView/ImageZoomModal'
 import RenderSingleComment from './RenderSingleComment'
 import RenderAddCommentBox from './RenderAddCommentBox'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 
 class CommentModal extends Component {
   state={
-    modalVisible: this.props.modalVisible,
+   
     offset: 0,
     loadingData: true,
     commentData: [],
@@ -31,6 +32,14 @@ class CommentModal extends Component {
 
 
   componentDidMount=()=>{
+      AsyncStorage.getItem("authInfo").then((data)=>{
+
+        if(data)
+        {
+            let obj = JSON.parse(data) 
+            this.setState({authType: obj.authType})
+        }
+      })
     fetch_comments(this.props.feedId,this.state.offset,dataLimit,this.commentsCallback)
   }
 
@@ -47,44 +56,40 @@ class CommentModal extends Component {
   add=(comment)=>{
         Toast.show("Please Wait...")
         this.setState({comment: comment},()=>
-        add_comment(this.state.comment, 2, this.props.feedId, 0, this.props.userInfo.id, this.addCallback))
+        add_comment(this.state.comment,this.state.authType=='user'?2:1, this.props.feedId, this.props.institute.details.id, this.props.userInfo.id, this.addCallback))
   }
 
-  openZoomModal=() => {
-      this.setState({zoomModal: true})
-  }
-
-  closeModal = () => {
-    this.setState({ zoomModal: false });
-  }
+ 
 
   addCallback=(response)=>{
       
       if(response.status==201)
       {
             Toast.show("Comment Added Successfully!!")
+            let commenterObject = {};
+            
+            if(this.state.authType=='user')
+            {
+                commenterObject =this.props.userInfo    
+            }else
+            {
+                commenterObject = this.props.institute.details
+            }
+            
           var obj={
-            commenterObject: {
-                blocked: this.props.userInfo.blocked,
-                email: this.props.userInfo.email,
-                id: this.props.userInfo.id,
-                mobileNumber: this.props.userInfo.mobileNumber,
-                name: this.props.userInfo.name,
-                stateOfResidence: this.props.userInfo.stateOfResidence,
-                studentImage: this.props.userInfo.studentImage,
-                userId: this.props.userInfo.userId,
-              },
+            commenterObject,
               feedComments: {
                 comment: this.state.comment,
-                commenter: 2,
+                commenter: this.state.authType=='user'?2:1,
                 feedId: this.state.feedId,
                 id: response.headers.map.location,
-                insId: 0,
+                insId: this.props.institute.details.id,
                 studentId: this.props.userInfo.id
               },
             }
         this.state.commentData.push(obj)
         this.setState({comment: ''})
+        this.props.updateCommentsCount(1);
       }
       else
       {
@@ -93,11 +98,7 @@ class CommentModal extends Component {
       }
   }
 
-  addImage=(link)=>{
-    this.state.userImage.pop()
-      this.state.userImage.push(link)
-      this.openZoomModal()
-  }
+ 
 
   renderSingleComment=(item)=>{
       return(
@@ -127,22 +128,22 @@ class CommentModal extends Component {
 
   render() {
     return(
-        <View>
+  
         <Modal
           animationType="fade"
           transparent={false}
-          visible={this.state.modalVisible}
-          onRequestClose={this.closeModal}
+          visible={this.props.modalVisible}
+          onRequestClose={()=>this.props.closeModal()}
         >
             <View style={styles.container}>
                 <View style={{ flexDirection: 'row', borderBottomColor:theme.labelOrInactiveColor,padding:10,}}>
                     <TouchableOpacity onPress={()=>this.props.closeModal()}>
                         <AntDesign name="left" size={24} color="black" />
                     </TouchableOpacity>
-                    <Text style={{fontFamily:'Raleway_700Bold',fontSize:20, marginLeft: 10}}>Comments ({this.props.comments})</Text>
+                    <Text style={{fontFamily:'Raleway_700Bold',fontSize:20, marginLeft: 10}}>Comments ({this.state.commentData.length})</Text>
                 </View>
                 
-                <ScrollView>
+                <ScrollView style={{height:height}}>
                 <View>
                     
                     {this.state.loadingData?(
@@ -155,7 +156,7 @@ class CommentModal extends Component {
                     />)}
                 </View>
                 </ScrollView>
-                <RenderAddCommentBox add={this.add}/>
+                <RenderAddCommentBox add={this.add}  />
                 {/* <View style={{flexDirection:'row', width: width, marginTop: 'auto',marginBottom:this.props.keyboardHeight?this.props.keyboardHeight+40:10}}>  
                     <View style={{flex: 1,  flexDirection: 'row',borderTopWidth: 1, borderColor: this.state.comment!=''?(theme.accentColor):(theme.labelOrInactiveColor), justifyContent: 'space-between'}}>    
                         <TextInput 
@@ -172,24 +173,13 @@ class CommentModal extends Component {
                 
             </View>
             
-        </Modal>
-        {this.state.zoomModal?(
-            <ImageZoomModal 
-                zoomModal={this.state.zoomModal}
-                closeModal={this.closeModal}
-                images={this.state.userImage}
-                index={this.state.index}
-                type="normal"
-            />
-        ):(null)}
-
-       </View>
+        </Modal>  
     )
   }
 }
 const styles = StyleSheet.create({
       container: {
-          flexDirection: 'column',
+          flexDirection: 'column', 
       }                       
                 
 });
@@ -199,6 +189,7 @@ const  mapStateToProps = (state)=>
     return {
         screenWidth: state.screen.screenWidth,
         userInfo:state.user.userInfo,
+        institute:state.institute,
         keyboardHeight: state.screen.keyboardHeight
     }
 }

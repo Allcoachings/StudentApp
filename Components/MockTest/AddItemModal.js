@@ -8,7 +8,7 @@ class AddItemModal extends Component {
     state=
     {
         name:'',
-        defaultDate:new Date(1598051730000), 
+        defaultDate:new Date(), 
         time:null,
         timePickerMode:'date',
         showTimePicker:false
@@ -149,13 +149,13 @@ class AddItemModal extends Component {
                             {/* <Text style={{fontFamily: 'Raleway_600SemiBold'}}>{this.state.date}</Text> */}
                         </View>
                          
-                            <TextInput
+                            {/* <TextInput
                                 placeholderTextColor={theme.greyColor}
                                 placeholder="Date"
                                 defaultValue={this.state.date}
                                 onChangeText={(text)=>this.setState({date: text})}
                                 style={styles.inputField}
-                            /> 
+                            />  */}
                 </View>
                 <View style={styles.inputView}>
                         <Text style={styles.labelText}>Time</Text>
@@ -168,13 +168,13 @@ class AddItemModal extends Component {
                             {/* <Text style={{fontFamily: 'Raleway_600SemiBold'}}>{this.state.time}</Text> */}
                         </View>
                        
-                            <TextInput
+                            {/* <TextInput
                                 placeholderTextColor={theme.greyColor}
                                 placeholder="Time"
                                 defaultValue={this.state.time}
                                 onChangeText={(text)=>this.setState({time: text})}
                                 style={styles.inputField}
-                            /> 
+                            />  */}
                 </View>
                 <View style={styles.btnView}>
                     <TouchableOpacity style={styles.submitButton} onPress={this.handleAddItemClick}>

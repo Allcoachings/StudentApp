@@ -16,16 +16,17 @@ class RenderSingleComment extends Component {
 
   render() {
     const {item} = this.props
+    console.log(item)
     return(
         <View>
             <View style={{ flex:1, flexDirection: 'row', margin: 5, padding: 10}}>
                 <TouchableOpacity style={{flex: 0.15}} onPress={()=>this.props.mode="all"?(this.props.addImage(serverBaseUrl+item.commenterObject.studentImage)):(console.log("hno"))}>
-                    <Image source={{uri: imageProvider(item.commenterObject.studentImage)}} style={{height: 50, width: 50, borderRadius: 25, borderWidth: 0.6, borderColor:theme.greyColor,}}/>
+                    <Image source={{uri: imageProvider(item.commenterObject.studentImage||item.commenterObject.logo)}} style={{height: 50, width: 50, borderRadius: 25, borderWidth: 0.6, borderColor:theme.greyColor,}}/>
                 </TouchableOpacity>
                 <View style={{flex: 0.85, flexDirection: 'column', marginLeft: 10, marginTop: 2}}>
-                    <View style={{ flexDirection: 'row'}}>
-                        <Text style={{fontFamily:'Raleway_700Bold', fontSize: 16}}>{item.commenterObject.name} {' • '}</Text>
-                        <Text style={{fontFamily:'Raleway_700Bold', fontSize: 15}}>{moment(item.feedComments.timeStamp).fromNow()}</Text>
+                    <View style={{ flexDirection: 'column'}}>
+                        <Text style={{fontFamily:'Raleway_600SemiBold', fontSize: 16, }} numberOfLines={1}>{item.commenterObject.name}</Text>
+                        <Text style={{fontFamily:'Raleway_400Regular', fontSize: 12,color:theme.greyColor}}>{moment(item.feedComments.timeStamp).fromNow()}</Text>
                     </View>
                     <View style={{flexShrink: 1}}>
                         <Text style={{fontFamily: 'Raleway_400Regular',  flexWrap: 'wrap'}}>{item.feedComments.comment}</Text>

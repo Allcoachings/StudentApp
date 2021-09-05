@@ -50,7 +50,7 @@ class FeedImage extends Component {
     }
   }
   likeFeed=(feedId)=>{
-    console.log("like feed")
+ console.log(this.props.type)
     this.setState({canUserLike: !this.state.canUserLike},()=>{
         like_feed(feedId,this.props.type,this.props.type==1?(this.props.institute.details.id):(this.props.userInfo.id),this.likeFeedCallBack)
     })
@@ -100,14 +100,14 @@ addImage=(link, type)=>{
     editFeedPressHandler=()=>this.props.mode=="userProfile"||this.props.mode=="insProfile"?(this.props.updateEditFeedState(this.props.item.feed.feed.feedType, this.props.item.feed.feed.description, this.props.item.feed.feedImages, null, this.props.item.feed.feed.id, this.props.index,this.props.item.feed.feed.creationTime)):(null)
 
   render() {
-    const{feed,posterObject} = this.props.item
-    
+    const{feed,posterObject} = this.props.item 
+   
     return(
         // CardView(
             <View style={{flexDirection: 'column', padding: 5}}>
                 <View style={styles.boxView}>
                     <FeedHeader  mode={this.props.mode} editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime}/>
-                    <TouchableOpacity style={styles.innerBoxView} onPress={()=>this.props.navigation.navigate("RenderSingleFeed",{id: feed.feed.id})}>
+                    <View style={styles.innerBoxView} onPress={()=>this.props.navigation.navigate("RenderSingleFeed",{id: feed.feed.id})}>
                         
                         {feed.feed.description?( 
                             <View style={{marginVertical:10}}>
@@ -140,7 +140,7 @@ addImage=(link, type)=>{
                         )}
                         <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation} changeCanUserLike={this.changeCanUserLike} unLikeFeed={this.unLikeFeed} likes={this.state.likes} comments={feed.feed.commentCount} mode={this.props.mode}/>
                                                 
-                    </TouchableOpacity>
+                    </View>
                     
                 </View>
                 <View style={{borderTopWidth: 0.8, borderColor: theme.labelOrInactiveColor, marginVertical: 10, width: '100%'}}/>

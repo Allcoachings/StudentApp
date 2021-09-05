@@ -41,7 +41,7 @@ class RenderCourseList extends React.Component {
             
             <View style={styles.corsePriceView}>
                 <Text style={styles.courseText}>{this.props.item.courseName}</Text>
-                <Text style={styles.coursePriceText}>{this.props.item.leads}</Text>
+                <Text style={styles.coursePriceText}>{this.props.item.leads||this.props.item.total}</Text>
             </View>
         )
     }
@@ -64,7 +64,7 @@ class RenderCourseList extends React.Component {
     }
 
     fetchCourseStudent=()=>{
-        this.setState({loading: true},()=>fetchStudentList(this.props.item.courseId, this.state.offset, dataLimit, this.studentListCallBack))
+        this.setState({loading: true},()=>this.props.fetchListFun(this.props.item.courseId, this.state.offset, dataLimit, this.studentListCallBack))
     }
 
     render() {

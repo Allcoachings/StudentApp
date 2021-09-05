@@ -157,6 +157,8 @@ class AddPdf extends React.Component {
             <PageStructure
                 iconName={"menu"}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
+                nosearchIcon={true}
+                noNotificationIcon={true}
             >
                 <ScrollView>
                     <View style={styles.headView}>

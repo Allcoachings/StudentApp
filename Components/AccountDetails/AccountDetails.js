@@ -67,6 +67,8 @@ class AccountDetails extends React.Component {
             <PageStructure
                 iconName={"menu"}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
+                nosearchIcon={true}
+                noNotificationIcon={true}
             >
              {this.state.loadingData?(
                             <CustomActivtiyIndicator mode="skimmer"/>

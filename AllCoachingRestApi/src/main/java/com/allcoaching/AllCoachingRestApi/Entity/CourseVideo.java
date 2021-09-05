@@ -50,7 +50,7 @@ public class CourseVideo {
 //    @JoinColumn(name = "playlistId")
 //    private VideoPlaylist videoPlaylist;
 
-    public CourseVideo(String videoLocation, String name, String description, boolean isDemo, String demoLenght, long courseId,long playlistId) {
+    public CourseVideo(String videoLocation, String name, String description, boolean isDemo, String demoLenght, long courseId,long playlistId,String videoThumb) {
         this.videoLocation = videoLocation;
         this.name = name;
         this.description = description;
@@ -58,6 +58,7 @@ public class CourseVideo {
         this.demoLenght = demoLenght;
         this.courseId = courseId;
         this.playlistId = playlistId;
+        this.videoThumb = videoThumb;
     }
 
     @Override

@@ -155,16 +155,26 @@ export const fetch_courses_videos=(offset, dataLimit, courseId=-1,callback,playl
 }
 
 //add video
-export   const addCourseVideo=(video,name,description,isDemo,demoLength,courseId,callback,playlistId=-1)=>
+export   const addCourseVideo=(video,thumbnail,name,description,isDemo,demoLength,courseId,callback,playlistId=-1)=>
 {
 
+    var formData   = new FormData();  
     const newImageUri =  "file:///" + video.uri.split("file:/").join("");
-            var formData   = new FormData();  
+        
             formData.append("file",{ 
                 uri : newImageUri,
                 type: mime.getType(newImageUri),
                 name: video.name
-            }) 
+            })
+    const newThumbnailUri =  "file:///" + thumbnail.uri.split("file:/").join("");
+        
+            formData.append("thumb",{ 
+                uri : newThumbnailUri,
+                type: mime.getType(newThumbnailUri),
+                name: thumbnail.name
+            })
+            
+        
              console.log("courseId",courseId)
              formData.append("name",name)
              formData.append("description",description)

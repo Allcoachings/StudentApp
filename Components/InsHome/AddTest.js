@@ -254,6 +254,8 @@ class AddTest extends React.Component {
         return(
             <PageStructure
                 iconName={"menu"}
+                nosearchIcon={true}
+                noNotificationIcon={true}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
             >
                 <ScrollView>

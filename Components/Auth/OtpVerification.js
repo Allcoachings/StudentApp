@@ -80,7 +80,7 @@ class OtpVerification extends React.Component {
                 }else
 
                 {
-                    console.log("this.state.phoneNumber",this.state.phoneNumber)
+                     
                     this.props.openInfoModal(this.state.phoneNumber)
                     this.props.closeModal() 
                 }

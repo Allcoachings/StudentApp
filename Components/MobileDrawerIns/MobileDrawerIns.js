@@ -18,6 +18,8 @@ import AboutCourse from '../AboutCourse/AboutCourse'
 import AuthIns from '../InsRegister/AuthIns';
 import Notification from '../Home/Notification'
 import RenderSingleFeed from '../Feed/RenderSingleFeed'
+import Revenue from '../Revenue/Revenue';
+import Feed from '../Feed/Feed';
 
 const Drawer = createDrawerNavigator();
 class indexIns extends React.Component {
@@ -38,11 +40,14 @@ class indexIns extends React.Component {
                                 <Drawer.Screen name="AddTimeTable" component={AddTimeTable}  /> 
                                 <Drawer.Screen name="AddTestSeries" component={AddTest}  /> 
                                 <Drawer.Screen name="Leads" component={Leads}  />
+                                <Drawer.Screen name="Revenue" component={Revenue}  />
                                 <Drawer.Screen name="pdfViewer" component={PdfViewer} /> 
                                 <Drawer.Screen name="videoplayer" component={VideoPlayerCustom} />
                                 <Drawer.Screen name="accountDetails" component={AccountDetails} />
                                 <Drawer.Screen name="Notification" component={Notification} />
                                 <Drawer.Screen name="RenderSingleFeed" component={RenderSingleFeed} />
+                                <Drawer.Screen name="Feed" component={Feed} />
+                                
                             </>
                        ):(
                                 <Drawer.Screen name="Register" component={AuthIns}  initialParams={{changeMode:this.props.changeMode}}  />    

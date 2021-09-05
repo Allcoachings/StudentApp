@@ -406,8 +406,31 @@ setFeedTypeOption=(postType)=>
   {
       this.setState({showFeedTypeOptions: true})
   }
+  resetFeedState=()=>
+  {console.log("oressed")
+      this.setState({  stepCheck:2,//to check on which step user is in order to add a feed
+        postType:3,//1 for image , 2 for poll 3 for text option 
+        addFeedLoading:false,
+        description:'',
+        feedImageData:[],
+        pollOptions:[
+            { 
+                pollOption:''
+            },
+            {
+                
+                pollOption:''
+            }
+          ],
+        pollOptionCounter:2,
+        feedItem:{},
+        id: '',
+        mode: "add",
+        index: '',
+        showFeedTypeOptions:false})
+  }
   render() {
-        console.log("feed categoryID",this.props.categoryId)
+         
     return (
         // <Modal 
         //     animationType = {"fade"} 
@@ -419,8 +442,16 @@ setFeedTypeOption=(postType)=>
                 <View style={{flexDirection:'row',alignItems: 'center'}} >
                     <Image source={{uri: imageProvider(this.props.posterImage)}} style={{height: 50, width: 50, borderRadius: 25, borderWidth: 0.6, borderColor:theme.greyColor,}}/>
                     <View style={{borderWidth:1,flex:1,borderColor:theme.labelOrInactiveColor,margin:10,borderRadius:10}}>
+
+                        
+                            {this.state.description?(<View style={{position: 'absolute',right:15,top:5,zIndex:10}}>
+                            <TouchableOpacity onPress={()=>this.resetFeedState()}>
+                                <Feather name={'x'} color={theme.featureNoColor} size={18}/>
+                            </TouchableOpacity> 
+                            </View>):(null)}
+                      
                         <TextInput
-                            style={{height:50,fontFamily:'Raleway_400Regular',marginHorizontal:10}}
+                            style={{height:50 ,fontFamily:'Raleway_400Regular',marginHorizontal:10}}
                             placeholder="Write Something...."
                             multiline={true}  
                             ref={(input) => { this.descriptionTextInput = input; }}

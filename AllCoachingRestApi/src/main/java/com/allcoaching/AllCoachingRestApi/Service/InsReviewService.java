@@ -1,8 +1,10 @@
 package com.allcoaching.AllCoachingRestApi.Service;
 import com.allcoaching.AllCoachingRestApi.Entity.InsReview;
 import com.allcoaching.AllCoachingRestApi.Entity.Institute;
+import com.allcoaching.AllCoachingRestApi.Entity.Student;
 import com.allcoaching.AllCoachingRestApi.Respository.InsReviewRepo;
 import com.allcoaching.AllCoachingRestApi.Respository.InstituteRepo;
+import com.allcoaching.AllCoachingRestApi.dto.InsLeadsStudentDto;
 import com.allcoaching.AllCoachingRestApi.dto.InsReviewDto;
 import com.allcoaching.AllCoachingRestApi.dto.SalesOverViewDataDto;
 import com.allcoaching.AllCoachingRestApi.dto.StudentPurchaseDto;
@@ -158,5 +160,17 @@ public class InsReviewService {
     public  Iterable<SalesOverViewDataDto> salesOverViewDataData(long insId)
     {
         return  insReviewRepo.findAllGroupedByCourseId(insId);
+    }
+
+    public Iterable<InsLeadsStudentDto> findStudentList(long courseId,int page,int pageSize)
+    {
+        Page<InsLeadsStudentDto> paged_result = insReviewRepo.findByCourseId(courseId,PageRequest.of(page,pageSize));
+        if (paged_result.hasContent())
+        {
+            return paged_result.getContent();
+        }else
+        {
+            return  new ArrayList<>();
+        }
     }
 }

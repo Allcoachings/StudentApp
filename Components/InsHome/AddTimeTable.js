@@ -47,7 +47,9 @@ class AddTimeTable extends React.Component {
     render() {
         console.log("add timetable course id: ",this.props.route.params.courseId)
         return(
-            <PageStructure
+            <PageStructure 
+                nosearchIcon={true}
+                noNotificationIcon={true}
                 iconName={"menu"}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
             >

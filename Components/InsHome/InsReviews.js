@@ -36,8 +36,9 @@ class InsReviews extends React.Component {
             this.setState({reviewLoading: false})
         }
     }
-
+ 
     render() {
+        console.log(this.props.institute.details)
         return (
             <View>
                 <Text style={styles.RatingText}>Rating & Reviews</Text>
@@ -47,12 +48,12 @@ class InsReviews extends React.Component {
                     <Review 
                         replyMode={true} 
                         review={this.state.reviews} 
-                        total_rating={this.props.institute.details.total_rating_count}
-                        one_star={this.props.institute.details.one_star_count} 
-                        two_star={this.props.institute.details.two_star_count}
-                        three_star={this.props.institute.details.three_star_count}
-                        four_star={this.props.institute.details.four_star_count}
-                        five_star={this.props.institute.details.five_star_count}
+                        total_rating={this.props.institute.details.totalRatingCount}
+                        one_star={this.props.institute.details.oneStarCount} 
+                        two_star={this.props.institute.details.twoStarCount}
+                        three_star={this.props.institute.details.threeStarCount}
+                        four_star={this.props.institute.details.fourStarCount}
+                        five_star={this.props.institute.details.fiveStarCount}
                     />
                 )}
             </View>

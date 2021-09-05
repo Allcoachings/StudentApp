@@ -39,13 +39,19 @@ import { theme } from '../config';
               {
                   case'fail': this.props.navigation.reset({
                     index: 0,
-                    routes: [{ name: 'Home' }],
+                    routes: [
+                        { name: 'Institute',params:{insId:webData[2]} },
+                     
+                    ],
                   })
                     break;
 
                   case 'success':   this.props.navigation.reset({
                                         index: 0,
-                                        routes: [{ name: 'Home' }],
+                                        routes: [
+                                        { name: 'Institute',params:{insId:webData[2]} },
+                                     
+                                    ],
                                     })
 
                     break;

@@ -12,6 +12,7 @@ import FeedImage from '../Feed/FeedImage';
 import FeedPoll from '../Feed/FeedPoll';
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 class Feed extends React.Component {
     state={
         offset:0,
@@ -42,6 +43,14 @@ class Feed extends React.Component {
 
     componentDidMount()
     {
+        AsyncStorage.getItem("authInfo").then((data)=>{
+
+            if(data)
+            {
+                let obj = JSON.parse(data) 
+                this.setState({authType: obj.authType=='user'?2:1,})
+            }
+          })
         fetch_feed_all(this.state.offset,dataLimit,this.handleFeedCallBack);
     }
 
@@ -57,8 +66,7 @@ class Feed extends React.Component {
    
     
     toggleCatMode=(mode,item)=>
-    {
-        console.log("feed modes ",mode,item)
+    { 
         switch(mode)
         {
             case true:
@@ -87,15 +95,15 @@ class Feed extends React.Component {
         {
             case 1:
                 return (
-                    <FeedImage item={item} type={2} navigation={this.props.navigation} mode="all"/>
+                    <FeedImage item={item} type={this.state.authType} navigation={this.props.navigation} mode="all"/>
                 )
             case 2:
                 return (
-                    <FeedPoll item={item} type={2} navigation={this.props.navigation} mode="all"/>
+                    <FeedPoll item={item} type={this.state.authType} navigation={this.props.navigation} mode="all"/>
                 )
             case 3:
                 return (
-                    <FeedText item={item} type={2} navigation={this.props.navigation} mode="all"/>
+                    <FeedText item={item} type={this.state.authType} navigation={this.props.navigation} mode="all"/>
                 )
         }
     }
@@ -139,7 +147,7 @@ class Feed extends React.Component {
                             ListFooterComponent={this.renderFooter}
                             onEndReached={() => 
                             {
-                                console.log("end ", "this.state.showLoadMore ", this.state.showLoadMore, "this.state.loadingFooter ", this.state.loadingFooter)
+                                
                                 if(this.state.showLoadMore&&!this.state.loadingFooter)
                                 {
                                     console.log("here")

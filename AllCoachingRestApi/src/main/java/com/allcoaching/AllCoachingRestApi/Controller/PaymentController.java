@@ -101,13 +101,15 @@ public class PaymentController {
         String gatewayResponseMsg = parameters.get("RESPMSG");
         boolean isValideChecksum = false;
         System.out.println("RESULT : "+txnStatus+" id:"+txnId);
+
         transactionService.compeleteTransaction(txnStatus,txnId,gatewayResponseMsg,orderId);
+        Optional<Transaction> transaction = transactionService.findByOrderId(orderId);
         try {
             isValideChecksum = validateCheckSum(parameters, paytmChecksum);
             if (isValideChecksum && parameters.containsKey("RESPCODE")) {
                 if (parameters.get("RESPCODE").equals("01")) {
                     result = "Payment Successful";
-                    Optional<Transaction> transaction = transactionService.findByOrderId(orderId);
+
                     transaction.ifPresent(this::processPayment);
 
                 } else {
@@ -123,6 +125,7 @@ public class PaymentController {
         model.addAttribute("result",result);
         parameters.remove("CHECKSUMHASH");
         model.addAttribute("parameters",parameters);
+        model.addAttribute("insId",transaction.get().getInsId());
         return "pgResponse";
     }
 

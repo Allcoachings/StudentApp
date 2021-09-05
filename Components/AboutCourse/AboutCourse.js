@@ -42,7 +42,9 @@ class AboutCourse extends React.Component {
             <PageStructure
                 iconName={"menu"}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
-                titleonheader={"About Course"}
+                titleonheader={"About Course"}      
+                nosearchIcon={true}
+                noNotificationIcon={true}
             >
                 {this.state.loading?(
                     <CustomActivtiyIndicator mode="skimmer"/>

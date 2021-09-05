@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View,StyleSheet, TextInput, TouchableOpacity, ScrollView,ActivityIndicator,Dimensions} from 'react-native';
+import {Text, View,StyleSheet,Image, TextInput, TouchableOpacity, ScrollView,ActivityIndicator,Dimensions} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {theme,screenMobileWidth, serverBaseUrl, videoDefaultThumbnail} from '../config'
 import CardView from '../Utils/CardView';
@@ -15,7 +15,8 @@ class AddVideo extends React.Component {
     state = {
         title: "",
         description: "",
-        video: "",
+        video: {},
+        videoThumb:{},
         loadingPlaylist:true,
         selectedPlaylist:-1,
         playlist:[],
@@ -32,13 +33,24 @@ class AddVideo extends React.Component {
             }
         })
     }
+    handleAddVideoThumbnailClick=()=>
+    {
+        DocumentPicker.getDocumentAsync({type:"image/*",copyToCacheDirectory:true,multiple:false}).then(response=>
+        {
+            
+            if(response.type=="success")
+            {
+                this.setState({videoThumb:response})
+            }
+        })
+    }
     handleAddVideoCallBack=(response)=>
     {
         if(response.status==201)
         {     
             Toast.show('Video Added Successfully.');
             let details = response.headers.map.location.split("*");
-            this.props.route.params.appendVideo({id:details[0],videoLocation:serverBaseUrl+details[1],name:this.state.title,description:this.state.description,isDemo:false,courseId:this.props.route.params.courseId,videoThumb:videoDefaultThumbnail})
+            this.props.route.params.appendVideo({id:details[0],views:0,videoLocation:serverBaseUrl+details[1],name:this.state.title,description:this.state.description,isDemo:false,courseId:this.props.route.params.courseId,videoThumb:this.state.videoThumb.uri})
         
             this.props.navigation.goBack();
         } 
@@ -55,7 +67,7 @@ class AddVideo extends React.Component {
             {
 
             this.setState({loadingAddVideo:true});
-            addCourseVideo(this.state.video,this.state.title,this.state.description,false,'0',this.props.route.params.courseId,this.handleAddVideoCallBack,this.state.selectedPlaylist)
+            addCourseVideo(this.state.video,this.state.videoThumb,this.state.title,this.state.description,false,'0',this.props.route.params.courseId,this.handleAddVideoCallBack,this.state.selectedPlaylist)
             }
         }
         else
@@ -64,7 +76,7 @@ class AddVideo extends React.Component {
         }
     }
 
-    verify=({title,description,video})=>title&&description&&video.type=='success'
+    verify=({title,description,video,videoThumb})=>title&&description&&video.type=='success'&&videoThumb&&videoThumb.type=='success'
     openModal=()=>
     {
         this.setState({isModalVisible: true})
@@ -123,7 +135,9 @@ class AddVideo extends React.Component {
         return(
             <PageStructure
                 iconName={"menu"}
-                btnHandler={() => {this.props.navigation.toggleDrawer()}}
+                btnHandler={() => {this.props.navigation.toggleDrawer()}}     
+                nosearchIcon={true}
+                noNotificationIcon={true}
             >
                  <ScrollView>
                     
@@ -134,7 +148,19 @@ class AddVideo extends React.Component {
                             <TouchableOpacity style={styles.submitButton} onPress={this.handleAddVideoClick}>
                                 <Text style={styles.submitButtonText}>Choose Video</Text>
                             </TouchableOpacity>
-                            <Text style={{fontFamily: 'Raleway_600SemiBold'}}>{this.state.video.name}</Text>
+                            {this.state.video.name&&<Text style={{fontFamily: 'Raleway_600SemiBold'}}>{this.state.video.name}</Text>}
+                    </View>
+                    <View style={[styles.inputView,{marginTop:10}]}> 
+                            {this.state.videoThumb.uri?(
+                                <> 
+                                    <Image source={{uri:this.state.videoThumb.uri}} style={{alignSelf: 'center',width:100,height:100,borderWidth: 1,borderColor: theme.labelOrInactiveColor,margin:10}}/>
+                                    <Text style={{fontFamily: 'Raleway_600SemiBold'}}>{this.state.videoThumb.name}</Text>
+                                </>
+                            ):(null)}
+                            
+                            <TouchableOpacity style={styles.submitButton} onPress={this.handleAddVideoThumbnailClick}>
+                                <Text style={styles.submitButtonText}>Choose Video Thumbnail</Text>
+                            </TouchableOpacity>
                     </View>
                     <View style={styles.inputView}>
                             <Text style={styles.labelText}>Video Title</Text>

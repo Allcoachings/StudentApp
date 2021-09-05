@@ -128,7 +128,7 @@ class FeedPoll extends Component {
             <View style={{flexDirection: 'column', padding: 5}}>
                 <View style={styles.boxView}> 
                     <FeedHeader  mode={this.props.mode} editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime}/>
-                    <TouchableOpacity onPress={()=>this.props.navigation.navigate("RenderSingleFeed",{id: feed.feed.id})} style={styles.innerBoxView}>
+                    <View onPress={()=>this.props.navigation.navigate("RenderSingleFeed",{id: feed.feed.id})} style={styles.innerBoxView}>
                         
                         <Text style={{fontFamily:'Raleway_400Regular', marginVertical: 10,fontSize:17}}>{feed.feed.pollQuestion}</Text>
                         <FlatList
@@ -145,7 +145,7 @@ class FeedPoll extends Component {
                         </View> */}
 
                         <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation} changeCanUserLike={this.changeCanUserLike} unLikeFeed={this.unLikeFeed} likes={this.state.likes} comments={feed.feed.commentCount} mode={this.props.mode}/>
-                    </TouchableOpacity>
+                    </View>
                 </View>
                 <View style={{borderTopWidth: 0.8, borderColor: theme.labelOrInactiveColor, marginVertical: 10, width: '100%'}}/>
             </View>

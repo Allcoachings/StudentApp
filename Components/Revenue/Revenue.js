@@ -6,14 +6,14 @@ import { Feather } from '@expo/vector-icons';
 import { feedData } from '../../FakeDataService/FakeData' 
 import {connect } from 'react-redux'
 import CardView from '../Utils/CardView';
-import RenderCourseList from './RenderCourseList';
-import { fetchLeads, fetchStudentList, getLeadCount } from '../Utils/DataHelper/Leads'
+import RenderCourseList from '../Leads/RenderCourseList';
+import { fetchRevenueOverview, getLeadCount,fetchStudentList } from '../Utils/DataHelper/Revenue'
 import { getCourseCount } from '../Utils/DataHelper/Course'
 import EmptyList from '../Utils/EmptyList'
-import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
-class Leads extends React.Component {
+import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator'; 
+class Revenue extends React.Component {
     state={
-        leads:[],
+        Revenue:[],
         offset: 0,
         courseList: [],
         leadCount: '',
@@ -27,42 +27,17 @@ class Leads extends React.Component {
     }
 
     componentDidMount(){
-        fetchLeads(this.props.institute.details.id,this.state.offset, dataLimit,this.fetchLeadsCallback)
-        getLeadCount(this.props.institute.details.id, this.leadCountCallBack)
-        getCourseCount(this.props.institute.details.id, this.courseCountCallBack)
+        fetchRevenueOverview(this.props.institute.details.id,this.fetchRevenueOverviewCallback)
+        
     }
-
-    leadCountCallBack=(response)=>{
-        if(response.status==200)
-        {
-            response.json().then(data=>{
-                this.setState({leadCount: data, loadingCount: false})
-            })
-        }
-        else
-        {
-            this.setState({loadingCount: false})
-        }
-    }
-    courseCountCallBack=(response)=>{
-        if(response.status==200)
-        {
-            response.json().then(data=>{
-                this.setState({courseCount: data, loadingCount: false})
-            })
-        }
-        else
-        {
-            this.setState({loadingCount: false})
-        }
-    }
-
-    fetchLeadsCallback=(response)=>{
+ 
+    fetchRevenueOverviewCallback=(response)=>{
         if(response.status==200)
         {
             response.json().then(data=>
             {
-                this.setState({leads: data})
+                console.log(data);
+                this.setState({Revenue: data})
             })
         }
         else
@@ -76,16 +51,14 @@ class Leads extends React.Component {
             <PageStructure
                 iconName={"menu"}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
-                titleonheader={"Leads"} 
-                nosearchIcon={true}
-                noNotificationIcon={true}
+                titleonheader={"Revenue"}
             >
                 <ScrollView>
                     <View style={styles.container}>
                         {/* {CardView(
                             <View style={styles.headView}>
                                 <Feather name="chevron-left" size={28} />
-                                <Text style={styles.headText}>Leads</Text>
+                                <Text style={styles.headText}>Revenue</Text>
                             </View>,{paddingTop: 5,justifyContent: 'center'}
                         )} */}
 
@@ -95,18 +68,18 @@ class Leads extends React.Component {
 
                         <View style={styles.rowContainer}>
                             <View style={[styles.colContainer, {backgroundColor: theme.redColor+"33"}]}>
-                                <Text style={styles.leadText}>Today Leads</Text>
-                                <Text style={styles.priceText}>{this.state.leadCount}</Text>
+                                <Text style={styles.leadText}>Today Revenue</Text>
+                                <Text style={styles.priceText}>₹ {this.state.Revenue.total_revenue}</Text>
                             </View>
                             <View style={[styles.colContainer, {backgroundColor: theme.yellowColor+"33"}]}>
-                                <Text style={styles.leadText}>Total Courses</Text>
-                                <Text style={styles.priceText}>{this.state.courseCount}</Text>
+                                <Text style={styles.leadText}>Purchased Courses</Text>
+                                <Text style={styles.priceText}>{this.state.Revenue.total_purchased_course}</Text>
                             </View>
                         </View>
 
                         <View style={styles.courseCol}>
                             <FlatList 
-                                data={this.state.leads} 
+                                data={this.state.Revenue.salesOverViewDataDtos} 
                                 renderItem={this.courses}
                                 keyExtractor={(item)=>item.id} 
                                 horizontal={false}
@@ -167,7 +140,7 @@ const styles = StyleSheet.create({
             },
                 leadText:
                 {
-                    fontSize: 20,
+                    fontSize: 15,
                     fontWeight: 'bold',
                     color: theme.secondaryColor
                 },
@@ -217,4 +190,4 @@ const  mapStateToProps = (state)=>
         institute:state.institute
     }
 }
-export default connect(mapStateToProps)(Leads); 
+export default connect(mapStateToProps)(Revenue); 

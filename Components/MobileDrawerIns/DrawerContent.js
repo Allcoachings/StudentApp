@@ -4,8 +4,18 @@ import { theme } from '../config';
 import {Text, Switch, Avatar, Title, Caption, Paragraph, Drawer, TouchableRipple} from 'react-native-paper'
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import  Icon  from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useDispatch } from 'react-redux';
+import { SET_INSTITUTE_AUTH } from '../Actions/types';
 
 export function DrawerContent(props){
+    const dispatch = useDispatch();
+    const userLogoutButton =()=>
+    {
+         props.navigation.closeDrawer();
+        AsyncStorage.clear().then(()=>{
+            dispatch({type:SET_INSTITUTE_AUTH,payload:{authStatus:false}})
+        })
+    }
     return(
         <View style={{flex: 1, width: '100%'}}>
             <DrawerContentScrollView {...props}>
@@ -65,7 +75,7 @@ export function DrawerContent(props){
                                 />
                             )}
                             label="Revenue"
-                            onPress={()=>{}}
+                            onPress={()=>{props.navigation.navigate("Revenue")}}
                             style={{borderBottomWidth: 0.2, borderColor: theme.greyColor}}
                         />
                          <DrawerItem
@@ -88,9 +98,9 @@ export function DrawerContent(props){
                                     size={size}
                                 />
                             )}
-                            label="Register"
+                            label="Logout"
                             onPress={()=>
-                                props.navigation.navigate("Register")}
+                                userLogoutButton()}
                         />
                     </Drawer.Section> 
                 </View>

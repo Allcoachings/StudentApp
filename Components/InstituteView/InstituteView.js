@@ -931,7 +931,17 @@ class InstituteView extends React.Component {
         return (
             <PageStructure 
                 iconName={"arrow-left"}
-                btnHandler={() => {this.props.navigation.goBack()}}
+                btnHandler={() => {
+                    if(this.props.navigation.canGoBack())
+                    {
+                        this.props.navigation.goBack()
+                    }else
+                    {
+                        this.props.navigation.navigate("Home")
+                    }
+                    
+                
+                }}
                 catInHeader={false}
                 titleonheader={"UPSC Coaching"}
                 noBottomTab={true}

@@ -126,14 +126,16 @@ class RenderSingleFeed extends React.Component {
                 scrollMode={'scroll'}
                 nosearchIcon={true}
                 noNotificationIcon={true}
-                noBottomTab={true}
+                replaceBottomTab={    <RenderAddCommentBox add={this.add}/>}
             >
                 {this.state.loadingFeed?(
                     <CustomActivtiyIndicator mode="skimmer" />
                 ):(
-                    <View style={{flexDirection: 'column',padding:15,}}>
-                        {this.switchType(this.state.data.feed.feed.feedType)}
-                        <View style={{height: height/1.85}}>
+                    <View style={{flexDirection: 'column'}}>
+                        <View  >
+                            {this.switchType(this.state.data.feed.feed.feedType)}
+                        </View>
+                        <View  >
                             {this.state.loadingComments?(
                                 <CustomActivtiyIndicator mode="skimmer"/>
                             ):(
@@ -141,11 +143,12 @@ class RenderSingleFeed extends React.Component {
                                     data={this.state.commentData}
                                     renderItem={({item}) => <RenderSingleComment item={item} addImage={this.addImage} mode="single"/>}
                                     keyExtractor={(item,index)=>index}
+                                    ListFooterComponent={<View style={{height:150}}></View>}
                                     ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                                 />
                             )}
                         </View>
-                        <RenderAddCommentBox add={this.add}/>
+                        
                     </View>
                 )}
             </PageStructure>

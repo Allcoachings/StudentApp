@@ -3,6 +3,8 @@ package com.allcoaching.AllCoachingRestApi.Service;
 import com.allcoaching.AllCoachingRestApi.Entity.Course;
 import com.allcoaching.AllCoachingRestApi.Entity.InsReview;
 import com.allcoaching.AllCoachingRestApi.Entity.Institute;
+import com.allcoaching.AllCoachingRestApi.Entity.Student;
+import com.allcoaching.AllCoachingRestApi.dto.InsLeadsStudentDto;
 import com.allcoaching.AllCoachingRestApi.dto.SalesOverViewDataDto;
 import com.allcoaching.AllCoachingRestApi.dto.SalesWithRevenueOverView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +23,8 @@ public class RevenueService {
   public SalesWithRevenueOverView getSalesOverview(long insId)
   {
       Iterable<SalesOverViewDataDto> salesOverViewDataDtos = insReviewService.salesOverViewDataData(insId);
-    final float[] sum = {0};
-    final long[] count = {0};
+      final float[] sum = {0};
+      final long[] count = {0};
        salesOverViewDataDtos.forEach(item->{
          count[0]++;
          Course c = courseService.findById(item.getCourseId()).get();
@@ -39,7 +41,10 @@ public class RevenueService {
 
   }
 
-
+  public Iterable<InsLeadsStudentDto> studentList(long courseId, int page, int pageSize)
+  {
+      return insReviewService.findStudentList(courseId,page,pageSize);
+  }
 
 
 

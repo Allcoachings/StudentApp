@@ -30,6 +30,7 @@ public class CourseVideoController {
 
     @PostMapping("/")
     public ResponseEntity<Object> saveVideo(@RequestParam("file")MultipartFile video,
+                                            @RequestParam("thumb") MultipartFile thumb,
                                             @RequestParam("name") String name,
                                             @RequestParam("description") String descriptions,
                                             @RequestParam("isDemo") boolean isDemo,
@@ -40,7 +41,9 @@ public class CourseVideoController {
     {
         String courseVideoLink = "files/";
         courseVideoLink += fileUploadService.storeFile(video);
-        CourseVideo courseVideo =courseVideoService.saveCourseVideo( new CourseVideo(courseVideoLink,name,descriptions,isDemo,demoLength,courseId,playlistId));
+        String videoThumb = "files/";
+        videoThumb +=fileUploadService.storeFile(thumb);
+        CourseVideo courseVideo =courseVideoService.saveCourseVideo( new CourseVideo(courseVideoLink,name,descriptions,isDemo,demoLength,courseId,playlistId,videoThumb));
         URI location = ServletUriComponentsBuilder.fromPath("{id}*{addr}").buildAndExpand(courseVideo.getId(),courseVideoLink).toUri();
 
         return ResponseEntity.created(location).build();

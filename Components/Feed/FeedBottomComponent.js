@@ -11,17 +11,22 @@ class FeedBottomComponent extends Component {
     state={
     canUserLike: this.props.canUserLike,
     feedId: this.props.feedId,
-    showCommentModal: false
+    showCommentModal: false,
+    comments:this.props.comments
   }
-
+updateCommentsCount=(x)=>
+{
+    this.setState({comments:this.state.comments+x});
+}
   closeModal=()=>{
     this.setState({showCommentModal: false})
   }
 
 
 
-  render() {
+  render() { 
     return(
+        <>
         <View style={styles.bottomRowContainer}>
             <View style={{flexDirection: 'row'}}>
                 {this.props.canUserLike?(
@@ -42,17 +47,19 @@ class FeedBottomComponent extends Component {
                     <FontAwesome name="comments" size={22} color={theme.greyColor} />
                 </TouchableOpacity>
                 <View style={{marginLeft:5}}>
-                    <Text>{this.props.comments}</Text>
+                    <Text>{this.state.comments}</Text>
                 </View>
             </View> 
             <TouchableOpacity style={styles.likeView} onPress={()=>onShare("TEset Me")}>
                 <AntDesign name="sharealt" size={22} color={theme.greyColor} />
             </TouchableOpacity>
 
-            {this.state.showCommentModal?(
-                <CommentModal feedId={this.state.feedId} modalVisible={this.state.showCommentModal} navigation={this.props.navigation} closeModal={this.closeModal} comments={this.props.comments}/>
-            ):(null)}
+          
         </View>
+          {this.state.showCommentModal?(
+            <CommentModal updateCommentsCount={this.updateCommentsCount} feedId={this.state.feedId} modalVisible={this.state.showCommentModal} navigation={this.props.navigation} closeModal={this.closeModal} comments={this.props.comments}/>
+        ):(null)}
+        </>
     )
   }
 }

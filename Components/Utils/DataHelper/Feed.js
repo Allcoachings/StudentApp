@@ -178,7 +178,7 @@ import mime from "mime";
                 headers.append('Access-Control-Allow-Credentials', 'true');
 
                 headers.append('GET', 'POST', 'OPTIONS'); 
-    
+                console.log(feedId,serverApiUrl+"feed/like/feed/"+feedId+"/"+likerType+"/"+likerId)
                 fetch(serverApiUrl+"feed/like/feed/"+feedId+"/"+likerType+"/"+likerId,
                 {
                     method: 'GET',  

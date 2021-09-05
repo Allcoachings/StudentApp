@@ -10,6 +10,7 @@ import { Feather } from '@expo/vector-icons';
 import {connect} from 'react-redux'
 import { List } from 'react-native-paper';
 import Accordian from '../Utils/Accordian'
+import {setNavigation} from '../Actions'
 import MockTest from '../MockTest/MockTest'
 import AddCourseModal from './AddCourseModal';
 import {fetch_institute_courses,fetch_courses_banners,addCourseBanner,fetch_courses_videos,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents,fetch_courses_timetable,fetch_testSeries,fetch_testSeriesPlaylist} from '../Utils/DataHelper/Course'
@@ -71,7 +72,9 @@ class InsHome extends React.Component {
             }
      }
      componentDidMount() {
+        this.props.setNavigation(this.props.navigation);
         fetch_institute_courses(this.props.institute.details.id,this.coursesCallBack)
+        
      }
 
     courseBannerCallback=(response)=>
@@ -1026,6 +1029,8 @@ class InsHome extends React.Component {
             notificationreplaceshare={"more-vertical"}
             rightIconOnPress={()=>{this.setState({modalVisible:true})}} 
             navigation={this.props.navigation}
+            nosearchIcon={true}
+            noNotificationIcon={true}
         > 
             <ScrollView>
                 <View style={styles.container}>
@@ -1765,4 +1770,4 @@ const  mapStateToProps = (state)=>
         institute:state.institute
     }
 }
-export default connect(mapStateToProps)(InsHome);
+export default connect(mapStateToProps,{setNavigation})(InsHome);
