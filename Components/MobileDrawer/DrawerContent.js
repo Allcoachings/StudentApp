@@ -78,7 +78,7 @@ export function DrawerContent(props){
                         {renderDrawerItem('Result Analysis','user',()=>props.navigation.navigate("ResultAnalysis"))}
                     {renderDrawerItem('Feed','user',()=>props.navigation.navigate("Feed",{item: false}))} */}
                         {renderDrawerItem('Night Mode','user',()=>props.navigation.navigate("NightMode"))}
-                        {renderDrawerItem('Settings','user',()=>props.navigation.navigate("Settings"))}
+                        {renderDrawerItem('Settings','user',()=>props.navigation.navigate("Settings",{mode: "student"}))}
                         {renderDrawerItem('Logout','user',()=>userLogoutButton())}
                         
                         

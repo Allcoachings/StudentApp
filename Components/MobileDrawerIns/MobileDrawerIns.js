@@ -17,6 +17,7 @@ import VideoPlayerCustom from '../VideoPLayer/VideoPlayerCustom';
 import AboutCourse from '../AboutCourse/AboutCourse'
 import AuthIns from '../InsRegister/AuthIns';
 import Notification from '../Home/Notification'
+import Settings from '../Settings/Settings'
 import RenderSingleFeed from '../Feed/RenderSingleFeed'
 import Revenue from '../Revenue/Revenue';
 import Feed from '../Feed/Feed';
@@ -30,7 +31,7 @@ class indexIns extends React.Component {
             <>
                 <NavigationContainer>
                 
-                <Drawer.Navigator drawerContent={props => <DrawerContent {...props} /> } > 
+                <Drawer.Navigator drawerContent={props => <DrawerContent {...props} institute={this.props.institute}/> } > 
                        {this.props.insAuth?(
                             <>
                                 <Drawer.Screen name="Home" component={InsHome} />  
@@ -47,6 +48,8 @@ class indexIns extends React.Component {
                                 <Drawer.Screen name="Notification" component={Notification} />
                                 <Drawer.Screen name="RenderSingleFeed" component={RenderSingleFeed} />
                                 <Drawer.Screen name="Feed" component={Feed} />
+                                <Drawer.Screen name="Settings" component={Settings} />
+                                <Drawer.Screen name="InsRegister" component={InsRegister} />
                                 
                             </>
                        ):(

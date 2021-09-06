@@ -16,7 +16,7 @@ class Downloads extends Component {
        loading:true,
     };
     activeTab=(tabValue)=>{
-        this.setState({activeTab:tabValue},()=>
+        this.setState({activeTab:tabValue, data:[]},()=>
         {
             this.extractSavedItems(this.props.userInfo.id,this.state.activeTab==2?'document':'video');
         });

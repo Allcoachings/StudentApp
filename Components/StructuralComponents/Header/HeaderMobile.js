@@ -62,7 +62,22 @@ class HeaderMobile extends React.Component {
 
                   <View style={!this.props.titleonheader?{alignSelf: 'center',alignItems: 'center',flex: 0.9}:{marginTop:2, flex: 0.9}}>
                     {this.props.titleonheader ? (
-                      <Text
+                     this.props.titleWithImage?(
+                       <View style={{display: 'flex', flexDirection: 'row'}}>
+                         <Image source={appLogo} style={{resizeMode:'contain',width: 25,height: 25}} />
+                         <Text
+                            style={{
+                              fontSize: 18,
+                              fontWeight: "bold",
+                              numberOfLines: 1,
+                              alignSelf: "flex-start",
+                              marginLeft: 10,
+                            }}
+                        >
+                            {this.props.titleonheader}
+                        </Text>
+                       </View>
+                     ):( <Text
                         style={{
                           fontSize: 18,
                           fontWeight: "bold",
@@ -72,7 +87,7 @@ class HeaderMobile extends React.Component {
                         }}
                       >
                         {this.props.titleonheader}
-                      </Text>
+                      </Text>)
                     ) : (
                       <View>
                         <Image source={appLogo} style={styles.headerLogo} />

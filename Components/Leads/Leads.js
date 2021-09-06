@@ -74,8 +74,8 @@ class Leads extends React.Component {
     render() {
         return(
             <PageStructure
-                iconName={"menu"}
-                btnHandler={() => {this.props.navigation.toggleDrawer()}}
+                iconName={"arrow-left"}
+                btnHandler={() => {this.props.navigation.goBack()}}
                 titleonheader={"Leads"} 
                 nosearchIcon={true}
                 noNotificationIcon={true}
@@ -95,7 +95,7 @@ class Leads extends React.Component {
 
                         <View style={styles.rowContainer}>
                             <View style={[styles.colContainer, {backgroundColor: theme.redColor+"33"}]}>
-                                <Text style={styles.leadText}>Today Leads</Text>
+                                <Text style={styles.leadText}>Total Leads</Text>
                                 <Text style={styles.priceText}>{this.state.leadCount}</Text>
                             </View>
                             <View style={[styles.colContainer, {backgroundColor: theme.yellowColor+"33"}]}>

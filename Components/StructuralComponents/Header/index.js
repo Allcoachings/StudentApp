@@ -85,6 +85,7 @@ class index extends React.Component {
                                 singleItem={this.props.singleItem}
                                 catInHeader={this.props.catInHeader}
                                 selectedCat={this.props.selectedCat}
+                                titleWithImage={this.props.titleWithImage}
                                 />
                             )
                             :

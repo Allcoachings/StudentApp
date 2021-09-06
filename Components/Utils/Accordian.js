@@ -29,9 +29,14 @@ const width = Dimensions.get('window').width
                     <View style={{justifyContent: 'center'}}>
                       {this.props.header}
                     </View>
-                    <View >
-                      <Feather name={this.state.isContentVisible?"chevron-up":"chevron-down"} size={20} />
-                    </View>
+                    {this.props.hideIcon?(
+                      null
+                    ):(
+                      <View >
+                        <Feather name={this.state.isContentVisible?"chevron-up":"chevron-down"} size={20} />
+                      </View>
+                    )}
+                    
                   </View> 
               </TouchableWithoutFeedback>
           </View>

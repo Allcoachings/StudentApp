@@ -1,8 +1,5 @@
 import { Feather } from '@expo/vector-icons';
 import React from 'react';
-// import BottomNavigation, {
-//     FullTab
-// } from 'react-native-material-bottom-navigation'
 import { theme } from './config';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
@@ -15,26 +12,26 @@ class BottomTab extends React.Component {
     {
       key: 'Home',
       icon: 'compass',
-      label: 'Explore',
+      label: this.props.mode=="student"?('Explore'):('Home'),
       barColor: theme.primaryColor,
       pressColor: 'rgba(255, 255, 255, 0.16)',
       params:{}
     },
     {
-      key: "TestSeries",
+      key: this.props.mode=="student"?("TestSeries"):("Revenue"),
       icon: 'file-text',
-      label: 'Test Series',
+      label: this.props.mode=="student"?('Test Series'):('Revenue'),
       barColor: theme.primaryColor,
       pressColor: 'rgba(255, 255, 255, 0.16)',
       params:{}
     },
     {
-      key: "Subscription",
+      key: this.props.mode=="student"?("Subscription"):("Notification"),
       icon: 'youtube',
-      label: 'Followings',
+      label: this.props.mode=="student"?('Followings'):('Notifications'),
       barColor: theme.primaryColor,
       pressColor: 'rgba(255, 255, 255, 0.16)',
-      params:{}
+      params:this.props.mode=="student"?({}):({mode: 'institute'})
     },
     {
       key: "Feed",

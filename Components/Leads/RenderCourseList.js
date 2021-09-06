@@ -69,22 +69,7 @@ class RenderCourseList extends React.Component {
 
     render() {
         return(    
-            <Accordian header={this.accordianHeader()} onPress={this.fetchCourseStudent}>
-                {this.state.loading?(
-                    <CustomActivtiyIndicator mode="skimmer"/>
-                ):(
-                    <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                    <FlatList 
-                        data={this.state.studentList} 
-                        renderItem={(item)=>{console.log(item);return this.studentList(item)}}
-                        keyExtractor={(item)=>item.id} 
-                        horizontal={false}
-                        showsHorizontalScrollIndicator={false}
-                        ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
-                    />
-                    </View> 
-                )}
-            </Accordian>
+            <Accordian header={this.accordianHeader()} onPress={this.fetchCourseStudent} hideIcon={true}/>
         )
     }
 }

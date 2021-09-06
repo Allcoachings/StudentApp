@@ -30,19 +30,20 @@ class Settings extends Component {
             iconName={"arrow-left"}
             btnHandler={() => {this.props.navigation.goBack()}}
             titleonheader={"Settings"}
-            notificationreplaceshare={""}
             noNotificationIcon={true}
             nosearchIcon={true}
         >
-                <View style={styles.container}>
-                    {this.renderSettingItem('Account','user',()=>{this.props.navigation.navigate("EditProfile")})}
-                    {this.renderSettingItem('Help & Support','help-circle',()=>{})}
-                    {this.renderSettingItem('Rate us on Play Store','disc',()=>{})}
-                    {/* {this.renderSettingItem('Refer n earn','gift',()=>{})} */}
-                    {this.renderSettingItem('Privacy Policy','lock',()=>{})}
-                    {this.renderSettingItem('Terms and Conditions','calendar',()=>{})}
-                    {this.renderSettingItem('FeedBack','refresh-cw',()=>{})}
-                </View>
+                
+                    
+                    <View style={styles.container}>
+                      {this.renderSettingItem('Account','user',()=>{this.props.route.params.mode=="institute"?(this.props.navigation.navigate("InsRegister",{mode:"edit"})):(this.props.navigation.navigate("EditProfile"))})}
+                      {this.renderSettingItem('Help & Support','help-circle',()=>{})}
+                      {this.renderSettingItem('Rate us on Play Store','disc',()=>{})}
+                      {/* {this.renderSettingItem('Refer n earn','gift',()=>{})} */}
+                      {this.renderSettingItem('Privacy Policy','lock',()=>{})}
+                      {this.renderSettingItem('Terms and Conditions','calendar',()=>{})}
+                      {this.renderSettingItem('FeedBack','refresh-cw',()=>{})}
+                    </View>
       </PageStructure>
     );
   }

@@ -1026,11 +1026,10 @@ class InsHome extends React.Component {
             btnHandler={() => {this.props.navigation.toggleDrawer()}}
             catInHeader={false}
             titleonheader={"Dashboard"}
-            notificationreplaceshare={"more-vertical"}
-            rightIconOnPress={()=>{this.setState({modalVisible:true})}} 
             navigation={this.props.navigation}
             nosearchIcon={true}
-            noNotificationIcon={true}
+            notificationreplaceshare={"share-2"}
+            titleWithImage={true}
         > 
             <ScrollView>
                 <View style={styles.container}>

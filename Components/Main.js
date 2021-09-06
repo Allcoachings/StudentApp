@@ -114,11 +114,11 @@ class Main extends React.Component {
     {
         if(screenWidth > screenMobileWidth && Platform.OS === 'web')
         { 
-              return(<WebViewControllerIns  insAuth={this.props.insAuth}/>)
+              return(<WebViewControllerIns  insAuth={this.props.insAuth} institute={this.props.institute}/>)
         }
         else  
         {
-              return(<MobileViewControllerIns changeMode={this.changeMode} insAuth={this.props.insAuth} />)
+              return(<MobileViewControllerIns changeMode={this.changeMode} insAuth={this.props.insAuth} institute={this.props.institute}/>)
         }
          
     }
@@ -259,6 +259,7 @@ const mapStateToProps = (state)=>
         insAuth:state.institute.authStatus,
         userInfo:state.user.userInfo,
         statusBarHidden:state.screen.statusBarHidden,
+        institute:state.institute
     }
 }
 export default connect(mapStateToProps,{setKeyboardHeight,screenWidthConfigChange,userAuthStatus,setInstituteAuth,setUserInfo,setInstituteDetails})(Main);

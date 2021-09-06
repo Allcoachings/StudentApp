@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { theme } from '../config';
+import { theme, serverBaseUrl } from '../config';
 import {Text, Switch, Avatar, Title, Caption, Paragraph, Drawer, TouchableRipple} from 'react-native-paper'
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import  Icon  from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -23,10 +23,10 @@ export function DrawerContent(props){
                     <View style={styles.userInfoSection}>
 
                         <View style={{marginTop: '5%' ,marginRight: 10,}}>
-                            <Avatar.Image source={{ uri: 'https://picsum.photos/200' }}  size={80}/>
+                            <Avatar.Image source={{ uri: serverBaseUrl+props.institute.details.logo }}  size={80}/>
                         </View>
                         <View style={styles.userNameSec}>
-                            <Title>All Coachings</Title>
+                            <Title>{props.institute.details.name}</Title>
                         </View>
                     </View>
                     <Drawer.Section>
@@ -88,6 +88,18 @@ export function DrawerContent(props){
                             )}
                             label="Lead"
                             onPress={()=>{props.navigation.navigate("Leads")}}
+                            style={{borderBottomWidth: 0.2, borderColor: theme.greyColor}}
+                        />
+                         <DrawerItem
+                            icon={({color, size}) => (
+                                <Icon
+                                    name="home-outline"
+                                    color={color}
+                                    size={size}
+                                />
+                            )}
+                            label="Settings"
+                            onPress={()=>{props.navigation.navigate("Settings",{mode: "institute"})}}
                             style={{borderBottomWidth: 0.2, borderColor: theme.greyColor}}
                         />
                          <DrawerItem

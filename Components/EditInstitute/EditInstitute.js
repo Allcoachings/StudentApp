@@ -4,9 +4,6 @@ import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {theme,screenMobileWidth} from '../config'
 import CardView from '../Utils/CardView';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import DropDownPicker from 'react-native-dropdown-picker';
-import {fetch_categories} from '../Utils/DataHelper/Categories'
-import {registerCoaching} from '../Utils/DataHelper/Coaching'
 import { Picker } from 'native-base';
 import * as DocumentPicker from 'expo-document-picker';
 import {Feather} from '@expo/vector-icons';
@@ -16,7 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const width = Dimensions.get('window').width
 import Toast from 'react-native-simple-toast';
 
-class InsRegister extends React.Component {
+class EditInstitute extends React.Component {
     state = {
         insName: '',
         dirName: '',
@@ -217,55 +214,50 @@ class InsRegister extends React.Component {
                             <Text style={styles.headText}>{this.props.route.params.mode=="edit"?("Edit"):("Submit")} Your Institute Details</Text>
                         </View>
                         <TouchableOpacity style={styles.imageView} onPress={this.handleImageBtnClick}>
-                            <Image source={{uri: this.state.logo?this.state.logo.uri:'https://picsum.photos/200/300'}} style={styles.imageStyle}/>
-                            <Text style={{fontFamily:'Raleway_600SemiBold',alignSelf: 'center'}}>{"Choose Logo"}</Text>
+                            <Image source={{uri: imageProvider(this.props.institute.details.logo)}} style={styles.imageStyle}/>
+                            <Text style={{fontFamily:'Raleway_600SemiBold',alignSelf: 'center'}}>{"Change Logo"}</Text>
                         </TouchableOpacity>
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'Institute Name',(insName)=>{this.setState({insName})})}
+                            {this.renderTextInput('', 'Institute Name',this.props.institute.details.name,(insName)=>{this.setState({insName})})}
                         </View>
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'Director Name',(dirName)=>{this.setState({dirName})})}
+                            {this.renderTextInput('', 'Director Name',this.props.institute.details.directorName,(dirName)=>{this.setState({dirName})})}
                         </View>
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'Phone number',(phone)=>{this.setState({phone})})}
+                            {this.renderTextInput('', 'Phone number',this.props.institute.details.phone,(phone)=>{this.setState({phone})})}
                         </View>
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'E-mail ID',(email)=>{this.setState({email})})}
+                            {this.renderTextInput('', 'E-mail ID',this.props.institute.details.email,(email)=>{this.setState({email})})}
                         </View>
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'Password',(pass)=>{this.setState({pass})})}
+                            {this.renderTextInput('', 'Password',this.props.institute.details.password,(pass)=>{this.setState({pass})})}
                         </View>
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'ConfirmPassword',(pass)=>{this.setState({pass})})}
+                            {this.renderTextInput('', 'ConfirmPassword',this.props.institute.details.password,(pass)=>{this.setState({pass})})}
                         </View>
                         
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'About this Institute',(about)=>{this.setState({about})})}
+                            {this.renderTextInput('', 'About this Institute',this.props.institute.details.about,(about)=>{this.setState({about})})}
                         </View>
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'Institute Address',(addr)=>{this.setState({addr})})}
+                            {this.renderTextInput('', 'Institute Address',this.props.institute.details.address,(addr)=>{this.setState({addr})})}
                         </View>
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'City',(city)=>{this.setState({city})})}
+                            {this.renderTextInput('', 'City',this.props.institute.details.city,(city)=>{this.setState({city})})}
                         </View>
                         <View style={styles.inputField}>
-                            {/* {this.renderTextInput('', 'State',(state)=>{this.setState({state})})} */}
                             <Picker 
                             style={[styles.dropDownView,{height:30}]}
                             selectedValue={this.state.state}
                             onValueChange={(itemValue, itemIndex) =>
                                 this.setSelectedState(itemValue)
                             }>
-                                {/* <Picker.Item label="Java" value="java" />
-                                <Picker.Item label="JavaScript" value="js" /> */}
                             {this.state.indianStates&&this.state.indianStates.map((item)=>this.renderPickerItemState(item))}
                             </Picker>
                         </View>
                         
                         
                         {!this.state.loadingCategory?(
-                            
-                            // CardView(
                                 <View style={styles.inputField}>
                                     <Picker
 
@@ -274,26 +266,9 @@ class InsRegister extends React.Component {
                                         onValueChange={(itemValue, itemIndex) =>
                                             this.setSelectedCategory(itemValue)
                                         }>
-                                            {/* <Picker.Item label="Java" value="java" />
-                                            <Picker.Item label="JavaScript" value="js" /> */}
                                         {this.state.categories&&this.state.categories.map((item)=>this.renderPickerItem(item))}
                                     </Picker>
-                                    {/* <DropDownPicker
-                                        placeholder="Select Category"
-                                        placeholderTextColor={theme.greyColor}
-                                        containerStyle={{borderColor: theme.greyColor}}
-                                        items={this.state.categories}
-                                        open={this.state.open}
-                                        setOpen={this.open}
-                                        value={this.state.selectedCategory}
-                                        setValue={this.setValue}
-                                        dropdownContainerStyle={{
-                                            zIndex:1000,
-                                            elevation:100
-                                        }}
-                                    /> */}
                                 </View> 
-                                // ,{marginTop: 10, padding: 12})
                         ):(null)}
                         
 
@@ -433,5 +408,10 @@ const styles = StyleSheet.create({
         }
     
 })
-
-export default connect(null,{setInstituteDetails,setInstituteAuth})(InsRegister);
+const  mapStateToProps = (state)=>
+{
+    return {
+        institute:state.institute
+    }
+}
+export default connect(mapStateToProps)(EditInstitute);

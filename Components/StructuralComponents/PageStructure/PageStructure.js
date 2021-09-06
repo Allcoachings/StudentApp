@@ -24,6 +24,7 @@ class PageStructure extends React.Component {
                                 bottomComponentStyle={this.props.bottomComponentStyle}  
                                 bottomComponent={this.props.bottomComponent}
                                 navigation={this.props.navigation}
+                                mode={this.props.userAuth?("student"):("institute")}
                             />
                         </View>
                     ):(null)} 
@@ -64,6 +65,7 @@ class PageStructure extends React.Component {
                                     catOnpress={this.props.catOnpress}
                                     catType={this.props.catType}
                                     selectedCat={this.props.selectedCat}
+                                    titleWithImage={this.props.titleWithImage}
                                 />  
                             </View>
                             <View style={[styles.pageLayout,this.props.screenWidth<=screenMobileWidth?({   margin:'2%'}):(null)]}> 
@@ -101,6 +103,7 @@ class PageStructure extends React.Component {
                                             catOnpress={this.props.catOnpress}
                                             catType={this.props.catType}
                                             selectedCat={this.props.selectedCat}
+                                            titleWithImage={this.props.titleWithImage}
                                         />  
                                     </View>
                                     <View style={[styles.pageLayout,this.props.screenWidth<=screenMobileWidth?({   margin:'2%'}):(null)]}> 
@@ -125,9 +128,6 @@ class PageStructure extends React.Component {
     render() {
         return (
             <>
-                {/* {this.props.statusBarHidden?(
-                    <StatusBar hidden/>
-                ):(null)}  */}
                 {this.renderContent()}
             </>
             );
@@ -179,7 +179,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state)=>{
     return {
-        screenWidth: state.screen.screenWidth
+        screenWidth: state.screen.screenWidth,
+        userAuth: state.user.userAuthStatus,
     }
 }
 export default connect(mapStateToProps)(PageStructure);
