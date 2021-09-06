@@ -12,7 +12,8 @@ import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const width = Dimensions.get('window').width
 import Toast from 'react-native-simple-toast';
-
+import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
+import {uploadFile} from '../Utils/DataHelper/FileHandler'
 class EditInstitute extends React.Component {
     state = {
         insName: '',
@@ -70,7 +71,28 @@ class EditInstitute extends React.Component {
             "Uttar Pradesh",
             "Uttarakhand",
             "West Bengal"
-        ]
+        ],
+        institute: [],
+        loadingInstitute: true,
+        changedLogo: ''
+    }
+
+
+    componentDidMount(){
+        fetch_instituteDetails(this.props.institute.details.id,this.instituteCallback)
+    }
+
+    instituteCallback=(response) =>
+    {
+        if(response.status==200)
+        {
+            response.json().then(data=>
+                {
+                    console.log(data)
+                    this.setState({institute:data,loadingInstitute:false})
+                })
+            
+        }
     }
 
 
@@ -139,43 +161,12 @@ class EditInstitute extends React.Component {
     setSelectedState=(state)=>{
         this.setState({state});
     }
-    registerCoachingCallBack =(response)=>
-    {
-           
-            if(response.status==201)
-            {
-                Toast.show('Institute Added Successfully.');
-                this.setState({registerLoader:false})
-                this.props.setInstituteDetails({id:response.headers.map.location,name:this.state.insName,directorName:this.state.dirName,email:this.state.email,phone:this.state.phone,password:this.state.password,address:this.state.address,city:this.state.city,state:this.state.state,category:this.state.category,about:this.state.about,logo:this.state.logo.uri,status:1})
-                this.props.setInstituteAuth(true);
-                AsyncStorage.setItem('authInfo', JSON.stringify({id:response.headers.map.location,name:this.state.insName,directorName:this.state.dirName,email:this.state.email,phone:this.state.phone,password:this.state.password,address:this.state.address,city:this.state.city,state:this.state.state,category:this.state.category,about:this.state.about,logo:this.state.logo.uri,status:1,authType:'ins'}))
-                this.props.navigation.navigate("Home")
-
-            }
-            else
-            {
-                Toast.show('Something Went Wrong. Please Try Again Later.');
-            }
-
-    }
-    registerCoachingClickHandler=()=>
-    {
+    
+    saveDetails=()=>{
+        if(this.state.changedImage)
+        {
             
-         
-            if(this.verifyFields(this.state))
-            {
-                if(!this.state.registerLoader)
-                {
-                    this.setState({registerLoader:true}) 
-                    let {insName,dirName,email,phone,pass,addr,city,state,selectedCategory,about,logo} =this.state;
-                    registerCoaching(insName,dirName,email,phone,pass,addr,city,state,selectedCategory,about,logo,this.registerCoachingCallBack) 
-                }
-               
-            }else
-            {
-                 
-                Toast.show('Please Fill All The Fields.');
-            }
+        }
     }
     
     verifyFields =({insName,dirName,phone,email,pass,addr,city,state,about,selectedCategory,logo})=>{
@@ -190,19 +181,17 @@ class EditInstitute extends React.Component {
                
                 if(response.type=="success")
                 {
-                    this.setState({logo:response})
+                    this.setState({changedLogo:response})
                 }
             })
     }
+
     render() {
-        // fetch_categories((response)=>{console.log(response)})
  
         return(
-            // <PageStructure
-            //     iconName={"menu"}
-            //     btnHandler={() => {this.props.navigation.toggleDrawer()}}
-            // >
-                <ScrollView>
+               this.state.loadingInstitute?(
+                   <CustomActivtiyIndicator mode="instituteView"/>
+               ):( <ScrollView>
                     <View style={styles.container}>
                         <View style={styles.header}>
                             {/* <AuthHeader/>                         */}
@@ -214,36 +203,36 @@ class EditInstitute extends React.Component {
                             <Text style={styles.headText}>{this.props.route.params.mode=="edit"?("Edit"):("Submit")} Your Institute Details</Text>
                         </View>
                         <TouchableOpacity style={styles.imageView} onPress={this.handleImageBtnClick}>
-                            <Image source={{uri: imageProvider(this.props.institute.details.logo)}} style={styles.imageStyle}/>
+                            <Image source={{uri: imageProvider(this.state.institute.logo)}} style={styles.imageStyle}/>
                             <Text style={{fontFamily:'Raleway_600SemiBold',alignSelf: 'center'}}>{"Change Logo"}</Text>
                         </TouchableOpacity>
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'Institute Name',this.props.institute.details.name,(insName)=>{this.setState({insName})})}
+                            {this.renderTextInput('', 'Institute Name',this.state.institute.name,(insName)=>{this.setState({insName})})}
                         </View>
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'Director Name',this.props.institute.details.directorName,(dirName)=>{this.setState({dirName})})}
+                            {this.renderTextInput('', 'Director Name',this.state.institute.directorName,(dirName)=>{this.setState({dirName})})}
                         </View>
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'Phone number',this.props.institute.details.phone,(phone)=>{this.setState({phone})})}
+                            {this.renderTextInput('', 'Phone number',this.state.institute.phone,(phone)=>{this.setState({phone})})}
                         </View>
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'E-mail ID',this.props.institute.details.email,(email)=>{this.setState({email})})}
+                            {this.renderTextInput('', 'E-mail ID',this.state.institute.email,(email)=>{this.setState({email})})}
                         </View>
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'Password',this.props.institute.details.password,(pass)=>{this.setState({pass})})}
+                            {this.renderTextInput('', 'Password',this.state.institute.password,(pass)=>{this.setState({pass})})}
                         </View>
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'ConfirmPassword',this.props.institute.details.password,(pass)=>{this.setState({pass})})}
+                            {this.renderTextInput('', 'ConfirmPassword',this.state.institute.password,(pass)=>{this.setState({pass})})}
                         </View>
                         
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'About this Institute',this.props.institute.details.about,(about)=>{this.setState({about})})}
+                            {this.renderTextInput('', 'About this Institute',this.state.institute.about,(about)=>{this.setState({about})})}
                         </View>
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'Institute Address',this.props.institute.details.address,(addr)=>{this.setState({addr})})}
+                            {this.renderTextInput('', 'Institute Address',this.state.institute.address,(addr)=>{this.setState({addr})})}
                         </View>
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'City',this.props.institute.details.city,(city)=>{this.setState({city})})}
+                            {this.renderTextInput('', 'City',this.state.institute.city,(city)=>{this.setState({city})})}
                         </View>
                         <View style={styles.inputField}>
                             <Picker 
@@ -295,8 +284,7 @@ class EditInstitute extends React.Component {
                         </View>
                     </View>
                 </ScrollView>
-        //    </PageStructure>
-        )}
+        ))}
     }
 
 const styles = StyleSheet.create({

@@ -7,7 +7,7 @@ import AddTest from '../InsHome/AddTest'
 import AddPdf from '../InsHome/AddPdf'
 import AddVideo from '../InsHome/AddVideo'
 import AddTimeTable from '../InsHome/AddTimeTable'
-import InsRegister from '../InsRegister/InsRegister'
+import EditInstitute from '../EditInstitute/EditInstitute'
 import Leads from '../Leads/Leads'
 import {theme} from '../config'
 import  {DrawerContent}  from './DrawerContent';
@@ -49,7 +49,7 @@ class indexIns extends React.Component {
                                 <Drawer.Screen name="RenderSingleFeed" component={RenderSingleFeed} />
                                 <Drawer.Screen name="Feed" component={Feed} />
                                 <Drawer.Screen name="Settings" component={Settings} />
-                                <Drawer.Screen name="InsRegister" component={InsRegister} />
+                                <Drawer.Screen name="EditInstitute" component={EditInstitute} />
                                 
                             </>
                        ):(

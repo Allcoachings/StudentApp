@@ -24,6 +24,7 @@ public class InstituteController {
 
     @Autowired
     private FileUploadService fileUploadService;
+
     @Autowired
     private InstituteService instituteService;
 
@@ -42,7 +43,6 @@ public class InstituteController {
             @RequestParam("category") long category,
             @RequestParam("about") String about,
             @RequestParam("status") int status
-
             )
     {
             String logo = "files/";
@@ -56,6 +56,16 @@ public class InstituteController {
             return ResponseEntity.created(location).build();
 
     }
+
+
+    @CrossOrigin(origins = "*")
+    @PutMapping("/editInstitute")
+    public ResponseEntity<Object> editInstitute(@RequestBody Institute institute)
+    {
+        instituteService.save(institute);
+        return ResponseEntity.ok().build();
+    }
+
 
     @CrossOrigin(origins = "*")
     @PostMapping("/validate/")

@@ -36,7 +36,7 @@ class Settings extends Component {
                 
                     
                     <View style={styles.container}>
-                      {this.renderSettingItem('Account','user',()=>{this.props.route.params.mode=="institute"?(this.props.navigation.navigate("InsRegister",{mode:"edit"})):(this.props.navigation.navigate("EditProfile"))})}
+                      {this.renderSettingItem('Account','user',()=>{this.props.route.params.mode=="institute"?(this.props.navigation.navigate("EditInstitute")):(this.props.navigation.navigate("EditProfile"))})}
                       {this.renderSettingItem('Help & Support','help-circle',()=>{})}
                       {this.renderSettingItem('Rate us on Play Store','disc',()=>{})}
                       {/* {this.renderSettingItem('Refer n earn','gift',()=>{})} */}
