@@ -78,4 +78,9 @@ public class TransactionService {
     {
         return  transactionRepo.findByOrderId(orderId);
     }
+
+    public  Iterable<Transaction> findByCourseId(long id,int page,int pageSize)
+    {
+        return transactionRepo.findByCourseId(id,PageRequest.of(page,pageSize));
+    }
 }

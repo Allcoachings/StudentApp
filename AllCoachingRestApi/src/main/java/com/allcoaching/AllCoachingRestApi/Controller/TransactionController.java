@@ -31,4 +31,11 @@ public class TransactionController {
         return ResponseEntity.created(location).build();
     }
 
+    @CrossOrigin(origins = "*")
+    @GetMapping("bycourseId/{id}")
+    public Iterable<Transaction> saveTransaction(@PathVariable long id,@PathVariable int page,@PathVariable int pageSize)
+    {
+         return transactionService.findByCourseId(id,page,pageSize);
+    }
+
 }

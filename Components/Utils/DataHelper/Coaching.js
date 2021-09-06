@@ -95,7 +95,7 @@ export   const validateLogin=(email,password,callback)=>
             headers.append('Access-Control-Allow-Credentials', 'true');
 
             headers.append('GET', 'POST', 'OPTIONS'); 
-
+                console.log(serverApiUrl+'institute/validate/',JSON.stringify({email,password}))
              fetch(serverApiUrl+'/institute/validate/',
             {
                 method: 'POST',  

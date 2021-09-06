@@ -26,6 +26,7 @@ public interface InsReviewRepo extends PagingAndSortingRepository<InsReview,Long
     @Query("Select new com.allcoaching.AllCoachingRestApi.dto.InsLeadsStudentDto(s.id,s.name,s.studentImage,s.userId) from InsReview r,Student s where r.studentId=s.id and r.courseId=:courseId")
     Page<InsLeadsStudentDto> findByCourseId(long courseId, Pageable pageable);
 
+
     @Query("SELECT new com.allcoaching.AllCoachingRestApi.dto.InsReviewDto(s.name,i.name, s.studentImage, r) from Institute i, InsReview r, Student s where r.insId=i.id and i.id = :id and r.studentId=s.id")
     Page<InsReviewDto> findByInsId(long id, Pageable pageable);
 

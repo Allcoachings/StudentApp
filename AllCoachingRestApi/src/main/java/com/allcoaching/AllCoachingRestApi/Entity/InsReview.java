@@ -6,9 +6,11 @@ import com.allcoaching.AllCoachingRestApi.dto.SalesOverViewDataDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @ToString
@@ -44,6 +46,9 @@ public class InsReview {
     private String review;
     private String reply;
 
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date time;
 
     public InsReview(long courseId, long insId, long studentId, int rating, String review) {
         this.courseId = courseId;
