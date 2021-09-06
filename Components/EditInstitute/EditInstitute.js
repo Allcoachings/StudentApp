@@ -1,31 +1,35 @@
 import React from 'react';
 import {Text, View,StyleSheet, TextInput, TouchableOpacity,TouchableWithoutFeedback, Image, ScrollView, CheckBox,ActivityIndicator,Dimensions} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import {theme,screenMobileWidth} from '../config'
+import {theme,screenMobileWidth, imageProvider, serverBaseUrl} from '../config'
 import CardView from '../Utils/CardView';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Picker } from 'native-base';
 import * as DocumentPicker from 'expo-document-picker';
+import {fetch_categories} from '../Utils/DataHelper/Categories'
 import {Feather} from '@expo/vector-icons';
 import {setInstituteDetails,setInstituteAuth} from '../Actions'
+import {fetch_instituteDetails} from '../Utils/DataHelper/Coaching'
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const width = Dimensions.get('window').width
 import Toast from 'react-native-simple-toast';
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import {uploadFile} from '../Utils/DataHelper/FileHandler'
+import {updateInstituteDetails} from '../Utils/DataHelper/EditInstitute'
 class EditInstitute extends React.Component {
     state = {
-        insName: '',
-        dirName: '',
-        number: '',
+        name: '',
+        directorName: '',
+        phone: '',
         email: '',
         password: '',
-        insAddr: '',
-        state: 'Andaman and Nicobar Islands',
+        logo:'', 
+        address: '',
+        state: '',
         city: '',
         about: '',
-        tandc: '',
+        id: this.props.institute.details.id,
         isSelected: false,
         loadingCategory:true,
         selectedCategory:-1,
@@ -72,14 +76,9 @@ class EditInstitute extends React.Component {
             "Uttarakhand",
             "West Bengal"
         ],
-        institute: [],
+        institute: {},
         loadingInstitute: true,
         changedLogo: ''
-    }
-
-
-    componentDidMount(){
-        fetch_instituteDetails(this.props.institute.details.id,this.instituteCallback)
     }
 
     instituteCallback=(response) =>
@@ -89,23 +88,19 @@ class EditInstitute extends React.Component {
             response.json().then(data=>
                 {
                     console.log(data)
-                    this.setState({institute:data,loadingInstitute:false})
+                    this.setState({name:data.name, directorName:data.directorName, phone:data.phone, email:data.email, password: data.password, about: data.about, address: data.address, city: data.city, state:data.state, loadingInstitute:false, logo:data.logo})
                 })
             
         }
     }
 
 
-    renderTextInput=(icon, placeholder,onPress)=>{
+    renderTextInput=(icon, placeholder, value, onPress)=>{
         return(
-            // CardView(
-                // <View style={{flex: 1, flexDirection: 'row'}}>
                     <>
                         <Text style={{fontFamily:'Raleway_600SemiBold',alignSelf: 'flex-start',marginLeft:10}}>{placeholder}</Text>
-                        <TextInput style={styles.inputField} placeholder={"Enter "+placeholder} onChangeText={(text)=>onPress(text)} />
+                        <TextInput style={styles.inputField} defaultValue={value} placeholder={"Enter "+placeholder} onChangeText={(text)=>onPress(text)} />
                     </>
-            //    ,{marginTop: 10, padding: 12}
-            // )
         )
     }
 
@@ -134,11 +129,8 @@ class EditInstitute extends React.Component {
     }
     componentDidMount()
     {
-
-     
         fetch_categories(this.handleCatgoryCallback) 
-        
-        // fetch_categories((response)=>{console.log(response)})
+        fetch_instituteDetails(this.props.institute.details.id,this.instituteCallback)
     }
     renderPickerItem=(item)=>
     {
@@ -163,15 +155,62 @@ class EditInstitute extends React.Component {
     }
     
     saveDetails=()=>{
-        if(this.state.changedImage)
+        this.setState({registerLoader: true})
+        if(this.state.changedLogo)
         {
-            
+            console.log("file upload")
+            uploadFile(this.state.changedLogo, this.fileCallBack)
+        }
+        else
+        {
+            console.log("details upload")
+            this.update()
+        }
+    }
+
+    update=()=>{
+        console.log("hre")
+        if(this.verifyFields(this.state))
+        {
+            console.log("verifyFields")
+            updateInstituteDetails(this.state.id, this.state.about, this.state.address, this.state.city, this.state.directorName, this.state.email, this.state.logo, this.state.name, this.state.phone, this.state.state, this.state.password, this.updateDetailsCallback)  
+        } 
+        else
+        {
+            console.log("not verifyFields")
+            this.setState({registerLoader: false})
+            Toast.show("Please Fill All The Fields.")
+        }
+    }
+
+    fileCallBack=(response)=>{
+        console.log("file", response.status)
+        if(response.status==201)
+        {
+            this.setState({logo: response.headers.map.location},()=>this.update())
+        }
+        else
+        {
+            console.log("error", response.status)
+        }
+    }
+
+    updateDetailsCallback=(response)=>{
+        this.setState({registerLoader: false})
+        console.log("details", response.status)
+        if(response.status==200)
+        {
+            Toast.show("Insititute Details Updated Successfully.")
+        }
+        else
+        {
+            Toast.show("Something Went Wrong. Please Try Again Later!!")
         }
     }
     
-    verifyFields =({insName,dirName,phone,email,pass,addr,city,state,about,selectedCategory,logo})=>{
+    verifyFields =({name,directorName,phone,email,password,address,city,state,about})=>{
         
-        return insName&&dirName&&phone&&email&&pass&&addr&&city&&state!=this.state.indianStates[0]&&about&&selectedCategory!=-1&&logo.type=="success"
+        return name&&directorName&&phone&&email&&password&&address&&city&&state!=this.state.indianStates[0]&&about
     }
 
     handleImageBtnClick=()=>
@@ -200,39 +239,36 @@ class EditInstitute extends React.Component {
                             </TouchableWithoutFeedback>
                         </View>
                         <View style={styles.headView}>
-                            <Text style={styles.headText}>{this.props.route.params.mode=="edit"?("Edit"):("Submit")} Your Institute Details</Text>
+                            <Text style={styles.headText}>Update Your Institute Details</Text>
                         </View>
                         <TouchableOpacity style={styles.imageView} onPress={this.handleImageBtnClick}>
-                            <Image source={{uri: imageProvider(this.state.institute.logo)}} style={styles.imageStyle}/>
+                            <Image source={this.state.changedLogo?(this.state.changedLogo):({uri: imageProvider(this.state.logo)})} style={styles.imageStyle}/>
                             <Text style={{fontFamily:'Raleway_600SemiBold',alignSelf: 'center'}}>{"Change Logo"}</Text>
                         </TouchableOpacity>
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'Institute Name',this.state.institute.name,(insName)=>{this.setState({insName})})}
+                            {this.renderTextInput('', 'Institute Name',this.state.name,(name)=>{this.setState({name})})}
                         </View>
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'Director Name',this.state.institute.directorName,(dirName)=>{this.setState({dirName})})}
+                            {this.renderTextInput('', 'Director Name',this.state.directorName,(directorName)=>{this.setState({directorName})})}
                         </View>
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'Phone number',this.state.institute.phone,(phone)=>{this.setState({phone})})}
+                            {this.renderTextInput('', 'Phone number',this.state.phone,(phone)=>{this.setState({phone})})}
                         </View>
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'E-mail ID',this.state.institute.email,(email)=>{this.setState({email})})}
+                            {this.renderTextInput('', 'E-mail ID',this.state.email,(email)=>{this.setState({email})})}
                         </View>
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'Password',this.state.institute.password,(pass)=>{this.setState({pass})})}
-                        </View>
-                        <View style={styles.inputView}>
-                            {this.renderTextInput('', 'ConfirmPassword',this.state.institute.password,(pass)=>{this.setState({pass})})}
+                            {this.renderTextInput('', 'Password',this.state.password,(password)=>{this.setState({password})})}
                         </View>
                         
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'About this Institute',this.state.institute.about,(about)=>{this.setState({about})})}
+                            {this.renderTextInput('', 'About this Institute',this.state.about,(about)=>{this.setState({about})})}
                         </View>
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'Institute Address',this.state.institute.address,(addr)=>{this.setState({addr})})}
+                            {this.renderTextInput('', 'Institute Address',this.state.address,(address)=>{this.setState({address})})}
                         </View>
                         <View style={styles.inputView}>
-                            {this.renderTextInput('', 'City',this.state.institute.city,(city)=>{this.setState({city})})}
+                            {this.renderTextInput('', 'City',this.state.city,(city)=>{this.setState({city})})}
                         </View>
                         <View style={styles.inputField}>
                             <Picker 
@@ -244,40 +280,15 @@ class EditInstitute extends React.Component {
                             {this.state.indianStates&&this.state.indianStates.map((item)=>this.renderPickerItemState(item))}
                             </Picker>
                         </View>
-                        
-                        
-                        {!this.state.loadingCategory?(
-                                <View style={styles.inputField}>
-                                    <Picker
-
-                                        style={[styles.dropDownView,{height:30}]}
-                                        selectedValue={this.state.selectedCategory}
-                                        onValueChange={(itemValue, itemIndex) =>
-                                            this.setSelectedCategory(itemValue)
-                                        }>
-                                        {this.state.categories&&this.state.categories.map((item)=>this.renderPickerItem(item))}
-                                    </Picker>
-                                </View> 
-                        ):(null)}
-                        
-
-
-                        <View style={styles.checkboxContainer}>
-                            <CheckBox
-                                value={this.state.isSelected}
-                                onValueChange={this.setSelection}
-                                style={styles.checkbox}
-                            />
-                            <Text style={styles.label}>By pressing 'Signup' you agree to our Terms & Conditions</Text>
-                        </View>
+                                                
 
                         <View style={styles.regBtnView}>
-                            <TouchableOpacity style={styles.regBtn} onPress={this.registerCoachingClickHandler}>
+                            <TouchableOpacity style={styles.regBtn} onPress={this.saveDetails}>
                                 {this.state.registerLoader?(
                                     <ActivityIndicator color={theme.primaryColor} size={"large"}/>
 
                                 ):(
-                                    <Text style={styles.regBtnText}>Register</Text>
+                                    <Text style={styles.regBtnText}>Save Changes</Text>
                                 )}
                                 
                             </TouchableOpacity>
