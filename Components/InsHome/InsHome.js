@@ -3,7 +3,7 @@ import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity,Touch
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {instituteData, insBanners} from '../../FakeDataService/FakeData'
 import { Rating } from 'react-native-ratings';
-import {theme,screenMobileWidth, serverBaseUrl,documentPlaceholder,dataLimit,addBannerImagePlaceholder, Assets, imageProvider} from '../config'
+import {theme,screenMobileWidth, serverBaseUrl,documentPlaceholder,dataLimit,addBannerImagePlaceholder, Assets, imageProvider, shareTextInstitute, shareBaseUrl} from '../config'
 import CardView from '../Utils/CardView';
 import MarqueeText from 'react-native-marquee';
 import { Feather } from '@expo/vector-icons';
@@ -30,6 +30,7 @@ import FeedImage from '../Feed/FeedImage';
 import FeedPoll from '../Feed/FeedPoll';
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
+import onShare from '../Utils/Share';
 const width = Dimensions.get('window').width
 class InsHome extends React.Component {
     
@@ -1039,6 +1040,11 @@ class InsHome extends React.Component {
             fetch_institute_feed(this.props.institute.details.id,this.state.feedOffset,dataLimit,this.handleFeedCallBack)
         }
     }
+
+    rightIconOnPress=()=>
+    {
+        onShare(shareTextInstitute+"\n"+shareBaseUrl+"institute/"+this.props.institute.details.id+"/"+this.props.institute.details.name)
+    }
     render() {
        const institute = this.props.institute.details
          return (
@@ -1052,6 +1058,7 @@ class InsHome extends React.Component {
             nosearchIcon={true}
             notificationreplaceshare={"share-2"}
             titleWithImage={true}
+            rightIconOnPress={this.rightIconOnPress}
         > 
             <ScrollView>
                 <View style={styles.container}>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text,Image,StyleSheet,Share, TouchableOpacity } from 'react-native';
-import {theme} from '../config';
+import {shareBaseUrl, shareTextFeed, theme} from '../config';
 import { AntDesign, FontAwesome} from '@expo/vector-icons';
 import { connect } from 'react-redux'
 import CommentModal from './CommentModal'
@@ -50,7 +50,7 @@ updateCommentsCount=(x)=>
                     <Text>{this.state.comments}</Text>
                 </View>
             </View> 
-            <TouchableOpacity style={styles.likeView} onPress={()=>onShare("TEset Me")}>
+            <TouchableOpacity style={styles.likeView} onPress={()=>onShare(shareTextFeed+"\n"+shareBaseUrl+"feed/"+this.props.feedId)}>
                 <AntDesign name="sharealt" size={22} color={theme.secondaryColor} />
             </TouchableOpacity>
 
