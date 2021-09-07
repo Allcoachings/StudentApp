@@ -49,8 +49,7 @@ class FeedImage extends Component {
           break;
     }
   }
-  likeFeed=(feedId)=>{
- console.log(this.props.type)
+  likeFeed=(feedId)=>{ 
     this.setState({canUserLike: !this.state.canUserLike},()=>{
         like_feed(feedId,this.props.type,this.props.type==1?(this.props.institute.details.id):(this.props.userInfo.id),this.likeFeedCallBack)
     })
@@ -106,7 +105,7 @@ addImage=(link, type)=>{
         // CardView(
             <View style={{flexDirection: 'column', padding: 5}}>
                 <View style={styles.boxView}>
-                    <FeedHeader  mode={this.props.mode} editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime}/>
+                    <FeedHeader  mode={this.props.mode} editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime} feed={feed}/>
                     <View style={styles.innerBoxView} onPress={()=>this.props.navigation.navigate("RenderSingleFeed",{id: feed.feed.id})}>
                         
                         {feed.feed.description?( 

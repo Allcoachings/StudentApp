@@ -77,6 +77,47 @@ public class NotificationService {
               return new ArrayList<>();
     }
 
+    //get notification filtered by type
+//get notification by notificationFor param
+    public Iterable<NotificationDto> getNotificationForByType(int notificationFor,String type,long receiverId, int page, int pageSize)
+    {
+        Page<Notification> paged_result =  notificationRepo.findByNotificationForAndReceiverIdAndTypeOrderByNotificationTimeDesc(notificationFor,receiverId, type,PageRequest.of(page,pageSize));
+        if(paged_result.hasContent())
+        {
+            Iterable<Notification> notifications = paged_result.getContent();
+            List<NotificationDto> notificationDtos = new ArrayList<>();
+            notifications.forEach(item->{
+                NotificationSenderDto senderDto = null;
+                switch (item.getNotificationFrom())
+                {
+                    case "admin":
+                        senderDto = new NotificationSenderDto(adminConfig.getId(),adminConfig.getName(),adminConfig.getImage());
+                        break;
+                    case "institute":
+                        Optional<Institute> instituteObj = instituteService.findById(item.getSenderId());
+                        if(instituteObj.isPresent())
+                        {
+                            Institute institute = instituteObj.get();
+                            senderDto = new NotificationSenderDto(institute.getId(), institute.getName(), institute.getLogo());
+                        }
+                        break;
+                    case "student":
+
+                        Optional<Student> studentObj = studentService.findById(item.getSenderId());
+                        if(studentObj.isPresent())
+                        {
+                            Student student = studentObj.get();
+                            senderDto = new NotificationSenderDto(student.getId(), student.getName(), student.getStudentImage());
+                        }
+                        break;
+                }
+                notificationDtos.add(new NotificationDto(item,senderDto));
+            });
+            return  notificationDtos;
+
+        }
+        return new ArrayList<>();
+    }
 
 
 

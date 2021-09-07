@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions, findNodeHandle,UIManager,} from 'react-native';
 import { theme, dataLimit, serverBaseUrl } from '../config';
 import { Feather } from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
@@ -16,6 +16,43 @@ class RenderSingleTestSeries extends React.Component {
         this.setState({modalVisible: false})                                                    
     }
 
+
+    actions = ['Change Playlist'];
+    showThreeMenu=()=>
+    {
+         
+      UIManager.showPopupMenu(
+          findNodeHandle(this.state.icon),
+          this.actions,
+          this.onError,
+          this.onPopupEvent
+      )
+        
+    }
+
+    onPopupEvent = (eventName, index) => {
+
+        if (eventName !== 'itemSelected') return 
+        switch (this.actions[index])
+        {
+            case "Change Playlist":
+                      this.changePlaylist()
+                break;
+            case "Share": 
+    
+              break;
+        }
+      }
+  
+    onRef = icon => {
+      if (!this.state.icon) {
+        this.setState({icon})
+      }
+    }
+
+    changePlaylist=()=>{
+        console.log("here")
+    }
     
 
     render(){
@@ -32,10 +69,10 @@ class RenderSingleTestSeries extends React.Component {
                             <TouchableOpacity style={styles.btnView} onPress={()=>{
                                
                                this.props.mode=="student"?(this.props.studentEnrolled?(
-                                   <>
-                                    {this.props.addToHistory("testSeries", this.props.item.id)}
-                                    {this.setState({modalVisible: true})}
-                                   </>
+                                    <>
+                                        {this.props.addToHistory("testSeries", this.props.item.id)}
+                                        {this.setState({modalVisible: true})}
+                                    </>
                                 ):(Toast.show('You Have Not Enrolled For This Course.'))):(this.setState({modalVisible: true}))}}>
                                 <Feather name="play" size={12} style={{color: theme.primaryColor, marginRight: 3}}/>
                                 <Text style={styles.btnText}>Start</Text>

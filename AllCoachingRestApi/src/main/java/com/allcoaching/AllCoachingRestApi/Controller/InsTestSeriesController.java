@@ -124,7 +124,13 @@ public class InsTestSeriesController {
         insTestSeriesService.updateHiddenStatusById(status,id);
         return ResponseEntity.ok().build();
     }
-
+    @CrossOrigin(origins="*")
+    @PutMapping("/updatePlaylist/{playlist_id}/{id}")
+    public  ResponseEntity<Object> updateHiddenStatus(@PathVariable long playlist_id,@PathVariable long id)
+    {
+        insTestSeriesService.updatePlaylistIdById(playlist_id,id);
+        return ResponseEntity.ok().build();
+    }
     @CrossOrigin(origins = "*")
     @DeleteMapping("/delete/series/{id}")
     public ResponseEntity<Object> deleteSeriesById(@PathVariable long id)

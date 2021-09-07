@@ -5,6 +5,7 @@ import com.allcoaching.AllCoachingRestApi.Respository.TransactionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -79,8 +80,15 @@ public class TransactionService {
         return  transactionRepo.findByOrderId(orderId);
     }
 
-    public  Iterable<Transaction> findByCourseId(long id,int page,int pageSize)
+    public  Iterable<Transaction> findByCourseIdWithStudentDetailSuccess(long id,int page,int pageSize)
     {
-        return transactionRepo.findByCourseId(id,PageRequest.of(page,pageSize));
+       Page<Transaction> paged_result = transactionRepo.findByCourseIdWithStudentDetailSuccess(id,PageRequest.of(page,pageSize, Sort.by(Sort.Direction.DESC,"purchaseDate")));
+       if(paged_result.hasContent())
+       {
+           return paged_result.getContent();
+       }else
+       {
+           return  new ArrayList<>();
+       }
     }
 }

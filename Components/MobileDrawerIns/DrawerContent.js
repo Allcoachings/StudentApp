@@ -75,7 +75,7 @@ export function DrawerContent(props){
                                         size={size} color={color} />
                                     )}
                                     label="All"
-                                    onPress={()=>{props.navigation.navigate("Notification",{mode: 'institute'})}}
+                                    onPress={()=>{props.navigation.navigate("Notification",{mode: 'institute', type:"all"})}}
                                     style={{marginLeft: 60}}
                                 />
                                 <DrawerItem
@@ -84,7 +84,7 @@ export function DrawerContent(props){
                                         size={size} color={color} />
                                     )}
                                     label="Social"
-                                    onPress={()=>{props.navigation.navigate("Notification",{mode: 'institute'})}}
+                                    onPress={()=>{props.navigation.navigate("Notification",{mode: 'institute', type:"social"})}}
                                     style={{marginLeft: 60}}
                                 />
                                 <DrawerItem
@@ -93,7 +93,7 @@ export function DrawerContent(props){
                                         size={size} color={color} />
                                     )}
                                     label="Ratings"
-                                    onPress={()=>{props.navigation.navigate("Notification",{mode: 'institute'})}}
+                                    onPress={()=>{props.navigation.navigate("Notification",{mode: 'institute', type:"rating"})}}
                                     style={{marginLeft: 60}}
                                 />
                             </>

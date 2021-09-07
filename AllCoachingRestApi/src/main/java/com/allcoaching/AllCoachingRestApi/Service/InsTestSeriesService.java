@@ -120,7 +120,11 @@ public class InsTestSeriesService {
         insTestSeriesRepo.updateHiddenStatus(status,id);
     }
 
-
+    //updating playlist id
+    public void updatePlaylistIdById(long playlistId,long id)
+    {
+        insTestSeriesRepo.updatePlaylistId(playlistId,id);
+    }
     //delete whole test series
     public void deleteSeriesById(long id)
     {

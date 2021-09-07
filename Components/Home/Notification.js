@@ -18,6 +18,7 @@ class Notification extends React.Component {
         showLoadMore: true,
         isNotificationLoading: true,
         loadingFooter: false,
+        type: this.props.route.params.type
     }
 
     componentDidMount(){
@@ -27,11 +28,11 @@ class Notification extends React.Component {
     fetch=() => {
         if(this.props.route.params.mode=="student")
         {
-            fetchNotifications(this.props.userInfo.id, 2, this.state.offset, dataLimit, this.notificationCallback)
+            fetchNotifications(this.props.userInfo.id, 2, this.state.type, this.state.offset, dataLimit, this.notificationCallback)
         }
         else
         {
-            fetchNotifications(this.props.institute.details.id, 1, this.state.offset, dataLimit, this.notificationCallback)
+            fetchNotifications(this.props.institute.details.id, 1,this.state.type, this.state.offset, dataLimit, this.notificationCallback)
         }
     }
 
@@ -51,6 +52,13 @@ class Notification extends React.Component {
                     this.setState({notifications:this.state.notifications,isNotificationLoading:false, showLoadMore: false, loadingFooter: false}); 
                 }                  
             })
+        }
+    }
+
+    updateComponent=()=>{
+        if(this.state.type!=this.props.route.params.type)
+        {
+            this.setState({type:this.props.route.params.type, notifications:[], offset: 0,isNotificationLoading: true},()=>this.fetch())  
         }
     }
 
@@ -90,7 +98,7 @@ class Notification extends React.Component {
     };
 
     render() {
-        
+        this.updateComponent()
         return(
             <PageStructure
                 iconName={"arrow-left"}

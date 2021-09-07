@@ -13,6 +13,7 @@ const windowHeight = Dimensions.get('screen').height;
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import AppLoading from 'expo-app-loading';
+import { validateLogin } from './Utils/DataHelper/Coaching';
 // import { StatusBar } from 'expo-status-bar';
 
 class Main extends React.Component {
@@ -73,8 +74,23 @@ class Main extends React.Component {
                 switch(data.authType)
                 {
                     case 'ins':
-                            this.props.setInstituteAuth(true);
-                            this.props.setInstituteDetails(data);
+                         
+                        validateLogin(data.email, data.password,(response)=>{
+                             
+                            if(response.status==200)
+                            {
+                                response.json().then(data=>{
+                                     
+                                    if(data)
+                                    {
+                                        this.props.setInstituteDetails(data)
+                                        this.props.setInstituteAuth(true);
+                                        AsyncStorage.setItem('authInfo', JSON.stringify({...data,authType:'ins'}))
+                                    } 
+                                })
+                            } 
+                        },"non-hashed")
+                            
                     break;
                     case 'user':
                         this.props.userAuthStatus(true);

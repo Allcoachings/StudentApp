@@ -73,7 +73,11 @@ public class CourseVideoService {
     {
         courseVideoRepo.updateHiddenStatus(status,id);
     }
-
+    //updating playlist id
+    public void updatePlaylistIdById(long playlistId,long id)
+    {
+        courseVideoRepo.updatePlaylistId(playlistId,id);
+    }
     //delete
     public void delete(long id)
     {

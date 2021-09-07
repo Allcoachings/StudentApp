@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
+import { Text,View,StyleSheet,TouchableWithoutFeedback,FlatList, Image,Platform, ScrollView} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import { theme, dataLimit , Assets} from '../config';
 import { Feather } from '@expo/vector-icons';
@@ -19,10 +19,18 @@ class Revenue extends React.Component {
         leadCount: '',
         courseCount: ''
     }
-
+    navigateToCourseRevenue=(item,institute)=>
+    {
+        console.log(institute)
+        this.props.navigation.navigate("courseRevenue",{item,institute})
+    }
     courses=({item})=>{
         return(
-            <RenderCourseList item={item} fetchListFun={fetchStudentList}/>
+            
+              
+                    <RenderCourseList item={item} OnPress={()=>this.navigateToCourseRevenue(item,this.props.institute)}  fetchListFun={fetchStudentList}/>
+            
+    
         )
     }
 
@@ -68,13 +76,13 @@ class Revenue extends React.Component {
 
                         <View style={styles.rowContainer}>
                             <View style={[styles.colContainer, {backgroundColor: theme.redColor+"33"}]}>
-                                <Text style={styles.leadText}>Today Revenue</Text>
+                                <Text style={styles.leadText}>Total Revenue</Text>
                                 <Text style={styles.priceText}>₹ {this.state.Revenue.total_revenue}</Text>
                             </View>
-                            <View style={[styles.colContainer, {backgroundColor: theme.yellowColor+"33"}]}>
+                            {/* <View style={[styles.colContainer, {backgroundColor: theme.yellowColor+"33"}]}>
                                 <Text style={styles.leadText}>Purchased Courses</Text>
                                 <Text style={styles.priceText}>{this.state.Revenue.total_purchased_course}</Text>
-                            </View>
+                            </View> */}
                         </View>
 
                         <View style={styles.courseCol}>

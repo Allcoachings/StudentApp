@@ -12,8 +12,10 @@ import { List } from 'react-native-paper';
 import Accordian from '../Utils/Accordian'
 import {setNavigation} from '../Actions'
 import MockTest from '../MockTest/MockTest'
+
+import CountDown from 'react-native-countdown-component';
 import AddCourseModal from './AddCourseModal';
-import {fetch_institute_courses,fetch_courses_banners,addCourseBanner,fetch_courses_videos,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents,fetch_courses_timetable,fetch_testSeries,fetch_testSeriesPlaylist} from '../Utils/DataHelper/Course'
+import {fetch_institute_courses,fetch_courses_banners,addCourseBanner,fetch_courses_videos,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents,fetch_courses_timetable,fetch_testSeries,fetch_testSeriesPlaylist,fetch_latestUpcomingSchedule} from '../Utils/DataHelper/Course'
 import {fetch_institute_reviews} from '../Utils/DataHelper/Reviews'
 import {fetch_institute_feed} from '../Utils/DataHelper/Feed'
 import InsReviews from './InsReviews'
@@ -71,10 +73,23 @@ class InsHome extends React.Component {
                 })
             }
      }
+     liveDataCallback=(response)=>
+     {
+         if(response.status==200)
+         {
+             response.json().then(data=>{
+                 var startDate = new Date(); 
+                 var endDate   = new Date(data.dateTime);
+                 var seconds = (endDate.getTime() - startDate.getTime()) / 1000;
+                 this.setState({liveDataLoaded:true,liveData:data,eventSeconds:seconds}); 
+             })
+         }
+             
+     }
      componentDidMount() {
         this.props.setNavigation(this.props.navigation);
         fetch_institute_courses(this.props.institute.details.id,this.coursesCallBack)
-        
+        fetch_latestUpcomingSchedule(this.props.institute.details.id,this.liveDataCallback)
      }
 
     courseBannerCallback=(response)=>
@@ -411,7 +426,7 @@ class InsHome extends React.Component {
             <>
                 <TouchableWithoutFeedback  onPress={()=>this.props.navigation.navigate("AddTimeTable",{courseId:this.state.activeCourse,appendSubject:this.appendCourseTimeTableSubject})}>
                     <View style={{justifyContent: 'center', alignItems: 'center', marginTop: '2%',backgroundColor:theme.greyColor, padding:5, borderRadius: 5}}>
-                        <Text style={{fontSize: 18, color: theme.primaryColor}}>Add Time Table</Text>
+                        <Text style={{fontSize: 18, color: theme.primaryColor}}>Add Subject </Text>
                     </View>
                 </TouchableWithoutFeedback>
                   <View style={styles.weekView}> 
@@ -464,12 +479,19 @@ class InsHome extends React.Component {
                 {
                     if(data.length>0)
                     {
-                        this.setState({courseTestSeries:[...this.state.courseTestSeries,...data],courseTestSeriesLoaded:true,isCourseTestSeriesLoading:false, showLoadMore: true, loadingFooter: false});
+                        if(data.length==dataLimit)
+                        {
+                            this.setState({courseTestSeries:[...this.state.courseTestSeries,...data],courseTestSeriesLoaded:true,isCourseTestSeriesLoading:false, showLoadMore: true, loadingFooter: false});               
+                        }
+                        else
+                        {
+                            this.setState({courseTestSeries:[...this.state.courseTestSeries,...data],courseTestSeriesLoaded:true,isCourseTestSeriesLoading:false, showLoadMore: false, loadingFooter: false});               
+                        }    
                     }   
                     else
                     {
                         this.setState({courseTestSeries:this.state.courseTestSeries,courseTestSeriesLoaded:true,isCourseTestSeriesLoading:false, showLoadMore: false, loadingFooter: false});
-                    }           
+                    }          
                 })
         }
     }
@@ -530,12 +552,19 @@ class InsHome extends React.Component {
                 {
                     if(data.length>0)
                     {
-                        this.setState({courseVideos:[...this.state.courseVideos,...data],courseVideoLoaded:true,isCourseVideoLoading:false, showLoadMore: true, loadingFooter: false}); 
+                        if(data.length==dataLimit)
+                        {
+                            this.setState({courseVideos:[...this.state.courseVideos,...data],courseVideoLoaded:true,isCourseVideoLoading:false, showLoadMore: true, loadingFooter: false});             
+                        }
+                        else
+                        {
+                            this.setState({courseVideos:[...this.state.courseVideos,...data],courseVideoLoaded:true,isCourseVideoLoading:false, showLoadMore: false, loadingFooter: false});             
+                        }
                     }  
                     else
                     {
                         this.setState({courseVideos:this.state.courseVideos,courseVideoLoaded:true,isCourseVideoLoading:false, showLoadMore: false, loadingFooter: false}); 
-                    }                  
+                    }                   
                 })
             }
     }
@@ -558,12 +587,20 @@ class InsHome extends React.Component {
                 {
                     if(data.length>0)
                     {
-                        this.setState({courseDocuments:[...this.state.courseDocuments,...data],courseDocumentLoaded:true,isCourseDocumentLoading:false, showLoadMore: true, loadingFooter: false});   
+                         
+                        if(data.length==dataLimit)
+                        {
+                            this.setState({courseDocuments:[...this.state.courseDocuments,...data],courseDocumentLoaded:true,isCourseDocumentLoading:false, showLoadMore: true, loadingFooter: false});               
+                        }
+                        else
+                        {
+                            this.setState({courseDocuments:[...this.state.courseDocuments,...data],courseDocumentLoaded:true,isCourseDocumentLoading:false, showLoadMore: false, loadingFooter: false});               
+                        } 
                     } 
                     else
                     {
                         this.setState({courseDocuments:this.state.courseDocuments,courseDocumentLoaded:true,isCourseDocumentLoading:false, showLoadMore: false, loadingFooter: false}); 
-                    }                   
+                    }                     
                 })
             }
     }
@@ -590,22 +627,7 @@ class InsHome extends React.Component {
 
     showFilters=(tab)=>{
         switch(tab)
-        {
-            case 'liveClass':   return(
-                                    <View style={styles.AddFilter}>
-                                        <TouchableOpacity 
-                                            onPress={()=>this.redirect('LiveAdd')} 
-                                            style={[styles.singleSubject,this.state.activeFilter=='LiveAdd'?({backgroundColor:theme.secondaryColor, color: theme.primaryColor}):(null)]}>
-                                                    <Text style={[styles.singleSubjectText,this.state.activeFilter=='LiveAdd'?({color:theme.primaryColor}):(null)]}>Go Live +</Text>
-                                        </TouchableOpacity>
-                                        <FlatList 
-                                            data={instituteData.liveClassFilters} 
-                                            renderItem={this.renderSubjectOptions}
-                                            keyExtractor={(item)=>item.id} 
-                                            horizontal={true}
-                                            showsHorizontalScrollIndicator={false}
-                                        />
-                                    </View>)
+        { 
 
             case 'videos':      
                     if(!this.state.courseVideoLoaded&&!this.state.isCourseVideoLoading)
@@ -707,38 +729,38 @@ class InsHome extends React.Component {
         switch(tab)
         {
             case 'liveClass':   return(
-                                        this.state.liveData?(
-                                            <View style={styles.liveContainer}>  
-                                                <View style={styles.liveItemTextView}>
-                                                    <Text style={styles.liveItemText}>{this.state.liveData.title}</Text> 
-                                                </View>
-                                                <View style={styles.liveDataTimeConatiner}>
-                                                    <View style={{flexDirection: 'row'}}>
-                                                            <Text style={styles.liveInText}>LIVE IN</Text>
-                                                    </View> 
-                                                    <View style={{flexDirection: 'row'}}>
-                                                        <CountDown
-                                                            until={this.state.eventSeconds}
-                                                            onFinish={() => alert('finished')}
-                                                            onPress={() => alert('hello')}
-                                                            size={25}
-                                                            style={{margin:10}}
-                                                            separatorStyle={{marginHorizontal:10}}
-                                                            digitStyle={styles.timeItemContainer}
-                                                            timeToShow={['D','H','M', 'S']}
-                                                        />
-                                                    </View>
+                this.state.liveData?(
+                    <View style={styles.liveContainer}>  
+                        <View style={styles.liveItemTextView}>
+                            <Text style={styles.liveItemText}>{this.state.liveData.title}</Text> 
+                        </View>
+                        <View style={styles.liveDataTimeConatiner}>
+                            <View style={{flexDirection: 'row'}}>
+                                    <Text style={styles.liveInText}>LIVE IN</Text>
+                            </View> 
+                            <View style={{flexDirection: 'row'}}>
+                                <CountDown
+                                    until={this.state.eventSeconds}
+                                    onFinish={() => alert('finished')}
+                                    onPress={() => alert('hello')}
+                                    size={25}
+                                    style={{margin:10}}
+                                    separatorStyle={{marginHorizontal:10}}
+                                    digitStyle={styles.timeItemContainer}
+                                    timeToShow={['D','H','M', 'S']}
+                                />
+                            </View>
 
-                                                </View>
-                                                <TouchableWithoutFeedback>
-                                                    <View style={{backgroundColor:theme.accentColor,padding:15,borderRadius:10,alignItems: 'center',width:'95%'}}>
-                                                        <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>
-                                                            Notify Me
-                                                        </Text>
-                                                    </View>
-                                                </TouchableWithoutFeedback>
+                        </View>
+                        {/* <TouchableWithoutFeedback>
+                            <View style={{backgroundColor:theme.accentColor,padding:15,borderRadius:10,alignItems: 'center',width:'95%'}}>
+                                <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>
+                                    Notify Me
+                                </Text>
+                            </View>
+                        </TouchableWithoutFeedback> */}
 
-                                        </View>):(<EmptyList image={Assets.noResult.noRes1}/>)                     
+                </View>):(<EmptyList image={Assets.noResult.noRes1}/>)
                                     )
             case 'videos':      return(
                                     this.state.courseVideoLoaded?(
@@ -1066,20 +1088,18 @@ class InsHome extends React.Component {
                         </View>
                         <View style={styles.body}>
                         <View style={styles.btnRow}>
-                                    <View style={[styles.btnView3,this.state.tabtoshow==1?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor,borderWidth:1})]}>
-                                        <Text style={[styles.btnText,{color:this.state.tabtoshow==1?theme.primaryColor:theme.greyColor}]} onPress={()=>{this.tabtoshow(1)}}>Courses</Text>
-                                    </View>
-                                     
-                                    <View style={[styles.btnView2,this.state.tabtoshow==2?({backgroundColor:theme.accentColor+'4D',borderColor:theme.accentColor+'4D'}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor})]}>
-                                        <Text style={[styles.btnText,{color:theme.blueColor}]}>{institute.follower?institute.follower:0} Follower</Text>
-                                    </View>
-                                    <TouchableOpacity style={[styles.btnView3,this.state.tabtoshow==3?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor,borderWidth:1})]} onPress={this.handleFeedTabBtnClick}>
-                                        <Text style={[styles.btnText,{color:this.state.tabtoshow==3?theme.primaryColor:theme.greyColor}]} >Feed</Text>
-                                    </TouchableOpacity>
+                            <View style={[styles.btnView3,this.state.tabtoshow==1?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor,borderWidth:1})]}>
+                                <Text style={[styles.btnText,{color:this.state.tabtoshow==1?theme.primaryColor:theme.greyColor}]} onPress={()=>{this.tabtoshow(1)}}>Courses</Text>
                             </View>
-                            {this.switchTabRender(this.state.tabtoshow)}
-
-                            
+                                
+                            <View style={[styles.btnView2,this.state.tabtoshow==2?({backgroundColor:theme.accentColor+'4D',borderColor:theme.accentColor+'4D'}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor})]}>
+                                <Text style={[styles.btnText,{color:theme.blueColor}]}>{institute.followersCount?institute.followersCount:0} Follower</Text>
+                            </View>
+                            <TouchableOpacity style={[styles.btnView3,this.state.tabtoshow==3?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor,borderWidth:1})]} onPress={this.handleFeedTabBtnClick}>
+                                <Text style={[styles.btnText,{color:this.state.tabtoshow==3?theme.primaryColor:theme.greyColor}]} >Feed</Text>
+                            </TouchableOpacity>
+                        </View>
+                            {this.switchTabRender(this.state.tabtoshow)} 
                         </View>
                     </View>
                     <View style={{borderBottomWidth: 1, borderBottomColor: theme.labelOrInactiveColor, marginVertical: 10}}/>
@@ -1492,6 +1512,48 @@ const styles = StyleSheet.create({
                     display: 'flex',
                     flexDirection: 'column'
                 },
+                    liveContainer:
+                    {
+                        margin:10,
+                        alignItems: 'center'
+                    },
+                        liveItemText:
+                        {
+                            fontFamily: 'Raleway_600SemiBold',
+                            fontSize:16
+                        },
+                        liveDataTimeConatiner:
+                        {
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                        },
+                            liveInText:
+                            {
+
+                                color:theme.featureNoColor,
+                                fontFamily: 'Raleway_600SemiBold',
+                                fontSize:16,
+                                margin:10
+                            },
+                            timeItemContainer:
+                            {
+                                borderWidth:0.3,
+                                borderColor:theme.labelOrInactiveColor,
+                                padding:10,
+                                alignItems: 'center',
+                                margin:5
+                            },
+                                liveTimeText:
+                                {
+                                    fontSize:25, 
+                                    fontFamily: 'Raleway_700Bold',
+                                    margin:10
+
+                                },
+                                timelabel:
+                                {
+                                    fontFamily: 'Raleway_600SemiBold'
+                                },
                     videoContainer:
                     {
                         marginTop: 10,

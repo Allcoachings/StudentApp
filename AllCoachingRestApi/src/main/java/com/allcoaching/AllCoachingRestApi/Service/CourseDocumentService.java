@@ -77,6 +77,12 @@ public class CourseDocumentService {
         courseDocumentRepo.updateHiddenStatus(status,id);
     }
 
+    //updating playlist id
+    public void updatePlaylistIdById(long playlistId,long id)
+    {
+        courseDocumentRepo.updatePlaylistId(playlistId,id);
+    }
+
     //delete by id
     public void delete(long id)
     {
