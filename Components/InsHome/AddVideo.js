@@ -20,7 +20,7 @@ class AddVideo extends React.Component {
         loadingPlaylist:true,
         selectedPlaylist:-1,
         playlist:[],
-        loadingAddVideo:false
+        loadingAddVideo:false,
     }
     handleAddVideoClick=()=>
     {

@@ -623,6 +623,52 @@ class InsHome extends React.Component {
         
         this.setState({courseVideosPlaylist})
     }
+
+    changePlayList=(type, id, index)=>{
+        if(this.state.activeFilterId==-1)
+        {
+            if(type=="document")
+            {
+                var arr=this.state.courseDocuments
+                arr[index].playlistId=id
+                this.setState({courseDocuments: arr})
+            }
+            else if(type=="video")
+            {
+                var arr=this.state.courseVideos
+                arr[index].playlistId=id
+                this.setState({courseVideos: arr})
+            }
+            else if(type=="testSeries")
+            {
+                var arr=this.state.courseTestSeries
+                arr[index].playlistId=id
+                this.setState({courseTestSeries: arr})
+            }
+        }
+        // else
+        // {
+        //     if(type=="document")
+        //     {
+        //         var arr=this.state.courseDocuments
+        //         delete arr[index]
+        //         this.setState({courseDocuments: arr})
+        //     }
+        //     else if(type=="video")
+        //     {
+        //         var arr=this.state.courseVideos
+        //         delete arr[index]
+        //         this.setState({courseVideos: arr})
+        //     }
+        //     else if(type=="testSeries")
+        //     {
+        //         var arr=this.state.courseTestSeries
+        //         delete arr[index]
+        //         this.setState({courseTestSeries: arr})
+        //     }
+        // }
+    }
+
      
 
     showFilters=(tab)=>{
@@ -766,7 +812,7 @@ class InsHome extends React.Component {
                                     this.state.courseVideoLoaded?(
                                         <FlatList 
                                             data={this.state.courseVideos} 
-                                            renderItem={({item})=><RenderVideo insId={this.props.institute.details.id} item={item} navigation={this.props.navigation} mode="institute" downloadMode={false}/>}
+                                            renderItem={({item,index})=><RenderVideo insId={this.props.institute.details.id} item={item} navigation={this.props.navigation} mode="institute" downloadMode={false} index={index} changePlayList={this.changePlayList} courseVideosPlaylist={this.state.courseVideosPlaylist}/>}
                                             keyExtractor={(item)=>item.id} 
                                             horizontal={false}
                                             showsHorizontalScrollIndicator={false}
@@ -781,7 +827,7 @@ class InsHome extends React.Component {
                                     ):(
                                         <FlatList 
                                             data={this.state.courseTestSeries} 
-                                            renderItem={({item})=><RenderSingleTestSeries item={item} navigation={this.props.navigation} mode="institute"  />}
+                                            renderItem={({item,index})=><RenderSingleTestSeries item={item} navigation={this.props.navigation} mode="institute"  index={index} changePlayList={this.changePlayList} courseTestSeriesPlaylist={this.state.courseTestSeriesPlaylist}/>}
                                             keyExtractor={(item)=>item.id} 
                                             horizontal={false}
                                             showsHorizontalScrollIndicator={false}
@@ -792,7 +838,7 @@ class InsHome extends React.Component {
                                 this.state.courseDocumentLoaded?(
                                     <FlatList 
                                         data={this.state.courseDocuments} 
-                                        renderItem={({item})=><RenderDocument item={item} navigation={this.props.navigation} mode="institute" downloadMode={false} insName={this.props.institute.details.name} insNumber={this.props.institute.details.phone}/>}
+                                        renderItem={({item,index})=><RenderDocument item={item} navigation={this.props.navigation} mode="institute" downloadMode={false} insName={this.props.institute.details.name} insNumber={this.props.institute.details.phone} index={index} changePlayList={this.changePlayList} courseDocumentPlaylist={this.state.courseDocumentPlaylist}/>}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
