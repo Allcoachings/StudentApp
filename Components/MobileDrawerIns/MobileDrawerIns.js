@@ -24,14 +24,20 @@ import Feed from '../Feed/Feed';
 
 const Drawer = createDrawerNavigator();
 class indexIns extends React.Component {
-    state = {  }
+    state = { 
+        showNotificationType: false
+     }
+
+     changeNotificationType=()=>{
+         this.setState({showNotificationType: !this.state.showNotificationType})
+     }
    
     render() {
         return (
             <>
                 <NavigationContainer>
                 
-                <Drawer.Navigator drawerContent={props => <DrawerContent {...props} institute={this.props.institute}/> } > 
+                <Drawer.Navigator drawerContent={props => <DrawerContent {...props} institute={this.props.institute} changeNotificationType={this.changeNotificationType} showNotificationType={this.state.showNotificationType}/> } > 
                        {this.props.insAuth?(
                             <>
                                 <Drawer.Screen name="Home" component={InsHome} />  

@@ -21,7 +21,8 @@ export const theme={
     gradientColor: '#90EE90'   ,
     lightGreenColor: '#ABE098'   ,
     purpleColor: '#f4ebf9',
-    darkPurpleColor: '#7859c5'
+    darkPurpleColor: '#7859c5',
+    buttonColor : '#ff4f5e',
 }
 
 //paytm config 

@@ -124,7 +124,7 @@ class InfoModal extends React.Component {
 
                                 <View style={styles.header}>
                                     {/* <AuthHeader/>                         */}
-                                    <Feather name="chevron-left" size={20} color={theme.greyColor}/>
+                                    <Feather name="arrow-left" size={20} color={theme.greyColor}/>
                                 </View>
                                 <View>
                                     <Text style={styles.postQueText}>{this.state.heading}</Text>

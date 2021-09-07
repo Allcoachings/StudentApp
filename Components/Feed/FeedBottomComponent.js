@@ -31,11 +31,11 @@ updateCommentsCount=(x)=>
             <View style={{flexDirection: 'row'}}>
                 {this.props.canUserLike?(
                     <TouchableOpacity style={styles.likeView}  onPress={()=>this.props.likeFeed(this.state.feedId)}>
-                        <AntDesign name="hearto" size={22} color={theme.greyColor} />
+                        <AntDesign name="hearto" size={22} color={theme.buttonColor} />
                     </TouchableOpacity>
                 ):(
                     <TouchableOpacity style={styles.likeView} onPress={()=>this.props.unLikeFeed(this.state.feedId)}>
-                        <AntDesign name="heart" size={22} color={theme.greyColor}/>
+                        <AntDesign name="heart" size={22} color={theme.buttonColor}/>
                     </TouchableOpacity>
                 )}
                 <View style={{marginLeft:5}}>
@@ -44,14 +44,14 @@ updateCommentsCount=(x)=>
             </View>
             <View style={{flexDirection:'row',alignItems: 'center'}}>
                 <TouchableOpacity style={styles.likeView} onPress={()=>this.props.mode=="single"?(console.log("no")):(this.setState({showCommentModal: true}))}>
-                    <FontAwesome name="comments" size={22} color={theme.greyColor} />
+                    <FontAwesome name="comments" size={22} color={theme.featureYesColor} />
                 </TouchableOpacity>
                 <View style={{marginLeft:5}}>
                     <Text>{this.state.comments}</Text>
                 </View>
             </View> 
             <TouchableOpacity style={styles.likeView} onPress={()=>onShare("TEset Me")}>
-                <AntDesign name="sharealt" size={22} color={theme.greyColor} />
+                <AntDesign name="sharealt" size={22} color={theme.secondaryColor} />
             </TouchableOpacity>
 
           

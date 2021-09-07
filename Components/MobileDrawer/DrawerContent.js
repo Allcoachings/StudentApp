@@ -41,6 +41,7 @@ export function DrawerContent(props){
             dispatch({type:USER_AUTH_STATUS,payload:{authStatus:false}})
         })
     }
+    console.log("props.showNotificationType",props.showNotificationType)
     return(
         <View style={{flex: 1, width: '100%'}}>
             <DrawerContentScrollView {...props}>
@@ -68,6 +69,12 @@ export function DrawerContent(props){
                         {/* {renderDrawerItem('Home','home',()=>props.navigation.navigate("Home"))} */}
                         {renderDrawerItem('Profile','user',()=>props.navigation.navigate("Profile"))}
                         {renderDrawerItem('Notifications','bell',()=>props.navigation.navigate("Notification",{mode: 'student'}))}
+                        {props.showNotificationType?(
+                            <>
+                            {renderDrawerItem('Notifications','bell',()=>props.navigation.navigate("Notification",{mode: 'student'})),
+                            renderDrawerItem('Notifications','bell',()=>props.navigation.navigate("Notification",{mode: 'student'}))}
+                            </>
+                        ):(null)}
                         {renderDrawerItem('Enrollments','lock',()=>props.navigation.navigate("Enrollments"))}
                         {renderDrawerItem('Pinned Institute','lock',()=>props.navigation.navigate("PinnedList"))}
                         {renderDrawerItem('Downloads','user',()=>props.navigation.navigate("Downloads"))}

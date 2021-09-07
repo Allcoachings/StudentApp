@@ -210,7 +210,7 @@ class InsRegister extends React.Component {
                         <View style={styles.header}>
                             {/* <AuthHeader/>                         */}
                             <TouchableWithoutFeedback onPress={()=>this.props.changeAuthMode(1)}> 
-                                <Feather name="chevron-left" size={20} color={theme.greyColor}  />
+                                <Feather name="arrow-left" size={20} color={theme.greyColor}  />
                             </TouchableWithoutFeedback>
                         </View>
                         <View style={styles.headView}>

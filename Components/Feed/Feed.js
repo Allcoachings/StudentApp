@@ -57,7 +57,7 @@ class Feed extends React.Component {
     header=() => {
         return(
             <View style={styles.headView}>
-                <Feather name="chevron-left" size={30} />
+                <Feather name="arrow-left" size={30} />
                 <Text style={styles.headText}>Feed</Text>
             </View>
         )
@@ -124,8 +124,9 @@ class Feed extends React.Component {
     render() {
         return(
             <PageStructure
-                iconName={"menu"}
-                btnHandler={() => {this.props.navigation.toggleDrawer()}}
+                iconName={"arrow-left"}
+                btnHandler={() => {this.props.navigation.goBack()}}
+                titleonheader={"Feeds"}
                 catOnpress={this.toggleCatMode}
                 scrollMode={'scroll'}
                 catInHeader={true}

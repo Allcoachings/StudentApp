@@ -289,7 +289,7 @@ class OtpVerification extends React.Component {
                                 <TouchableWithoutFeedback onPress={()=>this.props.closeModal() }>
                                     <View style={styles.header}>
                                         {/* <AuthHeader/>                         */}
-                                        <Feather name="chevron-left" size={20} color={theme.greyColor}/>
+                                        <Feather name="arrow-left" size={20} color={theme.greyColor}/>
                                     </View>
                                 </TouchableWithoutFeedback>
                             {this.renderContent()}

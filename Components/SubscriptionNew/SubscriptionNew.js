@@ -77,10 +77,9 @@ class SubscriptionNew extends React.Component {
     render() {
         return(
             <PageStructure
-                iconName={"menu"}
-                btnHandler={() => {this.props.navigation.toggleDrawer()}}
-                // titleonheader={"Subscription"}
-                // notificationreplaceshare={"share-2"}
+                iconName={"arrow-left"}
+                btnHandler={() => {this.props.navigation.goBack()}}
+                titleonheader={"Subscription"}
             >
                 <ScrollView>
                     <View style={styles.container}>
