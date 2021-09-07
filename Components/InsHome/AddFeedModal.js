@@ -139,6 +139,7 @@ class AddFeedModal extends Component {
             if(this.state.mode=="edit")
             {
                 feed.feed.id=this.state.id
+                feed.feed.edited=true
                 feed.feed.creationTime=this.state.creationTime
                  
             }
@@ -179,6 +180,7 @@ class AddFeedModal extends Component {
             }
             if(this.state.mode=="edit")
             {
+                feed.feed.edited=true
                 feed.feed.id=this.state.id;
                 feed.feed.creationTime=this.state.creationTime
             }
@@ -215,6 +217,8 @@ class AddFeedModal extends Component {
             if(this.state.mode=="edit")
             {
                 feed.feed.id=this.state.id
+                feed.feed.edited=true
+
                 feed.feed.creationTime=this.state.creationTime
             }
             this.setState({feedItem:feed})

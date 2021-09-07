@@ -9,6 +9,7 @@ import { Picker } from 'native-base';
 import { Feather } from '@expo/vector-icons';
 import AddVideoPlaylist from './AddVideoPlaylist';
 import Toast from 'react-native-simple-toast';
+import RatingBar from '../Utils/RatingBar';
 const width = Dimensions.get('window').width
 const height = Dimensions.get('screen').width
 class AddVideo extends React.Component {
@@ -59,6 +60,10 @@ class AddVideo extends React.Component {
         }
         this.setState({loadingAddVideo:false})
     }
+    handleProgressCallback=(percentage) =>
+    {
+        this.setState({percentage})
+    }
     handleSubmitButtonClick=()=>
     {
         if(this.verify(this.state))
@@ -67,7 +72,7 @@ class AddVideo extends React.Component {
             {
 
             this.setState({loadingAddVideo:true});
-            addCourseVideo(this.state.video,this.state.videoThumb,this.state.title,this.state.description,false,'0',this.props.route.params.courseId,this.handleAddVideoCallBack,this.state.selectedPlaylist)
+            addCourseVideo(this.state.video,this.state.videoThumb,this.state.title,this.state.description,false,'0',this.props.route.params.courseId,this.handleAddVideoCallBack,this.handleProgressCallback,this.state.selectedPlaylist)
             }
         }
         else
@@ -219,6 +224,13 @@ class AddVideo extends React.Component {
                                 </View>  
                             </View>
                             ):(null)}
+
+
+                        {this.state.percentage?(
+                            <View style={{borderWidth:1,borderColor:theme.accentColor,borderRadius:5,margin:10}}>
+                                <RatingBar labelStyle={{color:theme.accentColor}} progressStyle={{color:theme.accentColor} } progressColor={theme.accentColor+'1A'} duration={0} backgroundColor={theme.primaryColor} height={40} label={"Uploading Video ..."} showProgress={this.state.percentage} progress={100} borderRadius={5}/>
+                            </View> 
+                        ):(null)}            
                    
                     <View style={styles.btnView}>
                         <TouchableOpacity style={styles.submitButton} onPress={this.handleSubmitButtonClick}>

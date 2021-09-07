@@ -63,6 +63,14 @@ public class Feed {
 
     }
 
+    public boolean isEdited() {
+        return edited;
+    }
+
+    public void setEdited(boolean edited) {
+        this.edited = edited;
+    }
+
     public long getCommentCount() {
         return commentCount;
     }
