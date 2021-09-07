@@ -16,6 +16,8 @@ public interface NotificationRepo extends PagingAndSortingRepository<Notificatio
 
 
     Page<Notification> findByNotificationForAndReceiverIdOrderByNotificationTimeDesc(int notificationFor,long receiverId, Pageable pageable);
+    Page<Notification> findByNotificationForAndReceiverIdAndTypeOrderByNotificationTimeDesc(int notificationFor,long receiverId,String type, Pageable pageable);
+
 
     @Modifying
     @Query("UPDATE Notification set isSeen=:isSeen where id=:id")

@@ -12,8 +12,10 @@ const width = Dimensions.get('window').width
     
     accordionOnPress=()=>{
       this.setState({ isContentVisible:!this.state.isContentVisible})
+     
       if(this.props.onPress)
       {
+     
         this.props.onPress();
       }
     }

@@ -41,6 +41,7 @@ public class Feed {
     private long insId;
     private String tags="#all";
     private long categoryId;
+    private boolean edited=false;
 
 
     public Feed(int feedType, String photoLocation, String description, String pollQuestion, int totalPollVotes, int voterType, String pollVotedStudents, String pollVotedInstitutes, int likes, Date creationTime, int postedBy, long studentId, long insId,String tags,long categoryId) {

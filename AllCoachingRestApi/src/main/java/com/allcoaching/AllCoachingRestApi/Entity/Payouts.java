@@ -8,26 +8,24 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.util.Date;
 
-@Data
 @ToString
 @NoArgsConstructor
+@Data
 @Entity
-public class Notification {
+public class Payouts {
+
     @Id
     @GeneratedValue
     private long id;
 
-    private String message;
+    @OneToOne(targetEntity = Institute.class,fetch = FetchType.EAGER,cascade = CascadeType.DETACH)
+    @JoinColumn(name="insId",referencedColumnName = "id")
+    private Institute institute;
 
+    private float amount;
+    private String orderId;
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    private Date notificationTime;
-    private boolean isSeen=false ;
-    private int notificationFor;//1 for ins 2 for student
-    private long receiverId;
-    private  String notificationFrom;
-    private long senderId;
-    private String redirectLink;
-   private  String type;
-
+    private Date payoutTime;
 }
+

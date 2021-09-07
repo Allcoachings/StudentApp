@@ -65,7 +65,7 @@ class ResultAnalysis extends React.Component {
                     </View>
                     <View style={styles.testItemMiddle}>
                         <Text style={styles.testItemName}>{item.title}</Text>
-                        <Text style={styles.testItemTestTime}>Start Class {item.test} • {item.time}</Text>
+                        <Text style={styles.testItemTestTime}> {item.subTitle} • {item.time}</Text>
                     </View>
                 </View>
                   
@@ -122,7 +122,7 @@ class ResultAnalysis extends React.Component {
                     {this.props.mode!='readonly'?
                     (
                         <TouchableOpacity style={{justifyContent: 'center', alignItems: 'center', marginTop: '5%'}} onPress={()=>this.openModal()}>
-                            <Text style={{fontSize: 18, fontWeight: 'bold'}}>Add  +</Text>
+                            <Text style={{fontSize: 18, fontWeight: 'bold'}}>Add  Topic</Text>
                         </TouchableOpacity>
                     ):(null)
                 }

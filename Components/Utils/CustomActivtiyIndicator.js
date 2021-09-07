@@ -75,7 +75,7 @@ class CustomActivtiyIndicator extends React.Component {
                     return(<ShimmerVideo />)
                 case 'video':
                     return(<ShimmerDocument />)
-
+                case 'TransSkimmer':
                 default:
                     return (
                         <ActivityIndicator size="large" color={this.props.spinnerColor||theme.accentColor} />

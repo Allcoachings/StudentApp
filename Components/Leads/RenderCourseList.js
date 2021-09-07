@@ -66,10 +66,10 @@ class RenderCourseList extends React.Component {
     fetchCourseStudent=()=>{
         this.setState({loading: true},()=>this.props.fetchListFun(this.props.item.courseId, this.state.offset, dataLimit, this.studentListCallBack))
     }
-
+    
     render() {
         return(    
-            <Accordian header={this.accordianHeader()} onPress={this.fetchCourseStudent} hideIcon={true}/>
+            <Accordian header={this.accordianHeader()} onPress={this.props.OnPress} hideIcon={true}/>
         )
     }
 }

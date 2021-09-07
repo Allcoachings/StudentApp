@@ -50,6 +50,9 @@ class FeedHeader extends Component {
                     <Text style={styles.coaching}>{posterObject.name}</Text> 
                     <Text style={styles.timeDateText}>{moment(creationTime).fromNow()}</Text>
                 </View>
+                {this.props.feed.edited?(
+                    <Text style={{fontFamily: 'Raleway_400Regular',color:theme.greyColor}}>(Edited)</Text>
+                ):(null)}
                 {this.props.mode=="userProfile"||this.props.mode=="insProfile"?( 
                     <TouchableOpacity onPress={()=>this.showThreeMenu()}>
                         <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>

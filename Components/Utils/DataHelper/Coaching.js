@@ -79,7 +79,7 @@ export   const fetch_instituteDetails=(instId,callback)=>
    
         
 } 
-export   const validateLogin=(email,password,callback)=>
+export   const validateLogin=(email,password,callback,passMode='hashed')=>
 {
 
     

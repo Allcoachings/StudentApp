@@ -14,7 +14,8 @@ import java.util.Optional;
 @Repository
 @Transactional
 public interface TransactionRepo extends PagingAndSortingRepository<Transaction,Long> {
-
+    @Query("SELECT new com.allcoaching.AllCoachingRestApi.dto.TransactionStudentDetailDto(t,s) from Transaction t,Student s where t.studentId=s.id and t.courseId=:courseId and t.status='TXN_SUCCESS'")
+    Page<Transaction> findByCourseIdWithStudentDetailSuccess(long courseId, Pageable pageable);
     Page<Transaction> findByCourseId(long courseId, Pageable pageable);
     Page<Transaction> findByInsId(long insId, Pageable pageable);
     Page<Transaction> findByStudentId(long studentId, Pageable pageable);

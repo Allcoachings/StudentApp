@@ -25,4 +25,8 @@ public interface CourseDocumentRepo extends PagingAndSortingRepository<CourseDoc
     @Query("UPDATE CourseDocument set hidden=:hiddenStatus WHERE id=:id")
     void updateHiddenStatus(boolean hiddenStatus,long id);
 
+    @Modifying
+    @Query("UPDATE CourseDocument set playlistId=:playlistId WHERE id=:id")
+    void updatePlaylistId(long playlistId,long id);
+
 }

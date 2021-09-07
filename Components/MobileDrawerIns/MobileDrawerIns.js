@@ -21,6 +21,7 @@ import Settings from '../Settings/Settings'
 import RenderSingleFeed from '../Feed/RenderSingleFeed'
 import Revenue from '../Revenue/Revenue';
 import Feed from '../Feed/Feed';
+import CourseRevenue from '../Revenue/CourseRevenue';
 
 const Drawer = createDrawerNavigator();
 class indexIns extends React.Component {
@@ -50,6 +51,8 @@ class indexIns extends React.Component {
                                 <Drawer.Screen name="Feed" component={Feed} />
                                 <Drawer.Screen name="Settings" component={Settings} />
                                 <Drawer.Screen name="EditInstitute" component={EditInstitute} />
+                                <Drawer.Screen name="courseRevenue" component={CourseRevenue} />
+                                
                                 
                             </>
                        ):(

@@ -234,7 +234,7 @@ class EditInstitute extends React.Component {
                     <View style={styles.container}>
                         <View style={styles.header}>
                             {/* <AuthHeader/>                         */}
-                            <TouchableWithoutFeedback onPress={()=>this.props.changeAuthMode(1)}> 
+                            <TouchableWithoutFeedback onPress={()=>this.props.navigation.goBack()}> 
                                 <Feather name="chevron-left" size={20} color={theme.greyColor}  />
                             </TouchableWithoutFeedback>
                         </View>

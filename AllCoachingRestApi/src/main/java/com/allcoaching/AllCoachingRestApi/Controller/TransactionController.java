@@ -32,10 +32,10 @@ public class TransactionController {
     }
 
     @CrossOrigin(origins = "*")
-    @GetMapping("bycourseId/{id}")
-    public Iterable<Transaction> saveTransaction(@PathVariable long id,@PathVariable int page,@PathVariable int pageSize)
+    @GetMapping("bycourseId/{id}/{page}/{pageSize}")
+    public Iterable<Transaction> findByCourseIdWithStudentDetailSuccess(@PathVariable long id,@PathVariable int page,@PathVariable int pageSize)
     {
-         return transactionService.findByCourseId(id,page,pageSize);
+         return transactionService.findByCourseIdWithStudentDetailSuccess(id,page,pageSize);
     }
 
 }

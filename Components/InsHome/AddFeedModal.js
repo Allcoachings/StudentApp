@@ -440,19 +440,22 @@ setFeedTypeOption=(postType)=>
     
             <ScrollView>
                 <View style={{flexDirection:'row',alignItems: 'center'}} >
-                    <Image source={{uri: imageProvider(this.props.posterImage)}} style={{height: 50, width: 50, borderRadius: 25, borderWidth: 0.6, borderColor:theme.greyColor,}}/>
+                    {this.props.mode=="showImage"?(
+                        <Image source={{uri: imageProvider(this.props.posterImage)}} style={{height: 50, width: 50, borderRadius: 25, borderWidth: 0.6, borderColor:theme.greyColor,}}/>
+                    ):(null)}
+                    
                     <View style={{borderWidth:1,flex:1,borderColor:theme.labelOrInactiveColor,margin:10,borderRadius:10}}>
 
                         
                             {this.state.description?(<View style={{position: 'absolute',right:15,top:5,zIndex:10}}>
-                            <TouchableOpacity onPress={()=>this.resetFeedState()}>
+                            <TouchableOpacity onPre ss={()=>this.resetFeedState()}>
                                 <Feather name={'x'} color={theme.featureNoColor} size={18}/>
                             </TouchableOpacity> 
                             </View>):(null)}
                       
                         <TextInput
                             style={{height:50 ,fontFamily:'Raleway_400Regular',marginHorizontal:10}}
-                            placeholder="Write Something...."
+                            placeholder="Create Something...."
                             multiline={true}  
                             ref={(input) => { this.descriptionTextInput = input; }}
                             defaultValue={this.state.description}

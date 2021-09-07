@@ -114,6 +114,14 @@ public class CourseDocumentController {
         return ResponseEntity.ok().build();
     }
 
+    @CrossOrigin(origins="*")
+    @PutMapping("/updatePlaylist/{playlist_id}/{id}")
+    public  ResponseEntity<Object> updateHiddenStatus(@PathVariable long playlist_id,@PathVariable long id)
+    {
+        courseDocumentService.updatePlaylistIdById(playlist_id,id);
+        return ResponseEntity.ok().build();
+    }
+
     @CrossOrigin(origins = "*")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> delete(@PathVariable long id)
@@ -121,5 +129,7 @@ public class CourseDocumentController {
         courseDocumentService.delete(id);
         return ResponseEntity.ok().build();
     }
+
+
 
 }

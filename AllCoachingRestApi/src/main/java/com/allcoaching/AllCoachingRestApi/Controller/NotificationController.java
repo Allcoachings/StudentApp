@@ -34,4 +34,11 @@ public class NotificationController {
         URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(notification_saved.getId()).toUri();
         return ResponseEntity.created(location).build();
     }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/{receiverId}/{receiverType}/{type}/{page}/{pageSize}")
+    public Iterable<NotificationDto>  getNotificationByType(@PathVariable long receiverId,@PathVariable int receiverType,@PathVariable String type,@PathVariable int page,@PathVariable int pageSize)
+    {
+        return  notificationService.getNotificationForByType(receiverType,type,receiverId,page,pageSize);
+    }
 }
