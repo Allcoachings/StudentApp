@@ -9,6 +9,7 @@ import {fetch_document_playlist,addCourseDocument} from '../Utils/DataHelper/Cou
 import { Picker } from 'native-base'; 
 import AddDocumentPlaylist from './AddDocumentPlaylist';
 import Toast from 'react-native-simple-toast';
+import RatingBar from '../Utils/RatingBar';
 
 class AddPdf extends React.Component {
     state = {
@@ -130,6 +131,10 @@ class AddPdf extends React.Component {
                 }
             })
         }
+        handleProgressCallback=(percentage) =>
+        {
+            this.setState({percentage})
+        }
         handleSubmitButtonClick=()=>
         {
             if(this.verify(this.state))
@@ -137,7 +142,7 @@ class AddPdf extends React.Component {
                 if(!this.state.loadingAddDocument)
                 {
                     this.setState({loadingAddDocument:true})
-                    addCourseDocument(this.state.document,this.state.title,this.props.route.params.courseId,this.handleAddDocumentCallBack,this.state.selectedPlaylist)
+                    addCourseDocument(this.state.document,this.state.title,this.props.route.params.courseId,this.handleAddDocumentCallBack,this.handleProgressCallback,this.state.selectedPlaylist)
                 }
             }
             else
@@ -212,7 +217,11 @@ class AddPdf extends React.Component {
                                 </View> 
                             </View>
                             ):(null)}
-                  
+                    {this.state.percentage?(
+                            <View style={{borderWidth:1,borderColor:theme.accentColor,borderRadius:5,margin:10}}>
+                                <RatingBar labelStyle={{color:theme.accentColor}} progressStyle={{color:theme.accentColor} } progressColor={theme.accentColor+'1A'} duration={0} backgroundColor={theme.primaryColor} height={40} label={"Uploading Video ..."} showProgress={this.state.percentage} progress={100} borderRadius={5}/>
+                            </View> 
+                    ):(null)} 
                     <View style={styles.btnView}>
                         <TouchableOpacity style={styles.submitButton} onPress={()=>this.handleSubmitButtonClick()}>
                             {this.state.loadingAddDocument?(

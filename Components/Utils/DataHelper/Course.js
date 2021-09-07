@@ -155,7 +155,7 @@ export const fetch_courses_videos=(offset, dataLimit, courseId=-1,callback,playl
 }
 
 //add video
-export   const addCourseVideo=(video,thumbnail,name,description,isDemo,demoLength,courseId,callback,playlistId=-1)=>
+export   const addCourseVideo=(video,thumbnail,name,description,isDemo,demoLength,courseId,callback,callbackProgress,playlistId=-1)=>
 {
 
     var formData   = new FormData();  
@@ -191,17 +191,32 @@ export   const addCourseVideo=(video,thumbnail,name,description,isDemo,demoLengt
             headers.append('Access-Control-Allow-Credentials', 'true');
 
             headers.append('GET', 'POST', 'OPTIONS');  
-             fetch(serverApiUrl+'/institute/course/video/',
-            {
-                method: 'POST',  
-                headers,
-                body:formData
-            })
-            .then((response)=>callback(response)) 
-            .catch((error)=>{console.log(error)})
+            //  fetch(serverApiUrl+'/institute/course/video/',
+            // {
+            //     method: 'POST',  
+            //     headers,
+            //     body:formData
+            // })
+            // .then((response)=>callback(response)) 
+            // .catch((error)=>{console.log(error)})
 
-       
-   
+            const xhr = new XMLHttpRequest();
+            xhr.upload.onprogress = (e) => {
+                //handle progress here, you can use progressEvent.loaded, progressEvent.total to calculate the progress
+                var percentComplete = Math.ceil((e.loaded / e.total) * 100);
+                console.log(percentComplete);
+                callbackProgress(percentComplete)
+            };
+           
+            xhr.open('POST', serverApiUrl+'/institute/course/video/');
+            xhr.setRequestHeader('Content-Type', 'multipart/form-data');
+            xhr.responseType = 'json';
+            xhr.onload = function() {
+                
+                callback({status: this.status,headers:{map:{location:xhr.getResponseHeader("location")}}})
+              };
+            xhr.send(formData);
+            
         
 }
 
@@ -306,7 +321,7 @@ export const fetch_courses_documents=(offset, dataLimit, courseId=-1,callback,pl
 }
 
 //add document
-export   const addCourseDocument =(document,name,courseId,callback,playlistId=-1)=>
+export   const addCourseDocument =(document,name,courseId,callback,callbackProgress,playlistId=-1)=>
 {
 
     const newImageUri =  "file:///" + document.uri.split("file:/").join("");
@@ -328,14 +343,31 @@ export   const addCourseDocument =(document,name,courseId,callback,playlistId=-1
             headers.append('Access-Control-Allow-Credentials', 'true');
 
             headers.append('GET', 'POST', 'OPTIONS');  
-             fetch(serverApiUrl+'institute/course/document/',
-            {
-                method: 'POST',  
-                headers,
-                body:formData
-            })
-            .then((response)=>callback(response)) 
-            .catch((error)=>{console.log(error)})
+            //  fetch(serverApiUrl+'institute/course/document/',
+            // {
+            //     method: 'POST',  
+            //     headers,
+            //     body:formData
+            // })
+            // .then((response)=>callback(response)) 
+            // .catch((error)=>{console.log(error)})
+
+            const xhr = new XMLHttpRequest();
+            xhr.upload.onprogress = (e) => {
+                //handle progress here, you can use progressEvent.loaded, progressEvent.total to calculate the progress
+                var percentComplete = Math.ceil((e.loaded / e.total) * 100);
+                console.log(percentComplete);
+                callbackProgress(percentComplete)
+            };
+           
+            xhr.open('POST', serverApiUrl+'institute/course/document/');
+            xhr.setRequestHeader('Content-Type', 'multipart/form-data');
+            xhr.responseType = 'json';
+            xhr.onload = function() {
+                
+                callback({status: this.status,headers:{map:{location:xhr.getResponseHeader("location")}}})
+              };
+            xhr.send(formData);
 
        
    

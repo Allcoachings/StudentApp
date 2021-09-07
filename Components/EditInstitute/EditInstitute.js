@@ -234,9 +234,9 @@ class EditInstitute extends React.Component {
                     <View style={styles.container}>
                         <View style={styles.header}>
                             {/* <AuthHeader/>                         */}
-                            <TouchableWithoutFeedback onPress={()=>this.props.cnavigation.goBack()}> 
+                            {/* <TouchableWithoutFeedback onPress={()=>this.props.cnavigation.goBack()}> 
                                 <Feather name="arrow-left" size={20} color={theme.greyColor}  />
-                            </TouchableWithoutFeedback>
+                            </TouchableWithoutFeedback> */}
                         </View>
                         <View style={styles.headView}>
                             <Text style={styles.headText}>Update Your Institute Details</Text>

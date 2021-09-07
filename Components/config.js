@@ -36,6 +36,10 @@ export const paytmConfig={
 //online serverBaseUrl
 // export const serverBaseUrl="http://198.12.248.18:8080/"
 //local server base url
+export const  shareTextInstitute="Text here";
+export const  shareTextFeed="Text here";
+export const  shareTextResult="Text here";
+export const shareBaseUrl="https://allcoaching.com/"
 export const serverBaseUrl="http://192.168.1.4:8080/"; 
 export const serverApiUrl=serverBaseUrl+"api/v1/" 
 export const videoDefaultThumbnail="https://i.stack.imgur.com/PtbGQ.png";

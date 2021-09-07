@@ -1,13 +1,26 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet,TouchableOpacity } from 'react-native';
 import { theme, serverBaseUrl } from '../config';
 import {Text, Switch, Avatar, Title, Caption, Paragraph, Drawer, TouchableRipple} from 'react-native-paper'
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import  Icon  from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Octicons } from '@expo/vector-icons';
+import { Octicons, Feather } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
 import { SET_INSTITUTE_AUTH } from '../Actions/types';
-
+const renderDrawerItem=(label,icon,onPress)=>
+{
+    return (
+        <TouchableOpacity style={{flexDirection: 'row',padding:10,margin:10,marginBottom:0,alignItems: 'center'}} onPress={onPress}>
+            <View style={{backgroundColor: theme.labelOrInactiveColor,borderRadius:30,padding:9}}>
+              <Feather name={icon} size={20}/>
+            </View>
+            <Text style={{marginLeft:10,fontSize:15}}>{label}</Text>
+            {label=='Settings'?(<Feather name="chevron-right" size={20} style={{marginLeft:'auto',alignSelf:'flex-end'}}/>):(null)}
+            {label=='Notification'?(<Feather name="chevron-down" size={20} style={{marginLeft:'auto',alignSelf:'flex-end'}}/>):(null)}
+            
+        </TouchableOpacity>
+    )
+}
 export function DrawerContent(props){
     const dispatch = useDispatch();
     const userLogoutButton =()=>
@@ -27,23 +40,13 @@ export function DrawerContent(props){
                             <Avatar.Image source={{ uri: serverBaseUrl+props.institute.details.logo }}  size={80}/>
                         </View>
                         <View style={styles.userNameSec}>
-                            <Title>{props.institute.details.name}</Title>
+                            <Title numberOfLines={2} style={{fontFamily: 'Raleway_600SemiBold'}}>{props.institute.details.name}</Title>
                         </View>
                     </View>
                     <Drawer.Section>
-                        <DrawerItem
-                            icon={({color, size}) => (
-                                <Icon 
-                                name="home-outline" 
-                                color={color}
-                                size={size}
-                                />
-                            )}
-                            label="Home"
-                            onPress={()=>{props.navigation.navigate("Home")}}
-                            style={{borderBottomWidth: 0.2, borderColor: theme.greyColor}}
-                        />
-                        <DrawerItem
+                      
+                        {renderDrawerItem('Home','user',()=>props.navigation.navigate("Home"))}
+                        {/* <DrawerItem
                             icon={({color, size}) => (
                                 <Icon 
                                 name="home-outline" 
@@ -54,75 +57,42 @@ export function DrawerContent(props){
                             label="Account Details"
                             onPress={()=>{props.navigation.navigate("accountDetails")}}
                             style={{borderBottomWidth: 0.2, borderColor: theme.greyColor}}
-                        />
-                        <DrawerItem
-                            icon={({color, size}) => (
-                                <Icon
-                                    name="home-outline"
-                                    color={color}
-                                    size={size}
-                                />
-                            )}
-                            label="Notification"
-                            onPress={()=>{props.changeNotificationType()}}
-                            style={{borderBottomWidth: 0.2, borderColor: theme.greyColor}}
-                        />
-                        {props.showNotificationType?(
-                            <View style={{marginLeft: 10}}>
-                                <DrawerItem
-                                    icon={({color, size}) => (
-                                        <Octicons name="primitive-dot" 
-                                        size={20} color={color} />
-                                    )}
-                                    label="All"
-                                    onPress={()=>{props.navigation.navigate("Notification",{mode: 'institute', type:"all"})}}
-                                    style={{}}
-                                />
-                                <DrawerItem
-                                    icon={({color, size}) => (
-                                        <Octicons name="primitive-dot" 
-                                        size={20} color={color} />
-                                    )}
-                                    label="Social"
-                                    onPress={()=>{props.navigation.navigate("Notification",{mode: 'institute', type:"social"})}}
-                                    style={{}}
-                                />
-                                <DrawerItem
-                                    icon={({color, size}) => (
-                                        <Octicons name="primitive-dot" 
-                                        size={20} color={color} />
-                                    )}
-                                    label="Ratings"
-                                    onPress={()=>{props.navigation.navigate("Notification",{mode: 'institute', type:"rating"})}}
-                                    style={{}}
-                                />
-                            </View>
+                        /> */}
+                     {renderDrawerItem("Account Details",'user',()=>props.navigation.navigate("accountDetails",{mode: "institute"}))}
+                        {renderDrawerItem('Notification','user',props.changeNotificationType)}
+                        {props.showNotificationType?( 
+                            <View style={{marginLeft:20}}>
+                                  
+                                        <TouchableOpacity style={{flexDirection: 'row',padding:10,margin:10,marginBottom:0,alignItems: 'center'}} onPress={()=>{props.navigation.navigate("Notification",{mode: 'institute', type:"all"})}}>
+             
+                                             <Text style={{marginLeft:10,fontSize:15}}>{'All'}</Text>
+                                             <Feather name="chevron-right" size={20} style={{marginLeft:'auto',alignSelf:'flex-end'}}/>
+             
+            
+                                         </TouchableOpacity>
+                                         <TouchableOpacity style={{flexDirection: 'row',padding:10,margin:10,marginBottom:0,alignItems: 'center'}} onPress={()=>{props.navigation.navigate("Notification",{mode: 'institute', type:"social"})}}>
+             
+                                            <Text style={{marginLeft:10,fontSize:15}}>{'Social'}</Text>
+                                            <Feather name="chevron-right" size={20} style={{marginLeft:'auto',alignSelf:'flex-end'}}/>
+                                        </TouchableOpacity>
+                                       <TouchableOpacity style={{flexDirection: 'row',padding:10,margin:10,marginBottom:0,alignItems: 'center'}} onPress={()=>{props.navigation.navigate("Notification",{mode: 'institute', type:"transactional"})}}>
+                                            <Text style={{marginLeft:10,fontSize:15}}>{'Transactional'}</Text>
+                                          <Feather name="chevron-right" size={20} style={{marginLeft:'auto',alignSelf:'flex-end'}}/>
+                                       </TouchableOpacity>
+                                       <TouchableOpacity style={{flexDirection: 'row',padding:10,margin:10,marginBottom:0,alignItems: 'center'}} onPress={()=>{props.navigation.navigate("Notification",{mode: 'institute', type:"rating"})}}>
+                                           <Text style={{marginLeft:10,fontSize:15}}>{'Ratings'}</Text>
+                                          <Feather name="chevron-right" size={20} style={{marginLeft:'auto',alignSelf:'flex-end'}}/> 
+                                      </TouchableOpacity>
+                                       
+                                    
+    </View>
+                              
+                                
                         ):(null)}
-                         <DrawerItem
-                            icon={({color, size}) => (
-                                <Icon
-                                    name="home-outline"
-                                    color={color}
-                                    size={size}
-                                />
-                            )}
-                            label="Revenue"
-                            onPress={()=>{props.navigation.navigate("Revenue")}}
-                            style={{borderBottomWidth: 0.2, borderColor: theme.greyColor}}
-                        />
-                         <DrawerItem
-                            icon={({color, size}) => (
-                                <Icon
-                                    name="home-outline"
-                                    color={color}
-                                    size={size}
-                                />
-                            )}
-                            label="Lead"
-                            onPress={()=>{props.navigation.navigate("Leads")}}
-                            style={{borderBottomWidth: 0.2, borderColor: theme.greyColor}}
-                        />
-                         <DrawerItem
+                
+                         {renderDrawerItem('Revenue','user',()=>props.navigation.navigate("Revenue"))}
+                        {renderDrawerItem('Lead','user',()=>props.navigation.navigate("Leads"))}
+                         {/* <DrawerItem
                             icon={({color, size}) => (
                                 <Icon
                                     name="home-outline"
@@ -133,19 +103,10 @@ export function DrawerContent(props){
                             label="Settings"
                             onPress={()=>{props.navigation.navigate("Settings",{mode: "institute"})}}
                             style={{borderBottomWidth: 0.2, borderColor: theme.greyColor}}
-                        />
-                         <DrawerItem
-                            icon={({color, size}) => (
-                                <Icon
-                                    name="home-outline"
-                                    color={color}
-                                    size={size}
-                                />
-                            )}
-                            label="Logout"
-                            onPress={()=>
-                                userLogoutButton()}
-                        />
+                        /> */}
+                        {renderDrawerItem('Settings','user',()=>props.navigation.navigate("Settings",{mode: "institute"}))}
+                       
+                        {renderDrawerItem('Logout','user',  userLogoutButton)}
                     </Drawer.Section> 
                 </View>
             </DrawerContentScrollView>
@@ -161,7 +122,11 @@ const styles = StyleSheet.create({
         userInfoSection:
         {   
             flexDirection: 'row',
-            justifyContent: 'center',
+            // justifyContent: 'center',
+            // marginHorizontal:10,
+            borderBottomWidth:1,
+            borderBottomColor: theme.labelOrInactiveColor,
+            padding:5,
             alignItems: 'center'
         },
             userNameSec:

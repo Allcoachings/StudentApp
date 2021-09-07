@@ -42,17 +42,21 @@ class FeedHeader extends Component {
   }
 
   render() {
-      const {posterObject, postedBy, creationTime} =  this.props
+      const {posterObject, postedBy, creationTime,feed} =  this.props
+      console.log(this.props.feed.feed.edited,"  edited",feed)
     return(
             <View style={styles.rowView}>
                 <Image source={{ uri: postedBy==2?(imageProvider(posterObject.studentImage)):(imageProvider(posterObject.logo))}} style={styles.circleView}/>  
                 <View style={{width: '78%'}}>
-                    <Text style={styles.coaching}>{posterObject.name}</Text> 
-                    <Text style={styles.timeDateText}>{moment(creationTime).fromNow()}</Text>
+                    <Text style={styles.coaching} numberOfLines={1}>{posterObject.name}</Text> 
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={styles.timeDateText}>{moment(creationTime).fromNow()}</Text>
+                        {this.props.feed.feed.edited?(
+                            <Text style={{fontFamily: 'Raleway_400Regular',marginHorizontal:10,color:theme.greyColor}}>(Edited)</Text>
+                        ):(null)}
+                    </View>
                 </View>
-                {this.props.feed.edited?(
-                    <Text style={{fontFamily: 'Raleway_400Regular',color:theme.greyColor}}>(Edited)</Text>
-                ):(null)}
+        
                 {this.props.mode=="userProfile"||this.props.mode=="insProfile"?( 
                     <TouchableOpacity onPress={()=>this.showThreeMenu()}>
                         <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
