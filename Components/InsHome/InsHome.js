@@ -479,12 +479,19 @@ class InsHome extends React.Component {
                 {
                     if(data.length>0)
                     {
-                        this.setState({courseTestSeries:[...this.state.courseTestSeries,...data],courseTestSeriesLoaded:true,isCourseTestSeriesLoading:false, showLoadMore: true, loadingFooter: false});
+                        if(data.length==dataLimit)
+                        {
+                            this.setState({courseTestSeries:[...this.state.courseTestSeries,...data],courseTestSeriesLoaded:true,isCourseTestSeriesLoading:false, showLoadMore: true, loadingFooter: false});               
+                        }
+                        else
+                        {
+                            this.setState({courseTestSeries:[...this.state.courseTestSeries,...data],courseTestSeriesLoaded:true,isCourseTestSeriesLoading:false, showLoadMore: false, loadingFooter: false});               
+                        }    
                     }   
                     else
                     {
                         this.setState({courseTestSeries:this.state.courseTestSeries,courseTestSeriesLoaded:true,isCourseTestSeriesLoading:false, showLoadMore: false, loadingFooter: false});
-                    }           
+                    }          
                 })
         }
     }
@@ -545,12 +552,19 @@ class InsHome extends React.Component {
                 {
                     if(data.length>0)
                     {
-                        this.setState({courseVideos:[...this.state.courseVideos,...data],courseVideoLoaded:true,isCourseVideoLoading:false, showLoadMore: true, loadingFooter: false}); 
+                        if(data.length==dataLimit)
+                        {
+                            this.setState({courseVideos:[...this.state.courseVideos,...data],courseVideoLoaded:true,isCourseVideoLoading:false, showLoadMore: true, loadingFooter: false});             
+                        }
+                        else
+                        {
+                            this.setState({courseVideos:[...this.state.courseVideos,...data],courseVideoLoaded:true,isCourseVideoLoading:false, showLoadMore: false, loadingFooter: false});             
+                        }
                     }  
                     else
                     {
                         this.setState({courseVideos:this.state.courseVideos,courseVideoLoaded:true,isCourseVideoLoading:false, showLoadMore: false, loadingFooter: false}); 
-                    }                  
+                    }                   
                 })
             }
     }
@@ -573,12 +587,20 @@ class InsHome extends React.Component {
                 {
                     if(data.length>0)
                     {
-                        this.setState({courseDocuments:[...this.state.courseDocuments,...data],courseDocumentLoaded:true,isCourseDocumentLoading:false, showLoadMore: true, loadingFooter: false});   
+                         
+                        if(data.length==dataLimit)
+                        {
+                            this.setState({courseDocuments:[...this.state.courseDocuments,...data],courseDocumentLoaded:true,isCourseDocumentLoading:false, showLoadMore: true, loadingFooter: false});               
+                        }
+                        else
+                        {
+                            this.setState({courseDocuments:[...this.state.courseDocuments,...data],courseDocumentLoaded:true,isCourseDocumentLoading:false, showLoadMore: false, loadingFooter: false});               
+                        } 
                     } 
                     else
                     {
                         this.setState({courseDocuments:this.state.courseDocuments,courseDocumentLoaded:true,isCourseDocumentLoading:false, showLoadMore: false, loadingFooter: false}); 
-                    }                   
+                    }                     
                 })
             }
     }

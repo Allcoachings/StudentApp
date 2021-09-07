@@ -2,7 +2,7 @@
 import {serverApiUrl} from '../../config'
 // import {Base64} from '../../Base64' 
 
-    export const fetchNotifications=(receiverId, receiverType, page, pageSize, callback)=>
+    export const fetchNotifications=(receiverId, receiverType, type, page, pageSize, callback)=>
     {
         console.log(receiverId, receiverType, page, pageSize)
             let headers = new Headers(); 
@@ -10,8 +10,16 @@ import {serverApiUrl} from '../../config'
             headers.append('Access-Control-Allow-Origin', serverApiUrl);
             headers.append('Access-Control-Allow-Credentials', 'true'); 
             headers.append('GET', 'POST', 'OPTIONS'); 
+            if(type=="all")
+            {
+                apiUrl='notification/'+receiverId+'/'+receiverType+'/'+page+'/'+pageSize
+            }
+            else
+            {
+                apiUrl='notification/'+receiverId+'/'+receiverType+'/'+type+'/'+page+'/'+pageSize
+            }
 
-            fetch(serverApiUrl+'notification/'+receiverId+'/'+receiverType+'/'+page+'/'+pageSize,
+            fetch(serverApiUrl+apiUrl,
             {
                 method: 'GET', 
                 headers,

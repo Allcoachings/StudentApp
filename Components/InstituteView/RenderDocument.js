@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions,findNodeHandle,UIManager,Alert} from 'react-native';
 import { theme, documentPlaceholder,dataLimit, serverBaseUrl, downloadIcon } from '../config';
 import { Feather } from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
@@ -41,6 +41,51 @@ class RenderDocument extends React.Component {
         }
     }
 
+    actions = ['Change Playlist'];
+    showThreeMenu=()=>
+    {
+         
+      UIManager.showPopupMenu(
+          findNodeHandle(this.state.icon),
+          this.actions,
+          this.onError,
+          this.onPopupEvent
+      )
+        
+    }
+
+    onPopupEvent = (eventName, index) => {
+
+        if (eventName !== 'itemSelected') return 
+        switch (this.actions[index])
+        {
+            case "Change Playlist":
+                      this.changePlaylist()
+                break;
+            case "Share": 
+    
+              break;
+        }
+      }
+  
+    onRef = icon => {
+      if (!this.state.icon) {
+        this.setState({icon})
+      }
+    }
+
+    confirmReport=()=>{
+        Alert.alert(
+        'Confirm!',
+        '\n\nAre You Sure You Want To Change The Playlist?',
+        [
+          {text: 'Yes', onPress: () => this.setState({showModal: true})},
+          {text: 'Cancel', onPress: () => {},style: 'cancel'},
+        ],
+        { cancelable: false }
+      )
+    }
+
     render(){
         return( 
             <View style={styles.documentContainer}>
@@ -53,14 +98,15 @@ class RenderDocument extends React.Component {
                     </View>
                 </View>
                 {this.props.downloadMode?(
-                    <View style={{flexDirection: 'row',  marginLeft: 'auto', marginTop: 'auto', marginRight: 10, marginBottom: 15}}>
-                        <View></View>
-                        <TouchableOpacity onPress={()=>this.props.studentEnrolled?(this.download(this.props.item, 'document')):(Toast.show('You Have Not Enrolled For This Course.'))}>
+                    <View style={{flexDirection: 'column',  marginLeft: 'auto', justifyContent: 'space-between', marginRight:10}}>
+                        <TouchableOpacity style={{marginLeft: 'auto', marginTop: 8}} onPress={()=>this.showThreeMenu()}>
+                            <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={()=>this.props.studentEnrolled?(this.download(this.props.item, 'document')):(Toast.show('You Have Not Enrolled For This Course.'))} style={{marginBottom: 8}}>
                             <View>
                                 <Image source={downloadIcon} style={{height: 25, width: 25}} />
                             </View>
-                        </TouchableOpacity>
-                        
+                        </TouchableOpacity>  
                     </View>
                 ):(null)}
             </View>
@@ -74,9 +120,6 @@ const styles = StyleSheet.create({
         marginTop: 10,
         display: 'flex',
         flexDirection: 'row',
-        // overflow: 'hidden'
-        // justifyContent: 'center',
-        // alignItems: 'center'
     },
         documentImage:
         {

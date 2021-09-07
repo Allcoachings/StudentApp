@@ -212,7 +212,7 @@ class ResultAnalysis extends React.Component {
                         <>
                         <View style={styles.container}>
                             {/* <View style={styles.headView}>
-                                <Feather name="chevron-left" size={26} />
+                                <Feather name="k" size={26} />
                                 <Text style={styles.headText}>
                                     All Coachings
                                 </Text>

@@ -469,15 +469,11 @@ class UserProfile extends React.Component {
             <PageStructure
                 iconName={"menu"}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
-                // headerComponent={this.header()}
-                // replaceHeader={true}
                 titleonheader={"Profile"}
                 headerStyle={{ justifyContent: 'center'}}
                 replaceBottomTab={false}
                 nosearchIcon={true}
                 noNotificationIcon={true}
-                // notificationreplaceshare={"more-vertical"}
-                // rightIconOnPress={()=>this.openModal()} 
             >
                 <ScrollView>
                     <View style={styles.container}>

@@ -4,6 +4,7 @@ import { theme, serverBaseUrl } from '../config';
 import {Text, Switch, Avatar, Title, Caption, Paragraph, Drawer, TouchableRipple} from 'react-native-paper'
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import  Icon  from 'react-native-vector-icons/MaterialCommunityIcons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
 import { SET_INSTITUTE_AUTH } from '../Actions/types';
 
@@ -63,9 +64,40 @@ export function DrawerContent(props){
                                 />
                             )}
                             label="Notification"
-                            onPress={()=>{props.navigation.navigate("Notification",{mode: 'institute'})}}
+                            onPress={()=>{props.changeNotificationType()}}
                             style={{borderBottomWidth: 0.2, borderColor: theme.greyColor}}
                         />
+                        {props.showNotificationType?(
+                            <>
+                                <DrawerItem
+                                    icon={({color, size}) => (
+                                        <FontAwesome5 name="arrow-right" 
+                                        size={size} color={color} />
+                                    )}
+                                    label="All"
+                                    onPress={()=>{props.navigation.navigate("Notification",{mode: 'institute', type:"all"})}}
+                                    style={{marginLeft: 60}}
+                                />
+                                <DrawerItem
+                                    icon={({color, size}) => (
+                                        <FontAwesome5 name="arrow-right" 
+                                        size={size} color={color} />
+                                    )}
+                                    label="Social"
+                                    onPress={()=>{props.navigation.navigate("Notification",{mode: 'institute', type:"social"})}}
+                                    style={{marginLeft: 60}}
+                                />
+                                <DrawerItem
+                                    icon={({color, size}) => (
+                                        <FontAwesome5 name="arrow-right" 
+                                        size={size} color={color} />
+                                    )}
+                                    label="Ratings"
+                                    onPress={()=>{props.navigation.navigate("Notification",{mode: 'institute', type:"rating"})}}
+                                    style={{marginLeft: 60}}
+                                />
+                            </>
+                        ):(null)}
                          <DrawerItem
                             icon={({color, size}) => (
                                 <Icon

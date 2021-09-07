@@ -69,7 +69,7 @@ const LoginIns=(props)=>
                 <View style={styles.header}>
                     {/* <AuthHeader/>      */}
                     <TouchableWithoutFeedback onPress={()=>props.changeMode(1)}>                  
-                        <Feather name="chevron-left" size={20} color={theme.greyColor}/>
+                        <Feather name="arrow-left" size={20} color={theme.greyColor}/>
                     </TouchableWithoutFeedback>
                 </View>
                 <View>
