@@ -21,6 +21,7 @@ public interface InstituteRepo extends PagingAndSortingRepository<Institute,Long
 
 
     Page<Institute> findByCategory(long id, Pageable page);
+    Page<Institute> findByStatus(int status, Pageable page);
 
     Optional<Institute> findByEmailAndPassword(String email,String Password);
     @Modifying
