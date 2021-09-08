@@ -72,6 +72,13 @@ public class AdminTestSeriesController {
     }
 
     @CrossOrigin(origins = "*")
+    @GetMapping("testSubCategoryByCategoryId/{id}/{page}/{pageSize}")
+    public Iterable<AdminTestSubCategories> testSubCategoriesByCategoryId(@PathVariable long id,@PathVariable int offset,@PathVariable int pageSize)
+    {
+        return  adminTestSubCategoriesService.findByCategoryPagedResult(id,offset,pageSize);
+    }
+
+    @CrossOrigin(origins = "*")
     @PostMapping("/subcategory/content/add")
     public ResponseEntity<Object> addSubCategoryContent(@RequestParam MultipartFile file,@RequestParam String name,@RequestParam int sortOrder,@RequestParam long subcategoryId)
     {
