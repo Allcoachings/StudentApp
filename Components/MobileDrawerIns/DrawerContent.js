@@ -4,7 +4,7 @@ import { theme, serverBaseUrl } from '../config';
 import {Text, Switch, Avatar, Title, Caption, Paragraph, Drawer, TouchableRipple} from 'react-native-paper'
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import  Icon  from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Feather, FontAwesome5 } from '@expo/vector-icons';
+import { Octicons, Feather } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
 import { SET_INSTITUTE_AUTH } from '../Actions/types';
 const renderDrawerItem=(label,icon,onPress)=>

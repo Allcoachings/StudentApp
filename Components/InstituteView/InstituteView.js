@@ -501,6 +501,7 @@ class InstituteView extends React.Component {
         )
     }
 
+    
     renderTimeTable=(item)=>{
         return(
             // <Accordian
@@ -669,7 +670,7 @@ class InstituteView extends React.Component {
                                     this.state.courseVideoLoaded?(
                                     <FlatList 
                                         data={this.state.courseVideos} 
-                                        renderItem={({item})=><RenderVideo userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="student" studentEnrolled={this.state.studentEnrolled} downloadMode={true} courseVideosPlaylist={this.state.courseVideosPlaylist}/>}
+                                        renderItem={({item,index})=><RenderVideo userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="student" studentEnrolled={this.state.studentEnrolled} downloadMode={true} courseVideosPlaylist={this.state.courseVideosPlaylist} />}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
@@ -683,7 +684,7 @@ class InstituteView extends React.Component {
                                      <CustomActivtiyIndicator mode="testSeries"/>):(
                                      <FlatList 
                                         data={this.state.courseTestSeries} 
-                                        renderItem={({item})=><RenderSingleTestSeries item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="student" studentEnrolled={this.state.studentEnrolled} courseTestSeriesPlaylist={this.state.courseTestSeriesPlaylist}/>}
+                                        renderItem={({item,index})=><RenderSingleTestSeries item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="student" studentEnrolled={this.state.studentEnrolled} courseTestSeriesPlaylist={this.state.courseTestSeriesPlaylist} />}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
@@ -692,7 +693,7 @@ class InstituteView extends React.Component {
             case 'document':    return(
                                     this.state.courseDocumentLoaded?(<FlatList 
                                         data={this.state.courseDocuments} 
-                                        renderItem={({item})=><RenderDocument userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="student" studentEnrolled={this.state.studentEnrolled} downloadMode={true} insName={this.state.insName} insNumber={this.state.insNumber} courseDocumentPlaylist={this.state.courseDocumentPlaylist}/>}
+                                        renderItem={({item,index})=><RenderDocument userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="student" studentEnrolled={this.state.studentEnrolled} downloadMode={true} insName={this.state.insName} insNumber={this.state.insNumber} courseDocumentPlaylist={this.state.courseDocumentPlaylist} />}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}

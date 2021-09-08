@@ -733,4 +733,35 @@ export const getCourseCount=(insId,callback)=>
         .catch((error)=>{console.log(error)})
 }
 
+export const updatePlaylist=(type,playlist_id,id,callback)=>
+{
+    console.log(type,playlist_id,id)
+        let headers = new Headers(); 
+        headers.append('Content-Type', 'application/json');  
+        headers.append('Access-Control-Allow-Origin', serverApiUrl);
+        headers.append('Access-Control-Allow-Credentials', 'true'); 
+        headers.append('GET', 'POST', 'OPTIONS'); 
+        if(type=="document")
+        {
+            apiUrl= "institute/course/document/updatePlaylist/"+playlist_id+"/+"+id
+        }
+        else if(type=="video")
+        {
+            apiUrl="institute/course/video/updatePlaylist/"+playlist_id+"/+"+id
+        }
+        else if(type=="testSeries")
+        {
+            apiUrl="institute/course/testseries/updatePlaylist/"+playlist_id+"/+"+id
+        }
+        fetch(serverApiUrl+apiUrl,
+        {
+            method: 'PUT', 
+            headers,
+            // body:JSON.stringify({title,description,fees,instId})
+        })
+        .then((response)=>callback(response)) 
+        .catch((error)=>{console.log(error)})
+}
+
+
 

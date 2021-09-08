@@ -5,15 +5,18 @@ import { Feather } from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import { Picker } from 'native-base';
-import Toast from 'react-native-simple-toast';
 import {downloadFile} from '../Utils/DownloadFile'
 import moment from 'moment';
+import Toast from 'react-native-simple-toast';
+import { updatePlaylist } from '../Utils/DataHelper/Course';
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
  
 class RenderVideo extends React.Component {
     state = {
-        
+        showModal: false,
+        playlist: this.props.courseVideosPlaylist,
+        selectedPlaylist: this.props.item.playlistId
     }
 
     download=(item, type)=>{
@@ -51,16 +54,7 @@ class RenderVideo extends React.Component {
         switch (this.actions[index])
         {
             case "Change Playlist":
-                      return(
-                        <Picker 
-                            style={{ height:30 }}
-                            selectedValue={this.state.selectedPlaylist}
-                            onValueChange={(itemValue, itemIndex) =>
-                                this.setSelectedPlaylist(itemValue)
-                            }> 
-                            {this.props.courseVideosPlaylist&&this.props.courseVideosPlaylist.map((item)=>this.renderPickerItem(item))}
-                        </Picker>
-                      )
+                      this.setState({showModal: true})
                 break;
         }
     }
@@ -71,28 +65,38 @@ class RenderVideo extends React.Component {
       }
     }
 
-    // changePlaylist=()=>{
-    //    return(
-        
-    //    )
-    // }
+    
 
     renderPickerItem=(item)=>
     {
-        console.log(item)
-        return( 
-           
-            <Picker.Item label={item.name} value={item.id} />
-        )
+        if(item.id!=-1)
+        {
+            return( 
+                <Picker.Item label={item.name} value={item.id} />
+            )
+        }
     }
 
     setSelectedPlaylist=(selectedPlaylist)=>
     {
-    
-            this.setState({selectedPlaylist})
+        console.log("setSelectedPlaylist", selectedPlaylist)
+        this.setState({showModal: false, selectedPlaylist: selectedPlaylist},()=>updatePlaylist("video",selectedPlaylist,this.props.item.id,this.updateCallback))
+    }
+
+    updateCallback=(response)=>{
+        if(response.status=="200")
+        {
+            Toast.show("Playlist Updated Successfully.",)
+            this.props.changePlayList("video", this.state.selectedPlaylist, this.props.index)
+        }
+        else
+        {
+            console.log("error", response.status)
+        }
     }
 
     render(){
+        console.log("this.props.item.playlistId",this.props.item.playlistId)
         return( 
             <View style={styles.videoContainer}>
                 <TouchableOpacity onPress={()=>{
@@ -119,9 +123,7 @@ class RenderVideo extends React.Component {
                 </View>
                 {this.props.downloadMode?(
                     <View style={{flexDirection: 'column',  marginLeft: 'auto', justifyContent: 'space-between', marginRight:10}}>
-                        <TouchableOpacity style={{marginLeft: 'auto', marginTop: 8}} onPress={()=>this.showThreeMenu()}>
-                            <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
-                        </TouchableOpacity>
+                        <View></View>
                         <TouchableOpacity onPress={()=>this.props.studentEnrolled?(this.download(this.props.item, 'video')):(Toast.show('You Have Not Enrolled For This Course.'))} style={{marginBottom: 8}}>
                             <View >
                                 <Image source={downloadIcon} style={{height: 25, width: 25}} />
@@ -129,23 +131,37 @@ class RenderVideo extends React.Component {
                         </TouchableOpacity>
                         
                     </View>
-                ):(null)}
-                {/* {this.state.showModal?(
-                <Modal
-                    animationType="fade"
-                    transparent={true}  
-                    visible={this.state.showModal}
-                >
-                    <View>
-                        {CardView(
-                            <View style={styles.container}>
-                                <View style={styles.inputField}>
+                ):(
+                    <TouchableOpacity style={{marginLeft: 'auto', marginTop: 8}} onPress={()=>this.showThreeMenu()}>
+                            <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
+                    </TouchableOpacity>
+                )}
+                {this.state.showModal?(
+                    <Modal
+                        animationType="fade"
+                        transparent={true}  
+                        visible={this.state.showModal}
+                    >
+                        <View style={{height: height-80, width: width-80}}>
+                            {CardView(
+                                <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+                                    <Text style={{fontSize: 16, fontFamily: 'Raleway_600SemiBold',color: theme.secondaryColor,marginBottom: 10}}> Select Playlist</Text>
+                                    <View style={{display: 'flex',flexDirection: 'column', borderWidth:1, borderRadius: 6}}>
                                     
-                                </View>
-                            </View>,{width: width, height: height, }
-                        )}
-                    </View>
-                </Modal>):(null)} */}
+                                        <Picker 
+                                            style={{ height:50 }}
+                                            selectedValue={this.state.selectedPlaylist}
+                                            onValueChange={(itemValue, itemIndex) =>
+                                                this.setSelectedPlaylist(itemValue)
+                                            }> 
+                                            {this.props.courseVideosPlaylist&&this.props.courseVideosPlaylist.map((item)=>this.renderPickerItem(item))}
+                                        </Picker>
+                                    </View>
+                                </View>,{height: height*0.15, width: width*0.9, marginTop: height*0.425, marginLeft: width*0.05, justifyContent: 'center', padding: 15}
+                            )}
+                        </View>
+                    </Modal>
+                ):(null)}
             </View>
         )
     }

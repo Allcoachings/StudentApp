@@ -1,15 +1,20 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions, findNodeHandle,UIManager,} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions, findNodeHandle,UIManager, Modal} from 'react-native';
 import { theme, dataLimit, serverBaseUrl } from '../config';
 import { Feather } from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import Instructions from './Instructions'
 import Toast from 'react-native-simple-toast';
+import { Picker } from 'native-base';
+import {updatePlaylist} from '../Utils/DataHelper/Course'
+const width = Dimensions.get('window').width
+const height = Dimensions.get('window').height;
 
 class RenderSingleTestSeries extends React.Component {
     state = {
         modalVisible: false,
+        selectedPlaylist: this.props.item.playlistId
     }
 
     closeModal = () =>{
@@ -36,13 +41,10 @@ class RenderSingleTestSeries extends React.Component {
         switch (this.actions[index])
         {
             case "Change Playlist":
-                      this.changePlaylist()
+                      this.setState({showModal: true})
                 break;
-            case "Share": 
-    
-              break;
         }
-      }
+    }
   
     onRef = icon => {
       if (!this.state.icon) {
@@ -50,8 +52,34 @@ class RenderSingleTestSeries extends React.Component {
       }
     }
 
-    changePlaylist=()=>{
-        console.log("here")
+    
+
+    renderPickerItem=(item)=>
+    {
+        if(item.id!=-1)
+        {
+            return( 
+            
+                <Picker.Item label={item.name} value={item.id} />
+            )
+        }
+    }
+
+    setSelectedPlaylist=(selectedPlaylist)=>
+    {
+        this.setState({showModal: false, selectedPlaylist: selectedPlaylist},()=>updatePlaylist("testSeries",selectedPlaylist,this.props.item.id,this.updateCallback))
+    }
+
+    updateCallback=(response)=>{
+        if(response.status=="200")
+        {
+            Toast.show("Playlist Updated Successfully.",)
+            this.props.changePlayList("testSeries", this.state.selectedPlaylist, this.props.index)
+        }
+        else
+        {
+            console.log("error", response.status)
+        }
     }
     
 
@@ -62,7 +90,12 @@ class RenderSingleTestSeries extends React.Component {
                     <View style={styles.list}>
                         <View style={styles.topRow}>
                         <Text style={styles.queText}>{this.props.item.questionCount} Questions</Text>
-                        <Text style={styles.timeText}>{this.props.item.timeDuration} Minutes</Text>
+                            <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                                <Text style={styles.timeText}>{this.props.item.timeDuration} Minutes</Text>
+                                <TouchableOpacity style={{marginLeft: 'auto'}} onPress={()=>this.showThreeMenu()}>
+                                    <Feather name="more-vertical" size={18} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                         <View style={styles.bottomRow}>
                             <Text style={styles.titleText}>{this.props.item.title}</Text>
@@ -81,6 +114,34 @@ class RenderSingleTestSeries extends React.Component {
                     </View>,{margin: 10, borderWidth: 1, borderRadius: 10, borderColor: theme.labelOrInactiveColor}
                     
                 )}
+                {this.state.showModal?(
+                    <Modal
+                        animationType="fade"
+                        transparent={true}  
+                        visible={this.state.showModal}
+                    >
+                        <View style={{height: height-80, width: width-80}}>
+                            {CardView(
+                                <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+                                  
+                                        <Text style={{fontSize: 16, fontFamily: 'Raleway_600SemiBold',color: theme.secondaryColor}}> Select Playlist</Text>
+                               
+                                    <View style={{display: 'flex',flexDirection: 'column', borderWidth:1, borderRadius: 6}}>
+                                    
+                                        <Picker 
+                                            style={{ height:50 }}
+                                            selectedValue={this.state.selectedPlaylist}
+                                            onValueChange={(itemValue, itemIndex) =>
+                                                this.setSelectedPlaylist(itemValue)
+                                            }> 
+                                            {this.props.courseDocumentPlaylist&&this.props.courseDocumentPlaylist.map((item)=>this.renderPickerItem(item))}
+                                        </Picker>
+                                    </View>
+                                </View>,{height: height*0.15, width: width*0.9, marginTop: height*0.425, marginLeft: width*0.05, justifyContent: 'center', padding: 15}
+                            )}
+                        </View>
+                    </Modal>
+                ):(null)}
                 {this.state.modalVisible?(
                     <Instructions 
                         closeModal={this.closeModal} 
