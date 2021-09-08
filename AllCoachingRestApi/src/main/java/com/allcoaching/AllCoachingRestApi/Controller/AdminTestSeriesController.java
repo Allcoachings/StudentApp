@@ -72,7 +72,7 @@ public class AdminTestSeriesController {
     }
 
     @CrossOrigin(origins = "*")
-    @GetMapping("testSubCategoryByCategoryId/{id}/{page}/{pageSize}")
+    @GetMapping("testSubCategoryByCategoryId/{id}/{offset}/{pageSize}")
     public Iterable<AdminTestSubCategories> testSubCategoriesByCategoryId(@PathVariable long id,@PathVariable int offset,@PathVariable int pageSize)
     {
         return  adminTestSubCategoriesService.findByCategoryPagedResult(id,offset,pageSize);

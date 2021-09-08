@@ -61,6 +61,19 @@ public interface InsReviewRepo extends PagingAndSortingRepository<InsReview,Long
     long countByCourseId(long courseId);
     long countByInsId(long insId);
 
+    @Query(name = "insRevenueGraphDataYearly", nativeQuery = true)
+    Iterable<Graph2dDataDto> getGraphDataYearly(@Param("insId") long insId);
+    @Query(name = "insRevenueGraphDataMonthly", nativeQuery = true)
+    Iterable<Graph2dDataDto> getGraphDataMontly(@Param("insId") long insId,@Param("dataYear") int dataTime);
+    @Query(name = "insRevenueGraphDataWeekly", nativeQuery = true)
+    Iterable<Graph2dDataDto> getGraphDataWeekly(@Param("insId") long insId,@Param("dataMonth")int dataTime);
+
+    @Query(name = "adminRevenueGraphDataYearly", nativeQuery = true)
+    Iterable<Graph2dDataDto> adminRevenueGraphDataYearly();
+    @Query(name = "adminRevenueGraphDataMonthly", nativeQuery = true)
+    Iterable<Graph2dDataDto> adminRevenueGraphDataMonthly(@Param("dataYear") int dataTime);
+    @Query(name = "adminRevenueGraphDataWeekly", nativeQuery = true)
+    Iterable<Graph2dDataDto> adminRevenueGraphDataWeekly(@Param("dataMonth")int dataTime);
 
 
 }

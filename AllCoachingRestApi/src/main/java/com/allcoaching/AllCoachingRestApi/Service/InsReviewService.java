@@ -4,10 +4,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Entity.Student;
 import com.allcoaching.AllCoachingRestApi.Respository.InsReviewRepo;
 import com.allcoaching.AllCoachingRestApi.Respository.InstituteRepo;
-import com.allcoaching.AllCoachingRestApi.dto.InsLeadsStudentDto;
-import com.allcoaching.AllCoachingRestApi.dto.InsReviewDto;
-import com.allcoaching.AllCoachingRestApi.dto.SalesOverViewDataDto;
-import com.allcoaching.AllCoachingRestApi.dto.StudentPurchaseDto;
+import com.allcoaching.AllCoachingRestApi.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -173,4 +170,41 @@ public class InsReviewService {
             return  new ArrayList<>();
         }
     }
+
+
+
+    //graph data methods for ins data
+//weekly
+    public Iterable<Graph2dDataDto> getGraphDataWeekly(long insId, int dataTime)
+    {
+        return insReviewRepo.getGraphDataWeekly(insId,dataTime);
+    }
+    //monthly
+    public  Iterable<Graph2dDataDto> getGraphDataMontly(long insId,int dataTime)
+    {
+        return insReviewRepo.getGraphDataMontly(insId,dataTime);
+    }
+    //yearly
+    public Iterable<Graph2dDataDto> getGraphDataYearly(long insId,int dataTime)
+    {
+        return insReviewRepo.getGraphDataYearly(insId);
+    }
+
+    //graph data methods for ins data
+//weekly
+    public Iterable<Graph2dDataDto> adminRevenueGraphDataWeekly( int dataTime)
+    {
+        return insReviewRepo.adminRevenueGraphDataWeekly(dataTime);
+    }
+    //monthly
+    public  Iterable<Graph2dDataDto> adminRevenueGraphDataMonthly(int dataTime)
+    {
+        return insReviewRepo.adminRevenueGraphDataMonthly(dataTime);
+    }
+    //yearly
+    public Iterable<Graph2dDataDto> adminRevenueGraphDataYearly(int dataTime)
+    {
+        return insReviewRepo.adminRevenueGraphDataYearly();
+    }
+
 }
