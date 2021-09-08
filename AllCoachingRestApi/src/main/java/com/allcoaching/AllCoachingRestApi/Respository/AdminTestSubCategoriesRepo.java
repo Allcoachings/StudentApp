@@ -11,5 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface AdminTestSubCategoriesRepo  extends CrudRepository<AdminTestSubCategories,Long> {
 
     Iterable<AdminTestSubCategories> findByCategoryId(long id);
+    Page<AdminTestSubCategories> findByCategoryId(long id,Pageable pageable);
     Page<AdminTestSubCategories> findByNameContaining(String name, Pageable pageable);
 }

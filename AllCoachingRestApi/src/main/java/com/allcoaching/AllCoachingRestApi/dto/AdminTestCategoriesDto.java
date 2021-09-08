@@ -15,4 +15,6 @@ public class AdminTestCategoriesDto {
     private  long categoryId;
     private  String categoryName;
     private Iterable<AdminTestSubCategories> subCategories;
+    private  int sortOrder;
+    private String image;
 }

@@ -34,11 +34,13 @@ public class AdminTestSeriesCategoryService {
                 List<AdminTestCategoriesDto> adminTestCategoriesDtos = new ArrayList<>();
                 adminTestSeriesCategories.forEach(item->{
                     Iterable<AdminTestSubCategories> adminTestSubCategories = testSubCategoriesRepo.findByCategoryId(item.getId());
-                    adminTestCategoriesDtos.add(new AdminTestCategoriesDto(item.getId(),item.getName(),adminTestSubCategories));
+                    adminTestCategoriesDtos.add(new AdminTestCategoriesDto(item.getId(),item.getName(),adminTestSubCategories,item.getSortOrder(),item.getImage()));
                 });
                 return adminTestCategoriesDtos;
 
     }
+
+
 
     public  Iterable<AdminTestCategoriesDto> searchTestCategoryData(String word,int page,int pageSize)
     {
@@ -48,7 +50,7 @@ public class AdminTestSeriesCategoryService {
                     List<AdminTestCategoriesDto> adminTestCategoriesDtos = new ArrayList<>();
                     adminTestSeriesCategories.forEach(item -> {
                         Iterable<AdminTestSubCategories> adminTestSubCategories = testSubCategoriesRepo.findByCategoryId(item.getId());
-                        adminTestCategoriesDtos.add(new AdminTestCategoriesDto(item.getId(), item.getName(), adminTestSubCategories));
+                        adminTestCategoriesDtos.add(new AdminTestCategoriesDto(item.getId(), item.getName(), adminTestSubCategories,item.getSortOrder(),item.getImage()));
                     });
                     return adminTestCategoriesDtos;
                 }else

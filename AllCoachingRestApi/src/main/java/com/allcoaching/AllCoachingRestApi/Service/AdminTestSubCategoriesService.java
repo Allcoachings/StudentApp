@@ -42,6 +42,20 @@ public class AdminTestSubCategoriesService {
         return adminTestSubCategoriesRepo.findByCategoryId(id);
     }
 
+
+
+    public Iterable<AdminTestSubCategories> findByCategoryPagedResult(long id,int offset,int pageSize)
+    {
+        Page<AdminTestSubCategories> adminTestSubCategories = adminTestSubCategoriesRepo.findByCategoryId(id,PageRequest.of(offset,pageSize));
+        if(adminTestSubCategories.hasContent())
+        {
+            return  adminTestSubCategories.getContent();
+        }else
+        {
+            return  new ArrayList<>();
+        }
+    }
+
 //    public  Iterable<AdminTestCategoriesDto> searchTestCategoryData(String search, int page, int pageSize)
 //    {
 //        Page<AdminTestSubCategories> adminTestSeriesCategories = adminTestSubCategoriesRepo.findByNameContaining(search, PageRequest.of(page,pageSize));
