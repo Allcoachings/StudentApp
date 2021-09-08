@@ -4,15 +4,18 @@ import com.allcoaching.AllCoachingRestApi.Entity.CourseGoLive;
 import com.allcoaching.AllCoachingRestApi.Entity.InsReview;
 import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Service.InsReviewService;
+import com.allcoaching.AllCoachingRestApi.dto.Graph2dDataDto;
 import com.allcoaching.AllCoachingRestApi.dto.InsReviewDto;
 import com.allcoaching.AllCoachingRestApi.dto.StudentPurchaseDto;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @RestController
@@ -111,6 +114,48 @@ public class InsReviewController {
     public long countByInsId(@PathVariable long insId)
     {
         return insReviewService.countInstituteReviews(insId);
+    }
+    //getting graph data for institute Revenues based on mode
+    //i.e. weekly , monthly
+    @ApiOperation(value = "getting graph data for institute Revenues based on mode i.e. weekly , monthly")
+    @CrossOrigin()
+    @GetMapping("/course/Revenue/graphdata/{mode}/{insId}/{dataTime}")
+    public  Iterable<Graph2dDataDto> getRevenueGraphData(@PathVariable  String mode, @PathVariable long insId, @PathVariable int dataTime)
+    {
+        switch (mode)
+        {
+            case "weekly":
+                return insReviewService.getGraphDataWeekly(insId,dataTime);
+
+            case "monthly":
+                return insReviewService.getGraphDataMontly(insId,dataTime);
+
+            case "yearly":
+                return  insReviewService.getGraphDataYearly(insId,dataTime);
+
+            default:
+                return new ArrayList<>();
+        }
+    }
+    @ApiOperation(value = "getting graph data for admin based on mode i.e. weekly , monthly Revenues of institute")
+    @CrossOrigin()
+    @GetMapping("/course/admin/Revenue/graphdata/{mode}/{dataTime}")
+    public  Iterable<Graph2dDataDto> adminRevenueGraphData(@PathVariable  String mode,@PathVariable int dataTime)
+    {
+        switch (mode)
+        {
+            case "weekly":
+                return insReviewService.adminRevenueGraphDataWeekly( dataTime);
+
+            case "monthly":
+                return insReviewService.adminRevenueGraphDataMonthly( dataTime);
+
+            case "yearly":
+                return  insReviewService.adminRevenueGraphDataYearly( dataTime);
+
+            default:
+                return new ArrayList<>();
+        }
     }
 
 }

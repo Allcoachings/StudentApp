@@ -17,6 +17,69 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @DynamicUpdate
+
+@NamedNativeQuery(
+        name = "insRevenueGraphDataWeekly",
+        query ="SELECT WEEK(time) as x,COUNT(*) as y FROM ins_review "+
+                "WHERE ins_id=:insId and MONTH(time)=:dataMonth GROUP BY MONTH(time),WEEK(time)"
+        ,
+        resultSetMapping = "GraphDataDtoRevenue"
+)
+
+
+@NamedNativeQuery(
+        name = "insRevenueGraphDataMonthly",
+        query ="SELECT MONTH(time) as x,COUNT(*) as y FROM ins_review "+
+                "WHERE ins_id=:insId and YEAR(time)=:dataYear GROUP BY YEAR(time),MONTH(time)"
+        ,
+        resultSetMapping = "GraphDataDtoRevenue"
+)
+
+@NamedNativeQuery(
+        name = "insRevenueGraphDataYearly",
+        query ="SELECT YEAR(time) as x,COUNT(*) as y FROM ins_review "+
+                "WHERE ins_id=:insId   GROUP BY YEAR(time)"
+        ,
+        resultSetMapping = "GraphDataDtoRevenue"
+)
+
+@NamedNativeQuery(
+        name = "adminRevenueGraphDataWeekly",
+        query ="SELECT WEEK(time) as x,COUNT(*) as y FROM ins_review "+
+                "WHERE   MONTH(time)=:dataMonth GROUP BY MONTH(time),WEEK(time)"
+        ,
+        resultSetMapping = "GraphDataDtoRevenue"
+)
+
+
+@NamedNativeQuery(
+        name = "adminRevenueGraphDataMonthly",
+        query ="SELECT MONTH(time) as x,COUNT(*) as y FROM ins_review "+
+                "WHERE   YEAR(time)=:dataYear GROUP BY YEAR(time),MONTH(time)"
+        ,
+        resultSetMapping = "GraphDataDtoRevenue"
+)
+
+
+@NamedNativeQuery(
+        name = "adminRevenueGraphDataYearly",
+        query ="SELECT YEAR(time) as x,COUNT(*) as y FROM ins_review "+
+                " GROUP BY YEAR(time)"
+        ,
+        resultSetMapping = "GraphDataDtoRevenue"
+)
+@SqlResultSetMapping(
+        name = "GraphDataDtoRevenue",
+        classes = @ConstructorResult(
+                targetClass = Graph2dDataDto.class,
+                columns = {
+                        @ColumnResult(name = "x", type = String.class),
+                        @ColumnResult(name = "y", type = String.class),
+
+                }
+        )
+)
+
 @NamedNativeQuery(
         name = "salesOverview",
         query ="SELECT course_id,COUNT(course_id) as total  FROM ins_review "+
