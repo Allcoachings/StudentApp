@@ -30,6 +30,17 @@ public class InstituteService {
             return new ArrayList<Institute>();
         }
     }
+public  Iterable<Institute> getAllInstituteByStatus(Integer status,Integer pageNo,Integer pageSize,String sortBy)
+    {
+
+        Pageable paging  = PageRequest.of(pageNo,pageSize, Sort.by(sortBy));
+        Page<Institute> pagedResult = instituteRepo.findByStatus(status,paging);
+        if(pagedResult.hasContent()) {
+            return pagedResult.getContent();
+        } else {
+            return new ArrayList<Institute>();
+        }
+    }
 
 
     public Optional<Institute> validateIns(InsCredentialDto insCredentialDto)

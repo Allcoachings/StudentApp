@@ -84,6 +84,17 @@ public class InstituteController {
     }
 
     @CrossOrigin(origins = "*")
+    @GetMapping("/findAllByStatus/{status}/{offset}/{data_limit}/{sortBy}")
+    public Iterable<Institute> findAllByStatus(
+            @PathVariable(name ="status") Integer status,
+            @PathVariable(name = "offset") Integer offset,
+            @PathVariable(name = "data_limit") Integer data_limit,
+            @PathVariable(name = "sortBy") String sortBy)
+    {
+        return  instituteService.getAllInstituteByStatus(status,offset,data_limit,sortBy);
+    }
+
+    @CrossOrigin(origins = "*")
     @GetMapping("/{id}")
     public Optional<Institute> findById(@PathVariable long id)
     {
