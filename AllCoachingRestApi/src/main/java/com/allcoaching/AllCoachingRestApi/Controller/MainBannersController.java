@@ -29,7 +29,7 @@ public class MainBannersController {
 
     @CrossOrigin(origins = "*")
     @PostMapping("/upload/")
-    public ResponseEntity<Object> uploadBanner(
+    public @ResponseBody MainBanners uploadBanner(
             @RequestParam("file") MultipartFile image,
             @RequestParam("bannerLink") String bannerLink,
             @RequestParam("placeholder") String placeHolder
@@ -37,11 +37,8 @@ public class MainBannersController {
         String bannerImageLink = "files/";
         bannerImageLink += fileUploadService.storeFile(image);
         MainBanners mainBanners = new MainBanners(bannerImageLink, bannerLink, placeHolder);
-        MainBanners mainBanners_saved = mainBannersService.save(mainBanners);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Access-Control-Expose-Headers", "Location");
-        URI location = ServletUriComponentsBuilder.fromPath("{id}*{imageAddr}").buildAndExpand(mainBanners_saved.getId(),bannerImageLink).toUri();
-        return ResponseEntity.created(location).headers(headers).build();
+
+        return mainBannersService.save(mainBanners);
     }
 
     @CrossOrigin(origins = "*")
