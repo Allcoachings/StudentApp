@@ -69,9 +69,15 @@ public class InsTestSeriesController {
     //for saving only questions to a test series array containing questions Object should be passed
     @CrossOrigin(origins = "*")
     @PostMapping("/savequestion")
-    public @ResponseBody Iterable<InsTestSeriesQuestions> saveSeriesQuestions(@RequestBody Iterable<InsTestSeriesQuestions> insTestSeriesQuestions)
+    public @ResponseBody Iterable<TestSeriesQuestionDto> saveSeriesQuestions(@RequestBody Iterable<InsTestSeriesQuestions> insTestSeriesQuestions)
     {
-        return insTestSeriesService.saveSeriesQuestions(insTestSeriesQuestions);
+        List<TestSeriesQuestionDto> testSeriesQuestionDtos = new ArrayList<>();
+        insTestSeriesQuestions.forEach(item->{
+                InsTestSeriesQuestions insTestSeriesQuestions_saved =  insTestSeriesService.saveSeriesQuestionOneByOne(item);
+                testSeriesQuestionDtos.add(new TestSeriesQuestionDto(insTestSeriesQuestions_saved));
+
+        });
+        return  testSeriesQuestionDtos;
     }
 
     //fetching all test series of a course by course id
