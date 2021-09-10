@@ -5,6 +5,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Respository.CategoryRepo;
 import com.allcoaching.AllCoachingRestApi.Respository.FeedCategoryRepo;
 import com.allcoaching.AllCoachingRestApi.dto.CategoryDropDownDto;
+import com.allcoaching.AllCoachingRestApi.dto.Graph2dDataDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -57,6 +58,18 @@ public class CategoryService {
     public  Iterable<CategoryDropDownDto> findByAllForDropdown()
     {
         return categoryRepo.findByAllForDropdown();
+    }
+
+    //student count category wise
+    public  Iterable<Graph2dDataDto> studentCountCategoryWise()
+    {
+        return categoryRepo.studentCountCategoryWise();
+    }
+
+    //ins count category wise
+    public  Iterable<Graph2dDataDto> insCountCategoryWise()
+    {
+        return categoryRepo.insCountCategoryWise();
     }
 
 
