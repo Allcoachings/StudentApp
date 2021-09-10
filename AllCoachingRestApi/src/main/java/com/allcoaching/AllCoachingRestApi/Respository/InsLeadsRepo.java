@@ -22,8 +22,8 @@ public interface InsLeadsRepo extends PagingAndSortingRepository<InsLeads,Long> 
     Optional<InsLeads> findByCourseIdAndInsIdAndUserId(long courseId,long insId,long userId);
     long countByInsId(long insId);
 
-    @Query(name = "leadsData",nativeQuery = true)
-    Page<InsLeadsDto> findAllByInsId(@Param("insId") long id, Pageable pageable);
+    @Query(name = "leadsData",nativeQuery = true,countQuery = "Select count(il)  FROM insLeads il,Course c  WHERE c.id=il.courseId and  insId=:insId GROUP BY coursed,insId")
+    Page<InsLeadsDto> findAllByInsId(@Param("insId") long insId, Pageable pageable);
 
     @Query("Select new com.allcoaching.AllCoachingRestApi.dto.InsLeadsStudentDto(s.id,s.name,s.studentImage,s.userId) from Student s , InsLeads il where s.id = il.userId and il.courseId=:id")
     Page<InsLeadsStudentDto> findAllByCourseId(long id,Pageable pageable);

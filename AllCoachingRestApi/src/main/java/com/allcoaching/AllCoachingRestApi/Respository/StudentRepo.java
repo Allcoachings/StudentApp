@@ -1,6 +1,8 @@
 package com.allcoaching.AllCoachingRestApi.Respository;
 
 import com.allcoaching.AllCoachingRestApi.Entity.Student;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -16,6 +18,7 @@ public interface StudentRepo extends PagingAndSortingRepository<Student,Long> {
 
 
     Optional<Student> findByMobileNumber(String mobileNumber);
+    Page<Student> findByBlocked(boolean status, Pageable pageable);
 
     @Modifying
     @Query("UPDATE Student set studentImage=:image where id=:id")
@@ -24,7 +27,7 @@ public interface StudentRepo extends PagingAndSortingRepository<Student,Long> {
 
     @Modifying
     @Query("UPDATE Student set blocked=:status where id=:id")
-    void updateBlockedStatus(int status,long id);
+    void updateBlockedStatus(boolean status,long id);
 
     @Modifying
     @Query("UPDATE Student set expoToken=:token where id=:id")

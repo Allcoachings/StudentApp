@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/institute/course/testseries")
@@ -217,6 +219,62 @@ public class InsTestSeriesController {
         return insTestSeriesQuestions_saved;
     }
 
+    @CrossOrigin(origins = "*")
+    @PostMapping(value="/series/addquestion/bulk/{seriesId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Iterable<TestSeriesQuestionDto> addQuestionMultiple(@ModelAttribute Iterable<QuestionDto> questionDtos,@PathVariable long seriesId) {
+        List<TestSeriesQuestionDto> questionDtos_saved =  new ArrayList<>();
+        questionDtos.forEach(questionDto -> {
+
+
+
+                String seriesQuestion = "";
+                switch (questionDto.getQuestionType()) {
+
+
+                    case 1:
+                    case 3:
+                        seriesQuestion = questionDto.getQuestionText();
+                        break;
+                    case 2:
+                    case 4:
+                        String imageAddr = "files/";
+                        imageAddr += fileUploadService.storeFile(questionDto.getQuestionImage());
+                        seriesQuestion = imageAddr;
+                        break;
+                }
+
+                String optionA = "", optionB = "", optionC = "", optionD = "";
+                switch (questionDto.getOptionType()) {
+                    case 1:
+                        optionA = questionDto.getOptionAText();
+                        optionB = questionDto.getOptionBText();
+                        optionC = questionDto.getOptionCText();
+                        optionD = questionDto.getOptionDText();
+
+                        break;
+                    case 2:
+
+                        optionA = "files/";
+                        optionB = "files/";
+                        optionC = "files/";
+                        optionD = "files/";
+
+                        optionA += fileUploadService.storeFile(questionDto.getOptionAImage());
+                        optionB += fileUploadService.storeFile(questionDto.getOptionBImage());
+                        optionC += fileUploadService.storeFile(questionDto.getOptionCImage());
+                        optionD += fileUploadService.storeFile(questionDto.getOptionDImage());
+
+                        break;
+                }
+                InsTestSeriesQuestions insTestSeriesQuestions = new InsTestSeriesQuestions(seriesQuestion, optionA, optionB, optionC, optionD, questionDto.getCorrectOpt(), questionDto.getExplanation(), questionDto.getCorrectMarks(), questionDto.getWrongMarks(), questionDto.getQuestionType(), questionDto.getOptionType(), questionDto.getTestSeriesId());
+                if (questionDto.getMode().equals("edit")) {
+                    insTestSeriesQuestions.setId(questionDto.getQuestionId());
+                }
+                InsTestSeriesQuestions insTestSeriesQuestions_saved = insTestSeriesService.saveSeriesQuestionOneByOne(insTestSeriesQuestions);
+                questionDtos_saved.add(new TestSeriesQuestionDto(insTestSeriesQuestions_saved));
+        });
+        return questionDtos_saved;
+    }
     @CrossOrigin(origins = "*")
     @PutMapping(value="/series/updatequestiondata/",produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody String updateQuestion(@ModelAttribute EditQuestionDto editQuestionDto)

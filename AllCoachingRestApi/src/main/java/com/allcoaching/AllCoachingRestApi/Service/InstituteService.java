@@ -59,6 +59,17 @@ public  Iterable<Institute> getAllInstituteByStatus(Integer status,Integer pageN
             return new ArrayList<Institute>();
         }
     }
+    public  Iterable<Institute> findByStatusAndCategory(long id,int status,Pageable topTwenty)
+    {
+
+
+        Page<Institute> pagedResult = instituteRepo.findByStatusAndCategory(status,id,topTwenty);
+        if(pagedResult.hasContent()) {
+            return pagedResult.getContent();
+        } else {
+            return new ArrayList<Institute>();
+        }
+    }
     public Optional<Institute> findById(long id)
     {
         return instituteRepo.findById(id);

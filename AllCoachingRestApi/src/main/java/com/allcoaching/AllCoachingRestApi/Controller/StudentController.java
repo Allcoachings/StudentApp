@@ -36,7 +36,7 @@ public class StudentController {
     }
     @CrossOrigin(origins = "*")
     @PutMapping("/status/{status}/{studentId}")
-    public ResponseEntity<Object> updateStatus(@PathVariable int status,@PathVariable long studentId)
+    public ResponseEntity<Object> updateStatus(@PathVariable boolean status,@PathVariable long studentId)
     {
         studentService.updateBlockedStatus(status,studentId);
         return ResponseEntity.ok().build();
@@ -87,6 +87,18 @@ public class StudentController {
                                      )
     {
         return studentService.findAll(offset,data_limit);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/all/{status}/{offset}/{data_limit}")
+    public Iterable<Student> findAllWithStatus(
+                                    @PathVariable(name = "status") boolean status,
+                                    @PathVariable(name = "offset") int offset,
+                                     @PathVariable(name = "data_limit") int data_limit
+                                     )
+    {
+        return studentService.findAllWithStatus(status,offset,data_limit);
+
     }
 
     @CrossOrigin(origins = "*")
