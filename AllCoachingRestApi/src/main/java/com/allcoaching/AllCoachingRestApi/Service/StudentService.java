@@ -54,14 +54,27 @@ public class StudentService {
 
     }
 
+    public Iterable<Student> findAllWithStatus(boolean status,int page,int pageSize)
+    {
+        Page<Student> pagedResult = studentRepo.findByBlocked(status,PageRequest.of(page,pageSize));
+        if(pagedResult.hasContent())
+        {
+            return pagedResult.getContent();
+        }else
+        {
+            return new ArrayList<Student>();
+        }
+
+
+    }
+
     public void delete(long id)
     {
         studentRepo.deleteById(id);
     }
 
 
-    public  void updateBlockedStatus(int status, long id)
-
+    public  void updateBlockedStatus(boolean status, long id)
     {
         studentRepo.updateBlockedStatus(status,id);
     }

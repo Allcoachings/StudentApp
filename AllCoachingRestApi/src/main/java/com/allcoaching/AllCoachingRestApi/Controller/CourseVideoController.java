@@ -27,7 +27,7 @@ public class CourseVideoController {
 
     @Autowired
     private CourseVideoCommentsService courseVideoCommentsService;
-
+    @CrossOrigin(origins = "*")
     @PostMapping("/")
     public ResponseEntity<Object> saveVideo(@RequestParam("file")MultipartFile video,
                                             @RequestParam("thumb") MultipartFile thumb,
@@ -63,13 +63,14 @@ public class CourseVideoController {
         return courseVideoService.findByCourseId(id,offset,dataLimit);
 
     }
+    @CrossOrigin(origins = "*")
     @GetMapping("/{id}")
     public Optional<CourseVideo> findById(@PathVariable long id)
     {
         return courseVideoService.findById(id);
 
     }
-
+    @CrossOrigin(origins = "*")
     @PostMapping("/createPlaylist")
     public ResponseEntity<Object> createPlaylist(@RequestBody VideoPlaylist videoPlaylist)
     {
@@ -80,6 +81,7 @@ public class CourseVideoController {
     }
 
     //mapping for fetching video playlists
+    @CrossOrigin(origins = "*")
     @GetMapping("/playlists/{id}")
     public Iterable<VideoPlaylist> findVideoPlaylist(@PathVariable long id)
     {
@@ -87,6 +89,7 @@ public class CourseVideoController {
     }
 
     //mapping for fetching videos of a playlist
+    @CrossOrigin(origins = "*")
     @GetMapping("/playlist/{id}/{offset}/{dataLimit}")
     public  Iterable<CourseVideo> findPlaylistById(@PathVariable long id,@PathVariable int offset,@PathVariable int dataLimit)
     {

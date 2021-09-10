@@ -14,7 +14,6 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @ToString
-@Entity
 @NamedNativeQuery(
         name = "insLeadGraphDataWeekly",
         query ="SELECT WEEK(time) as x,COUNT(*) as y FROM ins_leads "+
@@ -96,6 +95,8 @@ import java.util.Date;
                 }
         )
 )
+
+@Entity
 public class InsLeads {
 
     @Id
