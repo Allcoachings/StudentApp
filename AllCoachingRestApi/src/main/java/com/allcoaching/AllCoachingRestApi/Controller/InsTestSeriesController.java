@@ -67,11 +67,9 @@ public class InsTestSeriesController {
     //for saving only questions to a test series array containing questions Object should be passed
     @CrossOrigin(origins = "*")
     @PostMapping("/savequestion")
-    public ResponseEntity<Object> saveSeriesQuestions(@RequestBody Iterable<InsTestSeriesQuestions> insTestSeriesQuestions)
+    public @ResponseBody Iterable<InsTestSeriesQuestions> saveSeriesQuestions(@RequestBody Iterable<InsTestSeriesQuestions> insTestSeriesQuestions)
     {
-        Iterable<InsTestSeriesQuestions> insTestSeriesQuestions_saved = insTestSeriesService.saveSeriesQuestions(insTestSeriesQuestions);
-        URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand("ok").toUri();
-        return ResponseEntity.created(location).build();
+        return insTestSeriesService.saveSeriesQuestions(insTestSeriesQuestions);
     }
 
     //fetching all test series of a course by course id

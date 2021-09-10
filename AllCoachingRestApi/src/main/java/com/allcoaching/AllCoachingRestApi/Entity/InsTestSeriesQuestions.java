@@ -24,8 +24,8 @@ public class InsTestSeriesQuestions {
     private String optionD;
     private String correctOpt;
     private String explanation;
-    private int correctMarks;
-    private int wrongMarks;
+    private float correctMarks;
+    private float wrongMarks;
     private int questionType;//1 for question type text,2 image only question,3 text with question,4 image with question
     private int optionType;//1 text option,2 for image options
     private long testSeriesId;
