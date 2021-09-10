@@ -76,4 +76,8 @@ public interface InsReviewRepo extends PagingAndSortingRepository<InsReview,Long
     Iterable<Graph2dDataDto> adminRevenueGraphDataWeekly(@Param("dataMonth")int dataTime);
 
 
+    @Query("Select new com.allcoaching.AllCoachingRestApi.dto.CategoryWisePurchaseDataDto(s,i,c)  from" +
+            " Student s,Institute i,Course c,InsReview ir where i.category=:categoryId and ir.courseId=c.id and ir.studentId=s.id and ir.insId=i.id")
+    Page<CategoryWisePurchaseDataDto> findEnrolledStudentsByCategoryId(long categoryId,Pageable pageable);
+
 }

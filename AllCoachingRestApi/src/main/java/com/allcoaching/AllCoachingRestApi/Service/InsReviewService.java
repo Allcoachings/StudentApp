@@ -207,4 +207,17 @@ public class InsReviewService {
         return insReviewRepo.adminRevenueGraphDataYearly();
     }
 
+
+    //find data byCategory id
+    public  Iterable<CategoryWisePurchaseDataDto> findEnrolledStudentsByCategoryId(long categoryId,int offset,int pageSize)
+    {
+         Page<CategoryWisePurchaseDataDto> pagedResult = insReviewRepo.findEnrolledStudentsByCategoryId(categoryId,PageRequest.of(offset,pageSize));
+         if(pagedResult.hasContent())
+         {
+             return pagedResult.getContent();
+         }else
+         {
+             return new ArrayList<>();
+         }
+    }
 }
