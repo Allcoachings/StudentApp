@@ -2,6 +2,7 @@ package com.allcoaching.AllCoachingRestApi.Service;
 
 import com.allcoaching.AllCoachingRestApi.Entity.Transaction;
 import com.allcoaching.AllCoachingRestApi.Respository.TransactionRepo;
+import com.allcoaching.AllCoachingRestApi.dto.TransactionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +29,18 @@ public class TransactionService {
     public  void deleteById(long id)
     {
         transactionRepo.deleteById(id);
+    }
+
+
+    public Iterable<TransactionDto> fetchAllTransaction(int offset, int dataLimit)
+    {
+        Page<TransactionDto> pagedResult =  transactionRepo.findAllTransactions(PageRequest.of(offset,dataLimit));
+        if(pagedResult.hasContent())
+        {
+            return  pagedResult.getContent();
+        }else{
+            return  new ArrayList<>();
+        }
     }
 
     //fetch by courseId

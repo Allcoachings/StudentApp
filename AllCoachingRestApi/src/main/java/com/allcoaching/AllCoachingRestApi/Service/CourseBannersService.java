@@ -43,4 +43,10 @@ public class CourseBannersService {
         courseBannersRepo.updatePublishedStatus(status,id);
     }
 
+
+    public  long countCourseBanners(long id)
+    {
+        return  courseBannersRepo.countByCourseId(id);
+    }
+
 }

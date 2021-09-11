@@ -17,6 +17,8 @@ public interface CourseBannersRepo extends CrudRepository<CourseBanners,Long> {
     @Modifying
     @Query("UPDATE CourseBanners set published=:publishedStatus WHERE id=:id")
     void updatePublishedStatus(boolean publishedStatus,long id);
+
+    long countByCourseId(long courseId);
 }
 
 

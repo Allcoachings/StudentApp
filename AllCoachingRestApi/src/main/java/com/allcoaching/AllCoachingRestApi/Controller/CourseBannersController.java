@@ -57,6 +57,14 @@ public class CourseBannersController {
 
     }
 
+    @CrossOrigin(origins = "*")
+    @GetMapping("/countbyCoureId/{id}")
+    public long courseBannerCount(@PathVariable long id)
+    {
+        return courseBannersService.countCourseBanners(id);
+
+    }
+
     @CrossOrigin(origins="*")
     @PutMapping("/publish/{status}/{id}")
     public  ResponseEntity<Object> updatePublishedStatus(@PathVariable boolean status,@PathVariable long id)

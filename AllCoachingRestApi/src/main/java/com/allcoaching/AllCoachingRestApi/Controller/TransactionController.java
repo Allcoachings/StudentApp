@@ -3,6 +3,7 @@ package com.allcoaching.AllCoachingRestApi.Controller;
 import com.allcoaching.AllCoachingRestApi.Entity.Transaction;
 import com.allcoaching.AllCoachingRestApi.Service.TransactionService;
 import com.allcoaching.AllCoachingRestApi.Utils.RandomString;
+import com.allcoaching.AllCoachingRestApi.dto.TransactionDto;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,6 @@ public class TransactionController {
     public ResponseEntity<Object> saveTransaction(@RequestBody Transaction transaction)
     {
         long transCount = transactionService.countTransactions();
-
         String orderId =transCount+""+RandomString.getAlphaNumericString(6);
         transaction.setOrderId(orderId);
         Transaction transaction_saved  = transactionService.addTransaction(transaction);
@@ -37,5 +37,14 @@ public class TransactionController {
     {
          return transactionService.findByCourseIdWithStudentDetailSuccess(id,page,pageSize);
     }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("all/{offset}/{pageLimit}")
+    public Iterable<TransactionDto> findAllTransactions(@PathVariable int offset, @PathVariable int pageLimit)
+    {
+        return transactionService.fetchAllTransaction(offset,pageLimit);
+
+    }
+
 
 }
