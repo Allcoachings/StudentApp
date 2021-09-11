@@ -1,5 +1,6 @@
 package com.allcoaching.AllCoachingRestApi.Respository;
 
+import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Entity.Student;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,4 +33,7 @@ public interface StudentRepo extends PagingAndSortingRepository<Student,Long> {
     @Modifying
     @Query("UPDATE Student set expoToken=:token where id=:id")
     void updatePushToken(long id,String token);
+
+    Page<Student> findByNameContainingIgnoreCase(String name, Pageable pageable);
+    Page<Student> findByEmailContainingIgnoreCase(String email,Pageable pageable);
 }

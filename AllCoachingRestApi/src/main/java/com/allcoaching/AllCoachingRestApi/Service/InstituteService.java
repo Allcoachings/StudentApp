@@ -92,6 +92,18 @@ public  Iterable<Institute> getAllInstituteByStatus(Integer status,Integer pageN
          }
     }
 
+    public Iterable<Institute> searchInstituteByEmail(String word,int page,int pageLimit)
+    {
+         Page<Institute> pagedResult = instituteRepo.findByEmailContainingIgnoreCase(word,PageRequest.of(page,pageLimit));
+         if(pagedResult.hasContent())
+         {
+             return pagedResult.getContent();
+         }else
+         {
+             return new ArrayList<>();
+         }
+    }
+
 
 
     public  void updateStatus(int status, long id)

@@ -1,5 +1,6 @@
 package com.allcoaching.AllCoachingRestApi.Service;
 
+import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Entity.Student;
 import com.allcoaching.AllCoachingRestApi.Respository.StudentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +86,29 @@ public class StudentService {
         studentRepo.updatePushToken(id,token);
     }
 
+    public Iterable<Student> searchStudent(String word, int page, int pageLimit)
+    {
+        Page<Student> pagedResult = studentRepo.findByNameContainingIgnoreCase(word,PageRequest.of(page,pageLimit));
+        if(pagedResult.hasContent())
+        {
+            return pagedResult.getContent();
+        }else
+        {
+            return new ArrayList<>();
+        }
+    }
 
+    public Iterable<Student> searchStudentByEmail(String word,int page,int pageLimit)
+    {
+        Page<Student> pagedResult = studentRepo.findByEmailContainingIgnoreCase(word,PageRequest.of(page,pageLimit));
+        if(pagedResult.hasContent())
+        {
+            return pagedResult.getContent();
+        }else
+        {
+            return new ArrayList<>();
+        }
+    }
 
 
 
