@@ -21,11 +21,17 @@ public class PayoutsController {
 
     @CrossOrigin(origins = "*")
     @PostMapping("/add")
-    public ResponseEntity<Object> savePayout(@RequestBody Payouts payouts)
+    public @ResponseBody Payouts savePayout(@RequestBody Payouts payouts)
     {
-        Payouts payouts_saved =  payoutService.addPayout(payouts);
-        URI location  = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(payouts_saved.getId()).toUri();
-        return  ResponseEntity.created(location).build();
+        return payoutService.addPayout(payouts);
+    }
+
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("/delete/{id}")
+    public  ResponseEntity<Object> deletePayout(@PathVariable long id)
+    {
+        payoutService.deletePayoutById(id);
+        return ResponseEntity.ok().build();
     }
 
 
@@ -35,8 +41,132 @@ public class PayoutsController {
     {
             return payoutService.findByInstitute(institute,page,pageSize);
     }
+    @CrossOrigin(origins = "*")
+    @GetMapping("all/{offset}/{dataLimit}")
+    public Iterable<Payouts> fetchAllPayouts(@PathVariable int offset,@PathVariable int dataLimit)
+    {
+        return payoutService.findAllPayouts(offset,dataLimit);
+    }
 
 
+    @CrossOrigin(origins = "*")
+    @GetMapping("today/all/{offset}/{dataLimit}")
+    public Iterable<Payouts> todaysPayouts(@PathVariable int offset,@PathVariable int dataLimit)
+    {
+        return payoutService.todaysPayouts(offset,dataLimit);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("month/all/{offset}/{dataLimit}")
+    public Iterable<Payouts> currentMonthPayouts(@PathVariable int offset,@PathVariable int dataLimit)
+    {
+        return payoutService.currentMonthPayouts(offset,dataLimit);
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("today/ins/{offset}/{dataLimit}")
+    public Iterable<Payouts> todayPayoutsIns(@RequestBody Institute institute,@PathVariable int offset,@PathVariable int dataLimit)
+    {
+        return payoutService.todaysPayoutsIns(institute,offset,dataLimit);
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("month/ins/{offset}/{dataLimit}")
+    public Iterable<Payouts> currentMonthPayoutsIns(@RequestBody Institute institute,@PathVariable int offset,@PathVariable int dataLimit)
+    {
+        return payoutService.currentMonthPayoutsIns(institute,offset,dataLimit);
+    }
+
+
+
+    @CrossOrigin(origins="*")
+    @GetMapping("/today/total/count")
+    public  long todaysTotalPayout()
+    {
+        return payoutService.todaysTotalPayout();
+    }
+
+    @CrossOrigin(origins="*")
+    @GetMapping("/today/total/sum")
+    public  long todaysPayoutsSum()
+    {
+        return payoutService.todaysPayoutsSum();
+
+    }
+
+    @CrossOrigin(origins="*")
+    @GetMapping("/month/total/count")
+    public  long monthPayoutsSum()
+    {
+        return payoutService.currentMonthTotalPayouts();
+
+    }
+
+    @CrossOrigin(origins="*")
+    @GetMapping("/month/total/sum")
+    public  long currentMonthPayoutsSum()
+    {
+        return payoutService.currentMonthPayoutsSum();
+
+    }
+
+    @CrossOrigin(origins="*")
+    @GetMapping("/total/count")
+    public  long totalPayouts()
+    {
+        return payoutService.totalPayouts();
+
+    }
+
+    @CrossOrigin(origins="*")
+    @GetMapping("/total/sum")
+    public  long payoutsSum()
+    {
+        return payoutService.payoutsSum();
+
+    }
+
+    @CrossOrigin(origins="*")
+    @PostMapping("today/total/ins/Count")
+    public  long todaysTotalPayoutsIns(@RequestBody Institute institute)
+    {
+        return payoutService.todaysTotalPayoutsIns(institute);
+    }
+
+    @CrossOrigin(origins="*")
+    @PostMapping("today/total/ins/sum")
+    public  long todaysPayoutsSumIns(@RequestBody Institute institute)
+    {
+        return payoutService.todaysPayoutsSumIns(institute);
+    }
+
+    @CrossOrigin(origins="*")
+    @PostMapping("month/total/ins/count")
+    public  long currentMonthTotalPayouts(@RequestBody Institute institute)
+    {
+        return payoutService.currentMonthTotalPayouts(institute);
+    }
+
+    @CrossOrigin(origins="*")
+    @PostMapping("month/total/ins/sum")
+    public  long currentMonthPayoutsSumIns(@RequestBody Institute institute)
+    {
+        return payoutService.currentMonthPayoutsSumIns(institute);
+    }
+
+    @CrossOrigin(origins="*")
+    @PostMapping("total/ins/count")
+    public  long totalPayoutsIns(@RequestBody Institute institute)
+    {
+        return payoutService.totalPayoutsIns(institute);
+    }
+
+    @CrossOrigin(origins="*")
+    @PostMapping("total/ins/sum")
+    public  long payoutsSumIns(@RequestBody Institute institute)
+    {
+        return payoutService.payoutsSumIns(institute);
+    }
 
     @CrossOrigin(origins="*")
     @PostMapping("/byIns/total")

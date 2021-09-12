@@ -151,4 +151,9 @@ public  Iterable<Institute> getAllInstituteByStatus(Integer status,Integer pageN
     {
         instituteRepo.updatePushToken(id,token);
     }
+
+    public Optional<Institute> findByEmail(String email)
+    {
+       return instituteRepo.findByEmail(email);
+    }
 }

@@ -102,6 +102,13 @@ public class InstituteController {
     }
 
     @CrossOrigin(origins = "*")
+    @GetMapping("/byemail/{id}")
+    public Optional<Institute> findByEmail(@PathVariable String email)
+    {
+        return instituteService.findByEmail(email);
+    }
+
+    @CrossOrigin(origins = "*")
     @GetMapping("/category/{category}/{page}/{offset}")
     public Iterable<Institute> findInstituteByCategory(@PathVariable long category,@PathVariable int page,@PathVariable  int offset)
     {

@@ -54,7 +54,6 @@ public class CourseBannersController {
     public Iterable<CourseBanners> findByCourseId(@PathVariable long id)
     {
         return courseBannersService.findByCourseId(id);
-
     }
 
     @CrossOrigin(origins = "*")

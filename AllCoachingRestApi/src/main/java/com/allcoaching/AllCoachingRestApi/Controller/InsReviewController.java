@@ -4,9 +4,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.CourseGoLive;
 import com.allcoaching.AllCoachingRestApi.Entity.InsReview;
 import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Service.InsReviewService;
-import com.allcoaching.AllCoachingRestApi.dto.Graph2dDataDto;
-import com.allcoaching.AllCoachingRestApi.dto.InsReviewDto;
-import com.allcoaching.AllCoachingRestApi.dto.StudentPurchaseDto;
+import com.allcoaching.AllCoachingRestApi.dto.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -156,6 +154,47 @@ public class InsReviewController {
             default:
                 return new ArrayList<>();
         }
+    }
+
+
+    @ApiOperation(value = "getting category wise revenue over for today and total")
+    @CrossOrigin()
+    @GetMapping("/course/admin/Revenue/categorywise")
+    public  Iterable<CategoryRevenueDto> categoryWiseRevenue()
+    {
+         return insReviewService.categoryWiseRevenue();
+    }
+
+    @ApiOperation(value = "getting category wise revenue over for today and total")
+    @CrossOrigin(origins = "*")
+    @GetMapping("/course/admin/Revenue/ins/categorywise/{catId}")
+    public  Iterable<InstituteRevenueDto> InscategoryWiseRevenue(@PathVariable long catId)
+    {
+        return insReviewService.instituteRevenueOverviewCategoryWise(catId);
+    }
+
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/course/admin/Revenue/inscourse/{insId}")
+    public  Iterable<CourseRevenueDto> instituteCourseRevenueOverviewCategoryWise(@PathVariable long insId)
+    {
+        return insReviewService.instituteCourseRevenueOverviewCategoryWise(insId);
+    }
+
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/course/admin/Revenue/count")
+    public  RevenueCountDto revenueCount()
+    {
+        return insReviewService.revenueCount();
+    }
+
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/course/admin/Revenue/count/ins/{insId}")
+    public  RevenueCountDto revenueCountIns(@PathVariable long insId)
+    {
+        return insReviewService.revenueCountIns(insId);
     }
 
 }

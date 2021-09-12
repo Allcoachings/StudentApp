@@ -1,4 +1,5 @@
 package com.allcoaching.AllCoachingRestApi.Service;
+import com.allcoaching.AllCoachingRestApi.Entity.Category;
 import com.allcoaching.AllCoachingRestApi.Entity.InsReview;
 import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Entity.Student;
@@ -191,7 +192,7 @@ public class InsReviewService {
     }
 
     //graph data methods for ins data
-//weekly
+    //weekly
     public Iterable<Graph2dDataDto> adminRevenueGraphDataWeekly( int dataTime)
     {
         return insReviewRepo.adminRevenueGraphDataWeekly(dataTime);
@@ -206,8 +207,6 @@ public class InsReviewService {
     {
         return insReviewRepo.adminRevenueGraphDataYearly();
     }
-
-
     //find data byCategory id
     public  Iterable<CategoryWisePurchaseDataDto> findEnrolledStudentsByCategoryId(long categoryId,int offset,int pageSize)
     {
@@ -220,4 +219,32 @@ public class InsReviewService {
              return new ArrayList<>();
          }
     }
+
+    public Iterable<CategoryRevenueDto> categoryWiseRevenue()
+    {
+
+        return insReviewRepo.categoryWiseTotalRevenue();
+    }
+
+    public  Iterable<InstituteRevenueDto> instituteRevenueOverviewCategoryWise(long catId)
+    {
+      return insReviewRepo.instituteRevenueOverviewCategoryWise(catId);
+    }
+
+  public  Iterable<CourseRevenueDto> instituteCourseRevenueOverviewCategoryWise(long insId)
+    {
+      return insReviewRepo.instituteCourseRevenueOverviewCategoryWise(insId);
+    }
+
+     public  RevenueCountDto revenueCount()
+     {
+         return new RevenueCountDto(insReviewRepo.todayRevenue(),insReviewRepo.totalRevenue());
+     }
+
+     public  RevenueCountDto revenueCountIns(long insId)
+     {
+         return new RevenueCountDto(insReviewRepo.todayRevenueIns(insId),insReviewRepo.totalRevenueIns(insId));
+     }
+
+
 }

@@ -27,6 +27,30 @@ public interface InsReviewRepo extends PagingAndSortingRepository<InsReview,Long
     Page<InsLeadsStudentDto> findByCourseId(long courseId, Pageable pageable);
 
 
+    @Query("Select new com.allcoaching.AllCoachingRestApi.dto.CategoryRevenueDto(cat,(Select sum(c.fees) from InsReview r,Course c,Institute i,Category cat where r.courseId=c.id and c.instId=i.id and r.insId=i.id and i.category=cat.id   and time>=CURRENT_DATE group by cat.id),sum(c.fees)) from InsReview r,Course c,Institute i,Category cat where r.courseId=c.id and c.instId=i.id and r.insId=i.id and i.category=cat.id   group by cat.id")
+    Iterable<CategoryRevenueDto> categoryWiseTotalRevenue();
+
+    @Query("Select new com.allcoaching.AllCoachingRestApi.dto.InstituteRevenueDto(i,(Select sum(c.fees) from InsReview r,Course c,Institute i,Category cat where r.courseId=c.id and c.instId=i.id and r.insId=i.id and i.category=cat.id   and time>=CURRENT_DATE and cat.id=:catId group by i.id),sum(c.fees)) from InsReview r,Course c,Institute i,Category cat where r.courseId=c.id and c.instId=i.id and r.insId=i.id and i.category=cat.id and cat.id=:catId  group by i.id")
+    Iterable<InstituteRevenueDto> instituteRevenueOverviewCategoryWise(long catId);
+
+
+    @Query("Select new com.allcoaching.AllCoachingRestApi.dto.CourseRevenueDto(c,(Select sum(c.fees) from InsReview r,Course c where r.courseId=c.id and r.insId=:insId and time>=CURRENT_DATE  group by c.id),sum(c.fees)) from InsReview r,Course c where r.courseId=c.id and c.instId=:insId  group by c.id")
+    Iterable<CourseRevenueDto> instituteCourseRevenueOverviewCategoryWise(long insId);
+
+    @Query("Select sum(c.fees) from InsReview r,Course c where  r.courseId=c.id and r.time >= CURRENT_DATE")
+    Double todayRevenue();
+
+    @Query("Select sum(c.fees) from InsReview r,Course c where  r.courseId=c.id")
+    Double totalRevenue();
+
+    @Query("Select sum(c.fees) from InsReview r,Course c where  r.courseId=c.id and r.insId=:insId and r.time >= CURRENT_DATE")
+    Double todayRevenueIns(long insId);
+
+    @Query("Select sum(c.fees) from InsReview r,Course c where  r.courseId=c.id and r.insId=:insId")
+    Double totalRevenueIns(long insId);
+
+
+
     @Query("SELECT new com.allcoaching.AllCoachingRestApi.dto.InsReviewDto(s.name,i.name, s.studentImage, r) from Institute i, InsReview r, Student s where r.insId=i.id and i.id = :id and r.studentId=s.id")
     Page<InsReviewDto> findByInsId(long id, Pageable pageable);
 

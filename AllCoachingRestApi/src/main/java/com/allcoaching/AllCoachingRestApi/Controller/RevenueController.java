@@ -31,4 +31,6 @@ public class RevenueController {
     {
         return revenueService.studentList(courseId,page,pageSize);
     }
+
+
 }
