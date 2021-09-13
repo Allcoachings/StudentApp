@@ -48,7 +48,7 @@ public class NotificationController {
     public ResponseEntity<Object>  sendNotification(@RequestBody NotificationDataDto notificationDataDto)
     {
           notificationService.sendNotification(notificationDataDto);
-          
+
           return  ResponseEntity.ok().build();
     }
 }
