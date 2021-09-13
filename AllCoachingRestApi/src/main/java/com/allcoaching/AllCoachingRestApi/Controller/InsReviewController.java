@@ -157,7 +157,7 @@ public class InsReviewController {
     }
 
 
-    @ApiOperation(value = "getting category wise revenue over for today and total")
+    @ApiOperation(value = "getting category wise revenue   for today and total")
     @CrossOrigin()
     @GetMapping("/course/admin/Revenue/categorywise")
     public  Iterable<CategoryRevenueDto> categoryWiseRevenue()
@@ -165,7 +165,7 @@ public class InsReviewController {
          return insReviewService.categoryWiseRevenue();
     }
 
-    @ApiOperation(value = "getting category wise revenue over for today and total")
+
     @CrossOrigin(origins = "*")
     @GetMapping("/course/admin/Revenue/ins/categorywise/{catId}")
     public  Iterable<InstituteRevenueDto> InscategoryWiseRevenue(@PathVariable long catId)

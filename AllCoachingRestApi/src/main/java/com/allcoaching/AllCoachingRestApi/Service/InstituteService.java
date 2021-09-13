@@ -59,6 +59,18 @@ public  Iterable<Institute> getAllInstituteByStatus(Integer status,Integer pageN
             return new ArrayList<Institute>();
         }
     }
+
+    public  Iterable<Institute> findByCategoryAndExpoTokenNotNull(long id,Pageable topTwenty)
+    {
+
+
+        Page<Institute> pagedResult = instituteRepo.findByCategoryAndExpoTokenNotNull(id,topTwenty);
+        if(pagedResult.hasContent()) {
+            return pagedResult.getContent();
+        } else {
+            return new ArrayList<Institute>();
+        }
+    }
     public  Iterable<Institute> findByStatusAndCategory(long id,int status,Pageable topTwenty)
     {
 
@@ -156,4 +168,6 @@ public  Iterable<Institute> getAllInstituteByStatus(Integer status,Integer pageN
     {
        return instituteRepo.findByEmail(email);
     }
+
+
 }

@@ -115,6 +115,14 @@ public class InstituteController {
         Pageable topTwenty = PageRequest.of(page, offset);
         return instituteService.findByCategory(category,topTwenty);
     }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/category/expo/{category}/{page}/{offset}")
+    public Iterable<Institute> findByCategoryAndExpoTokenNotNull(@PathVariable long category,@PathVariable int page,@PathVariable  int offset)
+    {
+        Pageable topTwenty = PageRequest.of(page, offset);
+        return instituteService.findByCategoryAndExpoTokenNotNull(category,topTwenty);
+    }
     @CrossOrigin(origins = "*")
     @GetMapping("/byCategoryAndStatus/{category}/{status}/{page}/{offset}")
     public Iterable<Institute> findInstituteByCategory(@PathVariable long category,@PathVariable int status,@PathVariable int page,@PathVariable  int offset)

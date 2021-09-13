@@ -5,6 +5,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.Notification;
 import com.allcoaching.AllCoachingRestApi.Entity.Student;
 import com.allcoaching.AllCoachingRestApi.Respository.NotificationRepo;
 import com.allcoaching.AllCoachingRestApi.Utils.Admin.AdminConfig;
+import com.allcoaching.AllCoachingRestApi.dto.NotificationDataDto;
 import com.allcoaching.AllCoachingRestApi.dto.NotificationDto;
 import com.allcoaching.AllCoachingRestApi.dto.NotificationSenderDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,6 +121,8 @@ public class NotificationService {
     }
 
 
-
-
+    public  void sendNotification(NotificationDataDto notificationDataDto)
+    {
+            System.out.println("notification sent");
+    }
 }

@@ -2,6 +2,7 @@ package com.allcoaching.AllCoachingRestApi.Controller;
 
 import com.allcoaching.AllCoachingRestApi.Entity.Notification;
 import com.allcoaching.AllCoachingRestApi.Service.NotificationService;
+import com.allcoaching.AllCoachingRestApi.dto.NotificationDataDto;
 import com.allcoaching.AllCoachingRestApi.dto.NotificationDto;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,14 @@ public class NotificationController {
     public Iterable<NotificationDto>  getNotificationByType(@PathVariable long receiverId,@PathVariable int receiverType,@PathVariable String type,@PathVariable int page,@PathVariable int pageSize)
     {
         return  notificationService.getNotificationForByType(receiverType,type,receiverId,page,pageSize);
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("send/notification")
+    public ResponseEntity<Object>  sendNotification(@RequestBody NotificationDataDto notificationDataDto)
+    {
+          notificationService.sendNotification(notificationDataDto);
+          
+          return  ResponseEntity.ok().build();
     }
 }
