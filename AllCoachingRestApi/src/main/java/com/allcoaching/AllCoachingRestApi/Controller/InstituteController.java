@@ -118,7 +118,7 @@ public class InstituteController {
 
     @CrossOrigin(origins = "*")
     @GetMapping("/category/expo/{category}/{page}/{offset}")
-    public Iterable<Institute> findByCategoryAndExpoTokenNotNull(@PathVariable long category,@PathVariable int page,@PathVariable  int offset)
+    public Iterable<String> findByCategoryAndExpoTokenNotNull(@PathVariable long category,@PathVariable int page,@PathVariable  int offset)
     {
         Pageable topTwenty = PageRequest.of(page, offset);
         return instituteService.findByCategoryAndExpoTokenNotNull(category,topTwenty);
