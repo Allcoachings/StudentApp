@@ -65,7 +65,7 @@ public class CourseDocumentService {
     }
     public void updateDocumentLink(String link,long id)
     {
-
+        courseDocumentRepo.updateDocumentLink(link,id);
     }
 
     //updating published Status
