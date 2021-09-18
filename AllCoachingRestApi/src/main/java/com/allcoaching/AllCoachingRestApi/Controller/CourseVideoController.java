@@ -6,6 +6,7 @@ import com.allcoaching.AllCoachingRestApi.Service.CourseVideoService;
 import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -76,7 +77,10 @@ public class CourseVideoController {
     {
         VideoPlaylist videoPlaylist_saved = courseVideoService.createPlaylist(videoPlaylist);
         URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(videoPlaylist_saved.getId()).toUri();
-        return ResponseEntity.created(location).build();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Expose-Headers", "Location");
+
+        return ResponseEntity.created(location).headers(headers).build();
 
     }
 
@@ -160,4 +164,13 @@ public class CourseVideoController {
         return  courseVideoCommentsService.fetch_comments(v_id,page,page_size);
     }
 
+
+    //delete Video playlist
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("/delete/playlist/{playlistId}")
+    public ResponseEntity<Object> deletePlaylist(@PathVariable  long playlistId)
+    {
+        courseVideoService.deletePlaylist(playlistId);
+        return  ResponseEntity.ok().build();
+    }
 }

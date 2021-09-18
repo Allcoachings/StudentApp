@@ -18,7 +18,6 @@ public interface TransactionRepo extends PagingAndSortingRepository<Transaction,
     @Query("SELECT new com.allcoaching.AllCoachingRestApi.dto.TransactionStudentDetailDto(t,s) from Transaction t,Student s where t.studentId=s.id and t.courseId=:courseId and t.status='TXN_SUCCESS'")
     Page<Transaction> findByCourseIdWithStudentDetailSuccess(long courseId, Pageable pageable);
     Page<Transaction> findByCourseId(long courseId, Pageable pageable);
-    Page<Transaction> findByInsId(long insId, Pageable pageable);
     Page<Transaction> findByStudentId(long studentId, Pageable pageable);
     Page<Transaction> findByStatus(String status, Pageable pageable);
     Optional<Transaction> findByOrderId(String orderId);
@@ -27,6 +26,8 @@ public interface TransactionRepo extends PagingAndSortingRepository<Transaction,
     @Query("Select new com.allcoaching.AllCoachingRestApi.dto.TransactionDto(t,c,i,s) from Transaction t,Course c,Institute i,Student s where t.courseId=c.id and t.insId=i.id and t.studentId=s.id")
     Page<TransactionDto> findAllTransactions(Pageable pageable);
 
+    @Query("Select new com.allcoaching.AllCoachingRestApi.dto.TransactionDto(t,c,i,s) from Transaction t,Course c,Institute i,Student s where t.courseId=c.id and t.insId=i.id and t.studentId=s.id and t.insId=:insId")
+    Page<TransactionDto> findByInsId(long insId, Pageable pageable);
     @Modifying
     @Query("UPDATE Transaction set status=:status,gatewayTransactionId=:gatewayTransactionId,gatewayResponseMsg=:gatewayResponseMsg where orderId=:orderId")
     void completeTransaction(String status,String gatewayTransactionId,String gatewayResponseMsg,String orderId);

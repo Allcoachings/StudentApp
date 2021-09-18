@@ -46,5 +46,13 @@ public class TransactionController {
 
     }
 
+    @CrossOrigin(origins = "*")
+    @GetMapping("byinsId/{insId}/{offset}/{pageLimit}")
+    public Iterable<TransactionDto> fetchByInsId(@PathVariable long insId,@PathVariable int offset, @PathVariable int pageLimit)
+    {
+        return transactionService.fetchByInsId(insId,offset,pageLimit);
+
+    }
+
 
 }

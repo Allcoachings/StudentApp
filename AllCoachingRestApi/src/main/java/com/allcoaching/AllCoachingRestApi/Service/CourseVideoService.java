@@ -101,4 +101,10 @@ public class CourseVideoService {
             return new ArrayList<>();
         }
     }
+
+    //deleting playlist
+    public void deletePlaylist(long playlistId)
+    {
+        courseVideoPLayListRepo.deleteById(playlistId);
+    }
 }
