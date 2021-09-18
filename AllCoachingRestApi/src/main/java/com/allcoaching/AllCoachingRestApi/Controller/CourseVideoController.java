@@ -55,7 +55,9 @@ public class CourseVideoController {
         courseVideoLink += fileUploadService.storeFile(file);
         courseVideoService.updateVideoLink(videoId,courseVideoLink);
         URI location = ServletUriComponentsBuilder.fromPath("{location}").buildAndExpand(courseVideoLink).toUri();
-        return ResponseEntity.created(location).build();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Expose-Headers", "Location");
+        return ResponseEntity.created(location).headers(headers).build();
     }
 
     @CrossOrigin(origins = "*")
@@ -66,7 +68,9 @@ public class CourseVideoController {
         courseVideoLink += fileUploadService.storeFile(file);
         courseVideoService.updateVideoThumbLink(videoId,courseVideoLink);
         URI location = ServletUriComponentsBuilder.fromPath("{location}").buildAndExpand(courseVideoLink).toUri();
-        return ResponseEntity.created(location).build();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Expose-Headers", "Location");
+        return ResponseEntity.created(location).headers(headers).build();
     }
     @CrossOrigin(origins = "*")
     @PutMapping("/editVideoDetails")

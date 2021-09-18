@@ -31,6 +31,6 @@ public interface CourseDocumentRepo extends PagingAndSortingRepository<CourseDoc
 
     @Modifying
     @Query("UPDATE CourseDocument set fileAddress=:fileAddress WHERE id=:id")
-    void zzupdateDocumentLink(String fileAddress,long id);
+    void updateDocumentLink(String fileAddress,long id);
 
 }

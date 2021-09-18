@@ -71,7 +71,9 @@ public class CourseDocumentController {
         courseDocumentService.updateDocumentLink(documentAddr,documentId);
 
         URI location = ServletUriComponentsBuilder.fromPath("{documentAddr}").buildAndExpand(documentAddr).toUri();
-        return  ResponseEntity.created(location).build();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Expose-Headers", "Location");
+        return ResponseEntity.created(location).headers(headers).build();
     }
 
     @CrossOrigin(origins = "*")
