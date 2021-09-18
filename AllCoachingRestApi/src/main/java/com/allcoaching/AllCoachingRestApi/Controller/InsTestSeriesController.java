@@ -20,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/institute/course/testseries")
@@ -104,6 +105,14 @@ public class InsTestSeriesController {
     public Iterable<InsTestSeries> findByPlaylistId(@PathVariable long playListId,@PathVariable int offset,@PathVariable int dataLimit)
     {
         return insTestSeriesService.getTestSeriesByPlaylistID(playListId,offset,dataLimit);
+    }
+
+    //fetch Test Series by id
+    @CrossOrigin(origins = "*")
+    @GetMapping("/byid/{id}")
+    public Optional<InsTestSeries> findById(@PathVariable long id)
+    {
+        return insTestSeriesService.findById(id);
     }
 
     //fetch Test Series playlists by courseId
