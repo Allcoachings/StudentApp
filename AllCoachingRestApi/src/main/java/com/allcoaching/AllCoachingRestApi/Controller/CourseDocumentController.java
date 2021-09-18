@@ -59,6 +59,7 @@ public class CourseDocumentController {
         documentAddr += fileUploadService.storeFile(document);
         CourseDocument courseDocument = courseDocumentService.save(new CourseDocument(documentAddr,name,courseId,playlistId));
         URI location = ServletUriComponentsBuilder.fromPath("{id}*{fileAddr}").buildAndExpand(courseDocument.getId(),documentAddr).toUri();
+
         return ResponseEntity.created(location).build();
     }
 
