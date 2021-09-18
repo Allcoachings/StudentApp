@@ -45,7 +45,10 @@ public class CourseVideoController {
         String videoThumb = "files/";
         videoThumb +=fileUploadService.storeFile(thumb);
         CourseVideo courseVideo =courseVideoService.saveCourseVideo( new CourseVideo(courseVideoLink,name,descriptions,isDemo,demoLength,courseId,playlistId,videoThumb));
-        URI location = ServletUriComponentsBuilder.fromPath("{id}*{addr}").buildAndExpand(courseVideo.getId(),courseVideoLink).toUri();        return ResponseEntity.created(location).build();
+        URI location = ServletUriComponentsBuilder.fromPath("{id}*{addr}").buildAndExpand(courseVideo.getId(),courseVideoLink).toUri();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Expose-Headers", "Location");
+        return ResponseEntity.created(location).headers(headers).build();
     }
     @CrossOrigin(origins = "*")
     @PutMapping("/updateVideo")
