@@ -6,6 +6,7 @@ import com.allcoaching.AllCoachingRestApi.Respository.CourseRepo;
 import com.allcoaching.AllCoachingRestApi.Service.CourseService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -36,7 +37,10 @@ public class CourseController {
                         .fromPath("{id}")
                         .buildAndExpand(c.getId())
                         .toUri();
-        return ResponseEntity.created(location).build();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Expose-Headers", "Location");
+
+        return ResponseEntity.created(location).headers(headers).build();
     }
 
     @CrossOrigin(origins = "*")

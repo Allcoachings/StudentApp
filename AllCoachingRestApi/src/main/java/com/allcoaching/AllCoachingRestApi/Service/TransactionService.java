@@ -49,15 +49,21 @@ public class TransactionService {
          return extractDataFromPage(transactionRepo.findByCourseId(courseId,PageRequest.of(page,pageSize)));
     }
     //fetch by insId
-    public Iterable<Transaction> fetchByInsId(long insId,int page,int pageSize)
+    public Iterable<TransactionDto> fetchByInsId(long insId,int page,int pageSize)
     {
-         return extractDataFromPage(transactionRepo.findByInsId(insId,PageRequest.of(page,pageSize)));
+         Page<TransactionDto> pagedResult = (transactionRepo.findByInsId(insId,PageRequest.of(page,pageSize)));
+        if(pagedResult.hasContent())
+        {
+            return  pagedResult.getContent();
+        }else{
+            return  new ArrayList<>();
+        }
     }
     //fetch by studentId
-    public Iterable<Transaction> fetchByStudentId(long studentId,int page,int pageSize)
-    {
-         return extractDataFromPage(transactionRepo.findByInsId(studentId,PageRequest.of(page,pageSize)));
-    }
+//    public Iterable<Transaction> fetchByStudentId(long studentId,int page,int pageSize)
+//    {
+//         return extractDataFromPage(transactionRepo.findByInsId(studentId,PageRequest.of(page,pageSize)));
+//    }
     //fetch by status
     public Iterable<Transaction> fetchByStatus(String status,int page,int pageSize)
     {
