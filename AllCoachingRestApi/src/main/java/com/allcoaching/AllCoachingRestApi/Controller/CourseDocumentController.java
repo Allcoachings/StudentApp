@@ -69,8 +69,17 @@ public class CourseDocumentController {
         String documentAddr = "files/";
         documentAddr += fileUploadService.storeFile(file);
         courseDocumentService.updateDocumentLink(documentAddr,documentId);
+
         URI location = ServletUriComponentsBuilder.fromPath("{documentAddr}").buildAndExpand(documentAddr).toUri();
         return  ResponseEntity.created(location).build();
+    }
+
+    @CrossOrigin(origins = "*")
+    @PutMapping("/updateDocumentDetails")
+    public ResponseEntity<Object> updateDocumentDetails(@RequestBody CourseDocument courseDocument)
+    {
+        courseDocumentService.save(courseDocument);
+        return  ResponseEntity.ok().build();
     }
 
     @CrossOrigin(origins = "*")

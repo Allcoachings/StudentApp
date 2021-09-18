@@ -29,4 +29,8 @@ public interface CourseDocumentRepo extends PagingAndSortingRepository<CourseDoc
     @Query("UPDATE CourseDocument set playlistId=:playlistId WHERE id=:id")
     void updatePlaylistId(long playlistId,long id);
 
+    @Modifying
+    @Query("UPDATE CourseDocument set fileAddress=:fileAddress WHERE id=:id")
+    void zzupdateDocumentLink(String fileAddress,long id);
+
 }
