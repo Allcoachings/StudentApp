@@ -155,6 +155,14 @@ public class InsTestSeriesController {
     }
 
     @CrossOrigin(origins = "*")
+    @DeleteMapping("/delete/series/playlist/{playlistId}")
+    public ResponseEntity<Object> deleteTestSeriesPlaylistById(@PathVariable long playlistId)
+    {
+        insTestSeriesService.deleteTestSeriesPlaylistById(playlistId);
+        return  ResponseEntity.ok().build();
+    }
+
+    @CrossOrigin(origins = "*")
     @DeleteMapping("/delete/series/question/{id}")
     public ResponseEntity<Object> deleteSeriesQuestionById(@PathVariable long id)
     {

@@ -63,7 +63,10 @@ public class CourseDocumentService {
     {
         return courseDocumentPlaylistRepo.findByCourseId(id);
     }
+    public void updateDocumentLink(String link,long id)
+    {
 
+    }
 
     //updating published Status
     public void updatePublishedStatusById(boolean status,long id)
@@ -89,6 +92,12 @@ public class CourseDocumentService {
         courseDocumentRepo.deleteById(id);
     }
 
+    //delete playlist
+    public void deletePlaylistById(long playlist)
+    {
+        courseDocumentPlaylistRepo.deleteById(playlist);
+
+    }
     //count course documents
     public  long countCourseDocuments(long courseId)
     {

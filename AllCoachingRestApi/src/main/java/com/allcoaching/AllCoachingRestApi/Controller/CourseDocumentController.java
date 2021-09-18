@@ -8,6 +8,7 @@ import com.allcoaching.AllCoachingRestApi.Service.CourseDocumentService;
 import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,7 +38,10 @@ public class CourseDocumentController {
                 .buildAndExpand(documentPlaylist_saved.getId())
                 .toUri();
 
-        return  ResponseEntity.created(location).build();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Expose-Headers", "Location");
+
+        return ResponseEntity.created(location).headers(headers).build();
 
     }
 
@@ -58,6 +62,16 @@ public class CourseDocumentController {
         return ResponseEntity.created(location).build();
     }
 
+    @CrossOrigin(origins = "*")
+    @PutMapping("/updateDocument")
+    public ResponseEntity<Object> updateDocument(@RequestParam("file") MultipartFile file,@RequestParam("documentId") long documentId)
+    {
+        String documentAddr = "files/";
+        documentAddr += fileUploadService.storeFile(file);
+        courseDocumentService.updateDocumentLink(documentAddr,documentId);
+        URI location = ServletUriComponentsBuilder.fromPath("{documentAddr}").buildAndExpand(documentAddr).toUri();
+        return  ResponseEntity.created(location).build();
+    }
 
     @CrossOrigin(origins = "*")
     @GetMapping("/{id}")
@@ -129,6 +143,16 @@ public class CourseDocumentController {
         courseDocumentService.delete(id);
         return ResponseEntity.ok().build();
     }
+
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("/delete/playlist/{playlistId}")
+    public ResponseEntity<Object> deletePlaylistById(@PathVariable long playlistId)
+    {
+        courseDocumentService.deletePlaylistById(playlistId);
+        return ResponseEntity.ok().build();
+    }
+
+
 
 
 

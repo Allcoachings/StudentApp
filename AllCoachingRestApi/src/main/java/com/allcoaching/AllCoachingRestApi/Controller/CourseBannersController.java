@@ -42,6 +42,8 @@ public class CourseBannersController {
         headers.add("Access-Control-Expose-Headers", "Location");
         return ResponseEntity.created(location).headers(headers).build();
     }
+
+
     @CrossOrigin(origins = "*")
     @GetMapping("/{id}")
     public Optional<CourseBanners> findById(@PathVariable long id)
