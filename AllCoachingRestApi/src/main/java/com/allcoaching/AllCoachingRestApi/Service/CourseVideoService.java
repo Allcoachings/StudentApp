@@ -31,7 +31,15 @@ public class CourseVideoService {
     {
         return courseVideoRepo.save(courseVideo);
     }
+    public  void updateVideoLink(long id,String link)
+    {
+        courseVideoRepo.updateVideoLink(id,link);
+    }
 
+    public  void updateVideoThumbLink(long id,String link)
+    {
+        courseVideoRepo.updateVideoThumb(id,link);
+    }
     //fetching videos by playlist
     public Iterable<CourseVideo> findByPlaylist(long id,int page,int pageSize)
     {

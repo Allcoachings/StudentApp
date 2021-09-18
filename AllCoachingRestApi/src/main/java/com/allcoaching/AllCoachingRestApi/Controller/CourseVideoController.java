@@ -45,11 +45,36 @@ public class CourseVideoController {
         String videoThumb = "files/";
         videoThumb +=fileUploadService.storeFile(thumb);
         CourseVideo courseVideo =courseVideoService.saveCourseVideo( new CourseVideo(courseVideoLink,name,descriptions,isDemo,demoLength,courseId,playlistId,videoThumb));
-        URI location = ServletUriComponentsBuilder.fromPath("{id}*{addr}").buildAndExpand(courseVideo.getId(),courseVideoLink).toUri();
-
+        URI location = ServletUriComponentsBuilder.fromPath("{id}*{addr}").buildAndExpand(courseVideo.getId(),courseVideoLink).toUri();        return ResponseEntity.created(location).build();
+    }
+    @CrossOrigin(origins = "*")
+    @PutMapping("/updateVideo")
+    public ResponseEntity<Object> updateVideo(@RequestParam("file") MultipartFile file,@RequestParam("videoId") long videoId)
+    {
+        String courseVideoLink = "files/";
+        courseVideoLink += fileUploadService.storeFile(file);
+        courseVideoService.updateVideoLink(videoId,courseVideoLink);
+        URI location = ServletUriComponentsBuilder.fromPath("{location}").buildAndExpand(courseVideoLink).toUri();
         return ResponseEntity.created(location).build();
     }
 
+    @CrossOrigin(origins = "*")
+    @PutMapping("/updateVideoThumb")
+    public ResponseEntity<Object> updateVideoThumb(@RequestParam("file") MultipartFile file,@RequestParam("videoId") long videoId)
+    {
+        String courseVideoLink = "files/";
+        courseVideoLink += fileUploadService.storeFile(file);
+        courseVideoService.updateVideoThumbLink(videoId,courseVideoLink);
+        URI location = ServletUriComponentsBuilder.fromPath("{location}").buildAndExpand(courseVideoLink).toUri();
+        return ResponseEntity.created(location).build();
+    }
+    @CrossOrigin(origins = "*")
+    @PutMapping("/editVideoDetails")
+    public ResponseEntity<Object> editDetails(@RequestBody CourseVideo courseVideo)
+    {
+        courseVideoService.saveCourseVideo(courseVideo);
+        return ResponseEntity.ok().build();
+    }
 //    @GetMapping("/playlist/{id}")
 //    public Iterable<CourseVideo> findByPlalist(long id)
 //    {

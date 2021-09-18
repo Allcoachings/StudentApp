@@ -136,7 +136,11 @@ public class InsTestSeriesService {
         insTestSeriesQuestionsRepo.deleteById(id);
     }
 
-
+    //delete playlist
+    public void  deleteTestSeriesPlaylistById(long playlistId)
+    {
+        testSeriesPlaylistRepo.deleteById(playlistId);
+    }
     //count course testSeries
     public long countCourseTestSeries(long id)
     {
