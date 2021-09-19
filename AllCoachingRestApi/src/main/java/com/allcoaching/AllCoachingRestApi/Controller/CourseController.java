@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/institute")
@@ -56,6 +57,14 @@ public class CourseController {
     public long countCoursesOf(@PathVariable long insId)
     {
         return  courseService.countCoursesOf(insId);
+    }
+
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("coursebyId/{courseId}")
+    public Optional<Course> findById(@PathVariable long courseId)
+    {
+        return  courseService.findById(courseId);
     }
 
 }
