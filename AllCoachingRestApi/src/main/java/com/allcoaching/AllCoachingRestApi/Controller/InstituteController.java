@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -53,7 +54,9 @@ public class InstituteController {
                             .fromPath("{id}")
                             .buildAndExpand(i.getId())
                             .toUri();
-            return ResponseEntity.created(location).build();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Expose-Headers", "Location");
+        return ResponseEntity.created(location).headers(headers).build();
 
     }
 

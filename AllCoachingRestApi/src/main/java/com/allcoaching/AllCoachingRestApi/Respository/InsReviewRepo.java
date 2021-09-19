@@ -27,6 +27,7 @@ public interface InsReviewRepo extends PagingAndSortingRepository<InsReview,Long
     Page<InsLeadsStudentDto> findByCourseId(long courseId, Pageable pageable);
 
 
+
     @Query("Select new com.allcoaching.AllCoachingRestApi.dto.CategoryRevenueDto(cat,(Select sum(c.fees) from InsReview r,Course c,Institute i,Category cat where r.courseId=c.id and c.instId=i.id and r.insId=i.id and i.category=cat.id   and time>=CURRENT_DATE group by cat.id),sum(c.fees)) from InsReview r,Course c,Institute i,Category cat where r.courseId=c.id and c.instId=i.id and r.insId=i.id and i.category=cat.id   group by cat.id")
     Iterable<CategoryRevenueDto> categoryWiseTotalRevenue();
 
