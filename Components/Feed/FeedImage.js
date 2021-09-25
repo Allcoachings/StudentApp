@@ -93,7 +93,7 @@ addImage=(link, type)=>{
         arr.pop()
         arr.push(link)
         this.setState({ imageArr: arr, type: type },()=>this.openZoomModal());   
-  }
+}
 
 
     editFeedPressHandler=()=>this.props.mode=="userProfile"||this.props.mode=="insProfile"?(this.props.updateEditFeedState(this.props.item.feed.feed.feedType, this.props.item.feed.feed.description, this.props.item.feed.feedImages, null, this.props.item.feed.feed.id, this.props.index,this.props.item.feed.feed.creationTime)):(null)

@@ -36,6 +36,7 @@ class OtpVerification extends React.Component {
   } 
   handleOtpGenerateCallBack=(response)=>
     {
+        console.log(response.status);
         if(response.status==200)
         {
             response.json().then(data=>
@@ -105,7 +106,6 @@ class OtpVerification extends React.Component {
     }
     handleContinueBtnClick=()=>
     {
-         
         if(!this.state.optVerificationLoading)
         {
             this.setState({optVerificationLoading:true})
