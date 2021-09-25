@@ -5,11 +5,8 @@ import {serverApiUrl} from '../../config'
 export const generateOtp=(mobileNumber,callback)=>
 {
 
+    console.log("gehereate")
     
-            // var formData   = new FormData(); 
-            // formData.append("fetch_banners",'true') 
-            // formData.append("offset",offset) 
-            // formData.append("data_limit",limit)  
             let headers = new Headers();
 
             headers.append('Content-Type', 'application/json'); 

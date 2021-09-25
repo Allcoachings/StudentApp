@@ -51,13 +51,6 @@ class RenderReview extends React.Component {
                 <View style={styles.userMetaContainer}>
                     <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.ratingUserImage}/> 
                     <Text style={styles.ratingUserName}>{item.studentName}</Text>
-                    {/* {this.props.replyMode?(null):(
-                        item.insReview.studentId==this.props.userId?(
-                            <TouchableOpacity onPress={null}>
-                                <Feather name="edit-3" size={18} color={theme.secondaryColor} />
-                            </TouchableOpacity>
-                        ):(null)
-                    )} */}
                 </View>
 
                 <View style={styles.ratingMetaView}>
