@@ -50,7 +50,7 @@ class InsTestSeriesList extends React.Component {
 
     componentDidMount(){
         fetchTestSeriesBySubCategory(this.state.id, this.state.offset, dataLimit,this.SubCatTestSeriesCallback)
-        fetch_Banners("testSeries", this.bannerCallback)
+        fetch_Banners("test", this.bannerCallback)
     }
 
     
@@ -72,6 +72,7 @@ class InsTestSeriesList extends React.Component {
         {
             response.json().then(data=>
             {
+                console.log(data);
                 this.setState({banner: data})
             })
         }
@@ -82,6 +83,7 @@ class InsTestSeriesList extends React.Component {
     }
     renderBannerList=({item})=>
     {
+        console.log(imageProvider(item.bannerImageLink))
         return(
             <TouchableOpacity style={styles.bannerItemContainer}>
                     <Image source={{uri: imageProvider(item.bannerImageLink)}} style={styles.bannerImage}/>
@@ -134,7 +136,7 @@ class InsTestSeriesList extends React.Component {
                             style={{height: 60, width: 60, borderRadius: 30}}
                         />
                     </View> */}
-                    <View style={styles.rowContainer}>
+                      <View style={styles.rowContainer}>
                         <FlatList 
                             data={this.state.banner} 
                             renderItem={this.renderBannerList} 
@@ -153,7 +155,7 @@ class InsTestSeriesList extends React.Component {
                             keyExtractor={(item) => item.id}
                             ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                         />
-                    </View>
+                    </View> 
                 </ScrollView>
             </PageStructure>
         )      

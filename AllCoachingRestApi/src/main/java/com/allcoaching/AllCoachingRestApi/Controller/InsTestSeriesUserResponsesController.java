@@ -29,7 +29,10 @@ public class InsTestSeriesUserResponsesController {
         insTestSeriesUserResponseBrief.setRank(rank);
         int belowScore = userResponsesService.belowScore(insTestSeriesUserResponseBrief.getTestSeriesId(),insTestSeriesUserResponseBrief.getScore());
         int count =userResponsesService.totalStudents(insTestSeriesUserResponseBrief.getTestSeriesId());
-        long percen = (belowScore/count)*100;
+        long percen=0;
+        if(count!=0) {
+          percen = (belowScore / count) * 100;
+        }
         String percentile = String.valueOf(percen);
         System.out.println("belowScore:"+belowScore+" count:"+count+" percentile:"+percentile+" long:"+percen);
         insTestSeriesUserResponseBrief.setPercentile(percentile);
