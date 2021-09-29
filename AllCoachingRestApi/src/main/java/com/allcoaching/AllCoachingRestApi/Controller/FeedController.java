@@ -11,6 +11,7 @@ import com.allcoaching.AllCoachingRestApi.dto.FeedDto;
 import io.swagger.annotations.Api;
 import io.swagger.models.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -87,7 +88,10 @@ public class FeedController {
         Feed f = feedService.saveFeed(feedContentDto);
 
         URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(f.getId()).toUri();
-        return ResponseEntity.created(location).build();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Expose-Headers", "Location");
+
+        return ResponseEntity.created(location).headers(headers).build();
     }
 
 
@@ -100,7 +104,10 @@ public class FeedController {
         String imageLocation = "files/";
          imageLocation  += fileUploadService.storeFile(image);
         URI location = ServletUriComponentsBuilder.fromPath("{location}").buildAndExpand(imageLocation).toUri();
-        return ResponseEntity.created(location).build();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Expose-Headers", "Location");
+
+        return ResponseEntity.created(location).headers(headers).build();
     }
 
 
@@ -160,6 +167,9 @@ public class FeedController {
     {
         FeedComments feedComments_saved = feedCommentService.saveComment(feedComments);
         URI location =  ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(feedComments_saved.getId()).toUri();
-        return ResponseEntity.created(location).build();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Expose-Headers", "Location");
+
+        return ResponseEntity.created(location).headers(headers).build();
     }
 }
