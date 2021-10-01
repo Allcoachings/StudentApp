@@ -96,6 +96,16 @@ public class CourseVideoController {
         return courseVideoService.findByCourseId(id,offset,dataLimit);
 
     }
+
+
+    //fetching playlist by course id and hidden parameter
+    @CrossOrigin(origins = "*")
+    @GetMapping("/all/{id}/hidden/{hidden}/{offset}/{dataLimit}")
+    public Iterable<CourseVideo> findByCourse(@PathVariable  long id,@PathVariable boolean hidden,@PathVariable int offset,@PathVariable int dataLimit)
+    {
+        return courseVideoService.findByCourseIdAndHidden(id,hidden,offset,dataLimit);
+
+    }
     @CrossOrigin(origins = "*")
     @GetMapping("/{id}")
     public Optional<CourseVideo> findById(@PathVariable long id)
@@ -130,6 +140,14 @@ public class CourseVideoController {
     public  Iterable<CourseVideo> findPlaylistById(@PathVariable long id,@PathVariable int offset,@PathVariable int dataLimit)
     {
         return courseVideoService.findByPlaylist(id,offset,dataLimit);
+    }
+
+    //mapping for fetching videos of a playlist with hidden parameter
+    @CrossOrigin(origins = "*")
+    @GetMapping("/playlist/{id}/hidden/{hidden}/{offset}/{dataLimit}")
+    public  Iterable<CourseVideo> findPlaylistByIdAndHidden(@PathVariable long id,@PathVariable boolean hidden,@PathVariable int offset,@PathVariable int dataLimit)
+    {
+        return courseVideoService.findByPlaylistAndHidden(id,hidden,offset,dataLimit);
     }
 
 

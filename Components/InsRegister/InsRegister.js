@@ -214,7 +214,7 @@ class InsRegister extends React.Component {
                             </TouchableWithoutFeedback>
                         </View>
                         <View style={styles.headView}>
-                            <Text style={styles.headText}>{this.props.route.params.mode=="edit"?("Edit"):("Submit")} Your Institute Details</Text>
+                            <Text style={styles.headText}>{this.props.route&&this.props.route.params&&this.props.route.params.mode=="edit"?("Edit"):("Submit")} Your Institute Details</Text>
                         </View>
                         <TouchableOpacity style={styles.imageView} onPress={this.handleImageBtnClick}>
                             <Image source={{uri: this.state.logo?this.state.logo.uri:'https://picsum.photos/200/300'}} style={styles.imageStyle}/>

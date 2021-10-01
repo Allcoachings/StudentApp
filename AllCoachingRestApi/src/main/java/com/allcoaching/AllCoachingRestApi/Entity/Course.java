@@ -20,7 +20,11 @@ public class Course {
     @GeneratedValue
     private long id;
     private String title;
+
+
+    @Column(columnDefinition = "TEXT")
     private String description;
+
     private float fees;
     private long instId;
     private long leads=0;

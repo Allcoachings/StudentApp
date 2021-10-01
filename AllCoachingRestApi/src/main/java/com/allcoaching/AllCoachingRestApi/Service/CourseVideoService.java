@@ -46,10 +46,21 @@ public class CourseVideoService {
         return extractDataFromPage(courseVideoPLayListRepo.playListContent(id,PageRequest.of(page,pageSize)));
     }
 
+    //fetching videos by playlist and hidden parameter
+    public Iterable<CourseVideo> findByPlaylistAndHidden(long id,boolean hidden,int page,int pageSize)
+    {
+        return extractDataFromPage(courseVideoPLayListRepo.findByPlaylistAndHidden(id,hidden,PageRequest.of(page,pageSize)));
+    }
+
     //fetching video by course Id
     public  Iterable<CourseVideo> findByCourseId(long id,int page,int pageSize)
     {
         return extractDataFromPage(courseVideoRepo.findByCourseId(id, PageRequest.of(page,pageSize)));
+    }
+    //fetching video by course Id and hidden
+    public  Iterable<CourseVideo> findByCourseIdAndHidden(long id,boolean hidden,int page,int pageSize)
+    {
+        return extractDataFromPage(courseVideoRepo.findByCourseIdAndHidden(id, hidden,PageRequest.of(page,pageSize)));
     }
 
     //fetching video by  Id

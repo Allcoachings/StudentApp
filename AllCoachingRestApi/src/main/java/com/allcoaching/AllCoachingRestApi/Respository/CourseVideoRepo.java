@@ -16,6 +16,7 @@ import javax.transaction.Transactional;
 public interface CourseVideoRepo extends PagingAndSortingRepository<CourseVideo,Long> {
 
     Page<CourseVideo> findByCourseId(long id, Pageable pageable);
+    Page<CourseVideo> findByCourseIdAndHidden(long id, boolean hidden,Pageable pageable);
     long  countByCourseId(long courseId);
 
     @Modifying

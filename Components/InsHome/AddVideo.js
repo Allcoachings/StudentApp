@@ -228,7 +228,7 @@ class AddVideo extends React.Component {
 
                         {this.state.percentage?(
                             <View style={{borderWidth:1,borderColor:theme.accentColor,borderRadius:5,margin:10}}>
-                                <RatingBar labelStyle={{color:theme.accentColor}} progressStyle={{color:theme.accentColor} } progressColor={theme.accentColor+'1A'} duration={0} backgroundColor={theme.primaryColor} height={40} label={"Uploading Video ..."} showProgress={this.state.percentage} progress={100} borderRadius={5}/>
+                                <RatingBar labelStyle={{color:theme.accentColor}} progressStyle={{color:theme.accentColor} } progressColor={theme.accentColor+'1A'} duration={0} backgroundColor={theme.primaryColor} height={40} label={"Uploading Video ..."} showProgress={this.state.percentage} progress={this.state.percentage} borderRadius={5}/>
                             </View> 
                         ):(null)}            
                    

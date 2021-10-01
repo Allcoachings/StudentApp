@@ -14,6 +14,8 @@ import org.springframework.stereotype.Repository;
 public interface CourseDocumentPlaylistRepo extends CrudRepository<DocumentPlaylist,Long> {
     @Query("SELECT cd from DocumentPlaylist dp , CourseDocument cd where dp.id=cd.playlistId and dp.id = :id")
     Page<CourseDocument> playListContent(long id, Pageable pageable);
+    @Query("SELECT cd from DocumentPlaylist dp , CourseDocument cd where dp.id=cd.playlistId and dp.id = :id and hidden=:hidden")
+    Page<CourseDocument> findByPlaylistIdAndHidden(long id,boolean hidden ,Pageable pageable);
 
     Iterable<DocumentPlaylist> findByCourseId(long id);
 }

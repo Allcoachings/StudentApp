@@ -27,7 +27,7 @@ public class RevenueService {
       final long[] count = {0};
        salesOverViewDataDtos.forEach(item->{
          count[0]++;
-         Course c = courseService.findById(item.getCourseId()).get();
+         Course c = courseService.findById(item.getCourseId()). get();
          float courseRevenue = (c.getFees()*item.getTotal());
          sum[0] = sum[0] +courseRevenue;
          item.setCourseFee(c.getFees());

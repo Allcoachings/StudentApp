@@ -19,6 +19,8 @@ public class AdminBlogs {
     private long id;
 
     private String title;
+
+    @Column(columnDefinition = "TEXT")
     private String blogBody;
     private String blogFeatureImage;
 

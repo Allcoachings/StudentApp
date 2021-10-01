@@ -54,14 +54,27 @@ public class InsTestSeriesService {
         return insTestSeriesQuestionsRepo.save(insTestSeriesQuestion);
     }
 
+    //fetching test seriesId  by course id
     public Iterable<InsTestSeries> getTestSeriesByCourseID(long id,int page,int pageSize)
     {
         return extractDataFromPage(insTestSeriesRepo.findByCourseIdAndIsAdmin(id,false,PageRequest.of(page,pageSize )));
     }
 
+    //fetching test seriesId  by course id and hidden parameter
+    public Iterable<InsTestSeries> getTestSeriesByCourseIDAndHidden(long id,boolean hidden,int page,int pageSize)
+    {
+        return extractDataFromPage(insTestSeriesRepo.findByCourseIdAndIsAdminAndHidden(id,false,hidden,PageRequest.of(page,pageSize )));
+    }
+    //fetching test seriesId  by playlist id
     public Iterable<InsTestSeries> getTestSeriesByPlaylistID(long id,int page,int pageSize)
     {
         return extractDataFromPage(insTestSeriesRepo.findByPlaylistIdAndIsAdmin(id,false,PageRequest.of(page,pageSize)));
+    }
+    //fetching test seriesId  by playlist id and hidden parameter
+    public Iterable<InsTestSeries> getTestSeriesByPlaylistIDAndHidden(long id,boolean hidden,int page,int pageSize)
+    {
+        return extractDataFromPage(insTestSeriesRepo.findByPlaylistIdAndIsAdminAndHidden(id,false,hidden,PageRequest.of(page,pageSize)));
+
     }
 
     public Iterable<TestSeriesQuestionDto> getSeriesQuestion(long id, int page, int pageSize)
@@ -147,10 +160,15 @@ public class InsTestSeriesService {
         return insTestSeriesRepo.countByCourseId(id);
     }
 
+    //fetching test series playlist by course id
     public  Iterable<InsTestSeriesPlaylist> findPlaylistByCourseId(long courseId)
     {
         return testSeriesPlaylistRepo.findByCourseId(courseId);
     }
+
+
+
+
 
 
     public Iterable<InsTestSeries> extractDataFromPage(Page<InsTestSeries> transactionPage)

@@ -1,10 +1,14 @@
 import React from 'react';
-import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity, Modal, TextInput,ActivityIndicator} from 'react-native';
+import { Image, Text,Dimensions, View,StyleSheet,ScrollView,FlatList,TouchableOpacity, Modal, TextInput,ActivityIndicator} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import { SliderBox } from 'react-native-image-slider-box';
 import {theme, serverBaseUrl, imageProvider} from '../config'
 import {fetch_courses_banners } from '../Utils/DataHelper/Course'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
+
+import RenderHtml from 'react-native-render-html';
+
+const width = Dimensions.get('window').width
 class AboutCourse extends React.Component {
     state={
         sliderImg: [],
@@ -54,8 +58,11 @@ class AboutCourse extends React.Component {
                         <Text style={styles.head}>{this.state.activeCourseDetail.title}</Text>
                     </View>
                 
-                    <View style={{marginHorizontal:10, marginTop: '5%'}}>
-                        <Text style={styles.body}>{this.state.activeCourseDetail.description}</Text>
+                    <View style={{marginHorizontal:10, marginTop: '5%'}}>  
+                        <RenderHtml
+                            contentWidth={width}
+                            source={{html:this.state.activeCourseDetail.description}}
+                        />
                     </View>
                 </ScrollView>)}
             </PageStructure>

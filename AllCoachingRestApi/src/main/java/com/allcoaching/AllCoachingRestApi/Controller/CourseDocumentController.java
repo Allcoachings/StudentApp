@@ -100,6 +100,14 @@ public class CourseDocumentController {
         return courseDocumentService.findByPlaylistId(id,offset,dataLimit);
     }
 
+    //fetch documents using playlist id and hidden parameter
+    @CrossOrigin(origins = "*")
+    @GetMapping("/playlist/{id}/hidden/{hidden}/{offset}/{dataLimit}")
+    public Iterable<CourseDocument> findByPlaylistAndHidden(@PathVariable  long id,@PathVariable  boolean hidden,@PathVariable int offset,@PathVariable int dataLimit )
+    {
+        return courseDocumentService.findByPlaylistIdAndHidden(id,hidden,offset,dataLimit);
+    }
+
     //count course documents
     @CrossOrigin(origins = "*")
     @GetMapping("/count/{courseId}")
@@ -114,6 +122,14 @@ public class CourseDocumentController {
     public  Iterable<CourseDocument> findByCourseId(@PathVariable  long id,@PathVariable int offset,@PathVariable int dataLimit)
     {
         return courseDocumentService.findByCourseId(id,offset,dataLimit);
+    }
+
+    //fetch documents using course id and hidden parameter
+    @CrossOrigin(origins = "*")
+    @GetMapping("/all/{id}/hidden/{hidden}/{offset}/{dataLimit}")
+    public  Iterable<CourseDocument> findByCourseIdAndHidden(@PathVariable  long id,@PathVariable  boolean hidden,@PathVariable int offset,@PathVariable int dataLimit)
+    {
+        return courseDocumentService.findByCourseIdAndHidden(id,hidden,offset,dataLimit);
     }
 
     //fetching document playlists by course id
