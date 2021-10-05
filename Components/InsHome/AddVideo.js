@@ -60,10 +60,12 @@ class AddVideo extends React.Component {
         }
         this.setState({loadingAddVideo:false})
     }
+    
     handleProgressCallback=(percentage) =>
     {
         this.setState({percentage})
     }
+
     handleSubmitButtonClick=()=>
     {
         if(this.verify(this.state))
