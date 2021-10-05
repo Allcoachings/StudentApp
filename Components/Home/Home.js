@@ -12,7 +12,7 @@ import {setNavigation} from '../Actions'
 
 import {fetch_institute_courses,fetch_courses_banners,fetch_courses_videos,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents,fetch_courses_timetable,fetch_testSeries} from '../Utils/DataHelper/Course'
 import {fetch_homeData} from '../Utils/DataHelper/HomeData'
-import {fetch_coachingByCategory} from '../Utils/DataHelper/Coaching'
+import {fetch_coachingByCategory, fetch_coachingByCategoryAndStatus} from '../Utils/DataHelper/Coaching'
 import {SearchInstitute} from '../Utils/DataHelper/Search'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PaymentGateway from '../Utils/PaymentGateway';
@@ -189,7 +189,7 @@ class Home extends React.Component {
             case true:
                 this.setState({catMode:mode,catid:item.id,loadingData:true,},()=>
                 {
-                    fetch_coachingByCategory(this.state.catid,this.state.offset,dataLimit,this.coachingCallBack)
+                    fetch_coachingByCategoryAndStatus(this.state.catid,1,this.state.offset,dataLimit,this.coachingCallBack)
                 })
                 break;
             case false:

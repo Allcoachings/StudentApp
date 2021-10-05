@@ -60,6 +60,19 @@ public  Iterable<Institute> getAllInstituteByStatus(Integer status,Integer pageN
         }
     }
 
+
+    public  Iterable<Institute> findByCategoryAndStatus(long id,int status,Pageable topTwenty)
+    {
+
+
+        Page<Institute> pagedResult = instituteRepo.findByCategoryAndStatus(id,status,topTwenty);
+        if(pagedResult.hasContent()) {
+            return pagedResult.getContent();
+        } else {
+            return new ArrayList<Institute>();
+        }
+    }
+
     public  Iterable<String> findByCategoryAndExpoTokenNotNull(long id,Pageable topTwenty)
     {
 

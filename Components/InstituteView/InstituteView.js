@@ -36,6 +36,7 @@ import RenderVideo from './RenderVideo'
 import { LinearGradient } from "expo-linear-gradient";
 import {fetch_institute_feed} from '../Utils/DataHelper/Feed'
 import { throwIfAudioIsDisabled } from 'expo-av/build/Audio/AudioAvailability';
+import { Toast } from 'native-base';
 
 const width = Dimensions.get('window').width
 class InstituteView extends React.Component {
@@ -91,10 +92,17 @@ class InstituteView extends React.Component {
         {
             response.json().then((data)=>
             {
-                this.setState({courses:data, courseId: data[0].id, activeCourse: data[0].id, activeCourseDetail: data[0]},()=>{
-                    checkUserEnrollment(this.state.courseId, this.state.studentId, this.checkEnrollCallBack)
-                    fetch_courses_banners(this.state.activeCourse,this.courseBannerCallback)
-                })
+                if(data)
+                {
+                    this.setState({courses:data, courseId: data[0].id, activeCourse: data[0].id, activeCourseDetail: data[0]},()=>{
+                        checkUserEnrollment(this.state.courseId, this.state.studentId, this.checkEnrollCallBack)
+                        fetch_courses_banners(this.state.activeCourse,this.courseBannerCallback)
+                    })
+                }else
+                {
+                    Toast.show('No Course Found')
+                }
+                
             })
         }
     }
@@ -168,7 +176,63 @@ class InstituteView extends React.Component {
     {
         if(this.props.route.params.insId!=this.state.instituteId)
         {
-            this.setState({instituteId:this.props.route.params.insId,loadingInstitute:true, bannerImg: []},()=>
+            this.setState({
+            courses:[],
+            courseDetails:{},
+            instituteId:this.props.route.params.insId,
+            loadingInstitute:true,
+             activeCourse:'',
+             courseId:'',
+             bannerImg: [],
+            courseTimetableLoaded:false,
+            isCourseTimeTableLoading:false,
+            courseTimeTable:[],
+            courseDocumentPlaylistLoaded:false,
+            isCourseDocumentPlaylistLoading:false,
+            courseDocumentPlaylist:[],
+            courseDocumentLoaded:false,
+            isCourseDocumentLoading:false,
+            courseDocuments:[],
+            courseTestSeriesLoaded:false,
+            isCourseTestSeriesLoading:false,
+            courseTestSeries:[],
+            courseTestSeriesPlaylistLoaded:false,
+            isCourseTestSeriesPlaylistLoading:false,
+            courseTestSeriesPlaylist:[],
+            courseVideoPlaylistLoaded:false,
+            isCourseVideoPlaylistLoading:false,
+            courseVideosPlaylist:[],
+            courseVideoLoaded:false,
+            isCourseVideoLoading:false,
+            courseVideos:[],
+            activeTab: 'videos', 
+            tabtoshow: 1,
+            modalVisible: false,
+            ReviewmodalVisible: false, 
+            studentId:this.props.userInfo.id,
+            studentEnrolled: '',
+            review: '',
+            feedOffset:0, 
+            subscribe: '',
+            zoomModal: false,
+            zimage:'', 
+            index: '',
+            activeFilter: 'All', 
+            insName:'',
+            insNumber:'',
+            docoffset: 0,
+            vidoffset: 0,
+            ttoffset: 0,
+            tsoffset: 0,
+            activeFilterId: -1,
+            showLoadMore: true,
+            courseDocuments:[],
+            courseVideos:[], 
+            courseTimeTable:[],
+            courseTestSeries:[],
+            pinId: '',
+            checkPinned: '' 
+        },()=>
             {
             fetch_instituteDetails(this.state.instituteId,this.instituteCallback)
             fetch_institute_courses(this.state.instituteId,this.coursesCallBack)
@@ -851,7 +915,8 @@ class InstituteView extends React.Component {
                                 showsHorizontalScrollIndicator={false}
                             /> 
                     </View>
-                    <View style={styles.rowContainer}>
+                    {this.state.activeCourse?(
+                        <View style={styles.rowContainer}>
                             {/* <FlatList 
                             data={this.state.courseBanners} 
                             renderItem={this.renderBannerList} 
@@ -911,10 +976,10 @@ class InstituteView extends React.Component {
                                         <View style={{}}><Feather name="chevron-down" size={20}/></View>
                                         <Text style={{margin:5}}>Load More</Text>
                                 </TouchableOpacity>
-                            ):(null)}
-
-                        </View>
-                        </>
+                            ):(null)} 
+                        </View> 
+                    ):(null)}
+                    </>
     
                 )
             

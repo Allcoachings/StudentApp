@@ -40,7 +40,7 @@ public class AppStudentHomeController {
             Iterable<Category> categories = categoryService.findAll();
             Pageable topTwenty = PageRequest.of(0, 20, Sort.by(Sort.Direction.DESC,"boostValue","totalRating"));
             categories.forEach(item->{
-                list.add(new AppStudentHomeDto(item.getName(),"listing",item.getId(),instituteService.findByCategory(item.getId(),topTwenty)));
+                list.add(new AppStudentHomeDto(item.getName(),"listing",item.getId(),instituteService.findByCategoryAndStatus(item.getId(),topTwenty)));
             });
 
             Iterable<MainBanners> mainBannerRow1 = mainBannersService.findByPlaceholder("home1");
