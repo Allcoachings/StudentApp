@@ -69,7 +69,7 @@ export function DrawerContent(props){
                         {/* {renderDrawerItem('Home','home',()=>props.navigation.navigate("Home"))} */}
                         {renderDrawerItem('Profile','user',()=>props.navigation.navigate("Profile"))}
                         {renderDrawerItem('Notifications','bell',()=>props.navigation.navigate("Notification",{mode: 'student', type: 'all'}))}
-                        {renderDrawerItem('Enrollments','lock',()=>props.navigation.navigate("Enrollments"))}
+                        {renderDrawerItem('Enrollments','lock',()=>props.navigation.navigate("Subscription"))}
                         {renderDrawerItem('Pinned Institute','lock',()=>props.navigation.navigate("PinnedList"))}
                         {renderDrawerItem('Downloads','user',()=>props.navigation.navigate("Downloads"))}
                         {renderDrawerItem('Test Series','lock',()=>props.navigation.navigate("TestSeries"))}

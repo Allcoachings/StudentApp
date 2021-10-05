@@ -31,7 +31,10 @@ class TestSeriesView extends React.Component {
         wrongQues:0,
         attempted:0,
         testScore:0,
-        backhandler:null
+        backhandler:null,
+        showLoadMore: true,
+        isNQuestionLoading: true,
+        loadingFooter: false,
     }
 
     questionCallback=(response) => 
@@ -43,7 +46,15 @@ class TestSeriesView extends React.Component {
                     {
                         StatusBar.setHidden(true);
                         this.props.setStatusBarHidden(true)
-                      this.setState({questions:{...this.state.questions,...data},isFirstTimeLoading:false,loadingQuestions:false})
+                        // this.setState({questions:{...this.state.questions,...data},isFirstTimeLoading:false,loadingQuestions:false})
+                        if(data.length>0)
+                        {
+                            this.setState({questions:[...this.state.questions,...data],isQuestionLoading:false, showLoadMore: true, loadingFooter:false, isFirstTimeLoading:false,loadingQuestions:false});  
+                        }
+                        else
+                        {
+                            this.setState({questions:this.state.questions,isQuestionLoading:false, showLoadMore: false, loadingFooter: false, isFirstTimeLoading:false,loadingQuestions:false}); 
+                        } 
                     })
             }
     }
@@ -51,11 +62,28 @@ class TestSeriesView extends React.Component {
     componentDidMount() 
     {  
        
-        fetch_testSeries_questions(this.state.testSeriesId,this.state.offset,dataLimit,this.questionCallback)
-        // this.timer();
+        
+        this.fetch();
 
         this.backHandlerListener() 
     }
+
+    fetch=()=>{
+        fetch_testSeries_questions(this.state.testSeriesId,this.state.offset,dataLimit,this.questionCallback)
+    }
+
+    renderFooter = () => {
+        try {
+       
+          if (this.state.loadingFooter) {
+            return <CustomActivtiyIndicator/>;
+          } else {
+            return null;
+          }
+        } catch (error) {
+          console.log(error);
+        }
+    };
     backHandlerListener  =()=> { 
         
         let backhandler =  BackHandler.addEventListener('hardwareBackPress',  ()=> 
@@ -276,6 +304,18 @@ class TestSeriesView extends React.Component {
                             horizontal={false}
                             showsHorizontalScrollIndicator={false}
                             ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                            onEndReachedThreshold={1}
+                            refreshing={this.state.refreshing}
+                            ListFooterComponent={this.renderFooter}
+                            onEndReached={() => 
+                            {
+                                if(this.state.showLoadMore&&!this.state.loadingFooter)
+                                {
+                                    this.setState({ refreshing: true,loadingFooter:true,offset:parseInt(this.state.offset)+1},()=>this.fetch())
+                                        
+                                }
+                            
+                            }}
                         />  
                     </View>
                     {this.state.isModalVisible ? (

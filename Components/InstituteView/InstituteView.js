@@ -72,7 +72,8 @@ class InstituteView extends React.Component {
         courseTimeTable:[],
         courseTestSeries:[],
         pinId: '',
-        checkPinned: ''
+        checkPinned: '',
+        actions: ['Change Playlist']
      }
 
      
@@ -753,7 +754,7 @@ class InstituteView extends React.Component {
                                     this.state.courseVideoLoaded?(
                                     <FlatList 
                                         data={this.state.courseVideos} 
-                                        renderItem={({item,index})=><RenderVideo userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="student" studentEnrolled={this.state.studentEnrolled} downloadMode={true} courseVideosPlaylist={this.state.courseVideosPlaylist} />}
+                                        renderItem={({item,index})=><RenderVideo userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="student" studentEnrolled={this.state.studentEnrolled} downloadMode={true} courseVideosPlaylist={this.state.courseVideosPlaylist}  action={this.state.actions}/>}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
@@ -772,7 +773,7 @@ class InstituteView extends React.Component {
                                      <CustomActivtiyIndicator mode="testSeries"/>):(
                                      <FlatList 
                                         data={this.state.courseTestSeries} 
-                                        renderItem={({item,index})=><RenderSingleTestSeries item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="student" studentEnrolled={this.state.studentEnrolled} courseTestSeriesPlaylist={this.state.courseTestSeriesPlaylist} />}
+                                        renderItem={({item,index})=><RenderSingleTestSeries item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="student" studentEnrolled={this.state.studentEnrolled} courseTestSeriesPlaylist={this.state.courseTestSeriesPlaylist} actions={this.state.actions}/>}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
@@ -787,7 +788,7 @@ class InstituteView extends React.Component {
             return(
                                     this.state.courseDocumentLoaded?(<FlatList 
                                         data={this.state.courseDocuments} 
-                                        renderItem={({item,index})=><RenderDocument userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="student" studentEnrolled={this.state.studentEnrolled} downloadMode={true} insName={this.state.insName} insNumber={this.state.insNumber} courseDocumentPlaylist={this.state.courseDocumentPlaylist} />}
+                                        renderItem={({item,index})=><RenderDocument userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="student" studentEnrolled={this.state.studentEnrolled} downloadMode={true} insName={this.state.insName} insNumber={this.state.insNumber} courseDocumentPlaylist={this.state.courseDocumentPlaylist} actions={this.state.actions} />}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
@@ -1159,10 +1160,11 @@ class InstituteView extends React.Component {
                                                     <Text style={{marginLeft:5}}>Unfollow</Text>
                                                 </TouchableOpacity>
                                             ):(
-                                            <TouchableOpacity onPress={() =>subscribe(this.state.studentId,this.state.instituteId,this.subscribeCallback)} style={{flexDirection: 'row',margin:5}}>
-                                                <Feather name="share" size={20}/>
-                                                <Text style={{marginLeft:5}}>Follow</Text>
-                                            </TouchableOpacity>)}
+                                                <TouchableOpacity onPress={() =>subscribe(this.state.studentId,this.state.instituteId,this.subscribeCallback)} style={{flexDirection: 'row',margin:5}}>
+                                                    <Feather name="share" size={20}/>
+                                                    <Text style={{marginLeft:5}}>Follow</Text>
+                                                </TouchableOpacity>
+                                            )}
                                             
                                             {!this.state.checkPinned?(
                                                     <TouchableOpacity onPress={()=>pinInstitute({"institute":{id: this.state.instituteId},"student":{id: this.props.userInfo.id}}, this.pinCallBack)} style={{flexDirection: 'row',margin:5}}>
@@ -1175,6 +1177,7 @@ class InstituteView extends React.Component {
                                                         <Text style={{marginLeft:5}}>UnPin</Text>
                                                     </TouchableOpacity>
                                             )}
+                                            
                                             <View style={{flexDirection: 'row',margin:5}}>
                                                 <Feather name="share" size={20}/>
                                                 <Text style={{marginLeft:5}}>Flag as inappropriate</Text>

@@ -28,7 +28,7 @@ class RenderSingleTestSeries extends React.Component {
          
       UIManager.showPopupMenu(
           findNodeHandle(this.state.icon),
-          this.actions,
+          this.props.actions,
           this.onError,
           this.onPopupEvent
       )
@@ -92,9 +92,11 @@ class RenderSingleTestSeries extends React.Component {
                         <Text style={styles.queText}>{this.props.item.questionCount} Questions</Text>
                             <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
                                 <Text style={styles.timeText}>{this.props.item.timeDuration} Minutes</Text>
-                                <TouchableOpacity style={{marginLeft: 'auto'}} onPress={()=>this.showThreeMenu()}>
-                                    <Feather name="more-vertical" size={18} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
-                                </TouchableOpacity>
+                                {this.props.actions.length>0?(
+                                    <TouchableOpacity style={{marginLeft: 'auto', marginTop: 8}} onPress={()=>this.showThreeMenu()}>
+                                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
+                                    </TouchableOpacity>
+                                ):(null)}
                             </View>
                         </View>
                         <View style={styles.bottomRow}>

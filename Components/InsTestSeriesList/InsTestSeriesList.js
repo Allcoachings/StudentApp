@@ -18,6 +18,7 @@ class InsTestSeriesList extends React.Component {
         id: this.props.route.params.id,
         subCat: [],
         offset: 0,
+        tsLoading: true,
         banner:[
             {
                 id: '1',
@@ -59,7 +60,7 @@ class InsTestSeriesList extends React.Component {
         {
             response.json().then(data=>
             {
-                this.setState({subCat: data})
+                this.setState({subCat: data, tsLoading:false})
             })
         }
         else
@@ -148,13 +149,17 @@ class InsTestSeriesList extends React.Component {
                     </View>
                     
                     <View style={styles.seriesView}>
-                        <FlatList
-                            data={this.state.subCat}
-                            renderItem={this.renderSeries}
-                            numColumns={3}
-                            keyExtractor={(item) => item.id}
-                            ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
-                        />
+                        {this.state.tsLoading?(
+                            <CustomActivtiyIndicator mode="testSeries"/>
+                        ):(
+                            <FlatList
+                                data={this.state.subCat}
+                                renderItem={this.renderSeries}
+                                numColumns={3}
+                                keyExtractor={(item) => item.id}
+                                ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                            />
+                        )}
                     </View> 
                 </ScrollView>
             </PageStructure>

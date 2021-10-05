@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Modal} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Modal, TouchableWithoutFeedback} from 'react-native';
 // import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {theme,screenMobileWidth, dataLimit,serverBaseUrl, imageProvider} from '../config'
 import { Feather } from '@expo/vector-icons';
@@ -8,7 +8,7 @@ import {subscriptionNew} from '../../FakeDataService/FakeData'
 import CardView from '../Utils/CardView'
 import { AirbnbRating } from 'react-native-ratings';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import { checkSubscription, subscribe, unsubscribe }  from '../Utils/DataHelper/Subscription'
+import { unsubscribe }  from '../Utils/DataHelper/Subscription'
 
 class RenderSingleSubsInstitute extends React.Component {
     
@@ -56,6 +56,11 @@ class RenderSingleSubsInstitute extends React.Component {
     //     }
     // }
 
+    redirectTo =(id)=>
+    {
+        this.props.navigation.navigate('Institute',{insId:id})
+    }
+
     render() {
         return(
             <View style={[this.state.hide?({display: 'none'}):(null)]}>
@@ -66,9 +71,9 @@ class RenderSingleSubsInstitute extends React.Component {
                             ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:100,borderRadius:15}):({width:200,height:150})])
                         } 
                         <View style={styles.instituteheaderMeta}>
-                            <View style={{display: 'flex', flexDirection: 'row'}}>
+                            <TouchableWithoutFeedback style={{display: 'flex', flexDirection: 'row'}} onPress={()=>this.redirectTo(this.props.item.id)}>
                                 <Text style={styles.instituteheaderText}>{this.props.item.name}</Text>
-                            </View>
+                            </TouchableWithoutFeedback>
                             <Text style={styles.instituteDirector}>{this.props.item.directorName}</Text>
                             <View style={styles.instituteRatingView}>
                                 <AirbnbRating 
@@ -81,7 +86,6 @@ class RenderSingleSubsInstitute extends React.Component {
                                     selectedColor={theme.blueColor}
                                     showRating={false}
                                 />
-                                
                                 <Text style={styles.voteCount}>{this.props.item.totalRatingCount>0?(this.props.item.totalRating/this.props.item.totalRatingCount):(0)}</Text>
                             </View>
                             <View style={styles.followerView}>

@@ -17,9 +17,16 @@ class SubscriptionNew extends React.Component {
     state = {
         subscription: [],
         offset: 0,
+        showLoadMore: true,
+        isSubscriptionLoading: true,
+        loadingFooter: false,
     }
 
     componentDidMount(){
+        this.fetch()
+    }
+
+    fetch=()=>{
         fetchSubscribedInstituteList(this.props.userInfo.id, this.state.offset, dataLimit, this.subscriptionCallBack)
     }
 
@@ -30,10 +37,31 @@ class SubscriptionNew extends React.Component {
             response.json().then(data=>
             {
                 console.log(data)
-                this.setState({subscription:data});                   
+                // this.setState({subscription:data});
+                if(data.length>0)
+                {
+                    this.setState({subscription:[...this.state.subscription,...data],isSubscriptionLoading:false, showLoadMore: true, loadingFooter:false});  
+                }
+                else
+                {
+                    this.setState({subscription:this.state.subscription,isSubscriptionLoading:false, showLoadMore: false, loadingFooter: false}); 
+                }                    
             })
         }
     }
+
+    renderFooter = () => {
+        try {
+       
+          if (this.state.loadingFooter) {
+            return <CustomActivtiyIndicator/>;
+          } else {
+            return null;
+          }
+        } catch (error) {
+          console.log(error);
+        }
+    };
 
     singleRow=({item})=>{
         return(
@@ -80,6 +108,8 @@ class SubscriptionNew extends React.Component {
                 iconName={"arrow-left"}
                 btnHandler={() => {this.props.navigation.goBack()}}
                 titleonheader={"Subscription"}
+                nosearchIcon={true}
+                noNotificationIcon={true}
             >
                 <ScrollView>
                     <View style={styles.container}>
@@ -96,11 +126,23 @@ class SubscriptionNew extends React.Component {
                         </View> */}
                         <FlatList 
                             data={this.state.subscription} 
-                            renderItem={({item})=><RenderSingleSubsInstitute item={item} />} 
+                            renderItem={({item})=><RenderSingleSubsInstitute item={item} navigation={this.props.navigation}/>} 
                             keyExtractor={(item)=>item.id}
                             horizontal={false} 
                             showsHorizontalScrollIndicator={false}
                             ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                            onEndReachedThreshold={0.1}
+                            refreshing={this.state.refreshing}
+                            ListFooterComponent={this.renderFooter}
+                            onEndReached={() => 
+                            {
+                                if(this.state.showLoadMore&&!this.state.loadingFooter)
+                                {
+                                    this.setState({ refreshing: true,loadingFooter:true,offset:parseInt(this.state.offset)+1},()=>this.fetch())
+                                        
+                                }
+                            
+                            }}
                         />
                     </View>
                 </ScrollView>

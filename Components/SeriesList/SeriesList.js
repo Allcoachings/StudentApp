@@ -13,6 +13,7 @@ import { fetch_Banners } from '../Utils/DataHelper/Banners'
 import Instructions from './Instructions'
 import RenderSingleTestSeries from './RenderSingleTestSeries'
 import EmptyList from '../Utils/EmptyList'
+import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height;
 
@@ -51,6 +52,7 @@ class SeriesList extends React.Component {
                 clickHandler: () => { },
             },
         ],
+        tsLoading: true
     }
 
     componentDidMount(){
@@ -78,7 +80,7 @@ class SeriesList extends React.Component {
             console.log("success series list")
             response.json().then(data=>
             {
-                this.setState({seriesList: data})
+                this.setState({seriesList: data, tsLoading:false})
             })
         }
         else
@@ -129,6 +131,9 @@ class SeriesList extends React.Component {
                             />
                         </View>
                         <View style={styles.container}>
+                        {this.state.tsLoading?(
+                                <CustomActivtiyIndicator mode="testSeries"/>
+                        ):(
                             <FlatList 
                                 data={this.state.seriesList} 
                                 renderItem={({item})=><RenderSingleTestSeries item={item} navigation={this.props.navigation}/>}
@@ -137,6 +142,7 @@ class SeriesList extends React.Component {
                                 showsHorizontalScrollIndicator={false}
                                 ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                             />
+                        )}
                         </View>
                     </View>
                     
