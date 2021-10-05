@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {insTestSeries} from '../../FakeDataService/FakeData'
 import { theme, dataLimit,serverBaseUrl, Assets, imageProvider } from '../config';
@@ -12,20 +12,45 @@ import { fetchTestSeriesBySubCategory } from '../Utils/DataHelper/TestSeries'
 import { fetch_Banners } from '../Utils/DataHelper/Banners'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
-const width = Dimensions.get('window').width
-
 class InsTestSeriesList extends React.Component {
 
     state={
         id: this.props.route.params.id,
         subCat: [],
         offset: 0,
-        banner:[],
+        banner:[
+            {
+                id: '1',
+                image: { uri: 'https://picsum.photos/200/300' },
+                clickHandler: () => { },
+
+            },
+            {
+                id: '3',
+                image: { uri: 'https://picsum.photos/200/300' },
+                clickHandler: () => { },
+            },
+            {
+                id: '4',
+                image: { uri: 'https://picsum.photos/200/300' },
+                clickHandler: () => { },
+            },
+            {
+                id: '5',
+                image: { uri: 'https://picsum.photos/200/300' },
+                clickHandler: () => { },
+            },
+            {
+                id: '6',
+                image: { uri: 'https://picsum.photos/200/300' },
+                clickHandler: () => { },
+            },
+        ],
     }
 
     componentDidMount(){
         fetchTestSeriesBySubCategory(this.state.id, this.state.offset, dataLimit,this.SubCatTestSeriesCallback)
-        fetch_Banners("testSeries", this.bannerCallback)
+        fetch_Banners("test", this.bannerCallback)
     }
 
     
@@ -34,7 +59,6 @@ class InsTestSeriesList extends React.Component {
         {
             response.json().then(data=>
             {
-                console.log("subcat", data)
                 this.setState({subCat: data})
             })
         }
@@ -48,6 +72,7 @@ class InsTestSeriesList extends React.Component {
         {
             response.json().then(data=>
             {
+                console.log(data);
                 this.setState({banner: data})
             })
         }
@@ -58,9 +83,10 @@ class InsTestSeriesList extends React.Component {
     }
     renderBannerList=({item})=>
     {
+        console.log(imageProvider(item.bannerImageLink))
         return(
             <TouchableOpacity style={styles.bannerItemContainer}>
-                    <Image source={{uri: serverBaseUrl+item.bannerImageLink}} style={styles.bannerImage}/>
+                    <Image source={{uri: imageProvider(item.bannerImageLink)}} style={styles.bannerImage}/>
             </TouchableOpacity  >
         )
     }
@@ -70,7 +96,7 @@ class InsTestSeriesList extends React.Component {
             CardView(
                 <View  style={styles.singleItem}>
                     <View style={styles.imageView}>
-                        <Image source={{uri: serverBaseUrl+item.image}} style={styles.itemImage}/>
+                        <Image source={{uri: imageProvider(item.image)}} style={styles.itemImage}/>
                     </View>
                     <View style={styles.titleView}>
                         <Text style={styles.itemTitle}>{item.name}</Text>
@@ -85,9 +111,8 @@ class InsTestSeriesList extends React.Component {
         )
         )
     }
-    
+
     render() {
-        console.log("hehe")
         return(
             <PageStructure
                 iconName={"arrow-left"}
@@ -111,7 +136,7 @@ class InsTestSeriesList extends React.Component {
                             style={{height: 60, width: 60, borderRadius: 30}}
                         />
                     </View> */}
-                    <View style={styles.rowContainer}>
+                      <View style={styles.rowContainer}>
                         <FlatList 
                             data={this.state.banner} 
                             renderItem={this.renderBannerList} 
@@ -130,7 +155,7 @@ class InsTestSeriesList extends React.Component {
                             keyExtractor={(item) => item.id}
                             ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                         />
-                    </View>
+                    </View> 
                 </ScrollView>
             </PageStructure>
         )      
@@ -183,6 +208,7 @@ const styles = StyleSheet.create({
                 {
                     height: 45,
                     width:60, 
+                     
                 },
             titleView:
             {

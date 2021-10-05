@@ -89,6 +89,14 @@ public class InsTestSeriesController {
         return insTestSeriesService.getTestSeriesByCourseID(courseId,offset,dataLimit);
     }
 
+    //fetching all test series of a course by course id and hidden parameter
+    @CrossOrigin(origins = "*")
+    @GetMapping("/all/{courseId}/hidden/{hidden}/{offset}/{dataLimit}")
+    public Iterable<InsTestSeries> getTestSeriesByCourseIDAndHidden(@PathVariable long courseId,@PathVariable boolean hidden,@PathVariable int offset,@PathVariable int dataLimit)
+    {
+        return insTestSeriesService.getTestSeriesByCourseIDAndHidden(courseId,hidden,offset,dataLimit);
+    }
+
 
     //fetching questions by series id
     @CrossOrigin(origins = "*")
@@ -105,6 +113,14 @@ public class InsTestSeriesController {
     public Iterable<InsTestSeries> findByPlaylistId(@PathVariable long playListId,@PathVariable int offset,@PathVariable int dataLimit)
     {
         return insTestSeriesService.getTestSeriesByPlaylistID(playListId,offset,dataLimit);
+    }
+
+    //fetch Test Series by playlistId and hidden parameter
+    @CrossOrigin(origins = "*")
+    @GetMapping("/playlist/{playListId}/hidden/{hidden}/{offset}/{dataLimit}")
+    public Iterable<InsTestSeries> getTestSeriesByPlaylistIDAndHidden(@PathVariable long playListId,@PathVariable boolean hidden,@PathVariable int offset,@PathVariable int dataLimit)
+    {
+        return insTestSeriesService.getTestSeriesByPlaylistIDAndHidden(playListId,hidden,offset,dataLimit);
     }
 
     //fetch Test Series by id

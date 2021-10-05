@@ -186,9 +186,11 @@ class ResultAnalysis extends React.Component {
         let timeTaken = (testSeriesData.series.timeDuration-testSeriesData.brief.timeLeft)
         let seriesData = {...testSeriesData.brief,studentId:this.props.userInfo.id,accuracy,timeTaken,skippedQues:this.props.testSeriesData.brief.Unattempted,userQuestionResponses:testSeriesData.ques}
         saveTestResult( seriesData,(response) => {
+            console.log("save result status",response.status)
             if(response.status==201)
             { 
                 let data  = response.headers.map.location.split("*"); 
+                console.log("saved result data ",data)
                 this.setState({accuracy,savedTestResult:true,savedTestResultId:data[0],percentile:data[1],rank:data[2],totalStudent:data[3]})
             }
         }) 

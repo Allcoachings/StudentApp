@@ -2,6 +2,7 @@ package com.allcoaching.AllCoachingRestApi.Controller;
 
 import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeriesUserResponseBrief;
 import com.allcoaching.AllCoachingRestApi.Service.InsTestSeriesUserResponsesService;
+import com.allcoaching.AllCoachingRestApi.dto.StudentResponseBriefDto;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,10 @@ public class InsTestSeriesUserResponsesController {
         insTestSeriesUserResponseBrief.setRank(rank);
         int belowScore = userResponsesService.belowScore(insTestSeriesUserResponseBrief.getTestSeriesId(),insTestSeriesUserResponseBrief.getScore());
         int count =userResponsesService.totalStudents(insTestSeriesUserResponseBrief.getTestSeriesId());
-        long percen = (belowScore/count)*100;
+        long percen=0;
+        if(count!=0) {
+          percen = (belowScore / count) * 100;
+        }
         String percentile = String.valueOf(percen);
         System.out.println("belowScore:"+belowScore+" count:"+count+" percentile:"+percentile+" long:"+percen);
         insTestSeriesUserResponseBrief.setPercentile(percentile);
@@ -45,6 +49,14 @@ public class InsTestSeriesUserResponsesController {
     public Optional<InsTestSeriesUserResponseBrief> getResponse(@PathVariable long responseId)
     {
         return userResponsesService.userResponseBriefs(responseId);
+    }
+
+
+    @CrossOrigin(origins="*")
+    @GetMapping("/get-testseries-student-response/{testSeriesId}/{offset}/{datalimit}")
+    public Iterable<StudentResponseBriefDto> findStudentListOrderByRank(@PathVariable long testSeriesId,@PathVariable int offset,@PathVariable int datalimit)
+    {
+        return userResponsesService.findStudentListOrderByRank(testSeriesId, offset, datalimit);
     }
 
 }

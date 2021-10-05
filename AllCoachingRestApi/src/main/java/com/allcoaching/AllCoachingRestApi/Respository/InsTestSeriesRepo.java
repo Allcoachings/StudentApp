@@ -14,7 +14,9 @@ import javax.transaction.Transactional;
 @Transactional
 public interface InsTestSeriesRepo extends PagingAndSortingRepository<InsTestSeries,Long> {
     Page<InsTestSeries> findByCourseIdAndIsAdmin(long id,boolean isAdmin,Pageable pageable);
+    Page<InsTestSeries> findByCourseIdAndIsAdminAndHidden(long id,boolean isAdmin,boolean hidden,Pageable pageable);
     Page<InsTestSeries> findByPlaylistIdAndIsAdmin(long id,boolean isAdmin,Pageable pageable);
+    Page<InsTestSeries> findByPlaylistIdAndIsAdminAndHidden(long id,boolean isAdmin,boolean hidden,Pageable pageable);
     Page<InsTestSeries> findByCategoryAndIsAdmin(long id, boolean isAdmin, Pageable pageable);
     Page<InsTestSeries> findByIsAdmin(boolean isAdmin,Pageable pageable);
     long countByCourseId(long id);

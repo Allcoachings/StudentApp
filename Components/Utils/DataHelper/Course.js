@@ -154,6 +154,40 @@ export const fetch_courses_videos=(offset, dataLimit, courseId=-1,callback,playl
             .catch((error)=>{console.log(error)})
 }
 
+//course video  with hedden parameter
+export const fetch_courses_videos_with_hidden=(hidden,offset, dataLimit, courseId=-1,callback,playlistId=-1)=>
+{
+    
+            // var formData   = new FormData(); 
+            // formData.append("fetch_banners",'true') 
+            // formData.append("offset",offset) 
+            // formData.append("data_limit",limit)  
+            let headers = new Headers(); 
+            headers.append('Content-Type', 'application/json'); 
+
+            headers.append('Access-Control-Allow-Origin', serverApiUrl);
+            headers.append('Access-Control-Allow-Credentials', 'true');
+
+            headers.append('GET', 'POST', 'OPTIONS'); 
+            let apiUrl;
+            if(playlistId == -1)
+            {
+                apiUrl = serverApiUrl+'institute/course/video/all/'+courseId+'/hidden/'+'/'+hidden+'/'+offset+'/'+dataLimit
+            }else
+            {
+                apiUrl = serverApiUrl+'institute/course/video/playlist/'+playlistId+'/hidden/'+'/'+hidden+'/'+offset+'/'+dataLimit
+            }
+               console.log(apiUrl) 
+             fetch(apiUrl,
+            {
+                method: 'GET',  
+                headers,
+                // body:JSON.stringify({title,description,fees,instId})
+            })
+            .then((response)=>callback(response)) 
+            .catch((error)=>{console.log(error)})
+}
+
 //add video
 export   const addCourseVideo=(video,thumbnail,name,description,isDemo,demoLength,courseId,callback,callbackProgress,playlistId=-1)=>
 {
@@ -308,6 +342,41 @@ export const fetch_courses_documents=(offset, dataLimit, courseId=-1,callback,pl
             else
             {
                 apiUrl = serverApiUrl+'/institute/course/document/playlist/'+playlistId+'/'+offset+'/'+dataLimit
+            }
+              console.log(apiUrl);  
+             fetch(apiUrl,
+            {
+                method: 'GET',  
+                headers,
+                // body:JSON.stringify({title,description,fees,instId})
+            })
+            .then((response)=>callback(response)) 
+            .catch((error)=>{console.log(error)})
+}
+//documents by course id and hidden parameter
+export const fetch_courses_documents_with_hidden=(hidden,offset, dataLimit, courseId=-1,callback,playlistId=-1)=>
+{
+
+    
+            // var formData   = new FormData(); 
+            // formData.append("fetch_banners",'true') 
+            // formData.append("offset",offset) 
+            // formData.append("data_limit",limit)  
+            let headers = new Headers(); 
+            headers.append('Content-Type', 'application/json'); 
+
+            headers.append('Access-Control-Allow-Origin', serverApiUrl);
+            headers.append('Access-Control-Allow-Credentials', 'true');
+
+            headers.append('GET', 'POST', 'OPTIONS'); 
+            let apiUrl;
+            if(playlistId == -1)
+            {
+                apiUrl = serverApiUrl+'institute/course/document/all/'+courseId+'/hidden/'+hidden+'/'+offset+'/'+dataLimit
+            }
+            else
+            {
+                apiUrl = serverApiUrl+'/institute/course/document/playlist/'+playlistId+'/'+'/hidden/'+hidden+'/'+offset+'/'+dataLimit
             }
               console.log(apiUrl);  
              fetch(apiUrl,
@@ -604,10 +673,9 @@ export   const addTestSeries=( testSeries,questions,callback)=>
 export const fetch_testSeries = (offset, dataLimit, courseId,callback,playlistId=-1)=>
 {
             let headers = new Headers(); 
-            headers.append('Content-Type', 'application/json'); 
-
+            headers.append('Content-Type', 'application/json');  
             headers.append('Access-Control-Allow-Origin', serverApiUrl);
-            headers.append('Access-Control-Allow-Credentials', 'true');
+            headers.append('Access-Control-Allow-Credentials', 'true'); 
 
             headers.append('GET', 'POST', 'OPTIONS'); 
             let apiUrl = serverApiUrl+'institute/course/testseries/all/'+courseId+'/'+offset+'/'+dataLimit
@@ -620,6 +688,35 @@ export const fetch_testSeries = (offset, dataLimit, courseId,callback,playlistId
                 apiUrl = serverApiUrl+'institute/course/testseries/playlist/'+playlistId+"/"+offset+"/"+dataLimit
             }
             console.log("api url bbhkbgdbkhdhkbncnncnnnn : ",apiUrl)
+             fetch(apiUrl,
+            {
+                method: 'GET',  
+                headers,
+                // body:JSON.stringify({title,description,fees,instId})
+            })
+            .then((response)=>callback(response)) 
+            .catch((error)=>{console.log(error)})
+
+}
+
+export const fetch_testSeries_with_hidden = (hidden,offset, dataLimit, courseId,callback,playlistId=-1)=>
+{
+            let headers = new Headers(); 
+            headers.append('Content-Type', 'application/json');  
+            headers.append('Access-Control-Allow-Origin', serverApiUrl);
+            headers.append('Access-Control-Allow-Credentials', 'true'); 
+
+            headers.append('GET', 'POST', 'OPTIONS'); 
+            let apiUrl = serverApiUrl+'institute/course/testseries/all/'+courseId+'/hidden/'+hidden+"/"+offset+'/'+dataLimit
+             
+            if(playlistId == -1)
+            {
+                apiUrl = serverApiUrl+'institute/course/testseries/all/'+courseId+'/hidden/'+hidden+"/"+offset+'/'+dataLimit
+            }else
+            {
+                apiUrl = serverApiUrl+'institute/course/testseries/playlist/'+playlistId+'/hidden/'+hidden+"/"+offset+"/"+dataLimit
+            }
+    
              fetch(apiUrl,
             {
                 method: 'GET',  

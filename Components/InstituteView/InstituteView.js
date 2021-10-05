@@ -16,7 +16,7 @@ import Accordian from '../Utils/Accordian'
 import MockTest from '../MockTest/MockTest'
 import CountDown from 'react-native-countdown-component';
 import {fetch_instituteDetails} from '../Utils/DataHelper/Coaching'
-import {fetch_institute_courses,fetch_courses_banners,addCourseBanner,fetch_courses_videos,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents,fetch_courses_timetable,fetch_testSeries, fetch_latestUpcomingSchedule, fetch_testSeriesPlaylist} from '../Utils/DataHelper/Course'
+import {fetch_institute_courses,fetch_courses_banners,addCourseBanner,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents_with_hidden,fetch_courses_timetable,fetch_testSeries_with_hidden, fetch_latestUpcomingSchedule, fetch_testSeriesPlaylist,fetch_courses_videos_with_hidden} from '../Utils/DataHelper/Course'
 import { checkUserEnrollment } from '../Utils/DataHelper/EnrollStudent'
 import { saveStudentHistory } from '../Utils/DataHelper/StudentHistory'
 import { SliderBox } from 'react-native-image-slider-box';
@@ -36,6 +36,7 @@ import RenderVideo from './RenderVideo'
 import { LinearGradient } from "expo-linear-gradient";
 import {fetch_institute_feed} from '../Utils/DataHelper/Feed'
 import { throwIfAudioIsDisabled } from 'expo-av/build/Audio/AudioAvailability';
+import { Toast } from 'native-base';
 
 const width = Dimensions.get('window').width
 class InstituteView extends React.Component {
@@ -91,10 +92,17 @@ class InstituteView extends React.Component {
         {
             response.json().then((data)=>
             {
-                this.setState({courses:data, courseId: data[0].id, activeCourse: data[0].id, activeCourseDetail: data[0]},()=>{
-                    checkUserEnrollment(this.state.courseId, this.state.studentId, this.checkEnrollCallBack)
-                    fetch_courses_banners(this.state.activeCourse,this.courseBannerCallback)
-                })
+                if(data)
+                {
+                    this.setState({courses:data, courseId: data[0].id, activeCourse: data[0].id, activeCourseDetail: data[0]},()=>{
+                        checkUserEnrollment(this.state.courseId, this.state.studentId, this.checkEnrollCallBack)
+                        fetch_courses_banners(this.state.activeCourse,this.courseBannerCallback)
+                    })
+                }else
+                {
+                    Toast.show('No Course Found')
+                }
+                
             })
         }
     }
@@ -168,7 +176,63 @@ class InstituteView extends React.Component {
     {
         if(this.props.route.params.insId!=this.state.instituteId)
         {
-            this.setState({instituteId:this.props.route.params.insId,loadingInstitute:true, bannerImg: []},()=>
+            this.setState({
+            courses:[],
+            courseDetails:{},
+            instituteId:this.props.route.params.insId,
+            loadingInstitute:true,
+             activeCourse:'',
+             courseId:'',
+             bannerImg: [],
+            courseTimetableLoaded:false,
+            isCourseTimeTableLoading:false,
+            courseTimeTable:[],
+            courseDocumentPlaylistLoaded:false,
+            isCourseDocumentPlaylistLoading:false,
+            courseDocumentPlaylist:[],
+            courseDocumentLoaded:false,
+            isCourseDocumentLoading:false,
+            courseDocuments:[],
+            courseTestSeriesLoaded:false,
+            isCourseTestSeriesLoading:false,
+            courseTestSeries:[],
+            courseTestSeriesPlaylistLoaded:false,
+            isCourseTestSeriesPlaylistLoading:false,
+            courseTestSeriesPlaylist:[],
+            courseVideoPlaylistLoaded:false,
+            isCourseVideoPlaylistLoading:false,
+            courseVideosPlaylist:[],
+            courseVideoLoaded:false,
+            isCourseVideoLoading:false,
+            courseVideos:[],
+            activeTab: 'videos', 
+            tabtoshow: 1,
+            modalVisible: false,
+            ReviewmodalVisible: false, 
+            studentId:this.props.userInfo.id,
+            studentEnrolled: '',
+            review: '',
+            feedOffset:0, 
+            subscribe: '',
+            zoomModal: false,
+            zimage:'', 
+            index: '',
+            activeFilter: 'All', 
+            insName:'',
+            insNumber:'',
+            docoffset: 0,
+            vidoffset: 0,
+            ttoffset: 0,
+            tsoffset: 0,
+            activeFilterId: -1,
+            showLoadMore: true,
+            courseDocuments:[],
+            courseVideos:[], 
+            courseTimeTable:[],
+            courseTestSeries:[],
+            pinId: '',
+            checkPinned: '' 
+        },()=>
             {
             fetch_instituteDetails(this.state.instituteId,this.instituteCallback)
             fetch_institute_courses(this.state.instituteId,this.coursesCallBack)
@@ -226,7 +290,8 @@ class InstituteView extends React.Component {
                 courseTestSeriesLoaded:false,isCourseTestSeriesLoading:false,courseTestSeries:[],
                 courseTestSeriesPlaylistLoaded:false,isCourseTestSeriesPlaylistLoading:false,courseTestSeriesPlaylist:[],
                 courseVideoPlaylistLoaded:false,isCourseVideoPlaylistLoading:false,courseVideosPlaylist:[],
-                courseVideoLoaded:false,isCourseVideoLoading:false,courseVideos:[] 
+                courseVideoLoaded:false,isCourseVideoLoading:false,courseVideos:[], 
+                
             },()=>{}  
             )
             checkUserEnrollment(item.id, this.state.studentId, this.checkEnrollCallBack)
@@ -332,7 +397,9 @@ class InstituteView extends React.Component {
                     else
                     {
                         this.setState({courseTimeTable:this.state.courseTimeTable,courseTimetableLoaded:true,isCourseTimetableLoading:false, showLoadMore: false, loadingFooter: false});
-                    }    
+                    } 
+                    
+                    
                 })
             }
     }
@@ -356,7 +423,9 @@ class InstituteView extends React.Component {
                     else
                     {
                         this.setState({courseTestSeries:this.state.courseTestSeries,courseTestSeriesLoaded:true,isCourseTestSeriesLoading:false, showLoadMore: false, loadingFooter: false});
-                    }                                    
+                    } 
+                    
+                    
                 })
         }
     }
@@ -366,6 +435,7 @@ class InstituteView extends React.Component {
             {
                 response.json().then(data=>
                 {
+                     
                     if(data.length>0)
                     {
                          
@@ -381,7 +451,9 @@ class InstituteView extends React.Component {
                     else
                     {
                         this.setState({courseDocuments:this.state.courseDocuments,courseDocumentLoaded:true,isCourseDocumentLoading:false, showLoadMore: false, loadingFooter: false}); 
-                    }               
+                    }
+
+                                   
                 })
             }
     }
@@ -404,7 +476,12 @@ class InstituteView extends React.Component {
                 else
                 {
                     this.setState({courseVideos:this.state.courseVideos,courseVideoLoaded:true,isCourseVideoLoading:false, showLoadMore: false, loadingFooter: false}); 
-                }                
+                }
+                
+                if(data.length<4)
+                {
+                    this.setState({showLoadMore:false})
+                }
             })
         }
     }
@@ -530,19 +607,19 @@ class InstituteView extends React.Component {
           case 'videos':  
                 this.setState({activeFilter: item.name, isCourseVideoLoading:true,courseVideoLoaded:false, activeFilterId: item.id, vidoffset: 0, showLoadMore: true,courseVideos: []},()=>
                 {
-                    fetch_courses_videos(this.state.vidoffset, dataLimit,this.state.activeCourse,this.courseVideoCallback,item.id);
+                    fetch_courses_videos_with_hidden(false,this.state.vidoffset, dataLimit,this.state.activeCourse,this.courseVideoCallback,item.id);
                 }) 
                 break;
            case 'document':
                 this.setState({activeFilter: item.name, isCourseDocumentLoading:true,courseDocumentLoaded:false, activeFilterId: item.id, docoffset: 0, showLoadMore: true, courseDocuments:[]},()=>
                 {
-                    fetch_courses_documents(this.state.docoffset, dataLimit, this.state.activeCourse,this.courseDocumentCallback,item.id);
+                    fetch_courses_documents_with_hidden(false,this.state.docoffset, dataLimit, this.state.activeCourse,this.courseDocumentCallback,item.id);
                 }) 
                 break;
             case 'testSeries':
                 this.setState({activeFilter: item.name, isCourseTestSeriesLoading:true,courseTestSeriesLoaded:false, activeFilterId: item.id, tsoffset: 0, showLoadMore: true, courseTestSeries: []},()=>
                 {
-                    fetch_testSeries(this.state.tsoffset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback,item.id);
+                    fetch_testSeries_with_hidden(false,this.state.tsoffset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback,item.id);
                 }) 
                 break;
 
@@ -556,7 +633,7 @@ class InstituteView extends React.Component {
                     if(!this.state.courseVideoLoaded&&!this.state.isCourseVideoLoading&&this.state.activeCourse)
                     {
                         this.setState({isCourseVideoLoading:true, activeFilterId: -1})
-                        fetch_courses_videos(this.state.vidoffset, dataLimit,this.state.activeCourse,this.courseVideoCallback);
+                        fetch_courses_videos_with_hidden(false,this.state.vidoffset, dataLimit,this.state.activeCourse,this.courseVideoCallback);
                     }
                     if(!this.state.courseVideoPlaylistLoaded&&!this.state.isCourseVideoPlaylistLoading&&this.state.activeCourse)
                     {
@@ -588,7 +665,7 @@ class InstituteView extends React.Component {
                         if(!this.state.courseTestseriesLoaded&&!this.state.isCourseTestseriesLoading&&this.state.activeCourse)
                         {
                             this.setState({isCourseTestseriesLoading:true, activeFilterId: -1})
-                            fetch_testSeries(this.state.tsoffset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback,this.state.activeFilterId);
+                            fetch_testSeries_with_hidden(false,this.state.tsoffset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback,this.state.activeFilterId);
                         }
                         if(!this.state.courseTestSeriesPlaylistLoaded&&!this.state.isCourseTestSeriesPlaylistLoading&&this.state.activeCourse)
                         {
@@ -611,7 +688,7 @@ class InstituteView extends React.Component {
                         if(!this.state.courseDocumentLoaded&&!this.state.isCourseDocumentLoading&&this.state.activeCourse)
                         {
                             this.setState({isCourseDocumentLoading:true})
-                            fetch_courses_documents(this.state.docoffset, dataLimit,this.state.activeCourse,this.courseDocumentCallback,this.state.activeFilterId);
+                            fetch_courses_documents_with_hidden(false,this.state.docoffset, dataLimit,this.state.activeCourse,this.courseDocumentCallback,this.state.activeFilterId);
                         }
                         if(!this.state.courseDocumentPlaylistLoaded&&!this.state.isCourseDocumentPlaylistLoading&&this.state.activeCourse)
                         {
@@ -666,7 +743,13 @@ class InstituteView extends React.Component {
 
                                     </View>):(<EmptyList image={Assets.noResult.noRes1}/>)                     
                 )
-            case 'videos':      return(
+            case 'videos':      
+            
+            if(this.state.courseVideos.length<4&&this.state.showLoadMore)
+            {
+                this.setState({showLoadMore:false})
+            }
+            return(
                                     this.state.courseVideoLoaded?(
                                     <FlatList 
                                         data={this.state.courseVideos} 
@@ -679,7 +762,12 @@ class InstituteView extends React.Component {
                                     ):(
                                         <CustomActivtiyIndicator mode="video"/>
                                     ))
-            case 'testSeries':  return(
+            case 'testSeries':  
+            if(this.state.courseTestSeries.length<4&&this.state.showLoadMore)
+            {
+                this.setState({showLoadMore:false})
+            }
+            return(
                                      this.state.isCourseDocumentLoading?(
                                      <CustomActivtiyIndicator mode="testSeries"/>):(
                                      <FlatList 
@@ -690,7 +778,13 @@ class InstituteView extends React.Component {
                                         showsHorizontalScrollIndicator={false}
                                         ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                                     />))
-            case 'document':    return(
+            case 'document':    
+            
+            if(this.state.courseDocuments.length<4&&this.state.showLoadMore)
+            {
+                this.setState({showLoadMore:false})
+            }
+            return(
                                     this.state.courseDocumentLoaded?(<FlatList 
                                         data={this.state.courseDocuments} 
                                         renderItem={({item,index})=><RenderDocument userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="student" studentEnrolled={this.state.studentEnrolled} downloadMode={true} insName={this.state.insName} insNumber={this.state.insNumber} courseDocumentPlaylist={this.state.courseDocumentPlaylist} />}
@@ -789,7 +883,7 @@ class InstituteView extends React.Component {
     loadMoreOnPress=()=>{
         if(this.state.activeTab=='document')
         {
-            this.setState({docoffset: parseInt(this.state.docoffset)+1},()=>{fetch_courses_documents(this.state.docoffset, dataLimit, this.state.activeCourse,this.courseDocumentCallback,this.state.activeFilterId);})
+            this.setState({docoffset: parseInt(this.state.docoffset)+1},()=>{fetch_courses_documents_with_hidden(false,this.state.docoffset, dataLimit, this.state.activeCourse,this.courseDocumentCallback,this.state.activeFilterId);})
         }
         else if(this.state.activeTab=='timeTable')
         {
@@ -798,12 +892,12 @@ class InstituteView extends React.Component {
         else if(this.state.activeTab=='videos')
         {
             this.setState({vidoffset: parseInt(this.state.vidoffset)+1},()=>
-                fetch_courses_videos(this.state.vidoffset, dataLimit,this.state.activeCourse,this.courseVideoCallback,this.state.activeFilterId)
+            fetch_courses_videos_with_hidden(false,this.state.vidoffset, dataLimit,this.state.activeCourse,this.courseVideoCallback,this.state.activeFilterId)
             )
         }
         else if(this.state.activeTab=='testSeries')
         {
-            this.setState({tsoffset: parseInt(this.state.tsoffset)+1},()=>{fetch_testSeries(this.state.tsoffset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback,this.state.activeFilterId)})
+            this.setState({tsoffset: parseInt(this.state.tsoffset)+1},()=>{fetch_testSeries_with_hidden(false,this.state.tsoffset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback,this.state.activeFilterId)})
         }
     }
 
@@ -821,7 +915,8 @@ class InstituteView extends React.Component {
                                 showsHorizontalScrollIndicator={false}
                             /> 
                     </View>
-                    <View style={styles.rowContainer}>
+                    {this.state.activeCourse?(
+                        <View style={styles.rowContainer}>
                             {/* <FlatList 
                             data={this.state.courseBanners} 
                             renderItem={this.renderBannerList} 
@@ -881,10 +976,10 @@ class InstituteView extends React.Component {
                                         <View style={{}}><Feather name="chevron-down" size={20}/></View>
                                         <Text style={{margin:5}}>Load More</Text>
                                 </TouchableOpacity>
-                            ):(null)}
-
-                        </View>
-                        </>
+                            ):(null)} 
+                        </View> 
+                    ):(null)}
+                    </>
     
                 )
             

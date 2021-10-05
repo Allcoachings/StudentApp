@@ -16,6 +16,7 @@ import javax.transaction.Transactional;
 public interface CourseDocumentRepo extends PagingAndSortingRepository<CourseDocument,Long> {
 
     Page<CourseDocument> findByCourseId(long id, Pageable pageable);
+    Page<CourseDocument> findByCourseIdAndHidden(long id, boolean hidden,Pageable pageable);
     long countByCourseId(long courseId);
     @Modifying
     @Query("UPDATE CourseDocument set published=:publishedStatus WHERE id=:id")

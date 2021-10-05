@@ -90,7 +90,7 @@ class AddFeedModal extends Component {
         //     {
         //         feedImagsArray.push({feedImage:item})
         //     }))
-        //     feedItem.feed.feedImages=feedImagsArray;
+        //     feedItem.feed.feedImagesD=feedImagsArray;
         // }
 
         
@@ -389,20 +389,20 @@ setFeedTypeOption=(postType)=>
                 keyExtractor={(item,index) =>index.toString()}
             />
             <View style={{flexDirection: 'row',alignItems: 'center',margin:10}}>
-                    <Text style={{fontSize:18,fontFamily: 'Raleway_600SemiBold'}}>Poll Options</Text>
-                    <View style={{flex: 1,flexDirection:'row',justifyContent: 'flex-end', alignItems: 'center'}}>
-                        <TouchableOpacity style={{margin:10,padding:10}} onPress={this.addPollOptions}>
-                            <Feather name="plus" size={20} color={theme.accentColor} />
-                        </TouchableOpacity>
-                        {this.state.pollOptionCounter>2?(
+                <Text style={{fontSize:18,fontFamily: 'Raleway_600SemiBold'}}>Poll Options</Text>
+                <View style={{flex: 1,flexDirection:'row',justifyContent: 'flex-end', alignItems: 'center'}}>
+                    <TouchableOpacity style={{margin:10,padding:10}} onPress={this.addPollOptions}>
+                        <Feather name="plus" size={20} color={theme.accentColor} />
+                    </TouchableOpacity>
+                    {this.state.pollOptionCounter>2?(
 
-                        <TouchableOpacity style={{margin:10,padding:10}} onPress={this.removePollOption}>
-                            <Feather name="minus" size={20} color={theme.accentColor} />
-                        </TouchableOpacity>
-                        ):(null)}
-                        
-                    </View>
+                    <TouchableOpacity style={{margin:10,padding:10}} onPress={this.removePollOption}>
+                        <Feather name="minus" size={20} color={theme.accentColor} />
+                    </TouchableOpacity>
+                    ):(null)}
+                    
                 </View>
+            </View>
         </View> 
         );
   }

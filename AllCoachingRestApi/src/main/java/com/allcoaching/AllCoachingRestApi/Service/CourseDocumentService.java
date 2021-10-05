@@ -42,12 +42,26 @@ public class CourseDocumentService {
         return extractDataFromPage(courseDocumentRepo.findByCourseId(id, PageRequest.of(page,pageSize)));
 
     }
+    //fetching documents  by course id and hidden parameter
+    public Iterable<CourseDocument> findByCourseIdAndHidden(long id,boolean hidden,int page,int pageSize)
+    {
+        return extractDataFromPage(courseDocumentRepo.findByCourseIdAndHidden(id, hidden,PageRequest.of(page,pageSize)));
+
+    }
 
     //fetching  documents  by playlist id
     public Iterable<CourseDocument> findByPlaylistId(long id,int page,int pageSize)
     {
 
         return extractDataFromPage(courseDocumentPlaylistRepo.playListContent(id,PageRequest.of(page,pageSize)));
+    }
+
+    //fetching  documents  by playlist id and hidden parameter
+    public Iterable<CourseDocument> findByPlaylistIdAndHidden(long id,boolean hidden,int page,int pageSize)
+    {
+
+        return extractDataFromPage(courseDocumentPlaylistRepo.findByPlaylistIdAndHidden(id,hidden,PageRequest.of(page,pageSize)));
+
     }
 
 

@@ -44,9 +44,9 @@ public class FeedService {
 
 
 
-               Feed f = opFeed.get();
-                    FeedContentDto feedContentDto = new FeedContentDto(f);
-                    FeedDto feedDto = new FeedDto(feedContentDto);
+                Feed f = opFeed.get();
+                FeedContentDto feedContentDto = new FeedContentDto(f);
+                FeedDto feedDto = new FeedDto(feedContentDto);
 
                     //detecting poster type is it a institute or a student
                     switch (f.getPostedBy())

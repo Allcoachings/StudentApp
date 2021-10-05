@@ -60,7 +60,7 @@ const Timer =(props)=>
             setTime(props.time);
             setIsRefreshRequired(false);
             timeRef.current=props.time;
-            console.log("props.time",props.time);
+          
         }
         
     },[props.time,isRefreshRequired])
@@ -148,7 +148,7 @@ const Timer =(props)=>
           
           props.removeBackListener() 
           
-           console.log("blurred",props)
+          
         });
     
         // Return the function to unsubscribe from the event so it gets removed on unmount

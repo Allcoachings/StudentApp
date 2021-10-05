@@ -55,7 +55,7 @@ class SeriesList extends React.Component {
 
     componentDidMount(){
         seriesList(this.state.id,this.state.offset,dataLimit,this.seriesListCallBack)
-        fetch_Banners("testSeries", this.bannerCallback)
+        fetch_Banners("test", this.bannerCallback)
     }
 
     bannerCallback=(response)=>{

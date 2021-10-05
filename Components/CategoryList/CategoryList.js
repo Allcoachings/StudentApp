@@ -6,7 +6,7 @@ import { theme,dataLimit, serverBaseUrl, Assets, imageProvider } from '../config
 import { Feather } from '@expo/vector-icons';
 import { Rating ,AirbnbRating} from 'react-native-ratings';
 import { Redirect } from 'react-router';
-import {fetch_coachingByCategory} from '../Utils/DataHelper/Coaching'
+import {fetch_coachingByCategory, fetch_coachingByCategoryAndStatus} from '../Utils/DataHelper/Coaching'
 import {SearchInstituteByCategory} from '../Utils/DataHelper/Search'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
@@ -24,20 +24,19 @@ class CategoryList extends React.Component {
         if(response.status==200)
         {
             response.json().then(data=>
-                {
-                    this.setState({institute:data,loadingInstitute:false})
-                })
+            {
+                this.setState({institute:data,loadingInstitute:false})
+            })
         }
     }
     componentDidMount() {
-        fetch_coachingByCategory(this.state.cat_id,this.state.offset,dataLimit,this.coachingCallBack)
+        fetch_coachingByCategoryAndStatus(this.state.cat_id,1,this.state.offset,dataLimit,this.coachingCallBack)
     }
 
     updateComponent=()=>{
         if(this.state.cat_id!=this.props.route.params.id)
         {
-            this.setState({cat_id:this.props.route.params.id, offset: 0},()=>fetch_coachingByCategory(this.state.cat_id,this.state.offset,dataLimit,this.coachingCallBack))
-            
+            this.setState({cat_id:this.props.route.params.id, offset: 0},()=>fetch_coachingByCategoryAndStatus(this.state.cat_id,1,this.state.offset,dataLimit,this.coachingCallBack))
         }
     }
 
