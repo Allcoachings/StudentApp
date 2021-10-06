@@ -84,11 +84,7 @@ class Downloads extends Component {
                     
                     <FlatList
                     data={this.state.data}
-<<<<<<< HEAD
-                    renderItem={({item,index}) =><RenderVideo  removeVideo={this.removeVideo} index={index} userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="offline" downloadMode={false}/>}
-=======
-                    renderItem={({item}) =><RenderVideo userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="offline" downloadMode={false} actions={this.state.actions}/>}
->>>>>>> 6227649e3fd01856cac9c35fce016f761d827651
+                    renderItem={({item,index}) =><RenderVideo  removeVideo={this.removeVideo} index={index} userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="offline" downloadMode={false} actions={this.state.actions}/>}
                     keyExtractor={(item)=>item.id}
                     ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                     />
