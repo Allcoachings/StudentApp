@@ -7,7 +7,7 @@ import { setStatusBarHidden } from 'expo-status-bar'
 import { SafeAreaView } from "react-navigation";
 import { SET_STATUS_BAR_HIDDEN } from '../Actions/types'
 import { useDispatch } from 'react-redux'
-import { theme,dataLimit } from '../config'
+import { theme,dataLimit, numFormatter } from '../config'
 import moment from 'moment'
 import VideoCommentItem from './VideoCommentItem'
 import AddComment from './AddComment'
@@ -15,7 +15,7 @@ import { fetchVideoComments, updateVideoView } from '../Utils/DataHelper/CourseV
 
 export default VideoPlayerCustom=(props)=>
 {
-      
+      console.log(props);
     const playbackRateOptions = [0.25,0.5,0.75,1.00,1.25,1.50,1.75,2.00]
     const [inFullscreen, setInFullsreen] = useState(false)
     const [shouldPlay, setShouldPlay] = useState(true);
@@ -178,7 +178,7 @@ export default VideoPlayerCustom=(props)=>
                 <View style={{margin:10}}> 
                     <Text style={{fontFamily: 'Raleway_600SemiBold' ,fontSize:15}}>{props.route.params.videoTitle}</Text>
                     <View style={{flexDirection: 'row'}}>
-                        <Text style={{color:theme.greyColor,marginTop:5}}>1K views{' • '} {moment(props.route.params.postingTime).fromNow()} </Text>
+                        <Text style={{color:theme.greyColor,marginTop:5}}>{numFormatter(props.route.params.item.views)} views{' • '} {moment(props.route.params.postingTime).fromNow()} </Text>
                     </View>
                 </View>
             </View>

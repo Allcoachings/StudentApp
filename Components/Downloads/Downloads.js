@@ -9,6 +9,7 @@ import RenderVideo from '../InstituteView/RenderVideo';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
+import {saveItemsOffline} from '../Utils/DownloadFile'
 class Downloads extends Component {
   
    state = {
@@ -47,6 +48,15 @@ class Downloads extends Component {
             }
         })
     }
+
+    removeVideo =(index)=>
+    {
+        let data_arr = this.state.data;
+        data_arr.splice(index,1)
+        this.setState({data:data_arr})
+        saveItemsOffline(data_arr,this.props.userInfo.id,this.state.activeTab==2?'document':'video');
+        
+    }
     switchTabRender=(activeTab)=>{
 
         
@@ -73,7 +83,7 @@ class Downloads extends Component {
                     
                     <FlatList
                     data={this.state.data}
-                    renderItem={({item}) =><RenderVideo userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="offline" downloadMode={false}/>}
+                    renderItem={({item,index}) =><RenderVideo  removeVideo={this.removeVideo} index={index} userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="offline" downloadMode={false}/>}
                     keyExtractor={(item)=>item.id}
                     ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                     />
@@ -92,13 +102,13 @@ class Downloads extends Component {
             }
             );
     }
-componentWillUnmount() {
-    console.log(this.didFocusListener)
-    if(this.didFocusListener)
-    {
-        this.didFocusListener.remove()
+    componentWillUnmount() {
+        console.log(this.didFocusListener)
+        if(this.didFocusListener)
+        {
+            this.didFocusListener.remove()
+        }
     }
-}
   render() {
     return (
         <PageStructure 

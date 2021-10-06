@@ -31,21 +31,21 @@ class TestSeriesView extends React.Component {
         wrongQues:0,
         attempted:0,
         testScore:0,
-        backhandler:null
+        // backhandler:null
     }
 
     questionCallback=(response) => 
     {
             
-            if(response.status==200)
-            {   
-                    response.json().then(data=>
-                    {
-                        StatusBar.setHidden(true);
-                        this.props.setStatusBarHidden(true)
-                      this.setState({questions:{...this.state.questions,...data},isFirstTimeLoading:false,loadingQuestions:false})
-                    })
-            }
+        if(response.status==200)
+        {   
+            response.json().then(data=>
+            {
+                StatusBar.setHidden(true);
+                this.props.setStatusBarHidden(true)
+                this.setState({questions:{...this.state.questions,...data},isFirstTimeLoading:false,loadingQuestions:false})
+            })
+        }
     }
 
     componentDidMount() 
@@ -54,21 +54,21 @@ class TestSeriesView extends React.Component {
         fetch_testSeries_questions(this.state.testSeriesId,this.state.offset,dataLimit,this.questionCallback)
         // this.timer();
 
-        this.backHandlerListener() 
+        // this.backHandlerListener() 
     }
-    backHandlerListener  =()=> { 
+    // backHandlerListener  =()=> { 
         
-        let backhandler =  BackHandler.addEventListener('hardwareBackPress',  ()=> 
-                {
-                    this.showAlert()
+    //     let backhandler =  BackHandler.addEventListener('hardwareBackPress',  ()=> 
+    //             {
+    //                 this.showAlert()
                     
-                    return true;
-                });
-                this.setState({backhandler});
+    //                 return true;
+    //             });
+    //     this.setState({backhandler});
 
 
 
-    }
+    // }
     showAlert=()=>
     {
         Alert.alert("Warning!","Are you sure to quit quiz",[ 
@@ -106,7 +106,7 @@ class TestSeriesView extends React.Component {
                         <View style={styles.pauseBtnView}>
                             {/* <Feather name="pause-circle" size={13} color={theme.greyColor}/> */}
                                 {/* <Text style={styles.pauseBtnText}> {this.formatTimer(this.state.time)}</Text> */}
-                                <Timer time={this.state.time} removeBackListener={this.removeBackListener} backHandlerListener={this.backHandlerListener} updateTimeInParent={this.updateTimeInParent} refresh={this.refreshQuiz} navigation={this.props.navigation} timeUpAction={this.timeUpAction}/>
+                                <Timer time={this.state.time} showAlert={this.showAlert}  updateTimeInParent={this.updateTimeInParent} refresh={this.refreshQuiz} navigation={this.props.navigation} timeUpAction={this.timeUpAction}/>
                         </View>
                         <TouchableOpacity style={styles.menuIcon} onPress={()=>this.openModal()}>
                             <Feather name="grid" size={25} color={theme.labelOrInactiveColor}/>
@@ -160,26 +160,26 @@ class TestSeriesView extends React.Component {
             )
         )
     }
-    removeBackListener=()=>
-    {
+    // removeBackListener=()=>
+    // {
         
-        if(this.state.backhandler)
-        {
-            console.log("remove back listener",this.state.backhandler)
-            this.state.backhandler.remove();
-        }
-    }
+    //     if(this.state.backhandler)
+    //     {
+    //         console.log("remove back listener",this.state.backhandler)
+    //         this.state.backhandler.remove();
+    //     }
+    // }
     closeModal = () => {
         this.setState({ isModalVisible: false});
       }
       openModal = () => {
         this.setState({ isModalVisible: true });
       }
-    componentWillUnmount() { 
+    // componentWillUnmount() { 
             
-            this.removeBackListener();
+    //         // this.removeBackListener();
           
-        }
+    //     }
       updateComponent=()=>
       {
            
@@ -286,8 +286,7 @@ class TestSeriesView extends React.Component {
                             wrongQues={this.state.wrongQues}
                             questions={this.state.questions}
                             attempted={this.state.attempted}
-                            isModalVisible={this.state.isModalVisible}
-                            removeBackListener={this.removeBackListener}
+                            isModalVisible={this.state.isModalVisible} 
                             // isPractice={true}
                             isPractice={this.state.testSeries.isPractice}
                             closeModal={this.closeModal}
@@ -296,6 +295,7 @@ class TestSeriesView extends React.Component {
                             timeOver ={this.state.timeOver}
                             timeLeft ={this.state.timeLeft}
                             intervalRef={this.state.interval}
+                            setStatusBarHidden={setStatusBarHidden}
                         />
                     ) : (null)}
               </>

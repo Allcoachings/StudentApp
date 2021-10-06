@@ -36,6 +36,13 @@ class RenderVideo extends React.Component {
     }
 
     actions = ['Change Playlist'];
+    componentDidMount = () => {
+        if(this.props.mode=="offline")
+        {
+            this.actions.push("Remove")
+        }
+    };
+    
     showThreeMenu=()=>
     {
          
@@ -56,6 +63,8 @@ class RenderVideo extends React.Component {
             case "Change Playlist":
                       this.setState({showModal: true})
                 break;
+            case "Remove":
+                this.props.removeVideo(this.props.index)
         }
     }
   
@@ -96,7 +105,7 @@ class RenderVideo extends React.Component {
     }
 
     render(){
-        console.log("this.props.item.playlistId",this.props.item.playlistId)
+       
         return( 
             <View style={styles.videoContainer}>
                 <TouchableOpacity onPress={()=>{

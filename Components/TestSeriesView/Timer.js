@@ -1,9 +1,9 @@
 import React,{ useEffect,useRef,useState } from "react";
-import { AppState,StyleSheet,Text,Alert } from "react-native"
+import { AppState,StyleSheet,Text,Alert,BackHandler } from "react-native"
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { differenceInSeconds } from "date-fns";
 import { theme } from "../config";
-
+let backhandler;
 const getElapsedTime = async () => {
     try {
       const startTime = await AsyncStorage.getItem("@start_time");
@@ -127,34 +127,51 @@ const Timer =(props)=>
           {
               props.refresh();
               setIsRefreshRequired(true)
+              
           }
-         
-          props.removeBackListener() 
-            props.backHandlerListener()
+          if(backhandler)
+          {
+            backhandler.remove()
+          }
+          backBtnListner()
+           
         
  
           
            
         });
-    
+        
         // Return the function to unsubscribe from the event so it gets removed on unmount
         return unsubscribe;
       }, [props.navigation]);
      
-      useEffect(() => {
-        const unsubscribe = props.navigation.addListener('blur', () => {
-          // The screen is focused
-          // Call any action
-          
-          props.removeBackListener() 
-          
-          
-        });
-    
-        // Return the function to unsubscribe from the event so it gets removed on unmount
-        return unsubscribe;
-      }, [props.navigation]);
-     
+    useEffect(() => {
+      const unsubscribe = props.navigation.addListener('blur', () => {
+        // The screen is focused
+        // Call any action
+        
+        console.log("blured")
+          if(backhandler)
+          {
+            console.log("removed on blur")
+            backhandler.remove()
+          }
+        
+      });
+  
+      // Return the function to unsubscribe from the event so it gets removed on unmount
+      return unsubscribe;
+    }, [props.navigation]);
+      const backBtnListner = ()=>{
+      backhandler =  BackHandler.addEventListener('hardwareBackPress',  ()=> 
+          {
+              props.showAlert()
+              
+              return true;
+          });
+
+          return ()=>{console.log("removed auto");backhandler.remove()}
+     }
 
       
 

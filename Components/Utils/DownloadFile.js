@@ -45,3 +45,16 @@ export const downloadFile=(item,url,userId,savingDocTye,callback) => {
      })
      
  }
+
+
+ export const saveItemsOffline=(item,userId,savingDocTye) => {
+   
+    let savingItem= {[userId]:{[savingDocTye]:[item]}};
+      AsyncStorage.setItem("offline",JSON.stringify(savingItem)).then(()=>{
+        console.log("document saved")
+      });
+ }
+
+
+
+ 

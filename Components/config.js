@@ -55,7 +55,7 @@ export const linkingPrefixes=['https://www.allcoaching.com',"https://allcoaching
 //   200 - success (fetch)
 //   400-bad request 404-notfound  500-hota hai
 
-
+            
 export const Assets = {
     noResult:
     {
