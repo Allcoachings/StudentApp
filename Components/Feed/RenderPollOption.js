@@ -17,6 +17,7 @@ class RenderPollOption extends React.Component {
 
     handleVotePollCallback=(response,option_id)=>
     {
+        
         if(response.status==200)
         {
             this.props.updateVote(option_id) 
@@ -50,14 +51,13 @@ class RenderPollOption extends React.Component {
 
     renderOption=(item)=>
     {
-
         return(
             <>
-                {/* <Text style={styles.optionText}>{this.props.item.pollOption}</Text> */}
                 {this.switchCanUserVote(this.props.canUserVote,this.props.index,item)}
             </>
         )
     }
+
     render() {
         
         return (

@@ -60,7 +60,8 @@ class InsHome extends React.Component {
         vidoffset: 0,
         docoffset: 0,
         ttoffset: 0,
-        tsoffset: 0
+        tsoffset: 0,
+        actions: ['Change Playlist', 'Delete']
      }
 
      coursesCallBack=(response)=>

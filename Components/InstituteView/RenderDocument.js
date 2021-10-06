@@ -52,7 +52,7 @@ class RenderDocument extends React.Component {
          
       UIManager.showPopupMenu(
           findNodeHandle(this.state.icon),
-          this.actions,
+          this.props.actions,
           this.onError,
           this.onPopupEvent
       )
@@ -127,9 +127,9 @@ class RenderDocument extends React.Component {
                         </TouchableOpacity>  
                     </View>
                 ):(
-                    <TouchableOpacity style={{marginLeft: 'auto', marginTop: 8}} onPress={()=>this.showThreeMenu()}>
-                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
-                    </TouchableOpacity>
+                    this.props.actions.length>0?(<TouchableOpacity style={{marginLeft: 'auto', marginTop: 8}} onPress={()=>this.showThreeMenu()}>
+                            <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
+                    </TouchableOpacity>):(null)
                 )}
                 {this.state.showModal?(
                     <Modal

@@ -10,14 +10,22 @@ import { AirbnbRating } from 'react-native-ratings';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
+import RenderSinglePinnedIns from './RenderSinglePinnedIns'
 class PinnedList extends React.Component {
     
     state = {
         list: [],
         offset: 0,
+        showLoadMore: true,
+        isPinnedListLoading: true,
+        loadingFooter: false,
     }
 
     componentDidMount(){
+        this.fetch()
+    }
+
+    fetch=()=>{
         pinnedInstituteList(this.props.userInfo.id, this.state.offset, dataLimit, this.insListCallback)
     }
 
@@ -27,7 +35,15 @@ class PinnedList extends React.Component {
         {
             response.json().then(data=>
             {
-                this.setState({list:data});                   
+                // this.setState({list:data}); 
+                if(data.length>0)
+                {
+                    this.setState({list:[...this.state.list,...data],isPinnedListLoading:false, showLoadMore: true, loadingFooter:false});  
+                }
+                else
+                {
+                    this.setState({list:this.state.list,isPinnedListLoading:false, showLoadMore: false, loadingFooter: false}); 
+                }                   
             })
         }
     }
@@ -72,6 +88,19 @@ class PinnedList extends React.Component {
         )
     }
 
+    renderFooter = () => {
+        try {
+       
+          if (this.state.loadingFooter) {
+            return <CustomActivtiyIndicator/>;
+          } else {
+            return null;
+          }
+        } catch (error) {
+          console.log(error);
+        }
+    };
+
     render() {
         return(
             <PageStructure
@@ -86,11 +115,23 @@ class PinnedList extends React.Component {
                     <View style={styles.container}>
                         <FlatList 
                             data={this.state.list} 
-                            renderItem={({item})=>this.singleRow(item)} 
+                            renderItem={({item})=><RenderSinglePinnedIns item={item} navigation={this.props.navigation}/>} 
                             keyExtractor={(item)=>item.id}
                             horizontal={false} 
                             showsHorizontalScrollIndicator={false}
                             ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                            onEndReachedThreshold={0.1}
+                            refreshing={this.state.refreshing}
+                            ListFooterComponent={this.renderFooter}
+                            onEndReached={() => 
+                            {
+                                if(this.state.showLoadMore&&!this.state.loadingFooter)
+                                {
+                                    this.setState({ refreshing: true,loadingFooter:true,offset:parseInt(this.state.offset)+1},()=>this.fetch())
+                                        
+                                }
+                            
+                            }}
                         />
                     </View>
                 </ScrollView>

@@ -55,6 +55,7 @@ class TestSeries extends React.Component {
         </View>)
     }
     render() {
+        // console.log("hehe this")
         return (
             <PageStructure
                 iconName={"arrow-left"}

@@ -117,6 +117,7 @@ import {serverApiUrl} from '../../config'
 
     export const pinInstitute=(obj,callback)=>
     {
+        console.log(obj)
         let headers = new Headers(); 
         headers.append('Content-Type', 'application/json');  
         headers.append('Access-Control-Allow-Origin', serverApiUrl);

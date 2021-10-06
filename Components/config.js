@@ -34,10 +34,10 @@ export const paytmConfig={
 }
 
 //online serverBaseUrl
-export const serverBaseUrl="http://198.12.248.18:8080/"
+// export const serverBaseUrl="http://198.12.248.18:8080/"
 
 //local server base url
-// export const serverBaseUrl="http://192.168.1.33:8080/"; 
+export const serverBaseUrl="http://192.168.141.76:8080/"; 
 
 export const  shareTextInstitute="Text here";
 export const  shareTextFeed="Text here";

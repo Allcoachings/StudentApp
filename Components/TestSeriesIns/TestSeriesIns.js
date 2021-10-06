@@ -16,7 +16,8 @@ class TestSeriesIns extends React.Component {
     state = { 
         offset: 0,
         testSeries: [],
-        category:''
+        category:'',
+        tsLoading: true
      }
 
     componentDidMount() {
@@ -28,7 +29,7 @@ class TestSeriesIns extends React.Component {
         {
             response.json().then(data=>
             {
-                this.setState({testSeries: data, category: data[0].categoryName})
+                this.setState({tsLoading: false, testSeries: data, category: data[0].categoryName})
             })
         }
         else
@@ -71,13 +72,14 @@ class TestSeriesIns extends React.Component {
                <Text style={styles.rowHeadText}>{item.categoryName}</Text> 
             </View>
             <View style={styles.rowBody}>
-                <FlatList 
-                    data={item.subCategories} 
-                    renderItem={this.singleItem} 
-                    keyExtractor={(item)=>item.id}
-                    horizontal={true} 
-                    showsHorizontalScrollIndicator={false}
-                />
+                
+                    <FlatList 
+                        data={item.subCategories} 
+                        renderItem={this.singleItem} 
+                        keyExtractor={(item)=>item.id}
+                        horizontal={true} 
+                        showsHorizontalScrollIndicator={false}
+                    />
             </View>
         </View>)
     }
@@ -91,6 +93,9 @@ class TestSeriesIns extends React.Component {
             >
                 <ScrollView>
                     <View style={styles.container}> 
+                    {this.state.tsLoading?(
+                        <CustomActivtiyIndicator mode="testSeries"/>
+                    ):(
                         <FlatList 
                             data={this.state.testSeries} 
                             renderItem={this.singleRow} 
@@ -98,6 +103,7 @@ class TestSeriesIns extends React.Component {
                             showsVerticalScrollIndicator={false} 
                             ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                         />
+                    )}
                     </View> 
                 </ScrollView>
            </PageStructure>
