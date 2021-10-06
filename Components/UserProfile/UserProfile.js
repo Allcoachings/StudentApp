@@ -51,6 +51,8 @@ class UserProfile extends React.Component {
         tsOffset:0,
         showLoadMore: true,
         loadingFooter: false,
+        enrollOffset:0,
+        enrollListLoading: true,
     }
 
     closeModal = () => {
@@ -68,8 +70,12 @@ class UserProfile extends React.Component {
     }
 
     componentDidMount() {
-        fetch_student_purchase(this.props.userInfo.id, this.state.offset, dataLimit,this.purchaseCallback)
+        this.fetch()
         this.checkForUserCat()
+    }
+
+    fetch=()=>{
+        fetch_student_purchase(this.props.userInfo.id, this.state.enrollOffset, dataLimit,this.purchaseCallback)
     }
 
     purchaseCallback=(response)=>{
@@ -80,7 +86,15 @@ class UserProfile extends React.Component {
             response.json().then(data=>
             {
                 console.log(data)
-                this.setState({purchase: data})
+                // this.setState({purchase: data})
+                if(data.length>0)
+                {
+                    this.setState({purchase:[...this.state.purchase,...data],enrollListLoading:false, showLoadMore: true, loadingFooter:false});  
+                }
+                else
+                {
+                    this.setState({purchase:this.state.purchase,enrollListLoading:false, showLoadMore: false, loadingFooter: false}); 
+                } 
             })
         }
         else
@@ -340,6 +354,18 @@ class UserProfile extends React.Component {
                         keyExtractor={(item,index)=>index}
                         ListEmptyComponent={<EmptyList />}
                         ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                        onEndReachedThreshold={0.1}
+                        refreshing={this.state.refreshing}
+                        ListFooterComponent={this.renderFooter}
+                        onEndReached={() => 
+                        {
+                            if(this.state.showLoadMore&&!this.state.loadingFooter)
+                            {
+                                this.setState({ refreshing: true,loadingFooter:true,enrollOffset:parseInt(this.state.enrollOffset)+1},()=>this.fetch())
+                                    
+                            }
+                        
+                        }}
                     />)}
                     </View>
 

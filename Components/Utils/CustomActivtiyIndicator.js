@@ -75,6 +75,8 @@ class CustomActivtiyIndicator extends React.Component {
                     return(<ShimmerVideo />)
                 case 'video':
                     return(<ShimmerDocument />)
+                case 'testItem':
+                    return(<ShimmerTestItem />)
                 case 'TransSkimmer':
                 default:
                     return (

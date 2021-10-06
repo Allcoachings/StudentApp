@@ -40,8 +40,11 @@ class RenderReview extends React.Component {
         }
     }
 
+    
+
     renderReviews=(item)=>
     {
+        console.log("reply", this.state.reply)
         console.log("item", item)
         return (
         <View style={styles.ratingContainer}>

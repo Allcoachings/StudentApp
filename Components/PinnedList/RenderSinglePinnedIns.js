@@ -8,6 +8,7 @@ import {pinnedInstituteList} from '../Utils/DataHelper/Subscription'
 import CardView from '../Utils/CardView'
 import { AirbnbRating } from 'react-native-ratings';
 import { unPinInstitute }  from '../Utils/DataHelper/Subscription'
+
 class RenderSinglePinnedIns extends React.Component {
     
     state = {
@@ -38,14 +39,14 @@ class RenderSinglePinnedIns extends React.Component {
         console.log("itemid", item.institute.id)
         return(
             <View style={[this.state.hide?({display: 'none'}):(null)]}>
-                <View style={{marginBottom: '5%'}}>
+                <TouchableOpacity style={{marginBottom: '5%'}} onPress={()=>this.redirectTo(item.institute.id)}>
                     <View style={styles.instituteheader}>
                         {CardView(
                             <Image source={{uri:imageProvider(item.institute.logo)}} style={styles.instituteheaderLogo}/>
                             ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:90,borderRadius:15}):({width:150,height:100})])
                         } 
                         <View style={styles.instituteheaderMeta}>
-                            <TouchableWithoutFeedback style={{display: 'flex', flexDirection: 'row'}} onPress={()=>this.redirectTo(item.institute.id)}>
+                            <TouchableWithoutFeedback style={{display: 'flex', flexDirection: 'row'}} >
                                 <Text style={styles.instituteheaderText}>{item.institute.name}</Text>
                             </TouchableWithoutFeedback>
                             <Text style={styles.instituteDirector}>{item.institute.directorName}</Text>
@@ -71,7 +72,7 @@ class RenderSinglePinnedIns extends React.Component {
                         <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
                         </TouchableOpacity>
                     </View>
-                </View>
+                </TouchableOpacity>
                 <View style = {styles.container}>
                     <Modal animationType = {"fade"} 
                             transparent = {true}
