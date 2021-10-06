@@ -31,30 +31,15 @@ class TestSeriesView extends React.Component {
         wrongQues:0,
         attempted:0,
         testScore:0,
-<<<<<<< HEAD
-        // backhandler:null
-=======
         backhandler:null,
         showLoadMore: true,
         isNQuestionLoading: true,
         loadingFooter: false,
->>>>>>> 6227649e3fd01856cac9c35fce016f761d827651
     }
 
     questionCallback=(response) => 
     {
             
-<<<<<<< HEAD
-        if(response.status==200)
-        {   
-            response.json().then(data=>
-            {
-                StatusBar.setHidden(true);
-                this.props.setStatusBarHidden(true)
-                this.setState({questions:{...this.state.questions,...data},isFirstTimeLoading:false,loadingQuestions:false})
-            })
-        }
-=======
             if(response.status==200)
             {   
                     response.json().then(data=>
@@ -72,7 +57,6 @@ class TestSeriesView extends React.Component {
                         } 
                     })
             }
->>>>>>> 6227649e3fd01856cac9c35fce016f761d827651
     }
 
     componentDidMount() 
@@ -83,9 +67,6 @@ class TestSeriesView extends React.Component {
 
         // this.backHandlerListener() 
     }
-<<<<<<< HEAD
-    // backHandlerListener  =()=> { 
-=======
 
     fetch=()=>{
         fetch_testSeries_questions(this.state.testSeriesId,this.state.offset,dataLimit,this.questionCallback)
@@ -95,7 +76,7 @@ class TestSeriesView extends React.Component {
         try {
        
           if (this.state.loadingFooter) {
-            return <CustomActivtiyIndicator/>;
+            return <CustomActivtiyIndicator mode="questionSkimmer"/>
           } else {
             return null;
           }
@@ -103,8 +84,7 @@ class TestSeriesView extends React.Component {
           console.log(error);
         }
     };
-    backHandlerListener  =()=> { 
->>>>>>> 6227649e3fd01856cac9c35fce016f761d827651
+    // backHandlerListener  =()=> { 
         
     //     let backhandler =  BackHandler.addEventListener('hardwareBackPress',  ()=> 
     //             {
@@ -187,25 +167,9 @@ class TestSeriesView extends React.Component {
 
    
 
-    renderFooter=()=>{
+    renderBottom=()=>{
         return(
-            CardView(
-                <View style={styles.footerView}>
-                    <View style={styles.reviewBtnView}>
-                        <TouchableOpacity style={styles.reviewBtn}>
-                            <Text style={styles.btnText}>Mark For Review</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.prevSaveBtnView}>
-                        <TouchableOpacity style={styles.previousBtn}>
-                            <Text style={styles.btnText}>Previous</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity  style={styles.saveBtn}>
-                            <Text style={styles.btnText}>Save & Next</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>, {width: '100%', marginTop:'auto',padding:10}
-            )
+             <View></View>
         )
     }
     // removeBackListener=()=>
@@ -305,7 +269,7 @@ class TestSeriesView extends React.Component {
                 headerComponent={this.header()}
                 replaceHeader={true}
                 replaceBottomTab={true}
-                bottomComponent={this.renderFooter()}
+                bottomComponent={this.renderBottom()}
                 headerStyle={{flex:0.0623}}
                 noBottomTab={true}
                 statusBarHidden={true}

@@ -141,7 +141,7 @@ class RenderVideo extends React.Component {
                         
                     </View>
                 ):(
-                    this.props.actions.length>0?(<TouchableOpacity style={{marginLeft: 'auto', marginTop: 8}} onPress={()=>this.showThreeMenu()}>
+                    this.props.actions?(<TouchableOpacity style={{marginLeft: 'auto', marginTop: 8}} onPress={()=>this.showThreeMenu()}>
                             <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
                     </TouchableOpacity>):(null)
                 )}
