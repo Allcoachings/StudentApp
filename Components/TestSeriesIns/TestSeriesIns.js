@@ -29,6 +29,7 @@ class TestSeriesIns extends React.Component {
         {
             response.json().then(data=>
             {
+                console.log("Success cat", data)
                 this.setState({tsLoading: false, testSeries: data, category: data[0].categoryName})
             })
         }
@@ -47,7 +48,7 @@ class TestSeriesIns extends React.Component {
             CardView(
                     <View  style={styles.singleItem}>
                         <View style={styles.imageView}>
-                            <Image source={{uri: imageProvider(item.image)}} style={styles.itemImage}/>
+                            <Image source={{uri: serverBaseUrl+item.image}} style={styles.itemImage}/>
                         </View>
                         <View style={styles.titleView}>
                             <Text style={styles.itemTitle}>{item.name}</Text>
