@@ -7236,6 +7236,11 @@ react-native-blink-view@^0.0.6:
   dependencies:
     prop-types "^15.6.0"
 
+react-native-circular-progress-indicator@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-circular-progress-indicator/-/react-native-circular-progress-indicator-1.1.2.tgz#df9668aa95a674424a6627338e042c24f4d896ea"
+  integrity sha512-kBRuIclMd9gu8/DNgjkUXqZ80tK2wT2kzGNvrJL+1HxUCtjtAlpz4mf3vewUq/YEK3WnNrHxiZJyJcWvNZHvZA==
+
 react-native-collapsible@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/react-native-collapsible/-/react-native-collapsible-1.6.0.tgz#ca261ffff16914f872059bb0972e3a78c4b37f9c"

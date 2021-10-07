@@ -687,7 +687,7 @@ export const fetch_testSeries = (offset, dataLimit, courseId,callback,playlistId
             {
                 apiUrl = serverApiUrl+'institute/course/testseries/playlist/'+playlistId+"/"+offset+"/"+dataLimit
             }
-            console.log("api url bbhkbgdbkhdhkbncnncnnnn : ",apiUrl)
+             
              fetch(apiUrl,
             {
                 method: 'GET',  

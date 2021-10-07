@@ -8,13 +8,17 @@ import { downloadFile } from '../Utils/DownloadFile';
 import { Picker } from 'native-base';
 import Toast from 'react-native-simple-toast';
 import {updatePlaylist} from '../Utils/DataHelper/Course'
+
+import CircularProgress from 'react-native-circular-progress-indicator';
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 
 class RenderDocument extends React.Component {
     state = {
         showModal: false,
-        selectedPlaylist: this.props.item.playlistId
+        selectedPlaylist: this.props.item.playlistId,
+        savingItem:false,
+        downloadProgress:0
     }
     documentOnClick = ()=>
     {
@@ -31,20 +35,29 @@ class RenderDocument extends React.Component {
 
     download=(item, type)=>{
         Toast.show('PLease Wait...')
-        downloadFile(item,item.fileAddress,this.props.userInfo.id,type,this.downloadCallback)
+        this.setState({savingItem: true});
+        downloadFile(item,item.fileAddress,this.props.userInfo.id,type,this.downloadCallback,this.downloadProgessCallback)
     }
-
+    downloadProgessCallback=(progress)=>
+    {
+            this.setState({downloadProgress:progress})
+    }
     downloadCallback=(response)=>{
-        
         if(response.status=="success")
         {
-            Toast.show('Document Downloaded successfully. Please Check in your Downloads Section.')
+            Toast.show('Video Downloaded successfully. Please Check in your Downloads Section.')
         }
-        else
+        else if(response.status=="already")
+        {
+            Toast.show('File saved');
+        }else
         {
             Toast.show('Something Went Wrong. Please Try Again Later')
         }
+
+        this.setState({savingItem: false});
     }
+    
 
     actions = ['Change Playlist'];
     showThreeMenu=()=>
@@ -97,7 +110,7 @@ class RenderDocument extends React.Component {
     updateCallback=(response)=>{
         if(response.status=="200")
         {
-            Toast.show("Playlist Updated Successfully.",)
+            Toast.show("Playlist Updated Successfully.")
             this.props.changePlayList("document", this.state.selectedPlaylist, this.props.index)
         }
         else
@@ -116,25 +129,52 @@ class RenderDocument extends React.Component {
                     <View style={{ display: 'flex', flexDirection: 'row'}}>
                         <Text style={styles.documentTitle}>{this.props.item.name}</Text>
                     </View>
-                </View>
-                {this.props.downloadMode?(
-                    <View style={{flexDirection: 'column',  marginLeft: 'auto', justifyContent: 'space-between', marginRight:10}}>
-                        <View></View>
-                        <TouchableOpacity onPress={()=>this.props.studentEnrolled?(this.download(this.props.item, 'document')):(Toast.show('You Have Not Enrolled For This Course.'))} style={{marginBottom: 8}}>
-                            <View>
-                                <Image source={downloadIcon} style={{height: 25, width: 25}} />
+                </View> 
+                    {this.props.downloadMode?(
+                        <View style={{flexDirection: 'column',  marginLeft: 'auto', justifyContent: 'space-between', marginRight:10}}>                  
+                            {this.state.savingItem?(
+                                <View style={{width:40,height:40}}>
+                                    <CircularProgress
+                                    value={this.state.downloadProgress}
+                                    radius={20}
+                                    inActiveStrokeColor={theme.accentColor}
+                                    inActiveStrokeOpacity={0.2}
+                                    inActiveStrokeWidth={5}
+                                    activeStrokeWidth={5}
+                                    textColor={'#000'}
+                                    valueSuffix={'%'}
+                                    />
+                                </View>
+
+                                ):(
+                                    this.state.downloadProgress==100?(
+                                        <MaterialIcons name="check-circle" size={20}/>
+                                    ):(
+                                        
+                                        <TouchableOpacity onPress={()=>this.props.studentEnrolled?(this.download(this.props.item, 'document')):(Toast.show('You Have Not Enrolled For This Course.'))} style={{marginBottom: 8}}>
+                                            <View>
+                                                <Image source={downloadIcon} style={{height: 25, width: 25}} />
+                                            </View>
+                                        </TouchableOpacity>  
+                                            
+                                        
+                                    )
+                                )}
                             </View>
-                        </TouchableOpacity>  
-                    </View>
-                ):(
-                    this.props.actions?(<TouchableOpacity style={{marginLeft: 'auto', marginTop: 8}} onPress={()=>this.showThreeMenu()}>
-                            <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
-                    </TouchableOpacity>):(null)
-                )}
+                        ):(null)}
+
+
+                    {this.props.actions?(
+                            <TouchableOpacity style={{marginLeft: 'auto', marginTop: 8}} onPress={()=>this.showThreeMenu()}>
+                                    <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
+                            </TouchableOpacity>
+                    ):(null)}
+                 
                 {this.state.showModal?(
                     <Modal
                         animationType="fade"
                         transparent={true}  
+                        onRequestClose = {()=>{this.setState({showModal:false})}}
                         visible={this.state.showModal}
                     >
                         <View style={{height: height-80, width: width-80}}>

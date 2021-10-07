@@ -15,7 +15,7 @@ class Downloads extends Component {
    state = {
        activeTab:1,
        loading:true,
-       actions:['Delete']
+       actions:['Remove']
     };
     activeTab=(tabValue)=>{
         this.setState({activeTab:tabValue, data:[]},()=>
