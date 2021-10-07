@@ -49,6 +49,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-41.0.0.tar.gz",
     "react-native-app-intro-slider": "^4.0.4",
     "react-native-blink-view": "^0.0.6",
+    "react-native-circular-progress-indicator": "^1.1.2",
     "react-native-collapsible": "^1.6.0",
     "react-native-countdown-component": "^2.7.1",
     "react-native-data-table": "^0.2.1",
