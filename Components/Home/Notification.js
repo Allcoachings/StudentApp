@@ -88,7 +88,7 @@ class Notification extends React.Component {
         try {
        
           if (this.state.loadingFooter) {
-            return <CustomActivtiyIndicator/>;
+            return <CustomActivtiyIndicator mode="skimmer"/>;
           } else {
             return null;
           }

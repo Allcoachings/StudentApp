@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
 // import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {theme,screenMobileWidth, dataLimit,serverBaseUrl, Assets, imageProvider} from '../config'
@@ -11,88 +11,54 @@ import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import RenderSinglePinnedIns from './RenderSinglePinnedIns'
-class PinnedList extends React.Component {
+import { useSelector } from 'react-redux'
+
+export default function PinnedList(props) {
     
-    state = {
-        list: [],
-        offset: 0,
-        showLoadMore: true,
-        isPinnedListLoading: true,
-        loadingFooter: false,
-    }
+        const [list, setList] = useState([]);
+        const [offset, setOffset] = useState(0);
+        const [showLoadMore, setShowLoadMore] = useState(true);
+        const [isPinnedListLoading, setIsPinnedListLoading] = useState(true);
+        const [loadingFooter, setLoadingFooter] = useState(false);
+        const [refreshing, setRefreshing] = useState(false);
+        const userInfo = useSelector((state) => state.user.userInfo)
 
-    componentDidMount(){
-        this.fetch()
-    }
+    useEffect(()=>{
+        console.log("idhar")
+        pinnedInstituteList(userInfo.id, offset, dataLimit, insListCallback)
+    
+    },[offset,])
 
-    fetch=()=>{
-        pinnedInstituteList(this.props.userInfo.id, this.state.offset, dataLimit, this.insListCallback)
-    }
 
-    insListCallback=(response)=>{
-        console.log("inslist", response.status)
+    const insListCallback=(response)=>{
         if(response.status==200)
         {
             response.json().then(data=>
             {
-                // this.setState({list:data}); 
                 if(data.length>0)
                 {
-                    this.setState({list:[...this.state.list,...data],isPinnedListLoading:false, showLoadMore: true, loadingFooter:false});  
+                    setList([...list, ...data])
+                    setIsPinnedListLoading(false);
+                    setShowLoadMore(true)
+                    setLoadingFooter(false)
                 }
                 else
                 {
-                    this.setState({list:this.state.list,isPinnedListLoading:false, showLoadMore: false, loadingFooter: false}); 
+                    setList(list)
+                    setIsPinnedListLoading(false);
+                    setShowLoadMore(false)
+                    setLoadingFooter(false)
                 }                   
             })
         }
     }
 
-    singleRow=(item)=>{
-        console.log(item)
-        return(
-            
-            <View style={{marginBottom: '5%'}}>
-                <View style={styles.instituteheader}>
-                    {CardView(
-                        <Image source={{uri:imageProvider(item.institute.logo)}} style={styles.instituteheaderLogo}/>
-                        ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:90,borderRadius:15}):({width:200,height:150})])
-                    } 
-                    <View style={styles.instituteheaderMeta}>
-                        <View style={{display: 'flex', flexDirection: 'row'}}>
-                            <Text style={styles.instituteheaderText}>{item.institute.name}</Text>
-                        </View>
-                        <Text style={styles.instituteDirector}>{item.institute.directorName}</Text>
-                        <View style={styles.instituteRatingView}>
-                            <AirbnbRating 
-                                starContainerStyle={styles.instituteRating} 
-                                count={5}
-                                reviews={[]} 
-                                isDisabled={true}
-                                defaultRating={item.institute.totalRatingCount>0?(item.institute.totalRating/item.institute.totalRatingCount):(0)}
-                                size={12}
-                                selectedColor={theme.blueColor}
-                                showRating={false}
-                            />
 
-                            <Text style={styles.voteCount}>{item.institute.totalRatingCount>0?(item.institute.totalRating/item.institute.totalRatingCount):(0)}</Text>
-                        </View>
-                        <View style={styles.followerView}>
-                            <Text style={styles.follower}>{item.institute.followersCount} Followers</Text>
-                        </View>
-                    </View>
-                    <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
-                </View>
-            </View>
-            
-        )
-    }
-
-    renderFooter = () => {
+    const renderFooter = () => {
         try {
        
-          if (this.state.loadingFooter) {
-            return <CustomActivtiyIndicator/>;
+          if (loadingFooter) {
+            return <CustomActivtiyIndicator mode="skimmer"/>;
           } else {
             return null;
           }
@@ -101,11 +67,11 @@ class PinnedList extends React.Component {
         }
     };
 
-    render() {
+    // render() {
         return(
             <PageStructure
                 iconName={"menu"}
-                btnHandler={() => {this.props.navigation.toggleDrawer()}}
+                btnHandler={() => {props.navigation.toggleDrawer()}}
                 nosearchIcon={true}
                 noNotificationIcon={true}
                 titleonheader={"Pinned Institutes"}
@@ -113,24 +79,25 @@ class PinnedList extends React.Component {
             >
                 <ScrollView>
                     <View style={styles.container}>
-                    {this.state.isPinnedListLoading?(
+                    {isPinnedListLoading?(
                             <CustomActivtiyIndicator mode="video" />
                         ):(<FlatList 
-                            data={this.state.list} 
-                            renderItem={({item})=><RenderSinglePinnedIns item={item} navigation={this.props.navigation}/>} 
+                            data={list} 
+                            renderItem={({item})=><RenderSinglePinnedIns item={item} navigation={props.navigation}/>} 
                             keyExtractor={(item)=>item.id}
                             horizontal={false} 
                             showsHorizontalScrollIndicator={false}
                             ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                             onEndReachedThreshold={0.1}
-                            refreshing={this.state.refreshing}
-                            ListFooterComponent={this.renderFooter}
+                            refreshing={refreshing}
+                            ListFooterComponent={renderFooter}
                             onEndReached={() => 
                             {
-                                if(this.state.showLoadMore&&!this.state.loadingFooter)
+                                if(showLoadMore&&!loadingFooter)
                                 {
-                                    this.setState({ refreshing: true,loadingFooter:true,offset:parseInt(this.state.offset)+1},()=>this.fetch())
-                                        
+                                    setRefreshing(true);
+                                    setOffset(parseInt(offset)+1);
+                                    setLoadingFooter(true);      
                                 }
                             
                             }}
@@ -139,7 +106,7 @@ class PinnedList extends React.Component {
                 </ScrollView>
             </PageStructure>
         )
-    }
+    // }
 }
 
 const styles = StyleSheet.create({
@@ -233,11 +200,11 @@ const styles = StyleSheet.create({
 
 })
 
-const  mapStateToProps = (state)=>
-{
-    return {
-        screenWidth: state.screen.screenWidth,
-        userInfo:state.user.userInfo,
-    }
-}
-export default connect(mapStateToProps)(PinnedList); 
+// const  mapStateToProps = (state)=>
+// {
+//     return {
+//         screenWidth: state.screen.screenWidth,
+//         userInfo:state.user.userInfo,
+//     }
+// }
+// export default connect(mapStateToProps)(PinnedList); 
