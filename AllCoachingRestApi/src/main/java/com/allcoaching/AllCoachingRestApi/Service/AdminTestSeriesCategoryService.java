@@ -34,7 +34,7 @@ public class AdminTestSeriesCategoryService {
                 List<AdminTestCategoriesDto> adminTestCategoriesDtos = new ArrayList<>();
                 adminTestSeriesCategories.forEach(item->{
                     Iterable<AdminTestSubCategories> adminTestSubCategories = testSubCategoriesRepo.findByCategoryId(item.getId());
-                    adminTestCategoriesDtos.add(new AdminTestCategoriesDto(item.getId(),item.getName(),adminTestSubCategories,item.getSortOrder(),item.getImage()));
+                    adminTestCategoriesDtos.add(new AdminTestCategoriesDto(item.getId(),item.getName(),adminTestSubCategories,item.getSortOrder()));
                 });
                 return adminTestCategoriesDtos;
 
@@ -50,7 +50,7 @@ public class AdminTestSeriesCategoryService {
                     List<AdminTestCategoriesDto> adminTestCategoriesDtos = new ArrayList<>();
                     adminTestSeriesCategories.forEach(item -> {
                         Iterable<AdminTestSubCategories> adminTestSubCategories = testSubCategoriesRepo.findByCategoryId(item.getId());
-                        adminTestCategoriesDtos.add(new AdminTestCategoriesDto(item.getId(), item.getName(), adminTestSubCategories,item.getSortOrder(),item.getImage()));
+                        adminTestCategoriesDtos.add(new AdminTestCategoriesDto(item.getId(), item.getName(), adminTestSubCategories,item.getSortOrder()));
                     });
                     return adminTestCategoriesDtos;
                 }else
