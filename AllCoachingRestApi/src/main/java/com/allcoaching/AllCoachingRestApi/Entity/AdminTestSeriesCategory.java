@@ -19,12 +19,10 @@ public class AdminTestSeriesCategory {
     @GeneratedValue
     private long id;
     private String name;
-    private String image;
     private int sortOrder;
 
-    public AdminTestSeriesCategory(String name, String image, int sortOrder) {
+    public AdminTestSeriesCategory(String name,  int sortOrder) {
         this.name = name;
-        this.image = image;
         this.sortOrder = sortOrder;
     }
 }

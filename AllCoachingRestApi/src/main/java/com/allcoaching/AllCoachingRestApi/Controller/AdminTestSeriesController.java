@@ -38,12 +38,11 @@ public class AdminTestSeriesController {
     private FileUploadService fileUploadService;
     @CrossOrigin(origins = "*")
     @PostMapping("/addCategory")
-    public @ResponseBody AdminTestSeriesCategory createTestSeriesCategory(@RequestParam MultipartFile file,@RequestParam String name,@RequestParam int sortOrder)
+    public @ResponseBody AdminTestSeriesCategory createTestSeriesCategory(@RequestParam String name,@RequestParam int sortOrder)
     {
-        String image = "files/";
-        image += fileUploadService.storeFile(file);
 
-        return adminTestSeriesCategoryService.save(new AdminTestSeriesCategory(name,image,sortOrder));
+
+        return adminTestSeriesCategoryService.save(new AdminTestSeriesCategory(name,sortOrder));
 
 
     }
