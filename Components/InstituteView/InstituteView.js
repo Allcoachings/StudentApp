@@ -186,25 +186,25 @@ class InstituteView extends React.Component {
              courseId:'',
              bannerImg: [],
             courseTimetableLoaded:false,
-            isCourseTimeTableLoading:false,
+            isCourseTimeTableLoading:true,
             courseTimeTable:[],
             courseDocumentPlaylistLoaded:false,
-            isCourseDocumentPlaylistLoading:false,
+            isCourseDocumentPlaylistLoading:true,
             courseDocumentPlaylist:[],
             courseDocumentLoaded:false,
-            isCourseDocumentLoading:false,
+            isCourseDocumentLoading:true,
             courseDocuments:[],
             courseTestSeriesLoaded:false,
-            isCourseTestSeriesLoading:false,
+            isCourseTestSeriesLoading:true,
             courseTestSeries:[],
             courseTestSeriesPlaylistLoaded:false,
-            isCourseTestSeriesPlaylistLoading:false,
+            isCourseTestSeriesPlaylistLoading:true,
             courseTestSeriesPlaylist:[],
             courseVideoPlaylistLoaded:false,
-            isCourseVideoPlaylistLoading:false,
+            isCourseVideoPlaylistLoading:true,
             courseVideosPlaylist:[],
             courseVideoLoaded:false,
-            isCourseVideoLoading:false,
+            isCourseVideoLoading:true,
             courseVideos:[],
             activeTab: 'videos', 
             tabtoshow: 1,
@@ -769,8 +769,9 @@ class InstituteView extends React.Component {
                 this.setState({showLoadMore:false})
             }
             return(
-                                     this.state.isCourseDocumentLoading?(
-                                     <CustomActivtiyIndicator mode="testSeries"/>):(
+                                    !this.state.courseTestSeriesLoaded?(
+                                     <CustomActivtiyIndicator mode="testItem"/>
+                                    ):(
                                      <FlatList 
                                         data={this.state.courseTestSeries} 
                                         renderItem={({item,index})=><RenderSingleTestSeries item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="student" studentEnrolled={this.state.studentEnrolled} courseTestSeriesPlaylist={this.state.courseTestSeriesPlaylist} actions={this.state.actions}/>}

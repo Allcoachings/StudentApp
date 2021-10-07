@@ -132,7 +132,7 @@ class SeriesList extends React.Component {
                         </View>
                         <View style={styles.container}>
                         {this.state.tsLoading?(
-                                <CustomActivtiyIndicator mode="testSeries"/>
+                                <CustomActivtiyIndicator mode="testItem"/>
                         ):(
                             <FlatList 
                                 data={this.state.seriesList} 

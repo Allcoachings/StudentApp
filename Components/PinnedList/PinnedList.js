@@ -113,7 +113,9 @@ class PinnedList extends React.Component {
             >
                 <ScrollView>
                     <View style={styles.container}>
-                        <FlatList 
+                    {this.state.isPinnedListLoading?(
+                            <CustomActivtiyIndicator mode="video" />
+                        ):(<FlatList 
                             data={this.state.list} 
                             renderItem={({item})=><RenderSinglePinnedIns item={item} navigation={this.props.navigation}/>} 
                             keyExtractor={(item)=>item.id}
@@ -132,7 +134,7 @@ class PinnedList extends React.Component {
                                 }
                             
                             }}
-                        />
+                        />)}
                     </View>
                 </ScrollView>
             </PageStructure>

@@ -64,14 +64,14 @@ class RenderSingleSubsInstitute extends React.Component {
     render() {
         return(
             <View style={[this.state.hide?({display: 'none'}):(null)]}>
-                <View style={{marginBottom: '5%'}}>
+                <TouchableOpacity style={{marginBottom: '5%'}} onPress={()=>this.redirectTo(this.props.item.id)}>
                     <View style={styles.instituteheader}>
                         {CardView(
                             <Image source={{uri:imageProvider(this.props.item.logo)}} style={styles.instituteheaderLogo}/>
                             ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:100,borderRadius:15}):({width:200,height:150})])
                         } 
                         <View style={styles.instituteheaderMeta}>
-                            <TouchableWithoutFeedback style={{display: 'flex', flexDirection: 'row'}} onPress={()=>this.redirectTo(this.props.item.id)}>
+                            <TouchableWithoutFeedback style={{display: 'flex', flexDirection: 'row'}} >
                                 <Text style={styles.instituteheaderText}>{this.props.item.name}</Text>
                             </TouchableWithoutFeedback>
                             <Text style={styles.instituteDirector}>{this.props.item.directorName}</Text>
@@ -96,7 +96,7 @@ class RenderSingleSubsInstitute extends React.Component {
                             <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
                         </TouchableOpacity>
                     </View>
-                </View>
+                </TouchableOpacity>
                 <View style = {styles.container}>
                     <Modal animationType = {"fade"} 
                             transparent = {true}

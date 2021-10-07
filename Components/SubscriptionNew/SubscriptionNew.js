@@ -124,7 +124,9 @@ class SubscriptionNew extends React.Component {
                                 <Feather name="share-2" size={22} />
                             </TouchableOpacity>
                         </View> */}
-                        <FlatList 
+                        {this.state.isSubscriptionLoading?(
+                            <CustomActivtiyIndicator mode="video" />
+                        ):(<FlatList 
                             data={this.state.subscription} 
                             renderItem={({item})=><RenderSingleSubsInstitute item={item} navigation={this.props.navigation}/>} 
                             keyExtractor={(item)=>item.id}
@@ -143,7 +145,7 @@ class SubscriptionNew extends React.Component {
                                 }
                             
                             }}
-                        />
+                        />)}
                     </View>
                 </ScrollView>
             </PageStructure>
