@@ -11,8 +11,10 @@ import {
   FlatList
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { theme, appLogo } from "../../config";
+import { theme, appLogo, Assets } from "../../config";
 import CardView from "../../Utils/CardView";
+import CustomActivtiyIndicator from '../../Utils/CustomActivtiyIndicator';
+import EmptyList from '../../Utils/EmptyList'
 // import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 class HeaderMobile extends React.Component {
   state = {
@@ -21,7 +23,8 @@ class HeaderMobile extends React.Component {
     searchWord:'',
     offset: 0,
     searchData:[],
-    showResult: false
+    showResult: false,
+    loadingData: false,
   };
 
   searchCallback=(response)=>{
@@ -30,7 +33,7 @@ class HeaderMobile extends React.Component {
         response.json().then(data=>
         {
             console.log("data",data)
-            this.setState({searchData:data, showResult: true})
+            this.setState({searchData:data, showResult: true, loadingData: false})
         })
     }
   }
@@ -164,7 +167,7 @@ class HeaderMobile extends React.Component {
                                     />
                                 </TouchableOpacity>
                             ):(
-                                <TouchableOpacity onPress={()=>this.setState({filterData: true},()=>this.props.searchFun(this.state.offset, this.state.searchWord, this.searchCallback))}>
+                                <TouchableOpacity onPress={()=>this.setState({filterData: true, loadingData: true},()=>this.props.searchFun(this.state.offset, this.state.searchWord, this.searchCallback))}>
                                     <Feather 
                                       name={'arrow-right'} 
                                       size={15} 
@@ -183,17 +186,21 @@ class HeaderMobile extends React.Component {
                     </View>,
                     {width:'95%', height:40,margin:10},2
                 )}
-                {this.state.showResult?(
-                  <FlatList 
-                    data={this.state.searchData}  
-                    showsVerticalScrollIndicator={false} 
-                    renderItem={this.props.singleItem}
-                    // numColumns={3}
-                    keyExtractor={item => item.id}
-                  />
+                {this.state.loadingData?(
+                    <CustomActivtiyIndicator mode="testItem" />
+                  ):(
+                    this.state.showResult?(
+                      <FlatList 
+                        data={this.state.searchData}  
+                        showsVerticalScrollIndicator={false} 
+                        renderItem={this.props.singleItem}
+                        // numColumns={3}
+                        keyExtractor={item => item.id}
+                        ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                      />
                 ):(
                   null
-                )}
+                ))}
                 
                  
           </Modal>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
 // import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {theme,screenMobileWidth, dataLimit,serverBaseUrl, Assets, imageProvider} from '../config'
@@ -12,25 +12,25 @@ import { fetchSubscribedInstituteList } from '../Utils/DataHelper/Subscription'
 import RenderSingleSubsInstitute from './RenderSingleSubsInstitute'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
-class SubscriptionNew extends React.Component {
-    
-    state = {
-        subscription: [],
-        offset: 0,
-        showLoadMore: true,
-        isSubscriptionLoading: true,
-        loadingFooter: false,
-    }
+import { useSelector } from 'react-redux'
 
-    componentDidMount(){
-        this.fetch()
-    }
+export default function SubscriptionNew(props) {
+   
 
-    fetch=()=>{
-        fetchSubscribedInstituteList(this.props.userInfo.id, this.state.offset, dataLimit, this.subscriptionCallBack)
-    }
+    const [subscription, setSubscription] = useState([]);
+    const [offset, setOffset] = useState(0);
+    const [showLoadMore, setShowLoadMore] = useState(true);
+    const [isSubscriptionLoading, setIsSubscriptionLoading] = useState(true);
+    const [loadingFooter, setLoadingFooter] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
+    const userInfo = useSelector((state) => state.user.userInfo)
 
-    subscriptionCallBack=(response)=>{
+    useEffect(()=>{
+        console.log("idhar")
+        fetchSubscribedInstituteList(userInfo.id, offset, dataLimit, subscriptionCallBack)
+    },[offset])
+
+    const subscriptionCallBack=(response)=>{
         console.log("subscription success")
         if(response.status==200)
         {
@@ -40,21 +40,29 @@ class SubscriptionNew extends React.Component {
                 // this.setState({subscription:data});
                 if(data.length>0)
                 {
-                    this.setState({subscription:[...this.state.subscription,...data],isSubscriptionLoading:false, showLoadMore: true, loadingFooter:false});  
+                    setSubscription([...subscription, ...data])
+                    setIsSubscriptionLoading(false);
+                    setShowLoadMore(true)
+                    setLoadingFooter(false)
+                    // this.setState({subscription:[...subscription,...data],isSubscriptionLoading:false, showLoadMore: true, loadingFooter:false});  
                 }
                 else
                 {
-                    this.setState({subscription:this.state.subscription,isSubscriptionLoading:false, showLoadMore: false, loadingFooter: false}); 
+                    setSubscription(subscription)
+                    setIsSubscriptionLoading(false);
+                    setShowLoadMore(false)
+                    setLoadingFooter(false)
+                    // this.setState({subscription:subscription,isSubscriptionLoading:false, showLoadMore: false, loadingFooter: false}); 
                 }                    
             })
         }
     }
 
-    renderFooter = () => {
+    const renderFooter = () => {
         try {
        
-          if (this.state.loadingFooter) {
-            return <CustomActivtiyIndicator/>;
+          if (loadingFooter) {
+            return <CustomActivtiyIndicator mode="skimmer"/>;
           } else {
             return null;
           }
@@ -62,95 +70,55 @@ class SubscriptionNew extends React.Component {
           console.log(error);
         }
     };
-
-    singleRow=({item})=>{
-        return(
-            
-            <View style={{marginBottom: '5%'}}>
-                <View style={styles.instituteheader}>
-                    {CardView(
-                        <Image source={{uri:imageProvider(item.logo)}} style={styles.instituteheaderLogo}/>
-                        ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:120,borderRadius:15}):({width:200,height:150})])
-                    } 
-                    <View style={styles.instituteheaderMeta}>
-                        <View style={{display: 'flex', flexDirection: 'row'}}>
-                            <Text style={styles.instituteheaderText}>{item.name}</Text>
-                        </View>
-                        <Text style={styles.instituteDirector}>{item.directorName}</Text>
-                        <View style={styles.instituteRatingView}>
-                            <AirbnbRating 
-                                starContainerStyle={styles.instituteRating} 
-                                count={5}
-                                reviews={[]} 
-                                isDisabled={true}
-                                defaultRating={item.totalRatingCount>0?(item.totalRating/item.totalRatingCount):(0)}
-                                size={12}
-                                selectedColor={theme.blueColor}
-                                showRating={false}
-                            />
-
-                            <Text style={styles.voteCount}>{item.totalRatingCount>0?(item.totalRating/item.totalRatingCount):(0)}</Text>
-                        </View>
-                        <View style={styles.followerView}>
-                            <Text style={styles.follower}>{item.followersCount} Followers</Text>
-                        </View>
-                    </View>
-                    <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
-                </View>
-            </View>
-            
-        )
-    }
-
-    render() {
-        return(
-            <PageStructure
-                iconName={"arrow-left"}
-                btnHandler={() => {this.props.navigation.goBack()}}
-                titleonheader={"Subscription"}
-                nosearchIcon={true}
-                noNotificationIcon={true}
-            >
-                <ScrollView>
-                    <View style={styles.container}>
-                        {/* <View style={styles.headView}>
-                            <TouchableOpacity onPress={null}>
-                                <Feather name="chevron-left" size={26} />
-                            </TouchableOpacity>
-                            <Text style={styles.headText}>
-                                Subscription
-                            </Text>
-                            <TouchableOpacity onPress={null}>
-                                <Feather name="share-2" size={22} />
-                            </TouchableOpacity>
-                        </View> */}
-                        {this.state.isSubscriptionLoading?(
-                            <CustomActivtiyIndicator mode="video" />
-                        ):(<FlatList 
-                            data={this.state.subscription} 
-                            renderItem={({item})=><RenderSingleSubsInstitute item={item} navigation={this.props.navigation}/>} 
-                            keyExtractor={(item)=>item.id}
-                            horizontal={false} 
-                            showsHorizontalScrollIndicator={false}
-                            ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
-                            onEndReachedThreshold={0.1}
-                            refreshing={this.state.refreshing}
-                            ListFooterComponent={this.renderFooter}
-                            onEndReached={() => 
+    console.log(loadingFooter)
+    return(
+        <PageStructure
+            iconName={"arrow-left"}
+            btnHandler={() => {props.navigation.goBack()}}
+            titleonheader={"Subscription"}
+            nosearchIcon={true}
+            noNotificationIcon={true}
+        >
+            <ScrollView>
+                <View style={styles.container}>
+                    {/* <View style={styles.headView}>
+                        <TouchableOpacity onPress={null}>
+                            <Feather name="chevron-left" size={26} />
+                        </TouchableOpacity>
+                        <Text style={styles.headText}>
+                            Subscription
+                        </Text>
+                        <TouchableOpacity onPress={null}>
+                            <Feather name="share-2" size={22} />
+                        </TouchableOpacity>
+                    </View> */}
+                    {isSubscriptionLoading?(
+                        <CustomActivtiyIndicator mode="video" />
+                    ):(<FlatList 
+                        data={subscription} 
+                        renderItem={({item})=><RenderSingleSubsInstitute item={item} navigation={props.navigation}/>} 
+                        keyExtractor={(item)=>item.id}
+                        horizontal={false} 
+                        showsHorizontalScrollIndicator={false}
+                        ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                        onEndReachedThreshold={0.1}
+                        refreshing={refreshing}
+                        ListFooterComponent={renderFooter}
+                        onEndReached={() => 
+                        {
+                            if(showLoadMore&&!loadingFooter)
                             {
-                                if(this.state.showLoadMore&&!this.state.loadingFooter)
-                                {
-                                    this.setState({ refreshing: true,loadingFooter:true,offset:parseInt(this.state.offset)+1},()=>this.fetch())
-                                        
-                                }
-                            
-                            }}
-                        />)}
-                    </View>
-                </ScrollView>
-            </PageStructure>
-        )
-    }
+                                setRefreshing(true);
+                                setOffset(parseInt(offset)+1);
+                                setLoadingFooter(true);                                      
+                            }
+                        
+                        }}
+                    />)}
+                </View>
+            </ScrollView>
+        </PageStructure>
+    )
 }
 
 const styles = StyleSheet.create({
@@ -244,11 +212,11 @@ const styles = StyleSheet.create({
 
 })
 
-const  mapStateToProps = (state)=>
-{
-    return {
-        screenWidth: state.screen.screenWidth,
-        userInfo:state.user.userInfo,
-    }
-}
-export default connect(mapStateToProps)(SubscriptionNew); 
+// const  mapStateToProps = (state)=>
+// {
+//     return {
+//         screenWidth: state.screen.screenWidth,
+//         userInfo:state.user.userInfo,
+//     }
+// }
+// export default connect(mapStateToProps)(SubscriptionNew); 
