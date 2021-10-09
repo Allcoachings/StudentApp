@@ -35,6 +35,7 @@ class SeriesModal extends React.Component {
   }
   provideQuestionItemStyle=(status)=>
   {
+     
     if(this.props.isPractice)
     {
       if(status)
@@ -51,8 +52,21 @@ class SeriesModal extends React.Component {
       }
     }else
     {
-      return styles.attemptedQues
+      if(status)
+      {
+         
+         switch(status)
+         {
+              case 'attempted':
+              case 'wrong':
+              case 'correct':
+                return styles.attemptedQues
+              default:
+                return styles.unAttemptedQues
+         }
+      }
     }
+    
       
   }
   calculateScore=(status,correctScore,wrongScore) =>
@@ -110,8 +124,9 @@ class SeriesModal extends React.Component {
   renderQuestionListItem=({item,index})=>
   {
     this.calculateScore(item.status,item.question.correctMarks,item.question.wrongMarks) 
+     
     return(
-      <View style={[{flex: 1,flexDirection: 'row',alignItems: 'center',flexWrap:'wrap'},this.provideQuestionItemStyle(item.status)]}>
+      <View style={[{flex: 1,flexDirection: 'row',alignItems: 'center',flexWrap:'wrap',paddingBottom:10},this.provideQuestionItemStyle(item.status)]}>
 
           <TouchableOpacity style={[styles.queView,{borderWidth:0}]}>
             <Text style={styles.queno}>{index+1}</Text>
@@ -492,9 +507,16 @@ wrongQues:
 },
 attemptedQues:
 {
-  borderColor:theme.secondaryColor
+  borderColor:theme.secondaryColor,
+  borderWidth:1, 
 
-}  
+}  ,
+unAttemptedQues:
+{
+  borderColor:theme.greyColor,
+  borderWidth:1, 
+
+}
 });
 
 const  mapStateToProps = (state)=>

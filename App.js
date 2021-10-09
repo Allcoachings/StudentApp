@@ -8,6 +8,7 @@ import Main from './Components/Main'
 // import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 // import { SafeAreaProvider } from 'react-native-safe-area-context';
+// import {NativeBaseProvider } from "native-base"
 import {
   useFonts,
   Raleway_100Thin,
@@ -57,10 +58,11 @@ let store = createStore(RootReducer)
     // }
     return (
       // <SafeAreaProvider>
+      
         <Provider store={store}>
             <Main/>
         </Provider>
-      // </SafeAreaProvider>
+       
     );
   }
 

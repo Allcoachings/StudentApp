@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,Image,TouchableOpacity,TouchableWithoutFeedback,Dimensions } from 'react-native';
+import { View, Text,StyleSheet,TouchableOpacity,TouchableWithoutFeedback,Dimensions,Image } from 'react-native';
 import {serverBaseUrl, theme, imageProvider} from '../config'
-import {Feather, FontAwesome} from '@expo/vector-icons';
+import {Feather, FontAwesome} from '@expo/vector-icons';  
  const width = Dimensions.get('window').width
 class Question extends Component {
   state={
@@ -122,7 +122,9 @@ class Question extends Component {
   renderOption=(index, text,optionType,onPress)=>
   {
       
+    
       return(
+        //   <Text>{index,text,optionType,onPress}</Text>
             <View style={[styles.singleOptionView,this.provideOptionResponseStyle(this.state.userOptionIndex,index)]}>
                 <TouchableWithoutFeedback style={styles.optionAns} onPress={onPress}>
                     <View style={styles.optionAns}>
@@ -135,6 +137,7 @@ class Question extends Component {
                             <Image source={{uri:imageProvider(text)}} style={{borderWidth:0.5,borderColor: theme.labelOrInactiveColor,width:'85%',height:150}}/>
                         )} 
                     </View>
+                     
                 </TouchableWithoutFeedback>
             </View>
       )
@@ -153,19 +156,32 @@ class Question extends Component {
         case '2': 
         case 4:
         case '4':
-
+                       
             return(
-                 <Image source={{uri: imageProvider(item.question)}} style={{width:width,height:150,resizeMode:'contain'}} />
+                // <Text style={styles.quizText}>{item.question}</Text>
+             <Image source={{uri:imageProvider(item.question)}}  style={styles.questionImageStyle}/>
+                 
             ); 
 
       }
   }
- 
+ componentDidMount() {
+    // if (global.__fbBatchedBridge) {
+    //     const origMessageQueue = global.__fbBatchedBridge;
+    //     const modules = origMessageQueue._remoteModuleTable;
+    //     const methods = origMessageQueue._remoteMethodTable;
+    //     global.findModuleByModuleAndMethodIds = (moduleId, methodId) => {
+    //       console.log(`The problematic line code is in: ${modules[moduleId]}.${methods[moduleId][methodId]}`)
+    //     }
+    //     global.findModuleByModuleAndMethodIds(29, 0);
+    //     // console.log("modules",modules,"methods",methods)
+    //   }
+ }
   render() {
 
      const {item} = this.props;
      const propsIndex = this.props.index;
-     const  index = propsIndex+1 
+     const  index = propsIndex+1  
     return (
         <>
         <View style={styles.quesRowSection}>
@@ -174,9 +190,7 @@ class Question extends Component {
                     Q. {index}
                 </Text>
             </View>
-            <View style={styles.quesRow2}>
-                {/* <View style={styles.marksView}> */}
-                    {/* <Text style={styles.marksText}>Marks</Text> */}
+            <View style={styles.quesRow2}> 
                     <View style={styles.marksCol}>
                         <View style={styles.posMarksView}>
                             <Text style={styles.tolMarksView}>+{item.correctMarks}</Text>
@@ -184,20 +198,17 @@ class Question extends Component {
                         <View style={styles.negMarksView}>
                             <Text style={styles.tolMarksView}>-{item.wrongMarks}</Text>
                         </View>
-                    </View>
-                {/* </View> */}
-                {/* <View style={styles.timeColSection}>
-                    <Text style={styles.timeText}>Time</Text>
-                    <Text style={styles.timeText}>00:00</Text>
-                </View> */}
+                    </View> 
                 <TouchableOpacity style={styles.alertView} onPress={()=>this.handleBookmarkClick(index-1)}> 
                     <FontAwesome name={this.state.bookmarked?"bookmark":"bookmark-o"} size={24} color={theme.labelOrInactiveColor}/>
                 </TouchableOpacity>
             </View>
         </View>
         <View style={styles.quizQuestionView}>
-            {this.renderQuestion(item)}
-           
+            <View>
+                {this.renderQuestion(item)}
+               
+            </View>
             <View style={styles.optionView}>
                 <View style={styles.optionRow}>
                     {this.renderOption("A",item.optionA,item.optionType,()=>{this.handleOptionBtnClick(propsIndex,item.correctOpt,"A")})}
@@ -326,6 +337,9 @@ const styles = StyleSheet.create({
             fontFamily: 'Raleway_600SemiBold',
             color: theme.secondaryColor,
             
+        },
+        questionImageStyle:{
+            width: width,height: 150,resizeMode:'contain'
         },
         optionView:{
             flex: 1,

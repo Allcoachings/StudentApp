@@ -12,7 +12,7 @@ export default class PDFViewer extends React.Component {
       <>
         <PDFRenderer pdf={this.props.route.params.pdf}/>
          <View style={{flexDirection: 'row',position:'absolute',top:40,left:40,zIndex:1000,elevation:1000,opacity:0.4}}>
-                <Text style={{color:theme.featureNoColor}}>{this.props.route.params.insName}  {this.props.route.params.insNumber}</Text> 
+                <Text style={{color:theme.featureNoColor}}>{this.props.route.params.studentName}  {this.props.route.params.studentNumber}</Text> 
          </View>  
        </>
     )

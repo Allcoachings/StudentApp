@@ -57,6 +57,8 @@ class Main extends React.Component {
     componentDidMount()
     {
 
+
+
         // StatusBar.setStatusBarBackgroundColor(theme.greyColor,true)
 
         // Font.loadAsync({ 
@@ -113,7 +115,13 @@ class Main extends React.Component {
         this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (e)=>this._keyboardDidShow(e));
         this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', (e)=>this._keyboardDidHide(2));
     } 
- 
+    componentDidUpdate()
+    {
+
+        
+        
+       
+    }
     renderViewport=(screenWidth)=>
     {
         if(screenWidth > screenMobileWidth && Platform.OS === 'web')

@@ -6,7 +6,7 @@ export const appLogo = require("../assets/Slide_icons/logo.png");
 export const downloadIcon = require("../assets/downloadIcon.png");
 export const theme={
     primaryColor: "#fff",
-    secondaryColor: "#000",
+    secondaryColor: "#000000",
     appBackgroundColor:"#fff",
     accentColor:"#13b989",
     labelOrInactiveColor:'#D3D3D3',

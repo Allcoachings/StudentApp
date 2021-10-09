@@ -44,16 +44,18 @@ class TestSeriesView extends React.Component {
             {   
                     response.json().then(data=>
                     {
+                     
                         StatusBar.setHidden(true);
                         this.props.setStatusBarHidden(true)
                         // this.setState({questions:{...this.state.questions,...data},isFirstTimeLoading:false,loadingQuestions:false})
                         if(data.length>0)
                         {
                             this.setState({questions:[...this.state.questions,...data],isQuestionLoading:false, showLoadMore: true, loadingFooter:false, isFirstTimeLoading:false,loadingQuestions:false});  
+                            
                         }
                         else
                         {
-                            this.setState({questions:this.state.questions,isQuestionLoading:false, showLoadMore: false, loadingFooter: false, isFirstTimeLoading:false,loadingQuestions:false}); 
+                            this.setState({isQuestionLoading:false, showLoadMore: false, loadingFooter: false, isFirstTimeLoading:false,loadingQuestions:false}); 
                         } 
                     })
             }
@@ -76,7 +78,7 @@ class TestSeriesView extends React.Component {
         try {
        
           if (this.state.loadingFooter) {
-            return <CustomActivtiyIndicator mode="questionSkimmer"/>
+            return <CustomActivtiyIndicator />
           } else {
             return null;
           }
@@ -288,14 +290,14 @@ class TestSeriesView extends React.Component {
                             horizontal={false}
                             showsHorizontalScrollIndicator={false}
                             ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
-                            onEndReachedThreshold={1}
+                            onEndReachedThreshold={0.8}
                             refreshing={this.state.refreshing}
                             ListFooterComponent={this.renderFooter}
                             onEndReached={() => 
                             {
                                 if(this.state.showLoadMore&&!this.state.loadingFooter)
                                 {
-                                    this.setState({ refreshing: true,loadingFooter:true,offset:parseInt(this.state.offset)+1},()=>this.fetch())
+                                    this.setState({ refreshing: true,loadingFooter:true,offset:parseInt(this.state.offset)+1},()=>{this.fetch()})
                                         
                                 }
                             
