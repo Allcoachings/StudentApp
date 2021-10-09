@@ -24,6 +24,8 @@ class SeriesList extends React.Component {
         seriesList: [],
         modalVisible: false,
         item:{},
+        showLoadMore: true,
+        loadingFooter: false,
         banner:[
             {
                 id: '1',
@@ -56,8 +58,12 @@ class SeriesList extends React.Component {
     }
 
     componentDidMount(){
-        seriesList(this.state.id,this.state.offset,dataLimit,this.seriesListCallBack)
+        this.fetch()
         fetch_Banners("test", this.bannerCallback)
+    }
+
+    fetch=() => {
+        seriesList(this.state.id,this.state.offset,dataLimit,this.seriesListCallBack)
     }
 
     bannerCallback=(response)=>{
@@ -80,7 +86,14 @@ class SeriesList extends React.Component {
             console.log("success series list")
             response.json().then(data=>
             {
-                this.setState({seriesList: data, tsLoading:false})
+                if(data.length>0)
+                {
+                    this.setState({seriesList:[...this.state.seriesList,...data],tsLoading:false, showLoadMore: true, loadingFooter:false});  
+                }
+                else
+                {
+                    this.setState({seriesList:this.state.seriesList,tsLoading:false, showLoadMore: false, loadingFooter: false}); 
+                } 
             })
         }
         else
@@ -101,6 +114,19 @@ class SeriesList extends React.Component {
             </TouchableOpacity  >
         )
     }
+
+    renderFooter = () => {
+        try {
+       
+          if (this.state.loadingFooter) {
+            return <CustomActivtiyIndicator mode="skimmer"/>;
+          } else {
+            return null;
+          }
+        } catch (error) {
+          console.log(error);
+        }
+    };
 
 
     render(){
@@ -141,6 +167,18 @@ class SeriesList extends React.Component {
                                 horizontal={false}
                                 showsHorizontalScrollIndicator={false}
                                 ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                                onEndReachedThreshold={0.1}
+                                refreshing={this.state.refreshing}
+                                ListFooterComponent={this.renderFooter}
+                                onEndReached={() => 
+                                {
+                                    if(this.state.showLoadMore&&!this.state.loadingFooter)
+                                    {
+                                        this.setState({ refreshing: true,loadingFooter:true,offset:parseInt(this.state.offset)+1},()=>this.fetch())
+                                            
+                                    }
+                                
+                                }}
                             />
                         )}
                         </View>
