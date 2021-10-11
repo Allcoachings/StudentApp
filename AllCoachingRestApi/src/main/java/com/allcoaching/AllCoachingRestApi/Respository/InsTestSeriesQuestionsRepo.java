@@ -39,4 +39,9 @@ public interface InsTestSeriesQuestionsRepo extends PagingAndSortingRepository<I
     @Query("UPDATE InsTestSeriesQuestions set optionD=:value , optionType=:type where id=:id")
     void updateOptionDField(String value,int type,long id);
 
+
+    @Modifying
+    @Query("UPDATE InsTestSeriesQuestions set correctOpt=:correctOpt , explanation=:explanation,correctMarks=:correctMarks,wrongMarks=:wrongMarks where id=:id")
+    void updateQuestionDetails(String correctOpt,String explanation,float correctMarks,float wrongMarks,long id);
+
 }

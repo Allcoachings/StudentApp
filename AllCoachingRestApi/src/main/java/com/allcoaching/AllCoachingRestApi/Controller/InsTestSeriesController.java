@@ -186,6 +186,14 @@ public class InsTestSeriesController {
         return  ResponseEntity.ok().build();
     }
 
+    @CrossOrigin(origins = "*")
+    @PutMapping("/update/series/question/details/{id}")
+    public ResponseEntity<Object> updateSeriesQuestionDetailsById(@RequestBody InsTestSeriesQuestions question)
+    {
+        insTestSeriesService.updateQuestionDetails(question.getExplanation(),question.getCorrectOpt(),question.getCorrectMarks(),question.getWrongMarks(),question.getId());
+        return  ResponseEntity.ok().build();
+    }
+
 
 
 
