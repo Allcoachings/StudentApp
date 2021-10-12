@@ -136,7 +136,7 @@ class TestSeriesView extends React.Component {
                         <View style={styles.pauseBtnView}>
                             {/* <Feather name="pause-circle" size={13} color={theme.greyColor}/> */}
                                 {/* <Text style={styles.pauseBtnText}> {this.formatTimer(this.state.time)}</Text> */}
-                                <Timer time={this.state.time} showAlert={this.showAlert}  updateTimeInParent={this.updateTimeInParent} refresh={this.refreshQuiz} navigation={this.props.navigation} timeUpAction={this.timeUpAction}/>
+                                <Timer time={this.state.time} showAlert={(okFun)=>this.showAlert(okFun)}  updateTimeInParent={this.updateTimeInParent} refresh={this.refreshQuiz} navigation={this.props.navigation} timeUpAction={this.timeUpAction}/>
                         </View>
                         <TouchableOpacity style={styles.menuIcon} onPress={()=>this.openModal()}>
                             <Feather name="grid" size={25} color={theme.labelOrInactiveColor}/>
@@ -197,13 +197,13 @@ class TestSeriesView extends React.Component {
       updateComponent=()=>
       {
            
-          if(this.state.testSeriesId!=this.props.route.params.item.id)
-          {
-            this.setState({testSeriesId:this.props.route.params.item.id,testSeries:this.props.route.params.item},()=>
-            {
-                fetch_testSeries_questions(this.state.testSeriesId,this.state.offset,dataLimit,this.questionCallback)
-            })
-          }
+        //   if(this.state.testSeriesId!=this.props.route.params.item.id)
+        //   {
+        //     this.setState({testSeriesId:this.props.route.params.item.id,testSeries:this.props.route.params.item},()=>
+        //     {
+        //         fetch_testSeries_questions(this.state.testSeriesId,this.state.offset,dataLimit,this.questionCallback)
+        //     })
+        //   }
           
       }
       
@@ -238,13 +238,29 @@ class TestSeriesView extends React.Component {
              let wrongQues = this.state.wrongQues;
              let attempted = this.state.attempted;
 
-             if(status=="correct")
+             if(!questions[quesIndex]['status']||questions[quesIndex]['status']!=status)
              {
-                correctQues++; 
-             }else if(status=="wrong")
-             {
-                wrongQues++;
-             } 
+
+
+                if(questions[quesIndex]['status']=="wrong" &&  status=="correct")
+                {
+                    wrongQues--;
+                }   
+                if(questions[quesIndex]['status']=="correct" &&  status=="wrong")
+                {
+                    correctQues--;
+                }
+
+
+                if(status=="correct")
+                {
+                   correctQues++; 
+                }else if(status=="wrong")
+                {
+                   wrongQues++;
+                } 
+             }
+            
              
              if(!questions[quesIndex]['isAttempted'])
              {

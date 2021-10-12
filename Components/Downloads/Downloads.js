@@ -104,7 +104,7 @@ class Downloads extends Component {
             );
     }
     componentWillUnmount() {
-        console.log(this.didFocusListener)
+    
         if(this.didFocusListener)
         {
             this.didFocusListener.remove()

@@ -122,16 +122,18 @@ class RenderDocument extends React.Component {
     render(){
         console.log("render", this.props.userInfo)
         return( 
-            <View style={styles.documentContainer}>
-                <TouchableOpacity onPress={()=>{this.documentOnClick()}}>
-                    <Image source={{uri:documentPlaceholder}} style={styles.documentImage}/>
-                </TouchableOpacity>
-                <View style={{flexShrink: 1, justifyContent: 'center'}}>
-                    <View style={{ display: 'flex', flexDirection: 'row'}}>
-                        <Text style={styles.documentTitle}>{this.props.item.name}</Text>
-                    </View>
-                </View> 
-                <View style={{alignItems: 'center'}}>
+            <View style={styles.documentContainer}> 
+                <View style={{flexDirection:'row'}}>
+                    <TouchableOpacity onPress={()=>{this.documentOnClick()}}>
+                        <Image source={{uri:documentPlaceholder}} style={styles.documentImage}/>
+                    </TouchableOpacity>
+                    <View style={{flexShrink: 1, justifyContent: 'center'}}>
+                        <View style={{ display: 'flex', flexDirection: 'row'}}>
+                            <Text style={styles.documentTitle}>{this.props.item.name}</Text>
+                        </View>
+                    </View> 
+                </View>
+                <View style={{alignItems: 'center',marginRight:5}}>
                     {this.props.actions?(
                             <TouchableOpacity style={{marginLeft: 'auto', marginTop: 8}} onPress={()=>this.showThreeMenu()}>
                                     <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
@@ -215,6 +217,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         display: 'flex',
         flexDirection: 'row',
+        justifyContent: 'space-between'
     },
         documentImage:
         {

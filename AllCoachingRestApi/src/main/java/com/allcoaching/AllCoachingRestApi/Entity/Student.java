@@ -28,7 +28,7 @@ public class Student {
     private String stateOfResidence;
     private String expoToken;
     private String mobileNumber;
-    private String studentImage;
+    private String studentImage="https://dubuddy.in/shortLinks/userAvatar";
     private boolean blocked;
 
     public Student(String userId, String email, String name, String stateOfResidence, String mobileNumber, String studentImage, boolean blocked) {

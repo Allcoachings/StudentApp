@@ -34,7 +34,7 @@ public class TransactionService {
 
     public Iterable<TransactionDto> fetchAllTransaction(int offset, int dataLimit)
     {
-        Page<TransactionDto> pagedResult =  transactionRepo.findAllTransactions(PageRequest.of(offset,dataLimit));
+        Page<TransactionDto> pagedResult =  transactionRepo.findAllTransactions(PageRequest.of(offset,dataLimit,Sort.by(Sort.Direction.DESC,"purchaseDate")));
         if(pagedResult.hasContent())
         {
             return  pagedResult.getContent();
@@ -46,12 +46,12 @@ public class TransactionService {
     //fetch by courseId
     public Iterable<Transaction> fetchByCourseId(long courseId,int page,int pageSize)
     {
-         return extractDataFromPage(transactionRepo.findByCourseId(courseId,PageRequest.of(page,pageSize)));
+         return extractDataFromPage(transactionRepo.findByCourseId(courseId,PageRequest.of(page,pageSize,Sort.by(Sort.Direction.DESC,"purchaseDate"))));
     }
     //fetch by insId
     public Iterable<TransactionDto> fetchByInsId(long insId,int page,int pageSize)
     {
-         Page<TransactionDto> pagedResult = (transactionRepo.findByInsId(insId,PageRequest.of(page,pageSize)));
+         Page<TransactionDto> pagedResult = (transactionRepo.findByInsId(insId,PageRequest.of(page,pageSize,Sort.by(Sort.Direction.DESC,"purchaseDate"))));
         if(pagedResult.hasContent())
         {
             return  pagedResult.getContent();
@@ -67,7 +67,7 @@ public class TransactionService {
     //fetch by status
     public Iterable<Transaction> fetchByStatus(String status,int page,int pageSize)
     {
-         return extractDataFromPage(transactionRepo.findByStatus(status,PageRequest.of(page,pageSize)));
+         return extractDataFromPage(transactionRepo.findByStatus(status,PageRequest.of(page,pageSize,Sort.by(Sort.Direction.DESC,"purchaseDate"))));
     }
 
     //count number of transactions
