@@ -99,7 +99,7 @@ class TestSeriesView extends React.Component {
 
 
     // }
-    showAlert=()=>
+    showAlert=(okFun)=>
     {
         Alert.alert("Warning!","Are you sure to quit quiz",[ 
             {
@@ -107,7 +107,7 @@ class TestSeriesView extends React.Component {
                 onPress: () => console.log("Cancel Pressed"),
                 style: "cancel"
               },
-              { text: "OK", onPress: () =>  this.props.navigation.goBack() },
+              { text: "OK", onPress: () =>{okFun();  this.props.navigation.goBack() }},
         ])
     }
 

@@ -131,8 +131,14 @@ class RenderDocument extends React.Component {
                         <Text style={styles.documentTitle}>{this.props.item.name}</Text>
                     </View>
                 </View> 
+                <View style={{alignItems: 'center'}}>
+                    {this.props.actions?(
+                            <TouchableOpacity style={{marginLeft: 'auto', marginTop: 8}} onPress={()=>this.showThreeMenu()}>
+                                    <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
+                            </TouchableOpacity>
+                    ):(null)}
                     {this.props.downloadMode?(
-                        <View style={{flexDirection: 'column',  marginLeft: 'auto', justifyContent: 'space-between', marginRight:10}}>                  
+                        <View style={{flexDirection: 'column',  marginLeft: 'auto', justifyContent: 'space-between',marginTop:'auto'}}>                  
                             {this.state.savingItem?(
                                 <View style={{width:40,height:40}}>
                                     <CircularProgress
@@ -163,13 +169,8 @@ class RenderDocument extends React.Component {
                                 )}
                             </View>
                         ):(null)}
+                </View>
 
-
-                    {this.props.actions?(
-                            <TouchableOpacity style={{marginLeft: 'auto', marginTop: 8}} onPress={()=>this.showThreeMenu()}>
-                                    <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
-                            </TouchableOpacity>
-                    ):(null)}
                  
                 {this.state.showModal?(
                     <Modal

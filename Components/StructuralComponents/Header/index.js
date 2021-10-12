@@ -8,6 +8,7 @@ import CardView from '../../Utils/CardView';
 import {fetch_categories_normalized} from '../../Utils/DataHelper/Categories';
 import {theme} from '../../config'
 import {tabListInstitute} from '../../../FakeDataService/FakeData'
+import {setCategories} from '../../Actions/'
 class index extends React.Component {
     state = { 
         activeTab: this.props.selectedCat||-1,
@@ -37,6 +38,8 @@ class index extends React.Component {
                 {
                     let obj = {icon:'',name:'All',sortOrder:1,id:-1}
                     data.unshift(obj)
+                    console.log("catgeories saved in redux")
+                    this.props.setCategories(data)
                 } 
                 this.setState({tabListInstitute:data,activeTab:this.props.selectedCat||-1});                   
             })
@@ -154,4 +157,4 @@ const mapStateToProps = (state)=>
         screenWidth: state.screen.screenWidth
     }
 }
-export default connect(mapStateToProps)(index);
+export default connect(mapStateToProps,{setCategories})(index);

@@ -1046,8 +1046,10 @@ class InstituteView extends React.Component {
     }
 
     render() {
+      console.log(this.props)
       this.updateComponent()
         const  {institute,loadingInstitute} = this.state;
+        console.log(institute&&this.props.categories.filter(item=>item.id==institute.category)[0].name)
         return (
             <PageStructure 
                 iconName={"arrow-left"}
@@ -1063,7 +1065,7 @@ class InstituteView extends React.Component {
                 
                 }}
                 catInHeader={false}
-                titleonheader={"UPSC Coaching"}
+                titleonheader={institute&&this.props.categories.filter(item=>item.id==institute.category)[0].name}
                 noBottomTab={true}
                 notificationreplaceshare={"more-vertical"}
                 rightIconOnPress={()=>{this.setState({modalVisible:true})}} 
@@ -1849,6 +1851,7 @@ const  mapStateToProps = (state)=>
     return {
         screenWidth: state.screen.screenWidth,
         userInfo:state.user.userInfo,
+        categories:state.categories.categories
     }
 }
 export default connect(mapStateToProps)(InstituteView);

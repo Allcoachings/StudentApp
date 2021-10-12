@@ -49,6 +49,25 @@ const app_redux = (state=initialState,action)=>
             return state
     }
 }
+//category reducer
+const initialCategoriesState = {
+    categories:[]
+}
+
+const categories_redux = (state=initialCategoriesState,action)=>
+{
+    switch(action.type)
+    {
+        case actionTypes.SET_CATEGORIES:
+            return {
+                ...state,
+                categories:action.payload.data
+            }
+
+        default:
+            return state
+    }
+}
 
 
 //user reducer starts
@@ -176,6 +195,7 @@ const rootReducer = combineReducers({
         institute:institute_reducer,
         testSeries:testSeries_reducer,
         layout:app_redux,
+        categories:categories_redux
 })
 
 

@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { differenceInSeconds } from "date-fns";
 import { theme } from "../config";
 let backhandler;
+let interval;
 const getElapsedTime = async () => {
     try {
       const startTime = await AsyncStorage.getItem("@start_time");
@@ -50,8 +51,7 @@ const Timer =(props)=>
 { 
     const appState = useRef(AppState.currentState);
     const [elapsed, setElapsed] = useState(0);
-    const [time,setTime] = useState(props.time);
-    const [interval, setInterval] = useState(null);
+    const [time,setTime] = useState(props.time); 
     const timeRef = useRef(props.time); 
     const [isRefreshRequired,setIsRefreshRequired] = useState(false)
     useEffect(() => {
@@ -98,7 +98,7 @@ const Timer =(props)=>
     {
       
         
-       let interval =  window.setInterval(()=>{
+         interval =  window.setInterval(()=>{
             
             if(time<=0)
             {
@@ -117,7 +117,7 @@ const Timer =(props)=>
             }
 
         },1000)
-     setInterval(interval)  
+      
     }
     useEffect(() => {
         const unsubscribe = props.navigation.addListener('focus', () => {
@@ -156,7 +156,7 @@ const Timer =(props)=>
             console.log("removed on blur")
             backhandler.remove()
           }
-        
+          
       });
   
       // Return the function to unsubscribe from the event so it gets removed on unmount
@@ -165,7 +165,7 @@ const Timer =(props)=>
       const backBtnListner = ()=>{
       backhandler =  BackHandler.addEventListener('hardwareBackPress',  ()=> 
           {
-              props.showAlert()
+              props.showAlert(()=>{console.log("cleared interval");window.clearInterval(interval)})
               
               return true;
           });
@@ -179,7 +179,7 @@ const Timer =(props)=>
          countdown();
          timeRef.current=time;
          props.updateTimeInParent(time)
-         return window.clearInterval(interval)
+         return ()=>window.clearInterval(interval)
      },[time])
 
     return(

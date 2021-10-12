@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -47,11 +48,16 @@ public class InsTestSeriesService {
 
     public Iterable<InsTestSeriesQuestions> saveSeriesQuestions(Iterable<InsTestSeriesQuestions> insTestSeriesQuestionsList)
     {
-        return insTestSeriesQuestionsRepo.saveAll(insTestSeriesQuestionsList);
+        Iterable<InsTestSeriesQuestions>  insTestSeriesQuestions = insTestSeriesQuestionsRepo.saveAll(insTestSeriesQuestionsList);
+          ArrayList<InsTestSeriesQuestions> i  = (ArrayList<InsTestSeriesQuestions>) insTestSeriesQuestionsList;
+            updateQuestionCount(i.size(),i.get(0).getTestSeriesId());
+        return insTestSeriesQuestions;
     }
     public InsTestSeriesQuestions saveSeriesQuestionOneByOne(InsTestSeriesQuestions insTestSeriesQuestion)
     {
-        return insTestSeriesQuestionsRepo.save(insTestSeriesQuestion);
+        InsTestSeriesQuestions insTestSeriesQuestions =  insTestSeriesQuestionsRepo.save(insTestSeriesQuestion);
+        updateQuestionCountByOne(insTestSeriesQuestions.getTestSeriesId());
+        return insTestSeriesQuestions;
     }
 
     //fetching test seriesId  by course id
@@ -146,7 +152,13 @@ public class InsTestSeriesService {
     //delete single question of test series
     public void deleteSeriesQuestionById(long id)
     {
-        insTestSeriesQuestionsRepo.deleteById(id);
+        Optional<InsTestSeriesQuestions> insTestSeriesQuestions = insTestSeriesQuestionsRepo.findById(id);
+        if(insTestSeriesQuestions.isPresent())
+        {
+            insTestSeriesQuestionsRepo.deleteById(id);
+            decreaseQuestionCountByOne(insTestSeriesQuestions.get().getTestSeriesId());
+        }
+
     }
 
     //delete playlist
@@ -213,4 +225,23 @@ public class InsTestSeriesService {
 
 
     }
+
+    //to update questionCount by one
+    public  void updateQuestionCountByOne(long id)
+    {
+        insTestSeriesRepo.updateQuestionCountByOne(id);
+    }
+
+    //to decrease questionCount by one
+    public  void decreaseQuestionCountByOne(long id)
+    {
+        insTestSeriesRepo.decreaseQuestionCountByOne(id);
+    }
+
+    //to update questionCount
+    public  void updateQuestionCount(int count,long id)
+    {
+        insTestSeriesRepo.updateQuestionCount(count,id);
+    }
+
 }

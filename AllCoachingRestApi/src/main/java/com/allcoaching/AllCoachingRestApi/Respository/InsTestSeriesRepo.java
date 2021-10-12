@@ -32,4 +32,18 @@ public interface InsTestSeriesRepo extends PagingAndSortingRepository<InsTestSer
     @Modifying
     @Query("UPDATE InsTestSeries set playlistId=:playlistId WHERE id=:id")
     void updatePlaylistId(long playlistId,long id);
+
+    @Modifying
+    @Query("UPDATE InsTestSeries set questionCount=questionCount+1 where id=:id")
+    void updateQuestionCountByOne(long id);
+
+    @Modifying
+    @Query("UPDATE InsTestSeries set questionCount=questionCount-1 where id=:id")
+    void decreaseQuestionCountByOne(long id);
+
+    @Modifying
+    @Query("UPDATE InsTestSeries set questionCount=:count where id=:id")
+    void updateQuestionCount(int count,long id);
+
+
 }

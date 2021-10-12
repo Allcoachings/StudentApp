@@ -119,6 +119,20 @@ export const setTestResultData=(data)=>
 
 //test series reducer actions ends
 
+//institute catgeory reducer actions starts
+
+export const setCategories=(data)=>
+{
+    return{
+        type:actionTypes.SET_CATEGORIES,
+        payload:{
+            data
+        }
+    }
+}
+
+//test series reducer actions ends
+
 
 //stacknavigation reducer actions starts
 

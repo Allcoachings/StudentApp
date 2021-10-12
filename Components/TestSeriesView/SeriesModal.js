@@ -126,7 +126,7 @@ class SeriesModal extends React.Component {
     this.calculateScore(item.status,item.question.correctMarks,item.question.wrongMarks) 
      
     return(
-      <View style={[{flex: 1,flexDirection: 'row',alignItems: 'center',flexWrap:'wrap',paddingBottom:10},this.provideQuestionItemStyle(item.status)]}>
+      <View style={[{flex: 1,flexDirection: 'row',alignItems: 'center',flexWrap:'wrap',paddingBottom:10,marginVertical:5},this.provideQuestionItemStyle(item.status)]}>
 
           <TouchableOpacity style={[styles.queView,{borderWidth:0}]}>
             <Text style={styles.queno}>{index+1}</Text>
