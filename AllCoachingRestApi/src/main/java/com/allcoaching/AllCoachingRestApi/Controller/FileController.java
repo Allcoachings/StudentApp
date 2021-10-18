@@ -1,10 +1,10 @@
 package com.allcoaching.AllCoachingRestApi.Controller;
 
 import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
+import com.allcoaching.AllCoachingRestApi.dto.CkEditorFileUploadDto;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -79,4 +79,22 @@ public class FileController {
         URI location = ServletUriComponentsBuilder.fromPath("{addr}").buildAndExpand(fileAddr).toUri();
         return ResponseEntity.created(location).headers(headers).build();
     }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("api/v1/files/uploadFileCkEditor")
+    public @ResponseBody
+    CkEditorFileUploadDto uploadFileCkEditor(@RequestParam MultipartFile upload)
+    {
+        String fileAddr ="files/";
+        fileAddr += fileUploadService.storeFile(upload);
+//        HttpHeaders headers = new HttpHeaders();
+//        System.out.println(fileAddr);
+//        headers.add("Access-Control-Expose-Headers", "Location");
+        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/{addr}").buildAndExpand(fileAddr).toUri();
+        return  new CkEditorFileUploadDto(location.toString(),true);
+    }
+
+
+
+
 }
