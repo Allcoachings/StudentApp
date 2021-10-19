@@ -259,11 +259,10 @@ public class InsTestSeriesController {
         {
             insTestSeriesQuestions.setId(questionDto.getQuestionId());
         }
-        InsTestSeriesQuestions insTestSeriesQuestions_saved =  insTestSeriesService.saveSeriesQuestionOneByOne(insTestSeriesQuestions);
-        URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(insTestSeriesQuestions_saved).toUri();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Access-Control-Expose-Headers", "Location");
-        return insTestSeriesQuestions_saved;
+        //        URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(insTestSeriesQuestions_saved.getId()).toUri();
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add("Access-Control-Expose-Headers", "Location");
+        return insTestSeriesService.saveSeriesQuestionOneByOne(insTestSeriesQuestions);
     }
 
     @CrossOrigin(origins = "*")

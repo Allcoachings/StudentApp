@@ -8,11 +8,13 @@ import com.allcoaching.AllCoachingRestApi.Respository.InsTestSeriesQuestionsRepo
 import com.allcoaching.AllCoachingRestApi.Respository.InsTestSeriesRepo;
 import com.allcoaching.AllCoachingRestApi.Respository.TestSeriesPlaylistRepo;
 import com.allcoaching.AllCoachingRestApi.dto.TestSeriesQuestionDto;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.HTML;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -55,6 +57,8 @@ public class InsTestSeriesService {
     }
     public InsTestSeriesQuestions saveSeriesQuestionOneByOne(InsTestSeriesQuestions insTestSeriesQuestion)
     {
+//        insTestSeriesQuestion.setQuestion(Jsoup.parse(insTestSeriesQuestion.getQuestion()).text());
+//        System.out.println(insTestSeriesQuestion.getQuestion());
         InsTestSeriesQuestions insTestSeriesQuestions =  insTestSeriesQuestionsRepo.save(insTestSeriesQuestion);
         updateQuestionCountByOne(insTestSeriesQuestions.getTestSeriesId());
         return insTestSeriesQuestions;
@@ -201,6 +205,7 @@ public class InsTestSeriesService {
         switch (fieldName)
         {
             case "question":
+
                 insTestSeriesQuestionsRepo.updateQuestionField(fieldValue,fieldDbType,qid);
                 break;
             case "optionA":

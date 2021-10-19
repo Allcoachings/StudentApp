@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -17,6 +18,7 @@ public class InsTestSeriesQuestions {
     @Id
     @GeneratedValue
     private  long id;
+    @Column(columnDefinition = "TEXT")
     private String question;
     private String optionA;
     private String optionB;
