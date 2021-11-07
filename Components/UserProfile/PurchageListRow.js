@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Text, StyleSheet, View, Modal,TouchableOpacity, Image,Dimensions} from 'react-native'
 import { theme,serverBaseUrl,imageProvider } from '../config';
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import CardView from '../Utils/CardView';
 const windowWidth = Dimensions.get('window').width
 
@@ -33,7 +33,7 @@ export default class PurchageListRow extends Component {
                 </View>
             </View>
             <TouchableOpacity onPress={()=>this.openPurchageModal()}>
-            <Feather name="more-vertical" size={20} color={theme.secondaryColor}  />
+            <EvilIcons name="more-vertical" size={20} color={theme.secondaryColor}  />
 
             </TouchableOpacity>
 
@@ -46,15 +46,15 @@ export default class PurchageListRow extends Component {
                     {CardView(
                         <>
                             <View style={{flexDirection: 'row',margin:5}}>
-                                <Feather name="share" size={20}/>
+                                <EvilIcons name="share" size={20}/>
                                 <Text style={{marginLeft:5}}>Share</Text>
                             </View>
                             <View style={{flexDirection: 'row',margin:5}}>
-                                <Feather name="share" size={20}/>
+                                <EvilIcons name="share" size={20}/>
                                 <Text style={{marginLeft:5}}>Add to wishlist</Text>
                             </View>
                             <View style={{flexDirection: 'row',margin:5}}>
-                                <Feather name="share" size={20}/>
+                                <EvilIcons name="share" size={20}/>
                                 <Text style={{marginLeft:5}}>Flag as inappropriate</Text>
                             </View>
                         </>,

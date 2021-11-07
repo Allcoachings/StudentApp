@@ -10,11 +10,12 @@ import {
   ScrollView,
   FlatList
 } from "react-native";
-import { Feather } from "@expo/vector-icons";
-import { theme, appLogo, Assets } from "../../config";
+import { EvilIcons } from "@expo/vector-icons";
+import { theme, appLogo, Assets, imageProvider } from "../../config";
 import CardView from "../../Utils/CardView";
 import CustomActivtiyIndicator from '../../Utils/CustomActivtiyIndicator';
 import EmptyList from '../../Utils/EmptyList'
+import { connect } from "react-redux";
 // import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 class HeaderMobile extends React.Component {
   state = {
@@ -26,7 +27,7 @@ class HeaderMobile extends React.Component {
     showResult: false,
     loadingData: false,
   };
-
+ 
   searchCallback=(response)=>{
     if(response.status==200)
     {
@@ -49,63 +50,97 @@ class HeaderMobile extends React.Component {
         ) : (
           <>
             {(
-              <>
+              <View style={{flexDirection: 'row',alignItems: 'center'}}>
              
-                    <TouchableOpacity
-                    style={{ margin: "1%", flex:0.1}}
+             {this.props.iconName?(
+              <TouchableOpacity
+                  
                     onPress={this.props.btnHandler}
                     >
-                    <Feather
+                    <EvilIcons
                         name={this.props.iconName}
                         size={25}
                         color={theme.secondaryColor}
                     />
                     </TouchableOpacity> 
+             ):(null)}
+                    
                 
 
-                  <View style={!this.props.titleonheader?{alignSelf: 'center',alignItems: 'center',flex: 0.9}:{marginTop:2, flex: 0.9}}>
-                    {this.props.titleonheader ? (
+                  <View style={!this.props.titleonheader?{alignItems: 'center',flex: 0.9}:{marginTop:2, flex: 0.9}}>
+                    {this.props.titleonheader ? 
+                    (
                      this.props.titleWithImage?(
-                       <View style={{display: 'flex', flexDirection: 'row'}}>
+                       <View style={{flexDirection: 'row',alignItems: 'center'}}>
                          <Image source={appLogo} style={{resizeMode:'contain',width: 25,height: 25}} />
                          <Text
                             style={{
-                              fontSize: 18,
-                              fontWeight: "bold",
+                              fontSize: 20, 
                               numberOfLines: 1,
                               alignSelf: "flex-start",
-                              marginLeft: 10,
+                              fontFamily: 'Raleway_600SemiBold',
+                              marginLeft: 1,
+                              paddingBottom:5
                             }}
                         >
                             {this.props.titleonheader}
                         </Text>
                        </View>
-                     ):( <Text
-                        style={{
-                          fontSize: 18,
-                          fontWeight: "bold",
-                          numberOfLines: 1,
-                          alignSelf: "flex-start",
-                          marginLeft: 10,
-                        }}
-                      >
-                        {this.props.titleonheader}
-                      </Text>)
+                     )
+                     :
+                     ( 
+                        <Text
+                          style={{
+                            fontSize: 18, 
+                            numberOfLines: 1,
+                            alignSelf: "flex-start",
+                            fontFamily: 'Raleway_600SemiBold',
+                            marginLeft: 1,
+                            paddingBottom:5
+                          }}
+                        >
+                          {this.props.titleonheader}
+                        </Text>
+                      )
                     ) : (
                       <View>
                         <Image source={appLogo} style={styles.headerLogo} />
-                      </View>
-                      
+                      </View> 
                     )}
                   </View>
+
+
+                  {!this.props.noNotificationIcon?(
+                    <TouchableOpacity   style={{ marginLeft: "auto" }} onPress={() => this.props.rightIconOnPress()}>
+                      {this.props.notificationreplaceshare ? (
+                        <EvilIcons
+                          name={this.props.notificationreplaceshare}
+                          size={25}
+                          color={theme.secondaryColor}
+                          style={styles.notiIcon}
+                        />
+                      ) : (
+                        <EvilIcons
+                          name="bell"
+                          size={25}
+                          color={theme.secondaryColor}
+                          style={styles.notiIcon}
+                        />
+                      )}
+                  </TouchableOpacity> 
+                 ):(null)} 
+
+
+
+
                   {!this.props.nosearchIcon?(
                   <TouchableOpacity
-                    style={{ marginLeft: "auto" }}
+                    style={!this.props.noNotificationIcon?{}:{ marginLeft: "auto" }}
                     onPress={() => this.setState({ search: true })}
                   >
-                  <Feather
+                  <EvilIcons
                     name="search"
-                    size={20}
+                    size={25}
                     color={theme.secondaryColor}
                     style={styles.searchIcon}
                   />
@@ -113,32 +148,25 @@ class HeaderMobile extends React.Component {
                 ):(null)}
 
 
-                 {!this.props.noNotificationIcon?(
-                    <TouchableOpacity   style={!this.props.nosearchIcon?{}:{ marginLeft: "auto" }} onPress={() => this.props.rightIconOnPress()}>
-                      {this.props.notificationreplaceshare ? (
-                        <Feather
-                          name={this.props.notificationreplaceshare}
-                          size={20}
-                          color={theme.secondaryColor}
-                          style={styles.notiIcon}
-                        />
-                      ) : (
-                        <Feather
-                          name="bell"
-                          size={20}
-                          color={theme.secondaryColor}
-                          style={styles.notiIcon}
-                        />
-                      )}
-                  </TouchableOpacity> 
-                 ):(null)} 
-                
-              </>
+                 
+                 {this.props.userIcon?(
+                  <TouchableOpacity
+                    style={{ marginLeft: "auto" }}
+                    onPress={this.props.userIcon}
+                  >
+                  <Image
+                    source={{uri:imageProvider(this.props.user.studentImage)}}
+                    style={{height: 20,width:20,backgroundColor:"blue",borderRadius:10}}
+                  />
+                </TouchableOpacity>
+                ):(null)}
+
+              </View>
             )}
           </>
         )}
 
-{this.state.search?(
+      {this.state.search?(
 
         <Modal
             transparent={false}
@@ -158,25 +186,24 @@ class HeaderMobile extends React.Component {
                         {this.state.searchWord!=''?(
                             this.state.filterData?(
                                 <TouchableOpacity onPress={() => this.setState({ searchWord: '', offset: 0, filterData: false, showResult: false, searchData: [] },() =>this.textInput.clear())}>
-                                    <Feather
+                                    <EvilIcons
                                       name="x"
-                                      size={20}
-
+                                      size={20} 
                                       color={theme.secondaryColor}
                                       style={styles.searchIcon}
                                     />
                                 </TouchableOpacity>
                             ):(
                                 <TouchableOpacity onPress={()=>this.setState({filterData: true, loadingData: true},()=>this.props.searchFun(this.state.offset, this.state.searchWord, this.searchCallback))}>
-                                    <Feather 
-                                      name={'arrow-right'} 
+                                    <EvilIcons 
+                                      name={'chevron-right'} 
                                       size={15} 
                                       color={theme.labelOrInactiveColor} 
                                       style={styles.searchIcon}
                                     />
                                 </TouchableOpacity>
                             )):(
-                                <Feather 
+                                <EvilIcons 
                                   name={'search'} 
                                   size={15} 
                                   color={theme.labelOrInactiveColor} 
@@ -238,10 +265,11 @@ const styles = StyleSheet.create({
     color: theme.secondaryColor,
   },
   searchIcon: {
-    margin: 15,
+    margin: 5, 
   },
   notiIcon: {
-    margin: 5,
+    margin:15,
+    
   },
   headerLogo: {
     width: 25,
@@ -251,4 +279,12 @@ const styles = StyleSheet.create({
     
   },
 });
-export default HeaderMobile;
+
+
+const mapStateToProps = (state)=>{ 
+
+  return {
+      user : state.user.userInfo
+  }
+}
+export default  connect(mapStateToProps)(HeaderMobile);

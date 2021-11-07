@@ -50,7 +50,7 @@ class AddTimeTable extends React.Component {
             <PageStructure 
                 nosearchIcon={true}
                 noNotificationIcon={true}
-                iconName={"menu"}
+                iconName="navicon"
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
             >
                 <ScrollView>

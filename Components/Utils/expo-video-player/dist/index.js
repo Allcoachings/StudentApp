@@ -260,7 +260,7 @@ const VideoPlayer = (tempProps) => {
                             !props.icon.pause)) && (<MaterialIcons name={playbackInstanceInfo.state === PlaybackStates.Playing
                             ? 'pause'
                             : playbackInstanceInfo.state === PlaybackStates.Paused
-                            ? 'play-arrow'
+                            ? 'play-chevron-right'
                             : 'replay'} style={props.icon.style} size={props.icon.size/1.5} color={props.icon.color}/>)}
                         </View>
                 </TouchableButton> 

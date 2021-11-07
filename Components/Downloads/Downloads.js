@@ -9,13 +9,16 @@ import RenderVideo from '../InstituteView/RenderVideo';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
-import {saveItemsOffline} from '../Utils/DownloadFile'
+import {pauseDownload, saveItemsOffline} from '../Utils/DownloadFile'
+import { removeDownloadingItem } from '../Actions';
+ 
 class Downloads extends Component {
   
    state = {
        activeTab:1,
        loading:true,
-       actions:['Remove']
+       actions:['Remove'],
+       downloadingItemActions:['Cancel']
     };
     activeTab=(tabValue)=>{
         this.setState({activeTab:tabValue, data:[]},()=>
@@ -58,6 +61,12 @@ class Downloads extends Component {
         saveItemsOffline(data_arr,this.props.userInfo.id,this.state.activeTab==2?'document':'video');
         
     }
+    cancelDownload =(item)=>
+    {
+        pauseDownload(item,()=>{ 
+            this.props.removeDownloadingItem(item.url)
+        });
+    }
     switchTabRender=(activeTab)=>{
 
         
@@ -71,25 +80,52 @@ class Downloads extends Component {
             case 2: 
                     // return this.renderDocument({image:{uri:'https://picsum.photos/200'},title:'The Course2',institute:'CHandan coaching institute',Views:'104,234',date:'date here'})
                     return (
+                        <>
+                        <FlatList
+                        data={this.props.downloadItems.filter((item)=>item.type=='document')}
+                        renderItem={({item,index}) =><RenderVideo  removeVideo={()=>this.cancelDownload(item)} index={index} userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="offline" downloadMode={true} savingItem={true} actions={this.state.downloadingItemActions} progress={item.progress}/>}
+                        ListEmptyComponent={()=>(this.props.downloadItems.filter(item=>item.type=='video').lengh==0?<EmptyList image={Assets.noResult.noRes1}/>:null)}
+                        // ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                        />
                         <FlatList
                             data={this.state.data}
                             renderItem={({item}) =><RenderDocument userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="offline" downloadMode={false} actions={this.state.actions}/>}
                             keyExtractor={(item)=>item.id}
                             ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                         />
+                        </>
                     )
                     
             case 1:
                 return(
-                    
-                    <FlatList
-                    data={this.state.data}
-                    renderItem={({item,index}) =><RenderVideo  removeVideo={this.removeVideo} index={index} userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="offline" downloadMode={false} actions={this.state.actions}/>}
-                    keyExtractor={(item)=>item.id}
-                    ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
-                    />
+                    <>
+                        <FlatList
+                        data={this.props.downloadItems.filter((item)=>item.type=='video')}
+                        renderItem={({item,index}) =><RenderVideo  removeVideo={()=>this.cancelDownload(item)} index={index} userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="offline" downloadMode={true} savingItem={true} actions={this.state.downloadingItemActions} progress={item.progress}/>}
+                        keyExtractor={(item)=>item.id}
+                        // ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                        />
+                        <FlatList
+                        data={this.state.data}
+                        renderItem={({item,index}) =><RenderVideo  removeVideo={this.removeVideo} index={index} userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="offline" downloadMode={false} actions={this.state.actions}/>}
+                        keyExtractor={(item)=>item.id}
+                        ListEmptyComponent={()=>(this.props.downloadItems.filter(item=>item.type=='video').lengh==0?<EmptyList image={Assets.noResult.noRes1}/>:null)}
+                        />
+                    </>
                 )
              
+        }
+
+    }
+    componentDidUpdate(prevProps,prevState) {
+        console.log("this.props.downloadItems",prevProps.downloadItems.length,this.props.downloadItems.length)
+
+        if(prevProps.downloadItems.length!=this.props.downloadItems.length)
+        {
+            setTimeout(()=>{
+                this.extractSavedItems(this.props.userInfo.id,this.state.activeTab==2?'document':'video');
+            },2000)
+            
         }
 
     }
@@ -102,10 +138,11 @@ class Downloads extends Component {
 
             }
             );
+            
     }
     componentWillUnmount() {
     
-        if(this.didFocusListener)
+        if(this.didFocusListener&&this.didFocusListener.remove)
         {
             this.didFocusListener.remove()
         }
@@ -113,7 +150,7 @@ class Downloads extends Component {
   render() {
     return (
         <PageStructure 
-            iconName={"arrow-left"}
+            iconName={"chevron-left"}
             btnHandler={() => {this.props.navigation.goBack()}}
             // headerComponent={this.header()}
             // replaceHeader={true}
@@ -124,16 +161,18 @@ class Downloads extends Component {
             noNotificationIcon={true}
         >
             <View>
-                <View style={{borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}/> 
+                {/* <View style={{borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}/>  */}
+
+                
                 <View style={styles.profile_navigation}>
-                        <View>
-                            <Text style={[styles.navlink,{color:this.state.activeTab==1?theme.accentColor:theme.labelOrInactiveColor}]} onPress={()=>{this.activeTab(1)}}>Videos</Text>
+                        <View style={[styles.btnView1,this.state.activeTab==1?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor})]}>
+                            <Text style={[styles.btnText,{color:this.state.activeTab==1?theme.primaryColor:theme.greyColor}]} onPress={()=>{this.activeTab(1)}}>Videos</Text>
                         </View>
-                        <View>
-                            <Text style={[styles.navlink,{color:this.state.activeTab==2?theme.accentColor:theme.labelOrInactiveColor}]} onPress={()=>{this.activeTab(2)}}>Documents</Text>
+                        <View style={[styles.btnView1,this.state.activeTab==2?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor})]}>
+                            <Text style={[styles.btnText,{color:this.state.activeTab==2?theme.primaryColor:theme.greyColor}]} onPress={()=>{this.activeTab(2)}}>Documents</Text>
                         </View> 
                 </View> 
-                <View style={{borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}/>
+                <View style={{borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:3}}/>
                 {this.switchTabRender(this.state.activeTab)}
             </View>
       </PageStructure>
@@ -229,12 +268,34 @@ const styles = StyleSheet.create({
                 marginBottom:10,
                 color: theme.secondaryColor,
             },
+
+            btnView1:
+            {
+                flex: 0.4,
+                paddingLeft: 10,
+                paddingRight: 10,
+                paddingTop: 5,
+                paddingBottom: 5,
+                backgroundColor:theme.greyColor,
+                borderRadius: 5,
+                borderWidth:1,
+                margin: 2, 
+                justifyContent:'center',
+                alignItems: 'center'
+            },
+                btnText:
+                {
+                    fontFamily: 'Raleway_600SemiBold',
+                    fontSize: 16,
+                    color: theme.greyColor
+                },
 });
 
 const  mapStateToProps = (state)=>
 {
     return { 
-        userInfo:state.user.userInfo,   
+        userInfo:state.user.userInfo, 
+        downloadItems:state.download.items  
     }
 } 
-export default connect(mapStateToProps)( Downloads);
+export default connect(mapStateToProps,{removeDownloadingItem})( Downloads);

@@ -2,18 +2,22 @@ import * as FileSystem from 'expo-file-system';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { serverBaseUrl } from '../config';
 import { Toast } from 'native-base';
-export  const downloadFile= async (item,url,userId,savingDocTye,callback,downloadProgressCallbackfun) => {
-
-  const isSaved =   await checkSavedOffline(item,userId,savingDocTye) 
+import {useDispatch} from 'react-redux';
+export  const downloadFile= async (item,url,userId,savingDocTye,callback,downloadProgressCallbackfun,setInReduxFun) => {
+ 
+  // const isSaved =   await checkSavedOffline(item,userId,savingDocTye) 
+  const isSaved = false;
   if(!isSaved) 
   {
     const downloadResumable = FileSystem.createDownloadResumable(
       serverBaseUrl+url,
       FileSystem.cacheDirectory + url.replace('files/',''),
       {},
-      (progress)=>downloadProgressCallback(progress,downloadProgressCallbackfun)
+      (progress)=>downloadProgressCallback(progress,downloadProgressCallbackfun,url)
     );
- 
+
+    
+    setInReduxFun({...item,downloadRef:downloadResumable})
     downloadResumable.downloadAsync()
       .then(({ uri }) => {
           let offlineItem = {...item,fileAddress:uri}
@@ -32,12 +36,18 @@ export  const downloadFile= async (item,url,userId,savingDocTye,callback,downloa
   }
     
  }
- const downloadProgressCallback = (downloadProgress ,callback)=> {
+ export const pauseDownload = (item,callback) =>
+  {
+    item.downloadRef.pauseAsync()
+    callback();
+
+  }
+ const downloadProgressCallback = (downloadProgress ,callback,url)=> {
   const progress =
     downloadProgress.totalBytesWritten /
     downloadProgress.totalBytesExpectedToWrite;
-    console.log(progress);
-    callback(progress*100);
+     
+    callback(progress*100,url);
    
 }
  export const saveOffline=(item,userId,savingDocTye)=>
@@ -50,10 +60,17 @@ export  const downloadFile= async (item,url,userId,savingDocTye,callback,downloa
          if(result)
          {
 
+          
                 savingItem = JSON.parse(result)       
-                console.log('Saving',savingItem);  
+                 if(savingItem[userId])
+                 {
+                  savingItem[userId][savingDocTye].push(item);
+                 }else
+                 {
+                    savingItem= {[userId]:{[savingDocTye]:[item]}};       
+                 }
                  
-                savingItem[userId][savingDocTye].push(item);
+                
 
                 
          }else

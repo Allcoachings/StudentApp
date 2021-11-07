@@ -13,17 +13,18 @@ class index extends React.Component {
     state = { 
         activeTab: this.props.selectedCat||-1,
         tabListInstitute:[],
+        activeTabIndex:0
     }
-
+    flatListRef=null
     componentDidMount=()=>{
         if(this.props.catType)
         {
-            console.log("catType")
+          
             fetch_categories_normalized(this.props.catType,this.categoriesCallBack)
         }  
         else
         {
-            console.log("not type")
+            
             fetch_categories_normalized('main',(response)=>this.categoriesCallBack(response,true))
         }  
     }
@@ -46,9 +47,16 @@ class index extends React.Component {
         }
     }
 
-    handleCatPress=(item)=>
+    handleCatPress=(item,index)=>
     {
-        this.setState({activeTab:item.id})
+        
+        if(index > this.state.activeTabIndex)
+        {
+            this.scrollForward()
+        }else if(index < this.state.activeTabIndex)
+        {
+            this.scrollBackward()
+        }
         if(item.id==-1)
         {
             this.props.catOnpress(false)
@@ -56,14 +64,29 @@ class index extends React.Component {
         {
             this.props.catOnpress(true,item)
         }
+        this.setState({activeTab:item.id,activeTabIndex:index})
         
     }
-
-    renderTabItems=({item})=>
+    scrollForward = () => {
+        if(this.flatListRef)
+        {
+            this.flatListRef.scrollToIndex({ animated: true, index: 0 });
+        }
+        
+    };
+  
+    scrollBackward = () => {
+        if(this.flatListRef)
+        {
+            this.flatListRef.scrollToIndex({animated: true, index: 1});
+        }
+        
+    };
+    renderTabItems=({item,index})=>
     {
         return (
-            <TouchableOpacity style={[styles.courseItemContainer,this.state.activeTab==item.id?({backgroundColor:theme.secondaryColor,borderColor:theme.secondaryColor}):({backgroundColor:theme.labelOrInactiveColor+'4D',borderColor:theme.labelOrInactiveColor})]} onPress={()=>this.handleCatPress(item)}> 
-                    <Text style={[styles.courseTitle,this.state.activeTab==item.id?({color:theme.primaryColor}):({color:theme.greyColor})]}>{item.name}</Text>
+            <TouchableOpacity style={[styles.courseItemContainer,this.state.activeTab==item.id?({backgroundColor:theme.secondaryColor+'A8',borderColor:theme.secondaryColor+'CC'}):({backgroundColor:theme.labelOrInactiveColor+'4D',borderColor:theme.labelOrInactiveColor})]} onPress={()=>this.handleCatPress(item)}> 
+                    <Text style={[styles.courseTitle,this.state.activeTab==item.id?({color:theme.primaryColor}):({color:theme.secondaryColor})]}>{item.name}</Text>
             </TouchableOpacity>
         );
     }
@@ -89,6 +112,8 @@ class index extends React.Component {
                                 catInHeader={this.props.catInHeader}
                                 selectedCat={this.props.selectedCat}
                                 titleWithImage={this.props.titleWithImage}
+                                userIcon={this.props.userIcon}
+                                
                                 />
                             )
                             :
@@ -96,13 +121,14 @@ class index extends React.Component {
                                 <HeaderWeb/>
                             )}
                         </View>
-                        {this.props.catInHeader?( 
+                        {this.props.catInHeader&&this.state.tabListInstitute.length?( 
                             <View style={[styles.catRow, this.props.catStyle]}> 
                                 <FlatList 
                                     data={this.state.tabListInstitute} 
                                     renderItem={this.renderTabItems}
                                     keyExtractor={(item)=>item.id} 
                                     horizontal={true}
+                                    ref={ref=>this.flatListRef=ref}
                                     showsHorizontalScrollIndicator={false}
                                 /> 
                             </View>
@@ -116,6 +142,7 @@ class index extends React.Component {
 
 const styles = StyleSheet.create({
 
+    
     container:
     {
         flex:1,
@@ -129,9 +156,9 @@ const styles = StyleSheet.create({
         },
         catRow:{
             
-            paddingTop:5,
-            paddingBottom:10,
-            borderTopWidth:1,
+             
+            padding:5,
+            borderTopWidth:0.5,
             borderTopColor:theme.labelOrInactiveColor
         },
             courseItemContainer:
@@ -139,16 +166,17 @@ const styles = StyleSheet.create({
                 paddingLeft:10,
                 paddingRight:10, 
                 marginRight:10,
-                padding:2,
-                marginTop:5 ,
-                borderWidth:1, 
+                padding:5,
+                 alignItems: "center",
+                borderWidth:0.7, 
                 borderColor:theme.labelOrInactiveColor,
                 borderRadius:15
             },
                 courseTitle:
                 {
-                    fontSize:15, 
-                    color:theme.greyColor
+                    fontSize:14,  
+                    // fontFamily: 'Raleway_400Regular',
+
                 },
 })
 const mapStateToProps = (state)=>

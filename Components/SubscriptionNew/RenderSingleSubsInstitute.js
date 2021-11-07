@@ -2,7 +2,7 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Modal, TouchableWithoutFeedback} from 'react-native';
 // import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {theme,screenMobileWidth, dataLimit,serverBaseUrl, imageProvider} from '../config'
-import { Feather } from '@expo/vector-icons';
+import { EvilIconsns } from '@expo/vector-icons';
 import {connect } from 'react-redux'
 import {subscriptionNew} from '../../FakeDataService/FakeData'
 import CardView from '../Utils/CardView'
@@ -93,7 +93,7 @@ class RenderSingleSubsInstitute extends React.Component {
                             </View>
                         </View>
                         <TouchableOpacity onPress={()=>{this.setState({modalVisible:true})}}>
-                            <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
+                            <EvilIconsns name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
                         </TouchableOpacity>
                     </View>
                 </TouchableOpacity>
@@ -108,20 +108,20 @@ class RenderSingleSubsInstitute extends React.Component {
                                     <>
                                         {/* {this.state.subscribe?( */}
                                             <TouchableOpacity onPress={() =>unsubscribe(this.state.studentId,this.state.instituteId,this.unsubscribeCallback)} style={{flexDirection: 'row',margin:5}}>
-                                                <Feather name="share" size={20}/>
+                                                <EvilIconsns name="share" size={20}/>
                                                 <Text style={{marginLeft:5}}>Unfollow</Text>
                                             </TouchableOpacity>
                                         {/* // ):( */}
                                         {/* <TouchableOpacity onPress={() =>subscribe(this.state.studentId,this.state.instituteId,this.subscribeCallback)} style={{flexDirection: 'row',margin:5}}>
-                                            <Feather name="share" size={20}/>
+                                            <EvilIconsns name="share" size={20}/>
                                             <Text style={{marginLeft:5}}>Follow</Text>
                                         </TouchableOpacity>)} */}
                                         <View style={{flexDirection: 'row',margin:5}}>
-                                            <Feather name="share" size={20}/>
+                                            <EvilIconsns name="share" size={20}/>
                                             <Text style={{marginLeft:5}}>Add to wishlist</Text>
                                         </View>
                                         <View style={{flexDirection: 'row',margin:5}}>
-                                            <Feather name="share" size={20}/>
+                                            <EvilIconsns name="share" size={20}/>
                                             <Text style={{marginLeft:5}}>Flag as inappropriate</Text>
                                         </View>
                                     </>,

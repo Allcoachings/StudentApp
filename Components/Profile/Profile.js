@@ -3,7 +3,7 @@ import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image, Platform, Scroll
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 // import {connect} from 'react-redux'
 import { theme,dataLimit,screenMobileWidth,serverBaseUrl,documentPlaceholder,imageProvider } from '../config';
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import * as DocumentPicker from 'expo-document-picker';
@@ -105,7 +105,7 @@ class Profile extends React.Component {
     
         return (
             <PageStructure
-                iconName={"menu"}
+                iconName="navicon"
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
                 titleonheader={"Edit Profile"}
                 headerStyle={{ justifyContent: 'center'}}

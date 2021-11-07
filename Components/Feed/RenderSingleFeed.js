@@ -2,7 +2,7 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Dimensions, Image,Platform, ScrollView,ActivityIndicator} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import { theme,dataLimit, Assets, imageProvider } from '../config';
-import {Feather, AntDesign, Entypo} from '@expo/vector-icons';
+import {EvilIcons, AntDesign, Entypo} from '@expo/vector-icons';
 import EmptyList from '../Utils/EmptyList'
 import {connect } from 'react-redux'
 import CardView from '../Utils/CardView';
@@ -120,7 +120,7 @@ class RenderSingleFeed extends React.Component {
     render(){
         return(
             <PageStructure
-                iconName={"menu"}
+                iconName="navicon"
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
                 catOnpress={this.toggleCatMode}
                 scrollMode={'scroll'}

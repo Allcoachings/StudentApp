@@ -3,7 +3,7 @@ import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform} from 'r
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {testSeriesData, storyLine} from '../../FakeDataService/FakeData'
 import { theme, Assets } from '../config';
-import { Feather } from '@expo/vector-icons';
+import { EvilIconsns } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
 import CardView from '../Utils/CardView'
@@ -40,7 +40,7 @@ class SingleTestSeries extends React.Component {
     render(){
         return(
             <PageStructure
-                iconName={"menu"}
+                iconName="navicon"
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
                 catInHeader={false}
             >
@@ -48,7 +48,7 @@ class SingleTestSeries extends React.Component {
                     <View style={styles.headerSection}>
                         <Text style={styles.title}>{testSeriesData[0].title}</Text>
                         <View style={styles.more}>
-                            <Feather name="arrow-right" size={20} />
+                            <EvilIconsns name="chevron-right" size={20} />
                         </View>
                     </View>
                     <FlatList 

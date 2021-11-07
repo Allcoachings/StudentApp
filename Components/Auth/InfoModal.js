@@ -1,5 +1,5 @@
 import React, { Component ,useState} from 'react';
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import { View, Text,StyleSheet,ScrollView,TouchableWithoutFeedback,Dimensions,Image, Modal, TextInput, ImageBackground } from 'react-native';
 import CardView from '../Utils/CardView';
 import {theme, Assets,defaultStudentImage} from '../config'
@@ -21,6 +21,7 @@ class InfoModal extends React.Component {
         studentImage:defaultStudentImage,
         isLoading:false,
         indianStates:[
+            "Select",
             "Andaman and Nicobar Islands",
             "Andhra Pradesh",
             "Arunachal Pradesh",
@@ -59,7 +60,7 @@ class InfoModal extends React.Component {
             "Uttarakhand",
             "West Bengal"
         ],
-        state:'Andaman and Nicobar Islands'
+        state:'Select'
         
     }
 
@@ -78,14 +79,14 @@ class InfoModal extends React.Component {
                   this.props.setUserInfo({id:response.headers.map.location,email:this.state.email,name:this.state.name,state:this.state.state,mobileNumber:this.props.mobileNumber,userId:this.props.mobileNumber,studentImage:this.state.studentImage})
                   this.props.userAuthStatus(true);
                 //   this.props.navigation.navigate("Home")
-                AsyncStorage.setItem('userDetails', JSON.stringify({id:response.headers.map.location,email:this.state.email,name:this.state.name,state:this.state.state,mobileNumber:this.props.mobileNumber,userId:this.props.mobileNumber,studentImage:this.state.studentImage,authType:'user'}))
+                AsyncStorage.setItem('authInfo', JSON.stringify({id:response.headers.map.location,email:this.state.email,name:this.state.name,state:this.state.state,mobileNumber:this.props.mobileNumber,userId:this.props.mobileNumber,studentImage:this.state.studentImage,authType:'user'}))
 
             }else
             {
                 this.setState({error:'Email Already Registered',isLoading:false})
             }
     }
-    verify=({email,name,state})=>email&&name&&state
+    verify=({email,name,state})=>email&&name&&state!="Select"
     handleSubmitButtonClick=() => {
         if(!this.state.isLoading)
         {
@@ -118,19 +119,21 @@ class InfoModal extends React.Component {
             >
                 <TouchableWithoutFeedback>
                     <View style={{height:height,width:width}}>
+                        
                         {CardView(
+                           
                             <View style={styles.container}>
-
+                            <ScrollView>
 
                                 <View style={styles.header}>
                                     {/* <AuthHeader/>                         */}
-                                    <Feather name="arrow-left" size={20} color={theme.greyColor}/>
+                                    <EvilIcons name="chevron-left" size={20} color={theme.greyColor}/>
                                 </View>
                                 <View>
                                     <Text style={styles.postQueText}>{this.state.heading}</Text>
                                     <View style={{flexDirection:'row'}}>
                                         <Text style={{fontFamily: 'Raleway_400Regular',marginLeft:'5%',marginRight:2}}>Signing up with </Text>
-                                        <Text style={{margin:2}}>+91 8109176342</Text>
+                                        <Text style={{margin:2}}>+91 {this.props.mobileNumber}</Text>
                                     </View>
                                     {/* <TouchableOpacity onPress={()=>this.props.closeModal()}>
                                         <Image source={Assets.discussions.closeIcon} style={styles.closeIcon}/>
@@ -171,8 +174,9 @@ class InfoModal extends React.Component {
                                         {this.state.indianStates&&this.state.indianStates.map((item)=>this.renderPickerItem(item))}
                                         </Picker>
                                 </View>
+                                </ScrollView>
                                 <View 
-                                    style={{flexDirection:'row',justifyContent:'center',marginTop:'auto',marginBottom:this.props.keyboardHeight?this.props.keyboardHeight+50:15,alignItems: 'center',width:width,borderTopWidth:1,borderTopColor:theme.labelOrInactiveColor,paddingTop:10}}
+                                    style={{flexDirection:'row',justifyContent:'center',marginTop:'auto',marginBottom:this.props.keyboardHeight?this.props.keyboardHeight+10:15,alignItems: 'center',width:width,borderTopWidth:1,borderTopColor:theme.labelOrInactiveColor,paddingTop:10}}
                                 >  
                                 
                                     <TouchableWithoutFeedback onPress={this.handleSubmitButtonClick}>
@@ -189,7 +193,7 @@ class InfoModal extends React.Component {
                                     </TouchableWithoutFeedback>
                                 </View>
                                     
-                                
+                          
                             </View>,{width: width, height: height-40, marginLeft: 'auto', marginRight:'auto',}
                         )}
                     </View>

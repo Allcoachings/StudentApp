@@ -31,7 +31,7 @@ import VideoPlayerCustom from '../VideoPLayer/VideoPlayerCustom';
 import AboutCourse from '../AboutCourse/AboutCourse'
 import WebViewCustom from '../WebView/WebViewCustom';
 import RenderSingleFeed from '../Feed/RenderSingleFeed'
-import PinnedList from '../PinnedList/PinnedList'
+import PinnedList from '../PinnedList/PinnedList' 
 // import ReviewAndRatings from '../ReviewAndRatings/ReviewAndRatings';
 const Drawer = createDrawerNavigator();
 
@@ -54,13 +54,16 @@ const linkingConfig = {
 class index extends React.Component {
     state = {  }
    
+
     render() {
         return (
                 <NavigationContainer>
                 
                     {/* <Drawer.Navigator  >
                     </Drawer.Navigator> */}
-                    <Drawer.Navigator drawerContent={props => <DrawerContent {...props} userInfo={this.props.userInfo}/> } > 
+                    <Drawer.Navigator 
+                     
+                    drawerContent={props => <DrawerContent {...props} userInfo={this.props.userInfo}/> } > 
 
                     {this.props.userAuth ?(
                         <>
@@ -90,7 +93,9 @@ class index extends React.Component {
                             <Drawer.Screen name="Payment" component={Payment} />
                             <Drawer.Screen name="webview" component={WebViewCustom}/>
                             <Drawer.Screen name="RenderSingleFeed" component={RenderSingleFeed} />
-                            <Drawer.Screen name="PinnedList" component={PinnedList} />
+                            <Drawer.Screen name="PinnedList" component={PinnedList}/>
+                            
+                           
                         </>
                     ):(
                         <Drawer.Screen name="Auth" component={Auth} initialParams={{changeMode:this.props.changeMode}} /> 

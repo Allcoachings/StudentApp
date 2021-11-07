@@ -3,7 +3,7 @@ import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollV
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {insTestSeries} from '../../FakeDataService/FakeData'
 import { theme, dataLimit,serverBaseUrl, Assets, imageProvider } from '../config';
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
 import CardView from '../Utils/CardView'
@@ -116,11 +116,12 @@ class InsTestSeriesList extends React.Component {
     render() {
         return(
             <PageStructure
-                iconName={"arrow-left"}
+                iconName={"chevron-left"}
                 btnHandler={() => {this.props.navigation.goBack()}} 
                 titleonheader={this.props.route.params.catName}
                 notificationreplaceshare={"share-2"}
                 nosearchIcon={true}
+                
                 // catInHeader={false}
                 
                 noNotificationIcon={true} 
@@ -129,7 +130,7 @@ class InsTestSeriesList extends React.Component {
                     {/* <View style={styles.headTitleView}>
                         <Text></Text>
                         <Text style={styles.title}>UPSC CSE</Text>
-                        <Feather name="share-2" size={18} style={{marginRight: 10}}/>
+                        <EvilIcons name="share-2" size={18} style={{marginRight: 10}}/>
                     </View> */}
                     {/* <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 10, marginBottom: 10}}>
                         <Image 

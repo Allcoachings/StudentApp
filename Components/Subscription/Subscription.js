@@ -3,7 +3,7 @@ import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform} from 'r
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {subscription} from '../../FakeDataService/FakeData'
 import { theme } from '../config';
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import { Video } from 'expo-av';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
@@ -74,7 +74,7 @@ class Subscription extends React.Component {
                         
                         <View style={styles.rowHeader}>
                             <Text style={styles.rowHeaderTitle}>{item.title}</Text>
-                            <Feather name="arrow-right" size={25} color={theme.secondaryColor}/>
+                            <EvilIcons name="chevron-right" size={25} color={theme.secondaryColor}/>
                         </View>
                         <View style={styles.typeView}>
                             <Text style={styles.type}>{item.type}</Text>
@@ -129,7 +129,7 @@ class Subscription extends React.Component {
     render() {
         return(
             <PageStructure
-                iconName={"menu"}
+                iconName="navicon"
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
                 catInHeader={true}
             >

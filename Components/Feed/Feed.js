@@ -2,7 +2,7 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView,ActivityIndicator} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import { theme,dataLimit, Assets } from '../config';
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import { feedData } from '../../FakeDataService/FakeData' 
 import {connect } from 'react-redux'
 import CardView from '../Utils/CardView';
@@ -57,7 +57,7 @@ class Feed extends React.Component {
     header=() => {
         return(
             <View style={styles.headView}>
-                <Feather name="arrow-left" size={30} />
+                <EvilIcons name="chevron-left" size={30} />
                 <Text style={styles.headText}>Feed</Text>
             </View>
         )
@@ -124,7 +124,7 @@ class Feed extends React.Component {
     render() {
         return(
             <PageStructure
-                iconName={"arrow-left"}
+                iconName={"chevron-left"}
                 btnHandler={() => {this.props.navigation.goBack()}}
                 titleonheader={"Feeds"}
                 catOnpress={this.toggleCatMode}

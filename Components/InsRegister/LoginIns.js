@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View,Text,TouchableWithoutFeedback,TextInput,Dimensions,StyleSheet } from 'react-native';
 import CardView from '../Utils/CardView'
 import {theme} from '../config'
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import { ActivityIndicator } from 'react-native-paper';
 import {validateLogin} from '../Utils/DataHelper/Coaching'
 import {setInstituteDetails,setInstituteAuth} from '../Actions'
@@ -69,7 +69,7 @@ const LoginIns=(props)=>
                 <View style={styles.header}>
                     {/* <AuthHeader/>      */}
                     <TouchableWithoutFeedback onPress={()=>props.changeMode(1)}>                  
-                        <Feather name="arrow-left" size={20} color={theme.greyColor}/>
+                        <EvilIcons name="chevron-left" size={20} color={theme.greyColor}/>
                     </TouchableWithoutFeedback>
                 </View>
                 <View>

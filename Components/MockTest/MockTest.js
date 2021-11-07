@@ -2,7 +2,7 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Dimensions,Image,Platform, ScrollView} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import { theme, Assets } from '../config';
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import {connect } from 'react-redux'
 import {MockTest} from '../../FakeDataService/FakeData'
 import Accordian from '../Utils/Accordian'
@@ -32,7 +32,7 @@ class ResultAnalysis extends React.Component {
                            
                         </View>
                         <View style={styles.accordianRight}>
-                            <Feather name={rightIcon} size={20}/>
+                            <EvilIcons name={rightIcon} size={20}/>
                         </View> 
             </View>,
             {
@@ -115,7 +115,7 @@ class ResultAnalysis extends React.Component {
         console.log("data item", this.props.subjectId)
         return( 
             // <PageStructure
-            //     iconName={"menu"}
+            //     iconName="navicon"
             //     btnHandler={() => {this.props.navigation.toggleDrawer()}}
             // >
                 <View style={styles.container}>

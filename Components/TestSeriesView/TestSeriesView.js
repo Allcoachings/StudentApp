@@ -4,7 +4,7 @@ import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import { theme,dataLimit, Assets } from '../config';
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
 import CardView from '../Utils/CardView'
@@ -128,21 +128,21 @@ class TestSeriesView extends React.Component {
                 <View style={styles.headerSection}>
                     <View style={styles.headerRowSection}>
                         <View style={{marginLeft:10}}>
-                            <Feather name="arrow-left" size={20} onPress={()=>this.showAlert()}/>
+                            <EvilIcons name="chevron-left" size={20} onPress={()=>this.showAlert()}/>
                         </View> 
                         <View style={styles.quizNameView}>
                             <Text style={styles.quizName}>{this.state.testSeries.title}</Text>
                         </View>
                         <View style={styles.pauseBtnView}>
-                            {/* <Feather name="pause-circle" size={13} color={theme.greyColor}/> */}
+                            {/* <EvilIcons name="pause-circle" size={13} color={theme.greyColor}/> */}
                                 {/* <Text style={styles.pauseBtnText}> {this.formatTimer(this.state.time)}</Text> */}
                                 <Timer time={this.state.time} showAlert={(okFun)=>this.showAlert(okFun)}  updateTimeInParent={this.updateTimeInParent} refresh={this.refreshQuiz} navigation={this.props.navigation} timeUpAction={this.timeUpAction}/>
                         </View>
                         <TouchableOpacity style={styles.menuIcon} onPress={()=>this.openModal()}>
-                            <Feather name="grid" size={25} color={theme.labelOrInactiveColor}/>
+                            <EvilIcons name="grid" size={25} color={theme.labelOrInactiveColor}/>
                         </TouchableOpacity>
                         {/* <TouchableOpacity style={{marginLeft:5,marginRight:5}} >
-                            <Feather name="more-vertical" size={25} color={theme.labelOrInactiveColor}/>
+                            <EvilIcons name="more-vertical" size={25} color={theme.labelOrInactiveColor}/>
                         </TouchableOpacity> */}
                     </View>
                     {/* <View style={styles.headerRowSection2}>
@@ -283,7 +283,7 @@ class TestSeriesView extends React.Component {
         return (
             <> 
             <PageStructure
-                iconName={"arrow-left"} 
+                iconName={"chevron-left"} 
                 headerComponent={this.header()}
                 replaceHeader={true}
                 replaceBottomTab={true}

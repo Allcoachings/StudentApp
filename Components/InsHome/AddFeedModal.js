@@ -1,4 +1,4 @@
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import React, { Component } from 'react';
 import { View, Text,StyleSheet,Modal,TouchableOpacity,TouchableWithoutFeedback,ActivityIndicator,ScrollView,Image,TextInput,FlatList } from 'react-native';
 import { addBannerImagePlaceholder, theme, serverBaseUrl, imageProvider } from '../config';
@@ -304,7 +304,7 @@ setFeedTypeOption=(postType)=>
     return(
         <TouchableOpacity style={{flex:1,flexDirection:'row',padding:10,alignItems: 'center'}} onPress={onPress}> 
             <View style={{marginTop:1}}>
-                <Feather name={icon} color={theme.greyColor} size={17}/>
+                <EvilIcons name={icon} color={theme.greyColor} size={17}/>
             </View>
             <View>
                 <Text style={{fontFamily:'Raleway_600SemiBold',color: theme.greyColor,fontSize:14}}>{name}</Text>
@@ -369,7 +369,7 @@ setFeedTypeOption=(postType)=>
             <View style={styles.feedImageContainer}>
                 <TouchableWithoutFeedback onPress={()=>this.removeImage(item,index)}>
                     <View style={styles.deleteImageIcon}>
-                        <Feather name="x" size={20} color={theme.featureNoColor}/>
+                        <EvilIcons name="x" size={20} color={theme.featureNoColor}/>
                     </View>
                 </TouchableWithoutFeedback> 
                 <Image source={{uri:  (imageProvider(item.feedImage||item.uri))}} style={styles.feedImage}/>
@@ -392,12 +392,12 @@ setFeedTypeOption=(postType)=>
                 <Text style={{fontSize:18,fontFamily: 'Raleway_600SemiBold'}}>Poll Options</Text>
                 <View style={{flex: 1,flexDirection:'row',justifyContent: 'flex-end', alignItems: 'center'}}>
                     <TouchableOpacity style={{margin:10,padding:10}} onPress={this.addPollOptions}>
-                        <Feather name="plus" size={20} color={theme.accentColor} />
+                        <EvilIcons name="plus" size={20} color={theme.accentColor} />
                     </TouchableOpacity>
                     {this.state.pollOptionCounter>2?(
 
                     <TouchableOpacity style={{margin:10,padding:10}} onPress={this.removePollOption}>
-                        <Feather name="minus" size={20} color={theme.accentColor} />
+                        <EvilIcons name="minus" size={20} color={theme.accentColor} />
                     </TouchableOpacity>
                     ):(null)}
                     
@@ -453,7 +453,7 @@ setFeedTypeOption=(postType)=>
                         
                             {this.state.description?(<View style={{position: 'absolute',right:15,top:5,zIndex:10}}>
                             <TouchableOpacity onPre ss={()=>this.resetFeedState()}>
-                                <Feather name={'x'} color={theme.featureNoColor} size={18}/>
+                                <EvilIcons name={'x'} color={theme.featureNoColor} size={18}/>
                             </TouchableOpacity> 
                             </View>):(null)}
                       
@@ -493,7 +493,7 @@ setFeedTypeOption=(postType)=>
                                     <TouchableWithoutFeedback onPress={this.checkPostData}>
                                         <View style={[{flexDirection: 'row',padding:5,marginVertical:5,alignItems: 'center',borderRadius:3,marginTop:'auto',borderWidth: 1,borderColor:this.state.description?theme.accentColor:theme.labelOrInactiveColor},this.state.description?{backgroundColor: theme.accentColor}:{}]}>
                                             <Text style={{color:this.state.description?theme.primaryColor:theme.greyColor,fontSize:16}}>Post</Text>
-                                            <Feather name="arrow-right" size={18} color={this.state.description?theme.primaryColor:theme.greyColor}/>
+                                            <EvilIcons name="chevron-right" size={18} color={this.state.description?theme.primaryColor:theme.greyColor}/>
                                         </View>
                                     </TouchableWithoutFeedback>
                                     // this.renderButton("Post","align-left",()=>this.handleSubmitButtonClick())

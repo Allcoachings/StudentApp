@@ -44,7 +44,7 @@ class AboutCourse extends React.Component {
         this.updateComponent()
         return(
             <PageStructure
-                iconName={"menu"}
+                iconName="navicon"
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
                 titleonheader={"About Course"}      
                 nosearchIcon={true}

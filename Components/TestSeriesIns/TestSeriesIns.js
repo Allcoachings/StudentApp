@@ -3,7 +3,7 @@ import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollV
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {insTestSeries} from '../../FakeDataService/FakeData'
 import { theme, dataLimit,serverBaseUrl, Assets,imageProvider } from '../config';
-import { Feather } from '@expo/vector-icons';
+import { EvilIconsns } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
 import CardView from '../Utils/CardView'
@@ -86,11 +86,14 @@ class TestSeriesIns extends React.Component {
     }
     render() {
         return (
-            <PageStructure
-                iconName={"menu"}
+            <PageStructure 
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
                 searchFun={this.search}
                 singleItem={this.singleRow}
+                titleWithImage={true}
+                titleonheader={"All Coaching"}
+                 
+                userIcon={() => {this.props.navigation.toggleDrawer()}}
             >
                 <ScrollView>
                     <View style={styles.container}> 

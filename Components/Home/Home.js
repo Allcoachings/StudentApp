@@ -3,7 +3,7 @@ import { Text,View,StyleSheet,TouchableOpacity,TouchableWithoutFeedback,FlatList
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {storyLine,homeFeaturesData} from '../../FakeDataService/FakeData'
 import { theme ,serverBaseUrl,dataLimit, paytmConfig, Assets, imageProvider} from '../config';
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import { AirbnbRating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux'
@@ -69,7 +69,7 @@ class Home extends React.Component {
                         <View style={styles.rowHeader}>
                             <Text style={styles.rowHeaderTitle} numberOfLines={1}>{item.title}</Text>
                             <TouchableWithoutFeedback onPress={()=>this.props.navigation.navigate("CategoryList", {type: item.title,id:item.id})}>
-                                <Feather name="arrow-right" size={25} color={theme.secondaryColor}/>
+                                <EvilIcons name="chevron-right" size={25} color={theme.secondaryColor}/>
                             </TouchableWithoutFeedback>
                         </View>
                         <View style={styles.rowBody}>
@@ -201,8 +201,9 @@ class Home extends React.Component {
     render() {
         return (
             <PageStructure
-                iconName={"menu"}
-                btnHandler={() => {this.props.navigation.toggleDrawer()}}
+                // iconName="navicon"
+                // btnHandler={() => {this.props.navigation.toggleDrawer()}}
+                userIcon={() => {this.props.navigation.toggleDrawer()}}
                 catInHeader={true}
                 catOnpress={this.toggleCatMode}
                 selectedCat={this.state.selectedCat}
@@ -210,6 +211,8 @@ class Home extends React.Component {
                 scrollMode={'scroll'}
                 navigation={this.props.navigation}
                 searchFun={this.search}
+                titleWithImage={true}
+                titleonheader={"All Coaching"}
                 singleItem={this.renderInstituteList}
             >
                 <View style={styles.container}> 

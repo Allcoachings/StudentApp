@@ -167,7 +167,7 @@ export default VideoPlayerCustom=(props)=>
                 }}
 
                 videoTitle={{
-                    titleIcon:inFullscreen?"chevron-down":"arrow-left",//MaterialCommuntyIcons
+                    titleIcon:inFullscreen?"chevron-down":"chevron-left",//MaterialCommuntyIcons
                     titleIconOnPress:inFullscreen?exitFullscreen:()=>backPressHandler("selfBackPress"),
                     title:props.route.params.videoTitle,
                     

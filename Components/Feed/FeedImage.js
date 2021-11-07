@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text,Image,StyleSheet,findNodeHandle,UIManager, TouchableOpacity } from 'react-native';
 import {imageProvider, serverBaseUrl, theme} from '../config';
-import {Feather, AntDesign, FontAwesome} from '@expo/vector-icons';
+import {EvilIconsnsnsnsns, AntDesign, FontAwesome} from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
 import { connect } from 'react-redux'
 import {like_feed, unLike_feed} from "../Utils/DataHelper/Feed"

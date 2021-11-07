@@ -2,7 +2,7 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList,BackHandler, Image,Platform, ScrollView} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import { theme, Assets } from '../config';
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import {connect } from 'react-redux'
 import Solutions from '../Solutions/Solutions'
 import EmptyList from '../Utils/EmptyList'
@@ -117,13 +117,13 @@ class ResultAnalysis extends React.Component {
                         item.type=='SKIPPED'?(
                             {backgroundColor: theme.labelOrInactiveColor}):(null)))]}>
                     {item.type=='CORRECT'?(
-                        <Feather name="check" size={18}/>
+                        <EvilIcons name="check" size={18}/>
                     ):(
                         item.type=='WRONG'?(
-                            <Feather name="x" size={18}/>
+                            <EvilIcons name="x" size={18}/>
                         ):(
                             item.type=='SKIPPED'?(
-                                <Feather name="minus" size={18}/>
+                                <EvilIcons name="minus" size={18}/>
                             ):(null)))}
                 </View>
                 <View style={styles.typeView}>
@@ -202,7 +202,7 @@ class ResultAnalysis extends React.Component {
         let timeTaken = (this.props.testSeriesData.series.timeDuration*60)-this.props.testSeriesData.brief.timeLeft 
         return(
             <PageStructure
-                iconName={"menu"}
+                iconName="navicon"
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
                 titleonheader={"Result Analysis"}
                 notificationreplaceshare={"share-2"}
@@ -214,11 +214,11 @@ class ResultAnalysis extends React.Component {
                         <>
                         <View style={styles.container}>
                             {/* <View style={styles.headView}>
-                                <Feather name="k" size={26} />
+                                <EvilIcons name="k" size={26} />
                                 <Text style={styles.headText}>
                                     All Coachings
                                 </Text>
-                                <Feather name="share-2" size={24} />
+                                <EvilIcons name="share-2" size={24} />
                             </View> */}
 
                             {/* <View style={styles.resultAnalysisView}>
@@ -268,7 +268,7 @@ class ResultAnalysis extends React.Component {
                             <View style={styles.colContainer}>
                                 <View style={styles.rowView}>
                                     <View style={styles.percentileView}>
-                                        <Feather name="percent" size={20} style={{color: theme.addMoreButtonColor}}/>
+                                        <EvilIcons name="percent" size={20} style={{color: theme.addMoreButtonColor}}/>
                                         <Text style={styles.titleText}>PERCENTILE</Text>
                                     </View>
                                     <Text style={styles.moreText}>{this.state.percentile}%</Text>
@@ -276,14 +276,14 @@ class ResultAnalysis extends React.Component {
                                 </View>
                                 <View style={styles.rowView}>
                                     <View  style={styles.percentileView}>
-                                        <Feather name="crosshair" size={20} style={{color: theme.accentColor}}/>
+                                        <EvilIcons name="crosshair" size={20} style={{color: theme.accentColor}}/>
                                         <Text style={styles.titleText}>ACCURACY</Text>
                                     </View>  
                                     <Text style={styles.moreText}>{this.state.accuracy}%</Text>
                                 </View>
                                 <View style={styles.rowView}>
                                     <View style={styles.percentileView}>
-                                        <Feather name="clock" size={20} style={{color: theme.yellowColor}}/>
+                                        <EvilIcons name="clock" size={20} style={{color: theme.yellowColor}}/>
                                         <Text style={styles.titleText}>TIME TAKEN</Text>
                                     </View>
                                     <Text style={styles.moreText}>{this.formatTimer(timeTaken)}</Text>

@@ -3,7 +3,7 @@ import {Text, View,StyleSheet, TextInput, TouchableOpacity, ScrollView,ActivityI
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {theme,screenMobileWidth, serverBaseUrl} from '../config'
 import CardView from '../Utils/CardView';
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import * as DocumentPicker from 'expo-document-picker';;
 import {fetch_document_playlist,addCourseDocument} from '../Utils/DataHelper/Course'
 import { Picker } from 'native-base'; 
@@ -160,7 +160,7 @@ class AddPdf extends React.Component {
     render() {
         return(
             <PageStructure
-                iconName={"menu"}
+                iconName="navicon"
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
                 nosearchIcon={true}
                 noNotificationIcon={true}
@@ -182,7 +182,7 @@ class AddPdf extends React.Component {
                                 <Text style={styles.submitButtonText}>Choose Document</Text>
                             </TouchableOpacity>
                             <Text style={{fontFamily: 'Raleway_600SemiBold'}}>{this.state.document.name}</Text>
-                            {/* <Feather name="link" size={12} color={theme.secondaryColor}/> */}
+                            {/* <EvilIcons name="link" size={12} color={theme.secondaryColor}/> */}
                             {/* {this.renderInputFiled()} */}
                     </View>
                     <View style={styles.inputView}>
@@ -201,7 +201,7 @@ class AddPdf extends React.Component {
                                 
                             <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
                                     <Text style={styles.labelText}>Document Playlist</Text>
-                                    <Feather name="plus" onPress={()=>this.openModal()} size={20}/>
+                                    <EvilIcons name="plus" onPress={()=>this.openModal()} size={20}/>
                             </View> 
                              
                                 <View style={styles.inputField}>

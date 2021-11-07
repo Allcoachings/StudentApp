@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
 // import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {theme,screenMobileWidth, dataLimit,serverBaseUrl, Assets, imageProvider} from '../config'
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import {connect } from 'react-redux'
 import {pinnedInstituteList} from '../Utils/DataHelper/Subscription'
 import CardView from '../Utils/CardView'
@@ -70,7 +70,7 @@ export default function PinnedList(props) {
     // render() {
         return(
             <PageStructure
-                iconName={"menu"}
+                iconName="navicon"
                 btnHandler={() => {props.navigation.toggleDrawer()}}
                 nosearchIcon={true}
                 noNotificationIcon={true}

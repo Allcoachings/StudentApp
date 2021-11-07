@@ -3,7 +3,7 @@ import { View ,Text,Image,StyleSheet,TouchableOpacity,Modal,TextInput} from 'rea
 import {connect} from 'react-redux'
 import {theme,screenMobileWidth} from '../config'
 import { AirbnbRating } from 'react-native-ratings';
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import {reply} from '../Utils/DataHelper/Reviews'
 import  Toast  from 'react-native-simple-toast';
 
@@ -86,7 +86,7 @@ class RenderReview extends React.Component {
                                 <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                                     <Text style={{fontSize: 14, fontWeight: 'bold', marginBottom: 10}}>{item.insName}</Text>
                                     {this.props.replyMode?(<TouchableOpacity onPress={()=>this.setState({ReviewmodalVisible: true, editReply: this.state.reply})}>
-                                        <Feather name="edit-3" size={18} color={theme.secondaryColor} />
+                                        <EvilIcons name="edit-3" size={18} color={theme.secondaryColor} />
                                     </TouchableOpacity>):(null)}
                                 </View>
                                 <Text>{this.state.reply}</Text>
@@ -102,7 +102,7 @@ class RenderReview extends React.Component {
                                 <View style={{flexDirection: 'row',alignItems: 'center',paddingBottom:10,borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}>
                                     <View style={{marginLeft:10}}>
                                         <TouchableOpacity onPress={()=>this.setState({ReviewmodalVisible:false})}>
-                                            <Feather name={'x'} size={20}/>
+                                            <EvilIcons name={'x'} size={20}/>
                                         </TouchableOpacity>
                                     </View>
                                     <View style={{marginHorizontal:10,flex:0.8,flexWrap:'wrap'}}>

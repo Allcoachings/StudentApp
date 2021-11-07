@@ -198,7 +198,7 @@ class AccountDetails extends React.Component {
             <View style={stylesReport.container}>
                     {/* {CardView(
                         <View style={stylesReport.headView}>
-                            <Feather name="chevron-left" size={28} />
+                            <EvilIcons name="chevron-left" size={28} />
                             <Text style={stylesReport.headText}>Revenue</Text>
                         </View>,{paddingTop: 5,justifyContent: 'center'}
                     )} */}
@@ -266,7 +266,7 @@ class AccountDetails extends React.Component {
          
         return(
             <PageStructure
-                iconName={"arrow-left"}
+                iconName={"chevron-left"}
                 btnHandler={() => {this.props.navigation.goBack()}}
                 nosearchIcon={true}
                 noNotificationIcon={true}

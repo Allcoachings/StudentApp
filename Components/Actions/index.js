@@ -149,3 +149,35 @@ export const setNavigation = (navigation)=>
 //stacknavigation reducer actions ends
 
 
+export const setDownloadingItem=(item,progress)=>
+{
+    return{
+        type: actionTypes.SET_DOWNLOADING_ITEM,
+        payload:{
+            item,
+            progress
+        }
+    }
+}
+
+export const setDownloadingItemProgress=(progress,key)=>
+{
+    return{
+        type:actionTypes.SET_DOWNLOADING_PROGRESS,
+        payload:{
+            key,
+            progress,
+        }
+    }
+
+}
+
+export const removeDownloadingItem=(key)=>
+{
+    return{
+        type:actionTypes.REMOVE_DOWNLOADING_ITEM,
+        payload:{
+            key
+        }
+    }
+}

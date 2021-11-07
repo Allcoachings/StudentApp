@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, Text, View,StyleSheet, ActivityIndicator, Modal, TouchableOpacity, TextInput } from 'react-native';
 import Review from '../ReviewAndRatings/Review'
 import {connect} from 'react-redux'
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import {fetch_institute_reviews} from '../Utils/DataHelper/Reviews'
 import { AirbnbRating } from 'react-native-ratings';
 import {theme, dataLimit} from '../config'
@@ -211,7 +211,7 @@ class StudentReview extends React.Component {
                                 <View style={{flexDirection: 'row',alignItems: 'center',paddingBottom:10,borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}>
                                     <View style={{marginLeft:10}}>
                                         <TouchableOpacity onPress={()=>this.setState({ReviewmodalVisible:false})}>
-                                            <Feather name={'arrow-left'} size={20}/>
+                                            <EvilIcons name={'chevron-left'} size={20}/>
                                         </TouchableOpacity>
                                     </View>
                                     <View style={{marginHorizontal:10,flex:0.8,flexWrap:'wrap'}}>
@@ -255,7 +255,7 @@ class StudentReview extends React.Component {
                                 <View style={{flexDirection: 'row',alignItems: 'center',paddingBottom:10,borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}>
                                     <View style={{marginLeft:10}}>
                                         <TouchableOpacity onPress={()=>this.setState({editReviewModal:false})}>
-                                            <Feather name={'arrow-left'} size={20}/>
+                                            <EvilIcons name={'chevron-left'} size={20}/>
                                         </TouchableOpacity>
                                     </View>
                                     <View style={{marginHorizontal:10,flex:0.8,flexWrap:'wrap'}}>

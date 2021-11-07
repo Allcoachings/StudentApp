@@ -2,7 +2,7 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
 // import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {theme,screenMobileWidth, dataLimit,serverBaseUrl, Assets, imageProvider} from '../config'
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import {connect } from 'react-redux'
 import CardView from '../Utils/CardView'
 import { AirbnbRating } from 'react-native-ratings';
@@ -101,7 +101,7 @@ class Notification extends React.Component {
         this.updateComponent()
         return(
             <PageStructure
-                iconName={"arrow-left"}
+                iconName={"chevron-left"}
                 btnHandler={() => {this.props.navigation.goBack()}}
                 titleonheader={"Notifications"}
                 noNotificationIcon={true}

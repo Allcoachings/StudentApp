@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,Dimensions,FlatList,StatusBar, Image,Platform, ScrollView, Modal,TouchableWithoutFeedback} from 'react-native';
 import { theme , Assets, serverBaseUrl, imageProvider} from '../config';
-import { Feather, FontAwesome } from '@expo/vector-icons';
+import { EvilIcons, FontAwesome } from '@expo/vector-icons';
 import {connect } from 'react-redux'
 import {singlequedata} from '../../FakeDataService/FakeData'
 import CardView from '../Utils/CardView'
@@ -232,13 +232,13 @@ class SeriesModal extends React.Component {
 
                 <View style={styles.viewStyle}>
                   <View style={styles.gridView}>
-                    <Feather name="grid" size={20} style={{color: theme.greyColor}}/>
+                    <EvilIcons name="grid" size={20} style={{color: theme.greyColor}}/>
                     <Text style={{fontSize: 16, color: theme.greyColor}}>Grid View</Text>
                   </View>
                   <View style={{borderRightColor: theme.greyColor,
                     borderRightWidth: 1,}}/>
                   <View style={styles.listView}>
-                    <Feather name="list" size={20} style={{color: theme.greyColor}}/>
+                    <EvilIcons name="list" size={20} style={{color: theme.greyColor}}/>
                     <Text style={{fontSize: 16, color: theme.greyColor}}>List View</Text>
                   </View>
                 </View>
@@ -256,7 +256,7 @@ class SeriesModal extends React.Component {
                 <View style={styles.markedView}>
                   <View style={styles.MarkViewRow1}>
                     <View style={styles.markIcon}>
-                      <Feather name="star" size={16} style={{color: 'pink', marginRight: 3}} />
+                      <EvilIcons name="star" size={16} style={{color: 'pink', marginRight: 3}} />
                       <Text>Marked For View</Text>
                     </View>
                     <View style={styles.markIcon}>
@@ -286,8 +286,8 @@ class SeriesModal extends React.Component {
                     Analogy
                   </Text>
                   <View style={styles.analogyIcon}>
-                    <Feather name="alert-circle" size={18} style={{color: theme.greyColor}}/>
-                    <Feather name="chevron-up" size={18} style={{color: theme.greyColor}}/>
+                    <EvilIcons name="alert-circle" size={18} style={{color: theme.greyColor}}/>
+                    <EvilIcons name="chevron-up" size={18} style={{color: theme.greyColor}}/>
                   </View>
                 </View> */}
 
@@ -327,7 +327,7 @@ class SeriesModal extends React.Component {
                     
                     <View style={styles.rowElement}>
                        
-                        <Feather name={this.state.listModeIcon} size={20} onPress={this.changeListMode}/>
+                        <EvilIcons name={this.state.listModeIcon} size={20} onPress={this.changeListMode}/>
                       
                     </View> 
                 </View>

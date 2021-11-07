@@ -6,7 +6,7 @@ import { Rating } from 'react-native-ratings';
 import {theme,screenMobileWidth, serverBaseUrl,documentPlaceholder,dataLimit,addBannerImagePlaceholder, Assets, imageProvider, shareTextInstitute, shareBaseUrl} from '../config'
 import CardView from '../Utils/CardView';
 import MarqueeText from 'react-native-marquee';
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import {connect} from 'react-redux'
 import { List } from 'react-native-paper';
 import Accordian from '../Utils/Accordian'
@@ -207,7 +207,7 @@ class InsHome extends React.Component {
                 onPress={()=>{this.setState({showLoadMore: link=='timeTable'?(false):(true)},()=>this.activeTab(link))}}  
                 style={[styles.setList,this.state.activeTab==link?({backgroundColor:theme.secondaryColor}):(null)]}
             >
-                    <Feather name={icon} size={12} color={this.state.activeTab==link?(theme.primaryColor):(theme.secondaryColor)}/>
+                    <EvilIcons name={icon} size={12} color={this.state.activeTab==link?(theme.primaryColor):(theme.secondaryColor)}/>
                     <Text style={[styles.listText,this.state.activeTab==link?({color:theme.primaryColor}):(null)]}>{text}</Text>
             </TouchableOpacity>
         )
@@ -305,13 +305,13 @@ class InsHome extends React.Component {
         return(
             <View style={styles.accordianHeader}>
                         <View style={styles.accordianLeft}>
-                            <Feather name={leftIcon} size={20}/>
+                            <EvilIcons name={leftIcon} size={20}/>
                         </View>
                         <View style={styles.accordianMiddle}>
                             <Text>{title}</Text>
                         </View>
                         <View style={styles.accordianRight}>
-                            <Feather name={rightIcon} size={20}/>
+                            <EvilIcons name={rightIcon} size={20}/>
                         </View> 
             </View>
         )
@@ -328,7 +328,7 @@ class InsHome extends React.Component {
                      <View style={styles.bottomRow}>
                          <Text style={styles.titleText}>{item.title}</Text>
                          <TouchableOpacity style={styles.btnView} onPress={()=>this.props.navigation.navigate("SingleTestSeries")}>
-                             <Feather name="play" size={12} style={{color: theme.primaryColor, marginRight: 3}}/>
+                             <EvilIcons name="play" size={12} style={{color: theme.primaryColor, marginRight: 3}}/>
                              <Text style={styles.btnText}>Start</Text>
                          </TouchableOpacity>
                      </View>
@@ -376,7 +376,7 @@ class InsHome extends React.Component {
                     </View>
                 </View>
                 <View>
-                    <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
+                    <EvilIcons name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
                 </View>
             </View>
         )
@@ -992,7 +992,7 @@ class InsHome extends React.Component {
                                     <TouchableOpacity 
                                         onPress={()=>this.setState({showLoadMore: false},()=>this.activeTab('liveClass'))} style={[styles.liveClassOuter,this.state.activeTab=='liveClass'?({backgroundColor:'red'}):({backgroundColor: theme.primaryColor})]}>
                                         <View style={styles.liveClassInner}>
-                                            <Feather name="disc" size={13} color={theme.primaryColor}/>
+                                            <EvilIcons name="disc" size={13} color={theme.primaryColor}/>
                                             <Text style={styles.liveClassText}>Live Now</Text>
                                         </View>
                                     </TouchableOpacity>
@@ -1012,7 +1012,7 @@ class InsHome extends React.Component {
                             ):(null)}
                             {this.state.showLoadMore?(
                                 <TouchableOpacity style={[styles.loadMoreView]} onPress={()=>this.loadMoreOnPress()}>
-                                        <View style={{}}><Feather name="chevron-down" size={20}/></View>
+                                        <View style={{}}><EvilIcons name="chevron-down" size={20}/></View>
                                         <Text style={{margin:5}}>Load More</Text>
                                 </TouchableOpacity>
                             ):(null)}
@@ -1097,7 +1097,7 @@ class InsHome extends React.Component {
          return (
         
         <PageStructure 
-            iconName={"menu"}
+            iconName="navicon"
             btnHandler={() => {this.props.navigation.toggleDrawer()}}
             catInHeader={false}
             titleonheader={"Dashboard"}
@@ -1118,7 +1118,7 @@ class InsHome extends React.Component {
                                 <View style={{display: 'flex', flexDirection: 'row'}}>
                                     <Text style={styles.instituteheaderText} numberOfLines={3}>{institute.name}</Text>
                                     {/* <TouchableOpacity onPress={null}>
-                                        <Feather name="edit-3" size={18} color={theme.secondaryColor} />
+                                        <EvilIcons name="edit-3" size={18} color={theme.secondaryColor} />
                                     </TouchableOpacity> */}
                                 </View>
                                 <Text style={styles.instituteDirector} >{institute.directorName}</Text>
@@ -1138,7 +1138,7 @@ class InsHome extends React.Component {
                                 </View>
                                 
                             </View>
-                            {/* <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/> */}
+                            {/* <EvilIcons name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/> */}
                         </View>
                         <View style={styles.body}>
                         <View style={styles.btnRow}>

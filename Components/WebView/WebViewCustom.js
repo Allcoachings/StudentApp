@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text,StyleSheet,TouchableOpacity,ActivityIndicator } from 'react-native'; 
 import { WebView } from 'react-native-webview';
-import {Feather} from '@expo/vector-icons' 
+import {EvilIcons} from '@expo/vector-icons' 
 import CardView from '../Utils/CardView';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import { theme } from '../config';
@@ -80,7 +80,7 @@ import { theme } from '../config';
                 return(
                     <PageStructure
 
-                    iconName={"arrow-left"}
+                    iconName={"chevron-left"}
                     btnHandler={() => {this.props.navigation.goBack()}}
                     navigation={this.props.navigation}
                     >
@@ -96,7 +96,7 @@ import { theme } from '../config';
                             <View style={styles.header}>
                                 <View style={styles.headerLeft}>
                                     <TouchableOpacity onPress={()=>{this.props.navigation.goBack()}}> 
-                                    <Feather name="arrow-left" size={20} /> 
+                                    <EvilIcons name="chevron-left" size={20} /> 
                                     </TouchableOpacity>
                                     
                                 </View>

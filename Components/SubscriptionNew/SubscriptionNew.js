@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
 // import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {theme,screenMobileWidth, dataLimit,serverBaseUrl, Assets, imageProvider} from '../config'
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import {connect } from 'react-redux'
 import {subscriptionNew} from '../../FakeDataService/FakeData'
 import CardView from '../Utils/CardView'
@@ -73,7 +73,7 @@ export default function SubscriptionNew(props) {
     console.log(loadingFooter)
     return(
         <PageStructure
-            iconName={"arrow-left"}
+            iconName={"chevron-left"}
             btnHandler={() => {props.navigation.goBack()}}
             titleonheader={"Subscription"}
             nosearchIcon={true}
@@ -83,13 +83,13 @@ export default function SubscriptionNew(props) {
                 <View style={styles.container}>
                     {/* <View style={styles.headView}>
                         <TouchableOpacity onPress={null}>
-                            <Feather name="chevron-left" size={26} />
+                            <EvilIcons name="chevron-left" size={26} />
                         </TouchableOpacity>
                         <Text style={styles.headText}>
                             Subscription
                         </Text>
                         <TouchableOpacity onPress={null}>
-                            <Feather name="share-2" size={22} />
+                            <EvilIcons name="share-2" size={22} />
                         </TouchableOpacity>
                     </View> */}
                     {isSubscriptionLoading?(

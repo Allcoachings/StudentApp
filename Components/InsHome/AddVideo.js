@@ -6,7 +6,7 @@ import CardView from '../Utils/CardView';
 import * as DocumentPicker from 'expo-document-picker';
 import {addCourseVideo,fetch_video_playlist} from '../Utils/DataHelper/Course'
 import { Picker } from 'native-base';
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import AddVideoPlaylist from './AddVideoPlaylist';
 import Toast from 'react-native-simple-toast';
 import RatingBar from '../Utils/RatingBar';
@@ -141,7 +141,7 @@ class AddVideo extends React.Component {
          
         return(
             <PageStructure
-                iconName={"menu"}
+                iconName="navicon"
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}     
                 nosearchIcon={true}
                 noNotificationIcon={true}
@@ -197,7 +197,7 @@ class AddVideo extends React.Component {
                                 
                             <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
                                     <Text style={styles.labelText}>Video Playlist</Text>
-                                    <Feather name="plus" onPress={()=>this.openModal()} size={20}/>
+                                    <EvilIcons name="plus" onPress={()=>this.openModal()} size={20}/>
                             </View> 
                             
                                 <View style={styles.inputField}>

@@ -2,7 +2,7 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, TouchableWithoutFeedback, Modal} from 'react-native';
 // import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {theme,screenMobileWidth, dataLimit,serverBaseUrl, Assets, imageProvider} from '../config'
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import {connect } from 'react-redux'
 import {pinnedInstituteList} from '../Utils/DataHelper/Subscription'
 import CardView from '../Utils/CardView'
@@ -69,7 +69,7 @@ class RenderSinglePinnedIns extends React.Component {
                             </View>
                         </View>
                         <TouchableOpacity onPress={() => this.setState({modalVisible: true})}>
-                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
+                        <EvilIcons name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
                         </TouchableOpacity>
                     </View>
                 </TouchableOpacity>
@@ -83,7 +83,7 @@ class RenderSinglePinnedIns extends React.Component {
                                 {CardView(
                                     <>
                                             <TouchableOpacity onPress={()=>unPinInstitute(item.institute.id, this.unPinCallBack)} style={{flexDirection: 'row',margin:5}}>
-                                                <Feather name="share" size={20}/>
+                                                <EvilIcons name="share" size={20}/>
                                                 <Text style={{marginLeft:5}}>UnPin</Text>
                                             </TouchableOpacity>
                                     </>,

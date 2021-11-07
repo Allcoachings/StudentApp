@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text,Image,StyleSheet,findNodeHandle,UIManager, TouchableOpacity } from 'react-native';
 import {imageProvider, serverBaseUrl, theme} from '../config';
 import moment from 'moment'
-import {Feather, AntDesign, FontAwesome} from '@expo/vector-icons';
+import {EvilIconsns, AntDesign, FontAwesome} from '@expo/vector-icons';
 class FeedHeader extends Component {
   state={
     
@@ -59,7 +59,7 @@ class FeedHeader extends Component {
         
                 {this.props.mode=="userProfile"||this.props.mode=="insProfile"?( 
                     <TouchableOpacity onPress={()=>this.showThreeMenu()}>
-                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
+                        <EvilIconsns name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
                     </TouchableOpacity>
                 ):(null)}
                 

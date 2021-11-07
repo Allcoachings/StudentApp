@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text,StyleSheet,FlatList,Image,findNodeHandle,UIManager, TouchableOpacity } from 'react-native';
-import {Feather, AntDesign, FontAwesome} from '@expo/vector-icons';
+import {EvilIcons, AntDesign, FontAwesome} from '@expo/vector-icons';
 import {imageProvider, serverBaseUrl, theme} from '../config';
 import CardView from '../Utils/CardView'
 import { connect } from 'react-redux'

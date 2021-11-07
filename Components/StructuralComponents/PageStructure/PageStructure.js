@@ -18,7 +18,7 @@ class PageStructure extends React.Component {
                 <View style={styles.containerMain}> 
                     {this.switchRender(this.props.scrollMode)} 
                     {!this.props.noBottomTab&&this.props.screenWidth<=screenMobileWidth?(
-                        <View style={[styles.pageBottomTab,{flex:this.props.catInHeader?0.08:0.102}]}>
+                        <View style={[styles.pageBottomTab,{flex:this.props.catInHeader?0.9:0.102}]}>
                             <BottomTab 
                                 replacBottomTab={this.props.replaceBottomTab} 
                                 bottomComponentStyle={this.props.bottomComponentStyle}  
@@ -46,8 +46,8 @@ class PageStructure extends React.Component {
             {
                 case 'scroll':    
                     return(
-                        <ScrollView  style={{flex:this.props.catInHeader?0.1:0.08}}>
-                            <View style={[styles.containerHeader,this.props.headerStyle]}> 
+                        <ScrollView>
+                            <View style={[styles.containerHeader,this.props.headerStyle,{flex:this.props.catInHeader?0.1:0.07}]}> 
                                 <Header 
                                     iconName={this.props.iconName}
                                     btnHandler={this.props.btnHandler}
@@ -66,16 +66,10 @@ class PageStructure extends React.Component {
                                     catType={this.props.catType}
                                     selectedCat={this.props.selectedCat}
                                     titleWithImage={this.props.titleWithImage}
+                                    userIcon={this.props.userIcon} 
                                 />  
                             </View>
-                            <View style={[styles.pageLayout,this.props.screenWidth<=screenMobileWidth?({   margin:'2%'}):(null)]}> 
-                                {this.props.screenWidth>screenMobileWidth?(
-                                    <View style={styles.leftNavContainer}> 
-                                            <Text>Left Navbar</Text>
-                                    </View> 
-                                ):(
-                                    null
-                                )} 
+                            <View style={[styles.pageLayout]}>  
                                 <View style={styles.pageContent}>
                                     {this.props.children}
                                 </View>
@@ -86,7 +80,8 @@ class PageStructure extends React.Component {
                         return (
                             
                             <>
-                                <View style={[styles.containerHeader,this.props.headerStyle,]} > 
+                            <View style={{flex:this.props.catInHeader?0.1:0.08,marginTop:-10}}>
+                                <View style={[styles.containerHeader,this.props.headerStyle]} > 
                                         <Header 
                                             iconName={this.props.iconName}
                                             searchFun={this.props.searchFun}
@@ -104,23 +99,17 @@ class PageStructure extends React.Component {
                                             catType={this.props.catType}
                                             selectedCat={this.props.selectedCat}
                                             titleWithImage={this.props.titleWithImage}
+                                            userIcon={this.props.userIcon}
                                         />  
-                                    </View>
-                                    <View style={[styles.pageLayout,this.props.screenWidth<=screenMobileWidth?({   margin:'2%'}):(null)]}> 
-                                        {this.props.screenWidth>screenMobileWidth?(
-                                            <View style={styles.leftNavContainer}> 
-                                                    <Text>Left Navbar</Text>
-                                            </View> 
-                                        ):(
-                                            null
-                                        )} 
-                                        <View style={styles.pageContent}>
-                                            
-                                                {this.props.children}
-                                            
-                                        </View>
                                 </View>
-                            </>
+                            </View>
+                            <View style={[styles.pageLayout]}>  
+                                <View style={styles.pageContent}> 
+                                        {this.props.children} 
+                                </View>
+                            </View>
+                        </>
+                            
                         )
             }
 
@@ -151,16 +140,16 @@ const styles = StyleSheet.create({
         containerHeader:
         {
             overflow: 'hidden',
-            borderBottomWidth:1,
+            borderBottomWidth:0.5,
             marginBottom:-7,
             borderBottomColor:theme.labelOrInactiveColor
         },
         pageLayout:
         {
 
-            flex:0.99,
+            flex:1,
             flexDirection: 'row',
-            marginBottom:-5
+            marginBottom:-5,  
         },
             leftNavContainer:
             {
@@ -169,11 +158,13 @@ const styles = StyleSheet.create({
             pageContent:
             {  
                 flex:1,
-                flexDirection: 'column'
+                flexDirection: 'column', 
+                marginHorizontal:5
             },
         pageBottomTab:
         {
-            marginTop:'auto' 
+            marginTop:'auto',
+            flex:0.2
         }
 })
 

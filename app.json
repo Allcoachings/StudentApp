@@ -6,8 +6,8 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "androidStatusBar": {
-      "barStyle": "light-content",
-      "backgroundColor": "#404040"
+      "barStyle": "dark-content",
+      "backgroundColor": "#ffffff"
     },
     "notification": {
       "icon": "./assets/noti.png",

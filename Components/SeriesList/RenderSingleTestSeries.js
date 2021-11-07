@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions, findNodeHandle,UIManager, Modal} from 'react-native';
 import { theme, dataLimit, serverBaseUrl } from '../config';
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import Instructions from './Instructions'
@@ -94,7 +94,7 @@ class RenderSingleTestSeries extends React.Component {
                                 <Text style={styles.timeText}>{this.props.item.timeDuration} Minutes</Text>
                                 {this.props.actions?(
                                     <TouchableOpacity style={{marginLeft: 'auto', marginTop: 8}} onPress={()=>this.showThreeMenu()}>
-                                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
+                                        <EvilIcons name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
                                     </TouchableOpacity>
                                 ):(null)}
                             </View>
@@ -109,7 +109,7 @@ class RenderSingleTestSeries extends React.Component {
                                         {this.setState({modalVisible: true})}
                                     </>
                                 ):(Toast.show('You Have Not Enrolled For This Course.'))):(this.setState({modalVisible: true}))}}>
-                                <Feather name="play" size={12} style={{color: theme.primaryColor, marginRight: 3}}/>
+                                <EvilIcons name="play" size={12} style={{color: theme.primaryColor, marginRight: 3}}/>
                                 <Text style={styles.btnText}>Start</Text>
                             </TouchableOpacity>
                         </View>

@@ -4,7 +4,7 @@ import { theme, serverBaseUrl } from '../config';
 import {Text, Switch, Avatar, Title, Caption, Paragraph, Drawer, TouchableRipple} from 'react-native-paper'
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import  Icon  from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Octicons, Feather } from '@expo/vector-icons';
+import { Octicons, EvilIcons } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
 import { SET_INSTITUTE_AUTH } from '../Actions/types';
 const renderDrawerItem=(label,icon,onPress)=>
@@ -12,11 +12,11 @@ const renderDrawerItem=(label,icon,onPress)=>
     return (
         <TouchableOpacity style={{flexDirection: 'row',padding:10,margin:10,marginBottom:0,alignItems: 'center'}} onPress={onPress}>
             <View style={{backgroundColor: theme.labelOrInactiveColor,borderRadius:30,padding:9}}>
-              <Feather name={icon} size={20}/>
+              <EvilIcons name={icon} size={20}/>
             </View>
             <Text style={{marginLeft:10,fontSize:15}}>{label}</Text>
-            {label=='Settings'?(<Feather name="chevron-right" size={20} style={{marginLeft:'auto',alignSelf:'flex-end'}}/>):(null)}
-            {label=='Notification'?(<Feather name="chevron-down" size={20} style={{marginLeft:'auto',alignSelf:'flex-end'}}/>):(null)}
+            {label=='Settings'?(<EvilIcons name="chevron-right" size={20} style={{marginLeft:'auto',alignSelf:'flex-end'}}/>):(null)}
+            {label=='Notification'?(<EvilIcons name="chevron-down" size={20} style={{marginLeft:'auto',alignSelf:'flex-end'}}/>):(null)}
             
         </TouchableOpacity>
     )
@@ -66,22 +66,22 @@ export function DrawerContent(props){
                                         <TouchableOpacity style={{flexDirection: 'row',padding:10,margin:10,marginBottom:0,alignItems: 'center'}} onPress={()=>{props.navigation.navigate("Notification",{mode: 'institute', type:"all"})}}>
              
                                              <Text style={{marginLeft:10,fontSize:15}}>{'All'}</Text>
-                                             <Feather name="chevron-right" size={20} style={{marginLeft:'auto',alignSelf:'flex-end'}}/>
+                                             <EvilIcons name="chevron-right" size={20} style={{marginLeft:'auto',alignSelf:'flex-end'}}/>
              
             
                                          </TouchableOpacity>
                                          <TouchableOpacity style={{flexDirection: 'row',padding:10,margin:10,marginBottom:0,alignItems: 'center'}} onPress={()=>{props.navigation.navigate("Notification",{mode: 'institute', type:"social"})}}>
              
                                             <Text style={{marginLeft:10,fontSize:15}}>{'Social'}</Text>
-                                            <Feather name="chevron-right" size={20} style={{marginLeft:'auto',alignSelf:'flex-end'}}/>
+                                            <EvilIcons name="chevron-right" size={20} style={{marginLeft:'auto',alignSelf:'flex-end'}}/>
                                         </TouchableOpacity>
                                        <TouchableOpacity style={{flexDirection: 'row',padding:10,margin:10,marginBottom:0,alignItems: 'center'}} onPress={()=>{props.navigation.navigate("Notification",{mode: 'institute', type:"transactional"})}}>
                                             <Text style={{marginLeft:10,fontSize:15}}>{'Transactional'}</Text>
-                                          <Feather name="chevron-right" size={20} style={{marginLeft:'auto',alignSelf:'flex-end'}}/>
+                                          <EvilIcons name="chevron-right" size={20} style={{marginLeft:'auto',alignSelf:'flex-end'}}/>
                                        </TouchableOpacity>
                                        <TouchableOpacity style={{flexDirection: 'row',padding:10,margin:10,marginBottom:0,alignItems: 'center'}} onPress={()=>{props.navigation.navigate("Notification",{mode: 'institute', type:"rating"})}}>
                                            <Text style={{marginLeft:10,fontSize:15}}>{'Ratings'}</Text>
-                                          <Feather name="chevron-right" size={20} style={{marginLeft:'auto',alignSelf:'flex-end'}}/> 
+                                          <EvilIcons name="chevron-right" size={20} style={{marginLeft:'auto',alignSelf:'flex-end'}}/> 
                                       </TouchableOpacity>
                                        
                                     

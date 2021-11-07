@@ -3,7 +3,7 @@ import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform,Dimensio
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {homeFeaturesData} from '../../FakeDataService/FakeData'
 import { theme,dataLimit, serverBaseUrl, Assets, imageProvider } from '../config';
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import { Rating ,AirbnbRating} from 'react-native-ratings';
 import { Redirect } from 'react-router';
 import {fetch_coachingByCategory, fetch_coachingByCategoryAndStatus} from '../Utils/DataHelper/Coaching'
@@ -42,7 +42,7 @@ class CategoryList extends React.Component {
 
     renderInstituteList=({item})=>{ 
         return (
-                <TouchableOpacity style={styles.instituteItemContainer} onPress={()=> this.props.navigation.navigate('Institute') }>
+                <TouchableOpacity style={styles.instituteItemContainer} onPress={()=> this.props.navigation.navigate('Institute',{insId:item.id}) }>
                     <View style={styles.instituteItemImageView}>
                         <Image source={{uri: imageProvider(item.logo)}} style={styles.instituteItemImage}/> 
                     </View>
@@ -93,7 +93,7 @@ class CategoryList extends React.Component {
         this.updateComponent()
         return(
             <PageStructure
-                iconName={"arrow-left"}
+                iconName={"chevron-left"}
                 btnHandler={() => {this.props.navigation.goBack()}}
                 titleonheader={this.props.route.params.type}
                 searchFun={this.search}

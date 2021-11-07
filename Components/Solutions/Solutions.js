@@ -212,14 +212,14 @@ class Solutions extends React.Component {
       
         return(
             // <PageStructure
-            //     iconName={"menu"}
+            //     iconName="navicon"
             //     btnHandler={() => {this.props.navigation.toggleDrawer()}}
             // >
             //     <ScrollView>
                     <View style={styles.container}>
                         <View style={{padding: 10}}>
                             <View style={styles.headView}>
-                                {/* <Feather name="chevron-left" size={26} style={{color: theme.greyColor}}/> */}
+                                {/* <EvilIconsns name="chevron-left" size={26} style={{color: theme.greyColor}}/> */}
                                 <Text style={styles.headText}>
                                     Solutions
                                 </Text>

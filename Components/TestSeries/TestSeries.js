@@ -3,7 +3,7 @@ import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform} from 'r
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {testSeriesData, storyLine} from '../../FakeDataService/FakeData'
 import { theme, Assets } from '../config';
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
 import CardView from '../Utils/CardView'
@@ -39,7 +39,7 @@ class TestSeries extends React.Component {
         return(
         <View style={styles.singleRow}>
             <View style={styles.rowHeader}>
-                <Feather name="star" size={16}/>
+                <EvilIcons name="star" size={16}/>
                <Text style={styles.rowHeadText}>{item.title}</Text> 
             </View>
             <View style={styles.rowBody}>
@@ -58,7 +58,7 @@ class TestSeries extends React.Component {
         // console.log("hehe this")
         return (
             <PageStructure
-                iconName={"arrow-left"}
+                iconName={"chevron-left"}
                 btnHandler={() => {this.props.navigation.goBack()}}
                 catInHeader={true}
             >

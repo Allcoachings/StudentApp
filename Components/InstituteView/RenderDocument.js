@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions,findNodeHandle,UIManager,Alert, Modal} from 'react-native';
 import { theme, documentPlaceholder,dataLimit, serverBaseUrl, downloadIcon } from '../config';
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import { downloadFile } from '../Utils/DownloadFile';
@@ -9,6 +9,7 @@ import { Picker } from 'native-base';
 import Toast from 'react-native-simple-toast';
 import {updatePlaylist} from '../Utils/DataHelper/Course'
 
+import { setDownloadingItem,setDownloadingItemProgress,removeDownloadingItem } from '../Actions';
 import CircularProgress from 'react-native-circular-progress-indicator';
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
@@ -36,10 +37,19 @@ class RenderDocument extends React.Component {
     download=(item, type)=>{
         Toast.show('PLease Wait...')
         this.setState({savingItem: true});
-        downloadFile(item,item.fileAddress,this.props.userInfo.id,type,this.downloadCallback,this.downloadProgessCallback)
+        downloadFile(item,item.videoLocation, this.props.userInfo.id,type,this.downloadCallback,this.downloadProgessCallback,(offlineItem)=>this.setDownloadingItemInRedux(offlineItem,item.videoLocation))
     }
-    downloadProgessCallback=(progress)=>
+    setDownloadingItemInRedux=(offlineItem,videoLocation)=>
     {
+        this.props.setDownloadingItem({...offlineItem,url:videoLocation,type:'document'},0);
+    }
+    downloadProgessCallback=(progress,url)=>
+    {
+            this.props.setDownloadingItemProgress(progress,url)
+            if(progress>=100)
+            {
+                this.props.removeDownloadingItem(url)
+            }
             this.setState({downloadProgress:progress})
     }
     downloadCallback=(response)=>{
@@ -136,7 +146,7 @@ class RenderDocument extends React.Component {
                 <View style={{alignItems: 'center',marginRight:5}}>
                     {this.props.actions?(
                             <TouchableOpacity style={{marginLeft: 'auto', marginTop: 8}} onPress={()=>this.showThreeMenu()}>
-                                    <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
+                                    <EvilIcons name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
                             </TouchableOpacity>
                     ):(null)}
                     {this.props.downloadMode?(
@@ -186,7 +196,7 @@ class RenderDocument extends React.Component {
                                 <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
                                     {/* <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 10}}>
                                         <TouchableOpacity onPress={()=>this.props.navigation.goBack()}>
-                                            <Feather name={"arrow-left"} size={18} color={theme.secondaryColor}/>
+                                            <EvilIcons name={"chevron-left"} size={18} color={theme.secondaryColor}/>
                                         </TouchableOpacity> */}
                                         <Text style={{fontSize: 16, fontFamily: 'Raleway_600SemiBold',color: theme.secondaryColor}}> Select Playlist</Text>
                                     {/* </View> */}
@@ -249,4 +259,5 @@ const  mapStateToProps = (state)=>
         userInfo:state.user.userInfo,
     }
 }
-export default connect(mapStateToProps)(RenderDocument)
+
+export default connect(mapStateToProps,{setDownloadingItem,setDownloadingItemProgress,removeDownloadingItem})(RenderDocument);

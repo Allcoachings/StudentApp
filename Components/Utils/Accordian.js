@@ -1,4 +1,4 @@
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import React, { Component } from 'react';
 import { View, StyleSheet,TouchableOpacity, TouchableWithoutFeedback, Dimensions } from 'react-native';
 import CardView from './CardView';
@@ -35,7 +35,7 @@ const width = Dimensions.get('window').width
                       null
                     ):(
                       <View >
-                        <Feather name={this.state.isContentVisible?"chevron-up":"chevron-down"} size={20} />
+                        <EvilIcons name={this.state.isContentVisible?"chevron-up":"chevron-down"} size={20} />
                       </View>
                     )}
                     

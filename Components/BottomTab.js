@@ -1,4 +1,4 @@
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons,MaterialCommunityIcons,MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
 import React from 'react';
 import { theme } from './config';
 import { NavigationContainer } from '@react-navigation/native';
@@ -11,7 +11,8 @@ class BottomTab extends React.Component {
     tabs = [
     {
       key: 'Home',
-      icon: 'compass',
+      activeIcon: <MaterialCommunityIcons size={22} name='home-variant'/>,
+      normalIcon: <SimpleLineIcons size={20} name='home' />,
       label: this.props.mode=="student"?('Explore'):('Home'),
       barColor: theme.primaryColor,
       pressColor: 'rgba(255, 255, 255, 0.16)',
@@ -19,7 +20,8 @@ class BottomTab extends React.Component {
     },
     {
       key: this.props.mode=="student"?("TestSeries"):("Revenue"),
-      icon: 'file-text',
+      activeIcon: <MaterialCommunityIcons size={22} name='file-document'/>,
+      normalIcon: <SimpleLineIcons size={20} name='doc' />,
       label: this.props.mode=="student"?('Test Series'):('Revenue'),
       barColor: theme.primaryColor,
       pressColor: 'rgba(255, 255, 255, 0.16)',
@@ -27,7 +29,8 @@ class BottomTab extends React.Component {
     },
     {
       key: this.props.mode=="student"?("Subscription"):("Notification"),
-      icon: 'youtube',
+      activeIcon: <MaterialCommunityIcons size={27} name='youtube'/>,
+      normalIcon: <SimpleLineIcons size={25} name='social-youtube' />,
       label: this.props.mode=="student"?('Followings'):('Notifications'),
       barColor: theme.primaryColor,
       pressColor: 'rgba(255, 255, 255, 0.16)',
@@ -35,7 +38,8 @@ class BottomTab extends React.Component {
     },
     {
       key: "Feed",
-      icon: 'bell',
+      normalIcon: <EvilIcons size={27} name="bell"/>,
+      activeIcon: <MaterialIcons size={25} name="notifications"/>,
       label: 'Feed',
       barColor: theme.primaryColor,
       pressColor: 'rgba(255, 255, 255, 0.16)',
@@ -48,7 +52,7 @@ class BottomTab extends React.Component {
   }
  
   renderIcon = icon => (isActive) => (
-    <Feather size={24} color={isActive?theme.accentColor:theme.secondaryColor} name={icon} />
+    <EvilIcons size={24} color={isActive?theme.accentColor:theme.secondaryColor} name={icon} />
   )
  
 //   renderTab = ({ tab, isActive }) => (
@@ -73,8 +77,12 @@ class BottomTab extends React.Component {
         return (
                 
                 <TouchableOpacity style={styles.TabContainer} onPress={()=>(this.clickHandler(tab.key, tab.params))}>
-                        <Feather size={24} color={isActive?theme.accentColor:theme.secondaryColor} name={tab.icon} />
-                    <Text style={{color: isActive?theme.accentColor:theme.secondaryColor,fontSize:12}}>{tab.label}</Text>
+                    {isActive?(
+                      tab.activeIcon
+                    ):(
+                      tab.normalIcon
+                    )}
+                    <Text style={[{color: theme.secondaryColor,fontSize:12},tab.label=="Followings"?{paddingBottom:5}:{}]}>{tab.label}</Text>
                 </TouchableOpacity>
                 
             
@@ -82,7 +90,7 @@ class BottomTab extends React.Component {
     }
 
   render() { 
-    console.log("bottom tab value:",this.props.activeBottomTab)      
+         
     return ( 
      
         <View style={styles.container}>
@@ -95,11 +103,11 @@ class BottomTab extends React.Component {
                       data={this.tabs} 
                       renderItem={({item})=>this.renderTab(item,this.props.activeBottomTab==item.key)}
                       keyExtractor={(item)=>item.key} 
-                      numColumns={this.tabs.length}
+                      numColumns={this.tabs.length} 
                       columnWrapperStyle={{justifyContent:'space-between',flexDirection:'row'}}
                       />),
-                      [{marginTop:'auto',paddingTop:10,width:'100%',paddingLeft:10,paddingRight:10,paddingBottom:5 ,     borderTopWidth:1, 
-                      borderTopColor:theme.labelOrInactiveColor,},this.props.bottomComponentStyle]
+                      [{marginTop:'auto',width:'100%',paddingLeft:10,paddingRight:10,paddingBottom:5 ,     borderTopWidth:1, 
+                      borderTopColor:theme.labelOrInactiveColor},this.props.bottomComponentStyle]
                   )}
         </View>
        

@@ -63,7 +63,7 @@ const renderHeader=(rowItem)=>
     
     return (
     <PageStructure
-        iconName={"arrow-left"}
+        iconName={"chevron-left"}
         btnHandler={() => { props.navigation.goBack()}}
         titleonheader={"Course Revenue"}
         nosearchIcon={true}
@@ -73,7 +73,7 @@ const renderHeader=(rowItem)=>
                 <View style={styles.container}>
                     {/* {CardView(
                         <View style={styles.headView}>
-                            <Feather name="chevron-left" size={28} />
+                            <EvilIcons name="chevron-left" size={28} />
                             <Text style={styles.headText}>Revenue</Text>
                         </View>,{paddingTop: 5,justifyContent: 'center'}
                     )} */}

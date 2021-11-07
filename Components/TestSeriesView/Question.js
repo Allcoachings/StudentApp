@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text,StyleSheet,TouchableOpacity,TouchableWithoutFeedback,Dimensions,Image } from 'react-native';
 import {serverBaseUrl, theme, imageProvider} from '../config'
-import {Feather, FontAwesome} from '@expo/vector-icons';  
+import {EvilIconsns, FontAwesome} from '@expo/vector-icons';  
  const width = Dimensions.get('window').width
 class Question extends Component {
   state={
@@ -116,7 +116,6 @@ class Question extends Component {
       {
             return styles.attemptedAnsIndex
       }
-       
             
   }
   renderOption=(index, text,optionType,onPress)=>
@@ -226,7 +225,7 @@ class Question extends Component {
                         <TouchableWithoutFeedback onPress={()=>this.setState({showSolution:false})}>
                             <View style={{flexDirection:'row', }}>
                                 <Text style={{color:theme.accentColor}}>Hide</Text>
-                                <Feather name="chevron-up" color={theme.accentColor} size={20}/>
+                                <EvilIconsns name="chevron-up" color={theme.accentColor} size={20}/>
                             </View>
                         </TouchableWithoutFeedback>
                     </View>
@@ -240,7 +239,7 @@ class Question extends Component {
                         <TouchableWithoutFeedback onPress={()=>this.setState({showSolution:true})}>
                             <View style={{flexDirection:'row', }}>
                                 <Text style={{fontFamily:'Raleway_600SemiBold',color:theme.accentColor}}>View Solution</Text>
-                                <Feather name="chevron-down" color={theme.accentColor} size={20}/>
+                                <EvilIconsns name="chevron-down" color={theme.accentColor} size={20}/>
                             </View>
                         </TouchableWithoutFeedback>
                     </View>

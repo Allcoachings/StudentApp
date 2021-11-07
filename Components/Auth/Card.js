@@ -1,4 +1,4 @@
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import React , { useState, useRef }  from 'react';
 import { StyleSheet,Text, View ,TouchableOpacity,Dimensions,StatusBar,SafeAreaView, TouchableWithoutFeedback} from 'react-native';
 import { theme } from '../config';
@@ -103,7 +103,7 @@ class SocialAuth extends React.Component {
                                                 ):( 
                                                     <>
                                                         <Text style={styles.btnText}>Continue</Text>
-                                                        <Feather name="log-in" size={20} color={theme.primaryColor} style={{marginTop:Platform.OS=='web'?5:0}}/> 
+                                                        <EvilIcons name="log-in" size={20} color={theme.primaryColor} style={{marginTop:Platform.OS=='web'?5:0}}/> 
                                                     </>
                                                 )}
                                             </View>

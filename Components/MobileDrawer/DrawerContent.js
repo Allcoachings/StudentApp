@@ -4,7 +4,7 @@ import { serverBaseUrl, theme, imageProvider } from '../config';
 import {Text, Switch, Avatar, Title, Caption, Paragraph, Drawer, TouchableRipple} from 'react-native-paper'
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import  Icon  from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import ChangeCatModal from './ChangeCatModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
@@ -15,10 +15,10 @@ const renderDrawerItem=(label,icon,onPress)=>
     return (
         <TouchableOpacity style={{flexDirection: 'row',padding:10,margin:10,marginBottom:0,alignItems: 'center'}} onPress={onPress}>
             <View style={{backgroundColor: theme.labelOrInactiveColor,borderRadius:30,padding:9}}>
-              <Feather name={icon} size={20}/>
+              <EvilIcons name={icon} size={20}/>
             </View>
             <Text style={{marginLeft:10,fontSize:15}}>{label}</Text>
-            {label=='Settings'?(<Feather name="chevron-right" size={20} style={{marginLeft:'auto',alignSelf:'flex-end'}}/>):(null)}
+            {label=='Settings'?(<EvilIcons name="chevron-right" size={20} style={{marginLeft:'auto',alignSelf:'flex-end'}}/>):(null)}
             
         </TouchableOpacity>
     )
@@ -41,7 +41,7 @@ export function DrawerContent(props){
             dispatch({type:USER_AUTH_STATUS,payload:{authStatus:false}})
         })
     }
-    console.log("props.showNotificationType",props.showNotificationType)
+   
     return(
         <View style={{flex: 1, width: '100%'}}>
             <DrawerContentScrollView {...props}>
@@ -49,20 +49,20 @@ export function DrawerContent(props){
                     <View style={{display: 'flex',justifyContent: 'space-between',borderBottomWidth:1,borderBottomColor: theme.labelOrInactiveColor, flexDirection: 'row',paddingBottom:5}}>
                         <View style={styles.userInfoSection}>
                             <View>
-                                <Avatar.Image source={{ uri: imageProvider(props.userInfo.studentImage) }}  size={80}/>
+                                <Avatar.Image source={{ uri: imageProvider(props.userInfo.studentImage) }}  size={65}/>
                             </View>
                             <View style={styles.userNameSec}>
                                 <Title>{props.userInfo.name}</Title>
                                 <Text style={{color: theme.greyColor}}>{props.userInfo.userId}</Text>
                             </View>
                         </View>
-                        <TouchableWithoutFeedback style={{height:"20%",justifyContent: 'center',borderWidth:1,borderColor: theme.labelOrInactiveColor,marginRight:10,paddingHorizontal:5}}
+                        {/* <TouchableWithoutFeedback style={{height:"20%",justifyContent: 'center',borderWidth:1,borderColor: theme.labelOrInactiveColor,marginRight:10,paddingHorizontal:5}}
                             onPress={()=>setCatModalOpen(true)}
                         >
                             <View style={{height:"20%",justifyContent: 'center',borderWidth:1,borderColor: theme.labelOrInactiveColor,marginRight:10,paddingHorizontal:5}}>
                                 <Text style={{color: theme.greyColor,   textAlign: 'center'}}>Manage Category</Text>
                             </View>
-                        </TouchableWithoutFeedback>
+                        </TouchableWithoutFeedback> */}
                     </View>
                     <Drawer.Section>
                      
@@ -70,7 +70,7 @@ export function DrawerContent(props){
                         {renderDrawerItem('Profile','user',()=>props.navigation.navigate("Profile"))}
                         {renderDrawerItem('Notifications','bell',()=>props.navigation.navigate("Notification",{mode: 'student', type: 'all'}))}
                         {/* {renderDrawerItem('Enrollments','lock',()=>props.navigation.navigate("Subscription"))} */}
-                        {renderDrawerItem('Pinned Institute','lock',()=>props.navigation.navigate("PinnedList"))}
+                        {/* {renderDrawerItem('Pinned Institute','lock',()=>props.navigation.navigate("PinnedList"))} */}
                         {renderDrawerItem('Downloads','user',()=>props.navigation.navigate("Downloads"))}
                         {renderDrawerItem('Test Series','lock',()=>props.navigation.navigate("TestSeries"))}
                         

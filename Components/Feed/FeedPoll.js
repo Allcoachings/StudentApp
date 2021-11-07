@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text,StyleSheet,FlatList,Image,findNodeHandle,UIManager, TouchableOpacity } from 'react-native';
-import {Feather, AntDesign, FontAwesome} from '@expo/vector-icons';
+import {EvilIconsnsnsnsns, AntDesign, FontAwesome} from '@expo/vector-icons';
 import CardView from '../Utils/CardView'; 
 import {imageProvider, serverBaseUrl, theme} from '../config';
 import RenderPollOption from './RenderPollOption'

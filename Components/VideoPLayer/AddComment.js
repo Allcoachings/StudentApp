@@ -39,7 +39,7 @@ const item = props.item;
             <View>
                 <TouchableWithoutFeedback onPress={addCommentHandler}>
                     <View>
-                        <MaterialIcons name="arrow-forward" size={24} color={theme.greyColor} />
+                        <MaterialIcons name="chevron-right-forward" size={24} color={theme.greyColor} />
                     </View>
                 </TouchableWithoutFeedback>
             </View>):(null)}

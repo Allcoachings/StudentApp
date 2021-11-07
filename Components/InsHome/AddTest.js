@@ -3,7 +3,7 @@ import {Text, View,StyleSheet, TextInput, TouchableOpacity, ScrollView, FlatList
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {theme,screenMobileWidth} from '../config'
 import CardView from '../Utils/CardView';
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import {connect} from 'react-redux'
 import {addTestSeries, fetch_testSeriesPlaylist} from '../Utils/DataHelper/Course'
 import Toast from 'react-native-simple-toast';
@@ -253,7 +253,7 @@ class AddTest extends React.Component {
        
         return(
             <PageStructure
-                iconName={"menu"}
+                iconName="navicon"
                 nosearchIcon={true}
                 noNotificationIcon={true}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
@@ -324,7 +324,7 @@ class AddTest extends React.Component {
                                 
                             <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
                                     <Text style={styles.labelText}>Test Series Playlist</Text>
-                                    <Feather name="plus" onPress={()=>this.openModal()} size={20}/>
+                                    <EvilIcons name="plus" onPress={()=>this.openModal()} size={20}/>
                             </View> 
                             
                                 <View style={styles.inputField}>

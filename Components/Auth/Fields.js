@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextInput,View,TouchableOpacity,StyleSheet ,Text,ScrollView,Platform} from 'react-native';
 import CardView from '../Utils/CardView';
-import { Feather } from '@expo/vector-icons'
+import { EvilIcons } from '@expo/vector-icons'
 import { theme,screenMobileWidth } from '../config';
 import {connect} from 'react-redux'  
 import Checkbox from 'expo-checkbox';
@@ -15,7 +15,7 @@ class Fields extends React.Component {
             return (
                 CardView(
                     <View style={styles.textInputContainer}>
-                        <Feather name={icon} size={20} color={theme.secondaryColor} style={styles.inputIcon}/>
+                        <EvilIcons name={icon} size={20} color={theme.secondaryColor} style={styles.inputIcon}/>
                         <TextInput placeholder={label}  style={styles.textInput}/>
                     </View>,
                     [styles.textInputCard,this.props.screenWidth<=screenMobileWidth?({padding:'3%', width:"80%"}):({padding:'2%', width:"65%"})]
@@ -53,7 +53,7 @@ class Fields extends React.Component {
                         <View style={{flex:1,flexDirection:'row',justifyContent:'center',marginLeft:'10%',marginRight:'10%'}}>
                             <TouchableOpacity style={styles.authModeBtn}>
                                 <Text style={styles.btnText}>{this.props.btnLabel}</Text>
-                                <Feather name="log-in" size={20} color={theme.primaryColor} style={{marginTop:Platform.OS=='web'?5:0}}/> 
+                                <EvilIcons name="log-in" size={20} color={theme.primaryColor} style={{marginTop:Platform.OS=='web'?5:0}}/> 
                             </TouchableOpacity>
                         </View>
                     </View>

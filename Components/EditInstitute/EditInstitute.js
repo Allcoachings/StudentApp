@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Picker } from 'native-base';
 import * as DocumentPicker from 'expo-document-picker';
 import {fetch_categories} from '../Utils/DataHelper/Categories'
-import {Feather} from '@expo/vector-icons';
+import {EvilIcons} from '@expo/vector-icons';
 import {setInstituteDetails,setInstituteAuth} from '../Actions'
 import {fetch_instituteDetails} from '../Utils/DataHelper/Coaching'
 import { connect } from 'react-redux';
@@ -235,7 +235,7 @@ class EditInstitute extends React.Component {
                         <View style={styles.header}>
                             {/* <AuthHeader/>                         */}
                             {/* <TouchableWithoutFeedback onPress={()=>this.props.cnavigation.goBack()}> 
-                                <Feather name="arrow-left" size={20} color={theme.greyColor}  />
+                                <EvilIcons name="chevron-left" size={20} color={theme.greyColor}  />
                             </TouchableWithoutFeedback> */}
                         </View>
                         <View style={styles.headView}>

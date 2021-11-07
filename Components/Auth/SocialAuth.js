@@ -1,4 +1,4 @@
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet,Text, View ,TouchableOpacity} from 'react-native';
 import { theme } from '../config';
@@ -12,7 +12,7 @@ class SocialAuth extends React.Component {
         return(
             CardView(
                 <TouchableOpacity style={styles.authBtn} onPress={handler}>
-                    <Feather name={icon} size={20} />
+                    <EvilIcons name={icon} size={20} />
                 </TouchableOpacity>,
                 [styles.authCard]
             )

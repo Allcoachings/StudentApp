@@ -8,7 +8,7 @@ import { enrollStudent } from '../Utils/DataHelper/EnrollStudent'
 import {connect} from 'react-redux'
 import CardView from '../Utils/CardView';
 import MarqueeText from 'react-native-marquee';
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 
 class Payment extends React.Component {
     state={
@@ -34,7 +34,7 @@ class Payment extends React.Component {
     render() {
         return(
             <PageStructure 
-                iconName={"arrow-left"}
+                iconName={"chevron-left"}
                 btnHandler={() => {this.props.navigation.goBack()}} 
             > 
             <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>

@@ -4,7 +4,7 @@ import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 // import {connect} from 'react-redux'
 import { theme,dataLimit,screenMobileWidth,serverBaseUrl,documentPlaceholder, Assets,imageProvider } from '../config';
 import AddFeedModal from '../InsHome/AddFeedModal';
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
 import CardView from '../Utils/CardView'
@@ -112,10 +112,10 @@ class UserProfile extends React.Component {
     header=() => {
         return(
             <View style={{display: 'flex', flexDirection: 'row',  alignItems: 'center', padding: 10, width: '100%', justifyContent: 'space-between'}}>
-                <Feather name="chevron-left" size={22} />
+                <EvilIcons name="chevron-left" size={22} />
                 <Text style={{fontSize: 24, color: theme.secondaryColor, fontWeight: '700'}}>Profile</Text>
                 <TouchableOpacity onPress={()=>this.openModal()}>
-                <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
+                <EvilIcons name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
                 </TouchableOpacity>
             </View>
         )
@@ -134,7 +134,7 @@ class UserProfile extends React.Component {
                 onPress={()=>{this.setState({subActiveTab: link})}} 
                 style={[styles.setList,this.state.activeTab==link?({backgroundColor:theme.secondaryColor}):(null)]}
             >
-                    <Feather name={icon} size={12} color={this.state.activeTab==link?(theme.primaryColor):(theme.secondaryColor)}/>
+                    <EvilIcons name={icon} size={12} color={this.state.activeTab==link?(theme.primaryColor):(theme.secondaryColor)}/>
                     <Text style={[styles.listText,this.state.activeTab==link?({color:theme.primaryColor}):(null)]}>{text}</Text>
             </TouchableOpacity>
         )
@@ -493,7 +493,7 @@ class UserProfile extends React.Component {
         // console.log(this.state.history)
         return (
             <PageStructure
-                iconName={"menu"}
+                iconName="navicon"
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
                 titleonheader={"Profile"}
                 headerStyle={{ justifyContent: 'center'}}

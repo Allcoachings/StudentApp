@@ -2,7 +2,7 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableWithoutFeedback,FlatList, Image,Platform, ScrollView} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import { theme, dataLimit , Assets} from '../config';
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import { feedData } from '../../FakeDataService/FakeData' 
 import {connect } from 'react-redux'
 import CardView from '../Utils/CardView';
@@ -57,7 +57,7 @@ class Revenue extends React.Component {
     render() {
         return(
             <PageStructure
-                iconName={"arrow-left"}
+                iconName={"chevron-left"}
                 btnHandler={() => {this.props.navigation.goBack()}}
                 titleonheader={"Revenue"}
             >
@@ -65,7 +65,7 @@ class Revenue extends React.Component {
                     <View style={styles.container}>
                         {/* {CardView(
                             <View style={styles.headView}>
-                                <Feather name="chevron-left" size={28} />
+                                <EvilIcons name="chevron-left" size={28} />
                                 <Text style={styles.headText}>Revenue</Text>
                             </View>,{paddingTop: 5,justifyContent: 'center'}
                         )} */}

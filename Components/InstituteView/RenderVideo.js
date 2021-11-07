@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions, findNodeHandle,UIManager, Modal} from 'react-native';
 import { theme, dataLimit, serverBaseUrl, downloadIcon, numFormatter, imageProvider } from '../config';
-import { Feather, MaterialIcons } from '@expo/vector-icons';
+import { EvilIcons, MaterialIcons } from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import { Picker } from 'native-base';
@@ -11,6 +11,7 @@ import Toast from 'react-native-simple-toast';
 import { updatePlaylist } from '../Utils/DataHelper/Course';
 import RatingBar from '../Utils/RatingBar';
 import CircularProgress from 'react-native-circular-progress-indicator';
+import { setDownloadingItem,setDownloadingItemProgress,removeDownloadingItem } from '../Actions';
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
  
@@ -19,17 +20,27 @@ class RenderVideo extends React.Component {
         showModal: false,
         playlist: this.props.courseVideosPlaylist,
         selectedPlaylist: this.props.item.playlistId,
-        savingItem:false,
+        savingItem:this.props.savingItem?this.props.savingItem:false,
         downloadProgress:0
     }
 
     download=(item, type)=>{
         Toast.show('PLease Wait...')
         this.setState({savingItem: true});
-        downloadFile(item,item.videoLocation, this.props.userInfo.id,type,this.downloadCallback,this.downloadProgessCallback)
+       
+        downloadFile(item,item.videoLocation, this.props.userInfo.id,type,this.downloadCallback,this.downloadProgessCallback,(offlineItem)=>this.setDownloadingItemInRedux(offlineItem,item.videoLocation))
     }
-    downloadProgessCallback=(progress)=>
+    setDownloadingItemInRedux=(offlineItem,videoLocation)=>
     {
+        this.props.setDownloadingItem({...offlineItem,url:videoLocation,type:'video'},0);
+    }
+    downloadProgessCallback=(progress,url)=>
+    {
+            this.props.setDownloadingItemProgress(progress,url)
+            if(progress>=100)
+            {
+                this.props.removeDownloadingItem(url)
+            }
             this.setState({downloadProgress:progress})
     }
     downloadCallback=(response)=>{
@@ -49,8 +60,12 @@ class RenderVideo extends React.Component {
     }
 
     actions = ['Change Playlist'];
-    componentDidMount = () => {
-         
+    componentDidUpdate = (prevProps, prevState) => {
+      
+       if(prevProps.progress!=this.props.progress)
+       {
+           this.setState({downloadProgress:this.props.progress})
+       }
     };
     
     showThreeMenu=()=>
@@ -75,6 +90,8 @@ class RenderVideo extends React.Component {
                 break;
             case "Remove":
                 this.props.removeVideo(this.props.index)
+            case "Cancel":
+                this.props.removeVideo()
         }
     }
   
@@ -175,7 +192,7 @@ class RenderVideo extends React.Component {
                     ):(null)}
                         {this.props.actions?(
                         <TouchableOpacity style={{marginLeft: 'auto', marginTop: 8}} onPress={()=>this.showThreeMenu()}>
-                                <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
+                                <EvilIcons name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
                         </TouchableOpacity>):(null)}
                     {this.state.showModal?(
                         <Modal
@@ -243,4 +260,4 @@ const  mapStateToProps = (state)=>
         userInfo:state.user.userInfo,
     }
 }
-export default connect(mapStateToProps)(RenderVideo);
+export default connect(mapStateToProps,{setDownloadingItem,setDownloadingItemProgress,removeDownloadingItem})(RenderVideo);

@@ -1,5 +1,5 @@
 import React, { Component ,useState,useRef} from 'react';
-import { Feather } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
 import { View, Text,StyleSheet,ScrollView,TouchableOpacity,Keyboard,Dimensions,Image,TouchableWithoutFeedback, Modal, TextInput, ImageBackground,ToastAndroid} from 'react-native';
 import CardView from '../Utils/CardView';
 import AuthHeader from './AuthHeader';
@@ -145,7 +145,7 @@ class OtpVerification extends React.Component {
         // {
             return(
                 <View style={styles.container}>
-                    <View style={{margin:10,marginLeft:20,width:'100%'}}>
+                    <View style={{marginLeft:20,width:'100%'}}>
                         <Text style={{fontFamily:'Raleway_700Bold',color:theme.secondaryColor,fontSize:20,marginBottom:5}}>{this.state.mode=="mobile"?("Your mobile number"):("Verify OTP")}</Text>
                         <Text style={{fontFamily:'Raleway_400Regular',color:theme.greyColor,marginBottom:8}}>
                         {this.state.mode=="mobile"?("We'll send on OTP for Verification"):("We have sent it on "+this.state.phoneNumber)}
@@ -173,6 +173,7 @@ class OtpVerification extends React.Component {
                                 fontFamily:'Raleway_600SemiBold'
                             }}
                             maxLength={10}
+                            minLength={10}
                             onChangeText={(text) => {
                                 this.checkNumber(text)
                             }}
@@ -196,15 +197,15 @@ class OtpVerification extends React.Component {
                             />
                         )}
                     </View>
-                    <View style={{alignItems: 'center',width: width,marginTop: 'auto',marginBottom:this.props.keyboardHeight?this.props.keyboardHeight+50:15}}>
+                    <View style={{alignItems: 'center',width: width,marginTop: 'auto',marginBottom:this.props.keyboardHeight?this.props.keyboardHeight+50:20}}>
 
-                        <View style={{margin:20}}>
+                        {this.state.mode=="mobile"?(<View style={{margin:20}}>
                             <TouchableWithoutFeedback onPress={()=>{this.props.changeMode(2)}}>
                                 <View>
                                     <Text style={{fontFamily:'Raleway_600SemiBold',fontSize:12,color:theme.greyColor}}>Login as Institute</Text> 
                                 </View>
                             </TouchableWithoutFeedback>
-                        </View>
+                        </View>):(null)}
                         <TouchableWithoutFeedback onPress={this.state.mode=="mobile"?(this.handleResendBtnClick):(this.handleContinueBtnClick)} disabled={false}>
                             <View style={[this.state.contBtnBg?({backgroundColor:theme.accentColor}):({backgroundColor:theme.greyColor}),{padding:15,borderRadius:10,alignItems: 'center',width:'95%'}]}>
                                 <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>{this.state.loader?(
@@ -282,20 +283,22 @@ class OtpVerification extends React.Component {
             // style={{height:500,width:5001}}
             visible={this.props.isOtpModal}
             >
-                <View>
-                {CardView(
-                    <View style={styles.container}>
-                        
-                                <TouchableWithoutFeedback onPress={()=>this.props.closeModal() }>
-                                    <View style={styles.header}>
-                                        {/* <AuthHeader/>                         */}
-                                        <Feather name="arrow-left" size={20} color={theme.greyColor}/>
-                                    </View>
-                                </TouchableWithoutFeedback>
-                            {this.renderContent()}
-                    </View>,{width: width, height: height, }
-                )}
-                </View>
+                <ScrollView>
+                    <View>
+                    {CardView(
+                        <View style={styles.container}>
+                            
+                                    <TouchableWithoutFeedback onPress={()=>this.props.closeModal() }>
+                                        <View style={styles.header}>
+                                            {/* <AuthHeader/>                         */}
+                                            <EvilIcons name="chevron-left" size={20} color={theme.greyColor}/>
+                                        </View>
+                                    </TouchableWithoutFeedback>
+                                {this.renderContent()}
+                        </View>,{width: width, height: height, }
+                    )}
+                    </View>
+                </ScrollView>
             </Modal>
         )
     }

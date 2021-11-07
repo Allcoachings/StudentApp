@@ -189,13 +189,65 @@ const testSeries_reducer=(state=initial_test_series_state,action) =>
         
     }
 }
+
+const initial_downloadItem_state = 
+{
+    items:[
+
+    ],
+    progress:0
+}
+const downloadReducer=(state=initial_downloadItem_state,action) =>
+{
+    switch(action.type)
+    {
+        case actionTypes.SET_DOWNLOADING_ITEM:
+            return{
+                ...state, 
+                items:[...state.items,{...action.payload.item,progress:action.payload.progress}]
+            }
+        case actionTypes.SET_DOWNLOADING_PROGRESS:
+            
+            var index = state.items.findIndex( item => {
+                
+                return item.url == action.payload.key 
+            })
+            let items  = [...state.items];
+            if(items[index])
+            {
+                items[index].progress = action.payload.progress;
+            }
+           
+            return{
+                ...state,
+                items
+             }
+        case actionTypes.REMOVE_DOWNLOADING_ITEM:
+            var index = state.items.findIndex( item => {
+                
+                return item.url == action.payload.key 
+            })
+            let itemsArr  = [...state.items];
+            
+            console.log(itemsArr.splice(index,1)," ",index," ",action.payload.key)
+             return{
+                 ...state,
+                 items:itemsArr
+             }
+            
+        default:
+            return state
+        
+    }
+}
 const rootReducer = combineReducers({
         user:user_reducer,
         screen:screen_reducer,
         institute:institute_reducer,
         testSeries:testSeries_reducer,
         layout:app_redux,
-        categories:categories_redux
+        categories:categories_redux,
+        download:downloadReducer,
 })
 
 

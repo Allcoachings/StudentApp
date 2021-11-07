@@ -9,7 +9,7 @@ import {fetch_categories} from '../Utils/DataHelper/Categories'
 import {registerCoaching} from '../Utils/DataHelper/Coaching'
 import { Picker } from 'native-base';
 import * as DocumentPicker from 'expo-document-picker';
-import {Feather} from '@expo/vector-icons';
+import {EvilIcons} from '@expo/vector-icons';
 import {setInstituteDetails,setInstituteAuth} from '../Actions'
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -76,7 +76,21 @@ class InsRegister extends React.Component {
         ]
     }
 
-
+    validateEmail = (text) => {
+        // console.log(text);
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+        if (reg.test(text) === false) {
+          console.log("Email is Not Correct");
+        //   this.setState({ email: text })
+         Toast.show('ENter a valid Email');
+          return false;
+        }
+        else {
+        //   this.setState({ email: text })
+          console.log("Email is Correct");
+          return true;
+        }
+      }
     renderTextInput=(icon, placeholder,onPress)=>{
         return(
             // CardView(
@@ -165,7 +179,7 @@ class InsRegister extends React.Component {
     {
             
          
-            if(this.verifyFields(this.state))
+            if(this.verifyFields(this.state)&&this.validateEmail(this.state.email))
             {
                 if(!this.state.registerLoader)
                 {
@@ -202,7 +216,7 @@ class InsRegister extends React.Component {
  
         return(
             // <PageStructure
-            //     iconName={"menu"}
+            //     iconName="navicon"
             //     btnHandler={() => {this.props.navigation.toggleDrawer()}}
             // >
                 <ScrollView>
@@ -210,7 +224,7 @@ class InsRegister extends React.Component {
                         <View style={styles.header}>
                             {/* <AuthHeader/>                         */}
                             <TouchableWithoutFeedback onPress={()=>this.props.changeAuthMode(1)}> 
-                                <Feather name="arrow-left" size={20} color={theme.greyColor}  />
+                                <EvilIcons name="chevron-left" size={20} color={theme.greyColor}  />
                             </TouchableWithoutFeedback>
                         </View>
                         <View style={styles.headView}>
