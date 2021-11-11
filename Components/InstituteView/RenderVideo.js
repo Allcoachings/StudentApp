@@ -12,6 +12,7 @@ import { updatePlaylist } from '../Utils/DataHelper/Course';
 import RatingBar from '../Utils/RatingBar';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import { setDownloadingItem,setDownloadingItemProgress,removeDownloadingItem } from '../Actions';
+import NotEnrolledModal from './NotEnrolledModal'
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
  
@@ -131,6 +132,12 @@ class RenderVideo extends React.Component {
         }
     }
 
+    nav=()=>{
+        return(
+            <NotEnrolledModal />
+        )
+    }
+
     render(){
        
         return( 
@@ -143,7 +150,10 @@ class RenderVideo extends React.Component {
                             {this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation,videoTitle:this.props.item.name,postingTime:this.props.item.date,item:this.props.item})}
                             {this.props.addToHistory("video", this.props.item.id)}
                             </>
-                        ):(Toast.show('You Have Not Enrolled For This Course.'))):(this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation,videoTitle:this.props.item.name,postingTime:this.props.item.date,item:this.props.item}))}
+                        ):(
+                            // Toast.show('You Have Not Enrolled For This Course.')
+                            this.nav()
+                        )):(this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation,videoTitle:this.props.item.name,postingTime:this.props.item.date,item:this.props.item}))}
                     } >
                         <Image source={{uri:imageProvider(this.props.item.videoThumb)}} style={styles.videoImage}/>
                     </TouchableOpacity>

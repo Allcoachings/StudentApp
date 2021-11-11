@@ -109,9 +109,17 @@ class HeaderMobile extends React.Component {
                     )}
                   </View>
 
+                  {this.props.pinUnpinIcon?(
+                    <EvilIcons
+                      name={this.props.pinIconName}
+                      size={25}
+                      color={theme.secondaryColor}
+                  />
+                  ):(null)}
+
 
                   {!this.props.noNotificationIcon?(
-                    <TouchableOpacity   style={{ marginLeft: "auto" }} onPress={() => this.props.rightIconOnPress()}>
+                    <TouchableOpacity    onPress={() => this.props.rightIconOnPress()}>
                       {this.props.notificationreplaceshare ? (
                         <EvilIcons
                           name={this.props.notificationreplaceshare}
@@ -145,10 +153,16 @@ class HeaderMobile extends React.Component {
                     style={styles.searchIcon}
                   />
                 </TouchableOpacity>
-                ):(null)}
+                ):(this.props.searchReplace ? (
+                  <TouchableOpacity>
+                      <Text>Follow</Text>
+                  </TouchableOpacity>
+                ):(null))}
 
 
                  
+                 
+
                  {this.props.userIcon?(
                   <TouchableOpacity
                     style={{ marginLeft: "auto" }}
@@ -159,8 +173,19 @@ class HeaderMobile extends React.Component {
                     style={{height: 20,width:20,backgroundColor:"blue",borderRadius:10}}
                   />
                 </TouchableOpacity>
-                ):(null)}
-
+                ):(
+                  this.props.showShareIcon?(
+                    <TouchableOpacity
+                      style={{ marginLeft: "auto" }}
+                    >
+                      <EvilIcons
+                        name="share-google"
+                        size={25}
+                        color={theme.secondaryColor}
+                        style={styles.searchIcon}
+                      />
+                    </TouchableOpacity>
+                  ):(null))}
               </View>
             )}
           </>

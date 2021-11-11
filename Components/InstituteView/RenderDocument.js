@@ -8,6 +8,7 @@ import { downloadFile } from '../Utils/DownloadFile';
 import { Picker } from 'native-base';
 import Toast from 'react-native-simple-toast';
 import {updatePlaylist} from '../Utils/DataHelper/Course'
+import NotEnrolledModal from './NotEnrolledModal'
 
 import { setDownloadingItem,setDownloadingItemProgress,removeDownloadingItem } from '../Actions';
 import CircularProgress from 'react-native-circular-progress-indicator';
@@ -21,6 +22,11 @@ class RenderDocument extends React.Component {
         savingItem:false,
         downloadProgress:0
     }
+    nav=()=>{
+        return(
+            <NotEnrolledModal />
+        )
+    }
     documentOnClick = ()=>
     {
 
@@ -30,7 +36,10 @@ class RenderDocument extends React.Component {
                 {this.props.navigation.navigate('pdfViewer',{pdf:serverBaseUrl+this.props.item.fileAddress, studentName: this.props.userInfo.name, studentNumber: this.props.userInfo.mobileNumber})}
                 {this.props.addToHistory("document", this.props.item.id)}
             </>
-        ):(Toast.show('You Have Not Enrolled For This Course.'))):(this.props.navigation.navigate('pdfViewer',{pdf:serverBaseUrl+this.props.item.fileAddress, studentName: this.props.insName, studentNumber: this.props.insNumber}))
+        ):(
+            // Toast.show('You Have Not Enrolled For This Course.')
+            this.nav()
+        )):(this.props.navigation.navigate('pdfViewer',{pdf:serverBaseUrl+this.props.item.fileAddress, studentName: this.props.insName, studentNumber: this.props.insNumber}))
         // downloadFile(this.props.item,this.props.userId,'document',(response)=>{console.log(response)})
     }
 
