@@ -4,7 +4,6 @@ import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {instituteData} from '../../FakeDataService/FakeData'
 import { AirbnbRating,Rating } from 'react-native-ratings';
 import {theme,screenMobileWidth,serverBaseUrl,documentPlaceholder,dataLimit, Assets, imageProvider} from '../config'
-
 import CardView from '../Utils/CardView';
 import MarqueeText from 'react-native-marquee';
 import { EvilIcons } from '@expo/vector-icons';
@@ -1070,9 +1069,13 @@ class InstituteView extends React.Component {
                 catInHeader={false}
                 titleonheader={institute&&this.props.categories.filter(item=>item.id==institute.category)[0].name}
                 noBottomTab={true}
-                notificationreplaceshare={"more-vertical"}
+                noNotificationIcon={false}
                 rightIconOnPress={()=>{this.setState({modalVisible:true})}} 
                 nosearchIcon={true}
+                pinIconName={!this.state.checkPinned?("paperclip"):("link")}
+                pinUnpinIcon={true}
+                searchReplace={true}
+                showShareIcon={true}
             > 
             {loadingInstitute?
             (

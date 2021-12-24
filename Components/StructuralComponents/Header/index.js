@@ -99,21 +99,24 @@ class index extends React.Component {
                             {this.props.screenWidth<=screenMobileWidth?
                             (
                                 <HeaderMobile iconName={this.props.iconName}
-                                titleonheader={this.props.titleonheader} 
-                                replaceHeader={this.props.replaceHeader} 
-                                headerComponent={this.props.headerComponent} 
-                                btnHandler={this.props.btnHandler} 
-                                notificationreplaceshare={this.props.notificationreplaceshare} 
-                                rightIconOnPress={this.props.rightIconOnPress}
-                                nosearchIcon={this.props.nosearchIcon}
-                                noNotificationIcon={this.props.noNotificationIcon}
-                                searchFun={this.props.searchFun}
-                                singleItem={this.props.singleItem}
-                                catInHeader={this.props.catInHeader}
-                                selectedCat={this.props.selectedCat}
-                                titleWithImage={this.props.titleWithImage}
-                                userIcon={this.props.userIcon}
-                                
+                                    titleonheader={this.props.titleonheader} 
+                                    replaceHeader={this.props.replaceHeader} 
+                                    headerComponent={this.props.headerComponent} 
+                                    btnHandler={this.props.btnHandler} 
+                                    notificationreplaceshare={this.props.notificationreplaceshare} 
+                                    rightIconOnPress={this.props.rightIconOnPress}
+                                    nosearchIcon={this.props.nosearchIcon}
+                                    noNotificationIcon={this.props.noNotificationIcon}
+                                    searchFun={this.props.searchFun}
+                                    singleItem={this.props.singleItem}
+                                    catInHeader={this.props.catInHeader}
+                                    selectedCat={this.props.selectedCat}
+                                    titleWithImage={this.props.titleWithImage}
+                                    userIcon={this.props.userIcon}
+                                    pinIconName={this.props.pinIconName}
+                                    pinUnpinIcon={this.props.pinUnpinIcon}
+                                    searchReplace={this.props.searchReplace}
+                                    showShareIcon={this.props.showShareIcon}
                                 />
                             )
                             :

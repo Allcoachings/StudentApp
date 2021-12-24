@@ -176,9 +176,9 @@ export default VideoPlayerCustom=(props)=>
             {/* meta section */}
             <View style={{borderBottomWidth:1,borderBottomColor:theme.labelOrInactiveColor}}> 
                 <View style={{margin:10}}> 
-                    <Text style={{fontFamily: 'Raleway_600SemiBold' ,fontSize:15}}>{props.route.params.videoTitle}</Text>
+                    <Text style={{color: theme.secondaryColor, fontFamily: 'Raleway_700Bold' ,fontSize:15}}>{props.route.params.videoTitle}</Text>
                     <View style={{flexDirection: 'row'}}>
-                        <Text style={{color:theme.greyColor,marginTop:5}}>{numFormatter(props.route.params.item.views)} views{' • '} {moment(props.route.params.postingTime).fromNow()} </Text>
+                        <Text style={{fontFamily: 'Raleway_600SemiBold',color:theme.greyColor,marginTop:5}}>{numFormatter(props.route.params.item.views)} views{' • '} {moment(props.route.params.postingTime).fromNow()} </Text>
                     </View>
                 </View>
             </View>

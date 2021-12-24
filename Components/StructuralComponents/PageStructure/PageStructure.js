@@ -68,6 +68,10 @@ class PageStructure extends React.Component {
                                     selectedCat={this.props.selectedCat}
                                     titleWithImage={this.props.titleWithImage}
                                     userIcon={this.props.userIcon} 
+                                    pinUnpinIcon={this.props.pinUnpinIcon}
+                                    pinIconName={this.props.pinIconName}
+                                    searchReplace={this.props.searchReplace}
+                                    showShareIcon={this.props.showShareIcon}
                                 />  
                             </View>
                             <View style={[styles.pageLayout]}>  
@@ -101,6 +105,10 @@ class PageStructure extends React.Component {
                                             selectedCat={this.props.selectedCat}
                                             titleWithImage={this.props.titleWithImage}
                                             userIcon={this.props.userIcon}
+                                            pinUnpinIcon={this.props.pinUnpinIcon}
+                                            pinIconName={this.props.pinIconName}
+                                            searchReplace={this.props.searchReplace}
+                                            showShareIcon={this.props.showShareIcon}
                                         />  
                                 </View>
                             </View>
