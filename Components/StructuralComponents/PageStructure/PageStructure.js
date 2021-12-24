@@ -42,6 +42,7 @@ class PageStructure extends React.Component {
     // }  
 
     switchRender=(scrollMode)=>{
+        console.log(scrollMode)
             switch(scrollMode)
             {
                 case 'scroll':    

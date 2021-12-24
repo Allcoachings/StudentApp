@@ -35,8 +35,8 @@ export function DrawerContent(props){
     const dispatch = useDispatch();
     const userLogoutButton =()=>
     {
-        console.log("User logged out");
-         props.navigation.closeDrawer();
+        
+        props.navigation.closeDrawer();
         AsyncStorage.clear().then(()=>{
             dispatch({type:USER_AUTH_STATUS,payload:{authStatus:false}})
         })
@@ -73,11 +73,9 @@ export function DrawerContent(props){
                         {/* {renderDrawerItem('Pinned Institute','lock',()=>props.navigation.navigate("PinnedList"))} */}
                         {renderDrawerItem('Downloads','user',()=>props.navigation.navigate("Downloads"))}
                         {renderDrawerItem('Test Series','lock',()=>props.navigation.navigate("TestSeries"))}
-                        
                         {/* {renderDrawerItem('Subscription','lock',()=>props.navigation.navigate("Subscription"))} 
-                        
                         {renderDrawerItem('Result Analysis','user',()=>props.navigation.navigate("ResultAnalysis"))}
-                    {renderDrawerItem('Feed','user',()=>props.navigation.navigate("Feed",{item: false}))} */}
+                        {renderDrawerItem('Feed','user',()=>props.navigation.navigate("Feed",{item: false}))} */}
                         {renderDrawerItem('Night Mode','user',()=>props.navigation.navigate("NightMode"))}
                         {renderDrawerItem('Settings','user',()=>props.navigation.navigate("Settings",{mode: "student"}))}
                         {renderDrawerItem('Logout','user',()=>userLogoutButton())}
