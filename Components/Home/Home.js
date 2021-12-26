@@ -1,21 +1,16 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,TouchableWithoutFeedback,FlatList, Image,Platform,Dimensions,ActivityIndicator} from 'react-native';
+import { Text,View,StyleSheet,TouchableWithoutFeedback,FlatList, Image,Dimensions} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import {storyLine,homeFeaturesData} from '../../FakeDataService/FakeData'
-import { theme ,serverBaseUrl,dataLimit, paytmConfig, Assets, imageProvider} from '../config';
+import { theme, dataLimit,  Assets, imageProvider} from '../config';
 import { EvilIcons } from '@expo/vector-icons';
 import { AirbnbRating } from 'react-native-ratings';
-import { Redirect } from 'react-router';
 import { connect } from 'react-redux'
 import CardView from '../Utils/CardView';
 import {setNavigation} from '../Actions'
-
-import {fetch_institute_courses,fetch_courses_banners,fetch_courses_videos,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents,fetch_courses_timetable,fetch_testSeries} from '../Utils/DataHelper/Course'
 import {fetch_homeData} from '../Utils/DataHelper/HomeData'
-import {fetch_coachingByCategory, fetch_coachingByCategoryAndStatus} from '../Utils/DataHelper/Coaching'
+import {fetch_coachingByCategoryAndStatus} from '../Utils/DataHelper/Coaching'
 import {SearchInstitute} from '../Utils/DataHelper/Search'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import PaymentGateway from '../Utils/PaymentGateway';
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 
@@ -93,7 +88,6 @@ class Home extends React.Component {
                             horizontal={true} 
                             showsHorizontalScrollIndicator={false}
                             />
-
                         </View>
                 )
         }

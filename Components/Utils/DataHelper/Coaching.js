@@ -81,12 +81,6 @@ export   const fetch_instituteDetails=(instId,callback)=>
 } 
 export   const validateLogin=(email,password,callback,passMode='hashed')=>
 {
-
-    
-            // var formData   = new FormData(); 
-            // formData.append("fetch_banners",'true') 
-            // formData.append("offset",offset) 
-            // formData.append("data_limit",limit)  
             let headers = new Headers();
 
             headers.append('Content-Type', 'application/json'); 
