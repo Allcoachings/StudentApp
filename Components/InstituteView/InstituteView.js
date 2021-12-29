@@ -6,7 +6,7 @@ import { AirbnbRating,Rating } from 'react-native-ratings';
 import {theme,screenMobileWidth,serverBaseUrl,documentPlaceholder,dataLimit, Assets, imageProvider} from '../config'
 import CardView from '../Utils/CardView';
 import MarqueeText from 'react-native-marquee';
-import { EvilIcons } from '@expo/vector-icons';
+import { EvilIcons, Feather } from '@expo/vector-icons';
 import { connect } from 'react-redux'
 import { List } from 'react-native-paper';
 import StudentReview from './StudentReview'
@@ -382,7 +382,7 @@ class InstituteView extends React.Component {
                 onPress={()=>this.setState({showLoadMore: link=='timeTable'?(false):(true)},()=>this.activeTab(link))} 
                 style={[styles.setList,this.state.activeTab==link?({backgroundColor:theme.secondaryColor}):(null)]}
             >
-                    <EvilIcons name={icon} size={12} color={this.state.activeTab==link?(theme.primaryColor):(theme.secondaryColor)}/>
+                    <Feather name={icon} size={12} color={this.state.activeTab==link?(theme.primaryColor):(theme.secondaryColor)}/>
                     <Text style={[styles.listText,this.state.activeTab==link?({color:theme.primaryColor}):(null)]}>{text}</Text>
             </TouchableOpacity>
         )
@@ -960,7 +960,7 @@ class InstituteView extends React.Component {
                                 <TouchableOpacity 
                                     onPress={()=>{this.setState({ activeFilterId: -1, showLoadMore: false},()=>this.activeTab('liveClass'))}} style={[styles.liveClassOuter,this.state.activeTab=='liveClass'?({backgroundColor:'red'}):({backgroundColor: theme.primaryColor})]}>
                                     <View style={styles.liveClassInner}>
-                                        <EvilIcons name="disc" size={13} color={theme.primaryColor}/>
+                                        <Feather name="disc" size={13} color={theme.primaryColor}/>
                                         <Text style={styles.liveClassText}>Live Now</Text>
                                     </View>
                                 </TouchableOpacity>

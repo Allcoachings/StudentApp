@@ -30,7 +30,7 @@ class TestSeriesIns extends React.Component {
             response.json().then(data=>
             {
                 console.log("Success cat", data)
-                this.setState({tsLoading: false, testSeries: data, category: data[0].categoryName})
+                this.setState({tsLoading: false, testSeries: data, category: data[0]&&data[0].categoryName})
             })
         }
         else

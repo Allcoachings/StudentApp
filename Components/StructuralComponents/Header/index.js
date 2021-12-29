@@ -161,8 +161,8 @@ const styles = StyleSheet.create({
             
              
             padding:5,
-            borderTopWidth:0.5,
-            borderTopColor:theme.labelOrInactiveColor
+            // borderTopWidth:0.5,
+            // borderTopColor:theme.labelOrInactiveColor
         },
             courseItemContainer:
             {  

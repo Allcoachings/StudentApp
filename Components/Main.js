@@ -11,9 +11,9 @@ import {screenWidthConfigChange,setInstituteAuth,userAuthStatus,setUserInfo,setI
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('screen').height; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import AppLoading from 'expo-app-loading';
+ 
 import { validateLogin } from './Utils/DataHelper/Coaching';
+import Navigator from './Navigator';
 // import { StatusBar } from 'expo-status-bar';
 
 class Main extends React.Component {
@@ -122,16 +122,10 @@ class Main extends React.Component {
         
        
     }
-    renderViewport=(screenWidth)=>
+    renderViewport=()=>
     {
-        if(screenWidth > screenMobileWidth && Platform.OS === 'web')
-        { 
-              return(<WebViewController  userAuth={this.props.userAuth} userInfo={this.props.userInfo}/>)
-        }
-        else  
-        {
-              return(<MobileViewController changeMode={this.changeMode} userAuth={this.props.userAuth} userInfo={this.props.userInfo}/>)
-        }
+        
+        return(<Navigator changeMode={this.changeMode} userAuth={this.props.userAuth} userInfo={this.props.userInfo}/>)
         // return(<MobileViewController userAuth={this.props.userAuth}/>)
     }
     renderViewportIns=(screenWidth)=>
@@ -152,7 +146,7 @@ class Main extends React.Component {
         switch(mode)
         {
             case 1: 
-                return(this.renderViewport(this.state.width));
+                return(this.renderViewport());
             case 2:
                 return(this.renderViewportIns(this.state.width))
             case 3: 

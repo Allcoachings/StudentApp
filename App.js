@@ -5,8 +5,7 @@ import { createStore } from 'redux';
 import { Provider, connect } from 'react-redux';
 import RootReducer from './Components/Reducers'
 import Main from './Components/Main'
-// import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
+// import * as Font from 'expo-font'; 
 // import { SafeAreaProvider } from 'react-native-safe-area-context';
 // import {NativeBaseProvider } from "native-base"
 import {

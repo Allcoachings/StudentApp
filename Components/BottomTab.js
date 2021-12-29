@@ -7,12 +7,21 @@ import { Text, View,StyleSheet,TouchableOpacity, FlatList} from 'react-native';
 import CardView from './Utils/CardView'
 import {setActiveBottomTab} from './Actions'
 import { connect } from 'react-redux'
+import HomeIcon_Outline from './Utils/Icons/Home_Outline';
+import Home_Filled from './Utils/Icons/Home_Filled';
+import Quiz_Filled from './Utils/Icons/Quiz_Filled';
+import Quiz_Outline from './Utils/Icons/Quiz_Outline';
+import Following_Filled from './Utils/Icons/Following_Filled';
+import Following_Outline from './Utils/Icons/Following_Outline';
+
+import Feed_Outline from './Utils/Icons/Feed_Outline';
+import Feed_Filled from './Utils/Icons/Feed_Filled';
 class BottomTab extends React.Component {
     tabs = [
     {
       key: 'Home',
-      activeIcon: <MaterialCommunityIcons size={22} name='home-variant'/>,
-      normalIcon: <SimpleLineIcons size={20} name='home' />,
+      activeIcon:<Home_Filled /> ,
+      normalIcon: <HomeIcon_Outline/>,
       label: this.props.mode=="student"?('Explore'):('Home'),
       barColor: theme.primaryColor,
       pressColor: 'rgba(255, 255, 255, 0.16)',
@@ -20,8 +29,8 @@ class BottomTab extends React.Component {
     },
     {
       key: this.props.mode=="student"?("TestSeries"):("Revenue"),
-      activeIcon: <MaterialCommunityIcons size={22} name='file-document'/>,
-      normalIcon: <SimpleLineIcons size={20} name='doc' />,
+      activeIcon: <Quiz_Filled/>,
+      normalIcon: <Quiz_Outline/>,
       label: this.props.mode=="student"?('Test Series'):('Revenue'),
       barColor: theme.primaryColor,
       pressColor: 'rgba(255, 255, 255, 0.16)',
@@ -29,8 +38,8 @@ class BottomTab extends React.Component {
     },
     {
       key: this.props.mode=="student"?("Subscription"):("Notification"),
-      activeIcon: <MaterialCommunityIcons size={27} name='youtube'/>,
-      normalIcon: <SimpleLineIcons size={25} name='social-youtube' />,
+      activeIcon: <Following_Filled/>,
+      normalIcon: <Following_Outline />,
       label: this.props.mode=="student"?('Followings'):('Notifications'),
       barColor: theme.primaryColor,
       pressColor: 'rgba(255, 255, 255, 0.16)',
@@ -38,8 +47,8 @@ class BottomTab extends React.Component {
     },
     {
       key: "Feed",
-      normalIcon: <EvilIcons size={27} name="bell"/>,
-      activeIcon: <MaterialIcons size={25} name="notifications"/>,
+      normalIcon: <Feed_Outline/>,
+      activeIcon: <Feed_Filled/>,
       label: 'Feed',
       barColor: theme.primaryColor,
       pressColor: 'rgba(255, 255, 255, 0.16)',
@@ -82,7 +91,7 @@ class BottomTab extends React.Component {
                     ):(
                       tab.normalIcon
                     )}
-                    <Text style={[{color: theme.secondaryColor,fontSize:12},tab.label=="Followings"?{paddingBottom:5}:{}]}>{tab.label}</Text>
+                    <Text style={[{color: theme.secondaryColor,fontSize:12}]}>{tab.label}</Text>
                 </TouchableOpacity>
                 
             

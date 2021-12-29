@@ -17,17 +17,17 @@ class PageStructure extends React.Component {
             <View style={styles.container}>
                 <View style={styles.containerMain}> 
                     {this.switchRender(this.props.scrollMode)} 
-                    {!this.props.noBottomTab&&this.props.screenWidth<=screenMobileWidth?(
+                    {/* {!this.props.noBottomTab&&this.props.screenWidth<=screenMobileWidth?(
                         <View style={[styles.pageBottomTab,{flex:this.props.catInHeader?0.9:0.102}]}>
-                            <BottomTab 
+                             <BottomTab 
                                 replacBottomTab={this.props.replaceBottomTab} 
                                 bottomComponentStyle={this.props.bottomComponentStyle}  
                                 bottomComponent={this.props.bottomComponent}
                                 navigation={this.props.navigation}
                                 mode={this.props.userAuth?("student"):("institute")}
-                            />
+                            /> 
                         </View>
-                    ):(null)} 
+                    ):(null)}  */}
                 </View>
             </View> 
         )
@@ -49,6 +49,7 @@ class PageStructure extends React.Component {
                     return(
                         <ScrollView>
                             <View style={[styles.containerHeader,this.props.headerStyle,{flex:this.props.catInHeader?0.1:0.07}]}> 
+                            
                                 <Header 
                                     iconName={this.props.iconName}
                                     btnHandler={this.props.btnHandler}
@@ -85,7 +86,7 @@ class PageStructure extends React.Component {
                         return (
                             
                             <>
-                            <View style={{flex:this.props.catInHeader?0.1:0.08,marginTop:-10}}>
+                            <View style={{flex:0.1,marginTop:-10,zIndex:100}}>
                                 <View style={[styles.containerHeader,this.props.headerStyle]} > 
                                         <Header 
                                             iconName={this.props.iconName}
@@ -149,9 +150,9 @@ const styles = StyleSheet.create({
         containerHeader:
         {
             overflow: 'hidden',
-            borderBottomWidth:0.5,
+            // borderBottomWidth:0.5,
             marginBottom:-7,
-            borderBottomColor:theme.labelOrInactiveColor
+            // borderBottomColor:theme.labelOrInactiveColor
         },
         pageLayout:
         {
@@ -160,15 +161,13 @@ const styles = StyleSheet.create({
             flexDirection: 'row',
             marginBottom:-5,  
         },
-            leftNavContainer:
-            {
-                marginRight:"2%"
-            },
+            
             pageContent:
             {  
                 flex:1,
                 flexDirection: 'column', 
-                marginHorizontal:5
+                marginHorizontal:5,
+                
             },
         pageBottomTab:
         {
