@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions,findNodeHandle,UIManager,Alert, Modal} from 'react-native';
 import { theme, documentPlaceholder,dataLimit, serverBaseUrl, downloadIcon } from '../config';
-import { EvilIcons } from '@expo/vector-icons';
+import { EvilIcons, Feather } from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import { downloadFile } from '../Utils/DownloadFile';
@@ -12,6 +12,7 @@ import NotEnrolledModal from './NotEnrolledModal'
 
 import { setDownloadingItem,setDownloadingItemProgress,removeDownloadingItem } from '../Actions';
 import CircularProgress from 'react-native-circular-progress-indicator';
+import Arrow_down_circle_black from '../Utils/Icons/Arrow_down_circle_black';
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 
@@ -155,13 +156,13 @@ class RenderDocument extends React.Component {
                 <View style={{alignItems: 'center',marginRight:5}}>
                     {this.props.actions?(
                             <TouchableOpacity style={{marginLeft: 'auto', marginTop: 8}} onPress={()=>this.showThreeMenu()}>
-                                    <EvilIcons name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
+                                    <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
                             </TouchableOpacity>
                     ):(null)}
                     {this.props.downloadMode?(
                         <View style={{flexDirection: 'column',  marginLeft: 'auto', justifyContent: 'space-between',marginTop:'auto'}}>                  
                             {this.state.savingItem?(
-                                <View style={{width:40,height:40}}>
+                                <View style={{width:30,height:30}}>
                                     <CircularProgress
                                     value={this.state.downloadProgress}
                                     radius={20}
@@ -176,12 +177,13 @@ class RenderDocument extends React.Component {
 
                                 ):(
                                     this.state.downloadProgress==100?(
-                                        <MaterialIcons name="check-circle" size={20}/>
+                                        <MaterialIcons name="check-circle" size={30}/>
                                     ):(
                                         
                                         <TouchableOpacity onPress={()=>this.props.studentEnrolled?(this.download(this.props.item, 'document')):(Toast.show('You Have Not Enrolled For This Course.'))} style={{marginBottom: 8}}>
                                             <View>
-                                                <Image source={downloadIcon} style={{height: 25, width: 25}} />
+                                                {/* <Image source={downloadIcon} style={{height: 25, width: 25}} /> */}
+                                                <Arrow_down_circle_black/>
                                             </View>
                                         </TouchableOpacity>  
                                             

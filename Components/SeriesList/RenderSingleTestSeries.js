@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions, findNodeHandle,UIManager, Modal} from 'react-native';
 import { theme, dataLimit, serverBaseUrl } from '../config';
-import { EvilIcons } from '@expo/vector-icons';
+import { EvilIcons, Feather } from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import Instructions from './Instructions'
@@ -94,7 +94,7 @@ class RenderSingleTestSeries extends React.Component {
                                 <Text style={styles.timeText}>{this.props.item.timeDuration} Minutes</Text>
                                 {this.props.actions?(
                                     <TouchableOpacity style={{marginLeft: 'auto', marginTop: 8}} onPress={()=>this.showThreeMenu()}>
-                                        <EvilIcons name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
+                                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
                                     </TouchableOpacity>
                                 ):(null)}
                             </View>
@@ -103,13 +103,16 @@ class RenderSingleTestSeries extends React.Component {
                             <Text style={styles.titleText}>{this.props.item.title}</Text>
                             <TouchableOpacity style={styles.btnView} onPress={()=>{
                                
-                               this.props.mode=="student"?(this.props.studentEnrolled?(
-                                    <>
-                                        {this.props.addToHistory("testSeries", this.props.item.id)}
+                            //    this.props.mode=="student"?(this.props.studentEnrolled?(
+                            //         <>
+                            //             {this.props.addToHistory("testSeries", this.props.item.id)}
+                            //             {this.setState({modalVisible: true})}
+                            //         </>
+                            //     ):(Toast.show('You Have Not Enrolled For This Course.'))):(this.setState({modalVisible: true}))
+                            {this.props.addToHistory("testSeries", this.props.item.id)}
                                         {this.setState({modalVisible: true})}
-                                    </>
-                                ):(Toast.show('You Have Not Enrolled For This Course.'))):(this.setState({modalVisible: true}))}}>
-                                <EvilIcons name="play" size={12} style={{color: theme.primaryColor, marginRight: 3}}/>
+                            }}>
+                                <EvilIcons name="play" size={20} style={{color: theme.primaryColor, marginRight: 3}}/>
                                 <Text style={styles.btnText}>Start</Text>
                             </TouchableOpacity>
                         </View>

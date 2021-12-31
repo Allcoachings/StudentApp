@@ -791,7 +791,7 @@ class InstituteView extends React.Component {
             return(
                                     this.state.courseDocumentLoaded?(<FlatList 
                                         data={this.state.courseDocuments} 
-                                        renderItem={({item,index})=><RenderDocument userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="student" studentEnrolled={this.state.studentEnrolled} downloadMode={true} insName={this.state.insName} insNumber={this.state.insNumber} courseDocumentPlaylist={this.state.courseDocumentPlaylist} actions={this.state.actions} />}
+                                        renderItem={({item,index})=><RenderDocument userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="student" studentEnrolled={this.state.studentEnrolled} downloadMode={true} insName={this.state.insName} insNumber={this.state.insNumber} courseDocumentPlaylist={this.state.courseDocumentPlaylist}   />}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
@@ -1048,13 +1048,13 @@ class InstituteView extends React.Component {
     }
 
     render() {
-      console.log(this.props)
+   
       this.updateComponent()
         const  {institute,loadingInstitute} = this.state;
-        console.log(institute&&this.props.categories.filter(item=>item.id==institute.category)[0].name)
+ 
         return (
             <PageStructure 
-                iconName={"chevron-left"}
+                iconName={"arrow-left"}
                 btnHandler={() => {
                     if(this.props.navigation.canGoBack())
                     {
@@ -1062,19 +1062,17 @@ class InstituteView extends React.Component {
                     }else
                     {
                         this.props.navigation.navigate("Home")
-                    }
-                    
-                
+                    } 
                 }}
                 catInHeader={false}
                 titleonheader={institute&&this.props.categories.filter(item=>item.id==institute.category)[0].name}
                 noBottomTab={true}
-                noNotificationIcon={false}
+                noNotificationIcon={true} title
                 rightIconOnPress={()=>{this.setState({modalVisible:true})}} 
                 nosearchIcon={true}
                 pinIconName={!this.state.checkPinned?("paperclip"):("link")}
                 pinUnpinIcon={true}
-                searchReplace={true}
+                searchReplace={false}
                 showShareIcon={true}
             > 
             {loadingInstitute?
@@ -1110,6 +1108,13 @@ class InstituteView extends React.Component {
                                 </View>
                             </View>
                             {/* <EvilIcons name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}  onPress = {() => {this.toggleModal(true)}}/> */}
+                            <View>
+                                <TouchableWithoutFeedback>
+                                    <View style={{backgroundColor: theme.secondaryColor,padding:5,paddingHorizontal:10,borderRadius:15,alignItems: 'center'}}>
+                                            <Text style={{fontFamily: 'Raleway_600SemiBold',color: theme.primaryColor}}>Follow</Text>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                            </View>
                         </View>
                         <View style={styles.body}>
                             <View style={styles.btnRow}>

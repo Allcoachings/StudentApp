@@ -203,7 +203,7 @@ class Home extends React.Component {
             <PageStructure
                 // iconName="navicon"
                 // btnHandler={() => {this.props.navigation.toggleDrawer()}}
-                userIcon={() => {this.props.navigation.toggleDrawer()}}
+                userIcon={() => {this.props.navigation.navigate("Profile")}}
                 catInHeader={true}
                 catOnpress={this.toggleCatMode}
                 selectedCat={this.state.selectedCat}

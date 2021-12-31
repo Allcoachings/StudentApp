@@ -1,5 +1,5 @@
 import React, { Component ,useState} from 'react';
-import { EvilIcons } from '@expo/vector-icons';
+import { EvilIcons, MaterialIcons } from '@expo/vector-icons';
 import { View, Text,StyleSheet,ScrollView,TouchableWithoutFeedback,Dimensions,Image, Modal, TextInput, ImageBackground } from 'react-native';
 import CardView from '../Utils/CardView';
 import {theme, Assets,defaultStudentImage} from '../config'
@@ -108,6 +108,18 @@ class InfoModal extends React.Component {
       
             this.setState({state})
     }
+
+    onFocus=(name)=>
+    {
+        this.setState({focusedInput:name})
+    } 
+    onBlur=(name)=>
+    {
+        if(this.state.focusedInput==name)
+        {
+            this.setState({focusedInput:''})
+        }
+    }
     render() {
         
         return(
@@ -127,7 +139,7 @@ class InfoModal extends React.Component {
 
                                 <View style={styles.header}>
                                     {/* <AuthHeader/>                         */}
-                                    <EvilIcons name="chevron-left" size={20} color={theme.greyColor}/>
+                                    <MaterialIcons name="chevron-left" size={25} color={theme.greyColor}/>
                                 </View>
                                 <View>
                                     <Text style={styles.postQueText}>{this.state.heading}</Text>
@@ -146,26 +158,28 @@ class InfoModal extends React.Component {
                                 </View>
                                 
                                 <View style={{marginTop:height*0.04}}>
-                                    <Text style={{marginLeft:15,fontFamily:'Raleway_600SemiBold'}}>Full Name</Text>
+                                    <Text   style={[{marginLeft:15,fontFamily:'Raleway_600SemiBold'},this.state.focusedInput=="fullname"?({color:theme.greyColor}):({color:theme.labelOrInactiveColor})]}>Full Name</Text>
                                 </View>
                                 <View style={styles.queDescView}>
-                                    <TextInput style={styles.queDesc} onChangeText={(text)=>this.setState({name: text})}  placeholder="Enter full name" placeholderTextColor={theme.labelOrInactiveColor}/>
+                                    <TextInput onFocus={()=>this.onFocus("fullname")} onBlur={()=>this.onBlur("fullname")} style={[styles.queDesc,this.state.focusedInput=="fullname"?({borderColor:theme.greyColor}):(null)]} onChangeText={(text)=>this.setState({name: text})}  placeholder="Enter full name" placeholderTextColor={ this.state.focusedInput=="fullname"?theme.greyColor: theme.labelOrInactiveColor}/>
                                 </View>
                                 <View style={{marginTop:15}}>
-                                    <Text style={{marginLeft:15,fontFamily:'Raleway_600SemiBold'}}>Email address</Text>
+                                    <Text style={[{marginLeft:15,fontFamily:'Raleway_600SemiBold'},this.state.focusedInput=="email"?({color:theme.greyColor}):({color:theme.labelOrInactiveColor})]}>Email address</Text>
                                 </View>
                                 <View style={styles.queDescView}>
-                                    <TextInput style={styles.queDesc} onChangeText={(text)=>this.setState({email: text})}  placeholder="Enter email address" placeholderTextColor={theme.labelOrInactiveColor}/>
+                                    <TextInput style={[styles.queDesc,this.state.focusedInput=="email"?({borderColor:theme.greyColor}):(null)]}  onFocus={()=>this.onFocus("email")} onBlur={()=>this.onBlur("email")} onChangeText={(text)=>this.setState({email: text})}  placeholder="Enter email address" placeholderTextColor={this.state.focusedInput=="email"?theme.greyColor: theme.labelOrInactiveColor}/>
                                 </View>
                                 <View style={{marginTop:15,}}>
-                                    <Text style={{marginLeft:15,fontFamily:'Raleway_600SemiBold'}}>State</Text>
+                                    <Text style={[{marginLeft:15,fontFamily:'Raleway_600SemiBold'},this.state.focusedInput=="state"?({color:theme.greyColor}):({color:theme.labelOrInactiveColor})]}>State Of residence</Text>
                                 </View>
-                                <View style={styles.queDescView}>
+                                <View style={[styles.queDesc,{borderWidth:1,marginHorizontal:10,marginTop:10},this.state.focusedInput=="state"?({borderColor:theme.greyColor}):(null)]}>
                                     {/* <TextInput style={styles.queDesc} onChangeText={(text)=>this.setState({state: text
                                     })}  placeholder="Select your state" placeholderTextColor={theme.labelOrInactiveColor}/> */}
                                     <Picker
                                         style={[styles.queDesc,{height:30}]}
                                         selectedValue={this.state.state}
+                                        onFocus={()=>this.onFocus('state')}
+                                        onBlur={()=>this.onBlur('state')}
                                         onValueChange={(itemValue, itemIndex) =>
                                             this.setSelectedState(itemValue)
                                         }>
@@ -176,12 +190,12 @@ class InfoModal extends React.Component {
                                 </View>
                                 </ScrollView>
                                 <View 
-                                    style={{flexDirection:'row',justifyContent:'center',marginTop:'auto',marginBottom:this.props.keyboardHeight?this.props.keyboardHeight+10:15,alignItems: 'center',width:width,borderTopWidth:1,borderTopColor:theme.labelOrInactiveColor,paddingTop:10}}
+                                    style={{flexDirection:'row',justifyContent:'center',marginTop:'auto',marginBottom:this.props.keyboardHeight?this.props.keyboardHeight+10:15,alignItems: 'center',width:width,paddingTop:10}}
                                 >  
                                 
                                     <TouchableWithoutFeedback onPress={this.handleSubmitButtonClick}>
                                         
-                                        <View style={{backgroundColor:theme.accentColor,padding:15,borderRadius:10,alignItems: 'center',width:'95%'}}>
+                                        <View style={{backgroundColor:theme.greyColor,padding:15,borderRadius:10,alignItems: 'center',width:'95%'}}>
                                         {this.state.isLoading?(
 
                                                 <ActivityIndicator color={theme.primaryColor} size={'small'}/>
@@ -194,7 +208,7 @@ class InfoModal extends React.Component {
                                 </View>
                                     
                           
-                            </View>,{width: width, height: height-40, marginLeft: 'auto', marginRight:'auto',}
+                            </View>,{width: width, height: height-20, marginLeft: 'auto', marginRight:'auto',}
                         )}
                     </View>
                 </TouchableWithoutFeedback>

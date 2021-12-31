@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image, Platform, ScrollView, Modal, ActivityIndicator} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,Dimensions,FlatList, Image, Platform, ScrollView, Modal, ActivityIndicator, TouchableWithoutFeedback} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 // import {connect} from 'react-redux'
 import { theme,dataLimit,screenMobileWidth,serverBaseUrl,documentPlaceholder, Assets,imageProvider } from '../config';
@@ -26,7 +26,7 @@ import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import { isThisSecond } from 'date-fns/esm';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import {Feed} from "../Feed/Feed"
-
+const width = Dimensions.get('window').width
 class UserProfile extends React.Component {
 
     state={
@@ -53,6 +53,7 @@ class UserProfile extends React.Component {
         loadingFooter: false,
         enrollOffset:0,
         enrollListLoading: true,
+        recentData:[]
     }
 
     closeModal = () => {
@@ -215,99 +216,133 @@ class UserProfile extends React.Component {
 
 
     switchTab=(tab)=>{
-        switch(tab)
-        {
-            case "video":   if(!this.state.isVideoLoaded&&!this.state.isVideoLoading)
-                            {
-                                this.setState({isVideoLoading: true},()=>
-                                fetch_student_history(this.props.userInfo.id, this.state.subActiveTab, this.state.vidOffset, dataLimit, this.studentHistoryCallBack))
-                            }
+        // switch(tab)
+        // {
+        //     case "video":   if(!this.state.isVideoLoaded&&!this.state.isVideoLoading)
+        //                     {
+        //                         this.setState({isVideoLoading: true},()=>
+        //                         fetch_student_history(this.props.userInfo.id, this.state.subActiveTab, this.state.vidOffset, dataLimit, this.studentHistoryCallBack))
+        //                     }
             
-                            return(
-                                !this.state.isVideoLoaded?(
-                                    <CustomActivtiyIndicator mode="video"/>
-                                ):(<FlatList
-                                    data={this.state.video}
-                                    renderItem={({item}) => this.displayItems(item)}
-                                    keyExtractor={(item,index)=>index}
-                                    ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
-                                    onEndReachedThreshold={0.1}
-                                    refreshing={this.state.refreshing}
-                                    ListFooterComponent={this.renderFooter}
-                                    onEndReached={() => 
-                                    {
-                                        if(this.state.showLoadMore&&!this.state.loadingFooter)
-                                        {
-                                            console.log("end video")
-                                            this.setState({ refreshing: true,loadingFooter:true,vidOffset:parseInt(this.state.vidOffset)+1},()=>this.loadMoreOnPress())
+        //                     return(
+        //                         !this.state.isVideoLoaded?(
+        //                             <CustomActivtiyIndicator mode="video"/>
+        //                         ):(<FlatList
+        //                             data={this.state.video}
+        //                             renderItem={({item}) => this.displayItems(item)}
+        //                             keyExtractor={(item,index)=>index}
+        //                             ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+        //                             onEndReachedThreshold={0.1}
+        //                             refreshing={this.state.refreshing}
+        //                             ListFooterComponent={this.renderFooter}
+        //                             onEndReached={() => 
+        //                             {
+        //                                 if(this.state.showLoadMore&&!this.state.loadingFooter)
+        //                                 {
+        //                                     console.log("end video")
+        //                                     this.setState({ refreshing: true,loadingFooter:true,vidOffset:parseInt(this.state.vidOffset)+1},()=>this.loadMoreOnPress())
                                                 
-                                        }
+        //                                 }
                                     
-                                    }}
-                                />)
-                        )
-                        break;
-            case "document": 
-                            if(!this.state.isDocumentLoaded&&!this.state.isDocumentLoading)
-                            {
-                                this.setState({isDocumentLoading: true},()=>
-                                fetch_student_history(this.props.userInfo.id, this.state.subActiveTab, this.state.docOffset, dataLimit, this.studentHistoryCallBack))
-                            }
-                            return(
-                                !this.state.isDocumentLoaded?(
-                                    <CustomActivtiyIndicator mode="document"/>
-                                ):(<FlatList
-                                    data={this.state.document}
-                                    renderItem={({item}) => this.displayItems(item)}
-                                    keyExtractor={(item,index)=>index}
-                                    ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
-                                    onEndReachedThreshold={0.1}
-                                    refreshing={this.state.refreshing}
-                                    ListFooterComponent={this.renderFooter}
-                                    onEndReached={() => 
-                                    {
-                                        if(this.state.showLoadMore&&!this.state.loadingFooter)
-                                        {
+        //                             }}
+        //                         />)
+        //                 )
+        //                 break;
+        //     case "document": 
+        //                     if(!this.state.isDocumentLoaded&&!this.state.isDocumentLoading)
+        //                     {
+        //                         this.setState({isDocumentLoading: true},()=>
+        //                         fetch_student_history(this.props.userInfo.id, this.state.subActiveTab, this.state.docOffset, dataLimit, this.studentHistoryCallBack))
+        //                     }
+        //                     return(
+        //                         !this.state.isDocumentLoaded?(
+        //                             <CustomActivtiyIndicator mode="document"/>
+        //                         ):(<FlatList
+        //                             data={this.state.document}
+        //                             renderItem={({item}) => this.displayItems(item)}
+        //                             keyExtractor={(item,index)=>index}
+        //                             ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+        //                             onEndReachedThreshold={0.1}
+        //                             refreshing={this.state.refreshing}
+        //                             ListFooterComponent={this.renderFooter}
+        //                             onEndReached={() => 
+        //                             {
+        //                                 if(this.state.showLoadMore&&!this.state.loadingFooter)
+        //                                 {
                                            
-                                            this.setState({ refreshing: true,loadingFooter:true,docOffset:parseInt(this.state.docOffset)+1},()=>this.loadMoreOnPress())
+        //                                     this.setState({ refreshing: true,loadingFooter:true,docOffset:parseInt(this.state.docOffset)+1},()=>this.loadMoreOnPress())
                                                 
-                                        }
+        //                                 }
                                     
-                                    }}
-                                />)
-                        )
-                        break;
-            case "testSeries": 
-                            if(!this.state.isTestSeriesLoaded&&!this.state.isTestSeriesLoading)
-                            {
-                                this.setState({isTestSeriesLoading: true},()=>
-                                fetch_student_history(this.props.userInfo.id, this.state.subActiveTab, this.state.tsOffset, dataLimit, this.studentHistoryCallBack))
-                            }
-                            return(
-                                !this.state.isTestSeriesLoaded?(
-                                    <CustomActivtiyIndicator mode="testSeries"/>
-                                ):(<FlatList
-                                    data={this.state.testSeries}
-                                    renderItem={({item}) => this.displayItems(item)}
-                                    keyExtractor={(item,index)=>index}
-                                    ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
-                                    onEndReachedThreshold={0.1}
-                                    refreshing={this.state.refreshing}
-                                    ListFooterComponent={this.renderFooter}
-                                    onEndReached={() => 
-                                    {
-                                        if(this.state.showLoadMore&&!this.state.loadingFooter)
-                                        {
-                                            console.log("end test")
-                                            this.setState({ refreshing: true,loadingFooter:true,tsOffset:parseInt(this.state.tsOffset)+1},()=>this.loadMoreOnPress())
+        //                             }}
+        //                         />)
+        //                 )
+        //                 break;
+        //     case "testSeries": 
+        //                     if(!this.state.isTestSeriesLoaded&&!this.state.isTestSeriesLoading)
+        //                     {
+        //                         this.setState({isTestSeriesLoading: true},()=>
+        //                         fetch_student_history(this.props.userInfo.id, this.state.subActiveTab, this.state.tsOffset, dataLimit, this.studentHistoryCallBack))
+        //                     }
+        //                     return(
+        //                         !this.state.isTestSeriesLoaded?(
+        //                             <CustomActivtiyIndicator mode="testSeries"/>
+        //                         ):(<FlatList
+        //                             data={this.state.testSeries}
+        //                             renderItem={({item}) => this.displayItems(item)}
+        //                             keyExtractor={(item,index)=>index}
+        //                             ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+        //                             onEndReachedThreshold={0.1}
+        //                             refreshing={this.state.refreshing}
+        //                             ListFooterComponent={this.renderFooter}
+        //                             onEndReached={() => 
+        //                             {
+        //                                 if(this.state.showLoadMore&&!this.state.loadingFooter)
+        //                                 {
+        //                                     console.log("end test")
+        //                                     this.setState({ refreshing: true,loadingFooter:true,tsOffset:parseInt(this.state.tsOffset)+1},()=>this.loadMoreOnPress())
                                                 
-                                        }
+        //                                 }
                                     
-                                    }}
-                                />)
-                        )
-                        break;
+        //                             }}
+        //                         />)
+        //                 )
+        //                 break;
+        // }
+
+
+
+        if(!this.state.isLoaded&&!this.state.isLoading)
+        {
+            this.setState({isLoading: true},()=>
+            fetch_student_history(this.props.userInfo.id, this.state.subActiveTab, this.state.vidOffset, dataLimit, this.studentHistoryCallBack))
         }
+
+        return(
+            !this.state.isLoaded?(
+                <CustomActivtiyIndicator mode="video"/>
+            ):( 
+                <FlatList
+                    data={this.state.recentData}
+                    renderItem={({item}) => this.displayItems(item)}
+                    keyExtractor={(item,index)=>index}
+                    ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                    onEndReachedThreshold={0.1}
+                    refreshing={this.state.refreshing}
+                    ListFooterComponent={this.renderFooter}
+                    onEndReached={() => 
+                    {
+                        if(this.state.showLoadMore&&!this.state.loadingFooter)
+                        {
+                            console.log("end test")
+                            this.setState({ refreshing: true,loadingFooter:true,tsOffset:parseInt(this.state.tsOffset)+1},()=>this.loadMoreOnPress())
+                                
+                        }
+                    
+                    }}
+                />
+            )
+        )
     }
     checkForUserCat=()=>
     {
@@ -447,39 +482,43 @@ class UserProfile extends React.Component {
         {
             response.json().then(data=>
             {
-                if(this.state.subActiveTab=="video")
-                {
-                    if(data.length>0)
-                    {    
-                        this.setState({video: [...this.state.video,...data], isVideoLoading: false, isVideoLoaded: true, showLoadMore: true, loadingFooter: false})
-                    }
-                    else
-                    {
-                        this.setState({video: this.state.video, isVideoLoading: false, isVideoLoaded: true, showLoadMore: false, loadingFooter: false})
-                    }
-                }
-                else if(this.state.subActiveTab=="document")
-                {
-                    if(data.length>0)
-                    { 
-                        this.setState({document: [...this.state.document,...data], isDocumentLoading: false, isDocumentLoaded: true, showLoadMore: true, loadingFooter: false})
-                    }
-                    else
-                    {
-                        this.setState({document: this.state.document, isDocumentLoading: false, isDocumentLoaded: true, showLoadMore: false, loadingFooter: false})
-                    }
-                }
-                else if(this.state.subActiveTab=="testSeries")
-                {
-                    if(data.length>0)
-                    { 
-                        this.setState({testSeries: [...this.state.testSeries,...data], isTestSeriesLoading: false, isTestSeriesLoaded: true, showLoadMore: true, loadingFooter: false})
-                    }
-                    else
-                    {
-                        this.setState({testSeries: [...this.state.testSeries,...data], isTestSeriesLoading: false, isTestSeriesLoaded: true, showLoadMore: false, loadingFooter: false})
-                    }
-                }
+
+
+
+                this.setState({recentData: [...this.state.recentData,...data], isLoading: false, isLoaded: true, showLoadMore: true, loadingFooter: false})
+                // if(this.state.subActiveTab=="video")
+                // {
+                //     if(data.length>0)
+                //     {    
+                //         this.setState({video: [...this.state.video,...data], isVideoLoading: false, isVideoLoaded: true, showLoadMore: true, loadingFooter: false})
+                //     }
+                //     else
+                //     {
+                //         this.setState({video: this.state.video, isVideoLoading: false, isVideoLoaded: true, showLoadMore: false, loadingFooter: false})
+                //     }
+                // }
+                // else if(this.state.subActiveTab=="document")
+                // {
+                //     if(data.length>0)
+                //     { 
+                //         this.setState({document: [...this.state.document,...data], isDocumentLoading: false, isDocumentLoaded: true, showLoadMore: true, loadingFooter: false})
+                //     }
+                //     else
+                //     {
+                //         this.setState({document: this.state.document, isDocumentLoading: false, isDocumentLoaded: true, showLoadMore: false, loadingFooter: false})
+                //     }
+                // }
+                // else if(this.state.subActiveTab=="testSeries")
+                // {
+                //     if(data.length>0)
+                //     { 
+                //         this.setState({testSeries: [...this.state.testSeries,...data], isTestSeriesLoading: false, isTestSeriesLoaded: true, showLoadMore: true, loadingFooter: false})
+                //     }
+                //     else
+                //     {
+                //         this.setState({testSeries: [...this.state.testSeries,...data], isTestSeriesLoading: false, isTestSeriesLoaded: true, showLoadMore: false, loadingFooter: false})
+                //     }
+                // }
             })
         }
         else
@@ -488,41 +527,73 @@ class UserProfile extends React.Component {
         }
     }
 
+    renderButton=(icon,label,fun)=>
+    {
+            return (
+                <TouchableWithoutFeedback onPress={fun} >
+                    <View style={{backgroundColor:theme.labelOrInactiveColor+'66',flexDirection: 'row',padding:10,alignItems: 'center',margin:10,borderRadius:5,width:(width/2)-10}}>
+                        <Image source={icon} style={{width: 30,height: 30,marginRight:20}}/>
+                        <Text style={{fontFamily: 'Raleway_600SemiBold'}}>{label}</Text>
+                    </View>
+                </TouchableWithoutFeedback>
+            )
+    }
     render(){
+        console.log(this.props.userInfo)
         // console.log(this.props.userInfo)
         // console.log(this.state.history)
         return (
-            <PageStructure
-                iconName="navicon"
-                btnHandler={() => {this.props.navigation.toggleDrawer()}}
-                titleonheader={"Profile"}
-                headerStyle={{ justifyContent: 'center'}}
-                replaceBottomTab={false}
-                nosearchIcon={true}
-                noNotificationIcon={true}
-            >
+            // <PageStructure
+            //     iconName="navicon"
+            //     btnHandler={() => {this.props.navigation.toggleDrawer()}}
+            //     titleonheader={"Profile"}
+            //     headerStyle={{ justifyContent: 'center'}}
+            //     replaceBottomTab={false}
+            //     nosearchIcon={true}
+            //     noNotificationIcon={true}
+            // >
+            <>
                 <ScrollView>
                     <View style={styles.container}>
                         <View style={styles.userInfoSecView}>
                             <View style={styles.imageView}>
-                                <Image source={{ uri: imageProvider(this.props.userInfo.studentImage) }} style={styles.image}/>
+                                <Image source={ this.props.userInfo.studentImage?(Assets.profile.profileIcon):({ uri:imageProvider(this.props.userInfo.studentImage)}) } style={styles.image}/>
                             </View>
                             <View style={styles.nameView}>
                                 <Text style={styles.name}>{this.props.userInfo.name}</Text>
-                                <Text style={styles.number}>{this.props.userInfo.mobileNumber}</Text>
+                                <Text style={styles.number}>@{this.props.userInfo.userId}</Text>
                             </View>
+                            <TouchableWithoutFeedback>
+                                <View style={{marginLeft:'auto',marginRight:10,borderWidth:1,borderColor:theme.labelOrInactiveColor,padding:5,borderRadius:5}}> 
+                                        <Text style={{fontFamily: 'Raleway_600SemiBold'}}>Edit Profile</Text>
+                                </View> 
+                            </TouchableWithoutFeedback>
                         </View>
-                        <View style={{marginTop:10}}/>
+                        <View style={{marginVertical:10,height:10,borderTopWidth:8,borderColor:theme.labelOrInactiveColor+'66'}}/>
+                        <View style={{flexDirection: 'row',justifyContent: 'space-between'}}>
+                            {this.renderButton(Assets.resultScreen.accuracy,'Enrollments',()=>{})}
+                            {this.renderButton(Assets.resultScreen.accuracy,'Downloads',()=>{})}
+                        </View>
+                        <View style={{flexDirection: 'row',justifyContent: 'space-between'}}>
+                            {this.renderButton(Assets.resultScreen.accuracy,'Notification',()=>{})}
+                            {this.renderButton(Assets.resultScreen.accuracy,'Community',()=>{})}
+                        </View>
+                        <View style={{flexDirection: 'row',justifyContent: 'space-between'}}>
+                            {this.renderButton(Assets.resultScreen.accuracy,'Help & Support',()=>{})}
+                            {this.renderButton(Assets.resultScreen.accuracy,'Settings',()=>{})}
+                        </View>
+                        <View style={{marginVertical:10,height:10,borderTopWidth:8,borderColor:theme.labelOrInactiveColor+'66'}}/>
 
-                        <View style={styles.profile_navigation}>
+                        <View style={{flexDirection:'row',alignItems: 'center',margin:10}}>
+                                    <Image source={Assets.resultScreen.accuracy} style={{width:15,height:15}} />
+                                    <Text style={{fontFamily: 'Raleway_600SemiBold',marginLeft:10,fontSize:15}}>Recent Activity</Text>
+                        </View>
+                        {/* <View style={styles.profile_navigation}>
+                                
                                 <View style={[styles.btnView1,this.state.activeTab==1?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor})]}>
                                     <Text style={[styles.btnText,{color:this.state.activeTab==1?theme.primaryColor:theme.greyColor}]} onPress={()=>{this.activeTab(1)}}>Enrollments</Text>
                                 </View>
-                                {/* <View>
-                                    <Text style={[styles.navlink,{color:this.state.activeTab==1?theme.accentColor:theme.labelOrInactiveColor}]} onPress={()=>{this.activeTab(1)}}>Enrollments</Text>
-                                </View> */}
-
-
+                                
                                 <View style={[styles.btnView1,this.state.activeTab==2?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor})]}>
                                     <Text style={[styles.btnText,{color:this.state.activeTab==2?theme.primaryColor:theme.greyColor}]} onPress={()=>this.activeTab(2) }>Recents</Text>
                                 </View>
@@ -535,14 +606,14 @@ class UserProfile extends React.Component {
                                         this.setState({isFeedLoading:true, offset: 0},()=>fetch_student_feed(this.props.userInfo.id,this.state.offset,dataLimit, this.fetchFeedCallback))}}>Feed</Text>
                                 </View>
                                  
-                        </View>
+                        </View> */}
 
-                        <View style={{borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}/>
-
-
-                        {this.switchTabRender(this.state.activeTab)}
+                        {/* <View style={{borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}/> */}
 
 
+                        {/* {this.switchTabRender(this.state.activeTab)} */}
+
+                        {this.switchTab(this.state.subActiveTab)}
                        
                         
 
@@ -577,7 +648,8 @@ class UserProfile extends React.Component {
                 ):(
                     null
                 )}
-            </PageStructure>
+            </>
+            // </PageStructure>
             
         )
     }
@@ -589,7 +661,7 @@ const styles = StyleSheet.create({
     {
         flex: 1,
         flexDirection: 'column',
-        marginTop:10
+        
     },
         userInfoSecView:
         {
@@ -605,9 +677,9 @@ const styles = StyleSheet.create({
             },
                 image:
                 {
-                    height: 80,
-                    width: 80,
-                    borderRadius: 40
+                    height: 50,
+                    width: 50,
+                    borderRadius: 25
                 },
             nameView:
             {
@@ -621,7 +693,7 @@ const styles = StyleSheet.create({
                 },
                 number:
                 {
-                    fontSize: 16,
+                    fontSize: 12,
                     // fontWeight: 'bold',
                     color: theme.greyColor
                 },

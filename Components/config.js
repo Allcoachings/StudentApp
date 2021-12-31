@@ -24,6 +24,13 @@ export const theme={
     purpleColor: '#f4ebf9',
     darkPurpleColor: '#7859c5',
     buttonColor : '#ff4f5e',
+    resultScreen:{
+        sectionBackground:'#eefff9',
+        correctColor:'#0bdac0',
+        wrongColor:'#f8c0c3',
+        skippedColor:'#cbc9ca'
+
+    }
 }
 
 //paytm config 
@@ -59,6 +66,16 @@ export const Assets = {
     {
         noRes1: require('../assets/noresult1.png'),
     },
+    resultScreen:
+    {
+        percentileIcon:require('../assets/speedometer.png'),
+        accuracy: require('../assets/accurate.png'),
+        timeTaken: require('../assets/clock.png'),
+    },
+    profile:
+    {
+        profileIcon: require('../assets/profile.png'),
+    }
 }
 
 
