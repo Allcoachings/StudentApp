@@ -89,6 +89,11 @@ export const Assets = {
         recents: require('../assets/recent.png'),
         settings: require('../assets/settings.png')
 
+    },
+    examCategory:{
+        top: require('../assets/top.png'),
+        otherCategory: require('../assets/category.jpeg'),
+        selectCategory: require('../assets/select.jpg')
     }
 }
 

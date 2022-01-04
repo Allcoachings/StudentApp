@@ -9,7 +9,7 @@ import AddVideo from '../InsHome/AddVideo'
 import AddTimeTable from '../InsHome/AddTimeTable'
 import EditInstitute from '../EditInstitute/EditInstitute'
 import Leads from '../Leads/Leads'
-import {theme} from '../config'
+import ExamCategory from '../ExamCategory/ExamCategory'
 import  {DrawerContent}  from './DrawerContent';
 import PdfViewer from '../PdfViewer/PdfViewer'
 import AccountDetails from '../AccountDetails/AccountDetails'
@@ -42,6 +42,7 @@ class indexIns extends React.Component {
                        {this.props.insAuth?(
                             <>
                                 <Drawer.Screen name="Home" component={InsHome} />  
+                                <Drawer.Screen name="ExamCategory" component={ExamCategory} />  
                                 <Drawer.Screen name="AboutCourse" component={AboutCourse} /> 
                                 <Drawer.Screen name="AddVideos" component={AddVideo}  /> 
                                 <Drawer.Screen name="AddDocument" component={AddPdf}  /> 

@@ -940,7 +940,10 @@ class InstituteView extends React.Component {
                             </TouchableOpacity>
                             
                             <View style={styles.optionalRow}> 
-                                <TouchableOpacity style={{borderColor:theme.borderColor,borderWidth:1,borderRadius:10,padding:10}} onPress={() => this.props.navigation.navigate("AboutCourse", {id: this.state.activeCourse, activeCourseDetail: this.state.activeCourseDetail})}>
+                                <TouchableOpacity style={{borderColor:theme.borderColor,borderWidth:1,borderRadius:10,padding:10}} 
+                                // onPress={() => this.props.navigation.navigate("AboutCourse", {id: this.state.activeCourse, activeCourseDetail: this.state.activeCourseDetail})}
+                                onPress={() => this.props.navigation.navigate('ExamCategory')}
+                            >
                                     <Text style={{fontSize:12,color:theme.secondaryColor,fontFamily:'Raleway_700Bold'}}>
                                         About Course
                                     </Text>
