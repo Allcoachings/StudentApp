@@ -9,6 +9,7 @@ import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import { saveTestResult } from '../Utils/DataHelper/TestSeriesResponse';
 import CardView from '../Utils/CardView';
+import LeadersBoard from './LeadersBoard'
 const width = Dimensions.get('window').width
 let backhandler;
 class ResultAnalysis extends React.Component {
@@ -300,6 +301,8 @@ class ResultAnalysis extends React.Component {
                                 </View> 
                             </View>
                         </View> 
+
+                        <LeadersBoard/>
 
                         {this.state.viewSolutions?(
                             <Solutions/>

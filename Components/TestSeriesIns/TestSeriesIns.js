@@ -132,14 +132,6 @@ class TestSeriesIns extends React.Component {
         
         return (
             <PageStructure 
-                // btnHandler={() => {this.props.navigation.toggleDrawer()}}
-                // searchFun={this.search}
-                // singleItem={this.singleRow}
-                // titleWithImage={true}
-                // titleonheader={"All Coaching"}
-                // catInHeader={true} 
-                // userIcon={() => {this.props.navigation.toggleDrawer()}}
-
                 userIcon={() => {this.props.navigation.navigate("Profile")}}
                 catInHeader={true} 
                 selectedCat={this.state.selectedCat}

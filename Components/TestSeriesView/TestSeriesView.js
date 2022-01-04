@@ -10,6 +10,7 @@ import { Redirect } from 'react-router';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import SeriesModal from './SeriesModal';
+import WarningModal from './WarningModal';
 import {fetch_testSeries_questions} from '../Utils/DataHelper/TestSeries'
 import Question from './Question';
 import moment from 'moment' 
@@ -23,6 +24,7 @@ class TestSeriesView extends React.Component {
         time:this.props.route.params.item.timeDuration*60,
         testSeriesId:this.props.route.params.item.id,
         isModalVisible: false,
+        isWarningModalVisible: false,
         loadingQuestions:true,
         isFirstTimeLoading:true,
         offset:0,
@@ -36,6 +38,10 @@ class TestSeriesView extends React.Component {
         isNQuestionLoading: true,
         loadingFooter: false,
     }
+
+    closeWarningModal = () => { this.setState({isWarningModalVisible: false})}
+    openWarningModal = () => { this.setState({isWarningModalVisible: true})}
+
 
     questionCallback=(response) => 
     {
@@ -101,15 +107,20 @@ class TestSeriesView extends React.Component {
     // }
     showAlert=(okFun)=>
     {
-        Alert.alert("Warning!","Are you sure to quit quiz",[ 
-            {
-                text: "Cancel",
-                onPress: () => console.log("Cancel Pressed"),
-                style: "cancel"
-              },
-              { text: "OK", onPress: () =>{okFun();  this.props.navigation.goBack() }},
-        ])
+        // Alert.alert("Warning!","Are you sure to quit quiz",[ 
+        //     {
+        //         text: "Cancel",
+        //         onPress: () => console.log("Cancel Pressed"),
+        //         style: "cancel"
+        //       },
+        //       { text: "OK", onPress: () =>{okFun();  this.props.navigation.goBack() }},
+        // ])
+        return(
+            <WarningModal />
+        )
     }
+
+    
 
       
         timeUpAction=(timeUpObj)=>
@@ -128,7 +139,7 @@ class TestSeriesView extends React.Component {
                 <View style={styles.headerSection}>
                     <View style={styles.headerRowSection}>
                         <View style={{marginLeft:10}}>
-                            <Feather name="arrow-left" size={20} onPress={()=>this.showAlert()}/>
+                            <Feather name="arrow-left" size={20} onPress={()=>this.setState({isWarningModalVisible: true})}/>
                         </View> 
                         <View style={styles.quizNameView}>
                             <Text numberOfLines={1} style={styles.quizName}>{this.state.testSeries.title}</Text>
@@ -349,6 +360,13 @@ class TestSeriesView extends React.Component {
                             timeLeft ={this.state.timeLeft}
                             intervalRef={this.state.interval}
                             setStatusBarHidden={setStatusBarHidden}
+                        />
+                    ) : (null)}
+                    {this.state.isWarningModalVisible ? (
+                        <WarningModal
+                            isModalVisible={this.state.isWarningModalVisible}
+                            openModal={this.openWarningModal}
+                            closeModal={this.closeWarningModal}
                         />
                     ) : (null)}
               </>

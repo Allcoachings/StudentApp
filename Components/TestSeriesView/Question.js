@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text,StyleSheet,TouchableOpacity,TouchableWithoutFeedback,Dimensions,Image } from 'react-native';
 import {serverBaseUrl, theme, imageProvider} from '../config'
-import {EvilIconsns, FontAwesome} from '@expo/vector-icons';  
- const width = Dimensions.get('window').width
+import {EvilIcons, FontAwesome, AntDesign} from '@expo/vector-icons';  
+const width = Dimensions.get('window').width
+import ReportQuestionModal from './ReportQuestionModal'
+import RenderHtml from 'react-native-render-html'
 class Question extends Component {
   state={
       isPractice:this.props.isPractice,
@@ -11,11 +13,12 @@ class Question extends Component {
       isCorrect:false,
       isResponded:false,
       showSolution:false,
-      
+      isModalVisible: false,
 
   }
 
-
+  closeModal = () => { this.setState({isModalVisible: false})}
+  openModal = () => { this.setState({isModalVisible: true})}
 
   checkAnswer=(correct,selected)=>correct==selected
    
@@ -149,7 +152,13 @@ class Question extends Component {
           case '3': 
           case 3:
                     return(
-                        <Text style={styles.quizText}>{item.question}</Text>
+                        // <Text style={styles.quizText}>{item.question}
+                            <RenderHtml
+                                contentWidth={width}
+                                // style={styles.quizText}
+                                source={{html: item.question}}
+                                />
+                        // {/* </Text> */}
                     ); 
         case 2:
         case '2': 
@@ -176,8 +185,9 @@ class Question extends Component {
     //     // console.log("modules",modules,"methods",methods)
     //   }
  }
-  render() {
 
+  render() {
+    
      const {item} = this.props;
      const propsIndex = this.props.index;
      const  index = propsIndex+1  
@@ -199,7 +209,7 @@ class Question extends Component {
                         </View>
                     </View> 
                 <TouchableOpacity style={styles.alertView} onPress={()=>this.handleBookmarkClick(index-1)}> 
-                    <FontAwesome name={this.state.bookmarked?"bookmark":"bookmark-o"} size={24} color={theme.labelOrInactiveColor}/>
+                    <FontAwesome name={this.state.bookmarked?"bookmark":"bookmark-o"} size={24} color={theme.silverColor}/>
                 </TouchableOpacity>
             </View>
         </View>
@@ -221,33 +231,60 @@ class Question extends Component {
             {this.state.isPractice&&this.state.isResponded?(
                 this.state.showSolution?(
                     <>
-                    <View style={{alignItems: 'flex-end',margin:10}}>
-                        <TouchableWithoutFeedback onPress={()=>this.setState({showSolution:false})}>
-                            <View style={{flexDirection:'row', }}>
-                                <Text style={{color:theme.accentColor}}>Hide</Text>
-                                <EvilIconsns name="chevron-up" color={theme.accentColor} size={20}/>
+                    
+                        <View style={{flexDirection: 'row', width: '100%', margin:10}}>
+                        <TouchableWithoutFeedback onPress={()=>this.setState({showSolution:false})} >
+                            <View style={{width: '80%', flexDirection: 'row'}}>
+                            <EvilIcons name="chevron-up" color={theme.secondaryColor} size={24}/>
+                            <Text style={{fontFamily: 'Raleway_700Bold', fontSize: 12, color:theme.darkYellowColor}}>HIDE</Text> 
                             </View>
-                        </TouchableWithoutFeedback>
+                        </TouchableWithoutFeedback> 
+                            <View style={{width: '10%'}}>
+                                <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                                    <TouchableOpacity onPress={()=>this.openModal()}>
+                                    <AntDesign name="warning" size={16} color={theme.silverColor} />  
+                                    </TouchableOpacity>     
+                                </View>
+                            </View>
+                        </View>
+                    <View style={{margin: 10}}>
+                        <Text style={{fontFamily:'Raleway_400Regular', color:theme.featureYesColor, fontSize: 14, marginVertical: 5}}>
+                            Correct Answer: {item.correctOpt}
+                        </Text>
+                        <Text style={{fontFamily:'Raleway_600SemiBold', fontSize: 12, marginVertical: 5}}>
+                            {item.explanation}
+                        </Text>
                     </View>
-                    <View style={styles.explanationView}>
-                        <Text style={styles.correctAnswer}>Correct Answer: {item.correctOpt}</Text>
-                        <Text style={styles.explanation}>{this.props.item.explanation}</Text>
-                    </View> 
                     </>
                 ):(
-                    <View style={{alignItems: 'flex-end',margin:10}}>
-                        <TouchableWithoutFeedback onPress={()=>this.setState({showSolution:true})}>
-                            <View style={{flexDirection:'row', }}>
-                                <Text style={{fontFamily:'Raleway_600SemiBold',color:theme.accentColor}}>View Solution</Text>
-                                <EvilIconsns name="chevron-down" color={theme.accentColor} size={20}/>
+                    
+                        <View  style={{flexDirection: 'row', width: '100%', margin:10}}>
+                            <TouchableWithoutFeedback onPress={()=>this.setState({showSolution:true})}>
+                            <View style={{width: '80%', flexDirection: 'row'}}>
+                                <EvilIcons name={"chevron-down"} size={24} />
+                                <Text style={{fontFamily: 'Raleway_700Bold', fontSize: 12, color:theme.darkYellowColor}}>SEE SOLUTION</Text> 
                             </View>
-                        </TouchableWithoutFeedback>
-                    </View>
+                            </TouchableWithoutFeedback>
+                            <View style={{width: '10%'}}>
+                                <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                                    <TouchableOpacity onPress={()=>this.openModal()}>
+                                        <AntDesign name="warning" size={16} color={theme.silverColor} /> 
+                                    </TouchableOpacity>      
+                                </View>
+                            </View>
+                        </View>
                 )
                 
             ):(null)}
-            
+            <View style={{borderBottomWidth: 7, borderBottomColor: theme.labelOrInactiveColor, marginVertical: 15}}/>
         </View>
+        {this.state.isModalVisible?(
+            <ReportQuestionModal
+                isModalVisible={this.state.isModalVisible}
+                openModal={this.openModal}
+                closeModal={this.closeModal}
+            />
+        ):(null)}
         </>
     );
   }
@@ -306,7 +343,7 @@ const styles = StyleSheet.create({
                     },
                         tolMarksView:{
                             fontSize: 14,
-                            color: theme.greyColor
+                            color: theme.silverColor
 
                         },
                     negMarksView:{
@@ -398,34 +435,34 @@ const styles = StyleSheet.create({
     correctAns:
     {
 
-        backgroundColor:theme.featureYesColor+'4D',
+        backgroundColor:theme.correctAnsColor+'66',
 
     },
     wrongAns:
     {
 
-        backgroundColor:theme.featureNoColor+'4D',  
+        backgroundColor:theme.featureNoColor+'66',  
 
     },
     attemptedAns:
     {
-
-        borderColor:theme.labelOrInactiveColor,
+        backgroundColor:theme.selectedOptColor+'66',
+        borderColor:theme.primaryColor,
         borderWidth:1,
         
     },
     correctAnsIndex:
     {
-        backgroundColor:theme.featureYesColor+'4D',
+        backgroundColor:theme.correctAnsColor,
 
     },
     wrongAnsIndex:
     {
-        backgroundColor:theme.featureNoColor+'4D',
+        backgroundColor:theme.featureNoColor,
     },
     attemptedAnsIndex:
     {
-        backgroundColor:theme.labelOrInactiveColor,
+        backgroundColor:theme.selectedOptColor,
         
 
     }
