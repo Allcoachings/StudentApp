@@ -232,17 +232,17 @@ class Question extends Component {
                 this.state.showSolution?(
                     <>
                     
-                        <View style={{flexDirection: 'row', width: '100%', margin:10}}>
+                        <View style={{flexDirection: 'row', width: '95%', margin:10,justifyContent: 'space-between',}}>
                         <TouchableWithoutFeedback onPress={()=>this.setState({showSolution:false})} >
                             <View style={{width: '80%', flexDirection: 'row'}}>
                             <EvilIcons name="chevron-up" color={theme.secondaryColor} size={24}/>
                             <Text style={{fontFamily: 'Raleway_700Bold', fontSize: 12, color:theme.darkYellowColor}}>HIDE</Text> 
                             </View>
                         </TouchableWithoutFeedback> 
-                            <View style={{width: '10%'}}>
+                            <View>
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                                     <TouchableOpacity onPress={()=>this.openModal()}>
-                                    <AntDesign name="warning" size={16} color={theme.silverColor} />  
+                                        <AntDesign name="warning" size={16} color={theme.silverColor} />  
                                     </TouchableOpacity>     
                                 </View>
                             </View>
@@ -258,14 +258,14 @@ class Question extends Component {
                     </>
                 ):(
                     
-                        <View  style={{flexDirection: 'row', width: '100%', margin:10}}>
+                        <View  style={{flexDirection: 'row', width: '95%', margin:10,justifyContent: 'space-between',}}>
                             <TouchableWithoutFeedback onPress={()=>this.setState({showSolution:true})}>
                             <View style={{width: '80%', flexDirection: 'row'}}>
                                 <EvilIcons name={"chevron-down"} size={24} />
                                 <Text style={{fontFamily: 'Raleway_700Bold', fontSize: 12, color:theme.darkYellowColor}}>SEE SOLUTION</Text> 
                             </View>
                             </TouchableWithoutFeedback>
-                            <View style={{width: '10%'}}>
+                            <View>
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                                     <TouchableOpacity onPress={()=>this.openModal()}>
                                         <AntDesign name="warning" size={16} color={theme.silverColor} /> 
@@ -303,8 +303,7 @@ const styles = StyleSheet.create({
             justifyContent: 'center'
         },
             queNum:{
-                fontSize: 16,
-                fontWeight: 'bold'
+                fontSize: 16, 
             },
         quesRow2:
         {

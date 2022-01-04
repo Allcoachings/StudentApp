@@ -383,7 +383,9 @@ class UserProfile extends React.Component {
                     <View style={{marginBottom: 50}}>
                     {this.state.loadingUserEnrollments?(
                         <CustomActivtiyIndicator mode="skimmer"/>
-                    ):(<FlatList
+                    ):(
+                    
+                    <FlatList
                         data={this.state.purchase}
                         renderItem={({item}) => this.renderPurchageCourse(item)}
                         keyExtractor={(item,index)=>index}
@@ -556,8 +558,8 @@ class UserProfile extends React.Component {
                 <ScrollView>
                     <View style={styles.container}>
                         <TouchableWithoutFeedback onPress={this.props.navigation.goBack}>
-                            <View style={{marginLeft:10}}>
-                                <Entypo name="cross" size={20}/>
+                            <View style={{margin:10}}>
+                                <Entypo name="cross" size={30}/>
                             </View>
                         </TouchableWithoutFeedback>
                         <View style={styles.userInfoSecView}>
@@ -577,16 +579,16 @@ class UserProfile extends React.Component {
                         </View>
                         <View style={{marginVertical:10,height:10,borderTopWidth:8,borderColor:theme.labelOrInactiveColor+'66'}}/>
                         <View style={{flexDirection: 'row',justifyContent: 'space-between'}}>
-                            {this.renderButton(Assets.profile.enrollment,'Enrollments',()=>{})}
+                            {this.renderButton(Assets.profile.enrollment,'Enrollments',()=>{this.props.navigation.navigate('Enrollments')})}
                             {this.renderButton(Assets.profile.downloadIcon,'Downloads',()=>{this.props.navigation.navigate('Downloads')})}
                         </View>
                         <View style={{flexDirection: 'row',justifyContent: 'space-between'}}>
-                            {this.renderButton(Assets.profile.notifications,'Notification',()=>{})}
-                            {this.renderButton(Assets.profile.people,'Community',()=>{})}
+                            {this.renderButton(Assets.profile.notifications,'Notification',()=>{this.props.navigation.navigate('Notification',{mode:'student'})})}
+                            {this.renderButton(Assets.profile.people,'Community',()=>{this.props.navigation.navigate('UserCommunityPosts')})}
                         </View>
                         <View style={{flexDirection: 'row',justifyContent: 'space-between'}}>
                             {this.renderButton(Assets.profile.helpNsupport,'Help & Support',()=>{})}
-                            {this.renderButton(Assets.profile.settings,'Settings',()=>{})}
+                            {this.renderButton(Assets.profile.settings,'Settings',()=>{this.props.navigation.navigate('Settings')})}
                         </View>
                         <View style={{marginVertical:10,height:10,borderTopWidth:8,borderColor:theme.labelOrInactiveColor+'66'}}/>
 

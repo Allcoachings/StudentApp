@@ -135,7 +135,7 @@ class TestSeriesView extends React.Component {
         }
     header=()=>{
         return(
-            // CardView(
+            CardView(
                 <View style={styles.headerSection}>
                     <View style={styles.headerRowSection}>
                         <View style={{marginLeft:10}}>
@@ -171,8 +171,8 @@ class TestSeriesView extends React.Component {
                         </View>
                     </View> */}
                 </View>
-                // ,{width: '100%', padding: 4, borderColor: theme.labelOrInactiveColor, borderWidth: 0.5}
-            // )
+                ,{width: '100%', padding: 4},3
+            )
         )
     }
 
@@ -293,19 +293,7 @@ class TestSeriesView extends React.Component {
         this.updateComponent()  
         return (
             <> 
-            <PageStructure
-                // iconName={"arrow-left"} 
-                // // headerComponent={this.header()}
-                // // replaceHeader={false}
-                // replaceBottomTab={true}
-                // bottomComponent={this.renderBottom()}
-                // headerStyle={{flex:0.0623}}
-                // noBottomTab={true}
-                // statusBarHidden={true}
-                // bottomComponentStyle={{paddingLeft:0,paddingRight:0,paddingBottom:0}}
-
-
-           
+            <PageStructure 
                 noBottomTab={true}
                 statusBarHidden={true}
                 replaceBottomTab={true}
@@ -323,7 +311,7 @@ class TestSeriesView extends React.Component {
                     <View style={styles.container}> 
                         <FlatList 
                             data={Object.values(this.state.questions)}  //this.state.testSeries.isPractice
-                            renderItem={({item,index}) =><Question item={item.question} index={index} isPractice={true} bookmarkQuestion={this.bookmarkQuestion} setQuestionAttemptStatus={this.setQuestionAttemptStatus}/>}
+                            renderItem={({item,index}) =><Question item={item.question} index={index} isPractice={e} bookmarkQuestion={this.bookmarkQuestion} setQuestionAttemptStatus={this.setQuestionAttemptStatus}/>}
                             keyExtractor={(item)=>item.id} 
                             horizontal={false}
                             showsHorizontalScrollIndicator={false}
@@ -385,7 +373,8 @@ const styles = StyleSheet.create({
     {
         flex: 1,
         flexDirection: 'column',
-        paddingBottom:10
+        paddingBottom:10,
+        marginTop:30
     },
         headerSection:
         {

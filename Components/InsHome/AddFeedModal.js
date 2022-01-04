@@ -1,4 +1,4 @@
-import { EvilIcons } from '@expo/vector-icons';
+import { EvilIcons, Feather } from '@expo/vector-icons';
 import React, { Component } from 'react';
 import { View, Text,StyleSheet,Modal,TouchableOpacity,TouchableWithoutFeedback,ActivityIndicator,ScrollView,Image,TextInput,FlatList } from 'react-native';
 import { addBannerImagePlaceholder, theme, serverBaseUrl, imageProvider } from '../config';
@@ -304,7 +304,7 @@ setFeedTypeOption=(postType)=>
     return(
         <TouchableOpacity style={{flex:1,flexDirection:'row',padding:10,alignItems: 'center'}} onPress={onPress}> 
             <View style={{marginTop:1}}>
-                <EvilIcons name={icon} color={theme.greyColor} size={17}/>
+                <Feather name={icon} color={theme.greyColor} size={17}/>
             </View>
             <View>
                 <Text style={{fontFamily:'Raleway_600SemiBold',color: theme.greyColor,fontSize:14}}>{name}</Text>
@@ -411,7 +411,7 @@ setFeedTypeOption=(postType)=>
       this.setState({showFeedTypeOptions: true})
   }
   resetFeedState=()=>
-  {console.log("oressed")
+  {
       this.setState({  stepCheck:2,//to check on which step user is in order to add a feed
         postType:3,//1 for image , 2 for poll 3 for text option 
         addFeedLoading:false,
@@ -453,7 +453,7 @@ setFeedTypeOption=(postType)=>
                         
                             {this.state.description?(<View style={{position: 'absolute',right:15,top:5,zIndex:10}}>
                             <TouchableOpacity onPre ss={()=>this.resetFeedState()}>
-                                <EvilIcons name={'x'} color={theme.featureNoColor} size={18}/>
+                                <Feather name={'x'} color={theme.featureNoColor} size={18}/>
                             </TouchableOpacity> 
                             </View>):(null)}
                       
@@ -493,7 +493,7 @@ setFeedTypeOption=(postType)=>
                                     <TouchableWithoutFeedback onPress={this.checkPostData}>
                                         <View style={[{flexDirection: 'row',padding:5,marginVertical:5,alignItems: 'center',borderRadius:3,marginTop:'auto',borderWidth: 1,borderColor:this.state.description?theme.accentColor:theme.labelOrInactiveColor},this.state.description?{backgroundColor: theme.accentColor}:{}]}>
                                             <Text style={{color:this.state.description?theme.primaryColor:theme.greyColor,fontSize:16}}>Post</Text>
-                                            <EvilIcons name="chevron-right" size={18} color={this.state.description?theme.primaryColor:theme.greyColor}/>
+                                            <Feather name="chevron-right" size={18} color={this.state.description?theme.primaryColor:theme.greyColor}/>
                                         </View>
                                     </TouchableWithoutFeedback>
                                     // this.renderButton("Post","align-left",()=>this.handleSubmitButtonClick())

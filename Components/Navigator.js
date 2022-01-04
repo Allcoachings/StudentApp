@@ -33,6 +33,8 @@ import WebViewCustom from './WebView/WebViewCustom';
 import RenderSingleFeed from './Feed/RenderSingleFeed'
 import PinnedList from './PinnedList/PinnedList' 
 import Auth from './Auth/Auth';
+import Enrollments from './UserProfile/Enrollments';
+import UserCommunityPosts from './UserProfile/UserCommunityPosts';
 
 
 const Tab = createBottomTabNavigator();
@@ -78,6 +80,8 @@ function Navigator(props) {
                         <Tab.Screen name="webview" component={WebViewCustom}/>
                         <Tab.Screen name="RenderSingleFeed" component={RenderSingleFeed} />
                         <Tab.Screen name="PinnedList" component={PinnedList}/> 
+                        <Tab.Screen name="Enrollments" component={Enrollments}/> 
+                        <Tab.Screen name="UserCommunityPosts" component={UserCommunityPosts}/> 
                     </>
                 ):(
                     <Tab.Screen  name="Auth" component={Auth} initialParams={{changeMode:props.changeMode}} /> 

@@ -23,7 +23,7 @@ class Settings extends Component {
   render() {
     return (
         <PageStructure
-            iconName={"chevron-left"}
+            iconName={"arrow-left"}
             btnHandler={() => {this.props.navigation.goBack()}}
             titleonheader={"Settings"}
             noNotificationIcon={true}

@@ -101,7 +101,7 @@ class Notification extends React.Component {
         this.updateComponent()
         return(
             <PageStructure
-                iconName={"chevron-left"}
+                iconName={"arrow-left"}
                 btnHandler={() => {this.props.navigation.goBack()}}
                 titleonheader={"Notifications"}
                 noNotificationIcon={true}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Text, StyleSheet, View, Modal,TouchableOpacity, Image,Dimensions} from 'react-native'
 import { theme,serverBaseUrl,imageProvider } from '../config';
-import { EvilIcons } from '@expo/vector-icons';
+import { EvilIcons, Feather } from '@expo/vector-icons';
 import CardView from '../Utils/CardView';
 const windowWidth = Dimensions.get('window').width
 
@@ -33,7 +33,7 @@ export default class PurchageListRow extends Component {
                 </View>
             </View>
             <TouchableOpacity onPress={()=>this.openPurchageModal()}>
-            <EvilIcons name="more-vertical" size={20} color={theme.secondaryColor}  />
+            <Feather name="more-vertical" size={20} color={theme.secondaryColor}  />
 
             </TouchableOpacity>
 

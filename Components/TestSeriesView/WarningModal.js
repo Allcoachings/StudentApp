@@ -17,12 +17,12 @@ class WarningModal extends React.Component {
                 visible={true}
             >
                 <TouchableWithoutFeedback>
-                    <View style={{height:height,width:width, backgroundColor: theme.labelOrInactiveColor}}>
+                    <View style={{height:height,width:width, backgroundColor: theme.secondaryColor+'66'}}>
                         {CardView(
                             <View style={{flexDirection: 'column'}}>
                                 <View style={{marginVertical: 15, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                                     <Text style={{fontFamily: 'Raleway_600SemiBold', fontSize: 18, marginBottom: 10, color: theme.greyColor}}>
-                                        Are You Sure You Want To Pause?
+                                        Are you sure you want to pause?
                                     </Text>
                                 </View>
                                 <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
@@ -53,7 +53,7 @@ class WarningModal extends React.Component {
                                         <Text style={{fontSize: 12, fontFamily: 'Raleway_700Bold',color: theme.darkYellowColor}}>PAUSE</Text>
                                     </TouchableOpacity>
                                 </View>
-                            </View>,{width: width*0.8, height: height*0.35, marginTop: height*0.2, marginLeft: width*0.1, borderRadius: 10}
+                            </View>,{alignSelf: 'center', marginTop: height*0.2,paddingVertical:20, borderRadius: 10}
                         )}
                     </View>
                 </TouchableWithoutFeedback>

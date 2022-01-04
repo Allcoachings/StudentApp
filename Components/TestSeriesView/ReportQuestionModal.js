@@ -27,10 +27,13 @@ class ReportQuestionModal extends React.Component {
             <Modal
                 animationType="fade"
                 transparent={true}
+                onRequestClose={this.props.closeModal}
                 visible={this.props.isModalVisible}
             >
-                <TouchableWithoutFeedback>
-                    <View style={{height:height,width:width, backgroundColor: theme.labelOrInactiveColor}}>
+                <TouchableWithoutFeedback
+                    onPress={this.props.closeModal}
+                >
+                    <View style={{height:height,width:width, backgroundColor: theme.secondaryColor+'66'}}>
                         {CardView(
                             
                             <View style={{flexDirection: 'column', justifyContent: 'space-between', padding: 20}}>
@@ -54,7 +57,7 @@ class ReportQuestionModal extends React.Component {
                                         <Text style={{fontSize: 12, fontFamily: 'Raleway_700Bold',color: theme.darkYellowColor}}>REPORT</Text>
                                     </TouchableOpacity>
                                 </View>
-                            </View>,{width: width*0.8, height: height*0.5, marginTop: height*0.2, marginLeft: width*0.1}
+                            </View>,{width: width*0.8,marginTop: height*0.2, marginLeft: width*0.1}
                         )}
                     </View>
                 </TouchableWithoutFeedback>

@@ -56,10 +56,10 @@ export default function TabBar({authStatus,navigation}) {
                     {renderTabItem(<Black_Book_Filled/>,<Black_Book_Outline/>,"TestSeries",()=>navigation.navigate("TestSeries"))}
                 </View>
                 <View>
-                    {renderTabItem(<Supervised_person_Filled/>,<Supervised_person_Outline/>,"Followings",()=>navigation.navigate("Subscription"))}
+                    {renderTabItem(<Favorite_Filled/>,<Favorite_Outline/>,"Followings",()=>navigation.navigate("Subscription"))}
                 </View>
                 <View>
-                    {renderTabItem(<Favorite_Filled/>,<Favorite_Outline/>,"Feed",()=>navigation.navigate("Feed"))}
+                    {renderTabItem(<Supervised_person_Filled/>,<Supervised_person_Outline/>,"Feed",()=>navigation.navigate("Feed"))}
                 </View>
             </View>,{width:'100%'}
         )

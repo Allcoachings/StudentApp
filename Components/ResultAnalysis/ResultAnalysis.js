@@ -202,7 +202,7 @@ class ResultAnalysis extends React.Component {
         return(
             <PageStructure
                 iconName="arrow-left"
-                btnHandler={() => {this.props.navigation.toggleDrawer()}}
+                btnHandler={() => {this.props.navigation.navigate('Home')}}
                 titleonheader={"Result Analysis"}
                 notificationreplaceshare={"share-2"}
                 noNotificationIcon={true}

@@ -1,13 +1,14 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,Dimensions,FlatList,StatusBar, Image,Platform, ScrollView, Modal,TouchableWithoutFeedback} from 'react-native';
 import { theme , Assets, serverBaseUrl, imageProvider} from '../config';
-import { EvilIcons, FontAwesome } from '@expo/vector-icons';
+import { EvilIcons, Feather, FontAwesome } from '@expo/vector-icons';
 import {connect } from 'react-redux'
 import {singlequedata} from '../../FakeDataService/FakeData'
 import CardView from '../Utils/CardView'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import {setTestResultData} from '../Actions'
+import RenderHTML from 'react-native-render-html';
 const width = Dimensions.get('window').width
 class SeriesModal extends React.Component {
   state = {
@@ -107,9 +108,15 @@ class SeriesModal extends React.Component {
         case '1':
         case '3': 
         case 3:
-                  return(
-                    <Text style={styles.queno}>{item.question}</Text>
-                  ); 
+          return(
+            // <Text style={styles.quizText}>{item.question}
+                <RenderHTML
+                    contentWidth={width}
+                    // style={styles.quizText}
+                    source={{html: item.question}}
+                    />
+            // {/* </Text> */}
+        );
       case 2:
       case '2': 
       case 4:
@@ -327,7 +334,7 @@ class SeriesModal extends React.Component {
                     
                     <View style={styles.rowElement}>
                        
-                        <EvilIcons name={this.state.listModeIcon} size={20} onPress={this.changeListMode}/>
+                        <Feather name={this.state.listModeIcon} size={20} onPress={this.changeListMode}/>
                       
                     </View> 
                 </View>
