@@ -73,10 +73,10 @@ export default function SubscriptionNew(props) {
     console.log(loadingFooter)
     return(
         <PageStructure
-            iconName={"chevron-left"}
+            iconName={"arrow-left"}
             btnHandler={() => {props.navigation.goBack()}}
             titleonheader={"Subscription"}
-            nosearchIcon={true}
+            nosearchIcon={false}
             noNotificationIcon={true}
         >
             <ScrollView>
@@ -111,8 +111,7 @@ export default function SubscriptionNew(props) {
                                 setRefreshing(true);
                                 setOffset(parseInt(offset)+1);
                                 setLoadingFooter(true);                                      
-                            }
-                        
+                            } 
                         }}
                     />)}
                 </View>

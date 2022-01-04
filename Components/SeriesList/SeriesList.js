@@ -14,6 +14,7 @@ import Instructions from './Instructions'
 import RenderSingleTestSeries from './RenderSingleTestSeries'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
+import { saveStudentHistory } from '../Utils/DataHelper/StudentHistory';
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height;
 
@@ -61,6 +62,17 @@ class SeriesList extends React.Component {
         this.fetch()
         fetch_Banners("test", this.bannerCallback)
     }
+    updateComponent=()=>
+    {
+        if(this.props.route.params.id!=this.state.id)
+        {
+            this.setState({
+             id:this.props.route.params.id, 
+             offset:0
+        },fetch)
+        }
+    }
+    
 
     fetch=() => {
         seriesList(this.state.id,this.state.offset,dataLimit,this.seriesListCallBack)
@@ -110,7 +122,7 @@ class SeriesList extends React.Component {
     {
         return(
             <TouchableOpacity style={styles.bannerItemContainer}>
-                    <Image source={{uri: imageProvider(item.bannerImageLink)}} style={styles.bannerImage}/>
+                    <Image source={{uri: imageProvider(item.bannerImageLink)}} style={[styles.bannerImage,{width:width-20    }]}/>
             </TouchableOpacity  >
         )
     }
@@ -128,41 +140,60 @@ class SeriesList extends React.Component {
         }
     };
 
+    addToHistory=(type, id)=>{
+        saveStudentHistory(type,id,this.props.userInfo.id,this.addToHistoryCallBack)
+     } 
+     
+    addToHistoryCallBack=(response)=>{
+        if(response.status==201)
+        {
+            // console.log("hello done")
+        }
+        else
+        {
+            //  console.log("error")
+        }
+     }
+
 
     render(){
         return(
             <PageStructure
-                iconName={"chevron-left"}
+                iconName={"arrow-left"}
                 btnHandler={() => {this.props.navigation.goBack()}}
                 catInHeader={false}
-                titleonheader={this.props.route.params.catName}
-                notificationreplaceshare={"share-2"}
+                titleonheader={this.props.route.params.catName} 
+                nosearchIcon={true}
+                noNotificationIcon={true}
             >
                <ScrollView>
                     <View style={styles.main}>
-                        <View 
+                        {/* <View 
                             style={{justifyContent: 'center', alignItems: 'center', marginTop: 10, marginBottom: 10}}>
                             <Image 
                                 source={{uri: imageProvider(this.props.route.params.image)}} 
                                 style={{height: 60, width: 60, borderRadius: 30}}
                             />
-                        </View>
-                        <View style={styles.rowContainer}>
-                            <FlatList 
-                                data={this.state.banner} 
-                                renderItem={this.renderBannerList} 
-                                keyExtractor={(item)=>item.id}
-                                horizontal={true} 
-                                ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
-                            />
-                        </View>
+                        </View> */}
+                        {this.state.banner.length>0?(
+                            <View style={styles.rowContainer}>
+                                <FlatList 
+                                    data={this.state.banner} 
+                                    renderItem={this.renderBannerList} 
+                                    keyExtractor={(item)=>item.id}
+                                    horizontal={true} 
+                                    ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                                />
+                            </View>
+                        ):(null)}
+                        
                         <View style={styles.container}>
                         {this.state.tsLoading?(
                                 <CustomActivtiyIndicator mode="testItem"/>
                         ):(
                             <FlatList 
                                 data={this.state.seriesList} 
-                                renderItem={({item})=><RenderSingleTestSeries item={item} navigation={this.props.navigation}/>}
+                                renderItem={({item})=><RenderSingleTestSeries item={item} navigation={this.props.navigation} addToHistory={this.addToHistory}/>}
                                 keyExtractor={(item)=>item.id} 
                                 horizontal={false}
                                 showsHorizontalScrollIndicator={false}
@@ -302,4 +333,7 @@ const styles = StyleSheet.create({
 
 })
 
-export default SeriesList;
+const mapStateToProps = (state)=>({
+    userInfo:state.user.userInfo,
+})
+export default connect(mapStateToProps)(SeriesList);

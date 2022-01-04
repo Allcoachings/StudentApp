@@ -4,7 +4,7 @@ import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import { theme,dataLimit, Assets } from '../config';
-import { EvilIcons } from '@expo/vector-icons';
+import { EvilIcons, Feather } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
 import CardView from '../Utils/CardView'
@@ -128,22 +128,22 @@ class TestSeriesView extends React.Component {
                 <View style={styles.headerSection}>
                     <View style={styles.headerRowSection}>
                         <View style={{marginLeft:10}}>
-                            <EvilIcons name="chevron-left" size={20} onPress={()=>this.showAlert()}/>
+                            <Feather name="arrow-left" size={20} onPress={()=>this.showAlert()}/>
                         </View> 
                         <View style={styles.quizNameView}>
-                            <Text style={styles.quizName}>{this.state.testSeries.title}</Text>
+                            <Text numberOfLines={1} style={styles.quizName}>{this.state.testSeries.title}</Text>
                         </View>
                         <View style={styles.pauseBtnView}>
-                            {/* <EvilIcons name="pause-circle" size={13} color={theme.greyColor}/> */}
+                            {/* <Feather name="pause-circle" size={13} color={theme.greyColor}/> */}
                                 {/* <Text style={styles.pauseBtnText}> {this.formatTimer(this.state.time)}</Text> */}
-                                <Timer time={this.state.time} showAlert={(okFun)=>this.showAlert(okFun)}  updateTimeInParent={this.updateTimeInParent} refresh={this.refreshQuiz} navigation={this.props.navigation} timeUpAction={this.timeUpAction}/>
+                                {/* <Timer time={this.state.time} showAlert={(okFun)=>this.showAlert(okFun)}  updateTimeInParent={this.updateTimeInParent} refresh={this.refreshQuiz} navigation={this.props.navigation} timeUpAction={this.timeUpAction}/> */}
                         </View>
                         <TouchableOpacity style={styles.menuIcon} onPress={()=>this.openModal()}>
-                            <EvilIcons name="grid" size={25} color={theme.labelOrInactiveColor}/>
+                            <Feather name="grid" size={25} color={theme.greyColor}/>
                         </TouchableOpacity>
-                        {/* <TouchableOpacity style={{marginLeft:5,marginRight:5}} >
-                            <EvilIcons name="more-vertical" size={25} color={theme.labelOrInactiveColor}/>
-                        </TouchableOpacity> */}
+                        <TouchableOpacity style={{marginLeft:5,marginRight:5}} >
+                            <Feather name="more-vertical" size={25} color={theme.greyColor}/>
+                        </TouchableOpacity>
                     </View>
                     {/* <View style={styles.headerRowSection2}>
                         <View style={styles.sectionView}>
@@ -283,14 +283,25 @@ class TestSeriesView extends React.Component {
         return (
             <> 
             <PageStructure
-                iconName={"chevron-left"} 
-                headerComponent={this.header()}
-                replaceHeader={true}
-                replaceBottomTab={true}
-                bottomComponent={this.renderBottom()}
-                headerStyle={{flex:0.0623}}
+                // iconName={"arrow-left"} 
+                // // headerComponent={this.header()}
+                // // replaceHeader={false}
+                // replaceBottomTab={true}
+                // bottomComponent={this.renderBottom()}
+                // headerStyle={{flex:0.0623}}
+                // noBottomTab={true}
+                // statusBarHidden={true}
+                // bottomComponentStyle={{paddingLeft:0,paddingRight:0,paddingBottom:0}}
+
+
+           
                 noBottomTab={true}
                 statusBarHidden={true}
+                replaceBottomTab={true}
+                singleItem={()=>{}}
+                headerComponent={this.header()}
+                replaceHeader={true}
+                bottomComponent={this.renderBottom()}
                 bottomComponentStyle={{paddingLeft:0,paddingRight:0,paddingBottom:0}}
             >
                 
@@ -300,8 +311,8 @@ class TestSeriesView extends React.Component {
                     <>
                     <View style={styles.container}> 
                         <FlatList 
-                            data={Object.values(this.state.questions)} 
-                            renderItem={({item,index}) =><Question item={item.question} index={index} isPractice={this.state.testSeries.isPractice} bookmarkQuestion={this.bookmarkQuestion} setQuestionAttemptStatus={this.setQuestionAttemptStatus}/>}
+                            data={Object.values(this.state.questions)}  //this.state.testSeries.isPractice
+                            renderItem={({item,index}) =><Question item={item.question} index={index} isPractice={true} bookmarkQuestion={this.bookmarkQuestion} setQuestionAttemptStatus={this.setQuestionAttemptStatus}/>}
                             keyExtractor={(item)=>item.id} 
                             horizontal={false}
                             showsHorizontalScrollIndicator={false}
@@ -361,7 +372,7 @@ const styles = StyleSheet.create({
         headerSection:
         {
             flexDirection: 'column',
-            paddingTop:10
+            paddingTop:10, 
         },
             headerRowSection:
             {

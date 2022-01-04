@@ -237,9 +237,9 @@ class InstituteView extends React.Component {
             checkPinned: '' 
         },()=>
             {
-            fetch_instituteDetails(this.state.instituteId,this.instituteCallback)
-            fetch_institute_courses(this.state.instituteId,this.coursesCallBack)
-            fetch_latestUpcomingSchedule(this.state.instituteId,this.liveDataCallback)
+                fetch_instituteDetails(this.state.instituteId,this.instituteCallback)
+                fetch_institute_courses(this.state.instituteId,this.coursesCallBack)
+                fetch_latestUpcomingSchedule(this.state.instituteId,this.liveDataCallback)
             })
         }
     }
@@ -1109,11 +1109,21 @@ class InstituteView extends React.Component {
                             </View>
                             {/* <EvilIcons name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}  onPress = {() => {this.toggleModal(true)}}/> */}
                             <View>
-                                <TouchableWithoutFeedback>
-                                    <View style={{backgroundColor: theme.secondaryColor,padding:5,paddingHorizontal:10,borderRadius:15,alignItems: 'center'}}>
-                                            <Text style={{fontFamily: 'Raleway_600SemiBold',color: theme.primaryColor}}>Follow</Text>
-                                    </View>
-                                </TouchableWithoutFeedback>
+                               
+
+                                {this.state.subscribe?(
+                                            <TouchableWithoutFeedback onPress={() =>unsubscribe(this.state.studentId,this.state.instituteId,this.unsubscribeCallback)}>
+                                                 <View style={{backgroundColor: theme.secondaryColor,padding:5,paddingHorizontal:10,borderRadius:15,alignItems: 'center'}}>
+                                                         <Text style={{fontFamily: 'Raleway_600SemiBold',color: theme.primaryColor}}>Un Follow</Text>
+                                                 </View>
+                                             </TouchableWithoutFeedback>
+                                            ):(
+                                                <TouchableWithoutFeedback  onPress={() =>subscribe(this.state.studentId,this.state.instituteId,this.subscribeCallback)}>
+                                                    <View style={{backgroundColor: theme.secondaryColor,padding:5,paddingHorizontal:10,borderRadius:15,alignItems: 'center'}}>
+                                                            <Text style={{fontFamily: 'Raleway_600SemiBold',color: theme.primaryColor}}>Follow</Text>
+                                                    </View>
+                                                </TouchableWithoutFeedback>
+                                            )}
                             </View>
                         </View>
                         <View style={styles.body}>

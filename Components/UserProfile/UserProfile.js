@@ -4,7 +4,7 @@ import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 // import {connect} from 'react-redux'
 import { theme,dataLimit,screenMobileWidth,serverBaseUrl,documentPlaceholder, Assets,imageProvider } from '../config';
 import AddFeedModal from '../InsHome/AddFeedModal';
-import { EvilIcons } from '@expo/vector-icons';
+import { Entypo, EvilIcons, MaterialIcons } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
 import CardView from '../Utils/CardView'
@@ -555,7 +555,13 @@ class UserProfile extends React.Component {
             <>
                 <ScrollView>
                     <View style={styles.container}>
+                        <TouchableWithoutFeedback onPress={this.props.navigation.goBack}>
+                            <View style={{marginLeft:10}}>
+                                <Entypo name="cross" size={20}/>
+                            </View>
+                        </TouchableWithoutFeedback>
                         <View style={styles.userInfoSecView}>
+                           
                             <View style={styles.imageView}>
                                 <Image source={ this.props.userInfo.studentImage?(Assets.profile.profileIcon):({ uri:imageProvider(this.props.userInfo.studentImage)}) } style={styles.image}/>
                             </View>
@@ -571,21 +577,21 @@ class UserProfile extends React.Component {
                         </View>
                         <View style={{marginVertical:10,height:10,borderTopWidth:8,borderColor:theme.labelOrInactiveColor+'66'}}/>
                         <View style={{flexDirection: 'row',justifyContent: 'space-between'}}>
-                            {this.renderButton(Assets.resultScreen.accuracy,'Enrollments',()=>{})}
-                            {this.renderButton(Assets.resultScreen.accuracy,'Downloads',()=>{})}
+                            {this.renderButton(Assets.profile.enrollment,'Enrollments',()=>{})}
+                            {this.renderButton(Assets.profile.downloadIcon,'Downloads',()=>{this.props.navigation.navigate('Downloads')})}
                         </View>
                         <View style={{flexDirection: 'row',justifyContent: 'space-between'}}>
-                            {this.renderButton(Assets.resultScreen.accuracy,'Notification',()=>{})}
-                            {this.renderButton(Assets.resultScreen.accuracy,'Community',()=>{})}
+                            {this.renderButton(Assets.profile.notifications,'Notification',()=>{})}
+                            {this.renderButton(Assets.profile.people,'Community',()=>{})}
                         </View>
                         <View style={{flexDirection: 'row',justifyContent: 'space-between'}}>
-                            {this.renderButton(Assets.resultScreen.accuracy,'Help & Support',()=>{})}
-                            {this.renderButton(Assets.resultScreen.accuracy,'Settings',()=>{})}
+                            {this.renderButton(Assets.profile.helpNsupport,'Help & Support',()=>{})}
+                            {this.renderButton(Assets.profile.settings,'Settings',()=>{})}
                         </View>
                         <View style={{marginVertical:10,height:10,borderTopWidth:8,borderColor:theme.labelOrInactiveColor+'66'}}/>
 
                         <View style={{flexDirection:'row',alignItems: 'center',margin:10}}>
-                                    <Image source={Assets.resultScreen.accuracy} style={{width:15,height:15}} />
+                                    <Image source={Assets.profile.recents} style={{width:15,height:15}} />
                                     <Text style={{fontFamily: 'Raleway_600SemiBold',marginLeft:10,fontSize:15}}>Recent Activity</Text>
                         </View>
                         {/* <View style={styles.profile_navigation}>

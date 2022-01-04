@@ -41,12 +41,12 @@ class HeaderMobile extends React.Component {
 
   closeModal=()=> this.setState({search:false})
   render() {
-     
+     console.log("header replace ",this.props.replaceHeader )
     return (
       // <KeyboardAwareScrollView>
       <View style={[styles.container,!this.props.catInHeader?({marginTop: 10,marginBottom:5}):(null)]}>
         {this.props.replaceHeader ? (
-          this.props.headerComponent
+            this.props.headerComponent
         ) : (
           <>
             {(

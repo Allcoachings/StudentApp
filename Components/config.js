@@ -30,7 +30,8 @@ export const theme={
         wrongColor:'#f8c0c3',
         skippedColor:'#cbc9ca'
 
-    }
+    },
+    transparentColor:"#FFFFFF00"
 }
 
 //paytm config 
@@ -75,6 +76,14 @@ export const Assets = {
     profile:
     {
         profileIcon: require('../assets/profile.png'),
+        downloadIcon: require('../assets/cloud-computing.png'),
+        helpNsupport:require('../assets/customer-service.png'),
+        enrollment: require('../assets/enrollment.png'),
+        notifications: require('../assets/notifications.png'),
+        people: require('../assets/people.png'),
+        recents: require('../assets/recent.png'),
+        settings: require('../assets/settings.png')
+
     }
 }
 

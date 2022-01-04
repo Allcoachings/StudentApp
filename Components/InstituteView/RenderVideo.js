@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions, findNodeHandle,UIManager, Modal} from 'react-native';
 import { theme, dataLimit, serverBaseUrl, downloadIcon, numFormatter, imageProvider } from '../config';
-import { EvilIcons, MaterialIcons } from '@expo/vector-icons';
+import { EvilIcons, Feather, MaterialIcons } from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import { Picker } from 'native-base';
@@ -158,9 +158,12 @@ class RenderVideo extends React.Component {
                         )):(this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation,videoTitle:this.props.item.name,postingTime:this.props.item.date,item:this.props.item}))}
                     } >
                         <Image source={{uri:imageProvider(this.props.item.videoThumb)}} style={styles.videoImage}/>
-                        <View style={{position: 'absolute',height:30,width:30,backgroundColor:theme.secondaryColor,borderRadius:15,right:5,top:5}}>
+                        {this.props.mode!="offline"?(
+                            <View style={{position: 'absolute',height:30,width:30,backgroundColor:theme.secondaryColor,borderRadius:15,right:5,top:5}}>
                                 <Lock height={20} width={20}/>
-                        </View>
+                            </View>
+                        ):(null)}
+                        
                     </TouchableOpacity>
                     <View style={styles.videoColumn}>
                         <View>
@@ -193,7 +196,8 @@ class RenderVideo extends React.Component {
                                                 
                                             ):(
                                                 
-                                                    <TouchableOpacity onPress={()=>this.props.studentEnrolled?(this.download(this.props.item, 'video')):(Toast.show('You Have Not Enrolled For This Course.'))} style={{marginBottom: 8}}> 
+                                                    // <TouchableOpacity onPress={()=>this.props.studentEnrolled?(this.download(this.props.item, 'video')):(Toast.show('You Have Not Enrolled For This Course.'))} style={{marginBottom: 8}}> 
+                                                    <TouchableOpacity onPress={()=>this.download(this.props.item, 'video')} style={{marginBottom: 8}}> 
                                                         <View >
                                                             {/* <Image source={downloadIcon} style={{height: 25, width: 25}} /> */}
                                                             <Arrow_down_circle_black/>
@@ -210,7 +214,7 @@ class RenderVideo extends React.Component {
                    
                         {this.props.actions?(
                         <TouchableOpacity style={{marginLeft: 'auto', marginTop: 8}} onPress={()=>this.showThreeMenu()}>
-                                <EvilIcons name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
+                                <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
                         </TouchableOpacity>):(null)}
                     {this.state.showModal?(
                         <Modal
