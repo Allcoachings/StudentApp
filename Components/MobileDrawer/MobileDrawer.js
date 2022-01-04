@@ -10,6 +10,7 @@ import InstituteView from '../InstituteView/InstituteView';
 import Payment from '../InstituteView/Payment';
 import Subscription from '../Subscription/Subscription';
 import TestSeriesView from '../TestSeriesView/TestSeriesView'
+
 import SeriesList from '../SeriesList/SeriesList'
 import InsTestSeriesList from '../InsTestSeriesList/InsTestSeriesList'
 import TestSeriesIns from '../TestSeriesIns/TestSeriesIns'
@@ -68,6 +69,7 @@ class index extends React.Component {
                     {this.props.userAuth ?(
                         <>
                             <Drawer.Screen name="Home" component={Home} />  
+                            
                             <Drawer.Screen name="Institute"  component={InstituteView} />
                             <Drawer.Screen name="StudentInsView"  component={InstituteView} />
                             <Drawer.Screen name="TestSeries" component={TestSeriesIns}  /> 
@@ -95,7 +97,6 @@ class index extends React.Component {
                             <Drawer.Screen name="RenderSingleFeed" component={RenderSingleFeed} />
                             <Drawer.Screen name="PinnedList" component={PinnedList}/>
                             
-                           
                         </>
                     ):(
                         <Drawer.Screen name="Auth" component={Auth} initialParams={{changeMode:this.props.changeMode}} /> 

@@ -21,6 +21,7 @@ import ResultAnalysis from './ResultAnalysis/ResultAnalysis'
 import SubscriptionNew from './SubscriptionNew/SubscriptionNew'
 import Feed from './Feed/Feed' 
 import MockTest from './MockTest/MockTest';
+import ExamCategory from './ExamCategory/ExamCategory'
 import UserProfile from './UserProfile/UserProfile';
 import Settings from './Settings/Settings';
 import Downloads from './Downloads/Downloads'; 
@@ -82,6 +83,7 @@ function Navigator(props) {
                         <Tab.Screen name="PinnedList" component={PinnedList}/> 
                         <Tab.Screen name="Enrollments" component={Enrollments}/> 
                         <Tab.Screen name="UserCommunityPosts" component={UserCommunityPosts}/> 
+                        <Tab.Screen name="ExamCategory" component={ExamCategory} /> 
                     </>
                 ):(
                     <Tab.Screen  name="Auth" component={Auth} initialParams={{changeMode:props.changeMode}} /> 
