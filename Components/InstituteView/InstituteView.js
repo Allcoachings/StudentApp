@@ -6,7 +6,7 @@ import { AirbnbRating,Rating } from 'react-native-ratings';
 import {theme,screenMobileWidth,serverBaseUrl,documentPlaceholder,dataLimit, Assets, imageProvider} from '../config'
 import CardView from '../Utils/CardView';
 import MarqueeText from 'react-native-marquee';
-import { EvilIcons } from '@expo/vector-icons';
+import { EvilIcons, Feather } from '@expo/vector-icons';
 import { connect } from 'react-redux'
 import { List } from 'react-native-paper';
 import StudentReview from './StudentReview'
@@ -237,9 +237,9 @@ class InstituteView extends React.Component {
             checkPinned: '' 
         },()=>
             {
-            fetch_instituteDetails(this.state.instituteId,this.instituteCallback)
-            fetch_institute_courses(this.state.instituteId,this.coursesCallBack)
-            fetch_latestUpcomingSchedule(this.state.instituteId,this.liveDataCallback)
+                fetch_instituteDetails(this.state.instituteId,this.instituteCallback)
+                fetch_institute_courses(this.state.instituteId,this.coursesCallBack)
+                fetch_latestUpcomingSchedule(this.state.instituteId,this.liveDataCallback)
             })
         }
     }
@@ -382,7 +382,7 @@ class InstituteView extends React.Component {
                 onPress={()=>this.setState({showLoadMore: link=='timeTable'?(false):(true)},()=>this.activeTab(link))} 
                 style={[styles.setList,this.state.activeTab==link?({backgroundColor:theme.secondaryColor}):(null)]}
             >
-                    <EvilIcons name={icon} size={12} color={this.state.activeTab==link?(theme.primaryColor):(theme.secondaryColor)}/>
+                    <Feather name={icon} size={12} color={this.state.activeTab==link?(theme.primaryColor):(theme.secondaryColor)}/>
                     <Text style={[styles.listText,this.state.activeTab==link?({color:theme.primaryColor}):(null)]}>{text}</Text>
             </TouchableOpacity>
         )
@@ -791,7 +791,7 @@ class InstituteView extends React.Component {
             return(
                                     this.state.courseDocumentLoaded?(<FlatList 
                                         data={this.state.courseDocuments} 
-                                        renderItem={({item,index})=><RenderDocument userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="student" studentEnrolled={this.state.studentEnrolled} downloadMode={true} insName={this.state.insName} insNumber={this.state.insNumber} courseDocumentPlaylist={this.state.courseDocumentPlaylist} actions={this.state.actions} />}
+                                        renderItem={({item,index})=><RenderDocument userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="student" studentEnrolled={this.state.studentEnrolled} downloadMode={true} insName={this.state.insName} insNumber={this.state.insNumber} courseDocumentPlaylist={this.state.courseDocumentPlaylist}   />}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
@@ -960,7 +960,7 @@ class InstituteView extends React.Component {
                                 <TouchableOpacity 
                                     onPress={()=>{this.setState({ activeFilterId: -1, showLoadMore: false},()=>this.activeTab('liveClass'))}} style={[styles.liveClassOuter,this.state.activeTab=='liveClass'?({backgroundColor:'red'}):({backgroundColor: theme.primaryColor})]}>
                                     <View style={styles.liveClassInner}>
-                                        <EvilIcons name="disc" size={13} color={theme.primaryColor}/>
+                                        <Feather name="disc" size={13} color={theme.primaryColor}/>
                                         <Text style={styles.liveClassText}>Live Now</Text>
                                     </View>
                                 </TouchableOpacity>
@@ -1048,13 +1048,13 @@ class InstituteView extends React.Component {
     }
 
     render() {
-      console.log(this.props)
+   
       this.updateComponent()
         const  {institute,loadingInstitute} = this.state;
-        console.log(institute&&this.props.categories.filter(item=>item.id==institute.category)[0].name)
+ 
         return (
             <PageStructure 
-                iconName={"chevron-left"}
+                iconName={"arrow-left"}
                 btnHandler={() => {
                     if(this.props.navigation.canGoBack())
                     {
@@ -1062,19 +1062,17 @@ class InstituteView extends React.Component {
                     }else
                     {
                         this.props.navigation.navigate("Home")
-                    }
-                    
-                
+                    } 
                 }}
                 catInHeader={false}
                 titleonheader={institute&&this.props.categories.filter(item=>item.id==institute.category)[0].name}
                 noBottomTab={true}
-                noNotificationIcon={false}
+                noNotificationIcon={true} title
                 rightIconOnPress={()=>{this.setState({modalVisible:true})}} 
                 nosearchIcon={true}
                 pinIconName={!this.state.checkPinned?("paperclip"):("link")}
                 pinUnpinIcon={true}
-                searchReplace={true}
+                searchReplace={false}
                 showShareIcon={true}
             > 
             {loadingInstitute?
@@ -1110,6 +1108,23 @@ class InstituteView extends React.Component {
                                 </View>
                             </View>
                             {/* <EvilIcons name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}  onPress = {() => {this.toggleModal(true)}}/> */}
+                            <View>
+                               
+
+                                {this.state.subscribe?(
+                                            <TouchableWithoutFeedback onPress={() =>unsubscribe(this.state.studentId,this.state.instituteId,this.unsubscribeCallback)}>
+                                                 <View style={{backgroundColor: theme.secondaryColor,padding:5,paddingHorizontal:10,borderRadius:15,alignItems: 'center'}}>
+                                                         <Text style={{fontFamily: 'Raleway_600SemiBold',color: theme.primaryColor}}>Un Follow</Text>
+                                                 </View>
+                                             </TouchableWithoutFeedback>
+                                            ):(
+                                                <TouchableWithoutFeedback  onPress={() =>subscribe(this.state.studentId,this.state.instituteId,this.subscribeCallback)}>
+                                                    <View style={{backgroundColor: theme.secondaryColor,padding:5,paddingHorizontal:10,borderRadius:15,alignItems: 'center'}}>
+                                                            <Text style={{fontFamily: 'Raleway_600SemiBold',color: theme.primaryColor}}>Follow</Text>
+                                                    </View>
+                                                </TouchableWithoutFeedback>
+                                            )}
+                            </View>
                         </View>
                         <View style={styles.body}>
                             <View style={styles.btnRow}>

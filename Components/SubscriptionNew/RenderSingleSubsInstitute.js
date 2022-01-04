@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Modal, TouchableWithoutFeedback} from 'react-native';
 // import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import {theme,screenMobileWidth, dataLimit,serverBaseUrl, imageProvider} from '../config'
+import {theme,screenMobileWidth, dataLimit,serverBaseUrl, imageProvider, numFormatter} from '../config'
 import { EvilIconsns } from '@expo/vector-icons';
 import {connect } from 'react-redux'
 import {subscriptionNew} from '../../FakeDataService/FakeData'
@@ -64,18 +64,20 @@ class RenderSingleSubsInstitute extends React.Component {
     render() {
         return(
             <View style={[this.state.hide?({display: 'none'}):(null)]}>
-                <TouchableOpacity style={{marginBottom: '5%'}} onPress={()=>this.redirectTo(this.props.item.id)}>
+                <TouchableWithoutFeedback style={{marginBottom: '5%'}} onPress={()=>this.redirectTo(this.props.item.id)}>
                     <View style={styles.instituteheader}>
                         {CardView(
                             <Image source={{uri:imageProvider(this.props.item.logo)}} style={styles.instituteheaderLogo}/>
                             ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:100,borderRadius:15}):({width:200,height:150})])
                         } 
                         <View style={styles.instituteheaderMeta}>
-                            <TouchableWithoutFeedback style={{display: 'flex', flexDirection: 'row'}} >
-                                <Text style={styles.instituteheaderText}>{this.props.item.name}</Text>
-                            </TouchableWithoutFeedback>
-                            <Text style={styles.instituteDirector}>{this.props.item.directorName}</Text>
-                            <View style={styles.instituteRatingView}>
+                            <View style={{alignItems: 'center',flexDirection: 'column'}}>
+                                <Text style={styles.instituteheaderText}>{this.props.item.name}</Text>                          
+                                <Text style={styles.follower}>{numFormatter(this.props.item.followersCount)} Followers</Text>
+
+                            </View>
+                            {/* <Text style={styles.instituteDirector}>{this.props.item.directorName}</Text> */}
+                            {/* <View style={styles.instituteRatingView}>
                                 <AirbnbRating 
                                     starContainerStyle={styles.instituteRating} 
                                     count={5}
@@ -87,16 +89,17 @@ class RenderSingleSubsInstitute extends React.Component {
                                     showRating={false}
                                 />
                                 <Text style={styles.voteCount}>{this.props.item.totalRatingCount>0?(this.props.item.totalRating/this.props.item.totalRatingCount):(0)}</Text>
-                            </View>
-                            <View style={styles.followerView}>
-                                <Text style={styles.follower}>{this.props.item.followersCount} Followers</Text>
+                            </View> */}
+                            <View style={styles.btnView}>
+                               <Text style={{color:theme.primaryColor,fontFamily:'Raleway_600SemiBold'}}>Latest Course</Text>
                             </View>
                         </View>
-                        <TouchableOpacity onPress={()=>{this.setState({modalVisible:true})}}>
+                        {/* <TouchableOpacity onPress={()=>{this.setState({modalVisible:true})}}>
                             <EvilIconsns name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     </View>
-                </TouchableOpacity>
+                </TouchableWithoutFeedback>
+                
                 <View style = {styles.container}>
                     <Modal animationType = {"fade"} 
                             transparent = {true}
@@ -166,9 +169,9 @@ instituteheader:
         instituteheaderText:
         {
             flex:1,
-            flexWrap:'wrap',
-            fontWeight: 'bold',
-            fontSize:16,
+            flexWrap:'wrap', 
+            fontFamily: 'Raleway_700Bold',
+            fontSize:19,
 
         },  
         instituteDirector:
@@ -194,21 +197,22 @@ instituteheader:
                 fontWeight:'bold',
 
             },
-        followerView:
+        btnView:
         {
-            backgroundColor: theme.primaryColor,
-            borderColor: theme.labelOrInactiveColor, 
+            backgroundColor: theme.accentColor,
+            borderColor: theme.accentColor, 
             borderWidth:1,
-            padding: 5,
-            borderRadius: 5,
+            padding: 3,
+            borderRadius: 10,
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
+            marginTop:'auto'
         },
             follower:
             {
                 color: theme.blueColor, 
                 fontWeight: 'bold',
-                fontSize: 16
+                fontSize: 18
             }
 
 })

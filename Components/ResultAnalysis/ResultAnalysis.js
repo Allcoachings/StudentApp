@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList,BackHandler, Image,Platform, ScrollView} from 'react-native';
+import { Text,View,StyleSheet,Dimensions,TouchableOpacity,FlatList,BackHandler, Image,Platform, ScrollView, TouchableWithoutFeedback} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import { theme, Assets } from '../config';
 import { EvilIcons } from '@expo/vector-icons';
@@ -8,23 +8,25 @@ import Solutions from '../Solutions/Solutions'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import { saveTestResult } from '../Utils/DataHelper/TestSeriesResponse';
+import CardView from '../Utils/CardView';
+const width = Dimensions.get('window').width
 let backhandler;
 class ResultAnalysis extends React.Component {
     state={
        data:[
            {
                id: '1',
-               type: 'CORRECT',
+               type: 'Correct',
                que: this.props.testSeriesData.brief.correctQues
            },
            {
                id: '2',
-               type: 'WRONG',
+               type: 'Wrong',
                que: this.props.testSeriesData.brief.wrongQues
            },
            {
                id: '3',
-               type: 'SKIPPED',
+               type: 'Skipped',
                que: this.props.testSeriesData.brief.Unattempted
            },
        ]
@@ -85,17 +87,17 @@ class ResultAnalysis extends React.Component {
                 this.setState({data:[
                     {
                         id: '1',
-                        type: 'CORRECT',
+                        type: 'Correct',
                         que: this.props.testSeriesData.brief.correctQues
                     },
                     {
                         id: '2',
-                        type: 'WRONG',
+                        type: 'Wrong',
                         que: this.props.testSeriesData.brief.wrongQues
                     },
                     {
                         id: '3',
-                        type: 'SKIPPED',
+                        type: 'Skipped',
                         que: this.props.testSeriesData.brief.Unattempted
                     },
                 ]})
@@ -104,43 +106,39 @@ class ResultAnalysis extends React.Component {
 
     renderBoxView=({item})=>{ 
         return(
-            <View style={[styles.boxView, {flex:1/3},
-                item.type=='CORRECT'?
-                ({backgroundColor: theme.accentColor+"0D"}):(
-                    item.type=='WRONG'?({backgroundColor: theme.redColor+"0D"}):(
-                        item.type=='SKIPPED'?(
-                            {backgroundColor: theme.labelOrInactiveColor+"26"}):(null)))]}>
-                <View style={[styles.iconView, 
-                item.type=='CORRECT'?
+        CardView(
+            <>
+                {/* <View style={[styles.iconView, 
+                item.type=='Correct'?
                 ({backgroundColor: theme.accentColor+"33"}):(
-                    item.type=='WRONG'?({backgroundColor: theme.redColor+"33"}):(
-                        item.type=='SKIPPED'?(
+                    item.type=='Wrong'?({backgroundColor: theme.redColor+"33"}):(
+                        item.type=='Skipped'?(
                             {backgroundColor: theme.labelOrInactiveColor}):(null)))]}>
-                    {item.type=='CORRECT'?(
+                    {item.type=='Correct'?(
                         <EvilIcons name="check" size={18}/>
                     ):(
-                        item.type=='WRONG'?(
+                        item.type=='Wrong'?(
                             <EvilIcons name="x" size={18}/>
                         ):(
-                            item.type=='SKIPPED'?(
+                            item.type=='Skipped'?(
                                 <EvilIcons name="minus" size={18}/>
                             ):(null)))}
-                </View>
+                </View> */}
                 <View style={styles.typeView}>
-                    <Text style={[styles.typeText, 
-                        item.type=='CORRECT'?
-                        ({color: theme.accentColor}):(
-                            item.type=='WRONG'?({color: theme.redColor}):(
-                                item.type=='SKIPPED'?(
-                                    {color: theme.greyColor}):(null)))]}>{item.type}</Text>
+                    <Text style={[styles.typeText,{fontSize:20,color:theme.primaryColor,fontFamily: 'Raleway_600SemiBold'}]}>{item.type}</Text>
                 </View>
                 <View style={styles.quesNoView}>
-                    <Text style={styles.quesNoText}>{item.que}</Text>
+                    <Text style={[styles.quesNoText,{fontSize:25,color:theme.primaryColor,}]}>{item.que}</Text>
                 </View>
-                <View style={styles.quesView}>
-                    <Text style={styles.quesText}>Ques</Text>
-                </View>
-            </View>
+                 
+            </>,
+            [styles.boxView, {flex:1/3},
+                item.type=='Correct'?
+                ({backgroundColor: theme.resultScreen.correctColor}):(
+                    item.type=='Wrong'?({backgroundColor: theme.resultScreen.wrongColor}):(
+                        item.type=='Skipped'?(
+                            {backgroundColor: theme.resultScreen.skippedColor   }):(null)))],1
+            )
         )
     }
     formatTimer =(seconds)=>
@@ -202,10 +200,12 @@ class ResultAnalysis extends React.Component {
         let timeTaken = (this.props.testSeriesData.series.timeDuration*60)-this.props.testSeriesData.brief.timeLeft 
         return(
             <PageStructure
-                iconName="navicon"
+                iconName="arrow-left"
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
                 titleonheader={"Result Analysis"}
                 notificationreplaceshare={"share-2"}
+                noNotificationIcon={true}
+                nosearchIcon={true}
             >
                 <ScrollView>
                     {!this.state.savedTestResult?(
@@ -224,37 +224,35 @@ class ResultAnalysis extends React.Component {
                             {/* <View style={styles.resultAnalysisView}>
                                 <Text style={styles.resAnText}>Result Analysis</Text>
                             </View> */}
-                            
-                            <View style={styles.userNameView}>
-                                <Text style={styles.userNameHiText}>Hi,</Text>
-                                <Text style={styles.userNameText}>{userInfo.name}</Text>
-                            </View>
+                            <View style={styles.headSection}>
+                                <View style={styles.userNameView}>
+                                    <Text style={styles.userNameHiText}>Hi,</Text>
+                                    <Text style={styles.userNameText}>{userInfo.name}</Text>
+                                </View>
 
-                            {/* <View style={styles.imageView}>
-                                <Image style={styles.img} source={{uri: 'https://picsum.photos/200'}}/>
-                            </View> */}
-                            
-                            <View style={styles.rowContainer}>
-                                <View style={styles.scoreView}>
-                                    <Text style={styles.scoreRankText}>SCORE</Text>
-                                    <View style={styles.marksView}>
-                                        <Text style={styles.obtainedMarks}>{testSeriesData.brief.score}</Text>
-                                        <Text> / </Text>
-                                        <Text style={styles.totalMarks}>{testSeriesData.series.maxMarks}</Text>
+                                {/* <View style={styles.imageView}>
+                                    <Image style={styles.img} source={{uri: 'https://picsum.photos/200'}}/>
+                                </View> */}
+                                
+                                <View style={styles.rowContainer}>
+                                    <View style={styles.scoreView}>
+                                        <Text style={styles.scoreRankText}>Score</Text>
+                                        <View style={styles.marksView}>
+                                            <Text style={styles.obtainedMarks}>{testSeriesData.brief.score}</Text>
+                                            <Text> out of {testSeriesData.series.maxMarks} </Text> 
+                                        </View>
+                                    </View>
+                                    <View style={styles.rankView}>
+                                        <Text style={styles.scoreRankText}>RANK</Text>
+                                        <View style={styles.marksView}>
+                                            <Text style={styles.obtainedMarks}>{this.state.rank}</Text>
+                                            
+                                            <Text> out of {this.state.totalStudent} </Text>
+                                            
+                                        </View>
                                     </View>
                                 </View>
-                                <View style={styles.rankView}>
-                                    <Text style={styles.scoreRankText}>RANK</Text>
-                                    <View style={styles.marksView}>
-                                        <Text style={styles.obtainedMarks}>{this.state.rank}</Text>
-                                        <Text> / </Text>
-                                        <Text style={styles.totalMarks}>{this.state.totalStudent}</Text>
-                                    </View>
-                                </View>
                             </View>
-
-                            <View style={{borderWidth:0.3, borderStyle:'dashed', borderRadius:1,borderColor:'black', marginTop: 10, marginBottom: 10}}></View>
-
                             <View style={styles.outerBoxView}>
                                 <FlatList 
                                     data={this.state.data} 
@@ -264,34 +262,55 @@ class ResultAnalysis extends React.Component {
                                     ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                                 />
                             </View>
+                            <View style={{flexDirection: 'row',backgroundColor: theme.resultScreen.sectionBackground,paddingVertical:20}}>
+                                <View style={styles.colContainer}>
+                                    {CardView(
+                                        <View style={styles.rowView}>
+                                            <View style={styles.percentileView}>
+                                                <Image source={Assets.resultScreen.percentileIcon} style={{width:20,height: 20,}}/>
+                                                <Text style={styles.titleText}>PERCENTILE</Text>
+                                            </View>
+                                            <Text style={styles.moreText}>{this.state.percentile}%</Text>
+                                            {/* <Text style={styles.moreText}>{'50%'}</Text> */}
+                                        </View>,{backgroundColor:theme.resultScreen.sectionBackground,padding:10,borderRadius:10,height:40,justifyContent: 'center',margin:5,marginBottom:10,width:(width/1.7)},3
+                                    )}
 
-                            <View style={styles.colContainer}>
-                                <View style={styles.rowView}>
-                                    <View style={styles.percentileView}>
-                                        <EvilIcons name="percent" size={20} style={{color: theme.addMoreButtonColor}}/>
-                                        <Text style={styles.titleText}>PERCENTILE</Text>
-                                    </View>
-                                    <Text style={styles.moreText}>{this.state.percentile}%</Text>
-                                    {/* <Text style={styles.moreText}>{'50%'}</Text> */}
-                                </View>
-                                <View style={styles.rowView}>
-                                    <View  style={styles.percentileView}>
-                                        <EvilIcons name="crosshair" size={20} style={{color: theme.accentColor}}/>
-                                        <Text style={styles.titleText}>ACCURACY</Text>
-                                    </View>  
-                                    <Text style={styles.moreText}>{this.state.accuracy}%</Text>
-                                </View>
-                                <View style={styles.rowView}>
-                                    <View style={styles.percentileView}>
-                                        <EvilIcons name="clock" size={20} style={{color: theme.yellowColor}}/>
-                                        <Text style={styles.titleText}>TIME TAKEN</Text>
-                                    </View>
-                                    <Text style={styles.moreText}>{this.formatTimer(timeTaken)}</Text>
-                                    {/* <Text style={styles.moreText}>{'00:01:12'}</Text> */}
-                                </View>
-                            </View> 
+                                    {CardView(
+                                        <View style={styles.rowView}>
+                                            <View style={styles.percentileView}>
+                                                <Image source={Assets.resultScreen.accuracy} style={{width:20,height: 20,}}/>
+                                                <Text style={styles.titleText}>ACCURACY</Text>
+                                            </View>
+                                            <Text style={styles.moreText}>{this.state.accuracy}%</Text>
+                                            {/* <Text style={styles.moreText}>{'50%'}</Text> */}
+                                        </View>,{backgroundColor:theme.resultScreen.sectionBackground,padding:10,borderRadius:10,height:40,justifyContent: 'center',margin:5,marginBottom:10,width:(width/1.7)},3
+                                    )}
+                                    {CardView(
+                                        <View style={styles.rowView}>
+                                            <View style={styles.percentileView}>
+                                                <Image source={Assets.resultScreen.timeTaken} style={{width:20,height: 20,}}/>
+                                                <Text style={styles.titleText}>Time Taken</Text>
+                                            </View>
+                                            <Text style={styles.moreText}>{this.formatTimer(timeTaken)}</Text>
+                                            {/* <Text style={styles.moreText}>{'50%'}</Text> */}
+                                        </View>,{backgroundColor:theme.resultScreen.sectionBackground,padding:10,borderRadius:10,height:40,justifyContent: 'center',margin:5,marginBottom:10,width:(width/1.7)},3
+                                    )}
+                                    
+                                
+                                </View> 
+                            </View>
                         </View> 
-                        <Solutions/>
+
+                        {this.state.viewSolutions?(
+                            <Solutions/>
+                        ):(
+                            <TouchableWithoutFeedback onPress={()=>this.setState({viewSolutions:true})}>
+                                <View style={{padding:10,backgroundColor:theme.accentColor,width:width-20,margin:10,borderRadius:5,alignItems: 'center',alignSelf:'center'}}>
+                                    <Text style={{color: theme.primaryColor,fontSize:16,fontFamily: 'Raleway_600SemiBold'}}>View Solution</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
+                        )}
+                        
                         </>
                     )}
             </ScrollView>
@@ -305,7 +324,7 @@ const styles = StyleSheet.create({
     {
         flex: 1,
         flexDirection: 'column',
-        padding:10,
+        
     },
         headView:
         {
@@ -329,23 +348,28 @@ const styles = StyleSheet.create({
                 fontSize: 24,
                 fontWeight: '700'
             },
+        headSection:
+        {
+            backgroundColor:theme.resultScreen.sectionBackground
+        },
         userNameView:
         {
             display: 'flex',
-            flexDirection: 'row',
-            marginTop: '6%',
-            marginLeft: 10
+            flexDirection: 'row', 
+            marginLeft: 10,
+            backgroundColor: theme.resultScreen.sectionBackground
         },
             userNameHiText:
             {
                 fontSize: 18,
-                fontFamily: 'Raleway_400Regular',
+                fontFamily: 'Raleway_700Bold',
                 color: theme.greyColor
             },
             userNameText:
             { 
                 fontSize: 18, 
-                fontFamily: 'Raleway_600SemiBold',
+                fontFamily: 'Raleway_700Bold',
+                color: theme.greyColor
             },
         imageView:
         {
@@ -363,27 +387,32 @@ const styles = StyleSheet.create({
             display: 'flex',
             flexDirection: 'row',
             marginTop: 10,
-            marginLeft: 5
+            marginLeft: 5,
+            justifyContent: 'center'
         },
             scoreView:
             {
                 display: 'flex',
                 flexDirection: 'column',
+                alignItems: 'center'
             },
+
                 scoreRankText:
                 {
-                    fontSize: 16,
-                    color: theme.greyColor
+                    fontSize: 12,
+                    color: theme.greyColor,
+                    margin:5
+
                 },
                 marksView:
                 {
                     display: 'flex',
-                    flexDirection: 'row',
+                    flexDirection: 'column',
                     alignItems: 'center'
                 },
                     obtainedMarks:
                     {
-                        fontSize: 24,
+                        fontSize: 30,
                         fontWeight: '700',
                     },
                     totalMarks:
@@ -393,7 +422,8 @@ const styles = StyleSheet.create({
                     },
             rankView:
             {
-                marginLeft: '20%'
+                marginLeft: '20%',
+                alignItems: 'center'
             },
         outerBoxView:
         {
@@ -405,15 +435,14 @@ const styles = StyleSheet.create({
         },
             boxView:
             {
-                paddingTop:20,
-                paddingBottom:20,
-
+                
+                height:110,
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
+                alignItems: 'center', 
                 borderRadius: 10,
-                margin: 5
+                margin: 5,
+                marginVertical:30,
             },
             iconView:
             {
@@ -430,7 +459,8 @@ const styles = StyleSheet.create({
                 },
             quesNoView:
             {
-                marginTop: 5
+                marginTop: 'auto',marginBottom:'auto',
+                
             },
                 quesNoText:
                 {
@@ -449,26 +479,25 @@ const styles = StyleSheet.create({
         {
             display: 'flex',
             marginTop: 10,
-            flexDirection: 'column'
+            flexDirection: 'column',
         },
             rowView:
             {
                 display: 'flex',
-                flexDirection: 'row',
-                marginTop: '10%',
+                flexDirection: 'row', 
                 justifyContent: 'space-between'
             },
                 percentileView:
                 {
                     display: 'flex',
                     flexDirection: 'row',
+                    alignItems: 'center'
                    
                 },
                     titleText:
                     {
                         fontSize: 18,
-                        marginLeft: 10,
-                        color: theme.textColor
+                        marginLeft: 10, 
                     },
                 moreText:
                 {

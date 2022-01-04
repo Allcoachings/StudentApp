@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, TouchableWithoutFeedback} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {insTestSeries} from '../../FakeDataService/FakeData'
 import { theme, dataLimit,serverBaseUrl, Assets, imageProvider } from '../config';
@@ -54,6 +54,19 @@ class InsTestSeriesList extends React.Component {
         fetch_Banners("test", this.bannerCallback)
     }
 
+    updateComponent=()=>
+    {
+        if(this.props.route.params.id!=this.state.id)
+        {
+            this.setState({
+             id:this.props.route.params.id, 
+             offset:0
+        },()=>
+            {
+                fetchTestSeriesBySubCategory(this.state.id, this.state.offset, dataLimit,this.SubCatTestSeriesCallback)
+            })
+        }
+    }
     
     SubCatTestSeriesCallback=(response)=>{
         if(response.status==200)
@@ -87,40 +100,42 @@ class InsTestSeriesList extends React.Component {
         console.log(imageProvider(item.bannerImageLink))
         return(
             <TouchableOpacity style={styles.bannerItemContainer}>
-                    <Image source={{uri: imageProvider(item.bannerImageLink)}} style={styles.bannerImage}/>
+                    <Image source={{uri: imageProvider(item.bannerImageLink)}} style={[styles.bannerImage,{width:this.props.screenWidth-20}]}/>
             </TouchableOpacity  >
         )
     }
 
-    renderSeries=({item})=>{
+    renderSeries=({item})=>{  
         return(
-            CardView(
-                <View  style={styles.singleItem}>
-                    <View style={styles.imageView}>
+            <TouchableWithoutFeedback onPress={()=>this.props.navigation.navigate("SeriesList", {id: item.id, catName: item.name, image: item.image})}>
+                <View style={{flexDirection: 'row',alignItems: 'center',marginBottom: 10,marginTop: 10}}>
+                    {CardView( 
                         <Image source={{uri: imageProvider(item.image)}} style={styles.itemImage}/>
+                    ,{width:120,height:120,borderRadius:15,borderColor: theme.labelOrInactiveColor,borderWidth:1,alignItems: 'center',justifyContent: 'center'},5
+                    )}
+                    <View style={{marginLeft:10,alignItems: 'center'}}>
+                        <View style={styles.titleView}>
+                            <Text numberOfLines={2} style={styles.itemTitle}>{item.name}</Text>
+                        </View>
+                        <View style={styles.countView}>
+                            {/* <Text style={styles.itemCount}>{item.count}</Text> */}
+                            <Text style={styles.itemCount}>10 Question Paper</Text>
+                        </View>
                     </View>
-                    <View style={styles.titleView}>
-                        <Text style={styles.itemTitle}>{item.name}</Text>
-                    </View>
-                    <View style={styles.countView}>
-                        <Text style={styles.itemCount}>{item.count}</Text>
-                    </View>
-                    <TouchableOpacity onPress={()=>this.props.navigation.navigate("SeriesList", {id: item.id, catName: this.props.route.params.catName, image: item.image})} style={styles.btnView}>
-                            <Text style={styles.cardButton}>View Test Series</Text>
-                    </TouchableOpacity>
-                </View>, { margin:7,width:((this.props.screenWidth/3.5)),borderWidth:1,borderColor:theme.labelOrInactiveColor,borderRadius:15 }
-        )
+                    
+                </View>
+            </TouchableWithoutFeedback>
         )
     }
 
     render() {
         return(
             <PageStructure
-                iconName={"chevron-left"}
+                iconName={"arrow-left"}
                 btnHandler={() => {this.props.navigation.goBack()}} 
                 titleonheader={this.props.route.params.catName}
                 notificationreplaceshare={"share-2"}
-                nosearchIcon={true}
+                nosearchIcon={false}
                 
                 // catInHeader={false}
                 
@@ -138,15 +153,24 @@ class InsTestSeriesList extends React.Component {
                             style={{height: 60, width: 60, borderRadius: 30}}
                         />
                     </View> */}
-                      <View style={styles.rowContainer}>
-                        <FlatList 
-                            data={this.state.banner} 
-                            renderItem={this.renderBannerList} 
-                            keyExtractor={(item)=>item.id}
-                            horizontal={true} 
-                            showsHorizontalScrollIndicator={false}
-                            ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
-                        />
+                    {this.state.banner.length>0?(
+                        <View style={styles.rowContainer}>
+                            <FlatList 
+                                data={this.state.banner} 
+                                renderItem={this.renderBannerList} 
+                                keyExtractor={(item)=>item.id}
+                                horizontal={true} 
+                                showsHorizontalScrollIndicator={false}
+                                ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                            />
+                        </View>
+                    ):(null)}
+                    <View style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'flex-start',margin:15,}}>
+                            {CardView(<Image source={{uri: imageProvider(this.props.route.params.image)}} style={{height:80,width:80,borderRadius:15}}/>,{height:80,width:80,borderRadius:15})}
+                            <View style={{flexDirection: 'column',marginLeft: 10}}> 
+                                <Text numberOfLines={1} style={{fontSize:25,fontFamily: 'Raleway_700Bold'}}>{this.props.route.params.catName}</Text>
+                                <Text numberOfLines={1} style={{fontSize:12,fontFamily: 'Raleway_600SemiBold'}}>{this.props.route.params.subCatName}</Text>
+                            </View>
                     </View>
                     
                     <View style={styles.seriesView}>
@@ -155,8 +179,7 @@ class InsTestSeriesList extends React.Component {
                         ):(
                             <FlatList
                                 data={this.state.subCat}
-                                renderItem={this.renderSeries}
-                                numColumns={3}
+                                renderItem={this.renderSeries} 
                                 keyExtractor={(item) => item.id}
                                 ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                             />
@@ -190,9 +213,9 @@ const styles = StyleSheet.create({
             bannerImage:
             {
                 width:300,
-                height:140,
+                height:130,
                 borderRadius:10,
-                marginRight:10,
+                marginRight:10, 
             },
     seriesView:{
 
@@ -212,8 +235,8 @@ const styles = StyleSheet.create({
             } ,
                 itemImage:
                 {
-                    height: 45,
-                    width:60, 
+                    height: 110,
+                    width:110,  
                      
                 },
             titleView:
@@ -222,9 +245,9 @@ const styles = StyleSheet.create({
             }   , 
                 itemTitle:
                 {
-                    fontSize: 14, 
+                    fontSize: 16, 
                     padding: 2, 
-                    fontWeight: '700', 
+                     fontFamily: 'Raleway_700Bold',
                     color: theme.secondaryColor
                 },
             countView:
@@ -233,15 +256,16 @@ const styles = StyleSheet.create({
             },
                 itemCount: 
                 {
-                    fontSize: 10,
-                    // padding: 4, 
+                    fontSize: 12,
+                    padding: 4, 
+                    fontFamily: 'Raleway_600SemiBold',
                     color: theme.secondaryColor
                 },
             btnView:
             { 
                 borderRadius: 2, 
                 margin: 3,
-                backgroundColor: theme.accentColor
+                backgroundColor: theme.secondaryColor
             },
                 cardButton:
                 {

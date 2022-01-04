@@ -1,5 +1,5 @@
 import React, { Component ,useState,useRef} from 'react';
-import { EvilIcons } from '@expo/vector-icons';
+import { EvilIcons, MaterialIcons } from '@expo/vector-icons';
 import { View, Text,StyleSheet,ScrollView,TouchableOpacity,Keyboard,Dimensions,Image,TouchableWithoutFeedback, Modal, TextInput, ImageBackground,ToastAndroid} from 'react-native';
 import CardView from '../Utils/CardView';
 import AuthHeader from './AuthHeader';
@@ -53,8 +53,11 @@ class OtpVerification extends React.Component {
         {
             if(!this.state.loader)
             {
+
                 this.setState({loader:true})
+                this.setState({error:""})
                 generateOtp(this.state.phoneNumber,this.handleOtpGenerateCallBack)
+
             }
         }else
         {
@@ -147,9 +150,16 @@ class OtpVerification extends React.Component {
                 <View style={styles.container}>
                     <View style={{marginLeft:20,width:'100%'}}>
                         <Text style={{fontFamily:'Raleway_700Bold',color:theme.secondaryColor,fontSize:20,marginBottom:5}}>{this.state.mode=="mobile"?("Your mobile number"):("Verify OTP")}</Text>
-                        <Text style={{fontFamily:'Raleway_400Regular',color:theme.greyColor,marginBottom:8}}>
-                        {this.state.mode=="mobile"?("We'll send on OTP for Verification"):("We have sent it on "+this.state.phoneNumber)}
-                        </Text>
+
+                        <View style={{flexDirection:'row',marginBottom:8,alignItems: 'center'}}>
+                            <Text style={{fontFamily:'Raleway_400Regular',color:theme.greyColor}}>
+                            {this.state.mode=="mobile"?("We'll send on OTP for Verification"):("We've sent it on ")}
+                            </Text>
+                            <Text style={{color:theme.greyColor}}>
+                            {this.state.mode!="mobile"?("+91"+this.state.phoneNumber):(null)}
+                            </Text>
+                        </View>
+
                        
                     </View> 
                     {this.state.error?( 
@@ -186,7 +196,7 @@ class OtpVerification extends React.Component {
                             autoFocus
                         />):(
                             <OTPInputView
-                                style={{width: '100%', height: 80,color: theme.secondaryColor, marginLeft:20,borderRadius:10}}
+                                style={{width: '100%', height: 80,color: theme.btn_dark_background_color, marginLeft:20,borderRadius:10}}
                                 pinCount={6}
                                 code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
                                 onCodeChanged = {code => { this.checkNumber(code)}}
@@ -201,17 +211,30 @@ class OtpVerification extends React.Component {
 
                         {this.state.mode=="mobile"?(<View style={{margin:20}}>
                             <TouchableWithoutFeedback onPress={()=>{this.props.changeMode(2)}}>
-                                <View>
-                                    <Text style={{fontFamily:'Raleway_600SemiBold',fontSize:12,color:theme.greyColor}}>Login as Institute</Text> 
+                                <View style={{flexDirection:'row', alignItems: 'center'}}>
+                                    <Text style={{fontFamily:'Raleway_600SemiBold',fontSize:12,color:theme.greyColor}}>LOGIN WITH EMAIL</Text> 
+                                    <MaterialIcons name="chevron-right" size={15} color={theme.greyColor}/>
                                 </View>
                             </TouchableWithoutFeedback>
-                        </View>):(null)}
+                        </View>):(
+                            
+                            // <TouchableWithoutFeedback onPress={()=>{this.props.changeMode(2)}}>
+                                <View style={{flexDirection:'row', alignItems: 'center',marginBottom:20}}>
+                                    <Text style={{fontFamily:'Raleway_600SemiBold',fontSize:12,color:theme.textColor}}>Having trouble? Write to us at </Text> 
+                                    <TouchableWithoutFeedback onPress={()=>{}}>
+                                        <Text style={{fontFamily:'Raleway_700Bold',textDecorationLine: 'underline',fontSize:12,color:theme.greyColor}}>helo@allcoaching.com </Text> 
+                                    </TouchableWithoutFeedback>
+                                    
+                                </View>
+                            // </TouchableWithoutFeedback>
+                        )}
+
                         <TouchableWithoutFeedback onPress={this.state.mode=="mobile"?(this.handleResendBtnClick):(this.handleContinueBtnClick)} disabled={false}>
-                            <View style={[this.state.contBtnBg?({backgroundColor:theme.accentColor}):({backgroundColor:theme.greyColor}),{padding:15,borderRadius:10,alignItems: 'center',width:'95%'}]}>
+                            <View style={[this.state.contBtnBg?({backgroundColor:theme.btn_dark_background_color}):({backgroundColor:theme.greyColor}),{padding:15,borderRadius:10,alignItems: 'center',width:'95%'}]}>
                                 <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>{this.state.loader?(
                                     <ActivityIndicator color={theme.primaryColor} size={"small"}/>
-                                ):("Continue")}</Text>
-                            </View>
+                                ):(this.state.mode=="mobile"?"Continue":"Verify")}</Text>
+                            </View> 
                         </TouchableWithoutFeedback>
                     </View>
                 </View>
@@ -291,7 +314,7 @@ class OtpVerification extends React.Component {
                                     <TouchableWithoutFeedback onPress={()=>this.props.closeModal() }>
                                         <View style={styles.header}>
                                             {/* <AuthHeader/>                         */}
-                                            <EvilIcons name="chevron-left" size={20} color={theme.greyColor}/>
+                                            <MaterialIcons name="chevron-left" size={25} color={theme.greyColor}/>
                                         </View>
                                     </TouchableWithoutFeedback>
                                 {this.renderContent()}
@@ -354,16 +377,10 @@ const styles = StyleSheet.create({
             borderColor: theme.greyColor,
           },
          
-          underlineStyleBase: {     
-            // width: 30,
-            // paddingLeft:10,
-            // paddingRight:10,
-            // height: 60,
-            // borderWidth: 0,
-            // color:'black',
-            // borderBottomWidth: 1,
+          underlineStyleBase: {      
             margin:5,
-            borderRadius:10
+            borderRadius:10,
+            color: theme.greyColor
           },
          
           underlineStyleHighLighted: {

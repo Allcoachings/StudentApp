@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions, findNodeHandle,UIManager, Modal} from 'react-native';
 import { theme, dataLimit, serverBaseUrl, downloadIcon, numFormatter, imageProvider } from '../config';
-import { EvilIcons, MaterialIcons } from '@expo/vector-icons';
+import { EvilIcons, Feather, MaterialIcons } from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import { Picker } from 'native-base';
@@ -12,6 +12,8 @@ import { updatePlaylist } from '../Utils/DataHelper/Course';
 import RatingBar from '../Utils/RatingBar';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import { setDownloadingItem,setDownloadingItemProgress,removeDownloadingItem } from '../Actions';
+import Arrow_down_circle_black from '../Utils/Icons/Arrow_down_circle_black';
+import Lock from '../Utils/Icons/Lock';
 import NotEnrolledModal from './NotEnrolledModal'
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
@@ -156,53 +158,63 @@ class RenderVideo extends React.Component {
                         )):(this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation,videoTitle:this.props.item.name,postingTime:this.props.item.date,item:this.props.item}))}
                     } >
                         <Image source={{uri:imageProvider(this.props.item.videoThumb)}} style={styles.videoImage}/>
+                        {this.props.mode!="offline"?(
+                            <View style={{position: 'absolute',height:30,width:30,backgroundColor:theme.secondaryColor,borderRadius:15,right:5,top:5}}>
+                                <Lock height={20} width={20}/>
+                            </View>
+                        ):(null)}
+                        
                     </TouchableOpacity>
                     <View style={styles.videoColumn}>
                         <View>
-                            <Text style={styles.videoText}>{this.props.item.name}</Text>
+                            <Text numberOfLines={2} style={styles.videoText}>{this.props.item.name}</Text>
                         </View>
                         <View>
-                            <Text style={styles.videoText}>{this.props.item.description}</Text>
+                            <Text numberOfLines={2} style={styles.videoText}>{this.props.item.description}</Text>
                         </View>
-                        <View>
-                            <Text style={styles.videoText}>{numFormatter(this.props.item.views)+" views • "+moment(this.props.item.date).fromNow()}</Text>
+                        <View style={{flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center'}}>
+                            <Text>{numFormatter(this.props.item.views)+" views • "+moment(this.props.item.date).fromNow()}</Text>
+                            {this.props.downloadMode?(
+                                <View style={{flexDirection: 'column',    marginRight:10}}>                  
+                                    {this.state.savingItem?(
+                                        <View style={{width:30,height:30,marginBottom: 8,alignItems: 'center'}}>
+                                            <CircularProgress
+                                            value={this.state.downloadProgress}
+                                            radius={17}
+                                            inActiveStrokeColor={theme.greyColor}
+                                            inActiveStrokeOpacity={0.2}
+                                            inActiveStrokeWidth={5}
+                                            activeStrokeWidth={5}
+                                            textColor={'#000'}
+                                            valueSuffix={'%'}
+                                            />
+                                        </View>
+
+                                    ):(
+                                            this.state.downloadProgress==100?(
+                                                <MaterialIcons name="check-circle" size={25}/>
+                                                
+                                            ):(
+                                                
+                                                    // <TouchableOpacity onPress={()=>this.props.studentEnrolled?(this.download(this.props.item, 'video')):(Toast.show('You Have Not Enrolled For This Course.'))} style={{marginBottom: 8}}> 
+                                                    <TouchableOpacity onPress={()=>this.download(this.props.item, 'video')} style={{marginBottom: 8}}> 
+                                                        <View >
+                                                            {/* <Image source={downloadIcon} style={{height: 25, width: 25}} /> */}
+                                                            <Arrow_down_circle_black/>
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                    
+                                                
+                                            )
+                                    )}
+                                </View>
+                            ):(null)}
                         </View>
                     </View>
-                    {this.props.downloadMode?(
-                        <View style={{flexDirection: 'column',  marginLeft: 'auto', justifyContent: 'space-between', marginRight:10}}>                  
-                            {this.state.savingItem?(
-                                <View style={{width:40,height:40}}>
-                                    <CircularProgress
-                                    value={this.state.downloadProgress}
-                                    radius={20}
-                                    inActiveStrokeColor={theme.accentColor}
-                                    inActiveStrokeOpacity={0.2}
-                                    inActiveStrokeWidth={5}
-                                    activeStrokeWidth={5}
-                                    textColor={'#000'}
-                                    valueSuffix={'%'}
-                                    />
-                                </View>
-
-                            ):(
-                                    this.state.downloadProgress==100?(
-                                        <MaterialIcons name="check-circle" size={20}/>
-                                    ):(
-                                        
-                                            <TouchableOpacity onPress={()=>this.props.studentEnrolled?(this.download(this.props.item, 'video')):(Toast.show('You Have Not Enrolled For This Course.'))} style={{marginBottom: 8}}>
-                                                <View >
-                                                    <Image source={downloadIcon} style={{height: 25, width: 25}} />
-                                                </View>
-                                            </TouchableOpacity>
-                                            
-                                        
-                                    )
-                            )}
-                        </View>
-                    ):(null)}
+                   
                         {this.props.actions?(
                         <TouchableOpacity style={{marginLeft: 'auto', marginTop: 8}} onPress={()=>this.showThreeMenu()}>
-                                <EvilIcons name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
+                                <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
                         </TouchableOpacity>):(null)}
                     {this.state.showModal?(
                         <Modal
@@ -255,11 +267,15 @@ const styles = StyleSheet.create({
         {
             marginTop: 6,
             marginLeft: 5,
-            flexDirection: 'column'
+            flexDirection: 'column',
+            flexWrap:'wrap',
+            width:(width-140)
         },
         videoText:
         {
             marginBottom: 5,
+            flexWrap:'wrap',
+            width:(width-140)
         },
   
 

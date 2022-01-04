@@ -9,10 +9,11 @@ export const theme={
     secondaryColor: "#000000",
     appBackgroundColor:"#fff",
     accentColor:"#13b989",
+    btn_dark_background_color:"#3c4952",
     labelOrInactiveColor:'#D3D3D3',
-    greyColor:'#808080',
+    greyColor:'#3c4952',
     addMoreButtonColor: '#00CED1',
-    textColor: '#404040',
+    textColor: '#808080',
     redColor: '#FF0000',
     yellowColor: '#FFFF00',
     blueColor: '#1E90FF',
@@ -23,6 +24,14 @@ export const theme={
     purpleColor: '#f4ebf9',
     darkPurpleColor: '#7859c5',
     buttonColor : '#ff4f5e',
+    resultScreen:{
+        sectionBackground:'#eefff9',
+        correctColor:'#0bdac0',
+        wrongColor:'#f8c0c3',
+        skippedColor:'#cbc9ca'
+
+    },
+    transparentColor:"#FFFFFF00"
 }
 
 //paytm config 
@@ -58,6 +67,24 @@ export const Assets = {
     {
         noRes1: require('../assets/noresult1.png'),
     },
+    resultScreen:
+    {
+        percentileIcon:require('../assets/speedometer.png'),
+        accuracy: require('../assets/accurate.png'),
+        timeTaken: require('../assets/clock.png'),
+    },
+    profile:
+    {
+        profileIcon: require('../assets/profile.png'),
+        downloadIcon: require('../assets/cloud-computing.png'),
+        helpNsupport:require('../assets/customer-service.png'),
+        enrollment: require('../assets/enrollment.png'),
+        notifications: require('../assets/notifications.png'),
+        people: require('../assets/people.png'),
+        recents: require('../assets/recent.png'),
+        settings: require('../assets/settings.png')
+
+    }
 }
 
 

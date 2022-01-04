@@ -10,7 +10,7 @@ import {
   ScrollView,
   FlatList
 } from "react-native";
-import { EvilIcons } from "@expo/vector-icons";
+import { EvilIcons, Feather } from "@expo/vector-icons";
 import { theme, appLogo, Assets, imageProvider } from "../../config";
 import CardView from "../../Utils/CardView";
 import CustomActivtiyIndicator from '../../Utils/CustomActivtiyIndicator';
@@ -41,25 +41,24 @@ class HeaderMobile extends React.Component {
 
   closeModal=()=> this.setState({search:false})
   render() {
-     
+     console.log("header replace ",this.props.replaceHeader )
     return (
       // <KeyboardAwareScrollView>
       <View style={[styles.container,!this.props.catInHeader?({marginTop: 10,marginBottom:5}):(null)]}>
         {this.props.replaceHeader ? (
-          this.props.headerComponent
+            this.props.headerComponent
         ) : (
           <>
             {(
               <View style={{flexDirection: 'row',alignItems: 'center'}}>
              
              {this.props.iconName?(
-              <TouchableOpacity
-                  
-                    onPress={this.props.btnHandler}
-                    >
-                    <EvilIcons
+              <TouchableOpacity 
+                  onPress={this.props.btnHandler}
+              >
+                    <Feather
                         name={this.props.iconName}
-                        size={25}
+                        size={20}
                         color={theme.secondaryColor}
                     />
                     </TouchableOpacity> 

@@ -123,15 +123,16 @@ class Feed extends React.Component {
 
     render() {
         return(
-            <PageStructure
-                iconName={"chevron-left"}
-                btnHandler={() => {this.props.navigation.goBack()}}
-                titleonheader={"Feeds"}
-                catOnpress={this.toggleCatMode}
-                scrollMode={'scroll'}
+            <PageStructure 
+                userIcon={() => {this.props.navigation.navigate("Profile")}}
                 catInHeader={true}
-                nosearchIcon={true}
-                noNotificationIcon={true}
+                catOnpress={this.toggleCatMode} 
+                rightIconOnPress={() =>this.props.navigation.navigate("Notification")}
+                scrollMode={'scroll'}
+                navigation={this.props.navigation}
+                searchFun={this.search}
+                titleWithImage={true}
+                titleonheader={"Community"} 
           
             >
                 {/* <ScrollView> */}
@@ -160,8 +161,7 @@ class Feed extends React.Component {
                             
                             }}
                         />
-                    )}
-                    
+                    )} 
                     </View>
                 {/* </ScrollView> */}
             </PageStructure>

@@ -197,7 +197,7 @@ class Home extends React.Component {
             <PageStructure
                 // iconName="navicon"
                 // btnHandler={() => {this.props.navigation.toggleDrawer()}}
-                userIcon={() => {this.props.navigation.toggleDrawer()}}
+                userIcon={() => {this.props.navigation.navigate("Profile")}}
                 catInHeader={true}
                 catOnpress={this.toggleCatMode}
                 selectedCat={this.state.selectedCat}
@@ -250,9 +250,9 @@ class Home extends React.Component {
 const styles = StyleSheet.create({
     container:
     {
-        marginTop:10,
-        flex: 1,
-        flexDirection: 'column',
+            marginTop:10,
+            flex: 1,
+            flexDirection: 'column',
     },
         mainContent:
         {

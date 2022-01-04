@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions, findNodeHandle,UIManager, Modal} from 'react-native';
 import { theme, dataLimit, serverBaseUrl } from '../config';
-import { EvilIcons } from '@expo/vector-icons';
+import { EvilIcons, Feather } from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import Instructions from './Instructions'
@@ -89,31 +89,37 @@ class RenderSingleTestSeries extends React.Component {
                 {CardView(
                     <View style={styles.list}>
                         <View style={styles.topRow}>
-                        <Text style={styles.queText}>{this.props.item.questionCount} Questions</Text>
-                            <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-                                <Text style={styles.timeText}>{this.props.item.timeDuration} Minutes</Text>
-                                {this.props.actions?(
-                                    <TouchableOpacity style={{marginLeft: 'auto', marginTop: 8}} onPress={()=>this.showThreeMenu()}>
-                                        <EvilIcons name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
-                                    </TouchableOpacity>
-                                ):(null)}
-                            </View>
-                        </View>
-                        <View style={styles.bottomRow}>
                             <Text style={styles.titleText}>{this.props.item.title}</Text>
                             <TouchableOpacity style={styles.btnView} onPress={()=>{
                                
-                               this.props.mode=="student"?(this.props.studentEnrolled?(
-                                    <>
-                                        {this.props.addToHistory("testSeries", this.props.item.id)}
+                            //    this.props.mode=="student"?(this.props.studentEnrolled?(
+                            //         <>
+                            //             {this.props.addToHistory("testSeries", this.props.item.id)}
+                            //             {this.setState({modalVisible: true})}
+                            //         </>
+                            //     ):(Toast.show('You Have Not Enrolled For This Course.'))):(this.setState({modalVisible: true}))
+                            {this.props.addToHistory("testSeries", this.props.item.id)}
                                         {this.setState({modalVisible: true})}
-                                    </>
-                                ):(Toast.show('You Have Not Enrolled For This Course.'))):(this.setState({modalVisible: true}))}}>
-                                <EvilIcons name="play" size={12} style={{color: theme.primaryColor, marginRight: 3}}/>
+                            }}>
+                                {/* <EvilIcons name="play" size={20} style={{color: theme.primaryColor, marginRight: 3}}/> */}
                                 <Text style={styles.btnText}>Start</Text>
                             </TouchableOpacity>
+                            {this.props.actions?(
+                                    <TouchableOpacity style={{marginLeft: 'auto', marginTop: 8}} onPress={()=>this.showThreeMenu()}>
+                                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
+                                    </TouchableOpacity>
+                                ):(null)}
+                        </View> 
+                        <View style={styles.bottomRow}> 
+                            
+                            <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+                                <Text style={styles.queText}>{this.props.item.questionCount} Questions</Text>
+                                <Text style={styles.timeText}>{this.props.item.timeDuration} Minutes</Text>
+                                <Text style={styles.timeText}>{this.props.item.maxMarks} Marks</Text>
+                              
+                            </View>
                         </View>
-                    </View>,{margin: 10, borderWidth: 1, borderRadius: 10, borderColor: theme.labelOrInactiveColor}
+                    </View>,{margin: 10, borderWidth: 1, borderRadius: 10, borderColor: theme.labelOrInactiveColor},3
                     
                 )}
                 {this.state.showModal?(
@@ -170,6 +176,7 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         paddingTop: 5,
         paddingBottom: 5,
+        
     },
         topRow:
         {
@@ -179,19 +186,20 @@ const styles = StyleSheet.create({
         },
             queText:
             {
-                fontSize: 16,
+                fontSize: 12,
                 color: theme.greyColor
             },
             timeText:
             { 
-                fontSize: 16,
-                color: theme.greyColor
+                fontSize: 12,
+                color: theme.greyColor,
+                marginLeft:10,
             },
     bottomRow:
     {
         flex: 1,
         flexDirection: 'row',
-        marginTop: 10,
+        marginTop: 3,
         justifyContent: 'space-between',
         alignItems: 'center'
     },
@@ -206,17 +214,17 @@ const styles = StyleSheet.create({
             // borderWidth:1,
             flexDirection: 'row',
             backgroundColor: theme.accentColor,
-            paddingLeft: 5,
-            paddingRight: 5,
-            paddingTop: 2,
-            paddingBottom: 2,
-            borderRadius: 3,
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 3,
+            paddingBottom: 3,
+            borderRadius: 10,
             justifyContent: 'space-between',
             alignItems: 'center'
         },
             btnText:
             {
-                fontSize: 14,
+                fontSize: 20,
                 color: theme.primaryColor   
             }
 

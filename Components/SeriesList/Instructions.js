@@ -219,7 +219,7 @@ class Instructions extends React.Component {
 
               </View>
             </ScrollView>
-            <View style={{marginTop:'auto',}}>
+            <View style={{marginTop:'auto',marginBottom: 20}}>
                 <TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,alignItems: 'center'}} onPress={()=>{this.props.navigation.navigate("SingleTestSeries", {item: this.props.item}), closeModal()}}>
                     <Text style={{fontFamily:'Raleway_600SemiBold',fontSize:18,color:theme.primaryColor}}>Continue</Text>
                 </TouchableOpacity >

@@ -44,11 +44,11 @@ const app_redux = (state=initialState,action)=>
                 ...state,
                 stackNavigation:action.payload.navigation
             }
-
         default:
             return state
     }
 }
+
 //category reducer
 const initialCategoriesState = {
     categories:[]
@@ -95,8 +95,7 @@ const user_reducer=(state=initial_user_state,action)=>
         case actionTypes.SET_USER_INFO:
             return{
                 ...state,
-                userInfo: action.payload.info
-
+                userInfo: action.payload.info 
             }
         default :
             return state
