@@ -12,6 +12,7 @@ import { fetchTestSeriesBySubCategory } from '../Utils/DataHelper/TestSeries'
 import { fetch_Banners } from '../Utils/DataHelper/Banners'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
+import { SearchInstituteByCategory } from '../Utils/DataHelper/Search';
 class InsTestSeriesList extends React.Component {
 
     state={
@@ -78,7 +79,7 @@ class InsTestSeriesList extends React.Component {
         }
         else
         {
-            console.log("something went wrong")
+            // console.log("something went wrong")
         }
     }
     bannerCallback=(response)=>{
@@ -86,18 +87,18 @@ class InsTestSeriesList extends React.Component {
         {
             response.json().then(data=>
             {
-                console.log(data);
+                // console.log(data);
                 this.setState({banner: data})
             })
         }
         else
         {
-            console.log("something went wrong", response.status)
+            // console.log("something went wrong", response.status)
         }
     }
     renderBannerList=({item})=>
     {
-        console.log(imageProvider(item.bannerImageLink))
+        // console.log(imageProvider(item.bannerImageLink))
         return(
             <TouchableOpacity style={styles.bannerItemContainer}>
                     <Image source={{uri: imageProvider(item.bannerImageLink)}} style={[styles.bannerImage,{width:this.props.screenWidth-20}]}/>
@@ -127,15 +128,17 @@ class InsTestSeriesList extends React.Component {
             </TouchableWithoutFeedback>
         )
     }
-
+    
     render() {
+        this.updateComponent()
         return(
             <PageStructure
                 iconName={"arrow-left"}
                 btnHandler={() => {this.props.navigation.goBack()}} 
                 titleonheader={this.props.route.params.catName}
                 notificationreplaceshare={"share-2"}
-                nosearchIcon={false}
+                navigation={this.props.navigation}
+                nosearchIcon={true}
                 
                 // catInHeader={false}
                 
@@ -165,10 +168,10 @@ class InsTestSeriesList extends React.Component {
                             />
                         </View>
                     ):(null)}
-                    <View style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'flex-start',margin:15,}}>
+                    <View style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'center'}}>
                             {CardView(<Image source={{uri: imageProvider(this.props.route.params.image)}} style={{height:80,width:80,borderRadius:15}}/>,{height:80,width:80,borderRadius:15})}
-                            <View style={{flexDirection: 'column',marginLeft: 10}}> 
-                                <Text numberOfLines={1} style={{fontSize:25,fontFamily: 'Raleway_700Bold'}}>{this.props.route.params.catName}</Text>
+                            <View style={{flexDirection: 'column',marginLeft: 10,flexWrap:'wrap',width:this.props.screenWidth-120}}> 
+                                <Text numberOfLines={1} style={{fontSize:22,fontFamily: 'Raleway_700Bold',flexWrap: 'wrap',width:this.props.screenWidth-120}}>{this.props.route.params.catName}</Text>
                                 <Text numberOfLines={1} style={{fontSize:12,fontFamily: 'Raleway_600SemiBold'}}>{this.props.route.params.subCatName}</Text>
                             </View>
                     </View>

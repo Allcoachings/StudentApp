@@ -29,7 +29,7 @@ export const userAuthStatus=(status)=>{
     }
 }
 export const setUserInfo=(info)=>{
-    console.log(info)
+    // console.log(info)
     return{
         type: actionTypes.SET_USER_INFO, //this type will be used to match the type
         payload:{
@@ -46,6 +46,27 @@ export const screenWidthConfigChange=(width)=>
         type: actionTypes.SCREEN_WIDTH_CONFIG_CHANGE, //this type will be used to match
         payload:{
             screenWidth:width
+        }
+    }
+}
+
+//screen reducer actions starts
+export const setPinnedInstituteCount=(count)=>
+{
+    return{
+        type: actionTypes.SET_PINNED_INSTITUTE_COUNT, //this type will be used to match
+        payload:{
+            count:count
+        }
+    }
+}
+
+export const toggleHeader=(status)=>
+{
+    return{
+        type: actionTypes.TOGGLE_HEADER, //this type will be used to match
+        payload:{
+            status
         }
     }
 }

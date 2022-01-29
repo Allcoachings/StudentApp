@@ -75,7 +75,6 @@ import java.util.Date;
                 columns = {
                         @ColumnResult(name = "x", type = String.class),
                         @ColumnResult(name = "y", type = String.class),
-
                 }
         )
 )

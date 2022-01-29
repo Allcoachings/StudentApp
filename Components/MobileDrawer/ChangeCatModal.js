@@ -43,14 +43,14 @@ const ChangeCatModal = (props) => {
                           
                             response.unshift({id:-1,name:"All",span:1})
                             // let pancham   = response.map(item=>({...item,id:item.key,span:arr[getRandomInt(0,2)]}))
-                            console.log(response)
+                            // console.log(response)
                             setCategories(response);
                             setLoadingCategory(false);
                         })
                         
                 }else
                 {
-                    console.log("something went wrong")
+                    // console.log("something went wrong")
                 }
        
 
@@ -71,7 +71,7 @@ const ChangeCatModal = (props) => {
 
 const handleExplorePress=()=>
 {
-    console.log(selectedCategory)
+    // console.log(selectedCategory)
     AsyncStorage.setItem("userCat",JSON.stringify(selectedCategory)).then(()=>
     {
         props.closeModal()
@@ -82,7 +82,7 @@ const handleExplorePress=()=>
     });
 }
 const setCatSelector=(item)=>{
-    console.log(item)
+    // console.log(item)
     setSelectedCategory(item)
     
     

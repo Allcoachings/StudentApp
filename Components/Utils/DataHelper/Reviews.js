@@ -24,7 +24,7 @@ export const fetch_institute_reviews=(insId,offset,dataLimit,callback)=>
 
 export const reply=(id, reply, rating,review,courseId, studentId, insId,callback)=>
 {
-    console.log(id, reply, rating, review, courseId, studentId, insId)
+    // console.log(id, reply, rating, review, courseId, studentId, insId)
     let headers = new Headers();
 
     headers.append('Content-Type', 'application/json'); 
@@ -46,7 +46,7 @@ export const reply=(id, reply, rating,review,courseId, studentId, insId,callback
 
 export const addStudentReview=(studentId,insId,courseId,review,rating,callback)=>
 {
-    console.log('addStudentReview',courseId,review,studentId,rating)
+    // console.log('addStudentReview',courseId,review,studentId,rating)
     let headers = new Headers();
 
     headers.append('Content-Type', 'application/json'); 
@@ -90,7 +90,7 @@ export const findReviewByStudentId=(studentId,insId,callback)=>
 
 export const updateReview=(id, review, rating, callback)=>
 {
-    console.log(id, review, rating)
+    // console.log(id, review, rating)
     let headers = new Headers();
 
     headers.append('Content-Type', 'application/json'); 

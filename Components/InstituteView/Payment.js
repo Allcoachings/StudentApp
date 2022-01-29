@@ -19,12 +19,12 @@ class Payment extends React.Component {
 
 
     enrollStudent=() => {
-        console.log("function")
+        // console.log("function")
         enrollStudent(this.state.studentId, this.state.insId,this.state.courseId, this.enrollCallBack)
     }
 
     enrollCallBack=(response)=>{
-        console.log("callBack")
+        // console.log("callBack")
         if(response.status==201)
         {
             this.props.navigation.navigate("StudentInsView",{insId:this.state.insId})
@@ -36,6 +36,7 @@ class Payment extends React.Component {
             <PageStructure 
                 iconName={"chevron-left"}
                 btnHandler={() => {this.props.navigation.goBack()}} 
+                navigation={this.props.navigation}
             > 
             <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                 <TouchableOpacity onPress={()=>this.enrollStudent()} style={{backgroundColor: theme.featureYesColor, padding:10, justifyContent: 'center', alignItems: 'center', marginVertical: 10}}>

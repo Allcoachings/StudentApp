@@ -4,8 +4,12 @@ import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import { theme , Assets, serverBaseUrl, imageProvider} from '../config';
 import { MaterialIcons } from '@expo/vector-icons';
 import EmptyList from '../Utils/EmptyList'
-import { connect } from 'react-redux';
-const windowWidth = Dimensions.get('window').width
+import { connect } from 'react-redux'; 
+
+const width = Dimensions.get('window').width
+import RenderHTML,{defaultSystemFonts} from 'react-native-render-html';
+
+const systemFonts = ["kruti_dev_010regular", ...defaultSystemFonts];
 class Solutions extends React.Component {
     state={
         type: [
@@ -154,7 +158,13 @@ class Solutions extends React.Component {
             case '3': 
             case 3:
                       return(
-                          <Text style={styles.ansStatement}>{item.question}</Text>
+                        //   <Text style={styles.ansStatement}>{item.question}</Text>
+                          <RenderHTML
+                            contentWidth={width-10} 
+                            defaultTextProps={{style:styles.ansStatement}}
+                            source={{html: item.question}} 
+                            systemFonts={systemFonts}  
+                        />
                       ); 
           case 2:
           case '2': 
@@ -189,13 +199,28 @@ class Solutions extends React.Component {
                                     </Text> */}
                                     {this.renderQuestion(item.question)}
                                     <View style={styles.explanationView}>
-                                        <Text style={styles.correctAnswer}>
-                                            Correct answer :  ({item.question.correctOpt})  {item.question.optionType==1?item["option"+item.question.correctOpt]:null}
-                                        </Text> 
+                                        <View style={{flexDirection: 'row'}}>
+                                            <Text style={styles.correctAnswer}>
+                                                Correct answer :  ({item.question.correctOpt})  
+                                            </Text> 
+                                            <RenderHTML
+                                                contentWidth={width-50} 
+                                                defaultTextProps={{style:styles.explanation}}
+                                                source={{html: item["option"+item.question.correctOpt]}} 
+                                                systemFonts={systemFonts}
+                                            />
+
+                                        </View>
                                         {item.optionType==2?(
                                              <Image source={{uri:imageProvider(item["option"+item.question.correctOpt])}} style={{borderWidth:0.5,borderColor: theme.labelOrInactiveColor,width:'85%',height:150,marginLeft:10}}/>
                                         ):(null)}
-                                        <Text style={styles.explanation}>{item.question.explanation}</Text>
+                                         
+                                        <RenderHTML
+                                            contentWidth={width-10} 
+                                            defaultTextProps={{style:styles.explanation}}
+                                            source={{html: item.question.explanation}} 
+                                            systemFonts={systemFonts}  
+                                        />
                                     </View> 
                                 </View>
                             </View>
@@ -385,14 +410,13 @@ const styles = StyleSheet.create({
                 ansStatement:
                 {
                     fontSize: 16,
-                    color: theme.textColor,
-                    fontWeight: '600'
+                    color: theme.textColor, 
                 },
                 explanationView:
                 {
                     // backgroundColor:theme.labelOrInactiveColor,
                     margin:5,
-                    width:windowWidth/1.2,
+                    width:width/1.2,
                 },
                     correctAnswer:
                     {
@@ -401,8 +425,7 @@ const styles = StyleSheet.create({
                         margin:10
                     },
                     explanation:
-                    {
-                        fontFamily: 'Raleway_600SemiBold',
+                    { 
                         marginLeft:10,
                         marginBottom:5
                     },
@@ -413,7 +436,7 @@ const mapStateToProps = (state)=>
 {
     return {
 
-        testSeriesData: state.testSeries.data,
+        testSeriesData: state.testSeries.data.testData,
       
 
     }

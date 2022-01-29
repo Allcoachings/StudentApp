@@ -33,9 +33,9 @@ public class StudentHistoryService {
         return studentHistoryRepo.save(studentHistory);
     }
 
-    public  Iterable<StudentHistoryDto> findAllByStudentId(long id,String type,int page,int pageSize)
+    public  Iterable<StudentHistoryDto> findAllByStudentId(long id,int page,int pageSize)
     {
-        Page<StudentHistory> pagedResult = studentHistoryRepo.findByStudentIdAndType(id, type,PageRequest.of(page,pageSize));
+        Page<StudentHistory> pagedResult = studentHistoryRepo.findByStudentId(id, PageRequest.of(page,pageSize));
         if(pagedResult.hasContent())
         {
              Iterable<StudentHistory> studentHistories =  pagedResult.getContent();

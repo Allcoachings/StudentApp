@@ -16,7 +16,7 @@ export const fetchInsPayouts=(institute,page,pageSize,callback)=>
     headers.append('Access-Control-Allow-Credentials', 'true');
 
     headers.append('GET', 'POST', 'OPTIONS'); 
-// console.log("pauout ins     ",{institute})
+// // console.log("pauout ins     ",{institute})
      fetch(serverApiUrl+'payouts/byIns/'+page+'/'+pageSize,
     {
         method: 'POST',  
@@ -38,7 +38,7 @@ export const fetchInsPayoutsTotal=(institute,callback)=>
     headers.append('Access-Control-Allow-Credentials', 'true');
 
     headers.append('GET', 'POST', 'OPTIONS'); 
-// console.log("pauout ins     ",{institute})
+// // console.log("pauout ins     ",{institute})
      fetch(serverApiUrl+'payouts/byIns/total',
     {
         method: 'POST',  
@@ -59,7 +59,7 @@ export const fetchInsPayoutsTotalToday=(institute,callback)=>
     headers.append('Access-Control-Allow-Credentials', 'true');
 
     headers.append('GET', 'POST', 'OPTIONS'); 
-// console.log("pauout ins     ",{institute})
+// // console.log("pauout ins     ",{institute})
      fetch(serverApiUrl+'payouts/byIns/todaysTotal',
     {
         method: 'POST',  

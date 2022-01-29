@@ -1,20 +1,93 @@
+import { Feather } from '@expo/vector-icons'
 import { Text } from 'native-base'
 import * as React from 'react'
-import { View } from 'react-native'
+import { TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import PDFReader from 'rn-pdf-reader-js'
 import { theme } from '../config'
+import CardView from '../Utils/CardView'
 import PDFRenderer from './PDFRenderer'
+import BackArrow from '../Utils/Icons/BackArrow'
+import { TOGGLE_HEADER } from '../Actions/types'
+import { useDispatch } from 'react-redux'
+ const  PDFViewer =({route,navigation}) =>
+{
 
-export default class PDFViewer extends React.Component {
-  render() {
+    const dispatch = useDispatch()
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => { 
+           
+           dispatch({type: TOGGLE_HEADER,payload:{status:false}})
+
+        });
+        
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return unsubscribe;
+      }, [navigation]);
     return (
      
       <>
-        <PDFRenderer pdf={this.props.route.params.pdf}/>
-         <View style={{flexDirection: 'row',position:'absolute',top:40,left:40,zIndex:1000,elevation:1000,opacity:0.4}}>
-                <Text style={{color:theme.featureNoColor}}>{this.props.route.params.studentName}  {this.props.route.params.studentNumber}</Text> 
+         {CardView(
+                    <View style={{flex: 1,flexDirection: 'row',alignItems: 'center',}}>
+                        {/* <View> */}
+                            <TouchableOpacity onPress={()=>navigation.goBack()}>
+                                <View style={{marginLeft:10,marginRight:5,height:24}}>
+                                    <BackArrow height={24} width={24}/>
+                                </View> 
+                            </TouchableOpacity>
+                        {/* </View> */}
+                        <View style={{marginBottom:5}}>
+                          <Text
+                            numberOfLines={1}
+                              style={{fontFamily: 'Raleway_600SemiBold',fontSize:18}} 
+                          >
+                              {route.params.name}
+                          </Text>
+                        </View>
+                        <View style={{marginLeft:'auto'}}>
+                            {/* {this.state.searchWord!=''?(
+                                this.state.filterData?(
+                                    <TouchableOpacity onPress={() => this.setState({ searchWord: '', offset: 0, filterData: false, showResult: false, searchData: [] },() =>this.textInput.clear())}>
+                                        <EvilIcons
+                                          name="x"
+                                          size={20} 
+                                          color={theme.secondaryColor}
+                                          style={styles.searchIcon}
+                                        />
+                                    </TouchableOpacity>
+                                ):(
+                                    <TouchableOpacity onPress={()=>this.setState({filterData: true, loadingData: true},()=>searchFun(this.state.offset, this.state.searchWord, this.searchCallback))}>
+                                        <EvilIcons 
+                                          name={'chevron-right'} 
+                                          size={15} 
+                                          color={theme.labelOrInactiveColor} 
+                                          style={styles.searchIcon}
+                                        />
+                                    </TouchableOpacity>
+                                )):(
+                                    <Feather 
+                                      name={'x'} 
+                                      size={30} 
+                                      color={theme.secondaryColor} 
+                                      style={styles.searchIcon}
+                                    />
+                            )} */}
+                            <Feather
+                                name={'x'} 
+                                size={30} 
+                                color={theme.secondaryColor}  
+                            />
+ 
+                        </View>
+                    </View>,
+                    {width:'100%',height:55},2
+                )}  
+          <PDFRenderer pdf={route.params.pdf}/>
+         <View style={{flexDirection: 'row',position:'absolute',bottom:80,left:40,zIndex:1000,elevation:1000,opacity:0.4}}>
+                <Text style={{color:theme.featureNoColor}}>{route.params.studentName}{"\n"}{route.params.studentNumber}</Text> 
          </View>  
        </>
     )
-  }
+  
 }
+
+export default PDFViewer

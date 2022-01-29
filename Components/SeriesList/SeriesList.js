@@ -8,7 +8,7 @@ import { Rating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
-import {seriesList} from '../Utils/DataHelper/TestSeries'
+import {seriesList, seriesListForUser} from '../Utils/DataHelper/TestSeries'
 import { fetch_Banners } from '../Utils/DataHelper/Banners'
 import Instructions from './Instructions'
 import RenderSingleTestSeries from './RenderSingleTestSeries'
@@ -75,7 +75,7 @@ class SeriesList extends React.Component {
     
 
     fetch=() => {
-        seriesList(this.state.id,this.state.offset,dataLimit,this.seriesListCallBack)
+        seriesListForUser(this.props.userInfo.id,this.state.id,this.state.offset,dataLimit,this.seriesListCallBack)
     }
 
     bannerCallback=(response)=>{
@@ -88,16 +88,18 @@ class SeriesList extends React.Component {
         }
         else
         {
-            console.log("something went wrong", response.status)
+            // console.log("something went wrong", response.status)
         }
     }
 
     seriesListCallBack=(response)=>{
+        
         if(response.status==200)
         {
-            console.log("success series list")
+            // console.log("success series list")
             response.json().then(data=>
             {
+                // console.log(data)
                 if(data.length>0)
                 {
                     this.setState({seriesList:[...this.state.seriesList,...data],tsLoading:false, showLoadMore: true, loadingFooter:false});  
@@ -110,7 +112,7 @@ class SeriesList extends React.Component {
         }
         else
         {
-            console.log("something went wrong")
+            // console.log("something went wrong")
         }
     }
 
@@ -136,7 +138,7 @@ class SeriesList extends React.Component {
             return null;
           }
         } catch (error) {
-          console.log(error);
+          // console.log(error);
         }
     };
 
@@ -147,11 +149,11 @@ class SeriesList extends React.Component {
     addToHistoryCallBack=(response)=>{
         if(response.status==201)
         {
-            // console.log("hello done")
+            // // console.log("hello done")
         }
         else
         {
-            //  console.log("error")
+            //  // console.log("error")
         }
      }
 
@@ -164,6 +166,7 @@ class SeriesList extends React.Component {
                 catInHeader={false}
                 titleonheader={this.props.route.params.catName} 
                 nosearchIcon={true}
+                navigation={this.props.navigation}
                 noNotificationIcon={true}
             >
                <ScrollView>
@@ -193,7 +196,7 @@ class SeriesList extends React.Component {
                         ):(
                             <FlatList 
                                 data={this.state.seriesList} 
-                                renderItem={({item})=><RenderSingleTestSeries item={item} navigation={this.props.navigation} addToHistory={this.addToHistory}/>}
+                                renderItem={({item})=><RenderSingleTestSeries briefId={item?.insTestSeriesUserResponseBrief?.id} item={item.insTestSeries} status={item?.insTestSeriesUserResponseBrief?.status} navigation={this.props.navigation} addToHistory={this.addToHistory}/>}
                                 keyExtractor={(item)=>item.id} 
                                 horizontal={false}
                                 showsHorizontalScrollIndicator={false}

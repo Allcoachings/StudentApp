@@ -16,7 +16,7 @@ class AddCourseTestSeriesPlaylist extends Component {
         if(reponse.status ===201)
         {
             Toast.show('Playlist Added Successfully.');
-            console.log("created",reponse.headers.map.location)
+            // console.log("created",reponse.headers.map.location)
             this.props.appendPlaylist({name:this.state.name,courseId:this.props.courseId,id:reponse.headers.map.location})
             this.props.closeModal()
         }

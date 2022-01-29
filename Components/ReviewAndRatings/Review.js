@@ -28,7 +28,7 @@ class Review extends React.Component {
             return null;
           }
         } catch (error) {
-          console.log(error);
+          // console.log(error);
         }
     };
 

@@ -45,14 +45,26 @@ public class InsTestSeriesUserResponsesService {
 
         return userResponseBriefRepo.findById(responseId);
     }
+    //fetch response from db by userId and test series id
+    public Optional<InsTestSeriesUserResponseBrief> getResponseByTestSeriesIdAndUserId(long testSeriesId,long userId)
+    {
+        System.out.println(testSeriesId);
+
+        return userResponseBriefRepo.findByStudentIdAndTestSeriesId(userId,testSeriesId);
+    }
 
     //save response to db
     public InsTestSeriesUserResponseBrief saveUserResponse(InsTestSeriesUserResponseBrief insTestSeriesUserResponseBrief)
     {
          InsTestSeriesUserResponseBrief insTestSeriesUserResponseBrief_saved = userResponseBriefRepo.save(insTestSeriesUserResponseBrief);
 
-
         return insTestSeriesUserResponseBrief_saved;
+    }
+
+    //function to update user test status  ==> completed==2,paused==1
+    public void updateResponseStatus(int status,long id)
+    {
+         userResponseBriefRepo.updateResponseStatus(status,id);
     }
 
 

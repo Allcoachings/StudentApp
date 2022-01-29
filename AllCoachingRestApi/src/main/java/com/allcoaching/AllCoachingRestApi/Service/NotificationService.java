@@ -79,7 +79,7 @@ public class NotificationService {
     }
 
     //get notification filtered by type
-//get notification by notificationFor param
+    //get notification by notificationFor param
     public Iterable<NotificationDto> getNotificationForByType(int notificationFor,String type,long receiverId, int page, int pageSize)
     {
         Page<Notification> paged_result =  notificationRepo.findByNotificationForAndReceiverIdAndTypeOrderByNotificationTimeDesc(notificationFor,receiverId, type,PageRequest.of(page,pageSize));
@@ -125,4 +125,10 @@ public class NotificationService {
     {
             System.out.println("notification sent");
     }
+
+    public void updateNotificationSeenStatus(boolean isSeen,long id)
+    {
+        notificationRepo.updateNotificationStatus(isSeen,id);
+    }
+
 }

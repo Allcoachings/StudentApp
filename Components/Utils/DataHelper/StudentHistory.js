@@ -2,7 +2,7 @@
 import {serverApiUrl} from '../../config'
 // import {Base64} from '../../Base64' 
  
-    export const fetch_student_history=(studentId,type,offset,dataLimit,callback)=>
+    export const fetch_student_history=(studentId,offset,dataLimit,callback)=>
     {
 
             // var formData   = new FormData(); 
@@ -15,14 +15,14 @@ import {serverApiUrl} from '../../config'
             headers.append('Access-Control-Allow-Credentials', 'true'); 
             headers.append('GET', 'POST', 'OPTIONS'); 
 
-             fetch(serverApiUrl+"student/history/fetch/"+studentId+"/"+type+"/"+offset+"/"+dataLimit+"/",
+             fetch(serverApiUrl+"student/history/fetch/"+studentId+"/"+offset+"/"+dataLimit+"/",
             {
                 method: 'GET',  
                 headers,
                 // body:JSON.stringify({title,description,fees,instId})
             })
             .then((response)=>callback(response)) 
-            .catch((error)=>{console.log(error)})
+            .catch((error)=>{ console.log(error)})
     }
 
     export const saveStudentHistory=(type,itemId,studentId,callback)=>

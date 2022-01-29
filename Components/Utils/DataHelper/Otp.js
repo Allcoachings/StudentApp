@@ -5,7 +5,7 @@ import {serverApiUrl} from '../../config'
 export const generateOtp=(mobileNumber,callback)=>
 {
 
-    console.log("gehereate")
+    // console.log("gehereate")
     
             let headers = new Headers();
 
@@ -43,7 +43,7 @@ export   const validateOtp=(otpValue,mobileNumber,callback)=>
 
             headers.append('GET', 'POST', 'OPTIONS'); 
 
-            console.log(otpValue)
+            // console.log(otpValue)
              fetch(serverApiUrl+'otp/validate/',
             {
                 method: 'POST',  

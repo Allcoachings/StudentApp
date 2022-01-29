@@ -15,7 +15,7 @@ export const defaultProps = {
     },
     activityIndicator: {
         size: 'large',
-        color: '#999',
+        color: '#fff',
     },
     animation: {
         fadeInDuration: 300,
@@ -37,7 +37,7 @@ export const defaultProps = {
     fullscreen: {
         enterFullscreen: () => 
         // eslint-disable-next-line no-console
-        console.log('[VideoPlayer] - missing `enterFullscreen` function in `fullscreen` prop'),
+         console.log('[VideoPlayer] - missing `enterFullscreen` function in `fullscreen` prop'),
         exitFullscreen: () => 
         // eslint-disable-next-line no-console
         console.log('[VideoPlayer] - missing `exitFullscreen` function in `fullscreen` prop'),

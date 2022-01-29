@@ -31,10 +31,11 @@ const styles = StyleSheet.create({
     bannerImage:
     {
         alignSelf:'flex-start',         
-        width:(WIDTH/1.1)-10,
+        width:WIDTH-20,
         height:150,
         borderRadius:10,
-        marginTop:10
+        marginTop:10,
+        marginLeft:10,
     },
     roundContainer:
     {

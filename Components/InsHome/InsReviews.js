@@ -38,7 +38,7 @@ class InsReviews extends React.Component {
     }
  
     render() {
-        console.log(this.props.institute.details)
+        // console.log(this.props.institute.details)
         return (
             <View>
                 <Text style={styles.RatingText}>Rating & Reviews</Text>

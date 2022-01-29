@@ -5,10 +5,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeriesQuestions;
 import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeriesPlaylist;
 import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
 import com.allcoaching.AllCoachingRestApi.Service.InsTestSeriesService;
-import com.allcoaching.AllCoachingRestApi.dto.EditQuestionDto;
-import com.allcoaching.AllCoachingRestApi.dto.QuestionDto;
-import com.allcoaching.AllCoachingRestApi.dto.TestSeriesDto;
-import com.allcoaching.AllCoachingRestApi.dto.TestSeriesQuestionDto;
+import com.allcoaching.AllCoachingRestApi.dto.*;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -41,7 +38,6 @@ public class InsTestSeriesController {
         InsTestSeriesPlaylist insTestSeriesPlaylist_saved = insTestSeriesService.createTestSeriesPlaylist(insTestSeriesPlaylist);
         URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(insTestSeriesPlaylist_saved.getId()).toUri();
         return ResponseEntity.created(location).build();
-
     }
 
     //count course testseries
@@ -113,6 +109,22 @@ public class InsTestSeriesController {
     public Iterable<InsTestSeries> findByPlaylistId(@PathVariable long playListId,@PathVariable int offset,@PathVariable int dataLimit)
     {
         return insTestSeriesService.getTestSeriesByPlaylistID(playListId,offset,dataLimit);
+    }
+
+    //fetch Test Series by playlistId for user
+    @CrossOrigin(origins = "*")
+    @GetMapping("/playlist/foruser/{userId}/{playListId}/{offset}/{dataLimit}")
+    public Iterable<TestSeriesAndUserResponseDto> findByPlaylistIdForUser(@PathVariable long userId, @PathVariable long playListId, @PathVariable int offset, @PathVariable int dataLimit)
+    {
+        return insTestSeriesService.getTestSeriesByPlaylistIDWithUserResponse(userId,playListId,offset,dataLimit);
+    }
+
+    //fetch Test Series by courseId for user
+    @CrossOrigin(origins = "*")
+    @GetMapping("/courseId/foruser/{userId}/{courseId}/{offset}/{dataLimit}")
+    public Iterable<TestSeriesAndUserResponseDto> getTestSeriesByCourseIdAndIsAdminWithUserResponse(@PathVariable long userId, @PathVariable long courseId, @PathVariable int offset, @PathVariable int dataLimit)
+    {
+        return insTestSeriesService.getTestSeriesByCourseIdAndIsAdminWithUserResponse(userId,courseId,offset,dataLimit);
     }
 
     //fetch Test Series by playlistId and hidden parameter
@@ -259,7 +271,7 @@ public class InsTestSeriesController {
         {
             insTestSeriesQuestions.setId(questionDto.getQuestionId());
         }
-        //        URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(insTestSeriesQuestions_saved.getId()).toUri();
+//        URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(insTestSeriesQuestions_saved.getId()).toUri();
 //        HttpHeaders headers = new HttpHeaders();
 //        headers.add("Access-Control-Expose-Headers", "Location");
         return insTestSeriesService.saveSeriesQuestionOneByOne(insTestSeriesQuestions);

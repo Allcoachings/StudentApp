@@ -1060,7 +1060,7 @@ class InsHome extends React.Component {
     updateSingleFeed=(item, index)=>{
         var obj=this.state.feeds
         obj[index]=item;
-        this.setState({feeds: obj},()=>console.log("state set"))
+        this.setState({feeds: obj},()=> {})
     }
 
     handleFeedCallBack=(response)=>

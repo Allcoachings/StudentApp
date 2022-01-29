@@ -1,11 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { createStore } from 'redux';
 import { Provider, connect } from 'react-redux';
 import RootReducer from './Components/Reducers'
 import Main from './Components/Main'
-// import * as Font from 'expo-font'; 
+import * as Font from 'expo-font'; 
+const kruti_dev_010regular =require('./assets/fonts/kruti_dev_010regular.ttf')
 // import { SafeAreaProvider } from 'react-native-safe-area-context';
 // import {NativeBaseProvider } from "native-base"
 import {
@@ -29,6 +30,8 @@ import {
   Raleway_800ExtraBold_Italic,
   Raleway_900Black_Italic,
 } from '@expo-google-fonts/raleway';
+import { pinnedInstituteList } from './Components/Utils/DataHelper/Subscription';
+import BasicDataFetch from './Components/BasicDataFetch';
 let store = createStore(RootReducer) 
   
   const App= ()=> {
@@ -51,7 +54,22 @@ let store = createStore(RootReducer)
       Raleway_700Bold_Italic,
       Raleway_800ExtraBold_Italic,
       Raleway_900Black_Italic,
+      
     });
+
+    useEffect( ()=>{
+
+
+     (async()=>{   
+       let isLoaded = await Font.loadAsync({
+            kruti_dev_010regular
+          })
+          console.log(isLoaded, " kruti")
+        })()
+    },[])
+
+
+     
     // if (!fontsLoaded) {
     //   return <AppLoading />;
     // }
@@ -59,7 +77,9 @@ let store = createStore(RootReducer)
       // <SafeAreaProvider>
       
         <Provider store={store}>
+            <BasicDataFetch/>
             <Main/>
+            
         </Provider>
        
     );

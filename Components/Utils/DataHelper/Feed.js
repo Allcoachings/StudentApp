@@ -57,20 +57,27 @@ import mime from "mime";
 
             export const uploadFeedImage=(image,callback)=>
             {
-                console.log("Upload",typeof image)
+                // console.log("Upload",typeof image)
                 if(typeof image == 'object'&&image.feedImage&&image.feedImage.startsWith("files/"))
                 {
                     callback({status:201,headers:{map:{location:image}}})
                     return;
                 }
-                const newImageUri =  "file:///" + image.uri.split("file:/").join("");
+                // const newImageUri =  "file:///" + image.uri.split("file:/").join("");
                 var formData   = new FormData();  
+                // formData.append("image",{ 
+                //     uri : newImageUri,
+                //     type: mime.getType(newImageUri),
+                //     name: image.name
+                // }) 
+                let filename = image.uri.split('/').pop();
+                let match = /\.(\w+)$/.exec(filename);
+                let type = match ? `image/${match[1]}` : `image`;
                 formData.append("image",{ 
-                    uri : newImageUri,
-                    type: mime.getType(newImageUri),
-                    name: image.name
-                }) 
-                
+                    uri : image.uri,
+                    type: type,
+                    name: filename,
+                })
                 
                 
                 let headers = new Headers(); 
@@ -178,7 +185,7 @@ import mime from "mime";
                 headers.append('Access-Control-Allow-Credentials', 'true');
 
                 headers.append('GET', 'POST', 'OPTIONS'); 
-                console.log(feedId,serverApiUrl+"feed/like/feed/"+feedId+"/"+likerType+"/"+likerId)
+                // console.log(feedId,serverApiUrl+"feed/like/feed/"+feedId+"/"+likerType+"/"+likerId)
                 fetch(serverApiUrl+"feed/like/feed/"+feedId+"/"+likerType+"/"+likerId,
                 {
                     method: 'GET',  
@@ -219,7 +226,7 @@ import mime from "mime";
                 // formData.append("fetch_banners",'true') 
                 // formData.append("offset",offset) 
                 // formData.append("data_limit",limit) 
-                // console.log(serverApiUrl+"vote/feed/"+feedId+"/"+optionId+"/"+voterType+"/"+voterId) 
+                // // console.log(serverApiUrl+"vote/feed/"+feedId+"/"+optionId+"/"+voterType+"/"+voterId) 
                 let headers = new Headers(); 
                 headers.append('Content-Type', 'application/json'); 
 

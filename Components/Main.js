@@ -19,32 +19,31 @@ import Navigator from './Navigator';
 class Main extends React.Component {
     state = {
         width:windowWidth,
-        height:windowHeight,
-
-        mode:3
+        height:windowHeight, 
+        mode:1
       } 
   
-      _keyboardDidShow(e) {
+    _keyboardDidShow(e) {
           // this.props.navigation.setParams({
           //     keyboardHeight: e.endCoordinates.height,
           //     normalHeight: Dimensions.get('window').height, 
           //     shortHeight: Dimensions.get('window').height - e.endCoordinates.height, 
           // }); 
           let marginTop=Dimensions.get('window').height - e.endCoordinates.height;
-        //   console.log("keyboard Open",marginTop," ",e.endCoordinates.height," ",Dimensions.get('window').height);
+        //   // console.log("keyboard Open",marginTop," ",e.endCoordinates.height," ",Dimensions.get('window').height);
           this.props.setKeyboardHeight(e.endCoordinates.height)
       }
-      _keyboardDidHide(e) {
+    _keyboardDidHide(e) {
           // this.props.navigation.setParams({
           //     keyboardHeight: e.endCoordinates.height,
           //     normalHeight: Dimensions.get('window').height, 
           //     shortHeight: Dimensions.get('window').height - e.endCoordinates.height, 
           // }); 
-        //   console.log("keyboard hidden");
+        //   // console.log("keyboard hidden");
 
           this.props.setKeyboardHeight(null)
       }
-      componentWillUnmount() {
+    componentWillUnmount() {
           if(this.keyboardDidShowListener)
           {
               this.keyboardDidShowListener.remove();
@@ -103,7 +102,7 @@ class Main extends React.Component {
                 
                 
             }
-            // console.log("nodata")
+            // // console.log("nodata")
         }) 
 
       

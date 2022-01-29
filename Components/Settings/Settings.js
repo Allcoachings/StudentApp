@@ -1,18 +1,25 @@
-import { EvilIcons } from '@expo/vector-icons';
-import React, { Component } from 'react';
+import { EvilIcons ,Feather} from '@expo/vector-icons';
+import React, { Component ,useState} from 'react';
 import { View, Text,StyleSheet,TouchableOpacity,Dimensions } from 'react-native';
 import { theme } from '../config';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure';
+import {useSelector} from 'react-redux'
+import SendMessage from '../InstituteView/SendMessage'
 const windowWidth = Dimensions.get('window').width
-class Settings extends Component {
-  state ={}
 
-  renderSettingItem=(label,icon,onPress)=>
+const Settings =  ({navigation})=> {
+  
+
+
+  const [helpAndSupportModalVisible,setHelpAndSupportModalVisible] = useState(false)
+  const [feedbackModalVisible,setFeedbackModalVisible] = useState(false)
+  const userInfo = useSelector(state => state.user.userInfo)
+  const renderSettingItem=(label,icon,onPress)=>
   {
       return (
           <TouchableOpacity style={{flexDirection: 'row',padding:10,margin:10,alignItems: 'center',borderBottomWidth:1,borderBottomColor:theme.labelOrInactiveColor}} onPress={onPress}>
               <View style={{backgroundColor: theme.labelOrInactiveColor,borderRadius:30,padding:9}}>
-                <EvilIcons name={icon} size={20}/>
+                <Feather name={icon} size={20}/>
               </View>
               <Text style={{marginLeft:10,fontSize:15}}>{label}</Text>
               <EvilIcons name="chevron-right" size={20} style={{marginLeft:'auto',alignSelf:'flex-end'}}/>
@@ -20,29 +27,53 @@ class Settings extends Component {
       )
   }
 
-  render() {
+
+ 
     return (
         <PageStructure
             iconName={"arrow-left"}
-            btnHandler={() => {this.props.navigation.goBack()}}
+            btnHandler={() => {navigation.goBack()}}
             titleonheader={"Settings"}
             noNotificationIcon={true}
+            navigation={navigation}
             nosearchIcon={true}
         >
                 
                     
                     <View style={styles.container}>
-                      {this.renderSettingItem('Account','user',()=>{this.props.route.params.mode=="institute"?(this.props.navigation.navigate("EditInstitute")):(this.props.navigation.navigate("EditProfile"))})}
-                      {this.renderSettingItem('Help & Support','help-circle',()=>{})}
-                      {this.renderSettingItem('Rate us on Play Store','disc',()=>{})}
-                      {/* {this.renderSettingItem('Refer n earn','gift',()=>{})} */}
-                      {this.renderSettingItem('Privacy Policy','lock',()=>{})}
-                      {this.renderSettingItem('Terms and Conditions','calendar',()=>{})}
-                      {this.renderSettingItem('FeedBack','refresh-cw',()=>{})}
+                      {renderSettingItem('Account','user',()=>{(navigation.navigate("EditProfile"))})}
+                      {renderSettingItem('Help & Support','help-circle',()=>{setFeedbackModalVisible(false);setHelpAndSupportModalVisible(true);})}
+                      {renderSettingItem('Rate us on Play Store','disc',()=>{})}
+                      {/* {renderSettingItem('Refer n earn','gift',()=>{})} */}
+                      {renderSettingItem('Privacy Policy','lock',()=>{})}
+                      {renderSettingItem('Terms and Conditions','calendar',()=>{})}
+                      {renderSettingItem('FeedBack','refresh-cw',()=>{setHelpAndSupportModalVisible(false);setFeedbackModalVisible(true)})}
                     </View>
+                    {feedbackModalVisible?(
+                    <SendMessage
+                        isVisible={feedbackModalVisible}
+                        closeModal={()=>setFeedbackModalVisible(false)}
+                        forAdmin={true}  
+                        title="FeedBack"
+                        studentId={userInfo.id}
+                        messageType="feedback"
+                    />
+                ):(null)}
+              {helpAndSupportModalVisible?(
+                    <SendMessage
+                        isVisible={helpAndSupportModalVisible}
+                        closeModal={()=>setHelpAndSupportModalVisible(false)}
+                        forAdmin={true}  
+                        studentId={userInfo.id}
+                        title="Help & Support"
+                        messageType="helpAndSupport"
+                    />
+                ):(null)}
+
+
       </PageStructure>
     );
-  }
+  
 }
 const styles = StyleSheet.create({
     

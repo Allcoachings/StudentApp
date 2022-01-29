@@ -10,7 +10,7 @@ import mime from "mime";
             // formData.append("fetch_banners",'true') 
             // formData.append("offset",offset) 
             // formData.append("data_limit",limit)
-            console.log('courseId',courseId) 
+            // console.log('courseId',courseId) 
             let headers = new Headers();
 
             headers.append('Content-Type', 'application/json'); 

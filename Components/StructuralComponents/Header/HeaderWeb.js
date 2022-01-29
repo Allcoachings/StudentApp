@@ -7,7 +7,7 @@ Text
      state = {  }
      render() {
          return (
-           <Text>HeaderWeb</Text>  
+            null
          );
      }
  }

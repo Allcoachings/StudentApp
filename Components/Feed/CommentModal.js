@@ -14,6 +14,7 @@ import ImageZoomModal from '../InstituteView/ImageZoomModal'
 import RenderSingleComment from './RenderSingleComment'
 import RenderAddCommentBox from './RenderAddCommentBox'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import BackArrow from '../Utils/Icons/BackArrow'
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 
@@ -94,7 +95,7 @@ class CommentModal extends Component {
       else
       {
             Toast.show("Something Went Wrong. Please Try Again Later!!")
-            console.log("error", response.status)
+            // console.log("error", response.status)
       }
   }
 
@@ -136,11 +137,12 @@ class CommentModal extends Component {
           onRequestClose={()=>this.props.closeModal()}
         >
             <View style={styles.container}>
-                <View style={{ flexDirection: 'row', borderBottomColor:theme.labelOrInactiveColor,padding:10,}}>
+                <View style={{ flexDirection: 'row', borderBottomColor:theme.labelOrInactiveColor,padding:10,alignItems: 'center'}}>
                     <TouchableOpacity onPress={()=>this.props.closeModal()}>
-                        <AntDesign name="left" size={24} color="black" />
+                        {/* <AntDesign name="left" size={24} color="black" /> */}
+                        <BackArrow height={24} width={24}/>
                     </TouchableOpacity>
-                    <Text style={{fontFamily:'Raleway_700Bold',fontSize:20, marginLeft: 10}}>Comments ({this.state.commentData.length})</Text>
+                    <Text style={{fontFamily:'Raleway_700Bold',fontSize:20, marginLeft: 10,marginBottom: 5}}>Comments ({this.state.commentData.length})</Text>
                 </View>
                 
                 <ScrollView style={{height:height}}>

@@ -10,7 +10,10 @@ import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import { saveTestResult } from '../Utils/DataHelper/TestSeriesResponse';
 import CardView from '../Utils/CardView';
 import LeadersBoard from './LeadersBoard'
+import {setStatusBarHidden,setTestResultData} from '../Actions'
+
 const width = Dimensions.get('window').width
+
 let backhandler;
 class ResultAnalysis extends React.Component {
     state={
@@ -18,17 +21,17 @@ class ResultAnalysis extends React.Component {
            {
                id: '1',
                type: 'Correct',
-               que: this.props.testSeriesData.brief.correctQues
+               que: this.props.testSeriesData.testData.brief.correctQues
            },
            {
                id: '2',
                type: 'Wrong',
-               que: this.props.testSeriesData.brief.wrongQues
+               que: this.props.testSeriesData.testData.brief.wrongQues
            },
            {
                id: '3',
                type: 'Skipped',
-               que: this.props.testSeriesData.brief.Unattempted
+               que: this.props.testSeriesData.testData.brief.Unattempted
            },
        ]
     } 
@@ -83,23 +86,23 @@ class ResultAnalysis extends React.Component {
 
         updateCounts=()=>
         {
-            if((this.state.data[0].que!=this.props.testSeriesData.brief.correctQues)||(this.state.data[1].que!=this.props.testSeriesData.brief.wrongQues)||(this.state.data[2].que!=this.props.testSeriesData.brief.Unattempted))
+            if((this.state.data[0].que!=this.props.testSeriesData.testData.brief.correctQues)||(this.state.data[1].que!=this.props.testSeriesData.testData.brief.wrongQues)||(this.state.data[2].que!=this.props.testSeriesData.testData.brief.Unattempted))
             {
                 this.setState({data:[
                     {
                         id: '1',
                         type: 'Correct',
-                        que: this.props.testSeriesData.brief.correctQues
+                        que: this.props.testSeriesData.testData.brief.correctQues
                     },
                     {
                         id: '2',
                         type: 'Wrong',
-                        que: this.props.testSeriesData.brief.wrongQues
+                        que: this.props.testSeriesData.testData.brief.wrongQues
                     },
                     {
                         id: '3',
                         type: 'Skipped',
-                        que: this.props.testSeriesData.brief.Unattempted
+                        que: this.props.testSeriesData.testData.brief.Unattempted
                     },
                 ]})
             }
@@ -181,31 +184,55 @@ class ResultAnalysis extends React.Component {
           });
         
         const{testSeriesData} = this.props;
-        let accuracy = Math.round((testSeriesData.brief.score/testSeriesData.series.maxMarks)*100,3)
-        let timeTaken = (testSeriesData.series.timeDuration-testSeriesData.brief.timeLeft)
-        let seriesData = {...testSeriesData.brief,studentId:this.props.userInfo.id,accuracy,timeTaken,skippedQues:this.props.testSeriesData.brief.Unattempted,userQuestionResponses:testSeriesData.ques}
+        let accuracy = Math.round((testSeriesData.testData.brief.score/testSeriesData.testData.series.maxMarks)*100,3)
+        let timeTaken = (testSeriesData.testData.series.timeDuration-testSeriesData.testData.brief.timeLeft)
+        let seriesData = {...testSeriesData.testData.brief,status:2,studentId:this.props.userInfo.id,accuracy,timeTaken,skippedQues:this.props.testSeriesData.testData.brief.Unattempted,userQuestionResponses:testSeriesData.testData.ques}
         saveTestResult( seriesData,(response) => {
             console.log("save result status",response.status)
             if(response.status==201)
-            { 
+            {
+                if(this.props?.testSeriesData?.testFuncs?.changeTestStatus){
+                    this.props.testSeriesData.testFuncs.changeTestStatus(2)
+                }
+                
                 let data  = response.headers.map.location.split("*"); 
-                console.log("saved result data ",data)
+                if(!testSeriesData.testData.brief.id)
+                {
+                    this.props.setTestResultData({...this.props.testSeriesData.testData,brief:{...testSeriesData.testData.brief,id:data[0]},})
+                } 
+                // console.log("saved result data ",data)
                 this.setState({accuracy,savedTestResult:true,savedTestResultId:data[0],percentile:data[1],rank:data[2],totalStudent:data[3]})
             }
         }) 
     }
     
+    viewSolutionHandler=()=>
+    {
+
+        if(this.props.testSeriesData.testData.series.practice)
+        {
+
+            this.setState({viewSolutions:true})
+        }else
+        {
+            this.props.navigation.navigate('SingleTestSeries',{viewMode:true,item:this.props.testSeriesData.testData.brief.item})
+        }
+        
+    }
     render() {
+
         this.updateCounts()
         const{testSeriesData,userInfo} = this.props;
-        let timeTaken = (this.props.testSeriesData.series.timeDuration*60)-this.props.testSeriesData.brief.timeLeft 
+        // console.log(testSeriesData)
+        let timeTaken = (this.props.testSeriesData.testData.series.timeDuration*60)-this.props.testSeriesData.testData.brief.timeLeft 
         return(
             <PageStructure
                 iconName="arrow-left"
                 btnHandler={() => {this.props.navigation.navigate('Home')}}
-                titleonheader={"Result Analysis"}
+                titleonheader={testSeriesData.testData.series.title}
                 notificationreplaceshare={"share-2"}
                 noNotificationIcon={true}
+                navigation={this.props.navigation}
                 nosearchIcon={true}
             >
                 <ScrollView>
@@ -239,8 +266,8 @@ class ResultAnalysis extends React.Component {
                                     <View style={styles.scoreView}>
                                         <Text style={styles.scoreRankText}>Score</Text>
                                         <View style={styles.marksView}>
-                                            <Text style={styles.obtainedMarks}>{testSeriesData.brief.score}</Text>
-                                            <Text> out of {testSeriesData.series.maxMarks} </Text> 
+                                            <Text style={styles.obtainedMarks}>{testSeriesData.testData.brief.score}</Text>
+                                            <Text> out of {testSeriesData.testData.series.maxMarks} </Text> 
                                         </View>
                                     </View>
                                     <View style={styles.rankView}>
@@ -301,13 +328,17 @@ class ResultAnalysis extends React.Component {
                                 </View> 
                             </View>
                         </View> 
+                        {!this.props.testSeriesData.testData.series.practice?
+                        (
+                            <LeadersBoard testId={this.props.testSeriesData.testData.series.id} />
+                        ):(null)}
 
-                        <LeadersBoard/>
+                        
 
                         {this.state.viewSolutions?(
                             <Solutions/>
                         ):(
-                            <TouchableWithoutFeedback onPress={()=>this.setState({viewSolutions:true})}>
+                            <TouchableWithoutFeedback onPress={this.viewSolutionHandler}>
                                 <View style={{padding:10,backgroundColor:theme.accentColor,width:width-20,margin:10,borderRadius:5,alignItems: 'center',alignSelf:'center'}}>
                                     <Text style={{color: theme.primaryColor,fontSize:16,fontFamily: 'Raleway_600SemiBold'}}>View Solution</Text>
                                 </View>
@@ -633,4 +664,4 @@ const  mapStateToProps = (state)=>
         userInfo: state.user.userInfo
     }
 }
-export default connect(mapStateToProps)(ResultAnalysis); 
+export default connect(mapStateToProps,{setTestResultData})(ResultAnalysis); 

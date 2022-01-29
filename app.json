@@ -52,6 +52,11 @@
             "DEFAULT"
           ]
         }
+      ],
+      "permissions": [
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.INTERNET"
       ]
     },
     "web": {
@@ -60,7 +65,9 @@
     "description": "",
     "sdkVersion": "42.0.0",
     "plugins": [
-      "expo-file-system"
+      "expo-file-system",
+      "expo-navigation-bar",
+      "expo-image-picker"
     ]
   }
 }

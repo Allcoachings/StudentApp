@@ -93,13 +93,14 @@ class CategoryList extends React.Component {
         this.updateComponent()
         return(
             <PageStructure
-                iconName={"chevron-left"}
+                iconName={"arrow-left"}
                 btnHandler={() => {this.props.navigation.goBack()}}
                 titleonheader={this.props.route.params.type}
                 searchFun={this.search}
                 singleItem={this.renderMain} 
                 nosearchIcon={true} 
                 noNotificationIcon={true}
+                navigation={this.props.navigation}
             >
             <ScrollView>
             <View style={styles.container}>

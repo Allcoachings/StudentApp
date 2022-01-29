@@ -6,7 +6,7 @@ import { EvilIcons } from '@expo/vector-icons';
 import { AirbnbRating } from 'react-native-ratings';
 import { connect } from 'react-redux'
 import CardView from '../Utils/CardView';
-import {setNavigation} from '../Actions'
+import {setNavigation,setPinnedInstituteCount} from '../Actions'
 import {fetch_homeData} from '../Utils/DataHelper/HomeData'
 import {fetch_coachingByCategoryAndStatus} from '../Utils/DataHelper/Coaching'
 import {SearchInstitute} from '../Utils/DataHelper/Search'
@@ -20,7 +20,8 @@ class Home extends React.Component {
     state = {  
        loadingData:true,
        homeMainContent:[],
-       offset:0
+       offset:0,
+       count:0
     }
 
     handleHomeDataCallBack=(response) => {
@@ -42,7 +43,18 @@ class Home extends React.Component {
         this.checkForUserCat()
         fetch_homeData(this.handleHomeDataCallBack)
         
-        // PaymentGateway({orderId:"123",mid:paytmConfig.mid,isStaging:paytmConfig.isStaging,appInvokeRestricted:paytmConfig.appInvokeRestricted,amount:10,tranxToken:"123",callback:(response)=>{console.log(response)}})
+        // PaymentGateway({orderId:"123",mid:paytmConfig.mid,isStaging:paytmConfig.isStaging,appInvokeRestricted:paytmConfig.appInvokeRestricted,amount:10,tranxToken:"123",callback:(response)=>{// console.log(response)}})
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        // console.log(this.props.pinnedInstitute,"before " , this.props.pinnedInstituteCount)
+        if(this.props?.pinnedInstitute[0]?.institute && this.props.pinnedInstituteCount==0)
+        {
+            // console.log(this.props.pinnedInstitute)
+                this.props.setPinnedInstituteCount(1)
+                this.redirectTo(this.props?.pinnedInstitute[0]?.institute)
+
+        }
     }
 
     redirectTo =(item)=>
@@ -109,10 +121,11 @@ class Home extends React.Component {
                 <View style={styles.instituteMetaContainer}>
                     <View style={{display:'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginLeft: 2}}>
                         <Text style={styles.instituteTitle} numberOfLines={2}>
-                            {item.name.length<=16?(item.name):(item.name.substr(0, 20)+"..")}</Text>
+                            {item.name}
+                        </Text>
                     </View>
                     <View style={{display:'flex', flexDirection: 'row', alignItems: 'center'}}>
-                        <Text style={{alignSelf:'flex-start', color: theme.greyColor,fontSize:14, marginRight: 2}}>{item.totalRatingCount>0?(item.totalRating/item.totalRatingCount):(0)}</Text> 
+                        <Text style={{alignSelf:'flex-start', color: theme.greyColor,fontSize:14, marginRight: 2}}>{item.totalRatingCount>0?((item.totalRating/item.totalRatingCount).toFixed(2)):(0)}</Text> 
                         <AirbnbRating 
                             starContainerStyle={styles.instituteRating} 
                             count={5}
@@ -133,7 +146,7 @@ class Home extends React.Component {
     {
         
         return(
-            <TouchableWithoutFeedback onPress={()=>item.bannerLink?(this.props.navigation.navigate('webview',{link:item.bannerLink,mode:'defaultAppHeader'})):(console.log("nolink"))}>
+            <TouchableWithoutFeedback onPress={()=>item.bannerLink?(this.props.navigation.navigate('webview',{link:item.bannerLink,mode:'defaultAppHeader'})):( console.log("nolink"))}>
                 <View style={styles.bannerItemContainer} >
                     <Image source={{uri:imageProvider(item.bannerImageLink)}} style={styles.bannerImage}/>
                 </View>
@@ -192,6 +205,7 @@ class Home extends React.Component {
         }
         
     }
+    
     render() {
         return (
             <PageStructure
@@ -202,12 +216,12 @@ class Home extends React.Component {
                 catOnpress={this.toggleCatMode}
                 selectedCat={this.state.selectedCat}
                 rightIconOnPress={() =>this.props.navigation.navigate("Notification")}
-                scrollMode={'scroll'}
-                navigation={this.props.navigation}
+                scrollMode={'scroll'} 
                 searchFun={this.search}
                 titleWithImage={true}
                 titleonheader={"All Coaching"}
                 singleItem={this.renderInstituteList}
+                navigation={this.props.navigation}
             >
                 <View style={styles.container}> 
                     <View style={styles.mainContent}> 
@@ -286,9 +300,11 @@ const styles = StyleSheet.create({
                     instituteItemContainer:
                     {
                         flexDirection:'column',
-                        width:(windowWidth/3)-20,
-                        height:180,
+                        width:(windowWidth/3)-10,
+                        height:160,
                         marginLeft:10,
+                         
+                        flexWrap:'wrap',
                         marginTop:10
                     },
                         instituteItemImage:
@@ -299,32 +315,35 @@ const styles = StyleSheet.create({
                         },
                         instituteMetaContainer:
                         {
+                            width:(windowWidth/3)-10,
                             flexDirection:'column',
                             flexWrap:'wrap'
                         },
                             instituteTitle:
                             {
                                 flexWrap:'wrap',
-                                width:'100%', 
+                                width:(windowWidth/3)-10, 
                                 fontSize:12,
                                 height:30
                             },
                             instituteRating:
                             {
                                 // alignSelf:'flex-start',
-                                // width:'80%'
+                                
                             },
                     bannerItemContainer:
                     {
-                        marginBottom: 10,
-                        height:160
+                        marginVertical: 10,
+                        height:125,
+                        width:windowWidth-25,
+                        marginHorizontal:10
+
                     },
                         bannerImage:
                         {
-                            width:(windowWidth/1.1)-10,
-                            height:150,
-                            borderRadius:10,
-                            marginLeft:10
+                            width:windowWidth-25,
+                            height:125, 
+                            borderRadius:10, 
                         }
 
 
@@ -334,6 +353,9 @@ const  mapStateToProps = (state)=>
     return {
         screenWidth: state.screen.screenWidth,
         userInfo:state.user.userInfo,
+        pinnedInstitute:state.user.pinnedInstitute,
+        pinnedInstituteCount:state.user.count
+        
     }
 }
-export default connect(mapStateToProps,{setNavigation})(Home);
+export default connect(mapStateToProps,{setNavigation,setPinnedInstituteCount})(Home);

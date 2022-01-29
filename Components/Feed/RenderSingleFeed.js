@@ -44,7 +44,7 @@ class RenderSingleFeed extends React.Component {
         }
         else
         {
-            console.log(response.status)
+            // console.log(response.status)
         }
     }
 
@@ -95,7 +95,7 @@ class RenderSingleFeed extends React.Component {
         else
         {
                 Toast.show("Something Went Wrong. Please Try Again Later!!")
-                console.log("error", response.status)
+                // console.log("error", response.status)
         }
     }
 
@@ -127,6 +127,7 @@ class RenderSingleFeed extends React.Component {
                 nosearchIcon={true}
                 noNotificationIcon={true}
                 replaceBottomTab={    <RenderAddCommentBox add={this.add}/>}
+                navigation={this.props.navigation}
             >
                 {this.state.loadingFeed?(
                     <CustomActivtiyIndicator mode="skimmer" />

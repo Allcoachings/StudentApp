@@ -32,7 +32,7 @@ class AddItemModal extends Component {
         }
         let date  = day+"-"+month+"-"+dateObject.getFullYear();
         let dateReverse  = dateObject.getFullYear()+"-"+month+"-"+day;
-        console.log(date)
+        // console.log(date)
         this.setState({date,dateReverse});
     }
     setTime=(timeObject)=>
@@ -85,7 +85,7 @@ class AddItemModal extends Component {
     {
             if(reponse.status ===201)
             {
-                console.log("created",reponse.headers.map.location)
+                // console.log("created",reponse.headers.map.location)
                 this.props.appendItems({title:this.state.title,subTitle:this.state.subTitle,date:this.state.date,time:this.state.time,subjectId:this.props.subjectId,id:reponse.headers.map.location})
                 this.props.closeModal()
             }
@@ -99,14 +99,14 @@ class AddItemModal extends Component {
             addCourseTimetableItem(this.state.title,this.state.subTitle,this.state.dateReverse,this.state.date,this.state.time,this.props.subjectId,this.props.insId,this.handleAddItemCallBack)
         }else
         {
-            console.log("empty filds")
+            // console.log("empty filds")
         }
     }
 
     verify=({title,subTitle,date,time}) =>title&&subTitle&&date&&time
 
   render() {
-      console.log(this.props.subjectId)
+      // console.log(this.props.subjectId)
     return (
         <Modal 
             animationType = {"fade"} 

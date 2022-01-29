@@ -3,6 +3,8 @@ import {serverApiUrl} from '../../config'
 
     export const SearchInstitute=(searchword,offset,dataLimit,callback)=>
     {
+
+        console.log(searchword,offset,dataLimit)
             let headers = new Headers(); 
             headers.append('Content-Type', 'application/json');  
             headers.append('Access-Control-Allow-Origin', serverApiUrl);

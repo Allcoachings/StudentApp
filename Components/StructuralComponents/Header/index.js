@@ -38,8 +38,7 @@ class index extends React.Component {
                 if(isMain)
                 {
                     let obj = {icon:'',name:'All',sortOrder:1,id:-1}
-                    data.unshift(obj)
-                    console.log("catgeories saved in redux")
+                    data.unshift(obj) 
                     this.props.setCategories(data)
                 } 
                 this.setState({tabListInstitute:data,activeTab:this.props.selectedCat||-1});                   
@@ -95,10 +94,9 @@ class index extends React.Component {
             <ScrollView>
             
                     <View style={styles.container}>
-                        <View style={styles.headerRow}>
-                            {this.props.screenWidth<=screenMobileWidth?
-                            (
-                                <HeaderMobile iconName={this.props.iconName}
+                        {/* <View style={styles.headerRow}> */}
+                            
+                                {/* <HeaderMobile iconName={this.props.iconName}
                                     titleonheader={this.props.titleonheader} 
                                     replaceHeader={this.props.replaceHeader} 
                                     headerComponent={this.props.headerComponent} 
@@ -117,13 +115,11 @@ class index extends React.Component {
                                     pinUnpinIcon={this.props.pinUnpinIcon}
                                     searchReplace={this.props.searchReplace}
                                     showShareIcon={this.props.showShareIcon}
-                                />
-                            )
-                            :
-                            (
-                                <HeaderWeb/>
-                            )}
-                        </View>
+                                    pinUnpinFunction={this.props.pinUnpinFunction}
+                                    showTitle={this.props.showTitle}
+                                /> */}
+                             
+                        {/* </View> */}
                         {this.props.catInHeader&&this.state.tabListInstitute.length?( 
                             <View style={[styles.catRow, this.props.catStyle]}> 
                                 <FlatList 

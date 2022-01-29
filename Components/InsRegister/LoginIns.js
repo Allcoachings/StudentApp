@@ -27,11 +27,11 @@ const LoginIns=(props)=>
 
     const validateCallback=(response)=>
     {
-            console.log(response.status)
+            // console.log(response.status)
             if(response.status==200)
             {
                 response.json().then(data=>{
-                    console.log(data)
+                    // console.log(data)
                     if(data)
                     {
                         props.setInstituteDetails(data)
@@ -51,7 +51,7 @@ const LoginIns=(props)=>
     {
             if(verify(email,password))
             {
-                    console.log("ready to validate")
+                    // console.log("ready to validate")
                     validateLogin(email,password,validateCallback)
             }else
             {

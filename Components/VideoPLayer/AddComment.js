@@ -3,7 +3,7 @@ import React,{useEffect,useState} from 'react';
 import { Text, View,Image,TouchableOpacity,TextInput, TouchableWithoutFeedback } from 'react-native';
 import { imageProvider, serverBaseUrl, theme } from '../config';
 import {addVideoComment} from '../Utils/DataHelper/CourseVideos'
-import { MaterialIcons } from '@expo/vector-icons'; 
+import { Feather, MaterialIcons } from '@expo/vector-icons'; 
 import {useSelector} from 'react-redux'
 const AddComment = (props) => {
 const item = props.item;
@@ -19,7 +19,7 @@ const item = props.item;
     {
             if(response.status==201)
             {
-                console.log("comment added");
+                // console.log("comment added");
                 props.unshiftCommets({comment,commentTime:Date.now(),student:user,videoId:props.videoId}) 
                 setComment("")
             }
@@ -39,7 +39,7 @@ const item = props.item;
             <View>
                 <TouchableWithoutFeedback onPress={addCommentHandler}>
                     <View>
-                        <MaterialIcons name="chevron-right-forward" size={24} color={theme.greyColor} />
+                        <Feather name="chevron-right-forward" size={24} color={theme.greyColor} />
                     </View>
                 </TouchableWithoutFeedback>
             </View>):(null)}

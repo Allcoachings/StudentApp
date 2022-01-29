@@ -25,8 +25,7 @@ public class InsTestSeriesUserResponsesController {
     @PostMapping("/saveresponse")
     public ResponseEntity<Object> saveResponse(@RequestBody InsTestSeriesUserResponseBrief insTestSeriesUserResponseBrief)
     {
-        long rank = userResponsesService.countRankBy(insTestSeriesUserResponseBrief.getTestSeriesId(),insTestSeriesUserResponseBrief.getScore())+1;
-        System.out.println("student rank "+rank);
+        long rank = userResponsesService.countRankBy(insTestSeriesUserResponseBrief.getTestSeriesId(),insTestSeriesUserResponseBrief.getScore());
         insTestSeriesUserResponseBrief.setRank(rank);
         int belowScore = userResponsesService.belowScore(insTestSeriesUserResponseBrief.getTestSeriesId(),insTestSeriesUserResponseBrief.getScore());
         int count =userResponsesService.totalStudents(insTestSeriesUserResponseBrief.getTestSeriesId());
@@ -35,11 +34,29 @@ public class InsTestSeriesUserResponsesController {
           percen = (belowScore / count) * 100;
         }
         String percentile = String.valueOf(percen);
-        System.out.println("belowScore:"+belowScore+" count:"+count+" percentile:"+percentile+" long:"+percen);
         insTestSeriesUserResponseBrief.setPercentile(percentile);
         InsTestSeriesUserResponseBrief insTestSeriesUserResponseBrief_saved =  userResponsesService.saveUserResponse(insTestSeriesUserResponseBrief);
         URI location = ServletUriComponentsBuilder.fromPath("{id}*{percentile}*{rank}*{count}").buildAndExpand(insTestSeriesUserResponseBrief_saved.getId(),percentile,rank,count).toUri();
+        return ResponseEntity.created(location).build();
+    }
 
+    @CrossOrigin(origins="*")
+    @PostMapping("/saveresponse-intermediate")
+    public ResponseEntity<Object> saveResponseIntermediate(@RequestBody InsTestSeriesUserResponseBrief insTestSeriesUserResponseBrief)
+    {
+//        long rank = userResponsesService.countRankBy(insTestSeriesUserResponseBrief.getTestSeriesId(),insTestSeriesUserResponseBrief.getScore())+1;
+//        System.out.println("student rank "+rank);
+//        insTestSeriesUserResponseBrief.setRank(rank);
+//        int belowScore = userResponsesService.belowScore(insTestSeriesUserResponseBrief.getTestSeriesId(),insTestSeriesUserResponseBrief.getScore());
+//        int count =userResponsesService.totalStudents(insTestSeriesUserResponseBrief.getTestSeriesId());
+//        long percen=0;
+//        if(count!=0) {
+//          percen = (belowScore / count) * 100;
+//        }
+//        String percentile = String.valueOf(percen);
+//        insTestSeriesUserResponseBrief.setPercentile(percentile);
+        InsTestSeriesUserResponseBrief insTestSeriesUserResponseBrief_saved =  userResponsesService.saveUserResponse(insTestSeriesUserResponseBrief);
+        URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(insTestSeriesUserResponseBrief_saved.getId()).toUri();
         return ResponseEntity.created(location).build();
     }
 
@@ -51,12 +68,29 @@ public class InsTestSeriesUserResponsesController {
         return userResponsesService.userResponseBriefs(responseId);
     }
 
+    @CrossOrigin(origins="*")
+    @GetMapping("/get-user-response/{testSeriesId}/{userId}")
+    public Optional<InsTestSeriesUserResponseBrief> getResponseByTestSeriesIdAndUserId(@PathVariable long testSeriesId,@PathVariable long userId)
+    {
+        return userResponsesService.getResponseByTestSeriesIdAndUserId(testSeriesId,userId);
+    }
+
 
     @CrossOrigin(origins="*")
     @GetMapping("/get-testseries-student-response/{testSeriesId}/{offset}/{datalimit}")
     public Iterable<StudentResponseBriefDto> findStudentListOrderByRank(@PathVariable long testSeriesId,@PathVariable int offset,@PathVariable int datalimit)
     {
-        return userResponsesService.findStudentListOrderByRank(testSeriesId, offset, datalimit);
+            return userResponsesService.findStudentListOrderByRank(testSeriesId, offset, datalimit);
+    }
+
+
+    @CrossOrigin(origins="*")
+    @PutMapping("/updateResponseStatus/{responseId}/{status}")
+    public ResponseEntity<Object> updateResponseStatus(@PathVariable long responseId,@PathVariable int status)
+    {
+         userResponsesService.updateResponseStatus(status,responseId);
+
+        return ResponseEntity.ok().build();
     }
 
 }

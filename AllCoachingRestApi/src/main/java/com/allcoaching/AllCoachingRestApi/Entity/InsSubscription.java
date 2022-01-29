@@ -20,5 +20,6 @@ public class InsSubscription {
 
     private long studentId;
     private long insId;
+    private boolean isNotificationOn;
 
 }

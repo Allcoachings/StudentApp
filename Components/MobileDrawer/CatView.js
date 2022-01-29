@@ -16,7 +16,7 @@ const CatView = (props) => {
         })
         const onPressHandler = (item)=>
         {
-            console.log('Press')
+            // console.log('Press')
             setSelected(!isSelected);
             setSelectedCat(item);
             props.setSelected(item)

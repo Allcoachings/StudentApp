@@ -21,7 +21,7 @@ class Revenue extends React.Component {
     }
     navigateToCourseRevenue=(item,institute)=>
     {
-        console.log(institute)
+        // console.log(institute)
         this.props.navigation.navigate("courseRevenue",{item,institute})
     }
     courses=({item})=>{
@@ -44,13 +44,13 @@ class Revenue extends React.Component {
         {
             response.json().then(data=>
             {
-                console.log(data);
+                // console.log(data);
                 this.setState({Revenue: data})
             })
         }
         else
         {
-            console.log("something went wrong")
+            // console.log("something went wrong")
         }
     }
 
@@ -60,6 +60,7 @@ class Revenue extends React.Component {
                 iconName={"chevron-left"}
                 btnHandler={() => {this.props.navigation.goBack()}}
                 titleonheader={"Revenue"}
+                navigation={this.props.navigation}
             >
                 <ScrollView>
                     <View style={styles.container}>

@@ -10,6 +10,7 @@ import { addStudentReview, findReviewByStudentId, updateReview } from '../Utils/
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import Toast from 'react-native-simple-toast';
+import BackArrow from "../Utils/Icons/BackArrow"
 class StudentReview extends React.Component {
     
     state = {
@@ -46,7 +47,7 @@ class StudentReview extends React.Component {
          if(response.status==200)
          {
             response.json().then(data=>{
-                console.log("data",data);
+                // console.log("data",data);
                 if(data)
                 {
                     this.setState({studentReviewData: data, showAddReview: false})
@@ -59,7 +60,7 @@ class StudentReview extends React.Component {
          }
          else
          {
-             console.log("something went wrong", response.status)
+             // console.log("something went wrong", response.status)
          }
      }
 
@@ -103,7 +104,7 @@ class StudentReview extends React.Component {
         }
         else
         {
-            console.log(response.status)
+            // console.log(response.status)
             Toast.show("Something Went Wrong. Please Try Again Later.")
         }
     }
@@ -114,14 +115,18 @@ class StudentReview extends React.Component {
        this.setState({ReviewmodalVisible: false})
         if(response.status==200)
         {
-            Toast.show("Review Added successfully!!")
-            var obj={"insName": 'Cyberflow', "insReview":{"id": 3, "courseId": 1, "insId": 1,  "reply": '', "review": this.state.review, "rating": this.state.rating,"studentId": 1}, "studentImage": "sdfghj", "studentName": "DU BUDDY"}
-            this.setState({ reviews: this.state.reviews.concat(obj), showAddReview: false })
-            this.props.increseRating(this.state.rating)
+            response.json().then(data=>{
+                Toast.show("Review Added successfully!!")
+                var obj={"insName": 'Cyberflow', "insReview":data, "studentImage": this.props.userInfo.studentImage, "studentName": this.props.userInfo.name}  
+                console.log("rrevie data ",data)
+                this.setState({ reviews: this.state.reviews.concat(obj), showAddReview: false })
+                this.props.increseRating(this.state.rating)
+            })
+            
         }
         else
         {
-            console.log("error", response.status)
+            // console.log("error", response.status)
             Toast.show("Something Went Wrong. Please Try Again Later.")
         }
     }
@@ -153,6 +158,7 @@ class StudentReview extends React.Component {
 
 
     render() {
+         
         return (
                 <View>
                     <View style={{flexDirection: 'column', justifyContent: 'space-between', marginBottom: 10, marginTop: 10}}>
@@ -178,7 +184,7 @@ class StudentReview extends React.Component {
                             </View>
                         ):(
                             <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
-                                <TouchableOpacity style={{backgroundColor: theme.accentColor, justifyContent: 'center', alignItems: 'center', padding: 7, borderRadius: 6}} onPress={()=>this.setState({editReviewModal: true, review: this.state.studentReviewData.review, rating: this.state.studentReviewData.rating})}>
+                                <TouchableOpacity style={{backgroundColor: theme.blueColor, justifyContent: 'center', alignItems: 'center', padding: 7, borderRadius: 6}} onPress={()=>this.setState({editReviewModal: true, review: this.state.studentReviewData.review, rating: this.state.studentReviewData.rating})}>
                                     <Text style={{color: theme.primaryColor}}>Edit Your Review</Text>
                                 </TouchableOpacity>
                             </View>
@@ -206,17 +212,19 @@ class StudentReview extends React.Component {
                     )}
                     <Modal animationType = {"fade"} transparent = {false}
                         visible = {this.state.ReviewmodalVisible}
-                        onRequestClose = {() => { console.log("Modal has been closed.") } }> 
+                        onRequestClose = {()=>this.setState({editReviewModal:false})}
+                        > 
                             <View>
                                 <View style={{flexDirection: 'row',alignItems: 'center',paddingBottom:10,borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}>
                                     <View style={{marginLeft:10}}>
                                         <TouchableOpacity onPress={()=>this.setState({ReviewmodalVisible:false})}>
-                                            <EvilIcons name={'chevron-left'} size={20}/>
+                                            {/* <EvilIcons name={'chevron-left'} size={20}/> */}
+                                            <BackArrow height={24} width={24}/>
                                         </TouchableOpacity>
                                     </View>
                                     <View style={{marginHorizontal:10,flex:0.8,flexWrap:'wrap'}}>
                                         <View style={{display: 'flex', flexDirection: 'row',}}> 
-                                            <Image source={this.state.inslogo} style={{width:35,height:35,borderRadius:5,marginRight:10}}/>
+                                            <Image source={{uri:this.state.inslogo}} style={{width:35,height:35,borderRadius:5,marginRight:10}}/>
                                             <View>
                                                 <Text numberOfLines={1} style={{color:theme.secondaryColor,fontSize:15}}>{this.state.institle}</Text>
                                                 <Text style={{color: theme.greyColor}}>Rate this Institute</Text>
@@ -250,17 +258,23 @@ class StudentReview extends React.Component {
                     </Modal>
 
                     {this.state.editReviewModal?(
-                        <Modal animationType = {"fade"} transparent = {false} visible = {this.state.editReviewModal} onRequestClose = {() => { console.log("Modal has been closed.") } }> 
+                        <Modal 
+                            animationType = {"fade"} transparent = {false} visible = {this.state.editReviewModal} 
+                            onRequestClose = {()=>this.setState({editReviewModal:false})
+                                  }> 
                             <View>
                                 <View style={{flexDirection: 'row',alignItems: 'center',paddingBottom:10,borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}>
                                     <View style={{marginLeft:10}}>
-                                        <TouchableOpacity onPress={()=>this.setState({editReviewModal:false})}>
-                                            <EvilIcons name={'chevron-left'} size={20}/>
+                                        <TouchableOpacity  onPress={()=>this.setState({editReviewModal:false})}
+                                            style={{height: 24,}}
+                                        >
+                                            {/* <EvilIcons name={'chevron-left'} size={20}/> */}
+                                            <BackArrow height={24} width={24}/>
                                         </TouchableOpacity>
                                     </View>
                                     <View style={{marginHorizontal:10,flex:0.8,flexWrap:'wrap'}}>
                                         <View style={{display: 'flex', flexDirection: 'row',}}> 
-                                            <Image source={this.state.inslogo} style={{width:35,height:35,borderRadius:5,marginRight:10}}/>
+                                            <Image source={{uri:this.state.inslogo}} style={{width:35,height:35,borderRadius:5,marginRight:10}}/>
                                             <View>
                                                 <Text numberOfLines={1} style={{color:theme.secondaryColor,fontSize:15}}>{this.state.institle}</Text>
                                                 <Text style={{color: theme.greyColor}}>Rate this Institute</Text>
@@ -330,6 +344,7 @@ const  mapStateToProps = (state)=>
 {
     return {
         screenWidth: state.screen.screenWidth,
+        userInfo:state.user.userInfo,
     }
 }
 export default connect(mapStateToProps)(StudentReview);

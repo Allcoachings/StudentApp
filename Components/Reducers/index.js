@@ -1,6 +1,8 @@
 import * as actionTypes from "../Actions/types";
 import { combineReducers } from "redux";
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+ 
 // create your reducers here
 
 /*
@@ -32,7 +34,8 @@ import { combineReducers } from "redux";
 
 //app reducer
 const initialState = {
-    stackNavigation:{}
+    stackNavigation:null,
+   
 }
 
 const app_redux = (state=initialState,action)=>
@@ -44,6 +47,7 @@ const app_redux = (state=initialState,action)=>
                 ...state,
                 stackNavigation:action.payload.navigation
             }
+        
         default:
             return state
     }
@@ -74,12 +78,9 @@ const categories_redux = (state=initialCategoriesState,action)=>
 const initial_user_state=
 {
     userAuthStatus:false,
-    userInfo:{},
-    "id": "1",
-    "name": "DU BUDDY",
-    "email": "dubuddy@gmail.com",
-    "mobile_number": "7302248204",
-    "user_pic": "{ uri: 'https://picsum.photos/200' }"
+    userInfo:{}, 
+    pinnedInstitute:{},
+    count:0
 }
 
 const user_reducer=(state=initial_user_state,action)=>
@@ -93,9 +94,20 @@ const user_reducer=(state=initial_user_state,action)=>
                 userAuthStatus: action.payload.authStatus
             }
         case actionTypes.SET_USER_INFO:
+            AsyncStorage.setItem("authInfo", JSON.stringify(action.payload.info))
             return{
                 ...state,
                 userInfo: action.payload.info 
+            }
+        case actionTypes.SET_PINNED_INSTITUTE:
+            return{
+                ...state,
+                pinnedInstitute: action.payload.data 
+            }
+        case actionTypes.SET_PINNED_INSTITUTE_COUNT:
+            return{
+                ...state,
+                count: action.payload.count 
             }
         default :
             return state
@@ -228,7 +240,7 @@ const downloadReducer=(state=initial_downloadItem_state,action) =>
             })
             let itemsArr  = [...state.items];
             
-            console.log(itemsArr.splice(index,1)," ",index," ",action.payload.key)
+            // console.log(itemsArr.splice(index,1)," ",index," ",action.payload.key)
              return{
                  ...state,
                  items:itemsArr
@@ -239,6 +251,34 @@ const downloadReducer=(state=initial_downloadItem_state,action) =>
         
     }
 }
+
+const initial_header_state=
+{
+    props:{},
+    isHeaderVisible:true
+}
+const headerReducer = (state = initial_header_state, action) =>{
+
+
+    switch(action.type)
+    {
+        case actionTypes.SET_HEADER_PROPS:
+            return{
+                ...state, 
+                props:action.payload.props
+            }
+       
+        case actionTypes.TOGGLE_HEADER:
+            return {
+                ...state,
+                isHeaderVisible:action.payload.status
+            }
+        default:
+            return state
+        
+    }
+}
+ 
 const rootReducer = combineReducers({
         user:user_reducer,
         screen:screen_reducer,
@@ -247,6 +287,7 @@ const rootReducer = combineReducers({
         layout:app_redux,
         categories:categories_redux,
         download:downloadReducer,
+        header:headerReducer
 })
 
 

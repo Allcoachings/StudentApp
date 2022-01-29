@@ -55,12 +55,13 @@ class TestSeries extends React.Component {
         </View>)
     }
     render() {
-        // console.log("hehe this")
+        // // console.log("hehe this")
         return (
             <PageStructure
                 iconName={"chevron-left"}
                 btnHandler={() => {this.props.navigation.goBack()}}
                 catInHeader={true}
+                navigation={this.props.navigation}
             >
                 <View style={styles.container}> 
                     <FlatList 

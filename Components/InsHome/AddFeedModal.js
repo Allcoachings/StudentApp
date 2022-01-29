@@ -1,6 +1,6 @@
 import { EvilIcons, Feather } from '@expo/vector-icons';
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,Modal,TouchableOpacity,TouchableWithoutFeedback,ActivityIndicator,ScrollView,Image,TextInput,FlatList } from 'react-native';
+import { View, Text,StyleSheet,Modal,TouchableOpacity,TouchableWithoutFeedback,ActivityIndicator,ScrollView,Image,TextInput,FlatList, Platform } from 'react-native';
 import { addBannerImagePlaceholder, theme, serverBaseUrl, imageProvider } from '../config';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure';
 import CardView from '../Utils/CardView';
@@ -8,6 +8,7 @@ import {addImgeFeed,saveFeed} from '../Utils/DataHelper/Feed'
 import * as DocumentPicker from 'expo-document-picker';
 import Toast from 'react-native-simple-toast';
 
+import * as ImagePicker from 'expo-image-picker';
 
 class AddFeedModal extends Component {
   state={
@@ -56,6 +57,24 @@ class AddFeedModal extends Component {
 
   componentDidMount(){
         this.props.setUpdateFun(this.updateState)
+  }
+
+
+
+  check = async () => 
+  {
+      if (Platform.OS !== 'web') 
+      {
+          const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+          if (status !== 'granted') 
+          {
+              alert('Sorry, we need camera roll permissions to make this work!');
+          }
+          else
+          {
+              this.handleImageBtnClick();
+          }
+      }
   }
 
   handleAddFeedCallback=(response)=>
@@ -233,21 +252,63 @@ class AddFeedModal extends Component {
 
   verifyTextPost=({description})=>description
   
-  handleImageBtnClick=()=>
+
+
+  handleImageBtnClick=async()=>
   {
-      this.setFeedTypeOption(1);
-      DocumentPicker.getDocumentAsync({type:"image/*",copyToCacheDirectory:true,multiple:false}).then(response=>
-          {
-           
-              if(response.type=="success")
-              {
-                  let feedImageData  = this.state.feedImageData;
-                  feedImageData.unshift(response)
+
+     this.setFeedTypeOption(1);
+      let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: false,
+          aspect: [1,1],
+          quality: 1,
+        });
+
+
+        if(result.uri != null)
+        {
+            // this.setState({localUri : result.uri})
+          //   setImageUri(result.uri);
+          //   // console.log(result);
+          //   setImageLoading(true);
+            // this.setState({changedImage:result,studentImagePrev:{uri:result.uri}})
+            console.log(result);
+            let feedImageData  = [...this.state.feedImageData];
+                  feedImageData.unshift(result)
                   this.setState({feedImageData})
-                //   this.setState({postImage:response})
-              }
-          })
+            // this.setState({imageLoading:true})
+          //   let filename = result.uri.split('/').pop();
+          //   let match = /\.(\w+)$/.exec(filename);
+          //   let type = match ? `image/${match[1]}` : `image`;
+          //   uploadImageToServer(result.uri,filename,type,userDetails.id,uploadImageCallback)
+        }
+      
+      // DocumentPicker.getDocumentAsync({type:"image/*",copyToCacheDirectory:true,multiple:false}).then(response=>
+      // {
+      //     // console.log(response)
+      //     if(response.type=="success")
+      //     {
+      //         this.setState({changedImage:response,studentImagePrev:{uri:response.uri}})
+      //         // console.log(response)
+      //     }
+      // })
   }
+//   handleImageBtnClick=()=>
+//   {
+      
+//       DocumentPicker.getDocumentAsync({type:"image/*",copyToCacheDirectory:true,multiple:false}).then(response=>
+//           {
+           
+//               if(response.type=="success")
+//               {
+//                   let feedImageData  = this.state.feedImageData;
+//                   feedImageData.unshift(response)
+//                   this.setState({feedImageData})
+//                 //   this.setState({postImage:response})
+//               }
+//           })
+//   }
  
  
 setFeedTypeOption=(postType)=>
@@ -369,7 +430,7 @@ setFeedTypeOption=(postType)=>
             <View style={styles.feedImageContainer}>
                 <TouchableWithoutFeedback onPress={()=>this.removeImage(item,index)}>
                     <View style={styles.deleteImageIcon}>
-                        <EvilIcons name="x" size={20} color={theme.featureNoColor}/>
+                        <Feather name="x" size={20} color={theme.featureNoColor}/>
                     </View>
                 </TouchableWithoutFeedback> 
                 <Image source={{uri:  (imageProvider(item.feedImage||item.uri))}} style={styles.feedImage}/>
@@ -483,7 +544,7 @@ setFeedTypeOption=(postType)=>
                             {this.renderButton("POLL","bar-chart-2",()=>this.setFeedTypeOption(2))} 
                             </View>
                             <View style={[styles.feedOption]}>
-                            {this.renderButton("IMAGE","image",this.handleImageBtnClick)} 
+                            {this.renderButton("IMAGE","image",this.check)} 
                             </View>
                             <View style={[styles.feedOption]}>
                                 {this.state.addFeedLoading?(

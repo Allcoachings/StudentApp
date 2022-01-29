@@ -14,7 +14,7 @@ export default  registerForPushNotificationsAsync = async (user_id,mode,callback
         return;
       }
       const token = (await Notifications.getExpoPushTokenAsync()).data;
-      console.log(token);
+      // console.log(token);
     //   this.setState({ expoPushToken: token });
         savePushToken(user_id,mode,token,callback);
     } else {

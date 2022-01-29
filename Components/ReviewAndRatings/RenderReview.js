@@ -1,7 +1,7 @@
 import React from 'react';
 import { View ,Text,Image,StyleSheet,TouchableOpacity,Modal,TextInput} from 'react-native'; 
 import {connect} from 'react-redux'
-import {theme,screenMobileWidth} from '../config'
+import {theme,screenMobileWidth, imageProvider, Assets} from '../config'
 import { AirbnbRating } from 'react-native-ratings';
 import { EvilIcons } from '@expo/vector-icons';
 import {reply} from '../Utils/DataHelper/Reviews'
@@ -36,7 +36,7 @@ class RenderReview extends React.Component {
         }
         else
         {
-            console.log("response.status",response.status)
+            // console.log("response.status",response.status)
         }
     }
 
@@ -44,15 +44,26 @@ class RenderReview extends React.Component {
 
     renderReviews=(item)=>
     {
-        console.log("reply", this.state.reply)
-        console.log("item", item)
+        // console.log("reply", this.state.reply)
+        // console.log("item", item)
         return (
         <View style={styles.ratingContainer}>
             {item.insReview.review!=null&&item.insReview.review!=''?(  
                 <View>  
                 
                 <View style={styles.userMetaContainer}>
-                    <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.ratingUserImage}/> 
+                    <Image source={{ uri: imageProvider(item.studentImage) }} style={styles.ratingUserImage}
+                        ref={(ref)=>this.userImageRef=ref} 
+                        onError={(props)=>{
+                            if(this.userImageRef)
+                            {
+                            this.userImageRef.setNativeProps({
+                                // source: [Assets.profile.profileIcon],
+                                src:[Image.resolveAssetSource(Assets.profile.profileIcon)],
+                            })
+                            }
+                        }}
+                    /> 
                     <Text style={styles.ratingUserName}>{item.studentName}</Text>
                 </View>
 
@@ -82,9 +93,9 @@ class RenderReview extends React.Component {
                             
                         ):(null)}
                         {this.state.reply!=null&&this.state.reply!=''?(
-                            <View style={{padding: 10, backgroundColor:theme.labelOrInactiveColor}}>
+                            <View style={{padding: 10, backgroundColor:theme.labelOrInactiveColor+'44'}}>
                                 <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                                    <Text style={{fontSize: 14, fontWeight: 'bold', marginBottom: 10}}>{item.insName}</Text>
+                                    <Text style={{fontSize: 14, fontFamily: 'Raleway_600SemiBold', marginBottom: 10}}>{item.insName}</Text>
                                     {this.props.replyMode?(<TouchableOpacity onPress={()=>this.setState({ReviewmodalVisible: true, editReply: this.state.reply})}>
                                         <EvilIcons name="edit-3" size={18} color={theme.secondaryColor} />
                                     </TouchableOpacity>):(null)}

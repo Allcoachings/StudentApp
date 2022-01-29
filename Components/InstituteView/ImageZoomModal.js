@@ -11,21 +11,21 @@ class ImageZoomModal extends React.Component {
   renderImage=()=>{
     switch(this.props.type)
     {
-      case "normal": return (<ImageViewer imageUrls={this.props.images.map(e => { return { url: e }})} />)
+      case "normal": return (<ImageViewer index={this.props.index}   backgroundColor={theme.primaryColor} imageUrls={this.props.images.map(e => { return { url: e }})} />)
                     break;
 
-      case "slider": return (<ImageViewer imageUrls={this.props.images.map(e => { return { url: serverBaseUrl+e.feedImage }})} />)
+      case "slider": return (<ImageViewer index={this.props.index} backgroundColor={theme.primaryColor} imageUrls={this.props.images.map(e => { return { url: serverBaseUrl+e.feedImage }})} />)
                     break;
     }
   }
  
   render() {
     const { zoomModal,closeModal } = this.props;
-    console.log("this.props.images", this.props.images)
+     
     return (
         <Modal
           animationType="slide"
-          transparent={true}
+          transparent={false}
           visible={zoomModal}
           onRequestClose={closeModal}>
           <View style={styles.centeredView}>
@@ -39,7 +39,7 @@ class ImageZoomModal extends React.Component {
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
-    backgroundColor: theme.secondaryColor
+    backgroundColor: theme.primaryColor
   },
     
 });

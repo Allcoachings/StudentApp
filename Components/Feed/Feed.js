@@ -95,15 +95,15 @@ class Feed extends React.Component {
         {
             case 1:
                 return (
-                    <FeedImage item={item} type={this.state.authType} navigation={this.props.navigation} mode="all"/>
+                    <FeedImage actions={['Share','Report','Copy Link']} item={item} type={this.state.authType} navigation={this.props.navigation} mode="all"/>
                 )
             case 2:
                 return (
-                    <FeedPoll item={item} type={this.state.authType} navigation={this.props.navigation} mode="all"/>
+                    <FeedPoll actions={['Share','Report','Copy Link']} item={item} type={this.state.authType} navigation={this.props.navigation} mode="all"/>
                 )
             case 3:
                 return (
-                    <FeedText item={item} type={this.state.authType} navigation={this.props.navigation} mode="all"/>
+                    <FeedText actions={['Share','Report','Copy Link']} item={item} type={this.state.authType} navigation={this.props.navigation} mode="all"/>
                 )
         }
     }
@@ -117,7 +117,7 @@ class Feed extends React.Component {
             return null;
           }
         } catch (error) {
-          console.log(error);
+          // console.log(error);
         }
     };
 
@@ -154,7 +154,7 @@ class Feed extends React.Component {
                                 
                                 if(this.state.showLoadMore&&!this.state.loadingFooter)
                                 {
-                                    console.log("here")
+                                    // console.log("here")
                                     this.setState({ refreshing: true,loadingFooter:true,offset:parseInt(this.state.offset)+1},()=>fetch_feed_all(this.state.offset,dataLimit,this.handleFeedCallBack));
                                         
                                 }

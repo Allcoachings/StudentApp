@@ -27,7 +27,7 @@ class SocialAuth extends React.Component {
         if(text.length>=10){
             this.props.phoneNumberEntered(text)
             var checkValid = phoneInput.current?.isValidNumber(value);
-            console.log(checkValid);
+            // console.log(checkValid);
             this.setState({number:text,continue:true,padding:10});
         }
         else if(text.length < 10)
@@ -42,7 +42,7 @@ class SocialAuth extends React.Component {
         {
             response.json().then(data=>
             {
-                console.log(data)
+                // console.log(data)
                 this.setState({loader:false})
                 this.props.openModal()
             })

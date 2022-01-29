@@ -26,17 +26,17 @@ export default function SubscriptionNew(props) {
     const userInfo = useSelector((state) => state.user.userInfo)
 
     useEffect(()=>{
-        console.log("idhar")
+        // console.log("idhar")
         fetchSubscribedInstituteList(userInfo.id, offset, dataLimit, subscriptionCallBack)
     },[offset])
 
     const subscriptionCallBack=(response)=>{
-        console.log("subscription success")
+        // console.log("subscription success")
         if(response.status==200)
         {
             response.json().then(data=>
             {
-                console.log(data)
+                // console.log(data)
                 // this.setState({subscription:data});
                 if(data.length>0)
                 {
@@ -67,19 +67,33 @@ export default function SubscriptionNew(props) {
             return null;
           }
         } catch (error) {
-          console.log(error);
+          // console.log(error);
         }
     };
-    console.log(loadingFooter)
+    // console.log(loadingFooter)
     return(
-        <PageStructure
-            iconName={"arrow-left"}
-            btnHandler={() => {props.navigation.goBack()}}
-            titleonheader={"Subscription"}
-            nosearchIcon={false}
-            noNotificationIcon={true}
-        >
-            <ScrollView>
+        // <PageStructure
+        //     iconName={"arrow-left"}
+        //     btnHandler={() => {props.navigation.goBack()}}
+        //     titleonheader={"Subscription"}
+        //     nosearchIcon={false}
+        //     noNotificationIcon={true} 
+
+
+
+        //     userIcon={() => {props.navigation.navigate("Profile")}}
+        //     // catInHeader={true}
+        //     // catOnpress={toggleCatMode}
+        //     // selectedCat={state.selectedCat}
+        //     rightIconOnPress={() =>props.navigation.navigate("Notification")}
+        //     scrollMode={'scroll'}
+        //     navigation={props.navigation}
+        //     // searchFun={search}
+        //     titleWithImage={true}
+        //     titleonheader={"All Coaching"}
+        //     // singleItem={renderInstituteList}
+        // >
+            // <ScrollView>
                 <View style={styles.container}>
                     {/* <View style={styles.headView}>
                         <TouchableOpacity onPress={null}>
@@ -115,8 +129,8 @@ export default function SubscriptionNew(props) {
                         }}
                     />)}
                 </View>
-            </ScrollView>
-        </PageStructure>
+            // </ScrollView>
+        // </PageStructure>
     )
 }
 

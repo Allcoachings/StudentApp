@@ -1,18 +1,19 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, TouchableWithoutFeedback} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {insTestSeries} from '../../FakeDataService/FakeData'
 import { theme, dataLimit,serverBaseUrl, Assets,imageProvider } from '../config';
-import { EvilIconsns } from '@expo/vector-icons';
+import { EvilIconsns, Feather } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
 import { Redirect } from 'react-router';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
-import { fetch_testSeries_category } from '../Utils/DataHelper/TestSeries'
+import { fetch_testSeries_category, fetch_testSeries_subcategoryByCategory } from '../Utils/DataHelper/TestSeries'
 import {SearchTestSeries} from '../Utils/DataHelper/Search'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import { fetch_Banners } from '../Utils/DataHelper/Banners';
+import SingleTestSeriesItem from './SingleTestSeriesItem';
 class TestSeriesIns extends React.Component {
     state = { 
         offset: 0,
@@ -27,18 +28,23 @@ class TestSeriesIns extends React.Component {
         fetch_Banners("test", this.bannerCallback)
     }
 
+
+    subCategoryByCategoryId=()=>{
+        fetch_testSeries_subcategoryByCategory()
+    }
+
     testSeriesCallBack=(response)=>{
         if(response.status==200)
         {
             response.json().then(data=>
             {
-                console.log("Success cat", data)
+                // console.log("Success cat", data)
                 this.setState({tsLoading: false, testSeries: data, category: data[0]&&data[0].categoryName})
             })
         }
         else
         {
-            console.log("something went wrong")
+            // console.log("something went wrong")
         }
     }
 
@@ -48,32 +54,25 @@ class TestSeriesIns extends React.Component {
 
     singleItem=({item})=>{
        return(
-            CardView(
-                    <View  style={styles.singleItem}>
-                        <View style={styles.imageView}>
-                            <Image source={{uri: serverBaseUrl+item.image}} style={styles.itemImage}/>
-                        </View>
-                        <View style={styles.titleView}>
-                            <Text style={styles.itemTitle}>{item.name}</Text>
-                        </View>
-                        <View style={styles.countView}>
-                            <Text style={styles.itemCount}>{item.count}</Text>
-                        </View>
-                        <TouchableOpacity onPress={()=>this.props.navigation.navigate("ViewInsTestSeriesList", {id: item.id, subCatName:item.name,catName: this.state.category, image: item.image})} style={styles.btnView}>
-                            <Text style={styles.cardButton}>Open Exam</Text>
-                        </TouchableOpacity>
-                    </View>, { margin:5,width:((this.props.screenWidth/3.1)),borderWidth:1,borderColor:theme.labelOrInactiveColor,borderRadius:15 },2
-            )
+            <SingleTestSeriesItem
+                item={item}
+                navigation={this.props.navigation}
+                category={this.state.category}
+             />
        )
     }
 
 
     singleRow=({item})=>
     {
+        // console.log(item)
         return(
         <View style={styles.singleRow}>
             <View style={styles.rowHeader}>
                <Text style={styles.rowHeadText}>{item.categoryName}</Text> 
+               <TouchableWithoutFeedback onPress={()=>{this.props.navigation.navigate("AdminTestSubCategoryList",{type:item.categoryName,id:item.categoryId})}}>
+                <Feather name="arrow-right" size={20} />
+               </TouchableWithoutFeedback>
             </View>
             <View style={styles.rowBody}>
                 
@@ -93,13 +92,13 @@ class TestSeriesIns extends React.Component {
         {
             response.json().then(data=>
             {
-                console.log("data",data);
+                // console.log("data",data);
                 this.setState({banner: data})
             })
         }
         else
         {
-            console.log("something went wrong", response.status)
+            // console.log("something went wrong", response.status)
         }
     }
     renderBannerList=({item})=>
@@ -139,8 +138,12 @@ class TestSeriesIns extends React.Component {
                 scrollMode={'scroll'}
                 navigation={this.props.navigation} 
                 titleWithImage={true}
+                searchFun={this.search}
+                singleItem={this.singleRow}
+                rowListing
                 titleonheader={"All Coaching"} 
                 catOnpress={this.toggleCatMode}
+
             >
                 <ScrollView> 
                     <View style={styles.container}> 
@@ -212,6 +215,8 @@ const styles = StyleSheet.create({
                 display:'flex', 
                 flexDirection: 'row',  
                 marginLeft: 10,
+                alignItems: 'center',
+                justifyContent: 'space-between',
             },
                 rowHeadText:
                 {
@@ -267,7 +272,7 @@ const styles = StyleSheet.create({
                     btnView:
                     { 
                         borderRadius: 2, 
-                        margin: 3,
+                        margin: 3, 
                         backgroundColor: theme.secondaryColor
                     },
                         cardButton:

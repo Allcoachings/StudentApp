@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/subscription")
@@ -40,7 +41,7 @@ public class InsSubscriptionController {
 
     @CrossOrigin(origins = "*")
     @PostMapping("/checksubscription")
-    public boolean checkSubscription(@RequestBody InsSubscription insSubscription)
+    public Optional<InsSubscription> checkSubscription(@RequestBody InsSubscription insSubscription)
     {
            return insSubscriptionService.checkSubscription(insSubscription);
     }
@@ -61,6 +62,13 @@ public class InsSubscriptionController {
     }
 
 
+    @CrossOrigin(origins = "*")
+    @PutMapping("/updateIsNotificationsOn/{studentId}/{insId}/{status}")
+    public ResponseEntity<Object> updateIsNotificationsOn(@PathVariable long studentId,@PathVariable long insId,@PathVariable boolean status)
+    {
+        insSubscriptionService.updateIsNotificationsOn(studentId,insId,status);
+        return ResponseEntity.ok().build();
+    }
 
 
 

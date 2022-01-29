@@ -11,7 +11,7 @@ class RenderPollOption extends React.Component {
 
     voteForPoll=(poll_id,option_id)=>
     {
-        console.log(poll_id)
+        // console.log(poll_id)
         votePoll(poll_id,option_id,this.props.userType,this.props.userType==1?(this.props.institute.details.id):(this.props.userInfo.id),this.handleVotePollCallback)
     }
 
@@ -24,7 +24,7 @@ class RenderPollOption extends React.Component {
         }
         else
         {
-            console.log("failed")
+            // console.log("failed")
         }
     }
 

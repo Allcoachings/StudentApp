@@ -32,6 +32,7 @@ public class StudentPinListService {
 
     public  Iterable<StudentPinList> findAllByStudentId(Student student, int page, int pageSize)
     {
+        System.out.println(student);
         Page<StudentPinList> paged_result = studentPinListRepo.findByStudent(student, PageRequest.of(page,pageSize));
         if(paged_result.hasContent())
         {

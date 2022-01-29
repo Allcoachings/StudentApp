@@ -28,6 +28,7 @@ function Tabs({navigation}) {
             replaceBottomTab={false}
             nosearchIcon={true}
             noNotificationIcon={true}
+            navigation={navigation}
         >
             <Tab.Navigator
                 screenOptions={{
@@ -36,7 +37,7 @@ function Tabs({navigation}) {
                 }}
             >
                 <Tab.Screen name="Videos" component={Videos} />
-                <Tab.Screen name="Downloads" component={Download} />
+                <Tab.Screen name="Documents" component={Download} />
             </Tab.Navigator>
       </PageStructure>
     );
@@ -95,7 +96,7 @@ const Videos = ({navigation})=>
               // Call any action
              
                 extractSavedItems(userInfo.id,'video',dataCallback)
-                console.log("video focused")
+                // console.log("video focused")
             });
         
             // Return the function to unsubscribe from the event so it gets removed on unmount
@@ -168,7 +169,7 @@ const Download = ({navigation})=>
               // Call any action
              
               extractSavedItems(userInfo.id,'document',dataCallback)
-              console.log("document focused")
+              // console.log("document focused")
             });
         
             // Return the function to unsubscribe from the event so it gets removed on unmount
@@ -198,7 +199,7 @@ const Download = ({navigation})=>
                 (
                     <FlatList
                         data={downloadItems.filter((item)=>item.type=='document')}
-                        renderItem={({item,index}) =><RenderVideo  removeVideo={()=>cancelDownload(item)} index={index} userId={userInfo.id} item={item} navigation={navigation} mode="offline" downloadMode={true} savingItem={true} actions={downloadingItemActions} progress={item.progress}/>}
+                        renderItem={({item,index}) =><RenderDocument userId={userInfo.id} item={item} navigation={navigation}   mode="offline" downloadMode={false} actions={actions}/>}
                         keyExtractor={(item)=>item.id}
                         // ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                     />
@@ -206,7 +207,9 @@ const Download = ({navigation})=>
                 }
                 <FlatList
                     data={data}
-                    renderItem={({item,index}) =><RenderVideo  removeVideo={removeVideo} index={index} userId={userInfo.id} item={item} navigation={navigation} mode="offline" downloadMode={false} actions={actions}/>}
+                    renderItem={({item,index}) =>{
+                    console.log(item)
+                    return <RenderDocument userId={userInfo.id} item={item} navigation={navigation}   mode="offline" downloadMode={false} actions={actions}/>} }
                     keyExtractor={(item)=>item.id}
                     ListEmptyComponent={()=>(downloadItems.filter(item=>item.type=='document').lengh==0?<EmptyList image={Assets.noResult.noRes1}/>:null)}
                 />
@@ -239,9 +242,9 @@ class Downloads extends Component {
             {
                 
                 let offlineObj = JSON.parse(result)
-                console.log(result);
+                // console.log(result);
                 let documentArr = offlineObj[uid][doctype]
-                console.log("documentArr", documentArr)
+                // console.log("documentArr", documentArr)
                 if(documentArr)
                 {
                     this.setState({data:documentArr,loading:false})
@@ -365,6 +368,8 @@ class Downloads extends Component {
             replaceBottomTab={false}
             nosearchIcon={true}
             noNotificationIcon={true}
+            navigation={this.props.navigation}
+
         >
             <View>
                 {/* <View style={{borderBottomWidth: 1, borderColor: theme.labelOrInactiveColor, marginTop:10}}/>  */}
@@ -517,12 +522,6 @@ const styles = StyleSheet.create({
                 },
 });
 
-const  mapStateToProps = (state)=>
-{
-    return { 
-        userInfo:state.user.userInfo, 
-        downloadItems:state.download.items  
-    }
-} 
+ 
 // export default connect(mapStateToProps,{removeDownloadingItem})( Downloads);
 export default Tabs;

@@ -7,48 +7,66 @@
   <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
   <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script th:src="@{/script.js}"></script>
 </head>
-<body>
-<div class="container">
-  <div class="row">
-    <div class="well col-xs-10 col-sm-10 col-md-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
+<body th:onload="startTimer('payment#success#[[${insId}]]')">
+    <div class="container" style="overflow:hidden">
       <div class="row">
-        <div class="col-xs-6 col-sm-6 col-md-6">
-          <strong th:text="${result}"></strong>
-          <br>
-        </div>
-        <div class="col-xs-6 col-sm-6 col-md-6 text-right">
-          <p>
-            <em>Receipt #: 34522677W</em>
-          </p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="text-center">
-          <h1>Receipt</h1>
-        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6  ">
+    <!--      <div class="row">-->
+    <!--        <div class="col-xs-6 col-sm-6 col-md-6">-->
+    <!--          <strong th:text="${result}"></strong>-->
+    <!--          <br>-->
+    <!--        </div>-->
+    <!--        <div class="col-xs-6 col-sm-6 col-md-6 text-right">-->
+    <!--          <p>-->
+    <!--            <em>Receipt #: 34522677W</em>-->
+    <!--          </p>-->
+    <!--        </div>-->
+    <!--      </div>-->
+          <div class="row" style="align-item:center;justify-content:center;display:flex">
+            <div class="text-center">
+              <h3>Payment Successful</h3>
+            </div>
+          </div>
+          <div class="row" style="align-item:center;justify-content:center;display:flex">
+            <img th:src="@{/success.png}" style="width:100%;"/>
+          </div>
+          <div class="row" style="align-item:center;justify-content:center;display:flex;margin-bottom:10px">
+                <span>Please Check you inbox for Transaction Details</span>
+            </div>
+          <div class="row" style="align-item:center;justify-content:center;display:flex;margin-bottom:10px">
 
-        <table class="table table-hover">
-          <thead>
-          <tr>
-            <th>Components</th>
-          </tr>
-          </thead>
-          <tbody>
 
-          <tr th:each="entry : ${parameters}">
 
-            <td th:text="${entry.key} + '  : -  ' + ${entry.value}"></td>
+    <!--        <table class="table table-hover">-->
+    <!--          <thead>-->
+    <!--          <tr>-->
+    <!--            <th>Components</th>-->
+    <!--          </tr>-->
+    <!--          </thead>-->
+    <!--          <tbody>-->
 
-          </tr>
-          </tbody>
-        </table>
-        <div class="col-12 justify-content-center">
-          <button class="btn btn-primary" th:onclick="window.ReactNativeWebView.postMessage('payment#success#[[${insId}]]')">Go To Home</button>
+    <!--          <tr th:each="entry : ${parameters}">-->
+
+    <!--            <td th:text="${entry.key} + '  : -  ' + ${entry.value}"></td>-->
+
+    <!--          </tr>-->
+    <!--          </tbody>-->
+    <!--        </table>-->
+
+            <div id="countDownDiv">
+              <span id="countDown">Redirecting back in 5</span>
+            </div>
+          </div>
+
+          <div class="row" style="align-item:center;justify-content:center;display:flex">
+              <div class="col-12 justify-content-center">
+              <button class="btn btn-primary" th:onclick="window.ReactNativeWebView.postMessage('payment#success#[[${insId}]]')">Redirect Now</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 </body>
 </html>

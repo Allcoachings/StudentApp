@@ -43,6 +43,7 @@ class SingleTestSeries extends React.Component {
                 iconName="navicon"
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
                 catInHeader={false}
+                navigation={this.props.navigation}
             >
                 <View style={styles.container}>
                     <View style={styles.headerSection}>

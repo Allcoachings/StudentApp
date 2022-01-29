@@ -167,12 +167,12 @@ class AddTest extends React.Component {
     }
     handlePlaylistCallback=(response)=>
     {
-        console.log("response playlist",response.status)
+        // console.log("response playlist",response.status)
         if(response.status == 200)
         {
             response.json().then(response=>
             { 
-                console.log("response",response)
+                // console.log("response",response)
                 response.unshift({id:-1,name:"Select Playlist"})
                 this.setState({playlist: response,loadingPlaylist:false})
             })
@@ -208,7 +208,7 @@ class AddTest extends React.Component {
                 let series = {isAdmin:true,title:this.state.title,questionCount:this.state.questionCount,timeDuration:this.state.timeDuration,isPractice:this.state.isPractice,courseId:this.props.route.params.courseId,maxMarks:this.state.maxMarks}
                 
                 addTestSeries(series,this.state.questionData,this.handleAddSeriesCallback)
-                console.log(series)
+                // console.log(series)
             }
         }
         else
@@ -224,7 +224,7 @@ class AddTest extends React.Component {
     }
     renderPickerItem=(item)=>
     {
-        console.log(item)
+        // console.log(item)
         return( 
            
             <Picker.Item label={item.name} value={item.id} />
@@ -257,6 +257,7 @@ class AddTest extends React.Component {
                 nosearchIcon={true}
                 noNotificationIcon={true}
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
+                navigation={this.props.navigation}
             >
                 <ScrollView>
                     <View style={styles.headView}>

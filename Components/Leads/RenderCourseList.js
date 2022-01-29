@@ -22,7 +22,7 @@ class RenderCourseList extends React.Component {
     studentListCallBack=(response)=>{
         if(response.status==200)
         {
-            console.log("success student list")
+            // console.log("success student list")
             response.json().then(data=>
             {
 
@@ -31,7 +31,7 @@ class RenderCourseList extends React.Component {
         }
         else
         {
-            console.log("something went wrong")
+            // console.log("something went wrong")
         }
     }
 

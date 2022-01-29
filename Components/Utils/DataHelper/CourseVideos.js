@@ -92,7 +92,7 @@ export const updateVideoView =( videoId,callback)=>
     headers.append('Access-Control-Allow-Origin', serverApiUrl);
     headers.append('Access-Control-Allow-Credentials', 'true'); 
     headers.append('GET', 'POST', 'OPTIONS');  
-    console.log(serverApiUrl+'institute/course/video/views/'+videoId)
+    // console.log(serverApiUrl+'institute/course/video/views/'+videoId)
      fetch(serverApiUrl+'institute/course/video/views/'+videoId,
     {
         method: 'POST',  

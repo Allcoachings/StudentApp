@@ -25,6 +25,10 @@ import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import { isThisSecond } from 'date-fns/esm';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { toggleHeader } from '../Actions';
+import { TOGGLE_HEADER } from '../Actions/types';
+
+import SendMessage from '../InstituteView/SendMessage'
 // import {Feed} from "../Feed/Feed"
 const width = Dimensions.get('window').width
 class UserProfile extends React.Component {
@@ -55,7 +59,7 @@ class UserProfile extends React.Component {
         enrollListLoading: true,
         recentData:[]
     }
-
+     
     closeModal = () => {
         this.setState({ isModalVisible: false});
     }
@@ -73,6 +77,16 @@ class UserProfile extends React.Component {
     componentDidMount() {
         this.fetch()
         this.checkForUserCat()
+        this.props.toggleHeader(false) 
+        this.unsubscribeFocusListeners = this.props.navigation.addListener('focus', () => {  
+            this.props.toggleHeader(false) 
+        });
+            
+            
+          
+
+
+
     }
 
     fetch=()=>{
@@ -81,12 +95,12 @@ class UserProfile extends React.Component {
 
     purchaseCallback=(response)=>{
         this.setState({loadingUserEnrollments:false})
-        console.log(response.status)
+        // console.log(response.status)
         if(response.status==200)
         {   
             response.json().then(data=>
             {
-                console.log(data)
+                // console.log(data)
                 // this.setState({purchase: data})
                 if(data.length>0)
                 {
@@ -100,10 +114,18 @@ class UserProfile extends React.Component {
         }
         else
         {
-            console.log("something went wrong")
+            // console.log("something went wrong")
         }
     }
-
+    componentWillUnmount()
+    {
+        this.props.toggleHeader(true)
+        if( this.unsubscribeFocusListeners)
+        {
+            console.log(this.unsubscribeFocusListeners)
+            this.unsubscribeFocusListeners()
+        }
+    }
     updateEditFeedState=()=>{}
 
     setUpdateEditFeedState=(ref)=>{
@@ -176,43 +198,54 @@ class UserProfile extends React.Component {
         }
     }
 
+   
+
     renderFooter = () => {
         try {
        
           if (this.state.loadingFooter) {
             return <CustomActivtiyIndicator mode="skimmer"/>;
           } else {
-            return null;
+            return <View style={{height:10}}></View>;
           }
         } catch (error) {
-          console.log(error);
+          // console.log(error);
         }
     };
 
     updateSingleFeed=(item, index)=>{
         var obj=this.state.feeds
-        // console.log("obj before ", obj[index])
+        // // console.log("obj before ", obj[index])
         obj[index]=item;
-        // console.log("obj after ", obj[index])
+        // // console.log("obj after ", obj[index])
         this.setState({feeds: obj})
     }
 
     displayItems=(item)=>{
-        if(this.state.subActiveTab==item.type)
-        {
+         
             switch(item.type)
             {
-                case 'video': return <RenderVideo item={item.data} mode="Profile" navigation={this.props.navigation}/>
+                case 'video': return (
+                <View style={{marginLeft:10}}>
+                        <RenderVideo item={item.data} mode="Profile" navigation={this.props.navigation}/>
+                </View>)
+                
                                 
-                case 'document': return <RenderDocument item={item.data} mode="Profile" navigation={this.props.navigation}/>
+                case 'document': return (
+                    <View style={{marginLeft:10}}>
+                        <RenderDocument item={item.data} mode="Profile" navigation={this.props.navigation}/>
+                    </View>
+                    )
                                 
                 case 'testSeries':  
                  
                 return <RenderSingleTestSeries item={item.data} mode="Profile" navigation={this.props.navigation}/>
                                  
             }
-        }    
+         
     }
+
+   
 
 
     switchTab=(tab)=>{
@@ -239,7 +272,7 @@ class UserProfile extends React.Component {
         //                             {
         //                                 if(this.state.showLoadMore&&!this.state.loadingFooter)
         //                                 {
-        //                                     console.log("end video")
+        //                                     // console.log("end video")
         //                                     this.setState({ refreshing: true,loadingFooter:true,vidOffset:parseInt(this.state.vidOffset)+1},()=>this.loadMoreOnPress())
                                                 
         //                                 }
@@ -299,7 +332,7 @@ class UserProfile extends React.Component {
         //                             {
         //                                 if(this.state.showLoadMore&&!this.state.loadingFooter)
         //                                 {
-        //                                     console.log("end test")
+        //                                     // console.log("end test")
         //                                     this.setState({ refreshing: true,loadingFooter:true,tsOffset:parseInt(this.state.tsOffset)+1},()=>this.loadMoreOnPress())
                                                 
         //                                 }
@@ -315,7 +348,7 @@ class UserProfile extends React.Component {
         if(!this.state.isLoaded&&!this.state.isLoading)
         {
             this.setState({isLoading: true},()=>
-            fetch_student_history(this.props.userInfo.id, this.state.subActiveTab, this.state.vidOffset, dataLimit, this.studentHistoryCallBack))
+            fetch_student_history(this.props.userInfo.id,  this.state.vidOffset, dataLimit, this.studentHistoryCallBack))
         }
 
         return(
@@ -334,7 +367,7 @@ class UserProfile extends React.Component {
                     {
                         if(this.state.showLoadMore&&!this.state.loadingFooter)
                         {
-                            console.log("end test")
+                            // console.log("end test")
                             this.setState({ refreshing: true,loadingFooter:true,tsOffset:parseInt(this.state.tsOffset)+1},()=>this.loadMoreOnPress())
                                 
                         }
@@ -347,10 +380,10 @@ class UserProfile extends React.Component {
     checkForUserCat=()=>
     {
         AsyncStorage.getItem("userCat").then((response)=>{
-            console.log(response)
+            // console.log(response)
              if(response)
              {
-                 console.log(response)
+                 // console.log(response)
                  let obj = JSON.parse(response);
                  this.setState({categoryId:obj.id}) 
              }else
@@ -360,18 +393,19 @@ class UserProfile extends React.Component {
         })
     }
     loadMoreOnPress=()=>{
-        if(this.state.subActiveTab=="video")
-        {
-            fetch_student_history(this.props.userInfo.id, this.state.subActiveTab, this.state.vidOffset, dataLimit, this.studentHistoryCallBack)
-        }
-        else if(this.state.subActiveTab=="document")
-        {
-           fetch_student_history(this.props.userInfo.id, this.state.subActiveTab, this.state.docOffset, dataLimit, this.studentHistoryCallBack)
-        }
-        else if(this.state.subActiveTab=="testSeries")
-        {
-            fetch_student_history(this.props.userInfo.id, this.state.subActiveTab, this.state.tsOffset, dataLimit, this.studentHistoryCallBack)
-        }
+        // if(this.state.subActiveTab=="video")
+        // {
+            // console.log(this.state.tsOffset)
+            fetch_student_history(this.props.userInfo.id, this.state.tsOffset, dataLimit, this.studentHistoryCallBack)
+        // }
+        // else if(this.state.subActiveTab=="document")
+        // {
+        //    fetch_student_history(this.props.userInfo.id, this.state.subActiveTab, this.state.docOffset, dataLimit, this.studentHistoryCallBack)
+        // }
+        // else if(this.state.subActiveTab=="testSeries")
+        // {
+        //     fetch_student_history(this.props.userInfo.id, this.state.subActiveTab, this.state.tsOffset, dataLimit, this.studentHistoryCallBack)
+        // }
     }
 
 
@@ -475,7 +509,7 @@ class UserProfile extends React.Component {
         }
         else
         {
-            console.log("something went wrong")
+            // console.log("something went wrong")
         }
     }
 
@@ -486,8 +520,14 @@ class UserProfile extends React.Component {
             {
 
 
-
-                this.setState({recentData: [...this.state.recentData,...data], isLoading: false, isLoaded: true, showLoadMore: true, loadingFooter: false})
+                if(data.length>0)
+                {
+                    this.setState({recentData: [...this.state.recentData,...data], isLoading: false, isLoaded: true, showLoadMore: true, loadingFooter: false})
+                }else
+                {
+                    this.setState({recentData: [...this.state.recentData,...data], isLoading: false, isLoaded: true, showLoadMore: false, loadingFooter: false})
+                }
+                
                 // if(this.state.subActiveTab=="video")
                 // {
                 //     if(data.length>0)
@@ -525,7 +565,7 @@ class UserProfile extends React.Component {
         }
         else
         {
-            console.log("something went wrong")
+            // console.log("something went wrong")
         }
     }
 
@@ -540,10 +580,13 @@ class UserProfile extends React.Component {
                 </TouchableWithoutFeedback>
             )
     }
+
+
+    
     render(){
-        console.log(this.props.userInfo)
         // console.log(this.props.userInfo)
-        // console.log(this.state.history)
+        // // console.log(this.props.userInfo)
+        // // console.log(this.state.history)
         return (
             // <PageStructure
             //     iconName="navicon"
@@ -565,13 +608,26 @@ class UserProfile extends React.Component {
                         <View style={styles.userInfoSecView}>
                            
                             <View style={styles.imageView}>
-                                <Image source={ this.props.userInfo.studentImage?(Assets.profile.profileIcon):({ uri:imageProvider(this.props.userInfo.studentImage)}) } style={styles.image}/>
+                                <Image 
+                                    source={ { uri:imageProvider(this.props.userInfo.studentImage)} } 
+                                    style={styles.image}
+                                    ref={(ref)=>this.imageRef=ref}
+                                    onError={()=>
+                                        {
+                                            if(this.imageRef)
+                                            {
+                                                this.imageRef.setNativeProps({
+                                                    src:[Image.resolveAssetSource(Assets.profile.profileIcon)]
+                                                })
+                                            }
+                                        }}
+                                />
                             </View>
                             <View style={styles.nameView}>
                                 <Text style={styles.name}>{this.props.userInfo.name}</Text>
                                 <Text style={styles.number}>@{this.props.userInfo.userId}</Text>
                             </View>
-                            <TouchableWithoutFeedback>
+                            <TouchableWithoutFeedback onPress={() =>this.props.navigation.navigate('EditProfile')}>
                                 <View style={{marginLeft:'auto',marginRight:10,borderWidth:1,borderColor:theme.labelOrInactiveColor,padding:5,borderRadius:5}}> 
                                         <Text style={{fontFamily: 'Raleway_600SemiBold'}}>Edit Profile</Text>
                                 </View> 
@@ -587,7 +643,7 @@ class UserProfile extends React.Component {
                             {this.renderButton(Assets.profile.people,'Community',()=>{this.props.navigation.navigate('UserCommunityPosts')})}
                         </View>
                         <View style={{flexDirection: 'row',justifyContent: 'space-between'}}>
-                            {this.renderButton(Assets.profile.helpNsupport,'Help & Support',()=>{})}
+                            {this.renderButton(Assets.profile.helpNsupport,'Help & Support',()=>{this.setState({helpAndSupportModalVisible:true})})}
                             {this.renderButton(Assets.profile.settings,'Settings',()=>{this.props.navigation.navigate('Settings')})}
                         </View>
                         <View style={{marginVertical:10,height:10,borderTopWidth:8,borderColor:theme.labelOrInactiveColor+'66'}}/>
@@ -656,7 +712,18 @@ class UserProfile extends React.Component {
                 ):(
                     null
                 )}
+                  {this.state.helpAndSupportModalVisible?(
+                    <SendMessage
+                        isVisible={this.state.helpAndSupportModalVisible}
+                        closeModal={()=>this.setState({helpAndSupportModalVisible:false})}
+                        forAdmin={true}  
+                        studentId={this.props.userInfo.id}
+                        title="Help & Support"
+                        messageType="helpAndSupport"
+                    />
+                ):(null)}
             </>
+
             // </PageStructure>
             
         )
@@ -1028,4 +1095,4 @@ const  mapStateToProps = (state)=>
         userInfo:state.user.userInfo,
     }
 }
-export default connect(mapStateToProps)(UserProfile);
+export default connect(mapStateToProps,{toggleHeader})(UserProfile);

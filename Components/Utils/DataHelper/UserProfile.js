@@ -72,11 +72,23 @@ import mime from "mime";
     { 
         const newImageUri =  "file:///" + image.uri.split("file:/").join("");
         var formData   = new FormData();  
+        // formData.append("image",{ 
+        //     uri : newImageUri,
+        //     type: mime.getType(newImageUri),
+        //     name: image.name
+        // })
+
+
+        let filename = image.uri.split('/').pop();
+        let match = /\.(\w+)$/.exec(filename);
+        let type = match ? `image/${match[1]}` : `image`;
         formData.append("image",{ 
-            uri : newImageUri,
-            type: mime.getType(newImageUri),
-            name: image.name
+            uri : image.uri,
+            type: type,
+            name: filename,
         })
+
+
         formData.append("id",id)  
         let headers = new Headers(); 
         headers.append('Content-Type',  'multipart/form-data');  

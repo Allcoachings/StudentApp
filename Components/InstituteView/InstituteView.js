@@ -3,7 +3,7 @@ import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity, Moda
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {instituteData} from '../../FakeDataService/FakeData'
 import { AirbnbRating,Rating } from 'react-native-ratings';
-import {theme,screenMobileWidth,serverBaseUrl,documentPlaceholder,dataLimit, Assets, imageProvider} from '../config'
+import {theme,screenMobileWidth,serverBaseUrl,documentPlaceholder,dataLimit, Assets, imageProvider, shareTextInstitute} from '../config'
 import CardView from '../Utils/CardView';
 import MarqueeText from 'react-native-marquee';
 import { EvilIcons, Feather } from '@expo/vector-icons';
@@ -15,7 +15,7 @@ import Accordian from '../Utils/Accordian'
 import MockTest from '../MockTest/MockTest'
 import CountDown from 'react-native-countdown-component';
 import {fetch_instituteDetails} from '../Utils/DataHelper/Coaching'
-import {fetch_institute_courses,fetch_courses_banners,addCourseBanner,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents_with_hidden,fetch_courses_timetable,fetch_testSeries_with_hidden, fetch_latestUpcomingSchedule, fetch_testSeriesPlaylist,fetch_courses_videos_with_hidden} from '../Utils/DataHelper/Course'
+import {fetch_institute_courses,fetch_courses_banners,addCourseBanner,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents_with_hidden,fetch_courses_timetable, fetch_latestUpcomingSchedule, fetch_testSeriesPlaylist,fetch_courses_videos_with_hidden, fetch_testSeries} from '../Utils/DataHelper/Course'
 import { checkUserEnrollment } from '../Utils/DataHelper/EnrollStudent'
 import { saveStudentHistory } from '../Utils/DataHelper/StudentHistory'
 import { SliderBox } from 'react-native-image-slider-box';
@@ -25,7 +25,7 @@ import FeedPoll from '../Feed/FeedPoll';
 import {tabListInstitute} from '../../FakeDataService/FakeData'
 import {addLead} from '../Utils/DataHelper/Leads'
 import ImageZoomModal from './ImageZoomModal';
-import { checkSubscription, subscribe, unsubscribe, pinInstitute, unPinInstitute,checkForPin }  from '../Utils/DataHelper/Subscription'
+import { checkSubscription, subscribe, unsubscribe, pinInstitute, unPinInstitute,checkForPin, followUnFollow }  from '../Utils/DataHelper/Subscription'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import RenderSingleTestSeries from '../SeriesList/RenderSingleTestSeries'
@@ -37,6 +37,13 @@ import {fetch_institute_feed} from '../Utils/DataHelper/Feed'
 import { throwIfAudioIsDisabled } from 'expo-av/build/Audio/AudioAvailability';
 import { Toast } from 'native-base';
 import ImageColors from 'react-native-image-colors'
+import Bell from '../Utils/Icons/Bell'
+import Ringing from '../Utils/Icons/Ringing'
+import PinFilledIcon from '../Utils/Icons/PinFilledIcon'
+import PinIcon from '../Utils/Icons/PinIcon'
+import SendMessage from './SendMessage';
+import NotEnrolledModal from './NotEnrolledModal';
+import onShare from '../Utils/Share'
 const width = Dimensions.get('window').width
 class InstituteView extends React.Component {
     state = { 
@@ -72,7 +79,8 @@ class InstituteView extends React.Component {
         courseTestSeries:[],
         pinId: '',
         checkPinned: '',
-        actions: ['Change Playlist']
+        actions: ['Change Playlist'],
+        pageTitle:''
      }
 
      
@@ -143,7 +151,7 @@ class InstituteView extends React.Component {
         if(response.status==200)
         {
             response.json().then(data=>{
-                // console.log("pindata success", data)
+                // // console.log("pindata success", data)
                 if(data&&data.id)
                 {
                     this.setState({checkPinned: true, pinId: data.id})
@@ -157,21 +165,28 @@ class InstituteView extends React.Component {
         }
         else
         {
-            // console.log("not pinned", response.status)
+            // // console.log("not pinned", response.status)
         }
     }
 
     checkSubscriptionCallback=(response)=>{
+        
         if(response.status==200)
         {
             response.json().then(data=>
             {
-                this.setState({subscribe: data})            
+                // console.log("checkSubscriptionCallback",data)
+                if(data)
+                { 
+                    this.setState({subscribe: true,isNotificationOn:data.notificationOn}) 
+                }
+                
+
             })
         }
         else
         {
-            // console.log("something went wrong")
+            // // console.log("something went wrong")
         }
     }
 
@@ -251,11 +266,11 @@ class InstituteView extends React.Component {
      addToHistoryCallBack=(response)=>{
         if(response.status==201)
         {
-            // console.log("hello done")
+            // // console.log("hello done")
         }
         else
         {
-            //  console.log("error")
+            //  // console.log("error")
         }
      }
 
@@ -275,11 +290,11 @@ class InstituteView extends React.Component {
      addLeadCallback=(response)=>{
          if(response.status==201)
          {
-            //  console.log("done")
+            //  // console.log("done")
          }
          else
          {
-            //  console.log("something went wrong")
+            //  // console.log("something went wrong")
          }
      }
 
@@ -346,17 +361,17 @@ class InstituteView extends React.Component {
         );
     }
     
-    renderBannerList=({item})=>
+    renderBannerList=({item,index})=>
     {
         return(
-            <TouchableOpacity style={styles.bannerItemContainer} onPress={()=>this.openZoomModal(serverBaseUrl+item.bannerImageLink)}>
+            <TouchableOpacity style={styles.bannerItemContainer} onPress={()=>this.openZoomModal(serverBaseUrl+item.bannerImageLink,index)}>
                 <Image source={{uri:imageProvider(item.bannerImageLink)}} style={styles.bannerImage}/>
             </TouchableOpacity  >
         )
     }
 
-    openZoomModal = () => {
-        this.setState({ zimage: image, zoomModal: true});
+    openZoomModal = (image,index) => {
+        this.setState({ zimage: image, zoomModal: true,index});
     }
 
     activeTab=(item)=>{
@@ -622,7 +637,7 @@ class InstituteView extends React.Component {
             case 'testSeries':
                 this.setState({activeFilter: item.name, isCourseTestSeriesLoading:true,courseTestSeriesLoaded:false, activeFilterId: item.id, tsoffset: 0, showLoadMore: true, courseTestSeries: []},()=>
                 {
-                    fetch_testSeries_with_hidden(false,this.state.tsoffset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback,item.id);
+                    fetch_testSeries(this.props.userInfo.id,this.state.tsoffset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback,item.id);
                 }) 
                 break;
 
@@ -668,7 +683,7 @@ class InstituteView extends React.Component {
                         if(!this.state.courseTestseriesLoaded&&!this.state.isCourseTestseriesLoading&&this.state.activeCourse)
                         {
                             this.setState({isCourseTestseriesLoading:true, activeFilterId: -1})
-                            fetch_testSeries_with_hidden(false,this.state.tsoffset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback,this.state.activeFilterId);
+                            fetch_testSeries(this.props.userInfo.id,this.state.tsoffset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback,this.state.activeFilterId);
                         }
                         if(!this.state.courseTestSeriesPlaylistLoaded&&!this.state.isCourseTestSeriesPlaylistLoading&&this.state.activeCourse)
                         {
@@ -756,7 +771,18 @@ class InstituteView extends React.Component {
                                     this.state.courseVideoLoaded?(
                                     <FlatList 
                                         data={this.state.courseVideos} 
-                                        renderItem={({item,index})=><RenderVideo userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="student" studentEnrolled={this.state.studentEnrolled} downloadMode={true} courseVideosPlaylist={this.state.courseVideosPlaylist}  action={this.state.actions}/>}
+                                        renderItem={({item,index})=><RenderVideo
+                                             userId={this.props.userInfo.id} 
+                                             item={item} 
+                                             navigation={this.props.navigation} 
+                                             addToHistory={this.addToHistory} 
+                                             mode="student" 
+                                             studentEnrolled={this.state.studentEnrolled} 
+                                             downloadMode={true} 
+                                             courseVideosPlaylist={this.state.courseVideosPlaylist} 
+                                            action={this.state.actions}
+                                            openPurchaseCourseModal={this.openPurchaseCourseModal}
+                                        />}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
@@ -776,7 +802,18 @@ class InstituteView extends React.Component {
                                     ):(
                                      <FlatList 
                                         data={this.state.courseTestSeries} 
-                                        renderItem={({item,index})=><RenderSingleTestSeries item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="student" studentEnrolled={this.state.studentEnrolled} courseTestSeriesPlaylist={this.state.courseTestSeriesPlaylist} actions={this.state.actions}/>}
+                                        renderItem={({item,index})=><RenderSingleTestSeries 
+                                        briefId={item?.insTestSeriesUserResponseBrief?.id} 
+                                        item={item.insTestSeries} 
+                                        status={item?.insTestSeriesUserResponseBrief?.status} 
+                                        navigation={this.props.navigation} 
+                                        addToHistory={this.addToHistory} 
+                                        mode="student" 
+                                        studentEnrolled={this.state.studentEnrolled} 
+                                        courseTestSeriesPlaylist={this.state.courseTestSeriesPlaylist} 
+                                        checkEnrollment
+                                        openPurchaseCourseModal={this.openPurchaseCourseModal}
+                                        />}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
@@ -791,7 +828,19 @@ class InstituteView extends React.Component {
             return(
                                     this.state.courseDocumentLoaded?(<FlatList 
                                         data={this.state.courseDocuments} 
-                                        renderItem={({item,index})=><RenderDocument userId={this.props.userInfo.id} item={item} navigation={this.props.navigation} addToHistory={this.addToHistory} mode="student" studentEnrolled={this.state.studentEnrolled} downloadMode={true} insName={this.state.insName} insNumber={this.state.insNumber} courseDocumentPlaylist={this.state.courseDocumentPlaylist}   />}
+                                        renderItem={({item,index})=><RenderDocument 
+                                        userId={this.props.userInfo.id} 
+                                        item={item} 
+                                        navigation={this.props.navigation} 
+                                        addToHistory={this.addToHistory} 
+                                        mode="student" 
+                                        studentEnrolled={this.state.studentEnrolled} 
+                                        downloadMode={true} 
+                                        insName={this.state.insName}
+                                        insNumber={this.state.insNumber}
+                                        courseDocumentPlaylist={this.state.courseDocumentPlaylist} 
+                                        openPurchaseCourseModal={this.openPurchaseCourseModal}  
+                                          />}
                                         keyExtractor={(item)=>item.id} 
                                         horizontal={false}
                                         showsHorizontalScrollIndicator={false}
@@ -901,8 +950,13 @@ class InstituteView extends React.Component {
         }
         else if(this.state.activeTab=='testSeries')
         {
-            this.setState({tsoffset: parseInt(this.state.tsoffset)+1},()=>{fetch_testSeries_with_hidden(false,this.state.tsoffset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback,this.state.activeFilterId)})
+            this.setState({tsoffset: parseInt(this.state.tsoffset)+1},()=>{ fetch_testSeries(this.props.userInfo.id,this.state.tsoffset, dataLimit,this.state.activeCourse,this.courseTestseriesCallback,this.state.activeFilterId)})
         }
+    }
+
+    purchaseCourseFun = ()=>{
+        this.closePurchaseCourseModal()
+        this.props.navigation.navigate('webview',{link: serverBaseUrl+"checkout/course/"+this.props.userInfo.id+"/"+this.state.activeCourse+"/"+this.state.instituteId})
     }
 
     switchTabRender=(tabtoshow)=>{
@@ -941,15 +995,22 @@ class InstituteView extends React.Component {
                             
                             <View style={styles.optionalRow}> 
                                 <TouchableOpacity style={{borderColor:theme.borderColor,borderWidth:1,borderRadius:10,padding:10}} 
-                                // onPress={() => this.props.navigation.navigate("AboutCourse", {id: this.state.activeCourse, activeCourseDetail: this.state.activeCourseDetail})}
-                                onPress={() => this.props.navigation.navigate('ExamCategory')}
+                                onPress={() => this.props.navigation.navigate("AboutCourse", {id: this.state.activeCourse, activeCourseDetail: this.state.activeCourseDetail})}
+                                // onPress={() => this.props.navigation.navigate('ExamCategory')}
                             >
                                     <Text style={{fontSize:12,color:theme.secondaryColor,fontFamily:'Raleway_700Bold'}}>
                                         About Course
                                     </Text>
                                 </TouchableOpacity>
-                                {this.state.studentEnrolled?(null):(
-                                <TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10,flexDirection: 'row',}} onPress={()=>this.props.navigation.navigate('webview',{link: serverBaseUrl+"checkout/course/"+this.props.userInfo.id+"/"+this.state.activeCourse+"/"+this.state.instituteId})}>
+                                {this.state.studentEnrolled?(
+                                    <TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10,flexDirection: 'row',}} onPress={()=>{this.setState({showSendMessageModal:true})}}>
+                                     <Text style={{fontSize:14,color:theme.primaryColor, fontFamily:'Raleway_700Bold'}}>
+                                             Send Message
+                                         </Text>
+                                         
+                                 </TouchableOpacity>
+                                ):(
+                                <TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,borderRadius:10,flexDirection: 'row',}} onPress={()=>this.purchaseCourseFun()}>
                                      
                                     <Text style={{fontSize:14,color:theme.primaryColor, fontFamily:'Raleway_700Bold'}}>
                                             Fees -  
@@ -957,7 +1018,8 @@ class InstituteView extends React.Component {
                                         <Text style={{fontSize:14,color:theme.primaryColor}}>
                                             {this.state.activeCourseDetail&&this.state.activeCourseDetail.fees}
                                         </Text>
-                                </TouchableOpacity>)}
+                                </TouchableOpacity>
+                                )}
                             </View>
                             <View style={styles.content}>
                                 <TouchableOpacity 
@@ -1012,6 +1074,7 @@ class InstituteView extends React.Component {
         {
             this.setState({subscribe: false})
         }
+        this.setState({followLoader:false})
     }
 
     subscribeCallback=(response)=>{
@@ -1019,6 +1082,7 @@ class InstituteView extends React.Component {
         {
             this.setState({subscribe: true})
         }
+        this.setState({followLoader:false})
     }
 
     closeModal = () => {
@@ -1028,26 +1092,71 @@ class InstituteView extends React.Component {
     pinCallBack=(response)=>{
         if(response.status==201)
         {
-            // console.log("pin success")
-            // console.log(response.headers.map.location)
+            // // console.log("pin success")
+            // // console.log(response.headers.map.location)
             this.setState({pinId: response.headers.map.location, checkPinned: true})
         }
         else
         {
-            // console.log("pin error", response.status)
+            // // console.log("pin error", response.status)
         }
     }
 
     unPinCallBack=(response)=>{
         if(response.status==200)
         {
-            // console.log("unpinned success")
+            // // console.log("unpinned success")
             this.setState({checkPinned: false})
         }
         else
         {
-            // console.log("unpin error", response.status)
+            // // console.log("unpin error", response.status)
         }
+    }
+
+    subscribeHandler=()=>
+    {
+        if(!this.state.followLoader)
+        {
+            this.setState({followLoader:true})
+            subscribe(this.state.studentId,this.state.instituteId,this.subscribeCallback)
+        } 
+        
+
+    }
+
+    unsubscribeHandler=()=>
+    {
+        if(!this.state.followLoader)
+        {
+            this.setState({followLoader:true})
+            unsubscribe(this.state.studentId,this.state.instituteId,this.unsubscribeCallback)
+        } 
+        
+    }
+
+    handleScroll=(event)=>
+    {
+        
+            // console.log();
+            if(event.nativeEvent.contentOffset.y>40&&(!this.state.pageTitle||this.state.pageTitle!=''))
+            {
+                this.setState({pageTitle:this.state.institute.name})
+            }
+            if(event.nativeEvent.contentOffset.y<40&&(this.state.pageTitle!=''))
+            {
+                this.setState({pageTitle:''})
+            }
+    }
+
+    openPurchaseCourseModal = ()=>
+    {
+        this.setState({purchaseCourseModal:true})
+    }
+
+    closePurchaseCourseModal = ()=>
+    {
+        this.setState({purchaseCourseModal:false})
     }
 
     render() {
@@ -1068,21 +1177,28 @@ class InstituteView extends React.Component {
                     } 
                 }}
                 catInHeader={false}
-                titleonheader={institute&&this.props.categories.filter(item=>item.id==institute.category)[0].name}
+                showTitle={true}
+                titleonheader={this.state.pageTitle}
                 noBottomTab={true}
-                noNotificationIcon={true} title
+                noNotificationIcon={true} 
+                title
                 rightIconOnPress={()=>{this.setState({modalVisible:true})}} 
                 nosearchIcon={true}
-                pinIconName={!this.state.checkPinned?("paperclip"):("link")}
+                pinIconName={this.state.checkPinned?(<PinFilledIcon height={24} width={24}/>):(<PinIcon height={24} width={24}/>)}
                 pinUnpinIcon={true}
                 searchReplace={false}
+                navigation={this.props.navigation}
+                pinUnpinFunction={!this.state.checkPinned?(()=>pinInstitute({"institute":{id: this.state.instituteId},"student":{id: this.props.userInfo.id}}, this.pinCallBack)):(()=>unPinInstitute(this.state.pinId, this.unPinCallBack))}
                 showShareIcon={true}
+                shareFun={()=>onShare(shareTextInstitute+"\n https://allcoaching.com/institute/"+this.state.instituteId+"/"+encodeURIComponent(institute.name))}
             > 
             {loadingInstitute?
             (
                 <CustomActivtiyIndicator mode="instituteView"/>
             ):(
-            <ScrollView >
+            <ScrollView 
+            onScroll={this.handleScroll}
+            >
                 <View style={styles.container}>
                         {/* <View style={styles.headerView}>
                             <Text style={styles.headText}>{instituteData.category}</Text>
@@ -1093,8 +1209,72 @@ class InstituteView extends React.Component {
                             ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:100}):({width:200,height:150})])
                             }
                             <View style={styles.instituteheaderMeta}>
-                                <Text style={styles.instituteheaderText} numberOfLines={3}>{institute.name}</Text>
-                                <Text style={styles.instituteDirector}>{institute.directorName}</Text>
+                                <Text  style={styles.instituteheaderText} numberOfLines={3}>{institute.name}</Text>
+                                <View style={{flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center'}}>
+                                    <View style={{width:'50%'}}>
+                                        <Text numberOfLines={1} style={styles.instituteDirector}>{institute.directorName}</Text>
+                                    </View>
+                                    <View>  
+                                        {this.state.subscribe?(
+                                            <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
+                                                <View style={{marginRight:5}}>
+                                                {this.state.isNotificationOn?
+                                                (
+                                                    <TouchableWithoutFeedback onPress={() =>{
+                                                        // console.log('isNotification')
+                                                        followUnFollow(this.props.userInfo.id, this.state.instituteId,false,(response)=>{
+                                                            // console.log(response.status)
+                                                            if(response.status==200)
+                                                            {
+                                                                this.setState({isNotificationOn:false})
+                                                            }
+                                                        })
+                                                        
+                                                    }}
+                                                        >
+                                                        <View>
+                                                            <Ringing height={24} width={24}/>
+                                                        </View>
+                                                    </TouchableWithoutFeedback>
+                                                ):(
+                                                    <TouchableWithoutFeedback onPress={() =>{
+                                                        // console.log('isNotification')
+                                                        
+                                                        followUnFollow(this.props.userInfo.id, this.state.instituteId,true,(response)=>{console
+                                                            // console.log(response.status)
+                                                            if(response.status==200)
+                                                            {
+                                                                 this.setState({isNotificationOn:true})
+                                                            }
+                                                        })
+                                                        
+                                                    }}>
+                                                        <View>
+                                                            <Bell height={24} width={24}/>
+                                                        </View>
+                                                    </TouchableWithoutFeedback>
+                                                )}
+                                                </View>
+
+                                                <TouchableWithoutFeedback onPress={this.unsubscribeHandler}>
+                                                    <View style={{backgroundColor: theme.primaryColor,borderColor: theme.secondaryColor,borderWidth: 1,padding:5,paddingHorizontal:10,borderRadius:15,alignItems: 'center'}}>
+                                                            
+                                                             
+                                                                <Text style={{fontFamily: 'Raleway_600SemiBold',color: theme.secondaryColor}}>Following</Text>
+                                                            
+                                                    </View>
+                                                </TouchableWithoutFeedback>
+                                            </View>
+                                        ):(
+                                            
+                                            <TouchableWithoutFeedback  onPress={this.subscribeHandler}>
+                                                <View style={{backgroundColor: theme.secondaryColor,padding:5,paddingHorizontal:10,borderRadius:15,alignItems: 'center'}}>     
+                                                    <Text style={{fontFamily: 'Raleway_600SemiBold',color: theme.primaryColor}}>Follow</Text>
+                                                </View>
+                                            </TouchableWithoutFeedback>
+                                        )}
+                                    </View>
+                                </View>
                                 <View style={styles.instituteRatingView}>
                                     <Text style={{ color: theme.greyColor}}>{institute.totalratingCount>0?institute.totalRating/institute.totalRatingCount:0+' • '}</Text>
                                     <AirbnbRating 
@@ -1111,23 +1291,7 @@ class InstituteView extends React.Component {
                                 </View>
                             </View>
                             {/* <EvilIcons name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}  onPress = {() => {this.toggleModal(true)}}/> */}
-                            <View>
-                               
-
-                                {this.state.subscribe?(
-                                            <TouchableWithoutFeedback onPress={() =>unsubscribe(this.state.studentId,this.state.instituteId,this.unsubscribeCallback)}>
-                                                 <View style={{backgroundColor: theme.secondaryColor,padding:5,paddingHorizontal:10,borderRadius:15,alignItems: 'center'}}>
-                                                         <Text style={{fontFamily: 'Raleway_600SemiBold',color: theme.primaryColor}}>Un Follow</Text>
-                                                 </View>
-                                             </TouchableWithoutFeedback>
-                                            ):(
-                                                <TouchableWithoutFeedback  onPress={() =>subscribe(this.state.studentId,this.state.instituteId,this.subscribeCallback)}>
-                                                    <View style={{backgroundColor: theme.secondaryColor,padding:5,paddingHorizontal:10,borderRadius:15,alignItems: 'center'}}>
-                                                            <Text style={{fontFamily: 'Raleway_600SemiBold',color: theme.primaryColor}}>Follow</Text>
-                                                    </View>
-                                                </TouchableWithoutFeedback>
-                                            )}
-                            </View>
+                            
                         </View>
                         <View style={styles.body}>
                             <View style={styles.btnRow}>
@@ -1139,7 +1303,7 @@ class InstituteView extends React.Component {
                                         <Text style={[styles.btnText,{color:theme.blueColor}]}> Follower</Text>
                                     </View>
                                     <TouchableOpacity style={[styles.btnView3,this.state.tabtoshow==3?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor})]} onPress={this.handleFeedTabBtnClick}>
-                                        <Text style={[styles.btnText,{color:this.state.tabtoshow==3?theme.primaryColor:theme.greyColor}]} >Feed</Text>
+                                        <Text style={[styles.btnText,{color:this.state.tabtoshow==3?theme.primaryColor:theme.greyColor}]} >Community</Text>
                                     </TouchableOpacity>
                             </View>                            
                             {this.switchTabRender(this.state.tabtoshow)}
@@ -1175,7 +1339,7 @@ class InstituteView extends React.Component {
                         <Modal animationType = {"fade"}                         
                                 transparent = {true}
                                 visible = {this.state.modalVisible}
-                                onRequestClose = {() => { console.log("Modal has been closed.") } }>
+                                onRequestClose = {() => {}}>
                             <TouchableWithoutFeedback onPress={() =>this.setState({modalVisible:false})}>        
                             <View   style={{width:'100%',height:'100%'}}>
                                 <TouchableOpacity style={{alignSelf: 'flex-end', width: 200, height: 120, padding: 6, backgroundColor: 'white',postion: 'absolute',top:10}}>
@@ -1226,6 +1390,29 @@ class InstituteView extends React.Component {
                         images={this.state.bannerImg}
                         index={this.state.index}
                         type="normal"
+                        index={this.state.index}
+                    />
+                ):(null)}
+                {this.state.showSendMessageModal?(
+                    <SendMessage
+                        isVisible={this.state.showSendMessageModal}
+                        closeModal={()=>this.setState({showSendMessageModal:false})}
+                        forAdmin={false}
+                        courseId={this.state.activeCourse}
+                        instituteId={this.state.instituteId}
+                        studentId={this.props.userInfo.id}
+                        messageType="instituteCourseRelated"
+                    />
+                ):(null)}
+
+                {this.state.purchaseCourseModal?(
+                    <NotEnrolledModal
+                        isVisible={this.state.purchaseCourseModal}
+                        closeModal={this.closePurchaseCourseModal}
+                        openPurchaseCourseModal={this.openPurchaseCourseModal}
+                        purchaseCourseFun={this.purchaseCourseFun}
+                        amount={this.state.activeCourseDetail&&this.state.activeCourseDetail.fees}
+
                     />
                 ):(null)}
             </PageStructure>
@@ -1333,7 +1520,7 @@ const styles = StyleSheet.create({
                             },
                             btnView2:
                             {
-                                flex: 0.6,
+                                flex: 0.4,
                                 paddingLeft: 10,
                                 paddingRight: 10,
                                 paddingTop: 5,
@@ -1347,7 +1534,7 @@ const styles = StyleSheet.create({
                             },
                             btnView3:
                             {
-                                flex: 0.2,
+                                flex: 0.3,
                                 paddingLeft: 10,
                                 paddingRight: 10,
                                 borderWidth:1,
@@ -1362,7 +1549,7 @@ const styles = StyleSheet.create({
                                 btnText:
                                 {
                                     fontFamily: 'Raleway_600SemiBold',
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     color: theme.greyColor
                                 },
 

@@ -132,6 +132,7 @@ class Subscription extends React.Component {
                 iconName="navicon"
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
                 catInHeader={true}
+                navigation={this.props.navigation}
             >
                 <View style={styles.container}> 
                     <View style={styles.mainContent}> 

@@ -95,12 +95,12 @@ class AddVideo extends React.Component {
 
     handlePlaylistCallback=(response)=>
     {
-        console.log("response playlist",response.status)
+        // console.log("response playlist",response.status)
         if(response.status == 200)
         {
             response.json().then(response=>
             { 
-                console.log("response",response)
+                // console.log("response",response)
                 response.unshift({id:-1,name:"Select Playlist"})
                 this.setState({playlist: response,loadingPlaylist:false})
             })
@@ -118,7 +118,7 @@ class AddVideo extends React.Component {
     }
     renderPickerItem=(item)=>
     {
-        console.log(item)
+        // console.log(item)
         return( 
            
             <Picker.Item label={item.name} value={item.id} />
@@ -145,6 +145,7 @@ class AddVideo extends React.Component {
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}     
                 nosearchIcon={true}
                 noNotificationIcon={true}
+                navigation={this.props.navigation}
             >
                  <ScrollView>
                     

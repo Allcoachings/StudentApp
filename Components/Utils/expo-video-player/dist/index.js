@@ -60,6 +60,7 @@ const VideoPlayer = (tempProps) => {
         }
     }, [props.videoProps.source]);
     const hideAnimation = () => {
+        // props.customFunction.onVideoPlayerTouch(false)
         Animated.timing(controlsOpacity, {
             toValue: 0,
             duration: props.animation.fadeOutDuration,
@@ -71,6 +72,7 @@ const VideoPlayer = (tempProps) => {
         });
     };
     const animationToggle = () => {
+        props.customFunction.onVideoPlayerTouch(true)
         if (controlsState === ControlStates.Hidden) {
             Animated.timing(controlsOpacity, {
                 toValue: 1,
@@ -96,7 +98,7 @@ const VideoPlayer = (tempProps) => {
                     clearTimeout(controlsTimer);
                 }
                 controlsTimer = null;
-            }, 2000+extraTimeToHide);
+            }, parseInt(2000+extraTimeToHide));
         }
     };
     // Set audio mode to play even in silent mode (like the YouTube app)
@@ -147,7 +149,7 @@ const VideoPlayer = (tempProps) => {
             
             setFastForwarding(false);
         })
-        setExtraTimeToHide(1)
+        setExtraTimeToHide(1000)
     }
     const fastBackward =(sec)=>
     {
@@ -157,7 +159,7 @@ const VideoPlayer = (tempProps) => {
             setFastBackwarding(false);
              
         })
-        setExtraTimeToHide(1) 
+        setExtraTimeToHide(1000) 
     }
     const onDoublePress=(fun)=>
     {
@@ -168,12 +170,13 @@ const VideoPlayer = (tempProps) => {
         if (delta < DOUBLE_PRESS_DELAY) {
             // Success double press
             fun()
-            console.log('double press');
+            // console.log('double press');
 
         }
         lastPress = time;
     }
     const togglePlay = () => __awaiter(void 0, void 0, void 0, function* () {
+        
         if (controlsState === ControlStates.Hidden) {
             return;
         }
@@ -187,6 +190,7 @@ const VideoPlayer = (tempProps) => {
                 animationToggle();
             }
         }
+        
     });
     if (playbackInstanceInfo.state === PlaybackStates.Error) {
         return (<View style={{
@@ -207,6 +211,7 @@ const VideoPlayer = (tempProps) => {
         {props.icon.loading || <ActivityIndicator {...props.activityIndicator}/>}
       </View>);
     }
+     
     return (<View style={{
             backgroundColor: props.style.videoBackgroundColor,
             width: videoWidth,
@@ -217,10 +222,10 @@ const VideoPlayer = (tempProps) => {
                 <View style={{position: 'absolute',top:10,left:10,zIndex:2,flexDirection: 'row'}}>
                     <TouchableWithoutFeedback onPress={props.videoTitle.titleIconOnPress}>
                         <View> 
-                            <MaterialCommunityIcons name={props.videoTitle.titleIcon} style={props.icon.style} size={props.icon.size / 2} color={props.icon.color}/>
+                            {props.videoTitle.titleIcon}
                         </View>
                     </TouchableWithoutFeedback>
-                    {props.fullscreen.inFullscreen&&props.videoTitle.title?(<Text style={[{color:'white',margin:5},props.videoTitle.titleStyle]}>{props.videoTitle.title}</Text>):(null)}
+                    {props.videoTitle.title?(<Text style={[{color:'white',margin:5,fontSize:15,fontFamily:'Raleway_600SemiBold'},props.videoTitle.titleStyle]}>{props.videoTitle.title}</Text>):(null)}
                 </View>
             ):(null)}
             
@@ -237,9 +242,9 @@ const VideoPlayer = (tempProps) => {
           <View style={{width:'100%',alignItems: 'center',flexDirection: 'row',justifyContent: 'center'}} pointerEvents={controlsState === ControlStates.Visible ? 'auto' : 'none'}>
             <View style={[ {marginRight:15,width:'30%',alignSelf: 'flex-end'}]}>
                 <TouchableButton   onPress={()=>onDoublePress(()=>fastBackward(10))}>
-                    <View style={{height:'90%', width:'100%',alignItems: 'center',justifyContent: 'center'}}> 
-                        {fastBackwarding?(
-                                <MaterialIcons name="fast-rewind" style={props.icon.style} size={props.icon.size/1.5} color={props.icon.color}/>
+                    <View style={{height:'100%', width:'100%',alignItems: 'center',justifyContent: 'center'}}> 
+                        {playbackInstanceInfo.state !== PlaybackStates.Ended?(
+                                <MaterialIcons name="replay-10" style={props.icon.style} size={props.icon.size/1.3} color={props.icon.color}/>
                         ):(null)}
                         
                     </View>
@@ -260,16 +265,16 @@ const VideoPlayer = (tempProps) => {
                             !props.icon.pause)) && (<MaterialIcons name={playbackInstanceInfo.state === PlaybackStates.Playing
                             ? 'pause'
                             : playbackInstanceInfo.state === PlaybackStates.Paused
-                            ? 'play-chevron-right'
-                            : 'replay'} style={props.icon.style} size={props.icon.size/1.5} color={props.icon.color}/>)}
+                            ? 'play-arrow'
+                            : 'replay'} style={props.icon.style} size={props.icon.size/1.3} color={props.icon.color}/>)}
                         </View>
                 </TouchableButton> 
             </View>
             <View style={[{marginLeft:15,width:'30%',alignSelf: 'flex-end'}]}>
                 <TouchableButton   onPress={()=>onDoublePress(()=>fastForward(10))}>
-                    <View style={{ height:'90%', width:'100%',alignItems: 'center',justifyContent: 'center'}}>
-                        {fastForwarding?(
-                                <MaterialIcons name="fast-forward" style={props.icon.style} size={props.icon.size/1.5} color={props.icon.color}/>
+                    <View style={{ height:'100%', width:'100%',alignItems: 'center',justifyContent: 'center'}}>
+                        {playbackInstanceInfo.state !== PlaybackStates.Ended?(
+                                <MaterialIcons name="replay-10" style={props.icon.style} size={props.icon.size/1.3} color={props.icon.color}/>
                         ):(null)}
                         
                     </View>
@@ -283,6 +288,7 @@ const VideoPlayer = (tempProps) => {
             styles.bottomInfoWrapper,
             {
                 opacity: controlsOpacity,
+                marginBottom:10
             },
         ]}>
         {props.timeVisible && (<Text style={[props.textStyle, styles.timeLeft]}>
@@ -309,9 +315,16 @@ const VideoPlayer = (tempProps) => {
             {getMinutesSecondsFromMilliseconds(playbackInstanceInfo.duration)}
           </Text>)}
            {/* palyback speed controls */}
-        {props.fullscreen.visible && (<TouchableButton onPress={() => {props.icon.playbackApi.onPress()}}>
+        {props.fullscreen.visible && (<TouchableButton onPress={() => {props.customFunction.toggleChatWindow(!props.customFunction.isChatWindowVisible);props.customFunction.toggleVideoSettings(false);props.customFunction.fullscreenScreenConfigChanged()}}>
             <View> 
-                <MaterialIcons name={'slow-motion-video'} style={props.icon.style} size={props.icon.size / 2} color={props.icon.color} ref={props.icon.playbackApi.ref}/>
+                {/* <MaterialIcons name={'chat'} style={props.icon.style} size={props.icon.size/1.5} color={props.icon.color}/> */}
+                {props.icon.commentIcon}
+            </View>
+          </TouchableButton>)}
+          {props.fullscreen.visible && (<TouchableButton onPress={() => {props.customFunction.toggleVideoSettings(!props.customFunction.isSettingModalVisible);props.customFunction.toggleChatWindow(false);;props.customFunction.fullscreenScreenConfigChanged()}}>
+            <View> 
+                {/* <MaterialIcons name={'slow-motion-video'} style={props.icon.style} size={props.icon.size/1.5} color={props.icon.color} ref={props.icon.playbackApi.ref}/> */}
+                {props.icon.settingsIcon}
             </View>
           </TouchableButton>)}
           {/* enter exit full screen */}
@@ -322,7 +335,7 @@ const VideoPlayer = (tempProps) => {
               {props.icon.fullscreen}
               {props.icon.exitFullscreen}
               {((!props.icon.fullscreen && props.fullscreen.inFullscreen) ||
-                (!props.icon.exitFullscreen && !props.fullscreen.inFullscreen)) && (<MaterialIcons name={props.fullscreen.inFullscreen ? 'fullscreen-exit' : 'fullscreen'} style={props.icon.style} size={props.icon.size / 2} color={props.icon.color}/>)}
+                (!props.icon.exitFullscreen && !props.fullscreen.inFullscreen)) && (<MaterialIcons name={props.fullscreen.inFullscreen ? 'fullscreen-exit' : 'fullscreen'} style={props.icon.style} size={props.icon.size / 1.4} color={props.icon.color}/>)}
             </View>
           </TouchableButton>)}
       </Animated.View>

@@ -1,47 +1,45 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Text,View,StyleSheet,Dimensions,TouchableOpacity,FlatList,BackHandler, Image,Platform, ScrollView, TouchableWithoutFeedback} from 'react-native';
-import { theme, Assets, appLogo } from '../config';
+import { theme, Assets, appLogo, imageProvider } from '../config';
 import { EvilIcons } from '@expo/vector-icons';
 import CardView from '../Utils/CardView';
+import { getTestSeriesStudentResponse } from '../Utils/DataHelper/TestSeriesResponse';
+import RenderTopLeader from './RenderTopLeader';
+import RenderOtherLeader from './RenderOtherLeader';
 const width = Dimensions.get('window').width
 let backhandler;
-class LeadersBoard extends React.Component {
-    state={}
+const LeadersBoard = ({testId})=> {
+    const [offset,setOffset] = useState(0)
+    const fetchRankListLimit  = 10
+    const [leaderBoard,setLeaderBoard] = useState([])
+    
+    const imageRef = useRef(null)
+    useEffect(()=>{
+        getTestSeriesStudentResponse(testId,offset,fetchRankListLimit,(response)=>{
+            if(response.status==200)
+            {
+                // console.log(response.status)
+                response.json().then((data)=>{
+                    setLeaderBoard(data)
+                    // console.log(data)
+                })
+            }
+        })
+    },[testId])
 
-    renderTopLeader=(item)=>{
+    const renderTopLeader=(item)=>{
         return(
-            <View style={{flexDirection: 'row',margin:5}}>
-                <Text style={{fontSize: 22, fontFamily: 'Raleway_700Bold'}}>{item.rank}</Text>
-                <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                    <View>
-                        <Image source={Assets.profile.profileIcon} style={{height: 70, width: 70}}/>
-                    </View>
-                    <Text style={{fontFamily: 'Raleway_600SemiBold'}}>{item.name}</Text>
-                    <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-                        <Text style={{fontSize: 12, fontFamily: 'Raleway_400Regular'}}>Score: </Text>
-                        <Text style={{fontSize: 12, fontFamily: 'Raleway_600SemiBold'}}>{item.score}</Text>
-                    </View>
-                </View>
-            </View>
+           <RenderTopLeader item={item}/>
         )
     }
 
-    renderOtherLeaders=()=>{
+    const renderOtherLeaders=(item)=>{
         return(
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 10}}>
-                <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-                    <View style={{borderRadius: 50, borderWidth: 1, marginRight: 5}}>
-                        <Image source={Assets.profile.profileIcon} style={{height: 26, width: 26}}/>
-                    </View>
-                    <Text style={{fontSize: 14, fontFamily: 'Raleway_700Bold'}}>Amit Kumar</Text>
-                </View>
-                <Text style={{fontSize: 14, fontFamily: 'Raleway_700Bold'}}>Score 44</Text>
-                <Text style={{fontSize: 14, fontFamily: 'Raleway_700Bold'}}>#4</Text>
-            </View>
+            <RenderOtherLeader item={item}/>
         )
     }
 
-    render() {
+     
         return(
             <View style={{marginVertical: 15, flexDirection: 'column'}}>
                 <View style={{flexDirection: 'row',backgroundColor:theme.labelOrInactiveColor+'4D',margin:10,padding:20,borderRadius:5}}>
@@ -51,13 +49,22 @@ class LeadersBoard extends React.Component {
                 {/* </View> */}
                 </View>
                 <View style={{flexDirection: 'row', justifyContent: 'space-evenly', marginVertical: 15}}>
-                    {this.renderTopLeader({name:'Amit',rank:'2nd',score:100})}
-                    {this.renderTopLeader({name:'Mangal',rank:'1st',score:101})}
-                    {this.renderTopLeader({name:'Ravi',rank:'3rd',score:99})}
+                    {leaderBoard[0]&&renderTopLeader({name:leaderBoard[0]?.student?.name,studentImage:leaderBoard[0]?.student?.studentImage,rank:leaderBoard[0]?.responseBrief?.rank,score:leaderBoard[0]?.responseBrief?.score})}
+                    {leaderBoard[1]&&renderTopLeader({name:leaderBoard[1]?.student?.name,studentImage:leaderBoard[1]?.student?.studentImage,rank:leaderBoard[1]?.responseBrief?.rank,score:leaderBoard[1]?.responseBrief?.score})}
+                    {
+                    leaderBoard[2]&&renderTopLeader({name:leaderBoard[2]?.student?.name,studentImage:leaderBoard[2]?.student?.studentImage,rank:leaderBoard[2]?.responseBrief?.rank,score:leaderBoard[2]?.responseBrief?.score})
+                    }
+                     
                 </View>
-                {this.renderOtherLeaders()}
-                {this.renderOtherLeaders()}
-                {this.renderOtherLeaders()}
+                {leaderBoard.map((item,index) =>{
+
+                    if(index <2)
+                    {
+                        return
+                    }
+                    renderOtherLeaders({name:item.student?.name,studentImage:item.student?.studentImage,rank:item.responseBrief?.rank,score:item.responseBrief?.score})
+                })}
+               
                 <View style={{flexDirection: 'row', justifyContent: 'flex-end', marginTop: 10}}>
                     <TouchableOpacity style={{backgroundColor: theme.violetColor, paddingVertical: 2, paddingHorizontal:10, borderRadius: 5}}>
                         <Text style={{color: theme.primaryColor}}>See All</Text>
@@ -65,6 +72,6 @@ class LeadersBoard extends React.Component {
                 </View>
             </View>
         )
-    }
+    
 }
 export default LeadersBoard

@@ -65,7 +65,7 @@ unLikeFeedCallBack=(response)=>{
         this.setState({likes: this.state.likes-1})
     }
     else{
-        console.log("failed")
+        // console.log("failed")
     }
 }
 
@@ -76,7 +76,7 @@ likeFeedCallBack=(response)=>{
         this.setState({likes: parseInt(this.state.likes)+1})
     }
     else{
-        console.log("failed")
+        // console.log("failed")
     }
 }
 
@@ -105,7 +105,7 @@ addImage=(link, type)=>{
         // CardView(
             <View style={{flexDirection: 'column', padding: 5}}>
                 <View style={styles.boxView}>
-                    <FeedHeader  mode={this.props.mode} editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime} feed={feed}/>
+                    <FeedHeader actions={this.props.actions} navigation={this.props.navigation} mode={this.props.mode} editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime} feed={feed}/>
                     <View style={styles.innerBoxView} onPress={()=>this.props.navigation.navigate("RenderSingleFeed",{id: feed.feed.id})}>
                         
                         {feed.feed.description?( 
@@ -142,7 +142,7 @@ addImage=(link, type)=>{
                     </View>
                     
                 </View>
-                <View style={{borderTopWidth: 0.8, borderColor: theme.labelOrInactiveColor, marginVertical: 10, width: '100%'}}/>
+                <View style={{borderTopWidth: 4, borderColor: theme.labelOrInactiveColor, marginVertical: 10, width: '100%'}}/>
                 {this.state.zoomModal?(
                     <ImageZoomModal 
                         zoomModal={this.state.zoomModal}

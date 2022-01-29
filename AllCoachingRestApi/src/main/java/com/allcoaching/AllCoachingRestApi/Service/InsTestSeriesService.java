@@ -7,6 +7,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeriesPlaylist;
 import com.allcoaching.AllCoachingRestApi.Respository.InsTestSeriesQuestionsRepo;
 import com.allcoaching.AllCoachingRestApi.Respository.InsTestSeriesRepo;
 import com.allcoaching.AllCoachingRestApi.Respository.TestSeriesPlaylistRepo;
+import com.allcoaching.AllCoachingRestApi.dto.TestSeriesAndUserResponseDto;
 import com.allcoaching.AllCoachingRestApi.dto.TestSeriesQuestionDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +81,32 @@ public class InsTestSeriesService {
     {
         return extractDataFromPage(insTestSeriesRepo.findByPlaylistIdAndIsAdmin(id,false,PageRequest.of(page,pageSize)));
     }
+
+    //fetching test seriesId  by playlist id
+    public Iterable<TestSeriesAndUserResponseDto> getTestSeriesByPlaylistIDWithUserResponse(long userId, long playlistId, int page, int pageSize)
+    {
+      Page<TestSeriesAndUserResponseDto> pagedResult = insTestSeriesRepo.getTestSeriesByPlaylistIDWithUserResponse(userId,playlistId,false,PageRequest.of(page,pageSize));
+      if(pagedResult.hasContent())
+      {
+          return pagedResult.getContent();
+      }else
+      {
+          return new ArrayList<>();
+      }
+    }
+
+    //fetching test seriesId  by course id with user Response
+    public Iterable<TestSeriesAndUserResponseDto> getTestSeriesByCourseIdAndIsAdminWithUserResponse(long userId, long courseId, int page, int pageSize)
+    {
+      Page<TestSeriesAndUserResponseDto> pagedResult = insTestSeriesRepo.getTestSeriesByCourseIdAndIsAdminWithUserResponse(userId,courseId,false,PageRequest.of(page,pageSize));
+      if(pagedResult.hasContent())
+      {
+          return pagedResult.getContent();
+      }else
+      {
+          return new ArrayList<>();
+      }
+    }
     //fetching test seriesId  by playlist id and hidden parameter
     public Iterable<InsTestSeries> getTestSeriesByPlaylistIDAndHidden(long id,boolean hidden,int page,int pageSize)
     {
@@ -115,6 +142,18 @@ public class InsTestSeriesService {
         else
         {
             return new ArrayList<InsTestSeries>();
+        }
+    }
+    public Iterable<TestSeriesAndUserResponseDto> findByCategoryAndIsAdminForUser(long userId,long category,int page,int pageSize)
+    {
+        Page<TestSeriesAndUserResponseDto> pagedResult =insTestSeriesRepo.findByCategoryAndIsAdminAndStudentId(category,true,userId,PageRequest.of(page,pageSize));
+        if(pagedResult.hasContent())
+        {
+            return  pagedResult.getContent();
+        }
+        else
+        {
+            return new ArrayList<>();
         }
     }
     public Iterable<InsTestSeries> findByIsAdmin(boolean isAdmin,int page,int pageSize)

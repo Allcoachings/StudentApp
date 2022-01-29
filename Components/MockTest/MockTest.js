@@ -46,7 +46,7 @@ class ResultAnalysis extends React.Component {
 
     renderTestItem=(item)=>
     {
-        console.log("test data",item)
+        // console.log("test data",item)
         
         let date  = moment(item.date, 'DD/MM/YYYY');
         let month = date.format('MMM')
@@ -75,7 +75,7 @@ class ResultAnalysis extends React.Component {
     }
 
     renderMockTestWeekItem =(item) => {
-        console.log("test data",item)
+        // console.log("test data",item)
         return(
             // <Accordian
             //     header={this.accordianHeader(item.title,item.testCount,"chevron-down")}
@@ -112,7 +112,7 @@ class ResultAnalysis extends React.Component {
         this.setState({data})  
     }
     render() {
-        console.log("data item", this.props.subjectId)
+        // console.log("data item", this.props.subjectId)
         return( 
             // <PageStructure
             //     iconName="navicon"

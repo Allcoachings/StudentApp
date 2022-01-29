@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, StyleSheet, View, Modal,TouchableOpacity, Image,Dimensions} from 'react-native'
-import { theme,serverBaseUrl,imageProvider } from '../config';
+import { theme,serverBaseUrl,imageProvider, numFormatter, screenMobileWidth } from '../config';
 import { EvilIcons, Feather } from '@expo/vector-icons';
 import CardView from '../Utils/CardView';
 const windowWidth = Dimensions.get('window').width
@@ -22,20 +22,31 @@ export default class PurchageListRow extends Component {
         return (
             <View style={styles.purchage_coursewrapper}>
             <View>
-                <Image source={{ uri: imageProvider(this.props.item.insImage) }} style={styles.curvedimage}/>
+                {CardView(
+                    <Image source={{ uri: imageProvider(this.props.item.insImage) }} style={styles.curvedimage}/>,
+                    [{width:'90%',height:100,borderRadius:10}]
+                )}
+                
             </View>
             <View style={{width:'60%',}}>
-                <Text style={styles.intitute_name} numberOfLines={2}>{this.props.item.insName}</Text>
+                {/* <Text style={styles.intitute_name} numberOfLines={2}>{this.props.item.insName}</Text> */}
+                <View style={{alignItems: 'center',flexDirection: 'column'}}>
+                    <Text style={styles.instituteheaderText}>{this.props.item.insName}</Text>                          
+                    <Text style={styles.follower}>{numFormatter(this.props.item.followersCount)}16 Followers</Text>
+                </View>
                 <View style={styles.purchage_coursebtn}>
-                    <TouchableOpacity style={styles.purchagebtn} onPress={()=>this.props.navigation.navigate('Institute',{insId:this.props.item.insId})}>
+                    {/* <TouchableOpacity style={styles.purchagebtn} onPress={()=>this.props.navigation.navigate('Institute',{insId:this.props.item.insId})}>
                         <Text style={styles.purchageText} >{this.props.item.courseName}</Text>
+                    </TouchableOpacity> */}
+                    <TouchableOpacity style={[styles.courseItemContainer,{backgroundColor:theme.purpleColor, borderColor:theme.darkPurpleColor}]} onPress={()=>this.handleCourseItemClick(item)}> 
+                                <Text style={[styles.courseTitle,{color:theme.darkPurpleColor}]}>{this.props.item.courseName}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
-            <TouchableOpacity onPress={()=>this.openPurchageModal()}>
+            {/* <TouchableOpacity onPress={()=>this.openPurchageModal()}>
             <Feather name="more-vertical" size={20} color={theme.secondaryColor}  />
 
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             <Modal animationType = {"fade"} 
                 transparent = {true}
@@ -72,7 +83,7 @@ export default class PurchageListRow extends Component {
 const styles = StyleSheet.create({
     purchage_coursewrapper:{
         flexDirection: 'row',
-        marginTop: 20,
+        margin: 10,
         width:windowWidth,
         flexWrap:'wrap',
     },
@@ -110,5 +121,41 @@ const styles = StyleSheet.create({
             paddingVertical: 2,
             paddingHorizontal: 4,
         },
+    courseItemContainer:
+    {  
+        paddingLeft:12,
+        paddingRight:12, 
+        marginRight:10,
+        paddingVertical: 3.5,
+        marginTop:5 , 
+        paddingHorizontal:2,
+        borderWidth:1, 
+        borderColor:theme.primaryColor,
+        borderRadius:15,
+            alignItems:'center',
+            justifyContent: 'center'
+
+    },
+        courseTitle:
+        {
+            fontSize:14, 
+            color:theme.greyColor,
+            fontFamily: 'Raleway_700Bold',
+        },
+    instituteheaderText:
+    {
+        flex:1,
+        flexWrap:'wrap', 
+        fontFamily: 'Raleway_700Bold',
+        fontSize:19,
+
+    },  
+    follower:
+    {
+        color: theme.blueColor, 
+        fontWeight: 'bold',
+        fontSize: 18
+    },
+
 
 })

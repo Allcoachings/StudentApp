@@ -24,13 +24,13 @@ class FeedPoll extends Component {
     componentDidUpdate = (prevProps, prevState) => {
       
     //   let cond = JSON.stringify(this.props.item.feed.feedPollOptions) != JSON.stringify(this.state.optionData) 
-    //   console.log("after after after after",cond);
+    //   // console.log("after after after after",cond);
     //   if(cond)
     //   {
     //         this.setState({optionData:this.props.item.feed.feedPollOptions})
     //   }else
     //   {
-    //       console.log(this.props.item.feed.feedPollOptions,"state",this.state.optionData)
+    //       // console.log(this.props.item.feed.feedPollOptions,"state",this.state.optionData)
     //   }
     };
     
@@ -54,7 +54,7 @@ class FeedPoll extends Component {
     }
 
     likeFeed=(feedId)=>{
-        console.log("like feed")
+        // console.log("like feed")
         this.setState({canUserLike: !this.state.canUserLike},()=>{
             like_feed(feedId,this.props.type,this.props.type==1?(this.props.institute.details.id):(this.props.userInfo.id),this.likeFeedCallBack)
         })
@@ -66,7 +66,7 @@ class FeedPoll extends Component {
             this.setState({likes: parseInt(this.state.likes)+1})
         }
         else{
-            console.log("failed")
+            // console.log("failed")
         }
     }
     unLikeFeedCallBack=(response)=>{
@@ -75,7 +75,7 @@ class FeedPoll extends Component {
             this.setState({likes: this.state.likes-1})
         }
         else{
-            console.log("failed")
+            // console.log("failed")
         }
     }
 
@@ -116,18 +116,18 @@ class FeedPoll extends Component {
     }
     editFeedPressHandler =()=>this.props.mode=="userProfile"||this.props.mode=="insProfile"?(this.props.updateEditFeedState(this.props.item.feed.feed.feedType, this.props.item.feed.feed.pollQuestion, null, this.state.optionData, this.props.item.feed.feed.id, this.props.index,this.props.item.feed.feed.creationTime)):(null)
     render() {
-    // console.log("this.state.canUserLike", this.state.optionData)
+    // // console.log("this.state.canUserLike", this.state.optionData)
     const{feed,posterObject} = this.props.item 
     // if(!posterObject)
     // {
-    //     console.log(this.props.item)
+    //     // console.log(this.props.item)
     // }
   
     return(
         // CardView(
             <View style={{flexDirection: 'column', padding: 5}}>
                 <View style={styles.boxView}> 
-                    <FeedHeader feed={feed}  mode={this.props.mode} editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime}/>
+                    <FeedHeader actions={this.props.actions} navigation={this.props.navigation} feed={feed}  mode={this.props.mode} editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime}/>
                     <View onPress={()=>this.props.navigation.navigate("RenderSingleFeed",{id: feed.feed.id})} style={styles.innerBoxView}>
                         
                         <Text style={{fontFamily:'Raleway_400Regular', marginVertical: 10,fontSize:17}}>{feed.feed.pollQuestion}</Text>
@@ -147,7 +147,7 @@ class FeedPoll extends Component {
                         <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation} changeCanUserLike={this.changeCanUserLike} unLikeFeed={this.unLikeFeed} likes={this.state.likes} comments={feed.feed.commentCount} mode={this.props.mode}/>
                     </View>
                 </View>
-                <View style={{borderTopWidth: 0.8, borderColor: theme.labelOrInactiveColor, marginVertical: 10, width: '100%'}}/>
+                <View style={{borderTopWidth: 4, borderColor: theme.labelOrInactiveColor, marginVertical: 10, width: '100%'}}/>
             </View>
         //     ,{width: '100%', padding: 6, marginBottom: 10}
         // )

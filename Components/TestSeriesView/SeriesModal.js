@@ -8,8 +8,12 @@ import CardView from '../Utils/CardView'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import {setTestResultData} from '../Actions'
-import RenderHTML from 'react-native-render-html';
+import RenderHTML,{defaultSystemFonts} from 'react-native-render-html';
+import BackArrow from '../Utils/Icons/BackArrow'
+import SubmitModel from './SubmitModel';
 const width = Dimensions.get('window').width
+
+const systemFonts = ["kruti_dev_010regular", ...defaultSystemFonts];
 class SeriesModal extends React.Component {
   state = {
     modalVisible: true,
@@ -91,7 +95,9 @@ class SeriesModal extends React.Component {
 
     this.calculateScore(item.status,item.question.correctMarks,item.question.wrongMarks)
     return(
-      <TouchableOpacity style={[styles.queView,this.provideQuestionItemStyle(item.status)]}>
+      <TouchableOpacity style={[styles.queView,this.provideQuestionItemStyle(item.status)]} 
+        onPress={()=>this.props.scrollToQuestion(index)}
+      >
         <Text style={styles.queno}>{index+1}</Text>
         {item.bookmarked?(
             <View style={{marginLeft:'auto',marginRight:10,position:'absolute',bottom:-5}}>
@@ -101,7 +107,7 @@ class SeriesModal extends React.Component {
       </TouchableOpacity>
     )
   }
-  renderQuestion=(item) => {
+  renderQuestion=(item) => { 
     switch (item.questionType)
     {
         case 1:
@@ -111,10 +117,11 @@ class SeriesModal extends React.Component {
           return(
             // <Text style={styles.quizText}>{item.question}
                 <RenderHTML
-                    contentWidth={width}
-                    // style={styles.quizText}
-                    source={{html: item.question}}
-                    />
+                    contentWidth={width-50} 
+                    defaultTextProps={{style:styles.queno}}
+                    source={{html: item.question}} 
+                    systemFonts={systemFonts}  
+                />
             // {/* </Text> */}
         );
       case 2:
@@ -133,45 +140,55 @@ class SeriesModal extends React.Component {
     this.calculateScore(item.status,item.question.correctMarks,item.question.wrongMarks) 
      
     return(
-      <View style={[{flex: 1,flexDirection: 'row',alignItems: 'center',flexWrap:'wrap',paddingBottom:10,marginVertical:5},this.provideQuestionItemStyle(item.status)]}>
+     CardView(  
+      <TouchableWithoutFeedback onPress={()=>this.props.scrollToQuestion(index)}>
+        <View style={[{flex: 1,flexDirection: 'row',alignItems: 'center'}]}>
 
-          <TouchableOpacity style={[styles.queView,{borderWidth:0}]}>
-            <Text style={styles.queno}>{index+1}</Text>
-          </TouchableOpacity>
-          <View>
-              {/* <Text style={styles.queno}>{item.question}</Text> */}
-              
-              {this.renderQuestion(item.question)}
-          </View>
-
-          {item.bookmarked?(
-            <View style={{marginLeft:'auto',marginRight:10}}>
-              <FontAwesome name="bookmark" size={24} color={theme.labelOrInactiveColor}/>
+            <View style={[{margin:5,borderWidth:0,alignSelf:'flex-start'}]}>
+              <Text style={[styles.queno,{fontSize:14,fontWeight: 'bold'}]}>{index+1}</Text>
             </View>
-          ):(null)}
-          <View>
+            <View>
+                {/* <Text style={styles.queno}>{item.question}</Text> */}
+                
+                {this.renderQuestion(item.question)}
+            </View>
 
-          </View>
-      </View>
+            {item.bookmarked?(
+              <View style={{marginLeft:'auto',marginRight:10}}>
+                <FontAwesome name="bookmark" size={24} color={theme.labelOrInactiveColor}/>
+              </View>
+            ):(null)}
+            <View>
+
+            </View>
+        </View>
+      </TouchableWithoutFeedback>,
+      [{width:width-20,margin:10,padding:10},{backgroundColor:index%2==0?theme.labelOrInactiveColor+'4D':theme.primaryColor},this.provideQuestionItemStyle(item.status)],2)
     )
   }
-  handleSubmitTestButtonClick=()=>
-  {
-     let data  ={ques:this.state.questions,series:this.state.testSeriesDetails,brief:{
-      correctQues:this.state.correctQues,
-      wrongQues:this.state.wrongQues,
-      Unattempted:this.state.Unattempted,
-      attempted:this.state.attempted,
-      score:this.score,
-      testSeriesId:this.props.testSeriesId,
-      timeLeft:this.props.timeLeft
-     }}
-     this.props.setTestResultData(data);
-     this.props.navigation.navigate("ResultAnalysis");
-     this.props.closeModal() 
-     this.props.setStatusBarHidden(false)
-     window.clearInterval(this.props.intervalRef)
-  }
+  // handleSubmitTestButtonClick=()=>
+  // {
+  //    let data  ={
+  //      ques:this.state.questions,
+  //     series:this.state.testSeriesDetails,
+  //     brief:{
+  //       id:this.props.briefId,
+  //     correctQues:this.state.correctQues,
+  //     wrongQues:this.state.wrongQues,
+  //     Unattempted:this.state.Unattempted,
+  //     attempted:this.state.attempted,
+  //     score:this.score,
+  //     testSeriesId:this.props.testSeriesId,
+  //     timeLeft:this.props.timeLeft,
+  //     itemId:this.props.item
+  //    }}
+  //    this.props.setTestResultData(data);
+  //    this.props.navigation.navigate("ResultAnalysis");
+  //    this.props.closeModal() 
+  //   //  StatusBar.setHidden(false);
+  //   //  this.props.setStatusBarHidden(false)
+  //    window.clearInterval(this.props.intervalRef)
+  // }
 
 
   changeListMode=()=>
@@ -187,7 +204,49 @@ class SeriesModal extends React.Component {
             break;
         }
   }
-
+  header=()=>{
+    // // console.log("test series titel ",this.state.testSeriesDetails.title)
+    return(
+        CardView(
+            <View style={styles.headerSection}>
+                <View style={styles.headerRowSection}>
+                  <View style={{flexDirection: 'row'}}>
+                      <TouchableWithoutFeedback onPress={this.props.closeModal}>
+                        <View style={{marginLeft:10}}>
+                            {/* <Feather name="arrow-left" size={20} onPress={()=>this.setState({isWarningModalVisible: true})}/> */}
+                            <BackArrow height={24} width={24}/>
+                        </View> 
+                      </TouchableWithoutFeedback>
+                      <View style={styles.quizNameView}>
+                          <Text numberOfLines={1} style={styles.quizName}>{this.state.testSeriesDetails.title}</Text>
+                      </View>
+                    </View>
+                    <View style={{flexDirection: 'row'}}>
+                      <View style={styles.rowElement}> 
+                          <Feather name={this.state.listModeIcon} size={20} onPress={this.changeListMode}/> 
+                      </View> 
+                       
+                    </View>
+                </View>
+                {/* <View style={styles.headerRowSection2}>
+                    <View style={styles.sectionView}>
+                        <Text style={styles.sectionText}>SECTIONS</Text>
+                    </View>
+                    <View style={styles.optView}>
+                        <Text style={styles.optText}>English Language</Text>
+                    </View>
+                    <View style={styles.optView}>
+                        <Text style={styles.optText}>Reasoning</Text>
+                    </View>
+                    <View style={styles.optView}>
+                        <Text style={styles.optText}>Quantitative</Text>
+                    </View>
+                </View> */}
+            </View>
+            ,{width: '100%', padding: 4},3
+        )
+    )
+}
   renderQuestionList=()=>
   {
 
@@ -218,6 +277,12 @@ class SeriesModal extends React.Component {
     }
     
   }
+  closeModalSubmit = () => {
+    this.setState({ isModalVisibleSubmit: false});
+  }
+  openModalSubmit = () => {
+    this.setState({ isModalVisibleSubmit: true });
+  }
   render() {
     const { isModalVisible,closeModal,isPractice } = this.props;
      
@@ -232,6 +297,7 @@ class SeriesModal extends React.Component {
             <TouchableOpacity onPress={()=>closeModal()} style={{width: this.props.screenWidth,height:'100%'}}>
               <TouchableWithoutFeedback>
               <View style={[styles.centeredView, {}]}>
+                {this.header()}
                 {/* <View style={styles.imageView}>
                   <Image source={singlequedata.image} style={styles.itemImage}/>
                   <Text style={styles.userName}>{singlequedata.name}</Text>
@@ -299,17 +365,15 @@ class SeriesModal extends React.Component {
                 </View> */}
 
 
-                <View
-                  style={{
-                    // borderBottomColor: theme.greyColor,
-                    // borderBottomWidth: 2,
-                    // marginTop: 10,
-                  }}
-                />
-
+               
 
 
                 <View style={styles.numRow}>
+                  {/* <TouchableWithoutFeedback onPress={closeModal}>
+                    <View>
+                      <BackArrow height={24} width={24}/>
+                    </View>
+                  </TouchableWithoutFeedback> */}
                   {isPractice?(
                     <>
                       <View style={styles.rowElement}>
@@ -323,7 +387,7 @@ class SeriesModal extends React.Component {
                     </>
                   ):(
                     <View style={styles.rowElement}>
-                        <Text style={{fontSize:30,color: theme.secondaryColor}}> • </Text>
+                        <Text style={{fontSize:30,color: theme.selectedOptColor}}> • </Text>
                         <Text style={{fontSize: 12,color: theme.greyColor}}>Attempted ({this.state.attempted})</Text>
                     </View>
                   )}
@@ -332,11 +396,7 @@ class SeriesModal extends React.Component {
                       <Text style={{fontSize: 12,color: theme.greyColor}}>Unattempted ({this.state.Unattempted})</Text>
                     </View>
                     
-                    <View style={styles.rowElement}>
-                       
-                        <Feather name={this.state.listModeIcon} size={20} onPress={this.changeListMode}/>
-                      
-                    </View> 
+                  
                 </View>
 
 
@@ -344,12 +404,31 @@ class SeriesModal extends React.Component {
                 <View style={styles.questions}>
                   {this.renderQuestionList()}
                 </View> 
-                <TouchableOpacity style={styles.submitBtn} onPress={this.handleSubmitTestButtonClick}>
-                  <Text style={styles.btntext}>Submit Test</Text>
-                </TouchableOpacity> 
+                {!this.props.viewMode?(
+                  <TouchableOpacity style={styles.submitBtn} onPress={this.openModalSubmit}>
+                    <Text style={styles.btntext}>Submit Test</Text>
+                  </TouchableOpacity> 
+                ):(
+                  <TouchableOpacity style={styles.submitBtn} onPress={()=>this.props.navigation.navigate('ResultAnalysis')}>
+                    <Text style={styles.btntext}>View Result</Text>
+                  </TouchableOpacity> 
+                )}
+                
               </View>
               </TouchableWithoutFeedback>              
             </TouchableOpacity>
+            {this.state.isModalVisibleSubmit ? (
+                        <SubmitModel
+                            isModalVisible={this.state.isModalVisibleSubmit}
+                            openModal={this.openModalSubmit}
+                            closeModal={this.closeModalSubmit}
+                            yesFun={this.props.handleSubmitTestButtonClick}
+                            correctQues={this.props.correctQues}
+                            incorrectQues={this.props.wrongQues}
+                            isPractice={this.props.isPractice}
+                            unAttemptedQues={this.props.totalQuestions-(this.props.attempted)}
+                        />
+                    ) : (null)}
           </Modal>)
     );
   }
@@ -477,9 +556,9 @@ const styles = StyleSheet.create({
       },
         queno:
         {
-          fontSize: 16,
-          padding: 2,
+          fontSize: 16, 
           color: theme.greyColor,
+          flexWrap:'wrap'
         },
     submitBtn:
     {
@@ -514,7 +593,8 @@ wrongQues:
 },
 attemptedQues:
 {
-  borderColor:theme.secondaryColor,
+  borderColor:theme.selectedOptColor+'66',
+  backgroundColor: theme.selectedOptColor+'66',
   borderWidth:1, 
 
 }  ,
@@ -523,7 +603,34 @@ unAttemptedQues:
   borderColor:theme.greyColor,
   borderWidth:1, 
 
-}
+},
+headerSection:
+        {
+            flexDirection: 'column',
+            paddingVertical:1
+        },
+            headerRowSection:
+            {
+               
+                width:'100%',
+                flexDirection: 'row',
+               alignItems: 'center',
+               justifyContent: 'space-between',
+            },
+                
+                quizNameView:
+                {
+                    marginRight: 5,
+                    marginLeft: 10,
+                },
+                    quizName:
+                    {
+                      fontSize: 20,
+                      fontWeight: 'bold' 
+                    },
+              
+                
+
 });
 
 const  mapStateToProps = (state)=>

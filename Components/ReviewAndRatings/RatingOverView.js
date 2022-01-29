@@ -11,7 +11,7 @@ class RatingOverView extends React.Component {
         return(
             <View style={styles.ratingBarContainer}>
                 <Text style={styles.ratingValueText}>{ratingValue}</Text>
-                <RatingBar   progressColor={theme.blueColor} backgroundColor="grey" height={15} progress={progress} borderRadius={30}/>
+                <RatingBar   progressColor={theme.blueColor} backgroundColor="grey" height={12} progress={progress} borderRadius={30}/>
             </View>
         )
     }

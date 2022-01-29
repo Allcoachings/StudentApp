@@ -80,30 +80,32 @@ public class InsReviewService {
         return insReviewRepo.setReply(insReview.getId(), insReview.getReply());
     }
 
-    public int addReview(InsReview insReview){
+    public InsReview addReview(InsReview insReview){
 
-        switch (insReview.getRating())
-        {
-            case 1:
-                instituteRepo.increaseOneStarCount(insReview.getInsId());
+            switch (insReview.getRating())
+            {
+                case 1:
+                    instituteRepo.increaseOneStarCount(insReview.getInsId());
 
-                break;
-            case 2:
-                instituteRepo.increaseTwoStarCount(insReview.getInsId());
-                break;
-            case 3:
-                instituteRepo.increaseThreeStarCount(insReview.getInsId());
-                break;
-            case 4:
-                instituteRepo.increaseFourStarCount(insReview.getInsId());
-                break;
-            case 5:
-                instituteRepo.increaseFiveStarCount(insReview.getInsId());
-                break;
-        }
-        instituteRepo.increaseTotalRating(insReview.getInsId(),insReview.getRating());
-        instituteRepo.increaseTotalRatingCount(insReview.getInsId());
-        return insReviewRepo.addReview(insReview.getCourseId(), insReview.getStudentId(), insReview.getReview(), insReview.getRating());
+                    break;
+                case 2:
+                    instituteRepo.increaseTwoStarCount(insReview.getInsId());
+                    break;
+                case 3:
+                    instituteRepo.increaseThreeStarCount(insReview.getInsId());
+                    break;
+                case 4:
+                    instituteRepo.increaseFourStarCount(insReview.getInsId());
+                    break;
+                case 5:
+                    instituteRepo.increaseFiveStarCount(insReview.getInsId());
+                    break;
+            }
+            instituteRepo.increaseTotalRating(insReview.getInsId(),insReview.getRating());
+            instituteRepo.increaseTotalRatingCount(insReview.getInsId());
+            insReviewRepo.addReview(insReview.getCourseId(), insReview.getStudentId(), insReview.getReview(), insReview.getRating());
+            return  insReviewRepo.findByCourseIdAndStudentId(insReview.getCourseId(),insReview.getStudentId()).get();
+
     }
 
 

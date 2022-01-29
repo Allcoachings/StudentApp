@@ -3,7 +3,11 @@ import { AppState,StyleSheet,Text,Alert,BackHandler } from "react-native"
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { differenceInSeconds } from "date-fns";
 import { theme } from "../config";
+
+import TimeUpModel from './TimeUpModel';
+ 
 let backhandler;
+
 let interval;
 const getElapsedTime = async () => {
     try {
@@ -54,12 +58,14 @@ const Timer =(props)=>
     const [time,setTime] = useState(props.time); 
     const timeRef = useRef(props.time); 
     const [isRefreshRequired,setIsRefreshRequired] = useState(false)
+    const [isModalVisible,setIsModalVisible] = useState(false)
     useEffect(() => {
         if(isRefreshRequired)
         {
             setTime(props.time);
             setIsRefreshRequired(false);
             timeRef.current=props.time;
+             
           
         }
         
@@ -92,6 +98,7 @@ const Timer =(props)=>
 
     useEffect(() =>{
         setTime(time-elapsed)
+        props.setTimeLeft(time-elapsed);
     },[elapsed])
      
     const countdown=()=>
@@ -109,22 +116,32 @@ const Timer =(props)=>
                 //     onPress: () => { notificationReceivedEvent.complete(); },
                 //     style: "cancel"
                 //  };
-                const button2 = { text: "Submit Test", onPress: () => { props.timeUpAction({timeOver:true,isModalVisible:true})}};
-                Alert.alert("Alert ", "Time Up", [ button2], { cancelable: false });
+                // const button2 = { text: "Submit Test", onPress: () => { props.timeUpAction({timeOver:true,isModalVisible:true})}};
+                // Alert.alert("Alert ", "Time Up", [ button2], { cancelable: false });
+                // setIsModalVisible(true)
+                props.handleSubmitTestButtonClick()
             }else
             {
                 setTime(time-1)
+                props.setTimeLeft(time-1);
             }
 
         },1000)
       
     }
     useEffect(() => {
+
+
+          console.log(props.navigation)
         const unsubscribe = props.navigation.addListener('focus', () => {
           // The screen is focused
           // Call any action
+
+
+          console.log("timerfocused called")
           if(props.time-2>timeRef.current)
           {
+            console.log('test refresh')
               props.refresh();
               setIsRefreshRequired(true)
               
@@ -153,7 +170,7 @@ const Timer =(props)=>
         console.log("blured")
           if(backhandler)
           {
-            console.log("removed on blur")
+            // console.log("removed on blur")
             backhandler.remove()
           }
           
@@ -163,14 +180,17 @@ const Timer =(props)=>
       return unsubscribe;
     }, [props.navigation]);
       const backBtnListner = ()=>{
+
+        console.log("backBtnListner called")
       backhandler =  BackHandler.addEventListener('hardwareBackPress',  ()=> 
           {
-              props.showAlert(()=>{console.log("cleared interval");window.clearInterval(interval)})
+            console.log("backpressed")
+              props.showAlert(()=>{ console.log("cleared interval");window.clearInterval(interval)})
               
               return true;
           });
 
-          return ()=>{console.log("removed auto");backhandler.remove()}
+          return ()=>{ console.log("removed auto");backhandler.remove()}
      }
 
       
@@ -183,7 +203,19 @@ const Timer =(props)=>
      },[time])
 
     return(
+      <>
         <Text style={styles.pauseBtnText}> {formatTimer(time)}</Text>
+        {isModalVisible&&<TimeUpModel
+            isModalVisible={isModalVisible}
+            openModal={()=>setIsModalVisible(true)}
+            closeModal={()=>setIsModalVisible(false)}
+            yesFun={()=>{setIsModalVisible(false);}}
+            correctQues={props.correctQues}
+            incorrectQues={props.wrongQues}
+            isPractice={props.isPractice}
+            unAttemptedQues={props.unAttemptedQues}
+        />}
+        </>
     )
 } 
 const styles = StyleSheet.create({

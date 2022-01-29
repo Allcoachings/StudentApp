@@ -22,7 +22,7 @@ class RenderSinglePinnedIns extends React.Component {
     }
 
     unPinCallBack=(response)=>{
-        console.log(response.status, "check")
+        // console.log(response.status, "check")
         if(response.status==200)
         {
             this.setState({hide: true})
@@ -36,7 +36,7 @@ class RenderSinglePinnedIns extends React.Component {
 
     render() {
         const {item } = this.props
-        console.log("itemid", item.institute.id)
+        // console.log("itemid", item.institute.id)
         return(
             <View style={[this.state.hide?({display: 'none'}):(null)]}>
                 <TouchableOpacity style={{marginBottom: '5%'}} onPress={()=>this.redirectTo(item.institute.id)}>

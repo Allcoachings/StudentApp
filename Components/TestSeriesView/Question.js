@@ -4,14 +4,16 @@ import {serverBaseUrl, theme, imageProvider} from '../config'
 import {EvilIcons, FontAwesome, AntDesign} from '@expo/vector-icons';  
 const width = Dimensions.get('window').width
 import ReportQuestionModal from './ReportQuestionModal'
-import RenderHtml from 'react-native-render-html'
+import RenderHtml ,{ defaultSystemFonts } from 'react-native-render-html'
+
+const systemFonts = ["kruti_dev_010regular", ...defaultSystemFonts];
 class Question extends Component {
   state={
       isPractice:this.props.isPractice,
       correctIndex:this.props.item.correctOpt,
-      userOptionIndex:'',
-      isCorrect:false,
-      isResponded:false,
+      userOptionIndex:this.props.userResponse,
+      isCorrect:this.props.status=="correct",
+      isResponded:this.props.status?true:false,
       showSolution:false,
       isModalVisible: false,
 
@@ -24,6 +26,12 @@ class Question extends Component {
    
   handleOptionBtnClick=(index,correct,selected)=>
   {
+      if(!this.state.isPractice&&selected==this.state.userOptionIndex)
+      {
+            this.props.clearQuestionAttemptStatus(index,null)
+            this.setState({userOptionIndex:null,isResponded:false})
+            return ;
+      }
        if(!this.state.isPractice||!this.state.isResponded)
        {
             if(this.checkAnswer(correct,selected))
@@ -127,21 +135,29 @@ class Question extends Component {
     
       return(
         //   <Text>{index,text,optionType,onPress}</Text>
+        <TouchableWithoutFeedback style={styles.optionAns} onPress={onPress}>
             <View style={[styles.singleOptionView,this.provideOptionResponseStyle(this.state.userOptionIndex,index)]}>
-                <TouchableWithoutFeedback style={styles.optionAns} onPress={onPress}>
+                
                     <View style={styles.optionAns}>
                         <View style={[{marginRight:10,borderRadius:15,paddingHorizontal:10,padding:5,borderWidth:1,borderColor: theme.labelOrInactiveColor},this.provideOptionIndexResponseStyle(this.state.userOptionIndex,index)]}>
                             <Text>{index}</Text>
                         </View> 
                         {optionType==1?(
-                            <Text style={styles.optionText}>{text}</Text>
+                            // <Text style={styles.optionText}>{text}</Text>
+                            <RenderHtml
+                            contentWidth={width-50} 
+                            source={{html: text}}
+                            systemFonts={systemFonts} 
+                            defaultTextProps={{style: styles.quizText}}
+                            />
                         ):(
                             <Image source={{uri:imageProvider(text)}} style={{borderWidth:0.5,borderColor: theme.labelOrInactiveColor,width:'85%',height:150}}/>
                         )} 
                     </View>
                      
-                </TouchableWithoutFeedback>
+                
             </View>
+        </TouchableWithoutFeedback>
       )
   }
   renderQuestion=(item) => {
@@ -154,9 +170,10 @@ class Question extends Component {
                     return(
                         // <Text style={styles.quizText}>{item.question}
                             <RenderHtml
-                                contentWidth={width}
-                                // style={styles.quizText}
+                                contentWidth={width} 
                                 source={{html: item.question}}
+                                systemFonts={systemFonts} 
+                                defaultTextProps={{style: styles.quizText}}
                                 />
                         // {/* </Text> */}
                     ); 
@@ -179,16 +196,16 @@ class Question extends Component {
     //     const modules = origMessageQueue._remoteModuleTable;
     //     const methods = origMessageQueue._remoteMethodTable;
     //     global.findModuleByModuleAndMethodIds = (moduleId, methodId) => {
-    //       console.log(`The problematic line code is in: ${modules[moduleId]}.${methods[moduleId][methodId]}`)
+    //       // console.log(`The problematic line code is in: ${modules[moduleId]}.${methods[moduleId][methodId]}`)
     //     }
     //     global.findModuleByModuleAndMethodIds(29, 0);
-    //     // console.log("modules",modules,"methods",methods)
+    //     // // console.log("modules",modules,"methods",methods)
     //   }
  }
 
   render() {
     
-     const {item} = this.props;
+     const {item,testSeriesId} = this.props;
      const propsIndex = this.props.index;
      const  index = propsIndex+1  
     return (
@@ -228,22 +245,22 @@ class Question extends Component {
                     {this.renderOption("D",item.optionD,item.optionType,()=>{this.handleOptionBtnClick(propsIndex,item.correctOpt,"D")})}  
                 </View> 
             </View>
-            {this.state.isPractice&&this.state.isResponded?(
+            {this.props.isPractice&&this.state.isResponded?(
                 this.state.showSolution?(
                     <>
                     
                         <View style={{flexDirection: 'row', width: '95%', margin:10,justifyContent: 'space-between',}}>
-                        <TouchableWithoutFeedback onPress={()=>this.setState({showSolution:false})} >
-                            <View style={{width: '80%', flexDirection: 'row'}}>
-                            <EvilIcons name="chevron-up" color={theme.secondaryColor} size={24}/>
-                            <Text style={{fontFamily: 'Raleway_700Bold', fontSize: 12, color:theme.darkYellowColor}}>HIDE</Text> 
-                            </View>
-                        </TouchableWithoutFeedback> 
-                            <View>
-                                <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                                    <TouchableOpacity onPress={()=>this.openModal()}>
-                                        <AntDesign name="warning" size={16} color={theme.silverColor} />  
-                                    </TouchableOpacity>     
+                            <TouchableWithoutFeedback onPress={()=>this.setState({showSolution:false})} >
+                                <View style={{width: '80%', flexDirection: 'row'}}>
+                                <EvilIcons name="chevron-up" color={theme.secondaryColor} size={24}/>
+                                <Text style={{fontFamily: 'Raleway_700Bold', fontSize: 12, color:theme.darkYellowColor}}>HIDE</Text> 
+                                </View>
+                            </TouchableWithoutFeedback> 
+                                <View>
+                                    <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                                        <TouchableOpacity onPress={()=>this.openModal()}>
+                                            <AntDesign name="warning" size={16} color={theme.silverColor} />  
+                                        </TouchableOpacity>     
                                 </View>
                             </View>
                         </View>
@@ -251,24 +268,30 @@ class Question extends Component {
                         <Text style={{fontFamily:'Raleway_400Regular', color:theme.featureYesColor, fontSize: 14, marginVertical: 5}}>
                             Correct Answer: {item.correctOpt}
                         </Text>
-                        <Text style={{fontFamily:'Raleway_600SemiBold', fontSize: 12, marginVertical: 5}}>
+                        {/* <Text style={{fontFamily:'Raleway_600SemiBold', fontSize: 12, marginVertical: 5}}>
                             {item.explanation}
-                        </Text>
+                        </Text> */}
+                        <RenderHtml
+                            contentWidth={width} 
+                            source={{html: item.explanation}}
+                            systemFonts={systemFonts} 
+                            defaultTextProps={{style: { fontSize: 12, marginVertical: 5}}}
+                            />
                     </View>
                     </>
                 ):(
                     
                         <View  style={{flexDirection: 'row', width: '95%', margin:10,justifyContent: 'space-between',}}>
                             <TouchableWithoutFeedback onPress={()=>this.setState({showSolution:true})}>
-                            <View style={{width: '80%', flexDirection: 'row'}}>
-                                <EvilIcons name={"chevron-down"} size={24} />
-                                <Text style={{fontFamily: 'Raleway_700Bold', fontSize: 12, color:theme.darkYellowColor}}>SEE SOLUTION</Text> 
-                            </View>
+                                <View style={{width: '80%', flexDirection: 'row'}}>
+                                    <EvilIcons name={"chevron-down"} size={25} />
+                                    <Text style={{fontFamily: 'Raleway_700Bold', fontSize: 13, color:theme.darkYellowColor}}>SEE SOLUTION</Text> 
+                                </View>
                             </TouchableWithoutFeedback>
                             <View>
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                                     <TouchableOpacity onPress={()=>this.openModal()}>
-                                        <AntDesign name="warning" size={16} color={theme.silverColor} /> 
+                                        <AntDesign name="warning" size={18} color={theme.silverColor} /> 
                                     </TouchableOpacity>      
                                 </View>
                             </View>
@@ -283,6 +306,8 @@ class Question extends Component {
                 isModalVisible={this.state.isModalVisible}
                 openModal={this.openModal}
                 closeModal={this.closeModal}
+                questionId={item.id}
+                testSeriesId={testSeriesId}
             />
         ):(null)}
         </>
@@ -295,7 +320,12 @@ const styles = StyleSheet.create({
     quesRowSection:{
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        paddingBottom:5,
+        borderBottomWidth: 0.5,
+        borderBottomColor:theme.labelOrInactiveColor,
+        margin:5,
+        marginHorizontal:5
     },
         queView:
         {
@@ -304,6 +334,7 @@ const styles = StyleSheet.create({
         },
             queNum:{
                 fontSize: 16, 
+                fontWeight: 'bold'
             },
         quesRow2:
         {
@@ -365,11 +396,12 @@ const styles = StyleSheet.create({
                 },
     quizQuestionView:{
         flexDirection: 'column',
-        marginTop: 10
+        marginTop: 10,
+        marginHorizontal: 5
     },
         quizText:{
-            fontSize: 16,
-            fontFamily: 'Raleway_600SemiBold',
+            fontSize: 18,
+             
             color: theme.secondaryColor,
             
         },
@@ -379,6 +411,8 @@ const styles = StyleSheet.create({
         optionView:{
             flex: 1,
             flexDirection: 'column',
+            borderBottomWidth:0.5,
+            borderBottomColor:theme.labelOrInactiveColor
         },
         optionRow:{
             flex: 1,
@@ -387,8 +421,8 @@ const styles = StyleSheet.create({
             // marginTop: 10
         },
             singleOptionView:{
-                // backgroundColor: theme.labelOrInactiveColor,
-                padding: 5,
+                
+                padding: 10,
                 width:width,
                 borderRadius: 5,
                 flexDirection: 'row',
@@ -399,11 +433,14 @@ const styles = StyleSheet.create({
                 optionAns:{
                     flexDirection: 'row',
                     alignItems: 'center',
+                    
                 
                 },
                 optionText:{
-                    fontSize: 16,
-                    fontFamily: 'Raleway_600SemiBold',
+                    fontSize: 17,
+                    flexWrap:'wrap',
+                    width: '87%',
+                    // fontFamily: 'Raleway_600SemiBold',
                     color: theme.secondaryColor
                 },
         explanationView:

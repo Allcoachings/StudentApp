@@ -5,8 +5,8 @@ import { Toast } from 'native-base';
 import {useDispatch} from 'react-redux';
 export  const downloadFile= async (item,url,userId,savingDocTye,callback,downloadProgressCallbackfun,setInReduxFun) => {
  
-  // const isSaved =   await checkSavedOffline(item,userId,savingDocTye) 
-  const isSaved = false;
+  const isSaved =   await checkSavedOffline(item,userId,savingDocTye) 
+  // const isSaved = false;
   if(!isSaved) 
   {
     const downloadResumable = FileSystem.createDownloadResumable(
@@ -23,7 +23,7 @@ export  const downloadFile= async (item,url,userId,savingDocTye,callback,downloa
           let offlineItem = {...item,fileAddress:uri}
           saveOffline(offlineItem,userId,savingDocTye)
           callback({status:'success',item:offlineItem})
-          console.log('Finished downloading to ', uri);
+          // console.log('Finished downloading to ', uri);
       })
       .catch(error => {
           callback({status:'error',error})
@@ -32,7 +32,7 @@ export  const downloadFile= async (item,url,userId,savingDocTye,callback,downloa
   }else
   {
     callback({status:'already'});
-    // console.log('File Already Saved')
+    // // console.log('File Already Saved')
   }
     
  }
@@ -64,7 +64,14 @@ export  const downloadFile= async (item,url,userId,savingDocTye,callback,downloa
                 savingItem = JSON.parse(result)       
                  if(savingItem[userId])
                  {
-                  savingItem[userId][savingDocTye].push(item);
+                   if(savingItem[userId][savingDocTye])
+                   {
+                    savingItem[userId][savingDocTye].push(item);
+                   }else
+                   {
+                     savingItem[userId][savingDocTye]=[item];
+                   }
+                  
                  }else
                  {
                     savingItem= {[userId]:{[savingDocTye]:[item]}};       
@@ -80,7 +87,7 @@ export  const downloadFile= async (item,url,userId,savingDocTye,callback,downloa
          }
     
          AsyncStorage.setItem("offline",JSON.stringify(savingItem)).then(()=>{
-             console.log("document saved")
+             // console.log("document saved")
          });
      })
      
@@ -96,8 +103,8 @@ export  const downloadFile= async (item,url,userId,savingDocTye,callback,downloa
                 savingItem = JSON.parse(result)        
                  
                 
-                let filtered = savingItem[userId][savingDocTye].filter(savedItem=>savedItem.id==item.id) 
-                if(filtered.length > 0)
+                let filtered = savingItem[userId][savingDocTye]?.filter(savedItem=>savedItem.id==item.id) 
+                if(filtered?.length > 0)
                 {
                   return true
                 }else
@@ -118,7 +125,7 @@ export  const downloadFile= async (item,url,userId,savingDocTye,callback,downloa
    
     let savingItem= {[userId]:{[savingDocTye]:item}};
       AsyncStorage.setItem("offline",JSON.stringify(savingItem)).then(()=>{
-        console.log("document saved")
+        // console.log("document saved")
       });
  }
 

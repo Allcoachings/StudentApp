@@ -87,7 +87,7 @@ class EditInstitute extends React.Component {
         {
             response.json().then(data=>
                 {
-                    console.log(data)
+                    // console.log(data)
                     this.setState({name:data.name, directorName:data.directorName, phone:data.phone, email:data.email, password: data.password, about: data.about, address: data.address, city: data.city, state:data.state, loadingInstitute:false, logo:data.logo})
                 })
             
@@ -123,7 +123,7 @@ class EditInstitute extends React.Component {
                 
         }else
         {
-            console.log("something went wrong")
+            // console.log("something went wrong")
         }
         
     }
@@ -158,46 +158,46 @@ class EditInstitute extends React.Component {
         this.setState({registerLoader: true})
         if(this.state.changedLogo)
         {
-            console.log("file upload")
+            // console.log("file upload")
             uploadFile(this.state.changedLogo, this.fileCallBack)
         }
         else
         {
-            console.log("details upload")
+            // console.log("details upload")
             this.update()
         }
     }
 
     update=()=>{
-        console.log("hre")
+        // console.log("hre")
         if(this.verifyFields(this.state))
         {
-            console.log("verifyFields")
+            // console.log("verifyFields")
             updateInstituteDetails(this.state.id, this.state.about, this.state.address, this.state.city, this.state.directorName, this.state.email, this.state.logo, this.state.name, this.state.phone, this.state.state, this.state.password, this.updateDetailsCallback)  
         } 
         else
         {
-            console.log("not verifyFields")
+            // console.log("not verifyFields")
             this.setState({registerLoader: false})
             Toast.show("Please Fill All The Fields.")
         }
     }
 
     fileCallBack=(response)=>{
-        console.log("file", response.status)
+        // console.log("file", response.status)
         if(response.status==201)
         {
             this.setState({logo: response.headers.map.location},()=>this.update())
         }
         else
         {
-            console.log("error", response.status)
+            // console.log("error", response.status)
         }
     }
 
     updateDetailsCallback=(response)=>{
         this.setState({registerLoader: false})
-        console.log("details", response.status)
+        // console.log("details", response.status)
         if(response.status==200)
         {
             Toast.show("Insititute Details Updated Successfully.")

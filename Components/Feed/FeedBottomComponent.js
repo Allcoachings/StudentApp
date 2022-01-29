@@ -31,7 +31,7 @@ updateCommentsCount=(x)=>
             <View style={{flexDirection: 'row'}}>
                 {this.props.canUserLike?(
                     <TouchableOpacity style={styles.likeView}  onPress={()=>this.props.likeFeed(this.state.feedId)}>
-                        <AntDesign name="hearto" size={22} color={theme.buttonColor} />
+                        <AntDesign name="hearto" size={22} color={theme.greyColor} />
                     </TouchableOpacity>
                 ):(
                     <TouchableOpacity style={styles.likeView} onPress={()=>this.props.unLikeFeed(this.state.feedId)}>

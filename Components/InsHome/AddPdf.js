@@ -25,7 +25,7 @@ class AddPdf extends React.Component {
     //             const res = await DocumentPicker.pick({
     //                 type: [DocumentPicker.types.allFiles],
     //             });
-    //             console.log(
+    //             // console.log(
     //                 res.uri,
     //                 res.type, // mime type
     //                 res.name,
@@ -35,7 +35,7 @@ class AddPdf extends React.Component {
     //         } catch (err) {
     //             if (DocumentPicker.isCancel(err)) 
     //             {
-    //                 console.log("error -----", err);
+    //                 // console.log("error -----", err);
     //             }
     //             else 
     //             {
@@ -72,7 +72,7 @@ class AddPdf extends React.Component {
         }
         renderPickerItem=(item)=>
         {
-            console.log(item)
+            // console.log(item)
             return( 
                
                 <Picker.Item label={item.name} value={item.id} />
@@ -104,19 +104,19 @@ class AddPdf extends React.Component {
         }
         handlePlaylistCallback=(response)=>
         {
-            console.log("response playlist",response.status)
+            // console.log("response playlist",response.status)
             if(response.status == 200)
             {
                 response.json().then(response=>
                 { 
-                    console.log("response",response)
+                    // console.log("response",response)
                     response.unshift({id:-1,name:"Select Playlist"})
                     this.setState({playlist: response,loadingPlaylist:false})
                 })
                     
             }else
             {
-                console.log("something went wrong")
+                // console.log("something went wrong")
             }
             
         }
@@ -164,6 +164,7 @@ class AddPdf extends React.Component {
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
                 nosearchIcon={true}
                 noNotificationIcon={true}
+                navigation={this.props.navigation}
             >
                 <ScrollView>
                     <View style={styles.headView}>

@@ -23,15 +23,17 @@ function UserCommunityPosts({navigation}) {
     const checkForUserCat=()=>
     {
         AsyncStorage.getItem("userCat").then((response)=>{
-            console.log(response)
+            // console.log(response)
              if(response)
              {
-                 console.log(response)
+                 // console.log(response)
                  let obj = JSON.parse(response);
-                 this.setState({categoryId:obj.id}) 
+                //  this.setState({categoryId:obj.id}) 
+
+                 setCategoryId(obj.id)
              }else
              {
-                this.setState({categoryId:null}) 
+                setCategoryId(null) 
              }
         })
     }
@@ -42,17 +44,17 @@ function UserCommunityPosts({navigation}) {
         {
             case 1:
                 return (
-                    <FeedImage item={item} type={2} navigation={this.props.navigation} mode="userProfile" updateEditFeedState={this.updateEditFeedState} index={index}/>
+                    <FeedImage item={item} type={2} navigation={navigation} mode="userProfile" updateEditFeedState={updateEditFeedState} index={index}/>
                 )
             case 2:
            
 
                 return (
-                    <FeedPoll item={item} type={2} navigation={this.props.navigation} mode="userProfile" updateEditFeedState={this.updateEditFeedState} index={index}/>
+                    <FeedPoll item={item} type={2} navigation={navigation} mode="userProfile" updateEditFeedState={updateEditFeedState} index={index}/>
                 )
             case 3:
                 return (
-                    <FeedText item={item} type={2} navigation={this.props.navigation} mode="userProfile" updateEditFeedState={this.updateEditFeedState} index={index}/>
+                    <FeedText item={item} type={2} navigation={navigation} mode="userProfile" updateEditFeedState={updateEditFeedState} index={index}/>
                 )
         }
     }
@@ -89,7 +91,7 @@ function UserCommunityPosts({navigation}) {
         }
         else
         {
-            console.log("something went wrong")
+            // console.log("something went wrong")
         }
     }
     useEffect(()=>{
@@ -103,6 +105,7 @@ function UserCommunityPosts({navigation}) {
             titleonheader={"Community"}
             nosearchIcon={true}
             noNotificationIcon={true}
+            navigation={navigation}
         >
         <View style={styles.container}>
                     {/* <TouchableOpacity  onPress={()=>this.openAddFeedModal()} style={{backgroundColor: theme.textColor, justifyContent: 'center', alignItems: 'center', padding:5, borderRadius:5}}> 

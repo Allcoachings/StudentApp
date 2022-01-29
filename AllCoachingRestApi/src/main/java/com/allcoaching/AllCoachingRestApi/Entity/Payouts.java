@@ -27,5 +27,7 @@ public class Payouts {
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date payoutTime;
+
+
 }
 

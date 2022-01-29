@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet,View,Text,TouchableOpacity,Image, TouchableWithoutFeedback,Dimensions } from 'react-native'
 // import Icon from 'react-native-vector-icons/dist/Feather';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Home_Filled from './Utils/Icons/Home_Filled'; 
 import HomeIcon_Outline from './Utils/Icons/Home_Outline';
@@ -12,13 +12,24 @@ import Supervised_person_Outline from './Utils/Icons/Supervised_person_Outline';
 import Favorite_Filled from './Utils/Icons/Favorite_Filled'; 
 import Favorite_Outline from './Utils/Icons/Favorite_Outline';
 import CardView from './Utils/CardView';
+import { SET_NAVIGATION } from './Actions/types';
  
  
 const height = Dimensions.get('window').height;
 export default function TabBar({authStatus,navigation}) {
-  
-    
-   const [activeTab,setActiveTab] = useState('Home')
+    const navState = navigation.getState()
+    // // console.log("navigation.state",)
+    const activeScreen = navState.routeNames[navState.index]
+    // const TabScreens = ['Home','TestSeries','Subscription','Feed','SeriesList','ViewInsTestSeriesList',]
+    const [activeTab,setActiveTab] = useState('Home')
+    const dispatch = useDispatch()
+
+
+
+    useEffect(() =>{
+        dispatch({type:SET_NAVIGATION,payload:{navigation}})
+    },[])
+
 
     //creating single generic  tab item structure
     const renderTabItem =  (ActiveIcon,InactiveIcon, label ,fun) =>
@@ -39,13 +50,13 @@ export default function TabBar({authStatus,navigation}) {
 
     const tabItemClickHandler = (label,fun)=>
     {
-        console.log('tabItemClickHandler')
+        // // console.log('tabItemClickHandler')
             setActiveTab(label)
             fun();
     }
 
     return (
-        authStatus?(
+        // authStatus&&TabScreens.includes(activeScreen)?(
 
         CardView(    
             <View style={[{display:'flex',flexDirection: 'row',justifyContent: 'space-between', paddingBottom:15,margin:10}]}>
@@ -63,7 +74,7 @@ export default function TabBar({authStatus,navigation}) {
                 </View>
             </View>,{width:'100%'}
         )
-        ):(null)
+        // ):(null)
     )
 }
 

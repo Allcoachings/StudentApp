@@ -77,17 +77,17 @@ class InsRegister extends React.Component {
     }
 
     validateEmail = (text) => {
-        // console.log(text);
+        // // console.log(text);
         let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
         if (reg.test(text) === false) {
-          console.log("Email is Not Correct");
+          // console.log("Email is Not Correct");
         //   this.setState({ email: text })
          Toast.show('ENter a valid Email');
           return false;
         }
         else {
         //   this.setState({ email: text })
-          console.log("Email is Correct");
+          // console.log("Email is Correct");
           return true;
         }
       }
@@ -123,7 +123,7 @@ class InsRegister extends React.Component {
                 
         }else
         {
-            console.log("something went wrong")
+            // console.log("something went wrong")
         }
         
     }
@@ -133,7 +133,7 @@ class InsRegister extends React.Component {
      
         fetch_categories(this.handleCatgoryCallback) 
         
-        // fetch_categories((response)=>{console.log(response)})
+        // fetch_categories((response)=>{// console.log(response)})
     }
     renderPickerItem=(item)=>
     {
@@ -212,7 +212,7 @@ class InsRegister extends React.Component {
             })
     }
     render() {
-        // fetch_categories((response)=>{console.log(response)})
+        // fetch_categories((response)=>{// console.log(response)})
  
         return(
             // <PageStructure

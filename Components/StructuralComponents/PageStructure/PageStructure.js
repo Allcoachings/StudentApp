@@ -1,83 +1,86 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Text, View,StyleSheet,ScrollView } from 'react-native';
 import Header from '../Header'
 import {theme} from '../../config'
-import {connect} from 'react-redux'
+import {connect, useDispatch, useSelector} from 'react-redux'
 import {screenMobileWidth} from '../../config'
 import BottomTab from '../../BottomTab'
 import CardView from '../../Utils/CardView'
-
 import { StatusBar } from 'expo-status-bar';
-class PageStructure extends React.Component {
-    state = {  }
-
-    renderContent=() =>
-    {
-        return(
-            <View style={styles.container}>
-                <View style={styles.containerMain}> 
-                    {this.switchRender(this.props.scrollMode)} 
-                    {/* {!this.props.noBottomTab&&this.props.screenWidth<=screenMobileWidth?(
-                        <View style={[styles.pageBottomTab,{flex:this.props.catInHeader?0.9:0.102}]}>
-                             <BottomTab 
-                                replacBottomTab={this.props.replaceBottomTab} 
-                                bottomComponentStyle={this.props.bottomComponentStyle}  
-                                bottomComponent={this.props.bottomComponent}
-                                navigation={this.props.navigation}
-                                mode={this.props.userAuth?("student"):("institute")}
-                            /> 
-                        </View>
-                    ):(null)}  */}
-                </View>
-            </View> 
-        )
-    }
- 
+import { SET_HEADER_PROPS, TOGGLE_HEADER } from '../../Actions/types';
+const PageStructure =(props)=> {
+   
+    // const navigation = useSelector(state=>state.layout.stackNavigation)
+    const dispatch = useDispatch()
+    const focusedRef = useRef(false)
     // handleScroll=(event)=> {
-    //     console.log(event.nativeEvent.contentOffset.y);
+    //     // console.log(event.nativeEvent.contentOffset.y);
     //     // if(event.nativeEvent.contentOffset.y>40)
     //     // {
     //     //     this.setState({catStyle:{position: 'absolute',top:0}})
     //     // }    
     // }  
 
-    switchRender=(scrollMode)=>{
-        console.log(scrollMode)
+    
+    useEffect(() => { 
+            dispatch({type: SET_HEADER_PROPS,payload:{props}})
+            console.log("props updated successfully")
+        
+    },[props])
+
+    useEffect(() => {
+        const unsubscribe = props.navigation.addListener('focus', () => { 
+          focusedRef.current=true 
+           dispatch({type: SET_HEADER_PROPS,payload:{props}}) 
+           dispatch({type: TOGGLE_HEADER,payload:{status:true}})
+
+        });
+        
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return unsubscribe;
+      }, [props.navigation]);
+ 
+
+     
+
+    const switchRender=(scrollMode)=>{ 
             switch(scrollMode)
             {
                 case 'scroll':    
                     return(
                         <ScrollView>
-                            <View style={[styles.containerHeader,this.props.headerStyle,{flex:this.props.catInHeader?0.1:0.07}]}> 
+                            <View style={[styles.containerHeader,props.headerStyle,{flex:props.catInHeader?0.1:0}]}> 
                             
                                 <Header 
-                                    iconName={this.props.iconName}
-                                    btnHandler={this.props.btnHandler}
-                                    catInHeader={this.props.catInHeader}
-                                    replaceHeader={this.props.replaceHeader}
-                                    headerComponent={this.props.headerComponent}
-                                    searchFun={this.props.searchFun}
-                                    singleItem={this.props.singleItem}
-                                    titleonheader={this.props.titleonheader}
-                                    notificationreplaceshare={this.props.notificationreplaceshare}
-                                    rightIconOnPress={this.props.rightIconOnPress}
-                                    catStyle={this.state.catStyle}
-                                    nosearchIcon={this.props.nosearchIcon}
-                                    noNotificationIcon={this.props.noNotificationIcon}
-                                    catOnpress={this.props.catOnpress}
-                                    catType={this.props.catType}
-                                    selectedCat={this.props.selectedCat}
-                                    titleWithImage={this.props.titleWithImage}
-                                    userIcon={this.props.userIcon} 
-                                    pinUnpinIcon={this.props.pinUnpinIcon}
-                                    pinIconName={this.props.pinIconName}
-                                    searchReplace={this.props.searchReplace}
-                                    showShareIcon={this.props.showShareIcon}
+                                    iconName={props.iconName}
+                                    btnHandler={props.btnHandler}
+                                    catInHeader={props.catInHeader}
+                                    replaceHeader={props.replaceHeader}
+                                    headerComponent={props.headerComponent}
+                                    searchFun={props.searchFun}
+                                    singleItem={props.singleItem}
+                                    titleonheader={props.titleonheader}
+                                    notificationreplaceshare={props.notificationreplaceshare}
+                                    rightIconOnPress={props.rightIconOnPress}
+                                     
+                                    nosearchIcon={props.nosearchIcon}
+                                    noNotificationIcon={props.noNotificationIcon}
+                                    catOnpress={props.catOnpress}
+                                    catType={props.catType}
+                                    selectedCat={props.selectedCat}
+                                    titleWithImage={props.titleWithImage}
+                                    userIcon={props.userIcon} 
+                                    pinUnpinIcon={props.pinUnpinIcon}
+                                    pinIconName={props.pinIconName}
+                                    searchReplace={props.searchReplace}
+                                    showShareIcon={props.showShareIcon}
+                                    pinUnpinFunction={props.pinUnpinFunction}
+                                    showTitle={props.showTitle}
                                 />  
                             </View>
-                            <View style={[styles.pageLayout]}>  
+                            <View style={[styles.pageLayout,{marginTop:props.catInHeader?0:15}]}>  
                                 <View style={styles.pageContent}>
-                                    {this.props.children}
+                                    {props.children}
                                 </View>
                             </View>
                         </ScrollView>
@@ -86,36 +89,38 @@ class PageStructure extends React.Component {
                         return (
                             
                             <>
-                            <View style={{flex:0.1,marginTop:-10,zIndex:100}}>
-                                <View style={[styles.containerHeader,this.props.headerStyle]} > 
+                            <View style={{flex:props.catInHeader?0.1:0,marginTop:-10,zIndex:100}}>
+                                <View style={[styles.containerHeader,props.headerStyle]} > 
                                         <Header 
-                                            iconName={this.props.iconName}
-                                            searchFun={this.props.searchFun}
-                                            singleItem={this.props.singleItem}
-                                            btnHandler={this.props.btnHandler}
-                                            catInHeader={this.props.catInHeader}
-                                            replaceHeader={this.props.replaceHeader}
-                                            headerComponent={this.props.headerComponent}
-                                            titleonheader={this.props.titleonheader}
-                                            rightIconOnPress={this.props.rightIconOnPress}
-                                            notificationreplaceshare={this.props.notificationreplaceshare} 
-                                            nosearchIcon={this.props.nosearchIcon}
-                                            noNotificationIcon={this.props.noNotificationIcon}
-                                            catOnpress={this.props.catOnpress}
-                                            catType={this.props.catType}
-                                            selectedCat={this.props.selectedCat}
-                                            titleWithImage={this.props.titleWithImage}
-                                            userIcon={this.props.userIcon}
-                                            pinUnpinIcon={this.props.pinUnpinIcon}
-                                            pinIconName={this.props.pinIconName}
-                                            searchReplace={this.props.searchReplace}
-                                            showShareIcon={this.props.showShareIcon}
+                                            iconName={props.iconName}
+                                            searchFun={props.searchFun}
+                                            singleItem={props.singleItem}
+                                            btnHandler={props.btnHandler}
+                                            catInHeader={props.catInHeader}
+                                            replaceHeader={props.replaceHeader}
+                                            headerComponent={props.headerComponent}
+                                            titleonheader={props.titleonheader}
+                                            rightIconOnPress={props.rightIconOnPress}
+                                            notificationreplaceshare={props.notificationreplaceshare} 
+                                            nosearchIcon={props.nosearchIcon}
+                                            noNotificationIcon={props.noNotificationIcon}
+                                            catOnpress={props.catOnpress}
+                                            catType={props.catType}
+                                            selectedCat={props.selectedCat}
+                                            titleWithImage={props.titleWithImage}
+                                            userIcon={props.userIcon}
+                                            pinUnpinIcon={props.pinUnpinIcon}
+                                            pinIconName={props.pinIconName}
+                                            searchReplace={props.searchReplace}
+                                            showShareIcon={props.showShareIcon}
+                                            pinUnpinFunction={props.pinUnpinFunction}
+                                            showTitle={props.showTitle}
                                         />  
                                 </View>
                             </View>
-                            <View style={[styles.pageLayout]}>  
+                            <View style={[styles.pageLayout,{marginTop:props.catInHeader?0:15}]}>  
                                 <View style={styles.pageContent}> 
-                                        {this.props.children} 
+                                        {props.children} 
                                 </View>
                             </View>
                         </>
@@ -124,13 +129,15 @@ class PageStructure extends React.Component {
             }
 
     }
-    render() {
-        return (
-            <>
-                {this.renderContent()}
-            </>
-            );
-    }
+     
+    return(
+        <View style={styles.container}>
+            <View style={styles.containerMain}> 
+                {switchRender(props.scrollMode)}  
+            </View>
+        </View> 
+    )
+     
 }
 
 
@@ -160,6 +167,7 @@ const styles = StyleSheet.create({
             flex:1,
             flexDirection: 'row',
             marginBottom:-5,  
+            
         },
             
             pageContent:

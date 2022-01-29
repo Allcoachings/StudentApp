@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,StatusBar,FlatList, Image,Platform, BackHandler,ScrollView,ActivityIndicator,Alert} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,StatusBar,FlatList, Image,Platform, BackHandler,TouchableWithoutFeedback,ScrollView,ActivityIndicator,Alert} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
@@ -15,10 +15,14 @@ import {fetch_testSeries_questions} from '../Utils/DataHelper/TestSeries'
 import Question from './Question';
 import moment from 'moment' 
 import Timer from './Timer';
-import {setStatusBarHidden} from '../Actions'
- 
-class TestSeriesView extends React.Component {
+import {setStatusBarHidden,setTestResultData} from '../Actions'
+import BackArrow from '../Utils/Icons/BackArrow'
+import SubmitModel from './SubmitModel';
+import { getResponseByTestSeriesIdAndUserId, saveTestResultIntermediate } from '../Utils/DataHelper/TestSeriesResponse';
+ import Toast from 'react-native-simple-toast';
 
+class TestSeriesView extends React.Component {
+    
     state={
         testSeries:this.props.route.params.item,
         time:this.props.route.params.item.timeDuration*60,
@@ -37,6 +41,7 @@ class TestSeriesView extends React.Component {
         showLoadMore: true,
         isNQuestionLoading: true,
         loadingFooter: false,
+        score:0
     }
 
     closeWarningModal = () => { this.setState({isWarningModalVisible: false})}
@@ -51,17 +56,17 @@ class TestSeriesView extends React.Component {
                     response.json().then(data=>
                     {
                      
-                        StatusBar.setHidden(true);
-                        this.props.setStatusBarHidden(true)
+                        // StatusBar.setHidden(true);
+                        // this.props.setStatusBarHidden(true)
                         // this.setState({questions:{...this.state.questions,...data},isFirstTimeLoading:false,loadingQuestions:false})
                         if(data.length>0)
                         {
-                            this.setState({questions:[...this.state.questions,...data],isQuestionLoading:false, showLoadMore: true, loadingFooter:false, isFirstTimeLoading:false,loadingQuestions:false});  
+                            this.setState({questions:[...this.state.questions,...data],isQuestionLoading:false,startCountDown:true, showLoadMore: true, loadingFooter:false, isFirstTimeLoading:false,loadingQuestions:false});  
                             
                         }
                         else
                         {
-                            this.setState({isQuestionLoading:false, showLoadMore: false, loadingFooter: false, isFirstTimeLoading:false,loadingQuestions:false}); 
+                            this.setState({isQuestionLoading:false, showLoadMore: false, loadingFooter: false, startCountDown:true,isFirstTimeLoading:false,loadingQuestions:false}); 
                         } 
                     })
             }
@@ -77,7 +82,54 @@ class TestSeriesView extends React.Component {
     }
 
     fetch=()=>{
-        fetch_testSeries_questions(this.state.testSeriesId,this.state.offset,dataLimit,this.questionCallback)
+         
+        if(this.props.route.params.testStatus==1)
+        {
+            getResponseByTestSeriesIdAndUserId(this.state.testSeriesId,this.props.userInfo.id,(response)=>{
+                if(response.status==200)
+                {
+                    response.json().then(data=>{    
+                         
+                         if(data)
+                         {
+                            
+                            this.setState({
+                                questions:data.userQuestionResponses,
+                                correctQues:data.correctQues,
+                                wrongQues:data.wrongQues, 
+                                attempted:this.state.testSeries.questionCount-(data.skippedQues),
+                                score:data.score, 
+                                timeLeft:data.timeLeft,
+                                isTestCompleted:data.status==2,
+                                briefId:data.id,
+                                isQuestionLoading:false, 
+                                showLoadMore: false, 
+                                loadingFooter:false, 
+                                isFirstTimeLoading:false,
+                                startCountDown:true,
+                                time:data.timeLeft,
+                                loadingQuestions:false});  
+                         }else
+                         {
+                            //  
+                            fetch_testSeries_questions(this.state.testSeriesId,this.state.offset,dataLimit,this.questionCallback)
+
+                         }
+                        
+    
+                    })
+                }else
+                {
+                    fetch_testSeries_questions(this.state.testSeriesId,this.state.offset,dataLimit,this.questionCallback)
+                   
+                }
+            })
+        }else
+        {
+            fetch_testSeries_questions(this.state.testSeriesId,this.state.offset,dataLimit,this.questionCallback)
+        }
+        this.setState({briefId:this.props.route.params.briefId})
+        
     }
 
     renderFooter = () => {
@@ -86,10 +138,26 @@ class TestSeriesView extends React.Component {
           if (this.state.loadingFooter) {
             return <CustomActivtiyIndicator />
           } else {
-            return null;
+              if(!this.state.showLoadMore&&!this.props.route.params?.viewMode)
+              {
+                  return (
+                  <TouchableWithoutFeedback onPress={this.openModalSubmit}>
+                    <View style={{padding: 10,backgroundColor:theme.accentColor,alignItems: 'center',borderRadius:10}}>
+                        <Text style={{color:theme.primaryColor,fontFamily: 'Raleway_600SemiBold',fontSize:15    }}>Submit</Text>
+                    </View>
+                  </TouchableWithoutFeedback>)
+              }else
+              {
+                return (<TouchableWithoutFeedback onPress={()=>{this.props.navigation.navigate('ResultAnalysis')}}>
+                    <View style={{padding: 10,backgroundColor:theme.accentColor,alignItems: 'center',borderRadius:10}}>
+                        <Text style={{color:theme.primaryColor,fontFamily: 'Raleway_600SemiBold',fontSize:15    }}>View Result</Text>
+                    </View>
+                </TouchableWithoutFeedback>)
+              }
+            
           }
         } catch (error) {
-          console.log(error);
+          // console.log(error);
         }
     };
     // backHandlerListener  =()=> { 
@@ -107,17 +175,55 @@ class TestSeriesView extends React.Component {
     // }
     showAlert=(okFun)=>
     {
-        // Alert.alert("Warning!","Are you sure to quit quiz",[ 
-        //     {
-        //         text: "Cancel",
-        //         onPress: () => console.log("Cancel Pressed"),
-        //         style: "cancel"
-        //       },
-        //       { text: "OK", onPress: () =>{okFun();  this.props.navigation.goBack() }},
-        // ])
-        return(
-            <WarningModal />
-        )
+         // console.log("backpressed")
+        if(this.props.route.params?.viewMode)
+        {
+            if(okFun)
+            {
+                okFun()
+            };  
+            this.props.navigation.navigate('ResultAnalysis')
+            return null
+        }else
+        {
+
+            this.setState({isWarningModalVisible:true})
+            return
+        }
+    }
+
+
+    saveResponseOnBackPress=()=>
+    {
+        let data  ={
+            studentId:this.props.userInfo.id,
+            userQuestionResponses:this.state.questions,     
+            correctQues:this.state.correctQues,
+            wrongQues:this.state.wrongQues,
+            skippedQues:this.state.testSeries.questionCount-(this.state.attempted),
+            attempted:this.state.attempted,
+            score:this.state.score,
+            testSeriesId:this.state.testSeriesId,
+            timeLeft:this.state.timeLeft,
+            status:1,
+            id:this.state.briefId
+        }
+     
+        saveTestResultIntermediate(data,(response)=>
+        {
+                  
+            if(response.status==201)
+            {
+                if(this.props.route.params.changeTestStatus){
+                    this.props.route.params.changeTestStatus(1)
+                }
+                this.setState({savingResultDone:true,isWarningModalVisible:false})
+                this.props.navigation.goBack() 
+            } else
+            {
+                Toast.show('Something Went Wrong. Unable To save Test Progress')
+            }                      
+        })
     }
 
     
@@ -126,8 +232,8 @@ class TestSeriesView extends React.Component {
         timeUpAction=(timeUpObj)=>
         {
             this.setState(timeUpObj);
-            StatusBar.setHidden(false);
-            this.props.setStatusBarHidden(false)
+            // StatusBar.setHidden(false);
+            // this.props.setStatusBarHidden(false)
         }
         updateTimeInParent=(time)=>
         {
@@ -135,44 +241,47 @@ class TestSeriesView extends React.Component {
         }
     header=()=>{
         return(
-            CardView(
-                <View style={styles.headerSection}>
+            // CardView( 
+                <View style={{width: '100%', paddingVertical: 5,marginTop:10,height: '100%'}}>
                     <View style={styles.headerRowSection}>
-                        <View style={{marginLeft:10}}>
-                            <Feather name="arrow-left" size={20} onPress={()=>this.setState({isWarningModalVisible: true})}/>
-                        </View> 
+                        <TouchableWithoutFeedback onPress={()=>(!this.props.route.params?.viewMode)?this.setState({isWarningModalVisible: true}):this.props.navigation.navigate('ResultAnalysis')}>
+                            <View style={{marginLeft:10,height:24,alignItems: 'center'}}> 
+                                <BackArrow height={24} width={24}/>
+                            </View> 
+                        </TouchableWithoutFeedback>
                         <View style={styles.quizNameView}>
                             <Text numberOfLines={1} style={styles.quizName}>{this.state.testSeries.title}</Text>
                         </View>
-                        <View style={styles.pauseBtnView}>
-                            {/* <Feather name="pause-circle" size={13} color={theme.greyColor}/> */}
-                                {/* <Text style={styles.pauseBtnText}> {this.formatTimer(this.state.time)}</Text> */}
-                                {/* <Timer time={this.state.time} showAlert={(okFun)=>this.showAlert(okFun)}  updateTimeInParent={this.updateTimeInParent} refresh={this.refreshQuiz} navigation={this.props.navigation} timeUpAction={this.timeUpAction}/> */}
+                        <View style={styles.pauseBtnView}> 
+                                {(this.state.startCountDown&&!this.props.route.params?.viewMode)?(
+                                    <Timer 
+                                        handleSubmitTestButtonClick={this.handleSubmitTestButtonClick} 
+                                        time={this.state.time}  
+                                        showAlert={(okFun)=>this.showAlert(okFun)}  
+                                        updateTimeInParent={this.updateTimeInParent} 
+                                        refresh={this.refreshQuiz} 
+                                        navigation={this.props.navigation} 
+                                        timeUpAction={this.timeUpAction}
+                                        correctQues={this.state.correctQues}
+                                        incorrectQues={this.state.wrongQues}
+                                        isPractice={this.state.testSeries.practice}
+                                        unAttemptedQues={this.state.testSeries.questionCount-(this.state.attempted)}
+                                        setTimeLeft={(timeLeft)=>this.setState({timeLeft})}
+                                    />
+                                ):(null)} 
                         </View>
-                        <TouchableOpacity style={styles.menuIcon} onPress={()=>this.openModal()}>
-                            <Feather name="grid" size={25} color={theme.greyColor}/>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{marginLeft:5,marginRight:5}} >
-                            <Feather name="more-vertical" size={25} color={theme.greyColor}/>
-                        </TouchableOpacity>
-                    </View>
-                    {/* <View style={styles.headerRowSection2}>
-                        <View style={styles.sectionView}>
-                            <Text style={styles.sectionText}>SECTIONS</Text>
+                        <View style={{flexDirection:'row',alignItems: 'center',marginLeft:5}}>
+                            <TouchableOpacity style={styles.menuIcon} onPress={()=>this.openModal()}>
+                                <Feather name="grid" size={25} color={theme.greyColor}/>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{marginLeft:5,marginRight:5}} >
+                                <Feather name="more-vertical" size={25} color={theme.greyColor}/>
+                            </TouchableOpacity>
                         </View>
-                        <View style={styles.optView}>
-                            <Text style={styles.optText}>English Language</Text>
-                        </View>
-                        <View style={styles.optView}>
-                            <Text style={styles.optText}>Reasoning</Text>
-                        </View>
-                        <View style={styles.optView}>
-                            <Text style={styles.optText}>Quantitative</Text>
-                        </View>
-                    </View> */}
+                    </View> 
                 </View>
-                ,{width: '100%', padding: 4},3
-            )
+            //     ,{width: '100%', paddingVertical: 10,height: '100%',},3
+            // )
         )
     }
 
@@ -190,7 +299,7 @@ class TestSeriesView extends React.Component {
         
     //     if(this.state.backhandler)
     //     {
-    //         console.log("remove back listener",this.state.backhandler)
+    //         // console.log("remove back listener",this.state.backhandler)
     //         this.state.backhandler.remove();
     //     }
     // }
@@ -199,6 +308,12 @@ class TestSeriesView extends React.Component {
       }
       openModal = () => {
         this.setState({ isModalVisible: true });
+      }
+      closeModalSubmit = () => {
+        this.setState({ isModalVisibleSubmit: false});
+      }
+      openModalSubmit = () => {
+        this.setState({ isModalVisibleSubmit: true });
       }
     // componentWillUnmount() { 
             
@@ -244,30 +359,36 @@ class TestSeriesView extends React.Component {
 
       setQuestionAttemptStatus=(quesIndex,status,userResponse) => 
       {
-             let questions = this.state.questions;  
+             let questions = this.state.questions;   
              let  correctQues  = this.state.correctQues;
              let wrongQues = this.state.wrongQues;
              let attempted = this.state.attempted;
-
+             let correctMarks  = questions[quesIndex].question.correctMarks
+             let wrongMarks = questions[quesIndex].question.wrongMarks
+             let user_score = this.state.score
              if(!questions[quesIndex]['status']||questions[quesIndex]['status']!=status)
              {
 
 
                 if(questions[quesIndex]['status']=="wrong" &&  status=="correct")
                 {
+                    user_score = user_score + wrongMarks;
                     wrongQues--;
                 }   
                 if(questions[quesIndex]['status']=="correct" &&  status=="wrong")
                 {
+                    user_score = user_score - correctMarks;
                     correctQues--;
                 }
 
 
                 if(status=="correct")
                 {
+                   user_score = user_score + correctMarks;
                    correctQues++; 
                 }else if(status=="wrong")
                 {
+                    user_score = user_score - wrongMarks;
                    wrongQues++;
                 } 
              }
@@ -280,7 +401,46 @@ class TestSeriesView extends React.Component {
              }
              questions[quesIndex]['status'] = status;
              questions[quesIndex]['userResponse'] = userResponse;
-             this.setState({questions,correctQues,wrongQues,attempted})
+            //  console.log("user_score ",user_score ," state value ",this.state.score," wrongMarks ",wrongMarks," correctMarks ",correctMarks, " question ",questions[quesIndex]);
+             this.setState({questions,correctQues,wrongQues,attempted,score:user_score})
+      }
+      clearQuestionAttemptStatus=(quesIndex,status) => 
+      {
+             let questions = this.state.questions;  
+             let correctQues  = this.state.correctQues;
+             let wrongQues = this.state.wrongQues;
+             let attempted = this.state.attempted;
+             let correctMarks  = questions[quesIndex].question.correctMarks
+             let wrongMarks = questions[quesIndex].question.wrongMarks
+             let user_score = this.state.score
+             console.log("before ",attempted)
+             if(!questions[quesIndex]['status']||questions[quesIndex]['status']!=status)
+             {
+
+                if(questions[quesIndex]['status']=="wrong" )
+                {
+                    user_score = user_score + wrongMarks;
+                    wrongQues--;
+                }   
+                if(questions[quesIndex]['status']=="correct" )
+                {
+                    user_score = user_score - correctMarks;
+                    correctQues--;
+                }
+
+                
+             }
+            
+             
+            //  if(questions[quesIndex]['isAttempted'])
+            //  {
+                attempted--;
+                questions[quesIndex]['isAttempted']=false;
+            //  }
+            console.log("after ",attempted)
+             questions[quesIndex]['status'] = status;
+             questions[quesIndex]['userResponse'] = null;
+             this.setState({questions,correctQues,wrongQues,attempted,score:user_score})
       }
       bookmarkQuestion=(quesIndex,status)=>
       {
@@ -288,19 +448,65 @@ class TestSeriesView extends React.Component {
             questions[quesIndex]['bookmarked']=status;
             this.setState({questions})
       }
+      handleSubmitTestButtonClick=()=>
+      {
+         let data  =
+         {
+             testData:{
+                 ques:this.state.questions,
+                series:this.state.testSeries,
+                brief:
+                {
+                    id:this.state.briefId,
+                    correctQues:this.state.correctQues,
+                    wrongQues:this.state.wrongQues,
+                    Unattempted:this.state.testSeries.questionCount-(this.state.attempted),
+                    attempted:this.state.attempted,
+                    score:this.state.score,
+                    testSeriesId:this.state.testSeriesId,
+                    timeLeft:this.state.timeLeft,
+                    item:this.props.route.params.item,
+                    
+                }
+            },
+            testFuncs:
+            {
+                changeTestStatus:this.props.route.params.changeTestStatus
+            }
+        }
+         this.props.setTestResultData(data);
+         this.props.navigation.navigate("ResultAnalysis");
+         this.closeModalSubmit()
+        //  this.props.closeModal() 
+        // StatusBar.setHidden(false);
+        //  this.props.setStatusBarHidden(false)   
+         window.clearInterval(this.state.intervalRef)
+      }
+      scrollToQuestion=(index)=>
+      {
+            if(this.flatlistRef)
+            {
+                this.flatlistRef.scrollTo(index)
+            }
+            this.closeModal()
+      }
     render(){
         
         this.updateComponent()  
+         
+        const mode = this.props.route.params?.viewMode||this.state.testSeries.practice
+
         return (
             <> 
             <PageStructure 
                 noBottomTab={true}
-                statusBarHidden={true}
+                // statusBarHidden={true}
                 replaceBottomTab={true}
                 singleItem={()=>{}}
                 headerComponent={this.header()}
                 replaceHeader={true}
                 bottomComponent={this.renderBottom()}
+                navigation={this.props.navigation}
                 bottomComponentStyle={{paddingLeft:0,paddingRight:0,paddingBottom:0}}
             >
                 
@@ -308,10 +514,26 @@ class TestSeriesView extends React.Component {
                     <CustomActivtiyIndicator mode="questionSkimmer"/>
                 ):(
                     <>
+                 
+
                     <View style={styles.container}> 
                         <FlatList 
+                            ref={ref=>this.flatlistRef}
                             data={Object.values(this.state.questions)}  //this.state.testSeries.isPractice
-                            renderItem={({item,index}) =><Question item={item.question} index={index} isPractice={e} bookmarkQuestion={this.bookmarkQuestion} setQuestionAttemptStatus={this.setQuestionAttemptStatus}/>}
+                            renderItem={({item,index}) =>(
+                                <Question 
+                                item={item.question} 
+                                status={item.status}  
+                                isTestCompleted={this.state.isTestCompleted} 
+                                userResponse={item.userResponse} 
+                                index={index} 
+                                testSeriesId={this.state.testSeries.id}
+                                isPractice={mode} 
+                                clearQuestionAttemptStatus={this.clearQuestionAttemptStatus} 
+                                bookmarkQuestion={this.bookmarkQuestion} 
+                                setQuestionAttemptStatus={this.setQuestionAttemptStatus}
+                                />
+                            )}
                             keyExtractor={(item)=>item.id} 
                             horizontal={false}
                             showsHorizontalScrollIndicator={false}
@@ -340,14 +562,19 @@ class TestSeriesView extends React.Component {
                             attempted={this.state.attempted}
                             isModalVisible={this.state.isModalVisible} 
                             // isPractice={true}
-                            isPractice={this.state.testSeries.isPractice}
+                            briefId={this.state.briefId}
+                            isPractice={this.state.testSeries.practice}
                             closeModal={this.closeModal}
                             testSeriesDetails={this.state.testSeries}
                             testSeriesId={this.state.testSeriesId}
                             timeOver ={this.state.timeOver}
                             timeLeft ={this.state.timeLeft}
                             intervalRef={this.state.interval}
-                            setStatusBarHidden={setStatusBarHidden}
+                            // setStatusBarHidden={setStatusBarHidden}
+                            item={this.props.route.params.item}
+                            scrollToQuestion={this.scrollToQuestion}
+                            viewMode={this.props.route.params?.viewMode}
+                            handleSubmitTestButtonClick={this.handleSubmitTestButtonClick}
                         />
                     ) : (null)}
                     {this.state.isWarningModalVisible ? (
@@ -355,6 +582,23 @@ class TestSeriesView extends React.Component {
                             isModalVisible={this.state.isWarningModalVisible}
                             openModal={this.openWarningModal}
                             closeModal={this.closeWarningModal}
+                            yesFun={this.saveResponseOnBackPress}
+                            correctQues={this.state.correctQues}
+                            incorrectQues={this.state.wrongQues}
+                            isPractice={this.state.testSeries.practice}
+                            unAttemptedQues={this.state.testSeries.questionCount-(this.state.attempted)}
+                        />
+                    ) : (null)}
+                    {this.state.isModalVisibleSubmit ? (
+                        <SubmitModel
+                            isModalVisible={this.state.isModalVisibleSubmit}
+                            openModal={this.openModalSubmit}
+                            closeModal={this.closeModalSubmit}
+                            yesFun={this.handleSubmitTestButtonClick}
+                            correctQues={this.state.correctQues}
+                            incorrectQues={this.state.wrongQues}
+                            isPractice={this.state.testSeries.practice}
+                            unAttemptedQues={this.state.testSeries.questionCount-(this.state.attempted)}
                         />
                     ) : (null)}
               </>
@@ -374,19 +618,19 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         paddingBottom:10,
-        marginTop:30
+        marginTop:5
     },
         headerSection:
         {
             flexDirection: 'column',
-            paddingTop:10, 
+            paddingTop:10
         },
             headerRowSection:
             {
                 flex: 0.1,
                 width:'100%',
                 flexDirection: 'row',
-               alignItems: 'center',
+                alignItems: 'center',
             //    justifyContent: 'space-between',
             },
                 timer:
@@ -404,12 +648,12 @@ const styles = StyleSheet.create({
                 quizNameView:
                 {
                     marginRight: 5,
-                    marginLeft: 5,
+                    marginLeft: 10,
                 },
                     quizName:
                     {
-                      fontSize: 14 ,
-                      fontWeight: '700' 
+                      fontSize: 20 ,
+                      fontWeight: 'bold' 
                     },
                 pauseBtnView:
                 { 
@@ -603,5 +847,11 @@ const styles = StyleSheet.create({
                 }
 })
 
-
-export default connect(null,{setStatusBarHidden})( TestSeriesView);
+const  mapStateToProps = (state)=>
+{
+    return {
+        
+        userInfo: state.user.userInfo
+    }
+}
+export default connect(mapStateToProps,{setStatusBarHidden,setTestResultData})( TestSeriesView);

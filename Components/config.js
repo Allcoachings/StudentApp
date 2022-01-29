@@ -36,6 +36,7 @@ export const theme={
         skippedColor:'#cbc9ca'
 
     },
+
     transparentColor:"#FFFFFF00"
 }
 
@@ -50,10 +51,12 @@ export const paytmConfig={
 //online serverBaseUrl
 // export const serverBaseUrl="http://3.110.215.40:8090/"; 
 //local server base url
-export const serverBaseUrl="http://3.110.215.40:8090/"; 
+export const serverBaseUrl="http://192.168.83.84:8080/"; 
+export const allcoachingAdminUrl="http://3.110.215.40:3000/"; 
 export const  shareTextInstitute="Text here";
 export const  shareTextFeed="Text here";
 export const  shareTextResult="Text here";
+ 
 export const shareBaseUrl="https://allcoaching.com/"
 export const serverApiUrl=serverBaseUrl+"api/v1/" 
 export const videoDefaultThumbnail="https://i.stack.imgur.com/PtbGQ.png";
@@ -94,6 +97,23 @@ export const Assets = {
         top: require('../assets/top.png'),
         otherCategory: require('../assets/category.jpeg'),
         selectCategory: require('../assets/select.jpg')
+    },
+    header:
+    {
+        back: require('../assets/back.png'),
+        backWhite: require('../assets/backArrowWhite.png'),
+        reply:require('../assets/reply.png'),
+        search: require('../assets/search.png')
+    },
+    instituteView:
+    {
+        ringing: require('../assets/ringing.png'),
+        bell: require('../assets/bell.png')
+    },
+    video:
+    {
+        chat: require('../assets/chatWhite.png'),
+        settings: require('../assets/settingWhite.png')
     }
 }
 

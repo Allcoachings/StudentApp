@@ -65,6 +65,10 @@ class Auth extends React.Component {
     {
         this.setState({ mobile: number,isModalVisible:true})   
     }
+    closeInfoModal=()=>
+    {
+        this.setState({ isModalVisible:false})   
+    }
     render() { 
        
         return (
@@ -118,8 +122,8 @@ class Auth extends React.Component {
                         </View>
                     )} 
                     </View>
-                    <OtpVerification isOtpModal = {this.state.isOtpModal} navigation={this.props.navigation} closeModal = {this.closeModalOTP} openInfoModal={this.openInfoModal} changeMode={this.props.route.params.changeMode}/>
-                    <InfoModal isModalVisible={this.state.isModalVisible} mobileNumber={this.state.mobile} navigation={this.props.navigation}/>
+                    <OtpVerification isOtpModal = {this.state.isOtpModal} navigation={this.props.navigation} closeModal = {this.closeModalOTP} openInfoModal={this.openInfoModal} />
+                    <InfoModal closeModal={this.closeInfoModal} isModalVisible={this.state.isModalVisible} mobileNumber={this.state.mobile} openModalOtp={this.openModalOTP} navigation={this.props.navigation}/>
                     </>
             // </ScrollView>
         );

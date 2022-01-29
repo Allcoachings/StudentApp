@@ -67,7 +67,7 @@ class Leads extends React.Component {
         }
         else
         {
-            console.log("something went wrong")
+            // console.log("something went wrong")
         }
     }
 
@@ -78,6 +78,7 @@ class Leads extends React.Component {
                 btnHandler={() => {this.props.navigation.goBack()}}
                 titleonheader={"Leads"} 
                 nosearchIcon={true}
+                navigation={this.props.navigation}
                 noNotificationIcon={true}
             >
                 <ScrollView>

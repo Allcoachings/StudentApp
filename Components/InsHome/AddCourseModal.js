@@ -16,7 +16,7 @@ class AddCourseModal extends Component {
 
   handleAddCourseCallback=(response)=> 
   {
-      console.log(response.status)
+      // console.log(response.status)
       if(response.status==201)
       {
             Toast.show('Course Added Successfully.');

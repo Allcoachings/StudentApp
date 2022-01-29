@@ -68,7 +68,7 @@ import { theme } from '../config';
 
     _onNavigationStateChange = (webViewState)=>
     {
-      console.log(webViewState.url)     
+      // console.log(webViewState.url)     
     }
 
     renderPageHeader =(mode)=>
@@ -80,7 +80,7 @@ import { theme } from '../config';
                 return(
                     <PageStructure
 
-                    iconName={"chevron-left"}
+                    iconName={"arrow-left"}
                     btnHandler={() => {this.props.navigation.goBack()}}
                     navigation={this.props.navigation}
                     >
@@ -118,21 +118,22 @@ import { theme } from '../config';
     return (
         
         <WebView  
-              ref="webview"
-              source={{ uri:this.state.loadUrl }}
-              renderLoading={this.renderLoadingView} 
-              startInLoadingState={true} 
-              injectedJavaScript="window.ReactNativeWebView.postMessage(window.location.origin+'#'+document.title)"
-              onMessage={this.handleMessage} 
-              onNavigationStateChange={this._onNavigationStateChange.bind(this)}
-              javaScriptEnabled = {true}
+            ref="webview"
+            source={{ uri:this.state.loadUrl }}
+            renderLoading={this.renderLoadingView} 
+            startInLoadingState={true} 
+            injectedJavaScript="window.ReactNativeWebView.postMessage(window.location.origin+'#'+document.title)"
+            onMessage={this.handleMessage} 
+            onNavigationStateChange={this._onNavigationStateChange.bind(this)}
+            javaScriptEnabled = {true}
+
         /> 
     );
 
   }
 
   updateComponent(){
-    // console.log(this.state.discussion_id, this.props.route.params.id)
+    // // console.log(this.state.discussion_id, this.props.route.params.id)
     if(this.state.loadUrl!=this.props.route.params.link)
     {
         this.setState({loadUrl:this.props.route.params.link,mode:this.props.route.params.mode})
@@ -143,7 +144,19 @@ import { theme } from '../config';
     {
         this.updateComponent();
         return (
-            this.renderPageHeader(this.state.mode)
+            <PageStructure
+
+            
+            btnHandler={() => {this.props.navigation.goBack()}}
+            navigation={this.props.navigation}
+            titleonheader={"All Coaching"}
+            titleWithImage={true}
+            noNotificationIcon={true}
+            nosearchIcon={true}
+            >
+                {this.renderWebView()}
+            
+            </PageStructure>
         )
     }
 }

@@ -28,6 +28,7 @@ public class Notification {
     private  String notificationFrom;
     private long senderId;
     private String redirectLink;
-   private  String type;
+    private  String type;
+    private String notificationImage;
 
 }

@@ -40,7 +40,7 @@ class FeedText extends Component {
   }
 
     likeFeed=(feedId)=>{
-        console.log("like feed")
+        // console.log("like feed")
         this.setState({canUserLike: !this.state.canUserLike},()=>{
             like_feed(feedId,this.props.type,this.props.type==1?(this.props.institute.details.id):(this.props.userInfo.id),this.likeFeedCallBack)
         })
@@ -53,7 +53,7 @@ class FeedText extends Component {
             this.setState({likes: parseInt(this.state.likes)+1})
         }
         else{
-            console.log("failed")
+            // console.log("failed")
         }
     }
     onRef = icon => {
@@ -70,7 +70,7 @@ editFeedPressHandler=()=>this.props.mode=="userProfile"||this.props.mode=="insPr
             this.setState({likes: this.state.likes-1})
         }
         else{
-            console.log("failed")
+            // console.log("failed")
         }
     }
 
@@ -88,13 +88,13 @@ editFeedPressHandler=()=>this.props.mode=="userProfile"||this.props.mode=="insPr
         // CardView(
             <View style={{flexDirection: 'column', padding: 5}}>
                 <View style={styles.boxView}>
-                    <FeedHeader feed={feed} editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime} mode={this.props.mode}/>
+                    <FeedHeader actions={this.props.actions} navigation={this.props.navigation} feed={feed} editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime} mode={this.props.mode}/>
                     <View onPress={()=>this.props.navigation.navigate("RenderSingleFeed",{id: feed.feed.id})} style={styles.innerBoxView}> 
                         <Text style={{fontFamily:'Raleway_400Regular', marginVertical: 10,fontSize:17}}>{feed.feed.description}</Text>
                         <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation} changeCanUserLike={this.changeCanUserLike} unLikeFeed={this.unLikeFeed} likes={this.state.likes} comments={feed.feed.commentCount} mode={this.props.mode}/>
                     </View>
                 </View>
-                <View style={{borderTopWidth: 0.8, borderColor: theme.labelOrInactiveColor, marginVertical: 10, width: '100%'}}/>
+                <View style={{borderTopWidth: 4, borderColor: theme.labelOrInactiveColor, marginVertical: 10, width: '100%'}}/>
             </View>
             // ,{width: '100%', padding: 6, marginBottom: 10}
         // )

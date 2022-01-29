@@ -27,7 +27,9 @@ public class InsTestSeriesUserResponseBrief {
     private String accuracy;
     private String percentile;
     private String timeTaken;
+    private String timeLeft;
     private long rank;
+    private int status;//completed==2,paused==1
 
     @OneToMany(targetEntity = InsTestSeriesUserQuestionResponses.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="brief_fk",referencedColumnName = "id")
@@ -41,6 +43,7 @@ public class InsTestSeriesUserResponseBrief {
         if (!(o instanceof InsTestSeriesQuestions )) return false;
         return id ==(((InsTestSeriesQuestions) o).getId());
     }
+
     @Override
     public int hashCode() {
         return getClass().hashCode();

@@ -47,10 +47,10 @@ public class InsReviewController {
 
     @CrossOrigin(origins = "*")
     @PutMapping("/add/")
-    public ResponseEntity<Object> addReview(@RequestBody InsReview insReview)
+    public @ResponseBody InsReview addReview(@RequestBody InsReview insReview)
     {
-        int rowCount= insReviewService.addReview(insReview);
-        return ResponseEntity.ok().build();
+        return  insReviewService.addReview(insReview);
+
     }
 
     @CrossOrigin(origins = "*")

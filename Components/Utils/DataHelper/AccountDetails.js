@@ -2,7 +2,7 @@ import {serverApiUrl} from '../../config'
 
 export const fetchAccountDetails=(insId, callback)=>
 {
-        console.log(insId)
+        // console.log(insId)
         let headers = new Headers(); 
         headers.append('Content-Type', 'application/json'); 
 
@@ -22,7 +22,7 @@ export const fetchAccountDetails=(insId, callback)=>
 
 export const updateAccountDetails=(accountHolderName, accountNumber, bankName, ifsc, insId, callback)=>
 {
-        console.log(insId)
+        // console.log(insId)
         let headers = new Headers(); 
         headers.append('Content-Type', 'application/json'); 
 

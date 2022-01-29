@@ -1,11 +1,11 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions, findNodeHandle,UIManager, Modal} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions, findNodeHandle,UIManager, Modal, TouchableWithoutFeedback} from 'react-native';
 import { theme, dataLimit, serverBaseUrl, downloadIcon, numFormatter, imageProvider } from '../config';
 import { EvilIcons, Feather, MaterialIcons } from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import { Picker } from 'native-base';
-import {downloadFile} from '../Utils/DownloadFile'
+import {downloadFile, pauseDownload} from '../Utils/DownloadFile'
 import moment from 'moment';
 import Toast from 'react-native-simple-toast';
 import { updatePlaylist } from '../Utils/DataHelper/Course';
@@ -15,6 +15,7 @@ import { setDownloadingItem,setDownloadingItemProgress,removeDownloadingItem } f
 import Arrow_down_circle_black from '../Utils/Icons/Arrow_down_circle_black';
 import Lock from '../Utils/Icons/Lock';
 import NotEnrolledModal from './NotEnrolledModal'
+
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
  
@@ -26,16 +27,27 @@ class RenderVideo extends React.Component {
         savingItem:this.props.savingItem?this.props.savingItem:false,
         downloadProgress:0
     }
-
+    pauseDownloadRef= React.createRef()
     download=(item, type)=>{
         Toast.show('PLease Wait...')
-        this.setState({savingItem: true});
+       
        
         downloadFile(item,item.videoLocation, this.props.userInfo.id,type,this.downloadCallback,this.downloadProgessCallback,(offlineItem)=>this.setDownloadingItemInRedux(offlineItem,item.videoLocation))
     }
     setDownloadingItemInRedux=(offlineItem,videoLocation)=>
     {
+         
+         this.setState({downloadRef:offlineItem.downloadRef,savingItem: true})
+         
         this.props.setDownloadingItem({...offlineItem,url:videoLocation,type:'video'},0);
+    }
+    cancelDownload=()=>
+    {
+        this.pauseDownloadRef.current=true
+        pauseDownload({downloadRef:this.state.downloadRef},()=>{
+            removeDownloadingItem(this.props.videoLocation)
+            this.pauseDownloadRef.current=false
+        })
     }
     downloadProgessCallback=(progress,url)=>
     {
@@ -47,6 +59,7 @@ class RenderVideo extends React.Component {
             this.setState({downloadProgress:progress})
     }
     downloadCallback=(response)=>{
+        // console.log(response)
         if(response.status=="success")
         {
             Toast.show('Video Downloaded successfully. Please Check in your Downloads Section.')
@@ -54,7 +67,7 @@ class RenderVideo extends React.Component {
         else if(response.status=="already")
         {
             Toast.show('File saved');
-        }else
+        }else if(!this.pauseDownloadRef?.current)
         {
             Toast.show('Something Went Wrong. Please Try Again Later')
         }
@@ -118,7 +131,7 @@ class RenderVideo extends React.Component {
 
     setSelectedPlaylist=(selectedPlaylist)=>
     {
-        console.log("setSelectedPlaylist", selectedPlaylist)
+        // console.log("setSelectedPlaylist", selectedPlaylist)
         this.setState({showModal: false, selectedPlaylist: selectedPlaylist},()=>updatePlaylist("video",selectedPlaylist,this.props.item.id,this.updateCallback))
     }
 
@@ -130,15 +143,11 @@ class RenderVideo extends React.Component {
         }
         else
         {
-            console.log("error", response.status)
+            // console.log("error", response.status)
         }
     }
 
-    nav=()=>{
-        return(
-            <NotEnrolledModal />
-        )
-    }
+    
 
     render(){
        
@@ -146,19 +155,20 @@ class RenderVideo extends React.Component {
             <View>
                 <View style={styles.videoContainer}>
                     <TouchableOpacity onPress={()=>{
-            
-                        this.props.mode=="student"?(this.props.studentEnrolled?(
+                        // console.log(this.props.item)
+                        this.props.mode=="student"?(this.props.studentEnrolled||this.props.item.demo?(
                             <>
-                            {this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation,videoTitle:this.props.item.name,postingTime:this.props.item.date,item:this.props.item})}
+                            {this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation,videoTitle:this.props.item.name,postingTime:this.props.item.date,item:this.props.item,studentName:this.props.userInfo.email,studentNumber:this.props.userInfo.mobileNumber})}
                             {this.props.addToHistory("video", this.props.item.id)}
                             </>
                         ):(
                             // Toast.show('You Have Not Enrolled For This Course.')
-                            this.nav()
-                        )):(this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation,videoTitle:this.props.item.name,postingTime:this.props.item.date,item:this.props.item}))}
+                            this.props.openPurchaseCourseModal?this.props.openPurchaseCourseModal():null
+                            
+                        )):(this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation,videoTitle:this.props.item.name,postingTime:this.props.item.date,item:this.props.item, studentName: this.props.insName, studentNumber: this.props.insNumber}))}
                     } >
                         <Image source={{uri:imageProvider(this.props.item.videoThumb)}} style={styles.videoImage}/>
-                        {this.props.mode!="offline"?(
+                        {this.props.mode!="offline"&&!this.props.studentEnrolled&&!this.props.item.demo?(
                             <View style={{position: 'absolute',height:30,width:30,backgroundColor:theme.secondaryColor,borderRadius:15,right:5,top:5}}>
                                 <Lock height={20} width={20}/>
                             </View>
@@ -170,25 +180,29 @@ class RenderVideo extends React.Component {
                             <Text numberOfLines={2} style={styles.videoText}>{this.props.item.name}</Text>
                         </View>
                         <View>
-                            <Text numberOfLines={2} style={styles.videoText}>{this.props.item.description}</Text>
+                            {/* <Text numberOfLines={2} style={styles.videoText}>{this.props.item.description}</Text> */}
                         </View>
-                        <View style={{flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center'}}>
+                        <View style={{flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center',marginTop:'auto'}}>
                             <Text>{numFormatter(this.props.item.views)+" views • "+moment(this.props.item.date).fromNow()}</Text>
                             {this.props.downloadMode?(
                                 <View style={{flexDirection: 'column',    marginRight:10}}>                  
                                     {this.state.savingItem?(
-                                        <View style={{width:30,height:30,marginBottom: 8,alignItems: 'center'}}>
-                                            <CircularProgress
-                                            value={this.state.downloadProgress}
-                                            radius={17}
-                                            inActiveStrokeColor={theme.greyColor}
-                                            inActiveStrokeOpacity={0.2}
-                                            inActiveStrokeWidth={5}
-                                            activeStrokeWidth={5}
-                                            textColor={'#000'}
-                                            valueSuffix={'%'}
-                                            />
-                                        </View>
+                                        <TouchableWithoutFeedback
+                                            onPress={this.cancelDownload}
+                                        >
+                                            <View style={{width:30,height:30,marginBottom: 8,alignItems: 'center'}}>
+                                                <CircularProgress
+                                                value={this.state.downloadProgress}
+                                                radius={17}
+                                                inActiveStrokeColor={theme.greyColor}
+                                                inActiveStrokeOpacity={0.2}
+                                                inActiveStrokeWidth={5}
+                                                activeStrokeWidth={5}
+                                                textColor={'#000'}
+                                                valueSuffix={'%'}
+                                                />
+                                            </View>
+                                        </TouchableWithoutFeedback>
 
                                     ):(
                                             this.state.downloadProgress==100?(
@@ -197,12 +211,12 @@ class RenderVideo extends React.Component {
                                             ):(
                                                 
                                                     // <TouchableOpacity onPress={()=>this.props.studentEnrolled?(this.download(this.props.item, 'video')):(Toast.show('You Have Not Enrolled For This Course.'))} style={{marginBottom: 8}}> 
-                                                    <TouchableOpacity onPress={()=>this.download(this.props.item, 'video')} style={{marginBottom: 8}}> 
+                                                   (this.props.studentEnrolled||this.props.item.demo)? <TouchableOpacity onPress={()=>this.download(this.props.item, 'video')} style={{marginBottom: 8}}>
                                                         <View >
                                                             {/* <Image source={downloadIcon} style={{height: 25, width: 25}} /> */}
                                                             <Arrow_down_circle_black/>
                                                         </View>
-                                                    </TouchableOpacity>
+                                                    </TouchableOpacity>:null
                                                     
                                                 
                                             )
@@ -275,6 +289,7 @@ const styles = StyleSheet.create({
         {
             marginBottom: 5,
             flexWrap:'wrap',
+            fontFamily: 'Raleway_600SemiBold',
             width:(width-140)
         },
   

@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       marginVertical: 40,
+      
     },
     header: {
       flexDirection: 'row',
@@ -56,7 +57,9 @@ class CustomActivtiyIndicator extends React.Component {
                                 </View>
                             </View>
                         </View>
-                        <Shimmer width={WIDTH} height={140} />
+                        <View style={{margin:10,overflow: 'hidden'}}>
+                            <Shimmer width={WIDTH} height={140} />
+                        </View>
                     </View>
                 )
                 case 'homeShimmer': 

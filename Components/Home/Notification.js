@@ -1,5 +1,5 @@
-import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView} from 'react-native';
+import React,{useState,useEffect} from 'react';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, TouchableWithoutFeedback} from 'react-native';
 // import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {theme,screenMobileWidth, dataLimit,serverBaseUrl, Assets, imageProvider} from '../config'
 import { EvilIcons } from '@expo/vector-icons';
@@ -7,136 +7,135 @@ import {connect } from 'react-redux'
 import CardView from '../Utils/CardView'
 import { AirbnbRating } from 'react-native-ratings';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import {fetchNotifications} from '../Utils/DataHelper/Notification'
+import {fetchNotifications,updateNotificationSeenStatus} from '../Utils/DataHelper/Notification'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
-class Notification extends React.Component {
+import {useSelector} from 'react-redux'
+import { getHeaderTitle } from '@react-navigation/elements';
+import moment from 'moment';
+import SingleNotification from './SingleNotification';
+
+
+
+const  Notification = ({route,navigation}) => {
     
-    state = {
-        notifications: [],
-        offset: 0,
-        showLoadMore: true,
-        isNotificationLoading: true,
-        loadingFooter: false,
-        type: this.props.route.params.type
-    }
 
-    componentDidMount(){
-        this.fetch()
-    }
+    const [notifications,setNotifications] = useState([])
+    const [offset,setOffset] = useState(0)
+    const [showLoadMore, setShowLoadMore] = useState(true)
+    const [isNotificationLoading,setIsNotificationLoading] = useState(false)
+    const [loadingFooter,setLoadingFooter] = useState(true)
+    // const [type,setType] = useState(route?.params?.type)
+    const [refreshing,setRefreshing] = useState(true)
+    const userInfo = useSelector(state=>state.user.userInfo)
+ 
+ 
+     useEffect(() =>{
+        const title =  route.name
+        const type = title=="Course" ? "course" :"general";
+        fetchNotifications(userInfo.id, 2, type, offset, dataLimit, notificationCallback)
+     },[offset,route.name])
 
-    fetch=() => {
-        if(this.props.route.params.mode=="student")
-        {
-            fetchNotifications(this.props.userInfo.id, 2, this.state.type, this.state.offset, dataLimit, this.notificationCallback)
-        }
-        else
-        {
-            fetchNotifications(this.props.institute.details.id, 1,this.state.type, this.state.offset, dataLimit, this.notificationCallback)
-        }
-    }
+    
 
-    notificationCallback=(response)=>{
-        console.log(response.status)
+  
+
+    const notificationCallback=(response)=>
+    {
+         
         if(response.status==200)
         {
             response.json().then(data=>
             {
-                console.log(data)
-                if(data.length>0)
-                {
-                    this.setState({notifications:[...this.state.notifications,...data],isNotificationLoading:false, showLoadMore: true, loadingFooter:false});  
-                }
-                else
-                {
-                    this.setState({notifications:this.state.notifications,isNotificationLoading:false, showLoadMore: false, loadingFooter: false}); 
-                }                  
+                 
+                 
+                     
+                    setNotifications([...notifications,...data])
+                    setIsNotificationLoading(false)
+                    setShowLoadMore(true)
+                    setLoadingFooter(false)
+                    setRefreshing(false)
+                                 
             })
         }
     }
 
-    updateComponent=()=>{
-        if(this.state.type!=this.props.route.params.type)
-        {
-            this.setState({type:this.props.route.params.type, notifications:[], offset: 0,isNotificationLoading: true},()=>this.fetch())  
-        }
-    }
+    // updateComponent=()=>{
+    //     if(type!=this.props.route.params.type)
+    //     {
+    //         this.setState({type:this.props.route.params.type, notifications:[], offset: 0,isNotificationLoading: true},()=>this.fetch())  
+    //     }
+    // }
 
-    singleRow=({item})=>{
+   
+
+    const singleRow=({item})=>{
         return(
-            <TouchableOpacity onPress={()=>this.props.navigation.navigate('webview',{link:item.notification.redirectLinkkkkkkkkkkk,mode:'defaultAppHeader'})}>
-                <View style={{marginBottom: '5%'}}>
-                    <View style={styles.instituteheader}>
-                        {CardView(
-                            <Image source={{ uri: imageProvider(item.senderObject.image) }} style={styles.instituteheaderLogo}/>
-                            ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:80,borderRadius:15}):({width:80,height:80, borderRadius:40})])
-                        } 
-                        <View style={styles.instituteheaderMeta}>
-                            <View style={{display: 'flex', flexDirection: 'row'}}>
-                                <Text style={styles.instituteheaderText}>{item.senderObject.name}</Text>
-                            </View>
-                            <Text style={styles.instituteDirector}>{item.notification.message}</Text>
-                        </View>
-                    </View>
-                    <View style={{ borderBottomWidth: 1, borderBottomColor:theme.labelOrInactiveColor}}/>
-                </View>
-            </TouchableOpacity>
+            <SingleNotification item={item} navigation={navigation} />
         )
     }
 
-    renderFooter = () => {
+   const  renderFooter = () => {
         try {
        
-          if (this.state.loadingFooter) {
+          if (loadingFooter) {
             return <CustomActivtiyIndicator mode="skimmer"/>;
           } else {
             return null;
           }
         } catch (error) {
-          console.log(error);
+          // console.log(error);
         }
     };
 
-    render() {
-        this.updateComponent()
+     
+         
         return(
-            <PageStructure
-                iconName={"arrow-left"}
-                btnHandler={() => {this.props.navigation.goBack()}}
-                titleonheader={"Notifications"}
-                noNotificationIcon={true}
-                nosearchIcon={true}
-            >
-                <ScrollView>
+            // <PageStructure
+            //     iconName={"arrow-left"}
+            //     btnHandler={() => {navigation.goBack()}}
+            //     titleonheader={"Notifications"}
+            //     noNotificationIcon={true}
+            //     navigation={navigation}
+            //     nosearchIcon={true}
+            // >
+                // <ScrollView>
                     <View style={styles.container}>
-                        {this.state.isNotificationLoading?(
+                        {isNotificationLoading?(
                             <CustomActivtiyIndicator mode="skimmer"/>
                         ):(
                             <FlatList 
-                            data={this.state.notifications} 
-                            renderItem={({item})=>this.singleRow({item})}
+                            data={notifications} 
+                            renderItem={({item})=>singleRow({item})}
                             keyExtractor={(item)=>item.id} 
                             horizontal={false}
                             showsHorizontalScrollIndicator={false}
                             ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                             onEndReachedThreshold={0.1}
-                            refreshing={this.state.refreshing}
-                            ListFooterComponent={this.renderFooter}
+                            refreshing={refreshing}
+                            ListFooterComponent={renderFooter}
                             onEndReached={() => 
                             {
-                                if(this.state.showLoadMore&&!this.state.loadingFooter)
+                                if(showLoadMore&&!loadingFooter)
                                 {
-                                    this.setState({ refreshing: true,loadingFooter:true,offset:parseInt(this.state.offset)+1},()=>this.fetch())
-                                        
-                                }
-                            
+
+                                     
+                                   
+                                 
+                                  
+                                    setLoadingFooter(false)
+                                    setRefreshing(true)
+                                    setOffset(parseInt(offset)+1)
+
+                                     
+                                } 
                             }}
                         />)}
                     </View>
-                </ScrollView>
-            </PageStructure>
+                //  </ScrollView>
+            // </PageStructure>
         )
-    }
+     
 }
 
 const styles = StyleSheet.create({
@@ -166,19 +165,22 @@ const styles = StyleSheet.create({
             logoCard:
             { 
                 flexWrap:'wrap',
+                width:40,
+                height:40, 
+                borderRadius:20
                 
             }, 
                 instituteheaderLogo:
                 {
-                    width:"100%",
-                    height:"100%",
-                    borderRadius:15,
+                    width:30,
+                    height:30,
+                    borderRadius:10,
                 },  
             instituteheaderMeta:
             {
                 flex:1,
                 flexDirection:'column',
-                marginLeft:'5%',
+                marginLeft:'2%',
                 marginRight:'5%'
             },
                 instituteheaderText:
@@ -191,8 +193,8 @@ const styles = StyleSheet.create({
                 instituteDirector:
                 {
                     color:theme.greyColor,
-                    fontSize:12,
-                    fontFamily:'Raleway_400Regular',
+                    fontSize:15,
+                    fontFamily:'Raleway_600SemiBold',
                 },
                 instituteRatingView:
                 {
@@ -230,12 +232,5 @@ const styles = StyleSheet.create({
 
 })
 
-const  mapStateToProps = (state)=>
-{
-    return {
-        screenWidth: state.screen.screenWidth,
-        userInfo:state.user.userInfo,
-        institute:state.institute
-    }
-}
-export default connect(mapStateToProps)(Notification); 
+ 
+export default Notification; 

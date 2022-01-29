@@ -21,6 +21,7 @@ function Enrollments({navigation}) {
     const [refreshing,setRefreshing] = useState(false)
     const renderPurchageCourse=(item)=>{
         return(
+            
             <PurchageListRow item={item} navigation={navigation}/>
         )
     }
@@ -35,10 +36,10 @@ function Enrollments({navigation}) {
           if (loadingFooter) {
             return <CustomActivtiyIndicator mode="skimmer"/>;
           } else {
-            return null;
+            return <></>;
           }
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
     };
 
@@ -48,12 +49,12 @@ function Enrollments({navigation}) {
 
    const purchaseCallback=(response)=>{
         setLoadingUserEnrollments(false)
-        console.log(response.status)
+        // console.log(response.status)
         if(response.status==200)
         {   
             response.json().then(data=>
             {
-                console.log(data)
+                // console.log(data)
                 // this.setState({purchase: data})
                 if(data.length>0)
                 {
@@ -76,7 +77,7 @@ function Enrollments({navigation}) {
         }
         else
         {
-            console.log("something went wrong")
+            // console.log("something went wrong")
         }
     }
 
@@ -87,6 +88,7 @@ function Enrollments({navigation}) {
             titleonheader={"Enrollments"}
             nosearchIcon={true}
             noNotificationIcon={true}
+            navigation={navigation}
         >
             <View>
                 <FlatList
@@ -96,7 +98,7 @@ function Enrollments({navigation}) {
                     ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                     onEndReachedThreshold={0.1}
                     refreshing={refreshing}
-                    ListFooterComponent={renderFooter}
+                    // ListFooterComponent={renderFooter}
                     onEndReached={() => 
                     {
                         if(showLoadMore&&!loadingFooter)
@@ -107,7 +109,7 @@ function Enrollments({navigation}) {
                         }
                     
                     }}
-                        />
+                />
             </View>
         </PageStructure>
     )

@@ -24,7 +24,7 @@ export default function PinnedList(props) {
         const userInfo = useSelector((state) => state.user.userInfo)
 
     useEffect(()=>{
-        console.log("idhar")
+        // console.log("idhar")
         pinnedInstituteList(userInfo.id, offset, dataLimit, insListCallback)
     
     },[offset,])
@@ -63,7 +63,7 @@ export default function PinnedList(props) {
             return null;
           }
         } catch (error) {
-          console.log(error);
+          // console.log(error);
         }
     };
 
@@ -74,6 +74,7 @@ export default function PinnedList(props) {
                 btnHandler={() => {props.navigation.toggleDrawer()}}
                 nosearchIcon={true}
                 noNotificationIcon={true}
+                navigation={this.props.navigation}
                 titleonheader={"Pinned Institutes"}
                 
             >

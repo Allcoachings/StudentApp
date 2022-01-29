@@ -41,7 +41,7 @@ export const fetch_institute_courses=(instId,callback)=>
             // formData.append("offset",offset) 
             // formData.append("data_limit",limit)  
             let headers = new Headers();
-            console.log(instId)
+            // console.log(instId)
             headers.append('Content-Type', 'application/json'); 
 
             headers.append('Access-Control-Allow-Origin', serverApiUrl);
@@ -104,7 +104,7 @@ export   const addCourseBanner=(banner,courseId,callback)=>
             headers.append('Access-Control-Allow-Credentials', 'true');
 
             headers.append('GET', 'POST', 'OPTIONS'); 
-            console.log("register   working")
+            // console.log("register   working")
              fetch(serverApiUrl+'/institute/course/banners/upload/',
             {
                 method: 'POST',  
@@ -143,7 +143,7 @@ export const fetch_courses_videos=(offset, dataLimit, courseId=-1,callback,playl
             {
                 apiUrl = serverApiUrl+'institute/course/video/playlist/'+playlistId+'/'+offset+'/'+dataLimit
             }
-               console.log(apiUrl) 
+               // console.log(apiUrl) 
              fetch(apiUrl,
             {
                 method: 'GET',  
@@ -177,7 +177,7 @@ export const fetch_courses_videos_with_hidden=(hidden,offset, dataLimit, courseI
             {
                 apiUrl = serverApiUrl+'institute/course/video/playlist/'+playlistId+'/hidden/'+'/'+hidden+'/'+offset+'/'+dataLimit
             }
-               console.log(apiUrl) 
+               // console.log(apiUrl) 
              fetch(apiUrl,
             {
                 method: 'GET',  
@@ -209,7 +209,7 @@ export   const addCourseVideo=(video,thumbnail,name,description,isDemo,demoLengt
             })
             
         
-             console.log("courseId",courseId)
+             // console.log("courseId",courseId)
              formData.append("name",name)
              formData.append("description",description)
 
@@ -238,7 +238,7 @@ export   const addCourseVideo=(video,thumbnail,name,description,isDemo,demoLengt
             xhr.upload.onprogress = (e) => {
                 //handle progress here, you can use progressEvent.loaded, progressEvent.total to calculate the progress
                 var percentComplete = Math.ceil((e.loaded / e.total) * 100);
-                console.log(percentComplete);
+                // console.log(percentComplete);
                 callbackProgress(percentComplete)
             };
            
@@ -266,7 +266,7 @@ export   const addCourseVideoPlaylist=(name,courseId,callback)=>
             //     type: mime.getType(newImageUri),
             //     name: video.name
             // }) 
-            //  console.log("courseId",courseId)
+            //  // console.log("courseId",courseId)
             //  formData.append("name",name)
             //  formData.append("description",description)
 
@@ -343,7 +343,7 @@ export const fetch_courses_documents=(offset, dataLimit, courseId=-1,callback,pl
             {
                 apiUrl = serverApiUrl+'/institute/course/document/playlist/'+playlistId+'/'+offset+'/'+dataLimit
             }
-              console.log(apiUrl);  
+              // console.log(apiUrl);  
              fetch(apiUrl,
             {
                 method: 'GET',  
@@ -378,7 +378,7 @@ export const fetch_courses_documents_with_hidden=(hidden,offset, dataLimit, cour
             {
                 apiUrl = serverApiUrl+'/institute/course/document/playlist/'+playlistId+'/'+'/hidden/'+hidden+'/'+offset+'/'+dataLimit
             }
-              console.log(apiUrl);  
+              // console.log(apiUrl);  
              fetch(apiUrl,
             {
                 method: 'GET',  
@@ -400,7 +400,7 @@ export   const addCourseDocument =(document,name,courseId,callback,callbackProgr
                 type: mime.getType(newImageUri),
                 name: document.name
             }) 
-             console.log("courseId",courseId)
+             // console.log("courseId",courseId)
              formData.append("name",name) 
               
              formData.append("playlistId",playlistId)
@@ -425,7 +425,7 @@ export   const addCourseDocument =(document,name,courseId,callback,callbackProgr
             xhr.upload.onprogress = (e) => {
                 //handle progress here, you can use progressEvent.loaded, progressEvent.total to calculate the progress
                 var percentComplete = Math.ceil((e.loaded / e.total) * 100);
-                console.log(percentComplete);
+                // console.log(percentComplete);
                 callbackProgress(percentComplete)
             };
            
@@ -455,7 +455,7 @@ export   const addCourseDocumentPlaylist=(name,courseId,callback)=>
             //     type: mime.getType(newImageUri),
             //     name: video.name
             // }) 
-            //  console.log("courseId",courseId)
+            //  // console.log("courseId",courseId)
             //  formData.append("name",name)
             //  formData.append("description",description)
 
@@ -511,7 +511,7 @@ export const fetch_document_playlist=(courseId,callback)=>
 export const fetch_courses_timetable=(offset, dataLimit,courseId,callback)=>
 {
 
-        console.log('fetch_courses_timetable', offset, dataLimit, courseId)
+        // console.log('fetch_courses_timetable', offset, dataLimit, courseId)
             // var formData   = new FormData(); 
             // formData.append("fetch_banners",'true') 
             // formData.append("offset",offset) 
@@ -547,7 +547,7 @@ export   const addCourseTimetableItem =(title,subTitle,dateReverse,date,time,sub
     //             type: mime.getType(newImageUri),
     //             name: document.name
     //         }) 
-    //          console.log("courseId",courseId)
+    //          // console.log("courseId",courseId)
     //          formData.append("name",name) 
               
     //          formData.append("playlistId",playlistId)
@@ -561,7 +561,7 @@ export   const addCourseTimetableItem =(title,subTitle,dateReverse,date,time,sub
             headers.append('GET', 'POST', 'OPTIONS');  
 
             let dateTime =  new Date(Date.parse(dateReverse+'T'+time+"+05:30"))
-            console.log("string Date time",dateReverse+'T'+time,dateTime," y-",dateTime.getFullYear()," m-",dateTime.getMonth()," d-",dateTime.getDate()," h-",dateTime.getHours()," min-",dateTime.getMinutes());
+            // console.log("string Date time",dateReverse+'T'+time,dateTime," y-",dateTime.getFullYear()," m-",dateTime.getMonth()," d-",dateTime.getDate()," h-",dateTime.getHours()," min-",dateTime.getMinutes());
              fetch(serverApiUrl+'/institute/course/timetable/addsubjectitem',
             {
                 method: 'POST',  
@@ -588,7 +588,7 @@ export   const addCourseTimeTableSubject=(name,courseId,callback)=>
             //     type: mime.getType(newImageUri),
             //     name: video.name
             // }) 
-            //  console.log("courseId",courseId)
+            //  // console.log("courseId",courseId)
             //  formData.append("name",name)
             //  formData.append("description",description)
 
@@ -654,7 +654,7 @@ export   const addTestSeries=( testSeries,questions,callback)=>
             headers.append('Content-Type', 'application/json');  
             headers.append('Access-Control-Allow-Origin', serverApiUrl);
             headers.append('Access-Control-Allow-Credentials', 'true');
-            console.log(testSeries)
+            // console.log(testSeries)
             headers.append('GET', 'POST', 'OPTIONS'); 
              fetch(serverApiUrl+'institute/course/testseries/createseries',
             {
@@ -670,22 +670,22 @@ export   const addTestSeries=( testSeries,questions,callback)=>
         
 }
 
-export const fetch_testSeries = (offset, dataLimit, courseId,callback,playlistId=-1)=>
+export const fetch_testSeries = (userId,offset, dataLimit, courseId,callback,playlistId=-1)=>
 {
             let headers = new Headers(); 
             headers.append('Content-Type', 'application/json');  
             headers.append('Access-Control-Allow-Origin', serverApiUrl);
             headers.append('Access-Control-Allow-Credentials', 'true'); 
 
-            headers.append('GET', 'POST', 'OPTIONS'); 
-            let apiUrl = serverApiUrl+'institute/course/testseries/all/'+courseId+'/'+offset+'/'+dataLimit
+            headers.append('GET', 'POST', 'OPTIONS');  
+            let apiUrl = serverApiUrl+'institute/course/testseries/courseId/foruser/'+userId+'/'+courseId+'/'+offset+'/'+dataLimit
              
             if(playlistId == -1)
             {
-                apiUrl = serverApiUrl+'institute/course/testseries/all/'+courseId+'/'+offset+'/'+dataLimit
+                apiUrl = serverApiUrl+'institute/course/testseries/courseId/foruser/'+userId+'/'+courseId+'/'+offset+'/'+dataLimit
             }else
-            {
-                apiUrl = serverApiUrl+'institute/course/testseries/playlist/'+playlistId+"/"+offset+"/"+dataLimit
+            {   
+                apiUrl = serverApiUrl+'institute/course/testseries/playlist/foruser/'+userId+'/'+playlistId+"/"+offset+"/"+dataLimit
             }
              
              fetch(apiUrl,
@@ -738,7 +738,7 @@ export   const addCourseTestSeriesPlaylist=(name,courseId,callback)=>
             //     type: mime.getType(newImageUri),
             //     name: video.name
             // }) 
-            //  console.log("courseId",courseId)
+            //  // console.log("courseId",courseId)
             //  formData.append("name",name)
             //  formData.append("description",description)
 
@@ -813,7 +813,7 @@ export const fetch_latestUpcomingSchedule = (insId,callback)=>
 
 export const getCourseCount=(insId,callback)=>
 {
-    console.log("insId",insId)
+    // console.log("insId",insId)
         let headers = new Headers(); 
         headers.append('Content-Type', 'application/json');  
         headers.append('Access-Control-Allow-Origin', serverApiUrl);
@@ -832,7 +832,7 @@ export const getCourseCount=(insId,callback)=>
 
 export const updatePlaylist=(type,playlist_id,id,callback)=>
 {
-    console.log(type,playlist_id,id)
+    // console.log(type,playlist_id,id)
         let headers = new Headers(); 
         headers.append('Content-Type', 'application/json');  
         headers.append('Access-Control-Allow-Origin', serverApiUrl);

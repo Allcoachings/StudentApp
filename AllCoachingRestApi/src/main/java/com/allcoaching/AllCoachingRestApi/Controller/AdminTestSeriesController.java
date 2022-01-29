@@ -7,6 +7,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.AdminTestSubCategories;
 import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeries;
 import com.allcoaching.AllCoachingRestApi.Service.*;
 import com.allcoaching.AllCoachingRestApi.dto.AdminTestCategoriesDto;
+import com.allcoaching.AllCoachingRestApi.dto.TestSeriesAndUserResponseDto;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -122,6 +123,13 @@ public class AdminTestSeriesController {
     public Iterable<InsTestSeries> fetchAllTestSeriesOfASubCategoryContent(@PathVariable int offset,@PathVariable int dataLimit,@PathVariable long subId)
     {
         return insTestSeriesService.findByCategoryAndIsAdmin(subId,offset,dataLimit);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/subcategory/content/testseries/forUser/{userId}/{offset}/{dataLimit}/{subId}")
+    public Iterable<TestSeriesAndUserResponseDto> fetchAllTestSeriesOfASubCategoryContentForUser(@PathVariable long userId, @PathVariable int offset, @PathVariable int dataLimit, @PathVariable long subId)
+    {
+        return insTestSeriesService.findByCategoryAndIsAdminForUser(userId,subId,offset,dataLimit);
     }
 
     @CrossOrigin(origins = "*")

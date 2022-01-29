@@ -17,7 +17,7 @@ class AddTimeTable extends React.Component {
         if(reponse.status ===201)
         {
             Toast.show('Time Table Added Successfully.');
-            console.log("created",reponse.headers.map.location)
+            // console.log("created",reponse.headers.map.location)
             this.props.route.params.appendSubject({name:this.state.name,courseId:this.props.route.params.courseId,id:reponse.headers.map.location,courseTimeTableItem:[]})
             this.props.navigation.goBack()
         }
@@ -45,13 +45,14 @@ class AddTimeTable extends React.Component {
     verify=({name}) =>name
 
     render() {
-        console.log("add timetable course id: ",this.props.route.params.courseId)
+        // console.log("add timetable course id: ",this.props.route.params.courseId)
         return(
             <PageStructure 
                 nosearchIcon={true}
                 noNotificationIcon={true}
                 iconName="navicon"
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
+                navigation={this.props.navigation}
             >
                 <ScrollView>
                     <View style={styles.headView}>

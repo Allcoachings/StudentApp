@@ -37,7 +37,7 @@ class RenderSingleSubsInstitute extends React.Component {
     //     }
     //     else
     //     {
-    //         console.log("something went wrong")
+    //         // console.log("something went wrong")
     //     }
     // }
 
@@ -90,9 +90,9 @@ class RenderSingleSubsInstitute extends React.Component {
                                 />
                                 <Text style={styles.voteCount}>{this.props.item.totalRatingCount>0?(this.props.item.totalRating/this.props.item.totalRatingCount):(0)}</Text>
                             </View> */}
-                            <View style={styles.btnView}>
-                               <Text style={{color:theme.primaryColor,fontFamily:'Raleway_600SemiBold'}}>Latest Course</Text>
-                            </View>
+                            <TouchableOpacity style={[styles.courseItemContainer,{backgroundColor:theme.purpleColor, borderColor:theme.darkPurpleColor}]} onPress={()=>this.handleCourseItemClick(item)}> 
+                                <Text style={[styles.courseTitle,{color:theme.darkPurpleColor}]}>Latest Course</Text>
+                            </TouchableOpacity>
                         </View>
                         {/* <TouchableOpacity onPress={()=>{this.setState({modalVisible:true})}}>
                             <EvilIconsns name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}}/>
@@ -145,7 +145,9 @@ const styles = StyleSheet.create({
 instituteheader:
 {
     flexDirection:'row',
-    flex:0.3
+    flex:0.3,   
+    marginBottom:10,
+    marginTop:5
 },
     logoCard:
     { 
@@ -213,7 +215,29 @@ instituteheader:
                 color: theme.blueColor, 
                 fontWeight: 'bold',
                 fontSize: 18
-            }
+            },
+
+        courseItemContainer:
+        {  
+            paddingLeft:12,
+            paddingRight:12, 
+            marginRight:10,
+            paddingVertical: 3.5,
+            marginTop:5 , 
+            paddingHorizontal:2,
+            borderWidth:1, 
+            borderColor:theme.primaryColor,
+            borderRadius:15,
+                alignItems:'center',
+                justifyContent: 'center'
+
+        },
+            courseTitle:
+            {
+                fontSize:14, 
+                color:theme.greyColor,
+                fontFamily: 'Raleway_700Bold',
+            },
 
 })
 

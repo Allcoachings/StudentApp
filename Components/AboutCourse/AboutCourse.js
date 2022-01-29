@@ -44,10 +44,11 @@ class AboutCourse extends React.Component {
         this.updateComponent()
         return(
             <PageStructure
-                iconName="navicon"
+                iconName="arrow-left"
                 btnHandler={() => {this.props.navigation.toggleDrawer()}}
                 titleonheader={"About Course"}      
                 nosearchIcon={true}
+                navigation={this.props.navigation}
                 noNotificationIcon={true}
             >
                 {this.state.loading?(
@@ -73,7 +74,7 @@ class AboutCourse extends React.Component {
 const styles = StyleSheet.create({
     head:{
         fontFamily: 'Raleway_700Bold',
-        fontSize: 26
+        fontSize: 20
     },
         body:{
             fontFamily: 'Raleway_600SemiBold',

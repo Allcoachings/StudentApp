@@ -11,6 +11,8 @@ import {registerStudent} from '../Utils/DataHelper/EnrollStudent'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Picker } from 'native-base';
 import { ActivityIndicator } from 'react-native-paper';
+
+import BackArrow from '../Utils/Icons/BackArrow'
 const width = Dimensions.get('window').width
 const height = Dimensions.get('screen').height
 var rate ;
@@ -86,7 +88,26 @@ class InfoModal extends React.Component {
                 this.setState({error:'Email Already Registered',isLoading:false})
             }
     }
-    verify=({email,name,state})=>email&&name&&state!="Select"
+    verify=({email,name,state})=>
+    {
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/
+        if(!name)
+        {
+            this.setState({error:'Please Enter Full Name' , fieldName:"fullname"})
+            return false
+        }
+        if(!reg.test(email))
+        {
+            this.setState({error:'Invalid Email' , fieldName:"email"})
+            return false
+        }
+        if(state=="Select")
+        {
+            this.setState({error:'Please Choose State' , fieldName:"state"})
+            return false
+        }
+        return true
+    }
     handleSubmitButtonClick=() => {
         if(!this.state.isLoading)
         {
@@ -94,11 +115,7 @@ class InfoModal extends React.Component {
             {
                 this.setState({isLoading:true,error:null})
                 registerStudent(this.state.email,this.state.name,this.state.state,this.props.mobileNumber,this.state.studentImage,this.registerCallBack)
-            }else
-            {
-                this.setState({error:'Please fill all the fields'});
-                
-            }
+            } 
         }
         
         
@@ -139,7 +156,12 @@ class InfoModal extends React.Component {
 
                                 <View style={styles.header}>
                                     {/* <AuthHeader/>                         */}
-                                    <MaterialIcons name="chevron-left" size={25} color={theme.greyColor}/>
+                                    {/* <MaterialIcons name="chevron-left" size={25} color={theme.greyColor}/> */}
+                                    <TouchableWithoutFeedback onPress={()=>{this.props.openModalOtp();this.props.closeModal()}}>
+                                        <View   style={styles.header}>
+                                            <BackArrow height={24} width={24}/>
+                                        </View>
+                                    </TouchableWithoutFeedback>
                                 </View>
                                 <View>
                                     <Text style={styles.postQueText}>{this.state.heading}</Text>
@@ -161,18 +183,18 @@ class InfoModal extends React.Component {
                                     <Text   style={[{marginLeft:15,fontFamily:'Raleway_600SemiBold'},this.state.focusedInput=="fullname"?({color:theme.greyColor}):({color:theme.labelOrInactiveColor})]}>Full Name</Text>
                                 </View>
                                 <View style={styles.queDescView}>
-                                    <TextInput onFocus={()=>this.onFocus("fullname")} onBlur={()=>this.onBlur("fullname")} style={[styles.queDesc,this.state.focusedInput=="fullname"?({borderColor:theme.greyColor}):(null)]} onChangeText={(text)=>this.setState({name: text})}  placeholder="Enter full name" placeholderTextColor={ this.state.focusedInput=="fullname"?theme.greyColor: theme.labelOrInactiveColor}/>
+                                    <TextInput onFocus={()=>this.onFocus("fullname")} onBlur={()=>this.onBlur("fullname")} style={[styles.queDesc,this.state.focusedInput=="fullname"?({borderColor:theme.greyColor}):(null),this.state.fieldName=="fullname"?({borderColor:theme.redColor}):(null)]} onChangeText={(text)=>this.setState({name: text})}  placeholder="Enter full name" placeholderTextColor={ this.state.focusedInput=="fullname"?theme.greyColor: theme.labelOrInactiveColor}/>
                                 </View>
                                 <View style={{marginTop:15}}>
                                     <Text style={[{marginLeft:15,fontFamily:'Raleway_600SemiBold'},this.state.focusedInput=="email"?({color:theme.greyColor}):({color:theme.labelOrInactiveColor})]}>Email address</Text>
                                 </View>
                                 <View style={styles.queDescView}>
-                                    <TextInput style={[styles.queDesc,this.state.focusedInput=="email"?({borderColor:theme.greyColor}):(null)]}  onFocus={()=>this.onFocus("email")} onBlur={()=>this.onBlur("email")} onChangeText={(text)=>this.setState({email: text})}  placeholder="Enter email address" placeholderTextColor={this.state.focusedInput=="email"?theme.greyColor: theme.labelOrInactiveColor}/>
+                                    <TextInput style={[styles.queDesc,this.state.focusedInput=="email"?({borderColor:theme.greyColor}):(null),this.state.fieldName=="email"?({borderColor:theme.redColor}):(null)]}  onFocus={()=>this.onFocus("email")} onBlur={()=>this.onBlur("email")} onChangeText={(text)=>this.setState({email: text})}  placeholder="Enter email address" placeholderTextColor={this.state.focusedInput=="email"?theme.greyColor: theme.labelOrInactiveColor}/>
                                 </View>
                                 <View style={{marginTop:15,}}>
-                                    <Text style={[{marginLeft:15,fontFamily:'Raleway_600SemiBold'},this.state.focusedInput=="state"?({color:theme.greyColor}):({color:theme.labelOrInactiveColor})]}>State Of residence</Text>
+                                      <Text style={[{marginLeft:15,fontFamily:'Raleway_600SemiBold'},this.state.focusedInput=="state"?({color:theme.greyColor}):({color:theme.labelOrInactiveColor})]}>State Of residence</Text>
                                 </View>
-                                <View style={[styles.queDesc,{borderWidth:1,marginHorizontal:10,marginTop:10},this.state.focusedInput=="state"?({borderColor:theme.greyColor}):(null)]}>
+                                <View style={[styles.queDesc,{borderWidth:1,marginHorizontal:10,marginTop:10},this.state.focusedInput=="state"?({borderColor:theme.greyColor}):(null),this.state.fieldName=="state"?({borderColor:theme.redColor}):(null)]}>
                                     {/* <TextInput style={styles.queDesc} onChangeText={(text)=>this.setState({state: text
                                     })}  placeholder="Select your state" placeholderTextColor={theme.labelOrInactiveColor}/> */}
                                     <Picker
@@ -229,13 +251,12 @@ const styles = StyleSheet.create({
     },
         header:
         {
-            flexDirection: 'row',
-            width: width*0.65,
+            flexDirection: 'column',
+            width: width,
             height: height*0.05,
-            alignItems: 'center',
-            marginTop:'5%',
-            marginLeft: '5%',
-            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            margin:10, 
+            // justifyContent: 'space-between',
         },
             postQueText:
             {

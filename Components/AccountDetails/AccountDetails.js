@@ -38,7 +38,7 @@ class AccountDetails extends React.Component {
         if(response.status==200)
         {
             response.json().then(data=>{
-                console.log("Total today",data);
+                // // // console.log("Total today",data);
                 this.setState({totalPayoutToday:data})
             })
         }
@@ -48,7 +48,7 @@ class AccountDetails extends React.Component {
         if(response.status==200)
         {
             response.json().then(data=>{
-                console.log("Total",data);
+                // console.log("Total",data);
                 this.setState({totalPayout:data})
             })
             
@@ -56,12 +56,12 @@ class AccountDetails extends React.Component {
     }
     institutePayoutCallback=(response)=>
     {
-        console.log(response.status)
+        // console.log(response.status)
         if(response.status==200)
         {
             response.json().then(data=>
                 {
-                    console.log(data)
+                    // console.log(data)
                         this.setState({payouts:data,loadingPayouts:false})
                 })
         }else
@@ -86,7 +86,7 @@ class AccountDetails extends React.Component {
         }
         else
         {
-            console.log("error", response.status)
+            // console.log("error", response.status)
         }
     }
 
@@ -109,7 +109,7 @@ class AccountDetails extends React.Component {
         }
         else
         {
-            console.log("up error", response.status)
+            // console.log("up error", response.status)
             Toast.show("Something Went Wrong. Please Try Again Later.")
         }
     }
@@ -234,7 +234,7 @@ class AccountDetails extends React.Component {
 
 
                                 {this.state.payouts.map((item,index) => {
-                                    console.log(item)
+                                    // console.log(item)
                             return(        <DataTable.Row key={index}> 
                                             <DataTable.Cell  >{item.orderId}</DataTable.Cell>
                                             <DataTable.Cell  >₹{item.amount}</DataTable.Cell>
@@ -270,6 +270,7 @@ class AccountDetails extends React.Component {
                 btnHandler={() => {this.props.navigation.goBack()}}
                 nosearchIcon={true}
                 noNotificationIcon={true}
+                navigation={this.props.navigation}
             >
              {this.state.loadingData||(this.state.showReports&&this.state.loadingPayouts)?(
                             <CustomActivtiyIndicator mode="skimmer"/>

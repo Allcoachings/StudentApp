@@ -19,13 +19,13 @@ public class CourseDocument {
     @Id
     @GeneratedValue
     private long id;
-
     private  String fileAddress;
     private String name;
     private long courseId;
     private long playlistId;
     private boolean published;
     private boolean hidden;
+    private boolean isDemo;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)

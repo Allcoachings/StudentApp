@@ -1,20 +1,30 @@
 import React, { Component } from 'react';
-import { View, Text,Image,StyleSheet,findNodeHandle,UIManager, TouchableOpacity } from 'react-native';
-import {imageProvider, serverBaseUrl, theme} from '../config';
+import { View, Text,Image,StyleSheet,findNodeHandle,UIManager, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import {Assets, imageProvider, serverBaseUrl, shareBaseUrl, shareTextFeed, theme} from '../config';
 import moment from 'moment'
-import {EvilIconsns, AntDesign, FontAwesome} from '@expo/vector-icons';
+import {EvilIconsns, AntDesign, FontAwesome, Feather, MaterialIcons} from '@expo/vector-icons';
+import onShare from '../Utils/Share';
+
+import Toast from 'react-native-simple-toast';
+import * as Clipboard from 'expo-clipboard';
+import ReportFeedModal from './ReportFeedModal';
+
 class FeedHeader extends Component {
   state={
+      reportModalVisible: false
     
   }
 
+
+
+   
   actions = ['Edit'];
   showThreeMenu=()=>
   {
        
     UIManager.showPopupMenu(
         findNodeHandle(this.state.icon),
-        this.actions,
+        this.props.actions?this.props.actions:this.actions,
         this.onError,
         this.onPopupEvent
     )
@@ -29,40 +39,82 @@ class FeedHeader extends Component {
   
   onPopupEvent = (eventName, index) => {
 
+
+    const actions = this.props.actions?this.props.actions:this.actions
     if (eventName !== 'itemSelected') return 
-    switch (this.actions[index])
+    switch (actions[index])
     {
         case "Edit":
                   this.props.editFeedPressHandler()
             break;
-        case "Share": 
-
+        case "Share":  
+                onShare(shareTextFeed+"\n "+shareBaseUrl+"community/post/"+this.props.feed.feed.id)
+          break;
+        case "Copy Link":  
+            Clipboard.setString(shareBaseUrl+"community/post/"+this.props.feed.feed.id)
+            Toast.show("Copied To clipboard",Toast.LENGTH_LONG)
+          break;
+        case "Report":  
+            this.setState({reportModalVisible:true})  
+             
           break;
     }
   }
 
   render() {
-      const {posterObject, postedBy, creationTime,feed} =  this.props
-      console.log(this.props.feed.feed.edited,"  edited",feed)
+      const {posterObject, postedBy, creationTime,feed} =  this.props 
     return(
-            <View style={styles.rowView}>
-                <Image source={{ uri: postedBy==2?(imageProvider(posterObject.studentImage)):(imageProvider(posterObject.logo))}} style={styles.circleView}/>  
-                <View style={{width: '78%'}}>
-                    <Text style={styles.coaching} numberOfLines={1}>{posterObject.name}</Text> 
-                    <View style={{flexDirection: 'row'}}>
-                        <Text style={styles.timeDateText}>{moment(creationTime).fromNow()}</Text>
-                        {this.props.feed.feed.edited?(
-                            <Text style={{fontFamily: 'Raleway_400Regular',marginHorizontal:10,color:theme.greyColor}}>(Edited)</Text>
-                        ):(null)}
-                    </View>
-                </View>
         
-                {this.props.mode=="userProfile"||this.props.mode=="insProfile"?( 
+            <View style={styles.rowView}>
+                <TouchableWithoutFeedback onPress={()=>{
+                    postedBy==1?(
+                            this.props.navigation.navigate('Institute',{insId:posterObject.id})
+                    ):(null)
+                }}>
+                    <View style={{flexDirection: 'row'}}> 
+                        <Image 
+                            source={{ uri: postedBy==2?(imageProvider(posterObject.studentImage)):(imageProvider(posterObject.logo))}} 
+                            style={styles.circleView}
+                            ref={(ref)=>this.imageRef=ref}
+                            onError={()=>
+                                {
+                                    if(this.imageRef)
+                                    {
+                                        this.imageRef.setNativeProps({
+                                            src:[Image.resolveAssetSource(Assets.profile.profileIcon)]
+                                        })
+                                    }
+                                }}
+                        />  
+                        <View style={{width: '78%'}}>
+                            <View style={{flexDirection: 'row'}}>
+                                <Text style={[styles.coaching,{marginRight:5}]} numberOfLines={1}>{posterObject.name}</Text> 
+                                {postedBy==1&&<MaterialIcons name="verified" size={20} color={theme.greyColor} />}
+                            </View>
+                            <View style={{flexDirection: 'row'}}>
+                                <Text style={styles.timeDateText}>{moment(creationTime).fromNow()}</Text>
+                                {this.props.feed.feed.edited?(
+                                    <Text style={{fontFamily: 'Raleway_400Regular',marginHorizontal:10,color:theme.greyColor}}>(Edited)</Text>
+                                ):(null)}
+                            </View>
+                        </View>
+                    </View>
+                </TouchableWithoutFeedback>
+        
+                {this.props.mode=="userProfile"||this.props.mode=="insProfile"||this.props.actions?( 
                     <TouchableOpacity onPress={()=>this.showThreeMenu()}>
-                        <EvilIconsns name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
+                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
                     </TouchableOpacity>
-                ):(null)}
+                ):(null)} 
                 
+                {this.state.reportModalVisible?(
+
+                    <ReportFeedModal
+                        closeModal={()=>this.setState({reportModalVisible:false})}
+                        isModalVisible={this.state.reportModalVisible}
+                        feedId={this.props.feed.feed.id}
+                    />
+                ):(null)}
             </View>
         )
     }

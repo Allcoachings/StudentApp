@@ -18,6 +18,8 @@ import PhoneInput from "react-native-phone-number-input";
 // import { Toast } from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActivityIndicator } from 'react-native-paper';
+
+import BackArrow from '../Utils/Icons/BackArrow'
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 var rate ; 
@@ -31,17 +33,17 @@ class OtpVerification extends React.Component {
         loader: false
     }
     getOtp=(otp) =>{
-        console.log(otp);
+        // console.log(otp);
         this.setState({ otp });
   } 
   handleOtpGenerateCallBack=(response)=>
     {
-        console.log(response.status);
+        // console.log(response.status);
         if(response.status==200)
         {
             response.json().then(data=>
             { 
-                console.log(data)
+                // console.log(data)
                 this.setState({loader:false, mode: "otp", contBtnBg: false}) 
                 ToastAndroid.show("Otp Sent", ToastAndroid.SHORT); 
             })
@@ -49,7 +51,7 @@ class OtpVerification extends React.Component {
     }
     handleResendBtnClick=()=>
     {
-        if(this.state.phoneNumber)
+        if(this.state.phoneNumber.length==10)
         {
             if(!this.state.loader)
             {
@@ -61,7 +63,7 @@ class OtpVerification extends React.Component {
             }
         }else
         {
-            this.setState({error:"Please Enter Mobile Number"})
+            this.setState({phoneError:"Mobile Number Should be of 10 digits"})
         }
         
         
@@ -70,7 +72,7 @@ class OtpVerification extends React.Component {
     
     findStudentByMobileCallBack=(response)=>
     {
-        console.log(response.status)
+        // console.log(response.status)
         if(response.status==200)
         {
             response.json().then(data=>{
@@ -80,7 +82,7 @@ class OtpVerification extends React.Component {
                     this.props.userAuthStatus(true);
                     AsyncStorage.setItem('authInfo', JSON.stringify({...data,authType:'user'}))  
                     // this.props.navigation.navigate("Home")   
-                    registerForPushNotificationsAsync(data.id,'student',()=>{console.log('token saved')})
+                    registerForPushNotificationsAsync(data.id,'student',()=>{ console.log('token saved')})
                 }else
 
                 {
@@ -94,11 +96,11 @@ class OtpVerification extends React.Component {
     otpVerificationCallback=(response)=>
     {
        
-        console.log(response.status)
+        // console.log(response.status)
             if(response.status==200)
             {
                 response.json().then(data=>{
-                    console.log("otp status",data)
+                    // console.log("otp status",data)
                     if(data)
                     {
                         findStudentByMobile(this.state.phoneNumber,this.findStudentByMobileCallBack)
@@ -122,12 +124,21 @@ class OtpVerification extends React.Component {
         {
             if(text.length==10)
             {
-                this.setState({contBtnBg: true, phoneNumber: text})
+                this.setState({contBtnBg: true, phoneNumber: text,phoneError:false})
             }
-            else 
+            else
             {
-                this.setState({contBtnBg: false})
+                if(!this.state.phoneError)
+                {
+                    if(text.length>10)
+                    {
+                        this.setState({phoneError: true,phoneNumber: text,contBtnBg: true,})
+                    }
+                }
+                this.setState({phoneNumber: text})
+                
             }
+            
         }
         else if(this.state.mode=="otp")
         {
@@ -166,18 +177,24 @@ class OtpVerification extends React.Component {
                             <Text style={styles.errorText}>{this.state.error}</Text>
                         ):(null)}
                     <View style={{marginLeft:'auto' }}>
-                    {this.state.mode=="mobile"?(<PhoneInput
+                    {this.state.mode=="mobile"?(
+                    
+                    <View style={{margin:10 }}>
+                        {this.state.phoneError?(
+                            <Text style={{fontFamily:'Raleway_600SemiBold',color:theme.redColor, fontSize: 14,alignSelf:"flex-start"}}>Mobile Number Should be of 10 digits</Text>
+                        ):(null)}
+                        
+                        <PhoneInput
                             ref={phoneInput}
-                            // defaultValue={value}
-                            defaultCode="DM"
+                            // defaultValue={value} 
                             layout="first"
                             containerStyle={{
-                                borderColor:theme.secondaryColor,
+                                borderColor:this.state.phoneError?theme.redColor:theme.secondaryColor,
                                 borderWidth:1,
                                 borderRadius:10,
                                 padding:5,
-                                width:width-20, 
-                                margin:10
+                                marginTop:10,
+                                width:width-20,  
                             }}
                             textInputStyle={{
                                 fontFamily:'Raleway_600SemiBold'
@@ -194,7 +211,9 @@ class OtpVerification extends React.Component {
                             defaultCode='IN'
                             withShadow 
                             autoFocus
-                        />):(
+                        />
+                    </View>
+                        ):(
                             <OTPInputView
                                 style={{width: '100%', height: 80,color: theme.btn_dark_background_color, marginLeft:20,borderRadius:10}}
                                 pinCount={6}
@@ -209,16 +228,9 @@ class OtpVerification extends React.Component {
                     </View>
                     <View style={{alignItems: 'center',width: width,marginTop: 'auto',marginBottom:this.props.keyboardHeight?this.props.keyboardHeight+50:20}}>
 
-                        {this.state.mode=="mobile"?(<View style={{margin:20}}>
-                            <TouchableWithoutFeedback onPress={()=>{this.props.changeMode(2)}}>
-                                <View style={{flexDirection:'row', alignItems: 'center'}}>
-                                    <Text style={{fontFamily:'Raleway_600SemiBold',fontSize:12,color:theme.greyColor}}>LOGIN WITH EMAIL</Text> 
-                                    <MaterialIcons name="chevron-right" size={15} color={theme.greyColor}/>
-                                </View>
-                            </TouchableWithoutFeedback>
-                        </View>):(
+                         
                             
-                            // <TouchableWithoutFeedback onPress={()=>{this.props.changeMode(2)}}>
+                             {/* <TouchableWithoutFeedback onPress={()=>{this.props.changeMode(2)}}> */}
                                 <View style={{flexDirection:'row', alignItems: 'center',marginBottom:20}}>
                                     <Text style={{fontFamily:'Raleway_600SemiBold',fontSize:12,color:theme.textColor}}>Having trouble? Write to us at </Text> 
                                     <TouchableWithoutFeedback onPress={()=>{}}>
@@ -226,11 +238,11 @@ class OtpVerification extends React.Component {
                                     </TouchableWithoutFeedback>
                                     
                                 </View>
-                            // </TouchableWithoutFeedback>
-                        )}
+                             {/* </TouchableWithoutFeedback> */}
+                     
 
                         <TouchableWithoutFeedback onPress={this.state.mode=="mobile"?(this.handleResendBtnClick):(this.handleContinueBtnClick)} disabled={false}>
-                            <View style={[this.state.contBtnBg?({backgroundColor:theme.btn_dark_background_color}):({backgroundColor:theme.greyColor}),{padding:15,borderRadius:10,alignItems: 'center',width:'95%'}]}>
+                            <View style={[this.state.contBtnBg?({backgroundColor:theme.btn_dark_background_color}):({backgroundColor:theme.greyColor}),{padding:15,borderRadius:10,alignItems: 'center',width:'95%',marginBottom:10}]}>
                                 <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>{this.state.loader?(
                                     <ActivityIndicator color={theme.primaryColor} size={"small"}/>
                                 ):(this.state.mode=="mobile"?"Continue":"Verify")}</Text>
@@ -311,10 +323,11 @@ class OtpVerification extends React.Component {
                     {CardView(
                         <View style={styles.container}>
                             
-                                    <TouchableWithoutFeedback onPress={()=>this.props.closeModal() }>
+                                    <TouchableWithoutFeedback onPress={()=>this.state.mode=="mobile"?this.props.closeModal():this.setState({mode: "mobile"}) }>
                                         <View style={styles.header}>
                                             {/* <AuthHeader/>                         */}
-                                            <MaterialIcons name="chevron-left" size={25} color={theme.greyColor}/>
+                                            {/* <MaterialIcons name="chevron-left" size={25} color={theme.greyColor}/> */}
+                                            <BackArrow height={24} width={24}/>
                                         </View>
                                     </TouchableWithoutFeedback>
                                 {this.renderContent()}
@@ -346,12 +359,12 @@ const styles = StyleSheet.create({
         },
         header:
         {
-            flexDirection: 'row',
+            flexDirection: 'column',
             width: width,
             height: height*0.05,
-            alignItems: 'center', 
+            alignItems: 'flex-start', 
             margin:10,
-            justifyContent: 'space-between',
+            // justifyContent: 'space-between',
         },
         email:{
             color:theme.greyColor,

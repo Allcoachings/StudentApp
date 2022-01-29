@@ -20,7 +20,7 @@ class RenderAddCommentBox extends Component {
 }
 
   render() {
-      console.log("box")
+      // console.log("box")
     return(
         <View style={{flexDirection:'row', width: width, marginTop: 'auto',marginBottom:5}}>  
             <View style={{flex: 1,  flexDirection: 'row',borderTopWidth: 1, borderColor: this.state.comment!=''?(theme.accentColor):(theme.labelOrInactiveColor), justifyContent: 'space-between'}}>    

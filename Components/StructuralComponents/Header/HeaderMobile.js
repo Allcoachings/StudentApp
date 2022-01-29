@@ -8,7 +8,8 @@ import {
   TextInput,
   Modal,
   ScrollView,
-  FlatList
+  FlatList,
+  TouchableWithoutFeedback
 } from "react-native";
 import { EvilIcons, Feather } from "@expo/vector-icons";
 import { theme, appLogo, Assets, imageProvider } from "../../config";
@@ -16,6 +17,13 @@ import CardView from "../../Utils/CardView";
 import CustomActivtiyIndicator from '../../Utils/CustomActivtiyIndicator';
 import EmptyList from '../../Utils/EmptyList'
 import { connect } from "react-redux";
+import BackArrow from "../../Utils/Icons/BackArrow"
+import Search from "../../Utils/Icons/Search"
+import ReplyBackIcons  from "../../Utils/Icons/ReplyBackIcons"
+import Notification from "../../Utils/Icons/Notification"
+import SearchModal from "./SearchModal";
+import UserIcon from "./UserIcons";
+import NotificationIcon from "./NotificationIcon";
 // import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 class HeaderMobile extends React.Component {
   state = {
@@ -32,50 +40,54 @@ class HeaderMobile extends React.Component {
     if(response.status==200)
     {
         response.json().then(data=>
-        {
-            console.log("data",data)
+        { 
             this.setState({searchData:data, showResult: true, loadingData: false})
         })
     }
   }
 
   closeModal=()=> this.setState({search:false})
-  render() {
-     console.log("header replace ",this.props.replaceHeader )
+  render() { 
     return (
       // <KeyboardAwareScrollView>
-      <View style={[styles.container,!this.props.catInHeader?({marginTop: 10,marginBottom:5}):(null)]}>
+      <View style={[styles.container,!this.props.catInHeader?({marginBottom:5}):(null)]}>
         {this.props.replaceHeader ? (
             this.props.headerComponent
         ) : (
           <>
             {(
-              <View style={{flexDirection: 'row',alignItems: 'center'}}>
+              <View style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'space-between'}}>
              
              {this.props.iconName?(
               <TouchableOpacity 
                   onPress={this.props.btnHandler}
+                  style={{height:'100%',alignItems: 'center'}}
               >
-                    <Feather
-                        name={this.props.iconName}
-                        size={20}
-                        color={theme.secondaryColor}
-                    />
-                    </TouchableOpacity> 
+                    {this.props.iconName=="arrow-left"?
+                      (<View style={{marginLeft:10}}>
+                        <BackArrow height={24} width={24}/> 
+                      </View>)
+                  :(<Feather
+                      name={this.props.iconName}
+                      size={20}
+                      color={theme.secondaryColor}
+                  />)}
+              </TouchableOpacity> 
              ):(null)}
                     
                 
 
-                  <View style={!this.props.titleonheader?{alignItems: 'center',flex: 0.9}:{marginTop:2, flex: 0.9}}>
-                    {this.props.titleonheader ? 
+                  <View style={!(this.props.titleonheader||this.props.showTitle)?{alignItems: 'center',flex: 0.9}:{marginTop:2, flex: 0.9}}>
+                    {(this.props.titleonheader||this.props.showTitle) ? 
                     (
                      this.props.titleWithImage?(
                        <View style={{flexDirection: 'row',alignItems: 'center'}}>
                          <Image source={appLogo} style={{resizeMode:'contain',width: 25,height: 25}} />
                          <Text
+                         
+                            numberOfLines={1}
                             style={{
                               fontSize: 20, 
-                              numberOfLines: 1,
                               alignSelf: "flex-start",
                               fontFamily: 'Raleway_600SemiBold',
                               marginLeft: 1,
@@ -89,16 +101,20 @@ class HeaderMobile extends React.Component {
                      :
                      ( 
                         <Text
+                          numberOfLines={1}
                           style={{
                             fontSize: 18, 
-                            numberOfLines: 1,
+                            
+                            textAlignVertical:'top',
                             alignSelf: "flex-start",
                             fontFamily: 'Raleway_600SemiBold',
-                            marginLeft: 1,
-                            paddingBottom:5
+                            marginLeft: 20,
+                            paddingBottom:5,
+
                           }}
                         >
                           {this.props.titleonheader}
+                          
                         </Text>
                       )
                     ) : (
@@ -107,84 +123,92 @@ class HeaderMobile extends React.Component {
                       </View> 
                     )}
                   </View>
-
-                  {this.props.pinUnpinIcon?(
-                    <EvilIcons
-                      name={this.props.pinIconName}
-                      size={25}
-                      color={theme.secondaryColor}
-                  />
-                  ):(null)}
-
-
-                  {!this.props.noNotificationIcon?(
-                    <TouchableOpacity    onPress={() => this.props.rightIconOnPress()}>
-                      {this.props.notificationreplaceshare ? (
-                        <EvilIcons
-                          name={this.props.notificationreplaceshare}
-                          size={25}
-                          color={theme.secondaryColor}
-                          style={styles.notiIcon}
-                        />
-                      ) : (
-                        <EvilIcons
-                          name="bell"
-                          size={25}
-                          color={theme.secondaryColor}
-                          style={styles.notiIcon}
-                        />
-                      )}
-                  </TouchableOpacity> 
-                 ):(null)} 
+                  <View style={{justifyContent: 'flex-end',flexDirection: 'row',alignItems: 'center' ,width:'25%'}}>
 
 
 
-
-                  {!this.props.nosearchIcon?(
-                  <TouchableOpacity
-                    style={!this.props.noNotificationIcon?{}:{ marginLeft: "auto" }}
-                    onPress={() => this.setState({ search: true })}
-                  >
-                  <EvilIcons
-                    name="search"
-                    size={25}
-                    color={theme.secondaryColor}
-                    style={styles.searchIcon}
-                  />
-                </TouchableOpacity>
-                ):(this.props.searchReplace ? (
-                  <TouchableOpacity>
-                      <Text>Follow</Text>
-                  </TouchableOpacity>
-                ):(null))}
+                    {this.props.pinUnpinIcon?( 
+                      <TouchableOpacity onPress={this.props.pinUnpinFunction} style={{marginRight:10,height:"100%",alignItems: 'center'}}>
+                        <View >
+                            {this.props.pinIconName}
+                        </View>
+                      </TouchableOpacity>
+                    ):(null)}
 
 
-                 
-                 
+                    {!this.props.noNotificationIcon?(
+                  //     <TouchableOpacity style={{marginLeft:10,marginRight:15}}   onPress={() => this.props.rightIconOnPress()}>
+                  //     {this.props.notificationreplaceshare ? (
+                  //       <EvilIcons
+                  //         name={this.props.notificationreplaceshare}
+                  //         size={25}
+                  //         color={theme.secondaryColor}
+                  //         style={styles.notiIcon}
+                  //       />
+                  //     ) : (
+                  //       <Notification height={24} width={24}/>
+                  //     )}
+                  // </TouchableOpacity>
+                      <NotificationIcon
+                        rightIconOnPress={this.props.rightIconOnPress}
+                        notificationreplaceshare={this.props.notificationreplaceshare}
+                      /> 
+                  ):(null)} 
 
-                 {this.props.userIcon?(
-                  <TouchableOpacity
-                    style={{ marginLeft: "auto" }}
-                    onPress={this.props.userIcon}
-                  >
-                  <Image
-                    source={{uri:imageProvider(this.props.user.studentImage)}}
-                    style={{height: 20,width:20,backgroundColor:"blue",borderRadius:10}}
-                  />
-                </TouchableOpacity>
-                ):(
-                  this.props.showShareIcon?(
+
+
+
+                    {!this.props.nosearchIcon?(
                     <TouchableOpacity
-                      style={{ marginLeft: "auto" }}
+                      style={!this.props.noNotificationIcon?{}:{ marginLeft: 15 ,marginRight:15}}
+                      onPress={() => this.setState({ search: true })}
                     >
-                      <EvilIcons
-                        name="share-google"
-                        size={25}
-                        color={theme.secondaryColor}
-                        style={styles.searchIcon}
-                      />
+                    <Search height={24} width={24}/>
+                  </TouchableOpacity>
+                  ):(this.props.searchReplace ? (
+                    <TouchableOpacity>
+                        <Text>Follow</Text>
                     </TouchableOpacity>
                   ):(null))}
+
+
+                  
+                  
+
+                  {this.props.userIcon?(
+                  //   <TouchableOpacity
+                  //     style={{ marginLeft: 15,marginRight:0 }}
+                  //     onPress={this.props.userIcon}
+                  //   >
+                  //   <Image
+                  //     ref={(ref)=>this.userImageRef=ref}
+                  //     source={{uri:imageProvider(this.props.user.studentImage)}}
+                  //     style={{height: 25,width:25,backgroundColor:"blue",borderRadius:13}}
+                  //     onError={(props)=>{
+                  //       if(this.userImageRef)
+                  //       {
+                  //         this.userImageRef.setNativeProps({
+                  //           // source: [Assets.profile.profileIcon],
+                  //           src:[Image.resolveAssetSource(Assets.profile.profileIcon)],
+                  //         })
+                  //       }
+                  //     }}
+                  //   />
+                  // </TouchableOpacity>
+                  <UserIcon
+                    userIcon={this.props.userIcon}
+
+                  />
+                  ):(
+                    this.props.showShareIcon?(
+                      <TouchableOpacity
+                        style={{marginLeft:10  }}
+                        onPress={this.props.shareFun}
+                      >
+                          <ReplyBackIcons width={25} height={25}/>
+                      </TouchableOpacity>
+                    ):(null))}
+                </View>
               </View>
             )}
           </>
@@ -192,69 +216,14 @@ class HeaderMobile extends React.Component {
 
       {this.state.search?(
 
-        <Modal
-            transparent={false}
-            visible={this.state.search}
-            onShow={ () => { this.textInput.focus(); }}
-            onRequestClose={this.closeModal}>
-                
-                {CardView(
-                    <View style={{flex: 1,flexDirection: 'row',alignItems: 'center'}}>
-                        <TextInput
-                            placeholder="Search"
-                            ref={ (input) => { this.textInput = input; }}
-                            // autoFocus={true}
-                            style={styles.searchInput}
-                            onChangeText={(value) => this.setState({ searchWord: value })}
-                        />
-                        {this.state.searchWord!=''?(
-                            this.state.filterData?(
-                                <TouchableOpacity onPress={() => this.setState({ searchWord: '', offset: 0, filterData: false, showResult: false, searchData: [] },() =>this.textInput.clear())}>
-                                    <EvilIcons
-                                      name="x"
-                                      size={20} 
-                                      color={theme.secondaryColor}
-                                      style={styles.searchIcon}
-                                    />
-                                </TouchableOpacity>
-                            ):(
-                                <TouchableOpacity onPress={()=>this.setState({filterData: true, loadingData: true},()=>this.props.searchFun(this.state.offset, this.state.searchWord, this.searchCallback))}>
-                                    <EvilIcons 
-                                      name={'chevron-right'} 
-                                      size={15} 
-                                      color={theme.labelOrInactiveColor} 
-                                      style={styles.searchIcon}
-                                    />
-                                </TouchableOpacity>
-                            )):(
-                                <EvilIcons 
-                                  name={'search'} 
-                                  size={15} 
-                                  color={theme.labelOrInactiveColor} 
-                                  style={styles.searchIcon}
-                                />
-                        )} 
-                    </View>,
-                    {width:'95%', height:40,margin:10},2
-                )}
-                {this.state.loadingData?(
-                    <CustomActivtiyIndicator mode="testItem" />
-                  ):(
-                    this.state.showResult?(
-                      <FlatList 
-                        data={this.state.searchData}  
-                        showsVerticalScrollIndicator={false} 
-                        renderItem={this.props.singleItem}
-                        // numColumns={3}
-                        keyExtractor={item => item.id}
-                        ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
-                      />
-                ):(
-                  null
-                ))}
-                
-                 
-          </Modal>
+        <SearchModal
+          isVisible={this.state.search}
+          closeModal={()=>this.setState({search: false})}
+          searchFun={this.props.searchFun}
+          singleItem={this.props.singleItem}
+          rowListing={this.props.rowListing}
+          
+        />
           ):(null)}
       </View>
       // </KeyboardAwareScrollView>
@@ -264,16 +233,18 @@ class HeaderMobile extends React.Component {
 
 const styles = StyleSheet.create({
   container: { 
-    flex: 1,
-    flexDirection: "row",
+    // flex: 1,
+    // flexDirection: "row",
     backgroundColor: theme.primaryColor,
+    marginHorizontal:5
     // justifyContent: 'space-between',
-    alignItems: "center", 
+    // alignItems: "center", 
+
   },
   headerSearch: {
     flex: 1,
     margin: 10,
-    height: 40,
+    height: 30,
     // borderColor: theme.secondaryColor,
     // borderWidth: 1,
     // borderRadius: 5,

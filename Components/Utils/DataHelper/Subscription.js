@@ -49,8 +49,8 @@ import {serverApiUrl} from '../../config'
 
     export const checkSubscription=(studentId,insId,callback)=>
     { 
-        console.log("insIdhhaaallooo",insId)
-        console.log("studentIdhhaaalllooo",studentId)
+        // console.log("insIdhhaaallooo",insId)
+        // console.log("studentIdhhaaalllooo",studentId)
         let headers = new Headers(); 
         headers.append('Content-Type', 'application/json');  
         headers.append('Access-Control-Allow-Origin', serverApiUrl);
@@ -115,9 +115,32 @@ import {serverApiUrl} from '../../config'
         .catch((error)=>{console.log(error)})
     }
 
+    export const followUnFollow=(studentId,insId,status,callback)=>
+    {
+
+        // var formData   = new FormData(); 
+        // formData.append("fetch_banners",'true') 
+        // formData.append("offset",offset) 
+        // formData.append("data_limit",limit)  
+        let headers = new Headers(); 
+        headers.append('Content-Type', 'application/json');  
+        headers.append('Access-Control-Allow-Origin', serverApiUrl);
+        headers.append('Access-Control-Allow-Credentials', 'true'); 
+        headers.append('GET', 'POST', 'OPTIONS'); 
+
+            fetch(serverApiUrl+"subscription/updateIsNotificationsOn/"+studentId+"/"+insId+"/"+status,
+        {
+            method: 'PUT',  
+            headers,
+           
+        })
+        .then((response)=>callback(response)) 
+        .catch((error)=>{console.log(error)})
+    }
+
     export const pinInstitute=(obj,callback)=>
     {
-        console.log(obj)
+        // console.log(obj)
         let headers = new Headers(); 
         headers.append('Content-Type', 'application/json');  
         headers.append('Access-Control-Allow-Origin', serverApiUrl);
@@ -181,6 +204,7 @@ import {serverApiUrl} from '../../config'
         headers.append('Access-Control-Allow-Credentials', 'true'); 
         headers.append('GET', 'POST', 'OPTIONS'); 
 
+        // console.log(serverApiUrl+'student/pin/student/'+page+'/'+pageSize)
         fetch(serverApiUrl+'student/pin/student/'+page+'/'+pageSize,
         {
             method: 'POST',  

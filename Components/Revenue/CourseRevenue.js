@@ -22,14 +22,14 @@ const CourseRevenue = props => {
 useEffect(() => {
     setIsLoading(true)
     const transactionCallback = (response) => {
-        console.log(response.status);
+        // console.log(response.status);
             if(response.status==200)
             {
                 response.json().then(data=>
                     {
                          
                         setCourseTransaction(data)
-                        console.log("transaction data",data)
+                        // console.log("transaction data",data)
                         setIsLoading(false)
                     })
                 
@@ -67,6 +67,7 @@ const renderHeader=(rowItem)=>
         btnHandler={() => { props.navigation.goBack()}}
         titleonheader={"Course Revenue"}
         nosearchIcon={true}
+        navigation={this.props.navigation}
         noNotificationIcon={true}
     >
           <ScrollView>
@@ -115,7 +116,7 @@ const renderHeader=(rowItem)=>
 
 
                                 {courseTransaction.map((item,index) => {
-                                    console.log(item)
+                                    // console.log(item)
                             return(        <DataTable.Row key={index}>
                                             <DataTable.Cell>{item.student.name}</DataTable.Cell>
                                             <DataTable.Cell  >{item.transaction.orderId}</DataTable.Cell>

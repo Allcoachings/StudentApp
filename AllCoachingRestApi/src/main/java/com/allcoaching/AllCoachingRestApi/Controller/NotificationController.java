@@ -44,10 +44,19 @@ public class NotificationController {
     }
 
     @CrossOrigin(origins = "*")
-    @PostMapping("send/notification")
+    @PostMapping("/send/notification")
     public ResponseEntity<Object>  sendNotification(@RequestBody NotificationDataDto notificationDataDto)
     {
           notificationService.sendNotification(notificationDataDto);
+
+          return  ResponseEntity.ok().build();
+    }
+
+    @CrossOrigin(origins = "*")
+    @PutMapping("/update/notificationSeenStatus/{isSeen}/{id}")
+    public ResponseEntity<Object>  updateNotificationSeenStatus(@PathVariable boolean isSeen,@PathVariable long id)
+    {
+          notificationService.updateNotificationSeenStatus(isSeen,id);
 
           return  ResponseEntity.ok().build();
     }

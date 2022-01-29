@@ -29,6 +29,10 @@ public interface InsSubscriptionRepo extends PagingAndSortingRepository<InsSubsc
     @Query("UPDATE Institute set followersCount = followersCount+1 where id=:id")
     void increaseInstituteFollowers(long id);
 
+   @Modifying
+    @Query("UPDATE InsSubscription set isNotificationOn =:status where studentId=:studentId and insId=:insId")
+    void updateIsNotificationsOn(long studentId,long insId,boolean status);
+
 
    @Modifying
    @Query("UPDATE Institute set followersCount = followersCount-1 where id=:id")

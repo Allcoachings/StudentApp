@@ -34,16 +34,19 @@ public class InsSubscriptionService {
 
     }
 
-    public boolean checkSubscription(InsSubscription insSubscription)
+    public Optional<InsSubscription> checkSubscription(InsSubscription insSubscription)
     {
 
         Optional<InsSubscription> insSubscription_checked= insSubscriptionRepo.findByStudentIdAndInsId(insSubscription.getStudentId(),insSubscription.getInsId());
-        return insSubscription_checked.isPresent();
+        return insSubscription_checked;
 
     }
 
 
-
+    public void updateIsNotificationsOn(long studentId,long insId,boolean status)
+    {
+        insSubscriptionRepo.updateIsNotificationsOn(studentId,insId,status);
+    }
     public Iterable<Institute> getStudentSubscriptionList(long studentId,int page,int pageSize)
     {
         Page<Institute> pagedResult = insSubscriptionRepo.findStudentSubscriptionList(studentId, PageRequest.of(page,pageSize));

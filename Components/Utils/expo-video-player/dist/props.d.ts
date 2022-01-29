@@ -47,7 +47,7 @@ declare type DefaultProps = {
     videoTitle: {
          title?: string;
          titleStyle?:TextStyle;
-         titleIcon?:string;
+         titleIcon?:JSX.Element;
          titleIconOnPress?:()=>void;
     };
     fullscreen: {

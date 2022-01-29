@@ -89,7 +89,7 @@ export   const validateLogin=(email,password,callback,passMode='hashed')=>
             headers.append('Access-Control-Allow-Credentials', 'true');
 
             headers.append('GET', 'POST', 'OPTIONS'); 
-                console.log(serverApiUrl+'institute/validate/',JSON.stringify({email,password}))
+                // console.log(serverApiUrl+'institute/validate/',JSON.stringify({email,password}))
              fetch(serverApiUrl+'/institute/validate/',
             {
                 method: 'POST',  
@@ -112,7 +112,7 @@ export const fetch_coachingByCategory =(category,offset,dataLimit,callback)=>
             headers.append('Access-Control-Allow-Origin', "*");
             headers.append('Access-Control-Allow-Credentials', 'true'); 
             headers.append('GET', 'POST', 'OPTIONS');  
-            console.log(serverApiUrl+'institute/category/'+category+"/"+offset+"/"+dataLimit)
+            // console.log(serverApiUrl+'institute/category/'+category+"/"+offset+"/"+dataLimit)
              fetch(serverApiUrl+'institute/category/'+category+"/"+offset+"/"+dataLimit,
             {
                 method: 'GET',  
