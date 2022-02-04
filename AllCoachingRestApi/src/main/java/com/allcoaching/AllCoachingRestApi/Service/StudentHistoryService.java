@@ -67,4 +67,39 @@ public class StudentHistoryService {
             return new ArrayList<StudentHistoryDto>();
         }
     }
+
+    public  Iterable<StudentHistoryDto> findAllByStudentIdWithType(long id,String type,int page,int pageSize)
+    {
+        Page<StudentHistory> pagedResult = studentHistoryRepo.findByStudentIdAndType(id, type,PageRequest.of(page,pageSize));
+        if(pagedResult.hasContent())
+        {
+             Iterable<StudentHistory> studentHistories =  pagedResult.getContent();
+             List<StudentHistoryDto> studentHistoryDtos = new ArrayList<>();
+
+             studentHistories.forEach(item->
+             {
+                 switch (item.getType())
+                 {
+                     case "document":
+
+                         studentHistoryDtos.add(new StudentHistoryDto(item.getType(),courseDocumentService.findById(item.getItemId())));
+
+                         break;
+                     case "video":
+                         studentHistoryDtos.add(new StudentHistoryDto(item.getType(),courseVideoService.findById(item.getItemId())));
+                         break;
+                     case "testSeries":
+                         studentHistoryDtos.add(new StudentHistoryDto(item.getType(),insTestSeriesService.findById(item.getItemId())));
+                         break;
+
+
+                 }
+             });
+
+             return  studentHistoryDtos;
+        }else
+        {
+            return new ArrayList<StudentHistoryDto>();
+        }
+    }
 }

@@ -31,7 +31,7 @@ public class Transaction {
     private String gatewayResponseMsg;
     private String status;
     private String productType;//COURSE or Any other digital product of all coaching
-
+    private boolean isSeenByAdmin;
 
 
     public Transaction(long insId, long studentId, long courseId, String amount, String orderId, String status,String productType) {

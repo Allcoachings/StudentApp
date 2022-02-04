@@ -47,10 +47,26 @@ public class TransactionController {
     }
 
     @CrossOrigin(origins = "*")
+    @PutMapping("updateTransactionSeenStatus")
+    public ResponseEntity<Object> updateTransactionSeenStatus(@RequestParam(name = "transactionId") long transactionId,@RequestParam(name = "status") boolean status)
+    {
+        transactionService.updateTransactionStatus(transactionId,status);
+        return ResponseEntity.ok().build();
+
+    }
+    @CrossOrigin(origins = "*")
     @GetMapping("byinsId/{insId}/{offset}/{pageLimit}")
     public Iterable<TransactionDto> fetchByInsId(@PathVariable long insId,@PathVariable int offset, @PathVariable int pageLimit)
     {
         return transactionService.fetchByInsId(insId,offset,pageLimit);
+
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("UnSeenTransactionCount/")
+    public long unseenTransactionCount()
+    {
+        return transactionService.getAdminUnSeenTransactionCount();
 
     }
 

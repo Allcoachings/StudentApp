@@ -93,6 +93,17 @@ public class TransactionService {
             transactionRepo.completeTransaction(status,gatewayTxnId,responseMsg,orderId);
     }
 
+    public  long getAdminUnSeenTransactionCount()
+    {
+        return  transactionRepo.countByIsSeenByAdmin(false);
+    }
+
+
+    public void updateTransactionStatus(long transactionId,boolean status)
+    {
+        transactionRepo.updateTransactionStatus(transactionId,status);
+    }
+
     //fetch transaction details by order id
     public Optional<Transaction> findByOrderId(String orderId)
     {

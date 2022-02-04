@@ -5,20 +5,25 @@ import com.allcoaching.AllCoachingRestApi.Entity.Notification;
 import com.allcoaching.AllCoachingRestApi.Entity.Student;
 import com.allcoaching.AllCoachingRestApi.Respository.NotificationRepo;
 import com.allcoaching.AllCoachingRestApi.Utils.Admin.AdminConfig;
+import com.allcoaching.AllCoachingRestApi.Utils.Expo.ExpoNotification;
 import com.allcoaching.AllCoachingRestApi.dto.NotificationDataDto;
 import com.allcoaching.AllCoachingRestApi.dto.NotificationDto;
 import com.allcoaching.AllCoachingRestApi.dto.NotificationSenderDto;
+import io.github.jav.exposerversdk.PushClientException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class NotificationService {
+
+
+
+
+
     @Autowired
     private NotificationRepo notificationRepo;
 
@@ -121,14 +126,103 @@ public class NotificationService {
     }
 
 
-    public  void sendNotification(NotificationDataDto notificationDataDto)
+    public  void sendNotification(NotificationDataDto notificationDataDto) throws PushClientException
     {
-            System.out.println("notification sent");
+
+            String targetGroup = notificationDataDto.getTargetGroup();
+            String targetGroupType = notificationDataDto.getTargetGroupType();
+            List<String> expoTokens = null;
+            ExpoNotification expoNotification = new ExpoNotification();
+            expoNotification.setTitle(notificationDataDto.getTitle());
+            expoNotification.setBody(notificationDataDto.getBody());
+            Map<String,Object> notificationData = new HashMap<>();
+
+            notificationData.putIfAbsent("url",notificationDataDto.getUrl());
+            //any other data to be sent ot the users
+            notificationData.putIfAbsent("data",notificationDataDto.getData());
+
+            expoNotification.setData(notificationData);
+
+            switch (targetGroupType)
+            {
+                case "studentsEnrolledInCategory":
+                    expoTokens = getExpoTokenForStudentsEnrolledInCategory(Long.valueOf(targetGroup));
+                    break;
+                case "allUsers":
+                    expoTokens = getExpoTokenForAllStudent(0,1000);
+                    break;
+                case "allInstitutes":
+                    expoTokens = getExpoTokenForAllIns(0,1000);
+                    break;
+                case "institutesOfCategory":
+                    expoTokens = getExpoTokenForInsEnrolledInCategory(Long.valueOf(targetGroup));
+                    break;
+                case "singleUser":
+                    expoTokens = getExpoTokenForStudent(Long.valueOf(targetGroup));
+                    break;
+                case "singleInstitute":
+                    expoTokens = getExpoTokenForIns(Long.valueOf(targetGroup));
+                    break;
+            }
+            expoNotification.getTo().addAll(expoTokens);
+            expoNotification.sendNotification();
     }
 
     public void updateNotificationSeenStatus(boolean isSeen,long id)
     {
         notificationRepo.updateNotificationStatus(isSeen,id);
     }
+
+
+
+    private List<String> getExpoTokenForStudentsEnrolledInCategory(long category)
+    {
+        return studentService.getExpoTokenOfStudentsEnrolledInCategory(category);
+    }
+
+    private List<String> getExpoTokenForStudent(long id)
+    {
+
+        ArrayList<String> tokens = new ArrayList<String>();
+        tokens.add(studentService.getExpoTokenOfStudent(id));
+        return tokens;
+    }
+    private List<String> getExpoTokenForAllStudent(int page,int pageSize)
+    {
+        Page<String> pagedResult  = studentService.getExpoTokenOfAllStudents(page,pageSize);;
+        if(pagedResult.hasContent())
+        {
+            return  pagedResult.getContent();
+        }else
+        {
+            return new ArrayList<>();
+        }
+    }
+
+    private List<String> getExpoTokenForInsEnrolledInCategory(long category)
+    {
+        return instituteService.getExpoTokenOfInsEnrolledInCategory(category);
+    }
+
+    private List<String> getExpoTokenForIns(long id)
+    {
+
+        ArrayList<String> tokens = new ArrayList<String>();
+        tokens.add(instituteService.getExpoTokenOfIns(id));
+        return tokens;
+    }
+    private List<String> getExpoTokenForAllIns(int page,int pageSize)
+    {
+        Page<String> pagedResult  = instituteService.getExpoTokenOfAllIns(page,pageSize);
+        if(pagedResult.hasContent())
+        {
+            return  pagedResult.getContent();
+        }else
+        {
+            return new ArrayList<>();
+        }
+    }
+
+
 
 }

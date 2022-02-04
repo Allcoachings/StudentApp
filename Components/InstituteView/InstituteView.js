@@ -148,10 +148,12 @@ class InstituteView extends React.Component {
     }
 
     checkPinCallBack=(response)=>{
+        console.log("pindata success", response.status)
         if(response.status==200)
         {
+            // console.log("pindata success", data)
             response.json().then(data=>{
-                // // console.log("pindata success", data)
+                console.log("pindata success", data)
                 if(data&&data.id)
                 {
                     this.setState({checkPinned: true, pinId: data.id})
@@ -1216,7 +1218,7 @@ class InstituteView extends React.Component {
                                     </View>
                                     <View>  
                                         {this.state.subscribe?(
-                                            <View style={{flexDirection:'row',justifyContent: 'space-between'}}>
+                                            <View style={{flexDirection:'row',justifyContent: 'space-between',alignItems: 'center'}}>
                                                 <View style={{marginRight:5}}>
                                                 {this.state.isNotificationOn?
                                                 (

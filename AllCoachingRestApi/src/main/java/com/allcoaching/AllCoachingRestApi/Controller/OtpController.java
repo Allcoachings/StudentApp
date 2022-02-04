@@ -18,6 +18,7 @@ public class OtpController {
     @GetMapping("/generate/{mobileNumber}")
     public Otp generateOtp(@PathVariable String mobileNumber)
     {
+
         return otpService.generateOtp(mobileNumber);
     }
 
@@ -30,9 +31,9 @@ public class OtpController {
         {
             otpService.deleteOtp(otp);
         }
-//        return  isValidOtp;
+        return  isValidOtp;
 
-        return true;
+//        return true;
     }
 
 

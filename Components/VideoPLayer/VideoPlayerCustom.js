@@ -13,7 +13,7 @@ import moment from 'moment'
 import VideoCommentItem from './VideoCommentItem'
 import AddComment from './AddComment'
 import { fetchVideoComments, updateVideoView } from '../Utils/DataHelper/CourseVideos'
-import BackArrowWhite from '../Utils/Icons/BackArrowWhite'
+import BackArrow from '../Utils/Icons/BackArrow'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import VideoSettingModal from './VideoSettingModal'
 import VideoPlayerSideBar from './VideoPlayerSideBar'
@@ -50,7 +50,9 @@ export default VideoPlayerCustom=(props)=>
         setComments([commentObj,...comments])
     }
 
-    useEffect(()=>{
+    useEffect(
+        
+        ()=>{
             (async () => {
                 const videoStatusString  = await AsyncStorage.getItem(props.route.params.videoUrl)
                 // console.log(videoStatusString,"videoStatusString")
@@ -253,9 +255,9 @@ export default VideoPlayerCustom=(props)=>
 
                     style={{
                         videoBackgroundColor: 'black',
-                        height: inFullscreen ? (isSideScreenVisible||isScreenConfigChanged )?Dimensions.get('window').width/1.78:Dimensions.get('window').width : 200,
+                        height: inFullscreen ? (isSideScreenVisible||isScreenConfigChanged )?Dimensions.get('window').width/2:Dimensions.get('window').width : 200,
                         // height: inFullscreen ? 200 : 200,
-                        width: inFullscreen ? isSideScreenVisible?Dimensions.get('window').height/1.1:isScreenConfigChanged?(Dimensions.get('window').height*2):Dimensions.get('window').height :  Dimensions.get('window').width,
+                        width: inFullscreen ? isSideScreenVisible?Dimensions.get('window').height/0.85:isScreenConfigChanged?(Dimensions.get('window').height*2):Dimensions.get('window').height :  Dimensions.get('window').width,
                     }}
 
 
@@ -269,7 +271,7 @@ export default VideoPlayerCustom=(props)=>
                     }}
 
                     videoTitle={{
-                        titleIcon:inFullscreen?<MaterialCommunityIcons name="chevron-down" size={30} color={theme.primaryColor}/>:<BackArrowWhite height={20} width={20}/>,//MaterialCommuntyIcons
+                        titleIcon:inFullscreen?<MaterialCommunityIcons name="chevron-down" size={30} color={theme.primaryColor}/>:<BackArrow height={20} width={20}/>,//MaterialCommuntyIcons
                         titleIconOnPress:inFullscreen?exitFullscreen:()=>backPressHandler("selfBackPress"),
                         title:props.route.params.videoTitle,
                         
@@ -303,7 +305,7 @@ export default VideoPlayerCustom=(props)=>
                 />
                 
 
-                    <View style={{flexDirection: 'row',height: '100%' ,width: isSideScreenVisible?'50%':20}}>
+                    <View style={{flexDirection: 'row',height: '100%' ,width: isSideScreenVisible?'30%':0}}>
                                         
                     {isSettingModalVisible&&inFullscreen?(
                         
@@ -334,8 +336,8 @@ export default VideoPlayerCustom=(props)=>
                         flatlistHeight={Dimensions.get('window').width}
                       />
                     ):(null)} 
-
-                    {/* <View style={{}}>
+{/* 
+                    <View style={{}}>
                         {CardView(
                         <VideoPlayerSideBar 
                             setIsSideScreenVisible={setIsSideScreenVisible} 

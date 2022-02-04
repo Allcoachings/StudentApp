@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -110,6 +111,21 @@ public class StudentService {
         }
     }
 
+
+    public List<String> getExpoTokenOfStudentsEnrolledInCategory(long categoryId)
+    {
+        return studentRepo.getExpoTokenOfStudentsEnrolledInCategory(categoryId);
+    }
+
+    public  String getExpoTokenOfStudent(long id)
+    {
+        return studentRepo.getExpoTokenOfStudent(id);
+    }
+
+    public Page<String> getExpoTokenOfAllStudents(int page,int pageSize)
+    {
+        return studentRepo.getExpoTokenOfAllStudents(PageRequest.of(page,pageSize));
+    }
 
 
 

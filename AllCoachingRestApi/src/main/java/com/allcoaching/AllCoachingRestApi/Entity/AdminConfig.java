@@ -8,20 +8,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-@Data
-@ToString
-@NoArgsConstructor
 @Entity
-public class Admin  {
+@NoArgsConstructor
+@ToString
+@Data
+public class AdminConfig {
 
     @Id
     @GeneratedValue
     private long id;
 
-    private  String email;
-    private  String password;
-
-
-
+    private String paymentCommission;
 
 }

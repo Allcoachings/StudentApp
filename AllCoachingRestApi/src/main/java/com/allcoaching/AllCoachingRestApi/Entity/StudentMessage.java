@@ -46,6 +46,10 @@ public class StudentMessage {
     private boolean forAdmin;
 
 
+    //to toggle between seen or unseen by admin only those which are there for admin
+    private boolean isSeenByAdmin=false;
+
+
     //feedback , instituteCourseRelated, helpAndSupport
     private String messageType;
 

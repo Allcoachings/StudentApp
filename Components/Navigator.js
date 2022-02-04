@@ -55,7 +55,7 @@ function StackNavigation(authStatus) {
                         <>
                             
                             
-                            <Stack.Screen name="Home" component={tabNavigator} />  
+                            <Stack.Screen name="Home" component={TabNavigator} />  
                             <Stack.Screen name="Institute"  component={InstituteView} />
                             <Stack.Screen name="StudentInsView"  component={InstituteView} />
                             <Stack.Screen name="TestSeries" component={TestSeriesIns}  /> 
@@ -94,7 +94,7 @@ function StackNavigation(authStatus) {
   }
 
 
-function tabNavigator(){
+function TabNavigator(){
     const authStatus =    useSelector(state=>state.user.userAuthStatus)
    return( <Tab.Navigator screenOptions={{ headerShown: false}}
                     tabBar={props => <TabBar {...props} authStatus={authStatus} />}

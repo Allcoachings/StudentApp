@@ -125,7 +125,7 @@ class Home extends React.Component {
                         </Text>
                     </View>
                     <View style={{display:'flex', flexDirection: 'row', alignItems: 'center'}}>
-                        <Text style={{alignSelf:'flex-start', color: theme.greyColor,fontSize:14, marginRight: 2}}>{item.totalRatingCount>0?((item.totalRating/item.totalRatingCount).toFixed(2)):(0)}</Text> 
+                        <Text style={{alignSelf:'flex-start', color: theme.greyColor,fontSize:12, marginRight: 2,}}>{item.totalRatingCount>0?((item.totalRating/item.totalRatingCount).toFixed(2)):(0)}</Text> 
                         <AirbnbRating 
                             starContainerStyle={styles.instituteRating} 
                             count={5}
@@ -324,7 +324,8 @@ const styles = StyleSheet.create({
                                 flexWrap:'wrap',
                                 width:(windowWidth/3)-10, 
                                 fontSize:12,
-                                height:30
+                                height:30,
+                                marginTop:5,
                             },
                             instituteRating:
                             {

@@ -4,10 +4,7 @@ import com.allcoaching.AllCoachingRestApi.Service.FeedReportService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
@@ -19,11 +16,37 @@ public class FeedReportController {
     @Autowired
     private FeedReportService feedReportService;
 
+    @CrossOrigin(origins = "*")
     @PostMapping("/report")
     public ResponseEntity<Object> addFeedReport(@RequestBody FeedReport feedReport)
     {
         FeedReport feedReport_saved = feedReportService.addReport(feedReport);
         URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(feedReport_saved.getId()).toUri();
         return ResponseEntity.created(location).build();
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("getReports/{page}/{pageSize}")
+    public Iterable<FeedReport> getFeedReport(@PathVariable int page,@PathVariable int pageSize)
+    {
+        return  feedReportService.getFeedReports(page,pageSize);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("UnSeenFeedReportCount")
+    public long UnSeenFeedReportCount()
+    {
+        return feedReportService.getFeedReportsUnseenCount();
+
+    }
+
+
+    @CrossOrigin(origins = "*")
+    @PutMapping("updateFeedReportSeenStatus")
+    public ResponseEntity<Object> updateTransactionSeenStatus(@RequestParam(name = "reportId") long reportId,@RequestParam(name = "status") boolean status)
+    {
+        feedReportService.updateReportStatus(reportId,status);
+        return ResponseEntity.ok().build();
+
     }
 }

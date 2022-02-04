@@ -23,6 +23,8 @@ public class FeedReport {
     private String text;
     private String description;
 
+    private boolean isSeenByAdmin=false;
+
 
     @OneToOne(targetEntity = Feed.class,fetch = FetchType.EAGER,cascade = CascadeType.DETACH)
     @JoinColumn(name="feedId",referencedColumnName = "id")

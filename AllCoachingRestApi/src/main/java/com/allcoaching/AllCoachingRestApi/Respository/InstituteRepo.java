@@ -113,4 +113,13 @@ public interface InstituteRepo extends PagingAndSortingRepository<Institute,Long
     int decreaseTotalRating(long id,int rating);
 
 
+    @Query("Select i.expoToken from  Institute i where  i.category=:categoryId")
+    List<String> getExpoTokenOfInsEnrolledInCategory(long categoryId);
+
+    @Query("Select expoToken from Institute  where id =:insId")
+    String getExpoTokenOfIns(long insId);
+
+    @Query("Select expoToken from Institute")
+    Page<String> getExpoTokenOfAllIns(Pageable pageable);
+
 }

@@ -2,6 +2,8 @@ package com.allcoaching.AllCoachingRestApi.Service;
 
 import com.allcoaching.AllCoachingRestApi.Entity.Otp;
 import com.allcoaching.AllCoachingRestApi.Respository.OtpRepo;
+import com.allcoaching.AllCoachingRestApi.Utils.SendSms;
+import com.allcoaching.AllCoachingRestApi.Utils.Sms;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,9 @@ public class OtpService {
         long prefix=otpRepo.count()+1;
         String otp = prefix+""+suffix;
         otp = otp.substring(0,6);
+
+        SendSms sms = new SendSms();
+        sms.sendOptOverMessage(mobileNumber,otp);
         return otpRepo.save(new Otp(mobileNumber,otp));
     }
 

@@ -8,6 +8,7 @@ import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,8 +50,12 @@ public class AdminBlogController {
             imageAddr += fileUploadService.storeFile(featureImage);
             AdminBlogs adminBlogs = new AdminBlogs(blogTitle,blogBody,imageAddr);
             AdminBlogs adminBlogs_saved =  adminBlogService.addBlog(adminBlogs);
-            URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(adminBlogs_saved).toUri();
-            return ResponseEntity.created(location).build();
+            URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(adminBlogs_saved.getId()).toUri();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Expose-Headers", "Location");
+
+        return ResponseEntity.created(location).headers(headers).build();
     }
 
     @CrossOrigin(origins = "*")
@@ -77,9 +82,7 @@ public class AdminBlogController {
     @PutMapping("/withoutimage")
     public ResponseEntity<Object>  updateBlogWithImage( @RequestBody AdminBlogs adminBlogs)
     {
-
          adminBlogService.addBlog(adminBlogs);
-
         return ResponseEntity.ok().build();
     }
 }

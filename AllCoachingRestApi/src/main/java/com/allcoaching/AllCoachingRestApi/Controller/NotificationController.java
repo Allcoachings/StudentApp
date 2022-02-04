@@ -47,7 +47,14 @@ public class NotificationController {
     @PostMapping("/send/notification")
     public ResponseEntity<Object>  sendNotification(@RequestBody NotificationDataDto notificationDataDto)
     {
-          notificationService.sendNotification(notificationDataDto);
+
+        try {
+            notificationService.sendNotification(notificationDataDto);
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
 
           return  ResponseEntity.ok().build();
     }

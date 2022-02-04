@@ -27,6 +27,12 @@ public class StudentHistoryController {
     {
         return studentHistoryService.findAllByStudentId(studentId,offset,data_limit);
     }
+    @CrossOrigin(origins = "*")
+    @GetMapping("fetch/{studentId}/{type}/{offset}/{data_limit}")
+    public   Iterable<StudentHistoryDto> findStudentHistoryWithType(@PathVariable long studentId,@PathVariable String type,@PathVariable int offset,@PathVariable  int data_limit)
+    {
+        return studentHistoryService.findAllByStudentIdWithType(studentId,type,offset,data_limit);
+    }
 
     @CrossOrigin(origins = "*")
     @PostMapping("/save")

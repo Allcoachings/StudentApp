@@ -24,7 +24,7 @@ const PageStructure =(props)=> {
     
     useEffect(() => { 
             dispatch({type: SET_HEADER_PROPS,payload:{props}})
-            console.log("props updated successfully")
+            // console.log("props updated successfully")
         
     },[props])
 

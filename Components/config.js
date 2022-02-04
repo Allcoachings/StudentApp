@@ -49,9 +49,9 @@ export const paytmConfig={
 }
 
 //online serverBaseUrl
-// export const serverBaseUrl="http://3.110.215.40:8090/"; 
+export const serverBaseUrl="http://3.110.215.40:8090/"; 
 //local server base url
-export const serverBaseUrl="http://192.168.83.84:8080/"; 
+// export const serverBaseUrl="http://192.168.83.84:8080/"; 
 export const allcoachingAdminUrl="http://3.110.215.40:3000/"; 
 export const  shareTextInstitute="Text here";
 export const  shareTextFeed="Text here";

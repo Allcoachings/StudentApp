@@ -11,6 +11,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -33,6 +34,17 @@ public interface StudentRepo extends PagingAndSortingRepository<Student,Long> {
     @Modifying
     @Query("UPDATE Student set expoToken=:token where id=:id")
     void updatePushToken(long id,String token);
+
+
+
+    @Query("Select s.expoToken from Student s , Institute i , InsReview ir where ir.insId=i.id and i.category=:categoryId and ir.studentId=s.id")
+    List<String> getExpoTokenOfStudentsEnrolledInCategory(long categoryId);
+
+    @Query("Select expoToken from Student where id =:studentId")
+    String getExpoTokenOfStudent(long studentId);
+
+    @Query("Select expoToken from Student")
+    Page<String> getExpoTokenOfAllStudents(Pageable pageable);
 
     Page<Student> findByNameContainingIgnoreCase(String name, Pageable pageable);
     Page<Student> findByEmailContainingIgnoreCase(String email,Pageable pageable);

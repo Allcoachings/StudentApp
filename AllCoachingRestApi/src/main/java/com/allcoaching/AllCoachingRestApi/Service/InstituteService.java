@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -169,6 +170,20 @@ public  Iterable<Institute> getAllInstituteByStatus(Integer status,Integer pageN
             return null;
         }
 
+    }
+    public List<String> getExpoTokenOfInsEnrolledInCategory(long categoryId)
+    {
+        return instituteRepo.getExpoTokenOfInsEnrolledInCategory(categoryId);
+    }
+
+    public  String getExpoTokenOfIns(long id)
+    {
+        return instituteRepo.getExpoTokenOfIns(id);
+    }
+
+    public Page<String> getExpoTokenOfAllIns(int page,int pageSize)
+    {
+        return instituteRepo.getExpoTokenOfAllIns(PageRequest.of(page,pageSize));
     }
 
 

@@ -12,4 +12,5 @@ public interface StudentHistoryRepo extends PagingAndSortingRepository<StudentHi
 
 
     Page<StudentHistory> findByStudentId(long studentId,Pageable pageable);
+    Page<StudentHistory> findByStudentIdAndType(long studentId,String type,Pageable pageable);
 }

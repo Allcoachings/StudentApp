@@ -263,9 +263,9 @@ public class InsTestSeriesService {
 
 
     }//update api to update direct question details by id
-    public void updateQuestionDetails(String exp,String correctOpt,float correctMarks,float wrongMarks,long qid)
+    public void updateQuestionDetails(String exp,String correctOpt, long qid)
     {
-         insTestSeriesQuestionsRepo.updateQuestionDetails(correctOpt,exp,correctMarks,wrongMarks,qid);
+         insTestSeriesQuestionsRepo.updateQuestionDetails(correctOpt,exp,qid);
 
 
     }

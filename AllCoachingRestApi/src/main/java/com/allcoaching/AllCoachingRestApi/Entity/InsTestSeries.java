@@ -29,6 +29,9 @@ public class InsTestSeries {
     private boolean published;
     private boolean hidden;
     private boolean isAdmin;
+    private float correctMarks;
+    private float wrongMarks;
+
 
 
     @DateTimeFormat(pattern = "dd/MM/yyyy")

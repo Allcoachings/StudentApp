@@ -202,7 +202,7 @@ public class InsTestSeriesController {
     @PutMapping("/update/series/question/details/{id}")
     public ResponseEntity<Object> updateSeriesQuestionDetailsById(@RequestBody InsTestSeriesQuestions question)
     {
-        insTestSeriesService.updateQuestionDetails(question.getExplanation(),question.getCorrectOpt(),question.getCorrectMarks(),question.getWrongMarks(),question.getId());
+        insTestSeriesService.updateQuestionDetails(question.getExplanation(),question.getCorrectOpt(),question.getId());
         return  ResponseEntity.ok().build();
     }
 
@@ -266,7 +266,7 @@ public class InsTestSeriesController {
 
                 break;
         }
-        InsTestSeriesQuestions insTestSeriesQuestions = new InsTestSeriesQuestions(seriesQuestion,optionA,optionB,optionC,optionD,questionDto.getCorrectOpt(),questionDto.getExplanation(),questionDto.getCorrectMarks(),questionDto.getWrongMarks(),questionDto.getQuestionType(),questionDto.getOptionType(),questionDto.getTestSeriesId());
+        InsTestSeriesQuestions insTestSeriesQuestions = new InsTestSeriesQuestions(seriesQuestion,optionA,optionB,optionC,optionD,questionDto.getCorrectOpt(),questionDto.getExplanation(),questionDto.getQuestionType(),questionDto.getOptionType(),questionDto.getTestSeriesId());
         if(questionDto.getMode().equals("edit"))
         {
             insTestSeriesQuestions.setId(questionDto.getQuestionId());
@@ -324,7 +324,7 @@ public class InsTestSeriesController {
 
                         break;
                 }
-                InsTestSeriesQuestions insTestSeriesQuestions = new InsTestSeriesQuestions(seriesQuestion, optionA, optionB, optionC, optionD, questionDto.getCorrectOpt(), questionDto.getExplanation(), questionDto.getCorrectMarks(), questionDto.getWrongMarks(), questionDto.getQuestionType(), questionDto.getOptionType(), questionDto.getTestSeriesId());
+                InsTestSeriesQuestions insTestSeriesQuestions = new InsTestSeriesQuestions(seriesQuestion, optionA, optionB, optionC, optionD, questionDto.getCorrectOpt(), questionDto.getExplanation(),   questionDto.getQuestionType(), questionDto.getOptionType(), questionDto.getTestSeriesId());
                 if (questionDto.getMode().equals("edit")) {
                     insTestSeriesQuestions.setId(questionDto.getQuestionId());
                 }
