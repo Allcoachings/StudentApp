@@ -1,19 +1,23 @@
 package com.allcoaching.AllCoachingRestApi.Utils.Expo;
 
 
-import io.github.jav.exposerversdk.ExpoPushMessage;
-import io.github.jav.exposerversdk.ExpoPushTicket;
-import io.github.jav.exposerversdk.PushClient;
-import io.github.jav.exposerversdk.PushClientException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.jav.exposerversdk.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @ToString
 @AllArgsConstructor
@@ -21,35 +25,42 @@ import java.util.concurrent.CompletableFuture;
 public class ExpoNotification {
 
 
-    private ArrayList<String> to=null;
-    private String title;
-    private String body; //notification description
-    private Map<String,Object> data;//for internal processing of app will not be visible to user
 
-    public ExpoNotification() {
-        this.to=new ArrayList<>();
-    }
 
-    public void sendNotification()
+    public static String  sendNotification(ExpoNotificationData expoNotificationData)
     {
+        try {
+            URL url = new URL("https://exp.host/--/api/v2/push/send");
+            HttpURLConnection http = (HttpURLConnection) url.openConnection();
+            http.setRequestMethod("POST");
+            http.setDoOutput(true);
+            http.setRequestProperty("Content-Type", "application/json");
 
-        try
-        {
-            ExpoPushMessage expoPushMessage = new ExpoPushMessage();
-            expoPushMessage.getTo().addAll(to);
-            expoPushMessage.setTitle(title);
-            expoPushMessage.setBody(body);
-            expoPushMessage.setData(data);
-            List<ExpoPushMessage> expoPushMessages = new ArrayList<>();
-            expoPushMessages.add(expoPushMessage);
-            PushClient client = new PushClient();
-            CompletableFuture<List<ExpoPushTicket>> ticks = client.sendPushNotificationsAsync(expoPushMessages);
-            System.out.println(ticks);
-            
-        }catch (Exception exception)
-        {
-            exception.printStackTrace();
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            // Converting the Java object into a JSON string
+            String notificationData = objectMapper.writeValueAsString(expoNotificationData);
+            // Displaying Java object into a JSON string
+            System.out.println(notificationData);
+
+
+
+            byte[] out = notificationData.getBytes(StandardCharsets.UTF_8);
+
+            OutputStream stream = http.getOutputStream();
+            stream.write(out);
+
+            System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
+
+            http.disconnect();
+            return http.getResponseMessage();
         }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return  e.getMessage();
+        }
+
 
 
     }

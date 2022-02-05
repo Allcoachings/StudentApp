@@ -162,6 +162,14 @@ public class FeedController {
     }
 
     @CrossOrigin(origins = "*")
+    @DeleteMapping("deleteFeedById/{id}")
+    public ResponseEntity<Object> deleteFeedById(@PathVariable long id)
+    {
+            feedService.deleteFeedById(id);
+            return ResponseEntity.ok().build();
+    }
+
+    @CrossOrigin(origins = "*")
     @PostMapping("/feed/comment")
     public ResponseEntity<Object> addComment(@RequestBody FeedComments feedComments)
     {

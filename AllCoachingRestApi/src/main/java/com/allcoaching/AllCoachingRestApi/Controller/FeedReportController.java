@@ -49,4 +49,21 @@ public class FeedReportController {
         return ResponseEntity.ok().build();
 
     }
+
+
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("deleteById/{id}")
+    public ResponseEntity<Object>  deleteById(@PathVariable(name="id") long id)
+    {
+        feedReportService.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("deleteByFeedId/{id}")
+    public ResponseEntity<Object>  deleteByFeedId(@PathVariable(name="id") long id)
+    {
+        feedReportService.deleteByFeedId(id);
+        return ResponseEntity.ok().build();
+    }
 }

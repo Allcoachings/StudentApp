@@ -18,4 +18,7 @@ public interface ReportFeedRepo extends PagingAndSortingRepository<FeedReport,Lo
     @Modifying
     @Query("UPDATE FeedReport fr set fr.isSeenByAdmin = :status where fr.id=:id")
     void updateReportStatus(long id,boolean status);
+
+
+    void deleteByFeedId(long FeedId);
 }

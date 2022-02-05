@@ -41,7 +41,16 @@ public class FeedReportService {
 
     public long getFeedReportsUnseenCount()
     {
-        return  reportFeedRepo.countByIsSeenByAdmin(true);
+        return  reportFeedRepo.countByIsSeenByAdmin(false);
 
+    }
+    public void deleteById(long id)
+    {
+          reportFeedRepo.deleteById(id);
+    }
+
+    public void deleteByFeedId(long id)
+    {
+          reportFeedRepo.deleteByFeedId(id);
     }
 }

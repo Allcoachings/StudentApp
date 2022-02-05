@@ -117,9 +117,9 @@ public class StudentService {
         return studentRepo.getExpoTokenOfStudentsEnrolledInCategory(categoryId);
     }
 
-    public  String getExpoTokenOfStudent(long id)
+    public  String getExpoTokenOfStudent(long id,String email)
     {
-        return studentRepo.getExpoTokenOfStudent(id);
+        return studentRepo.getExpoTokenOfStudent(id,email);
     }
 
     public Page<String> getExpoTokenOfAllStudents(int page,int pageSize)

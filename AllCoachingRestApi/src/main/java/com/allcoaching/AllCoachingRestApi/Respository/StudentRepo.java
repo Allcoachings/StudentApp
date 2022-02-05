@@ -37,13 +37,13 @@ public interface StudentRepo extends PagingAndSortingRepository<Student,Long> {
 
 
 
-    @Query("Select s.expoToken from Student s , Institute i , InsReview ir where ir.insId=i.id and i.category=:categoryId and ir.studentId=s.id")
+    @Query("Select DISTINCT s.expoToken from Student s , Institute i , InsReview ir where ir.insId=i.id and i.category=:categoryId and ir.studentId=s.id and s.expoToken is not null")
     List<String> getExpoTokenOfStudentsEnrolledInCategory(long categoryId);
 
-    @Query("Select expoToken from Student where id =:studentId")
-    String getExpoTokenOfStudent(long studentId);
+    @Query("Select expoToken from Student where id =:studentId or email =:email and expoToken is not null")
+    String getExpoTokenOfStudent(long studentId,String email);
 
-    @Query("Select expoToken from Student")
+    @Query("Select expoToken from Student where  expoToken is not null")
     Page<String> getExpoTokenOfAllStudents(Pageable pageable);
 
     Page<Student> findByNameContainingIgnoreCase(String name, Pageable pageable);

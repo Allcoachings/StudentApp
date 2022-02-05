@@ -6,6 +6,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.Student;
 import com.allcoaching.AllCoachingRestApi.Respository.NotificationRepo;
 import com.allcoaching.AllCoachingRestApi.Utils.Admin.AdminConfig;
 import com.allcoaching.AllCoachingRestApi.Utils.Expo.ExpoNotification;
+import com.allcoaching.AllCoachingRestApi.Utils.Expo.ExpoNotificationData;
 import com.allcoaching.AllCoachingRestApi.dto.NotificationDataDto;
 import com.allcoaching.AllCoachingRestApi.dto.NotificationDto;
 import com.allcoaching.AllCoachingRestApi.dto.NotificationSenderDto;
@@ -126,27 +127,28 @@ public class NotificationService {
     }
 
 
-    public  void sendNotification(NotificationDataDto notificationDataDto) throws PushClientException
+    public  String sendNotification(NotificationDataDto notificationDataDto) throws PushClientException
     {
 
             String targetGroup = notificationDataDto.getTargetGroup();
             String targetGroupType = notificationDataDto.getTargetGroupType();
+            String targetEmail = notificationDataDto.getTargetEmail();
             List<String> expoTokens = null;
-            ExpoNotification expoNotification = new ExpoNotification();
-            expoNotification.setTitle(notificationDataDto.getTitle());
-            expoNotification.setBody(notificationDataDto.getBody());
+            ExpoNotificationData expoNotificationData = new ExpoNotificationData();
+            expoNotificationData.setTitle(notificationDataDto.getTitle());
+            expoNotificationData.setBody(notificationDataDto.getBody());
             Map<String,Object> notificationData = new HashMap<>();
 
             notificationData.putIfAbsent("url",notificationDataDto.getUrl());
             //any other data to be sent ot the users
             notificationData.putIfAbsent("data",notificationDataDto.getData());
 
-            expoNotification.setData(notificationData);
+            expoNotificationData.setData(notificationData);
 
             switch (targetGroupType)
             {
                 case "studentsEnrolledInCategory":
-                    expoTokens = getExpoTokenForStudentsEnrolledInCategory(Long.valueOf(targetGroup));
+                    expoTokens = getExpoTokenForStudentsEnrolledInCategory(Long.parseLong(targetGroup));
                     break;
                 case "allUsers":
                     expoTokens = getExpoTokenForAllStudent(0,1000);
@@ -155,17 +157,18 @@ public class NotificationService {
                     expoTokens = getExpoTokenForAllIns(0,1000);
                     break;
                 case "institutesOfCategory":
-                    expoTokens = getExpoTokenForInsEnrolledInCategory(Long.valueOf(targetGroup));
+                    expoTokens = getExpoTokenForInsEnrolledInCategory(Long.parseLong(targetGroup));
                     break;
                 case "singleUser":
-                    expoTokens = getExpoTokenForStudent(Long.valueOf(targetGroup));
+                    expoTokens = getExpoTokenForStudent(Long.parseLong(targetGroup),targetEmail);
                     break;
                 case "singleInstitute":
-                    expoTokens = getExpoTokenForIns(Long.valueOf(targetGroup));
+                    expoTokens = getExpoTokenForIns(Long.parseLong(targetGroup),targetEmail);
                     break;
             }
-            expoNotification.getTo().addAll(expoTokens);
-            expoNotification.sendNotification();
+            expoNotificationData.getTo().addAll(expoTokens);
+
+            return ExpoNotification.sendNotification(expoNotificationData);
     }
 
     public void updateNotificationSeenStatus(boolean isSeen,long id)
@@ -180,11 +183,11 @@ public class NotificationService {
         return studentService.getExpoTokenOfStudentsEnrolledInCategory(category);
     }
 
-    private List<String> getExpoTokenForStudent(long id)
+    private List<String> getExpoTokenForStudent(long id,String email)
     {
 
         ArrayList<String> tokens = new ArrayList<String>();
-        tokens.add(studentService.getExpoTokenOfStudent(id));
+        tokens.add(studentService.getExpoTokenOfStudent(id,email));
         return tokens;
     }
     private List<String> getExpoTokenForAllStudent(int page,int pageSize)
@@ -204,11 +207,11 @@ public class NotificationService {
         return instituteService.getExpoTokenOfInsEnrolledInCategory(category);
     }
 
-    private List<String> getExpoTokenForIns(long id)
+    private List<String> getExpoTokenForIns(long id,String email)
     {
 
         ArrayList<String> tokens = new ArrayList<String>();
-        tokens.add(instituteService.getExpoTokenOfIns(id));
+        tokens.add(instituteService.getExpoTokenOfIns(id,email));
         return tokens;
     }
     private List<String> getExpoTokenForAllIns(int page,int pageSize)

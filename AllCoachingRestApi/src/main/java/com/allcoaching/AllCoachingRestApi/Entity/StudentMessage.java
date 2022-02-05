@@ -22,6 +22,8 @@ public class StudentMessage {
 
     private String message;
 
+    private boolean replied;
+
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date messageInitialTime;
@@ -52,6 +54,8 @@ public class StudentMessage {
 
     //feedback , instituteCourseRelated, helpAndSupport
     private String messageType;
+
+    private String reply;
 
     @OneToMany(targetEntity = StudentMessageImages.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name="studentMsg_fk",referencedColumnName = "id")

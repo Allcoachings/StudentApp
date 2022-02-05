@@ -176,9 +176,9 @@ public  Iterable<Institute> getAllInstituteByStatus(Integer status,Integer pageN
         return instituteRepo.getExpoTokenOfInsEnrolledInCategory(categoryId);
     }
 
-    public  String getExpoTokenOfIns(long id)
+    public  String getExpoTokenOfIns(long id,String  email)
     {
-        return instituteRepo.getExpoTokenOfIns(id);
+        return instituteRepo.getExpoTokenOfIns(id,email);
     }
 
     public Page<String> getExpoTokenOfAllIns(int page,int pageSize)

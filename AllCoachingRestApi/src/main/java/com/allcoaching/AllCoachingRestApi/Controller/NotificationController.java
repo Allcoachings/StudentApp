@@ -49,14 +49,19 @@ public class NotificationController {
     {
 
         try {
-            notificationService.sendNotification(notificationDataDto);
+           String result =  notificationService.sendNotification(notificationDataDto);
+           if(result.equals("OK"))
+           {
+               return  ResponseEntity.ok().build();
+           }
         }catch (Exception e)
         {
             e.printStackTrace();
+            return  ResponseEntity.badRequest().build();
         }
 
 
-          return  ResponseEntity.ok().build();
+        return  ResponseEntity.badRequest().build();
     }
 
     @CrossOrigin(origins = "*")

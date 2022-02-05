@@ -23,6 +23,11 @@ public class StudentMessageService {
         return studentMessageRepo.save(studentMessage);
     }
 
+
+    public void deleteById(long id)
+    {
+        studentMessageRepo.deleteById(id);
+    }
     public Iterable<StudentMessage>  getStudentMessagesWithMessageType(boolean forAdmin,String messageType,int page,int pageSize)
     {
            Page<StudentMessage> pagedResult =  studentMessageRepo.findByForAdminAndMessageType(forAdmin,messageType, PageRequest.of(page,pageSize, Sort.by(Sort.Direction.DESC,"messageInitialTime")));
@@ -32,9 +37,27 @@ public class StudentMessageService {
            }
            return new ArrayList<>();
     }
+    public Iterable<StudentMessage>  getStudentMessagesWithMessageTypeAndReplied(boolean replied, boolean forAdmin,String messageType,int page,int pageSize)
+    {
+           Page<StudentMessage> pagedResult =  studentMessageRepo.findByForAdminAndMessageTypeAndReplied(forAdmin,messageType,replied, PageRequest.of(page,pageSize, Sort.by(Sort.Direction.DESC,"messageInitialTime")));
+           if(pagedResult.hasContent())
+           {
+               return pagedResult.getContent();
+           }
+           return new ArrayList<>();
+    }
     public Iterable<StudentMessage>  getStudentMessages(boolean forAdmin,int page,int pageSize)
     {
            Page<StudentMessage> pagedResult =  studentMessageRepo.findByForAdmin(forAdmin, PageRequest.of(page,pageSize, Sort.by(Sort.Direction.DESC,"messageInitialTime")));
+           if(pagedResult.hasContent())
+           {
+               return pagedResult.getContent();
+           }
+           return new ArrayList<>();
+    }
+    public Iterable<StudentMessage>  getStudentMessagesReplied(boolean replied,boolean forAdmin,int page,int pageSize)
+    {
+           Page<StudentMessage> pagedResult =  studentMessageRepo.findByForAdminAndReplied(forAdmin,replied, PageRequest.of(page,pageSize, Sort.by(Sort.Direction.DESC,"messageInitialTime")));
            if(pagedResult.hasContent())
            {
                return pagedResult.getContent();

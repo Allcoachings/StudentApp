@@ -68,9 +68,34 @@ public class StudentMessageController {
     }
 
     @CrossOrigin(origins = "*")
+    @GetMapping("getStudentMessagesWithMessageTypeAndRepliedAs")
+    public Iterable<StudentMessage> getStudentMessagesWithMessageTypeAndRepliedAs(@RequestParam(name="replied") String replied,@RequestParam(name="forAdmin") boolean forAdmin,@RequestParam(name="messageType") String messageType,@RequestParam(name="page") int page, @RequestParam(name="pageSize") int pageSize)
+    {
+        return  studentMessageService.getStudentMessagesWithMessageTypeAndReplied(Boolean.parseBoolean(replied),forAdmin,messageType,page,pageSize);
+    }
+
+    @CrossOrigin(origins = "*")
     @GetMapping("getStudentMessages")
     public Iterable<StudentMessage> getStudentMessages(@RequestParam(name="forAdmin") boolean forAdmin,@RequestParam(name="page") int page, @RequestParam(name="pageSize") int pageSize)
     {
         return  studentMessageService.getStudentMessages(forAdmin,page,pageSize);
     }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("getStudentAllMessagesRepliedAs")
+    public Iterable<StudentMessage> getStudentAllMessagesRepliedAs(@RequestParam(name="replied") String replied,@RequestParam(name="forAdmin") boolean forAdmin,@RequestParam(name="page") int page, @RequestParam(name="pageSize") int pageSize)
+    {
+        return  studentMessageService.getStudentMessagesReplied(Boolean.parseBoolean(replied),forAdmin,page,pageSize);
+    }
+
+
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("deleteById/{id}")
+    public ResponseEntity<Object>  deleteByID(@PathVariable(name="id") long id)
+    {
+        studentMessageService.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
+
+
 }

@@ -17,6 +17,8 @@ public class ReportQuestionController {
 
     @Autowired
     QuestionReportService questionReportService;
+
+    @CrossOrigin(origins = "*")
     @PostMapping("/reportQuestion")
     public ResponseEntity<Object> createQuestionReport(@RequestBody QuestionReport questionReport)
     {
@@ -24,4 +26,13 @@ public class ReportQuestionController {
         URI location = ServletUriComponentsBuilder.fromPath("{id}").buildAndExpand(questionReport_saved.getId()).toUri();
         return ResponseEntity.created(location).build();
     }
+
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("deleteById/{id}")
+    public ResponseEntity<Object>  deleteById(@PathVariable(name="id") long id)
+    {
+        questionReportService.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
 }
+

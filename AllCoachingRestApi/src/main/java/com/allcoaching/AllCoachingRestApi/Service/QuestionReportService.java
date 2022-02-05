@@ -15,4 +15,9 @@ public class QuestionReportService {
         return questionReportRepo.save(questionReport);
     }
 
+    public void deleteById(long id)
+    {
+          questionReportRepo.deleteById(id);
+    }
+
 }

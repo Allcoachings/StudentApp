@@ -407,4 +407,9 @@ public class FeedService {
         }
     }
 
+    public void deleteFeedById(long id)
+    {
+        feedRepo.deleteById(id);
+    }
+
 }
