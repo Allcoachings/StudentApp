@@ -4,6 +4,7 @@ package com.allcoaching.AllCoachingRestApi.Controller;
 import com.allcoaching.AllCoachingRestApi.Entity.Course;
 import com.allcoaching.AllCoachingRestApi.Respository.CourseRepo;
 import com.allcoaching.AllCoachingRestApi.Service.CourseService;
+import com.allcoaching.AllCoachingRestApi.dto.InstituteCourseWiseStudentEnrolledDto;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -24,9 +26,9 @@ public class CourseController {
 
     @CrossOrigin(origins = "*")
     @GetMapping("/{insId}/course")
-    public  Iterable<Course> findAllCourse(@PathVariable long insId)
+    public  Iterable<Course> findAllCourse(@PathVariable long insId,@RequestParam boolean isDeleted)
     {
-        return courseService.findByInstId(insId);
+        return courseService.findByInstId(insId,isDeleted);
     }
 
     @CrossOrigin(origins = "*")
@@ -46,9 +48,9 @@ public class CourseController {
 
     @CrossOrigin(origins = "*")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteCourseById(@PathVariable long id)
+    public ResponseEntity<Object> deleteCourseById(@PathVariable long id,@RequestParam(name = "deleteCourse")boolean deleteCourse)
     {
-        courseService.deleteCourseById(id);
+        courseService.deleteCourseById(id,deleteCourse);
         return ResponseEntity.ok().build();
     }
 
@@ -57,6 +59,20 @@ public class CourseController {
     public long countCoursesOf(@PathVariable long insId)
     {
         return  courseService.countCoursesOf(insId);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("countStudentEnrolledInCourse/{courseId}")
+    public long countStudentEnrolledIn(@PathVariable long courseId)
+    {
+        return  courseService.countStudentEnrolledInCourse(courseId);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("getInstituteCourseWiseStudentEnrolled/{insId}")
+    public List<InstituteCourseWiseStudentEnrolledDto> getInstituteCourseWiseStudentEnrolled(@PathVariable long insId)
+    {
+        return  courseService.getInstituteCourseWiseStudentEnrolled(insId);
     }
 
 

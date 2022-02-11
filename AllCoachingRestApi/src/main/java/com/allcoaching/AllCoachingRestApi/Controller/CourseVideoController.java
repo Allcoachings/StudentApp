@@ -166,6 +166,14 @@ public class CourseVideoController {
         courseVideoService.updateHiddenStatusById(status,id);
         return ResponseEntity.ok().build();
     }
+
+    @CrossOrigin(origins="*")
+    @PutMapping("/demo/{status}/{id}")
+    public  ResponseEntity<Object> updateDemoStatus(@PathVariable boolean status,@PathVariable long id)
+    {
+        courseVideoService.updateDemoStatusById(status,id);
+        return ResponseEntity.ok().build();
+    }
     @CrossOrigin(origins="*")
     @PutMapping("/updatePlaylist/{playlist_id}/{id}")
     public  ResponseEntity<Object> updateHiddenStatus(@PathVariable long playlist_id,@PathVariable long id)

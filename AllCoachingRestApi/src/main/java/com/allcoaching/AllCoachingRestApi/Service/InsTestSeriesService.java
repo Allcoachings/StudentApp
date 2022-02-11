@@ -13,6 +13,7 @@ import com.allcoaching.AllCoachingRestApi.dto.TestSeriesQuestionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.HTML;
@@ -116,7 +117,7 @@ public class InsTestSeriesService {
 
     public Iterable<TestSeriesQuestionDto> getSeriesQuestion(long id, int page, int pageSize)
     {
-        Page<TestSeriesQuestionDto> pagesResult = insTestSeriesQuestionsRepo.findByTestSeriesId(id, PageRequest.of(page,pageSize));
+        Page<TestSeriesQuestionDto> pagesResult = insTestSeriesQuestionsRepo.findByTestSeriesId(id, PageRequest.of(page,pageSize, Sort.by(Sort.Direction.DESC,"createdAt")));
         if(pagesResult.hasContent())
         {
             return  pagesResult.getContent();

@@ -94,6 +94,12 @@ public class CourseDocumentService {
         courseDocumentRepo.updateHiddenStatus(status,id);
     }
 
+    //updating hidden Status
+    public void updateDemoStatusById(boolean status,long id)
+    {
+        courseDocumentRepo.updateDemoStatus(status,id);
+    }
+
     //updating playlist id
     public void updatePlaylistIdById(long playlistId,long id)
     {

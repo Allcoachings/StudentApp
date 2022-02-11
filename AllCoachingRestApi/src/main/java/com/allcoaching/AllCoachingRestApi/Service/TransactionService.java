@@ -97,11 +97,19 @@ public class TransactionService {
     {
         return  transactionRepo.countByIsSeenByAdmin(false);
     }
+   public  long getAdminUnSeenTransactionCountForIns(long insId)
+    {
+        return  transactionRepo.countByInsIdAndIsSeenByIns(insId,false);
+    }
 
 
     public void updateTransactionStatus(long transactionId,boolean status)
     {
         transactionRepo.updateTransactionStatus(transactionId,status);
+    }
+    public void updateTransactionStatusForIns(long transactionId,boolean status)
+    {
+        transactionRepo.updateTransactionStatusForIns(transactionId,status);
     }
 
     //fetch transaction details by order id

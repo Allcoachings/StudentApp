@@ -19,7 +19,7 @@ public class StudentMessage {
     @GeneratedValue
     @Id
     private long id;
-
+    @Column(columnDefinition = "TEXT")
     private String message;
 
     private boolean replied;
@@ -50,11 +50,14 @@ public class StudentMessage {
 
     //to toggle between seen or unseen by admin only those which are there for admin
     private boolean isSeenByAdmin=false;
+    //to toggle between seen or unseen by admin only those which are there for institute
+    private boolean isSeenByIns=false;
 
 
     //feedback , instituteCourseRelated, helpAndSupport
-    private String messageType;
 
+    private String messageType;
+    @Column(columnDefinition = "TEXT")
     private String reply;
 
     @OneToMany(targetEntity = StudentMessageImages.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)

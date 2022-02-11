@@ -32,6 +32,7 @@ public class Transaction {
     private String status;
     private String productType;//COURSE or Any other digital product of all coaching
     private boolean isSeenByAdmin;
+    private boolean isSeenByIns;
 
 
     public Transaction(long insId, long studentId, long courseId, String amount, String orderId, String status,String productType) {

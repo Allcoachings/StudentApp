@@ -16,4 +16,14 @@ public class InsLeadsStudentDto {
     private String studentName;
     private String studentImage;
     private String studentUniqueId;
+    private String studentEmail;
+    private String studentMobile;
+    public InsLeadsStudentDto(long studentId, String studentName, String studentImage, String studentUniqueId) {
+        this.studentId = studentId;
+        this.studentName = studentName;
+        this.studentImage = studentImage;
+        this.studentUniqueId = studentUniqueId;
+    }
+
+
 }

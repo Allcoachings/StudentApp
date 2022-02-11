@@ -82,7 +82,7 @@ export const registerStudent=(email,name,stateOfResidence,mobileNumber,studentIm
     {
         method: 'POST',  
         headers,
-        body:JSON.stringify({email, name, stateOfResidence,mobileNumber,userId:mobileNumber, studentImage,blocked:false})
+        body:JSON.stringify({email, name, stateOfResidence,mobileNumber, studentImage,blocked:false})
     })
     .then((response)=>callback(response)) 
     .catch((error)=>{console.log(error)})    

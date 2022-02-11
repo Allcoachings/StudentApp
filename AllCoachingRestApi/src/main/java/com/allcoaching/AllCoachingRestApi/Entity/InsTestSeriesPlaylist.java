@@ -13,6 +13,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Entity
 public class InsTestSeriesPlaylist {
+
     @Id
     @GeneratedValue
     private long id;

@@ -1,5 +1,6 @@
 package com.allcoaching.AllCoachingRestApi.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,15 +10,11 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class InsAccountDto {
+public class InstituteCourseWiseStudentEnrolledDto {
 
-    private long insId;
-    private String accountNumber;
-    private String ifsc;
-    private String accountHolderName;
-    private String bankName;
-    private String upi;
-
-
+    private String name;
+    private String email;
+    private String mobileNumber;
+    private String courseName;
 
 }

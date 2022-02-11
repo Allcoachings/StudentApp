@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.Table;
 
 import javax.persistence.*;
 import java.util.List;
@@ -19,6 +20,8 @@ public class Institute {
     private long id;
     private String name;
     private String  directorName;
+    private String uniqueUserId;
+    @Column(name="email",unique=true)
     private String email;
     private String phone;
     private String password;
@@ -48,6 +51,12 @@ public class Institute {
     private String ifsc;
     private String accountHolderName;
     private String bankName;
+    private String upi;
+
+
+    public Institute(long id) {
+        this.id = id;
+    }
 
     public Institute(String name, String directorName, String email, String phone, String password, String address, String city, String state, long category, String about, String logo, int status) {
 

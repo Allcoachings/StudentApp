@@ -28,6 +28,7 @@ public class Course {
     private float fees;
     private long instId;
     private long leads=0;
+    private boolean isDeleted=false;
 
     public Course(String title, String description, float fees, long instId) {
         this.title = title;

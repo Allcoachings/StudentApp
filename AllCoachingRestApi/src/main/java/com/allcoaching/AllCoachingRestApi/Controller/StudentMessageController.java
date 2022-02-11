@@ -1,7 +1,8 @@
 package com.allcoaching.AllCoachingRestApi.Controller;
 
 
-import com.allcoaching.AllCoachingRestApi.Entity.FeedReport;
+import com.allcoaching.AllCoachingRestApi.Entity.Institute;
+import com.allcoaching.AllCoachingRestApi.Entity.Student;
 import com.allcoaching.AllCoachingRestApi.Entity.StudentMessage;
 import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
 import com.allcoaching.AllCoachingRestApi.Service.StudentMessageImageService;
@@ -29,6 +30,8 @@ public class StudentMessageController {
     @Autowired
     private FileUploadService fileUploadService;
 
+
+
     @CrossOrigin(origins = "*")
     @PostMapping("/add")
     public ResponseEntity<Object> addStudentMessage(@RequestBody StudentMessage studentMessage)
@@ -52,10 +55,27 @@ public class StudentMessageController {
     }
 
     @CrossOrigin(origins = "*")
+    @GetMapping("UnSeenStudentMessageCountForIns")
+    public long unseenTransactionCountForIns(@RequestParam(name = "insId")long insId)
+    {
+        return studentMessageService.getStudentMessageUnseenCountForIns(insId);
+
+    }
+
+    @CrossOrigin(origins = "*")
     @PutMapping("updateMessageSeenStatus")
     public ResponseEntity<Object> updateMessageSeenStatus(@RequestParam(name = "messageId") long messageId,@RequestParam(name = "status") boolean status)
     {
           studentMessageService.updateMessageSeenStatus(messageId,status);
+          return ResponseEntity.ok().build();
+
+    }
+
+    @CrossOrigin(origins = "*")
+    @PutMapping("updateMessageSeenByInsStatus")
+    public ResponseEntity<Object> updateMessageSeenByInsStatus(@RequestParam(name = "messageId") long messageId,@RequestParam(name = "status") boolean status)
+    {
+          studentMessageService.updateMessageSeenStatusForIns(messageId,status);
           return ResponseEntity.ok().build();
 
     }
@@ -68,6 +88,14 @@ public class StudentMessageController {
     }
 
     @CrossOrigin(origins = "*")
+    @GetMapping("getStudentMessagesWithMessageTypeForIns")
+    public Iterable<StudentMessage> getStudentMessagesWithMessageTypeForIns(@RequestParam(name = "insId") long insId,@RequestParam(name="forAdmin") boolean forAdmin,@RequestParam(name="messageType") String messageType,@RequestParam(name="page") int page, @RequestParam(name="pageSize") int pageSize)
+    {
+        Institute institute = new Institute(insId);
+        return  studentMessageService.getStudentMessagesWithMessageTypeForIns(institute,forAdmin,messageType,page,pageSize);
+    }
+
+    @CrossOrigin(origins = "*")
     @GetMapping("getStudentMessagesWithMessageTypeAndRepliedAs")
     public Iterable<StudentMessage> getStudentMessagesWithMessageTypeAndRepliedAs(@RequestParam(name="replied") String replied,@RequestParam(name="forAdmin") boolean forAdmin,@RequestParam(name="messageType") String messageType,@RequestParam(name="page") int page, @RequestParam(name="pageSize") int pageSize)
     {
@@ -75,10 +103,43 @@ public class StudentMessageController {
     }
 
     @CrossOrigin(origins = "*")
+    @GetMapping("getStudentMessagesWithMessageTypeAndRepliedAsForIns")
+    public Iterable<StudentMessage> getStudentMessagesWithMessageTypeAndRepliedAsForIns(@RequestParam(name = "insId") long insId,@RequestParam(name="replied") String replied,@RequestParam(name="forAdmin") boolean forAdmin,@RequestParam(name="messageType") String messageType,@RequestParam(name="page") int page, @RequestParam(name="pageSize") int pageSize)
+    {
+        Institute institute = new Institute(insId);
+        return  studentMessageService.getStudentMessagesWithMessageTypeAndRepliedForIns(institute,Boolean.parseBoolean(replied),forAdmin,messageType,page,pageSize);
+    }
+
+    @CrossOrigin(origins = "*")
     @GetMapping("getStudentMessages")
     public Iterable<StudentMessage> getStudentMessages(@RequestParam(name="forAdmin") boolean forAdmin,@RequestParam(name="page") int page, @RequestParam(name="pageSize") int pageSize)
     {
+
         return  studentMessageService.getStudentMessages(forAdmin,page,pageSize);
+    }
+    @CrossOrigin(origins = "*")
+    @GetMapping("getStudentMessagesForIns")
+    public Iterable<StudentMessage> getStudentMessagesForIns(@RequestParam(name="insId")long insId,@RequestParam(name="forAdmin") boolean forAdmin,@RequestParam(name="page") int page, @RequestParam(name="pageSize") int pageSize)
+    {
+        Institute institute = new Institute(insId);
+        return  studentMessageService.getStudentMessagesForIns(institute,forAdmin,page,pageSize);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("getChatListForInstitute")
+    public Iterable<StudentMessage> getChatListForInstitute(@RequestParam(name="insId")long insId, @RequestParam(name="courseId")long courseId, @RequestParam(name="page") int page, @RequestParam(name="pageSize") int pageSize)
+    {
+        Institute institute = new Institute(insId);
+        return  studentMessageService.getChatListForInstitute(institute,courseId,page,pageSize);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("getStudentChatForCourse")
+    public Iterable<StudentMessage> findByInstituteAndCourseIdAndStudentOrderByMessageInitialTime(@RequestParam(name="insId")long insId, @RequestParam(name="courseId")long courseId, @RequestParam(name="studentId") long studentId,@RequestParam(name="page") int page, @RequestParam(name="pageSize") int pageSize)
+    {
+        Institute institute = new Institute(insId);
+        Student student = new Student(studentId);
+        return  studentMessageService.findByInstituteAndCourseIdAndStudentOrderByMessageInitialTime(institute,student,courseId,page,pageSize);
     }
 
     @CrossOrigin(origins = "*")
@@ -86,6 +147,14 @@ public class StudentMessageController {
     public Iterable<StudentMessage> getStudentAllMessagesRepliedAs(@RequestParam(name="replied") String replied,@RequestParam(name="forAdmin") boolean forAdmin,@RequestParam(name="page") int page, @RequestParam(name="pageSize") int pageSize)
     {
         return  studentMessageService.getStudentMessagesReplied(Boolean.parseBoolean(replied),forAdmin,page,pageSize);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("getStudentAllMessagesRepliedAsForIns")
+    public Iterable<StudentMessage> getStudentAllMessagesRepliedAsForIns(@RequestParam(name="insId")long insId,@RequestParam(name="replied") String replied,@RequestParam(name="forAdmin") boolean forAdmin,@RequestParam(name="page") int page, @RequestParam(name="pageSize") int pageSize)
+    {
+        Institute institute = new Institute(insId);
+        return  studentMessageService.getStudentMessagesRepliedForIns(institute,Boolean.parseBoolean(replied),forAdmin,page,pageSize);
     }
 
 

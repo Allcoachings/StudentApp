@@ -92,6 +92,12 @@ public class CourseVideoService {
     {
         courseVideoRepo.updateHiddenStatus(status,id);
     }
+
+    //updating demo Status
+    public void updateDemoStatusById(boolean status,long id)
+    {
+        courseVideoRepo.updateDemoStatus(status,id);
+    }
     //updating playlist id
     public void updatePlaylistIdById(long playlistId,long id)
     {

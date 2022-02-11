@@ -26,6 +26,8 @@ public class NotificationService {
 
 
     @Autowired
+    private CourseService courseService;
+    @Autowired
     private NotificationRepo notificationRepo;
 
     @Autowired
@@ -165,6 +167,9 @@ public class NotificationService {
                 case "singleInstitute":
                     expoTokens = getExpoTokenForIns(Long.parseLong(targetGroup),targetEmail);
                     break;
+                case "courseStudents":
+                    expoTokens = getExpoTokenForStudentsEnrolledInCourse(Long.parseLong(targetGroup));
+                    break;
             }
             expoNotificationData.getTo().addAll(expoTokens);
 
@@ -202,6 +207,13 @@ public class NotificationService {
         }
     }
 
+
+
+
+    private List<String> getExpoTokenForStudentsEnrolledInCourse(long courseId)
+    {
+        return courseService.getStudentsExpoTokenEnrolledInCourse(courseId);
+    }
     private List<String> getExpoTokenForInsEnrolledInCategory(long category)
     {
         return instituteService.getExpoTokenOfInsEnrolledInCategory(category);

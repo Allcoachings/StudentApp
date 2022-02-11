@@ -3,6 +3,7 @@ package com.allcoaching.AllCoachingRestApi.Service;
 import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Entity.Student;
 import com.allcoaching.AllCoachingRestApi.Respository.StudentRepo;
+import com.allcoaching.AllCoachingRestApi.Utils.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,7 +29,13 @@ public class StudentService {
     }
     public Student createStudent(Student student)
     {
-        return studentRepo.save(student);
+       Student student_saved =  studentRepo.save(student);
+        long id = student_saved.getId();
+        String name = student_saved.getName();
+        String randomString = RandomString.getAlphaNumericString(3);
+        String uniqueId = name+"_"+randomString+""+id;
+        student_saved.setUserId(uniqueId);
+        return studentRepo.save(student_saved);
     }
 
     public Optional<Student> findById(long id)

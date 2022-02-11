@@ -22,6 +22,7 @@ public interface TransactionRepo extends PagingAndSortingRepository<Transaction,
     Page<Transaction> findByStatus(String status, Pageable pageable);
     Optional<Transaction> findByOrderId(String orderId);
     long countByIsSeenByAdmin(boolean isSeenByAdmin);
+    long countByInsIdAndIsSeenByIns(long insId,boolean isSeenByIns);
 
     @Query("Select new com.allcoaching.AllCoachingRestApi.dto.TransactionDto(t,c,i,s) from Transaction t,Course c,Institute i,Student s where t.courseId=c.id and t.insId=i.id and t.studentId=s.id")
     Page<TransactionDto> findAllTransactions(Pageable pageable);
@@ -35,6 +36,10 @@ public interface TransactionRepo extends PagingAndSortingRepository<Transaction,
     @Modifying
     @Query("UPDATE Transaction t set t.isSeenByAdmin = :status where t.id=:id")
     void updateTransactionStatus(long id,boolean status);
+
+    @Modifying
+    @Query("UPDATE Transaction t set t.isSeenByIns = :status where t.id=:id")
+    void updateTransactionStatusForIns(long id,boolean status);
 
 
 }

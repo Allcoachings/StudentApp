@@ -37,14 +37,12 @@ public class CourseDocumentController {
                 .fromPath("{id}")
                 .buildAndExpand(documentPlaylist_saved.getId())
                 .toUri();
-
         HttpHeaders headers = new HttpHeaders();
         headers.add("Access-Control-Expose-Headers", "Location");
 
         return ResponseEntity.created(location).headers(headers).build();
 
     }
-
 
     @CrossOrigin(origins = "*")
     @PostMapping("/")
@@ -153,6 +151,14 @@ public class CourseDocumentController {
     public  ResponseEntity<Object> updateHiddenStatus(@PathVariable boolean status,@PathVariable long id)
     {
         courseDocumentService.updateHiddenStatusById(status,id);
+        return ResponseEntity.ok().build();
+    }
+
+    @CrossOrigin(origins="*")
+    @PutMapping("/demo/{status}/{id}")
+    public  ResponseEntity<Object> updateDemoStatus(@PathVariable boolean status,@PathVariable long id)
+    {
+        courseDocumentService.updateDemoStatusById(status,id);
         return ResponseEntity.ok().build();
     }
 

@@ -2,9 +2,11 @@ package com.allcoaching.AllCoachingRestApi.Service;
 
 import com.allcoaching.AllCoachingRestApi.Entity.Course;
 import com.allcoaching.AllCoachingRestApi.Respository.CourseRepo;
+import com.allcoaching.AllCoachingRestApi.dto.InstituteCourseWiseStudentEnrolledDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,14 +21,14 @@ public class CourseService {
     }
 
     //fetching course by institute id
-    public  Iterable<Course> findByInstId(long instId)
+    public  Iterable<Course> findByInstId(long instId,boolean isDeleted)
     {
-        return courseRepo.findByInstId(instId);
+        return courseRepo.findByInstIdAndIsDeleted(instId,isDeleted);
     }
 
-    public void deleteCourseById(long id)
+    public void deleteCourseById(long id,boolean deleteCourse)
     {
-          courseRepo.deleteById(id);
+          courseRepo.updateCourseIsDeletedStatus(id,deleteCourse );
     }
 
     //fetch course bu its id
@@ -37,6 +39,20 @@ public class CourseService {
 
     public long countCoursesOf(long institute)
     {
-        return courseRepo.countByInstId(institute);
+        return courseRepo.countByInstIdAndIsDeleted(institute,false);
+    }
+
+    public long countStudentEnrolledInCourse(long courseId)
+    {
+        return courseRepo.countStudentsEnrolled(courseId);
+    }
+
+    public List<InstituteCourseWiseStudentEnrolledDto> getInstituteCourseWiseStudentEnrolled(long insId)
+    {
+        return courseRepo.getInstituteCourseWiseStudentEnrolled(insId);
+    }
+    List<String> getStudentsExpoTokenEnrolledInCourse(long courseId)
+    {
+        return  courseRepo.getExpoTokenOfStudentsEnrolledInCourse(courseId);
     }
 }

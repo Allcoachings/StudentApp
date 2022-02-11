@@ -1,7 +1,10 @@
 package com.allcoaching.AllCoachingRestApi.Service;
 
 import com.allcoaching.AllCoachingRestApi.Entity.Institute;
+import com.allcoaching.AllCoachingRestApi.Entity.Student;
+import com.allcoaching.AllCoachingRestApi.Entity.StudentMessage;
 import com.allcoaching.AllCoachingRestApi.Respository.InstituteRepo;
+import com.allcoaching.AllCoachingRestApi.Utils.RandomString;
 import com.allcoaching.AllCoachingRestApi.dto.InsAccountDto;
 import com.allcoaching.AllCoachingRestApi.dto.InsCredentialDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,7 +106,13 @@ public  Iterable<Institute> getAllInstituteByStatus(Integer status,Integer pageN
 
     public Institute save(Institute institute)
     {
-        return  instituteRepo.save(institute);
+        Institute institute_saved =   instituteRepo.save(institute);
+        long id = institute_saved.getId();
+        String name = institute.getName();
+        String randomString = RandomString.getAlphaNumericString(3);
+        String uniqueId = name+"_"+randomString+""+id;
+        institute_saved.setUniqueUserId(uniqueId);
+        return instituteRepo.save(institute_saved);
     }
 
     public Iterable<Institute> searchInstitute(String word,int page,int pageLimit)
@@ -152,7 +161,7 @@ public  Iterable<Institute> getAllInstituteByStatus(Integer status,Integer pageN
     //update institute bank details
     public void updateInstituteBankDetails(InsAccountDto insAccountDto)
     {
-        instituteRepo.updateInstituteAccountDetails(insAccountDto.getAccountNumber(),insAccountDto.getIfsc(),insAccountDto.getAccountHolderName(),insAccountDto.getBankName(),insAccountDto.getInsId());
+        instituteRepo.updateInstituteAccountDetails(insAccountDto.getAccountNumber(),insAccountDto.getIfsc(),insAccountDto.getAccountHolderName(),insAccountDto.getBankName(),insAccountDto.getUpi(),insAccountDto.getInsId());
 
     }
 
@@ -164,7 +173,7 @@ public  Iterable<Institute> getAllInstituteByStatus(Integer status,Integer pageN
         if(i.isPresent())
         {
             Institute institute = i.get();
-            return  new InsAccountDto(institute.getId(),institute.getAccountNumber(),institute.getIfsc(),institute.getAccountHolderName(),institute.getBankName());
+            return  new InsAccountDto(institute.getId(),institute.getAccountNumber(),institute.getIfsc(),institute.getAccountHolderName(),institute.getBankName(),institute.getUpi());
         }else
         {
             return null;
@@ -175,6 +184,8 @@ public  Iterable<Institute> getAllInstituteByStatus(Integer status,Integer pageN
     {
         return instituteRepo.getExpoTokenOfInsEnrolledInCategory(categoryId);
     }
+
+
 
     public  String getExpoTokenOfIns(long id,String  email)
     {

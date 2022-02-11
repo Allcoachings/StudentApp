@@ -27,6 +27,7 @@ public class Student {
     private String name;
     private String stateOfResidence;
     private String expoToken;
+    @Column(name = "mobileNumber", unique = true)
     private String mobileNumber;
     private String studentImage="https://dubuddy.in/shortLinks/userAvatar";
     private boolean blocked;
@@ -39,6 +40,10 @@ public class Student {
         this.mobileNumber = mobileNumber;
         this.studentImage = studentImage;
         this.blocked = blocked;
+    }
+
+    public Student(long id) {
+        this.id = id;
     }
 
     public Student(long id, String userId, String email, String name, String stateOfResidence, String mobileNumber, String studentImage, boolean blocked) {
