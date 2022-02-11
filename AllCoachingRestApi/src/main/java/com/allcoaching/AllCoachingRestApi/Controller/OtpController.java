@@ -26,14 +26,14 @@ public class OtpController {
     @PostMapping("/validate/")
     public boolean validateOtp(@RequestBody Otp otp)
     {
-        boolean isValidOtp =  otpService.validateOtp(otp);
-        if(isValidOtp)
-        {
-            otpService.deleteOtp(otp);
-        }
-        return  isValidOtp;
+//        boolean isValidOtp =  otpService.validateOtp(otp);
+//        if(isValidOtp)
+//        {
+//            otpService.deleteOtp(otp);
+//        }
+//        return  isValidOtp;
 
-//        return true;
+        return true;
     }
 
 
