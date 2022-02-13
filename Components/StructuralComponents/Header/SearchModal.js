@@ -9,7 +9,7 @@ import BackArrow from "../../Utils/Icons/BackArrow"
 
 function SearchModal({isVisible,closeModal,singleItem,searchFun,rowListing}) {
 
-    const [searchWord,setSearchWord] = useState()
+    const [searchWord,setSearchWord] = useState("coa")
     const [searchData,setSearchData] = useState([])
     const textInput = useRef()
     const[loadingData,setLoadingData] = useState(false)
@@ -104,7 +104,7 @@ function SearchModal({isVisible,closeModal,singleItem,searchFun,rowListing}) {
                 data={searchData}  
                 showsVerticalScrollIndicator={false} 
                 renderItem={singleItem}
-                numColumns={rowListing?1:3}
+                numColumns={1}
                 keyExtractor={item => item.id}
                 ListEmptyComponent={searched&&<EmptyList image={Assets.noResult.noRes1}/>}
               />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, TouchableWithoutFeedback} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, TouchableWithoutFeedback, RefreshControl} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {insTestSeries} from '../../FakeDataService/FakeData'
 import { theme, dataLimit,serverBaseUrl, Assets, imageProvider } from '../config';
@@ -48,9 +48,14 @@ class InsTestSeriesList extends React.Component {
                 clickHandler: () => { },
             },
         ],
+        refreshing: false,
     }
 
     componentDidMount(){
+        this.initialFetch()
+    }
+
+    initialFetch=() => {
         fetchTestSeriesBySubCategory(this.state.id, this.state.offset, dataLimit,this.SubCatTestSeriesCallback)
         fetch_Banners("test", this.bannerCallback)
     }
@@ -81,6 +86,7 @@ class InsTestSeriesList extends React.Component {
         {
             // console.log("something went wrong")
         }
+        this.setState({refreshing: false})
     }
     bannerCallback=(response)=>{
         if(response.status==200)
@@ -95,6 +101,7 @@ class InsTestSeriesList extends React.Component {
         {
             // console.log("something went wrong", response.status)
         }
+        this.setState({refreshing: false})
     }
     renderBannerList=({item})=>
     {
@@ -128,6 +135,12 @@ class InsTestSeriesList extends React.Component {
             </TouchableWithoutFeedback>
         )
     }
+
+    refreshing=()=>{
+        this.setState({refreshing:true});
+        this.initialFetch();
+
+    }
     
     render() {
         this.updateComponent()
@@ -144,7 +157,13 @@ class InsTestSeriesList extends React.Component {
                 
                 noNotificationIcon={true} 
             >
-                <ScrollView>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl refreshing={this.state.refreshing} 
+                        onRefresh={this.refreshing} />
+                    }
+                    style={{flex: 1}}
+                >
                     {/* <View style={styles.headTitleView}>
                         <Text></Text>
                         <Text style={styles.title}>UPSC CSE</Text>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity,TouchableWithoutFeedback, Modal, TextInput ,ActivityIndicator,Dimensions} from 'react-native';
+import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity,TouchableWithoutFeedback, Modal, TextInput ,ActivityIndicator,Dimensions , RefreshControl} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {instituteData, insBanners} from '../../FakeDataService/FakeData'
 import { Rating } from 'react-native-ratings';
@@ -61,7 +61,8 @@ class InsHome extends React.Component {
         docoffset: 0,
         ttoffset: 0,
         tsoffset: 0,
-        actions: ['Change Playlist', 'Delete']
+        actions: ['Change Playlist', 'Delete'],
+        refreshing: false,
      }
 
      coursesCallBack=(response)=>
@@ -74,6 +75,7 @@ class InsHome extends React.Component {
                     fetch_courses_banners(this.state.activeCourse,this.courseBannerCallback)})
                 })
             }
+            this.setState({refreshing: false})
      }
      liveDataCallback=(response)=>
      {
@@ -86,13 +88,18 @@ class InsHome extends React.Component {
                  this.setState({liveDataLoaded:true,liveData:data,eventSeconds:seconds}); 
              })
          }
+         this.setState({refreshing: false});
              
      }
      componentDidMount() {
+        this.initialFetch();
+     }
+
+    initialFetch=()=>{
         this.props.setNavigation(this.props.navigation);
         fetch_institute_courses(this.props.institute.details.id,this.coursesCallBack)
         fetch_latestUpcomingSchedule(this.props.institute.details.id,this.liveDataCallback)
-     }
+    }
 
     courseBannerCallback=(response)=>
     {
@@ -1092,6 +1099,13 @@ class InsHome extends React.Component {
     {
         onShare(shareTextInstitute+"\n"+shareBaseUrl+"institute/"+this.props.institute.details.id+"/"+this.props.institute.details.name)
     }
+
+    refreshing=()=>{
+        this.setState({refreshing:true});
+        this.initialFetch();
+
+    }
+
     render() {
        const institute = this.props.institute.details
          return (
@@ -1107,7 +1121,13 @@ class InsHome extends React.Component {
             titleWithImage={true}
             rightIconOnPress={this.rightIconOnPress}
         > 
-            <ScrollView>
+            <ScrollView
+                    refreshControl={
+                        <RefreshControl refreshing={this.state.refreshing} 
+                        onRefresh={this.refreshing} />
+                    }
+                    style={{flex: 1}}
+            >
                 <View style={styles.container}>
                         <View style={styles.instituteheader}>
                             {CardView(

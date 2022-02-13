@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView,ActivityIndicator} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView,ActivityIndicator, RefreshControl} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import { theme,dataLimit, Assets } from '../config';
 import { EvilIcons } from '@expo/vector-icons';
@@ -19,7 +19,8 @@ class Feed extends React.Component {
         loadingData:true,
         shoeLoadMore:true,
         feeds:[],
-        loadingFooter: false
+        loadingFooter: false,
+        refreshing: false
     }
 
     handleFeedCallBack=(response)=>
@@ -39,6 +40,7 @@ class Feed extends React.Component {
         {
             this.setState({loadingData:false})
         }
+        this.setState({refreshing: false})
     }
 
     componentDidMount()
@@ -51,6 +53,10 @@ class Feed extends React.Component {
                 this.setState({authType: obj.authType=='user'?2:1,})
             }
           })
+        this.initialFetch()
+    }
+
+    initialFetch=() => {
         fetch_feed_all(this.state.offset,dataLimit,this.handleFeedCallBack);
     }
 
@@ -121,6 +127,12 @@ class Feed extends React.Component {
         }
     };
 
+    refreshing=()=>{
+        this.setState({refreshing:true});
+        this.initialFetch();
+
+    }
+
     render() {
         return(
             <PageStructure 
@@ -135,7 +147,13 @@ class Feed extends React.Component {
                 titleonheader={"Community"} 
           
             >
-                {/* <ScrollView> */}
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl refreshing={this.state.refreshing} 
+                        onRefresh={this.refreshing} />
+                    }
+                    style={{flex: 1}}
+                >
                     <View style={styles.container}>
 
                     {this.state.loadingData?(
@@ -163,7 +181,7 @@ class Feed extends React.Component {
                         />
                     )} 
                     </View>
-                {/* </ScrollView> */}
+                </ScrollView>
             </PageStructure>
         )
     }

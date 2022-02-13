@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableWithoutFeedback,FlatList, Image,Dimensions} from 'react-native';
+import { Text,View,StyleSheet,TouchableWithoutFeedback,FlatList, Image,Dimensions, ScrollView, RefreshControl, TouchableOpacity} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import { theme, dataLimit,  Assets, imageProvider} from '../config';
+import { theme, dataLimit,  Assets, imageProvider, screenMobileWidth,numFormatter} from '../config';
 import { EvilIcons } from '@expo/vector-icons';
 import { AirbnbRating } from 'react-native-ratings';
 import { connect } from 'react-redux'
@@ -21,11 +21,11 @@ class Home extends React.Component {
        loadingData:true,
        homeMainContent:[],
        offset:0,
-       count:0
+       count:0,
+       refreshing: false
     }
 
     handleHomeDataCallBack=(response) => {
-      
             if(response.status==200)
             {
                     response.json().then(data=>
@@ -37,13 +37,19 @@ class Home extends React.Component {
             {
                 this.setState({loadingData:false});
             }
+                this.setState({refreshing: false});
     }
     componentDidMount() {
+        this.initialFetch()
+        
+        // PaymentGateway({orderId:"123",mid:paytmConfig.mid,isStaging:paytmConfig.isStaging,appInvokeRestricted:paytmConfig.appInvokeRestricted,amount:10,tranxToken:"123",callback:(response)=>{// console.log(response)}})
+    }
+
+    initialFetch=() => {
         this.props.setNavigation(this.props.navigation);
         this.checkForUserCat()
         fetch_homeData(this.handleHomeDataCallBack)
         
-        // PaymentGateway({orderId:"123",mid:paytmConfig.mid,isStaging:paytmConfig.isStaging,appInvokeRestricted:paytmConfig.appInvokeRestricted,amount:10,tranxToken:"123",callback:(response)=>{// console.log(response)}})
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -166,6 +172,31 @@ class Home extends React.Component {
         }
     }
 
+    renderSearchIns=({item})=>{
+        return(
+            <View>
+                <TouchableWithoutFeedback style={{marginBottom: '5%'}} onPress={()=>this.redirectTo(item.id)}>
+                    <View style={styles.instituteheader}>
+                        {CardView(
+                            <Image source={{uri:imageProvider(item.logo)}} style={styles.instituteheaderLogo}/>
+                            ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:100,borderRadius:15}):({width:200,height:150})])
+                        } 
+                        <View style={styles.instituteheaderMeta}>
+                            <View style={{alignItems: 'center',flexDirection: 'column'}}>
+                                <Text style={styles.instituteheaderText}>{item.name}</Text>                          
+                                <Text style={styles.follower}>{numFormatter(item.followersCount)} Followers</Text>
+
+                            </View>
+                            <TouchableOpacity style={[styles.courseItemContainer,{backgroundColor:theme.purpleColor, borderColor:theme.darkPurpleColor}]} onPress={()=>this.redirectTo(item.id)}> 
+                                <Text style={[styles.courseTitle,{color:theme.darkPurpleColor}]}>Latest Course</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </TouchableWithoutFeedback>
+            </View>  
+        )
+    }
+
     search=(offset, search, callback)=>{
         SearchInstitute(search, offset, dataLimit, callback)
     }
@@ -205,6 +236,12 @@ class Home extends React.Component {
         }
         
     }
+
+    refreshing=()=>{
+        this.setState({refreshing:true});
+        this.initialFetch();
+
+    }
     
     render() {
         return (
@@ -220,42 +257,49 @@ class Home extends React.Component {
                 searchFun={this.search}
                 titleWithImage={true}
                 titleonheader={"All Coaching"}
-                singleItem={this.renderInstituteList}
+                singleItem={this.renderSearchIns}
                 navigation={this.props.navigation}
             >
-                <View style={styles.container}> 
-                    <View style={styles.mainContent}> 
-                    {this.state.loadingData?(
-                        <View style={{margin:10,padding:10}}>
-                            <CustomActivtiyIndicator mode="homeShimmer" />
-                        </View>
-                    ):(
-                        this.state.catMode?(
-                            <View>
-                            <FlatList 
-                                data={this.state.institute}  
-                                showsVerticalScrollIndicator={false} 
-                                renderItem={this.renderInstituteList}
-                                numColumns={3}
-                                keyExtractor={item => item.id}
-                                ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
-                            />
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl refreshing={this.state.refreshing} 
+                        onRefresh={this.refreshing} />
+                    }
+                    style={{flex: 1}}
+                >
+                    <View style={styles.container}> 
+                        <View style={styles.mainContent}> 
+                        {this.state.loadingData?(
+                            <View style={{margin:10,padding:10}}>
+                                <CustomActivtiyIndicator mode="homeShimmer" />
                             </View>
                         ):(
-                            <FlatList 
-                                data={this.state.homeMainContent}  
-                                showsVerticalScrollIndicator={false} 
-                                renderItem={this.renderMainContetnRow}
-                                keyExtractor={item => item.id}
-                                ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
-                            />
-                        )
-                    )}
-                    
+                            this.state.catMode?(
+                                <View>
+                                <FlatList 
+                                    data={this.state.institute}  
+                                    showsVerticalScrollIndicator={false} 
+                                    renderItem={this.renderInstituteList}
+                                    numColumns={3}
+                                    keyExtractor={item => item.id}
+                                    ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                                />
+                                </View>
+                            ):(
+                                <FlatList 
+                                    data={this.state.homeMainContent}  
+                                    showsVerticalScrollIndicator={false} 
+                                    renderItem={this.renderMainContetnRow}
+                                    keyExtractor={item => item.id}
+                                    ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                                />
+                            )
+                        )}
                         
+                            
+                        </View>
                     </View>
-                </View>
-                
+                </ScrollView>
            </PageStructure>
         );
     }
@@ -345,7 +389,104 @@ const styles = StyleSheet.create({
                             width:windowWidth-25,
                             height:125, 
                             borderRadius:10, 
-                        }
+                        },
+
+                        instituteheader:
+                        {
+                            flexDirection:'row',
+                            flex:0.3,   
+                            marginBottom:10,
+                            marginTop:5
+                        },
+                            logoCard:
+                            { 
+                                flexWrap:'wrap',
+                                
+                            }, 
+                                instituteheaderLogo:
+                                {
+                                    width:"100%",
+                                    height:"100%",
+                                     
+                                    borderRadius:15,
+                                },  
+                            instituteheaderMeta:
+                            {
+                                flex:1,
+                                flexDirection:'column',
+                                marginLeft:'5%',
+                                marginRight:'5%'
+                            },
+                                instituteheaderText:
+                                {
+                                    flex:1,
+                                    flexWrap:'wrap', 
+                                    fontFamily: 'Raleway_700Bold',
+                                    fontSize:19,
+                        
+                                },  
+                                instituteDirector:
+                                {
+                                    color:theme.accentColor,
+                                    fontWeight:'bold',
+                                    fontSize:12,
+                                },
+                                instituteRatingView:
+                                {
+                                    flex:1,
+                                    flexDirection:'row',
+                                    alignItems: 'center'
+                                    // justifyContent: 'center'    
+                                },
+                                    instituteRating:
+                                    {
+                                        alignSelf:'flex-start',
+                                        marginRight:10,
+                                    },
+                                    voteCount:
+                                    {
+                                        fontWeight:'bold',
+                        
+                                    },
+                                btnView:
+                                {
+                                    backgroundColor: theme.accentColor,
+                                    borderColor: theme.accentColor, 
+                                    borderWidth:1,
+                                    padding: 3,
+                                    borderRadius: 10,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    marginTop:'auto'
+                                },
+                                    follower:
+                                    {
+                                        color: theme.blueColor, 
+                                        fontWeight: 'bold',
+                                        fontSize: 18
+                                    },
+                        
+                                courseItemContainer:
+                                {  
+                                    paddingLeft:12,
+                                    paddingRight:12, 
+                                    marginRight:10,
+                                    paddingVertical: 3.5,
+                                    marginTop:5 , 
+                                    paddingHorizontal:2,
+                                    borderWidth:1, 
+                                    borderColor:theme.primaryColor,
+                                    borderRadius:15,
+                                        alignItems:'center',
+                                        justifyContent: 'center'
+                        
+                                },
+                                    courseTitle:
+                                    {
+                                        fontSize:14, 
+                                        color:theme.greyColor,
+                                        fontFamily: 'Raleway_700Bold',
+                                    },
 
 
 })

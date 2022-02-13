@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, View,Dimensions, TouchableWithoutFeedback, Image, Text, TouchableOpacity, } from 'react-native';
+import { FlatList, StyleSheet, View,Dimensions, TouchableWithoutFeedback, Image, Text, TouchableOpacity, ScrollView, RefreshControl} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure';
 import EmptyList from '../Utils/EmptyList';
@@ -23,6 +23,10 @@ function SubCategoryList({route,navigation}) {
 
     useEffect(()=>{
         // console.log(categoryId)
+        initialFetch()
+    },[categoryId,offset])
+
+    const initialFetch = () =>{
         fetch_testSeries_subcategoryByCategory(categoryId,offset,dataLimit,(response)=>{
             if(response.status==200)
             {
@@ -33,9 +37,9 @@ function SubCategoryList({route,navigation}) {
             setRefreshing(false)
             setLoadingFooter(false) 
             setLoading(false)
+            setRefreshing(false)
         })
-    },[categoryId,offset])
-
+    }
 
 
     const renderSeries=({item})=>{  
@@ -60,6 +64,11 @@ function SubCategoryList({route,navigation}) {
           // console.log(error);
         }
     };
+    const refreshingFun=()=>{
+            setRefreshing(true);
+            initialFetch();
+    }
+
   return (
     <PageStructure
         iconName={"arrow-left"}
@@ -71,6 +80,13 @@ function SubCategoryList({route,navigation}) {
         nosearchIcon={true} 
         noNotificationIcon={true}
     >
+        <ScrollView
+            refreshControl={
+                <RefreshControl refreshing={refreshing} 
+                onRefresh={refreshingFun} />
+            }
+            style={{flex: 1}}
+        >
             <View style={styles.container}>
                 {loading?(
                     <CustomActivtiyIndicator mode="skimmer"/>
@@ -101,6 +117,7 @@ function SubCategoryList({route,navigation}) {
                 />
                 )}
             </View>
+        </ScrollView>
     </PageStructure>
   );
 }

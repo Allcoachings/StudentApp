@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity, Modal, Dimensions, TextInput,ActivityIndicator,TouchableWithoutFeedback} from 'react-native';
+import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity, Modal, Dimensions, TextInput,ActivityIndicator,TouchableWithoutFeedback, RefreshControl} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {instituteData} from '../../FakeDataService/FakeData'
 import { AirbnbRating,Rating } from 'react-native-ratings';
@@ -81,7 +81,9 @@ class InstituteView extends React.Component {
         pinId: '',
         checkPinned: '',
         actions: ['Change Playlist'],
-        pageTitle:''
+        pageTitle:'',
+        refreshing: false,
+
      }
 
      
@@ -96,6 +98,7 @@ class InstituteView extends React.Component {
                  })
              
          }
+         this.setState({refreshing: false})
      }
      coursesCallBack=(response)=>   {
         if(response.status==200)
@@ -115,6 +118,7 @@ class InstituteView extends React.Component {
                 
             })
         }
+        this.setState({refreshing: false})
     }
     checkEnrollCallBack=(response) =>{
         if(response.status==200)
@@ -136,16 +140,20 @@ class InstituteView extends React.Component {
                 this.setState({liveDataLoaded:true,liveData:data,eventSeconds:seconds}); 
             })
         }
-            
+        this.setState({refreshing: false})    
     }
     componentDidMount() {
-         fetch_instituteDetails(this.state.instituteId,this.instituteCallback)
+         this.initialFetch();
+          
+          
+    }
+
+    initialFetch=() => {
+        fetch_instituteDetails(this.state.instituteId,this.instituteCallback)
          fetch_institute_courses(this.state.instituteId,this.coursesCallBack)
          checkSubscription(this.state.studentId,this.state.instituteId,this.checkSubscriptionCallback) 
          fetch_latestUpcomingSchedule(this.state.instituteId,this.liveDataCallback)
          checkForPin({"institute":{id: this.state.instituteId},"student":{id: this.props.userInfo.id}}, this.checkPinCallBack)
-          
-          
     }
 
     checkPinCallBack=(response)=>{
@@ -170,6 +178,7 @@ class InstituteView extends React.Component {
         {
             // // console.log("not pinned", response.status)
         }
+        this.setState({refreshing: false})
     }
 
     checkSubscriptionCallback=(response)=>{
@@ -191,6 +200,13 @@ class InstituteView extends React.Component {
         {
             // // console.log("something went wrong")
         }
+        this.setState({refreshing: false})
+    }
+
+    refreshing=()=>{
+        this.setState({refreshing:true});
+        this.initialFetch();
+
     }
 
     updateComponent=()=>
@@ -252,7 +268,7 @@ class InstituteView extends React.Component {
             courseTimeTable:[],
             courseTestSeries:[],
             pinId: '',
-            checkPinned: '' 
+            checkPinned: '' ,
         },()=>
             {
                 fetch_instituteDetails(this.state.instituteId,this.instituteCallback)
@@ -1199,8 +1215,14 @@ class InstituteView extends React.Component {
             (
                 <CustomActivtiyIndicator mode="instituteView"/>
             ):(
-            <ScrollView 
-            onScroll={this.handleScroll}
+            
+            <ScrollView
+                // onScroll={this.handleScroll}
+                refreshControl={
+                    <RefreshControl refreshing={this.state.refreshing} 
+                    onRefresh={this.refreshing} />
+                }
+                style={{flex: 1}}
             >
                 <View style={styles.container}>
                         {/* <View style={styles.headerView}>

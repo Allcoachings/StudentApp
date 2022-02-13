@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, TouchableWithoutFeedback} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, TouchableWithoutFeedback, RefreshControl} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {insTestSeries} from '../../FakeDataService/FakeData'
 import { theme, dataLimit,serverBaseUrl, Assets,imageProvider } from '../config';
@@ -20,14 +20,18 @@ class TestSeriesIns extends React.Component {
         testSeries: [],
         category:'',
         tsLoading: true,
-        banner:[]
+        banner:[],
+        refreshing: false
      }
 
     componentDidMount() {
+        this.initialFetch()
+    }
+
+    initialFetch=() => {
         fetch_testSeries_category(this.state.offset, dataLimit, this.testSeriesCallBack)
         fetch_Banners("test", this.bannerCallback)
     }
-
 
     subCategoryByCategoryId=()=>{
         fetch_testSeries_subcategoryByCategory()
@@ -100,6 +104,7 @@ class TestSeriesIns extends React.Component {
         {
             // console.log("something went wrong", response.status)
         }
+        this.setState({refreshing:false})
     }
     renderBannerList=({item})=>
     {
@@ -127,6 +132,13 @@ class TestSeriesIns extends React.Component {
         }
         
     }
+
+    refreshing=()=>{
+        this.setState({refreshing:true});
+        this.initialFetch();
+
+    }
+
     render() {
         
         return (
@@ -145,7 +157,13 @@ class TestSeriesIns extends React.Component {
                 catOnpress={this.toggleCatMode}
 
             >
-                <ScrollView> 
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl refreshing={this.state.refreshing} 
+                        onRefresh={this.refreshing} />
+                    }
+                    style={{flex: 1}}
+                >
                     <View style={styles.container}> 
                     {this.state.catMode?(
                         this.state.tsLoading?(

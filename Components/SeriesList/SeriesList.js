@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions, RefreshControl} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {insTestSeries} from '../../FakeDataService/FakeData'
 import { theme, dataLimit, serverBaseUrl, Assets,imageProvider } from '../config';
@@ -55,10 +55,15 @@ class SeriesList extends React.Component {
                 clickHandler: () => { },
             },
         ],
-        tsLoading: true
+        tsLoading: true,
+        refreshing: false
     }
 
     componentDidMount(){
+        this.initialFetch()
+    }
+
+    initialFetch=() => {
         this.fetch()
         fetch_Banners("test", this.bannerCallback)
     }
@@ -90,6 +95,7 @@ class SeriesList extends React.Component {
         {
             // console.log("something went wrong", response.status)
         }
+        this.setState({refreshing:false})
     }
 
     seriesListCallBack=(response)=>{
@@ -114,6 +120,7 @@ class SeriesList extends React.Component {
         {
             // console.log("something went wrong")
         }
+        this.setState({refreshing: false})
     }
 
     closeModal = () =>{
@@ -157,6 +164,9 @@ class SeriesList extends React.Component {
         }
      }
 
+     refreshing=()=>{
+        this.setState({refreshing:true},()=>this.initialFetch());
+    }
 
     render(){
         return(
@@ -169,7 +179,13 @@ class SeriesList extends React.Component {
                 navigation={this.props.navigation}
                 noNotificationIcon={true}
             >
-               <ScrollView>
+               <ScrollView
+                    refreshControl={
+                        <RefreshControl refreshing={this.state.refreshing} 
+                        onRefresh={this.refreshing} />
+                    }
+                    style={{flex: 1}}
+                >
                     <View style={styles.main}>
                         {/* <View 
                             style={{justifyContent: 'center', alignItems: 'center', marginTop: 10, marginBottom: 10}}>
