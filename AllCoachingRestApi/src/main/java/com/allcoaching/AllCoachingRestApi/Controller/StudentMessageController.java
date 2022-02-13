@@ -88,6 +88,14 @@ public class StudentMessageController {
     }
 
     @CrossOrigin(origins = "*")
+    @GetMapping("getStudentMessagesWithMessageTypeByStudentId")
+    public Iterable<StudentMessage> getStudentMessagesWithMessageTypeByStudent(@RequestParam(name="forAdmin") boolean forAdmin,@RequestParam(name="messageType") String messageType,@RequestParam(name="studentId") long studentId,@RequestParam(name="page") int page, @RequestParam(name="pageSize") int pageSize)
+    {
+        Student s  = new Student(studentId);
+        return  studentMessageService.getStudentMessagesWithMessageTypeByStudent(forAdmin,messageType,s,page,pageSize);
+    }
+
+    @CrossOrigin(origins = "*")
     @GetMapping("getStudentMessagesWithMessageTypeForIns")
     public Iterable<StudentMessage> getStudentMessagesWithMessageTypeForIns(@RequestParam(name = "insId") long insId,@RequestParam(name="forAdmin") boolean forAdmin,@RequestParam(name="messageType") String messageType,@RequestParam(name="page") int page, @RequestParam(name="pageSize") int pageSize)
     {

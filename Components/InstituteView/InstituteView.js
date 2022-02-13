@@ -44,6 +44,7 @@ import PinIcon from '../Utils/Icons/PinIcon'
 import SendMessage from './SendMessage';
 import NotEnrolledModal from './NotEnrolledModal';
 import onShare from '../Utils/Share'
+import PinUnPinPopUp from './PinUnPinPopUp'
 const width = Dimensions.get('window').width
 class InstituteView extends React.Component {
     state = { 
@@ -998,7 +999,7 @@ class InstituteView extends React.Component {
                             <View style={styles.optionalRow}> 
                                 <TouchableOpacity style={{borderColor:theme.borderColor,borderWidth:1,borderRadius:10,padding:10}} 
                                 onPress={() => this.props.navigation.navigate("AboutCourse", {id: this.state.activeCourse, activeCourseDetail: this.state.activeCourseDetail})}
-                                // onPress={() => this.props.navigation.navigate('ExamCategory')}
+ 
                             >
                                     <Text style={{fontSize:12,color:theme.secondaryColor,fontFamily:'Raleway_700Bold'}}>
                                         About Course
@@ -1190,7 +1191,7 @@ class InstituteView extends React.Component {
                 pinUnpinIcon={true}
                 searchReplace={false}
                 navigation={this.props.navigation}
-                pinUnpinFunction={!this.state.checkPinned?(()=>pinInstitute({"institute":{id: this.state.instituteId},"student":{id: this.props.userInfo.id}}, this.pinCallBack)):(()=>unPinInstitute(this.state.pinId, this.unPinCallBack))}
+                pinUnpinFunction={()=>this.setState({pinAlertVisible:true})}
                 showShareIcon={true}
                 shareFun={()=>onShare(shareTextInstitute+"\n https://allcoaching.com/institute/"+this.state.instituteId+"/"+encodeURIComponent(institute.name))}
             > 
@@ -1414,6 +1415,16 @@ class InstituteView extends React.Component {
                         openPurchaseCourseModal={this.openPurchaseCourseModal}
                         purchaseCourseFun={this.purchaseCourseFun}
                         amount={this.state.activeCourseDetail&&this.state.activeCourseDetail.fees}
+
+                    />
+                ):(null)}
+
+                {this.state.pinAlertVisible?(
+                    <PinUnPinPopUp
+                        closeModal={()=>this.setState({pinAlertVisible:false})}
+                        yesFun={()=>!this.state.checkPinned?(pinInstitute({"institute":{id: this.state.instituteId},"student":{id: this.props.userInfo.id}}, this.pinCallBack)):(unPinInstitute(this.state.pinId, this.unPinCallBack))}
+                        pining = {!this.state.checkPinned}
+                        noFun={()=>this.setState({pinAlertVisible:false})}
 
                     />
                 ):(null)}

@@ -28,6 +28,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { toggleHeader } from '../Actions';
 import { TOGGLE_HEADER } from '../Actions/types';
 
+import BackArrow from '../Utils/Icons/BackArrow'
 import SendMessage from '../InstituteView/SendMessage'
 // import {Feed} from "../Feed/Feed"
 const width = Dimensions.get('window').width
@@ -601,8 +602,8 @@ class UserProfile extends React.Component {
                 <ScrollView>
                     <View style={styles.container}>
                         <TouchableWithoutFeedback onPress={this.props.navigation.goBack}>
-                            <View style={{margin:10}}>
-                                <Entypo name="cross" size={30}/>
+                            <View style={{margin:10,alignItems: 'flex-start'}}>
+                                <BackArrow height={24} width={24}/>
                             </View>
                         </TouchableWithoutFeedback>
                         <View style={styles.userInfoSecView}>

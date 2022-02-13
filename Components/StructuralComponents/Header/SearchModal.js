@@ -90,12 +90,7 @@ function SearchModal({isVisible,closeModal,singleItem,searchFun,rowListing}) {
                               style={styles.searchIcon}
                             />
                     )} */}
-                    <Feather
-                    name={'x'} 
-                    size={30} 
-                    color={theme.secondaryColor} 
-                    style={styles.searchIcon}
-                  />
+                    
 
                 </View>
             </View>,

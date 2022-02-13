@@ -1,7 +1,7 @@
 import { Feather } from '@expo/vector-icons'
 import { Text } from 'native-base'
-import * as React from 'react'
-import { TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import React,{useState} from 'react'
+import { TouchableOpacity, TouchableWithoutFeedback, View,ScrollView } from 'react-native'
 import PDFReader from 'rn-pdf-reader-js'
 import { theme } from '../config'
 import CardView from '../Utils/CardView'
@@ -11,6 +11,7 @@ import { TOGGLE_HEADER } from '../Actions/types'
 import { useDispatch } from 'react-redux'
  const  PDFViewer =({route,navigation}) =>
 {
+    const [headerVisible,setHeaderVisible] =useState(true);
 
     const dispatch = useDispatch()
     React.useEffect(() => {
@@ -23,10 +24,27 @@ import { useDispatch } from 'react-redux'
         // Return the function to unsubscribe from the event so it gets removed on unmount
         return unsubscribe;
       }, [navigation]);
+
+
+      const  handleScroll=(event)=>
+      {
+          
+              // console.log();
+              if(event.nativeEvent.contentOffset.y>40)
+              {
+                   setHeaderVisible(false)
+              }
+              if(event.nativeEvent.contentOffset.y<40&&(!headerVisible))
+              {
+                setHeaderVisible(true)
+              }
+      }
+
     return (
      
       <>
-         {CardView(
+
+         {CardView( 
                     <View style={{flex: 1,flexDirection: 'row',alignItems: 'center',}}>
                         {/* <View> */}
                             <TouchableOpacity onPress={()=>navigation.goBack()}>
@@ -71,11 +89,7 @@ import { useDispatch } from 'react-redux'
                                       style={styles.searchIcon}
                                     />
                             )} */}
-                            <Feather
-                                name={'x'} 
-                                size={30} 
-                                color={theme.secondaryColor}  
-                            />
+                            
  
                         </View>
                     </View>,

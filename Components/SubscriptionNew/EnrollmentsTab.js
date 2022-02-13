@@ -21,8 +21,8 @@ function EnrollmentsTab({navigation}) {
     const [refreshing,setRefreshing] = useState(false)
     const renderPurchageCourse=(item)=>{
         return(
-            
-            <PurchageListRow item={item} navigation={navigation}/>
+              
+             <PurchageListRow item={item} navigation={navigation}/>
         )
     }
 

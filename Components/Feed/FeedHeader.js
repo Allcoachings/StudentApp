@@ -71,7 +71,7 @@ class FeedHeader extends Component {
                             this.props.navigation.navigate('Institute',{insId:posterObject.id})
                     ):(null)
                 }}>
-                    <View style={{flexDirection: 'row'}}> 
+                    <View style={{flexDirection: 'row',alignItems:"center"}}> 
                         <Image 
                             source={{ uri: postedBy==2?(imageProvider(posterObject.studentImage)):(imageProvider(posterObject.logo))}} 
                             style={styles.circleView}
@@ -86,10 +86,15 @@ class FeedHeader extends Component {
                                     }
                                 }}
                         />  
-                        <View style={{width: '78%'}}>
+                        <View style={{width: '90%'}}>
                             <View style={{flexDirection: 'row'}}>
                                 <Text style={[styles.coaching,{marginRight:5}]} numberOfLines={1}>{posterObject.name}</Text> 
-                                {postedBy==1&&<MaterialIcons name="verified" size={20} color={theme.greyColor} />}
+                                {postedBy==1&&<MaterialIcons  name="verified" size={15} color={theme.greyColor} />} 
+                                {this.props.mode=="userProfile"||this.props.mode=="insProfile"||this.props.actions?( 
+                                    <TouchableOpacity onPress={()=>this.showThreeMenu()} style={{marginLeft:"auto",alignSelf:'flex-end'}}>
+                                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
+                                    </TouchableOpacity>
+                                ):(null)} 
                             </View>
                             <View style={{flexDirection: 'row'}}>
                                 <Text style={styles.timeDateText}>{moment(creationTime).fromNow()}</Text>
@@ -101,11 +106,7 @@ class FeedHeader extends Component {
                     </View>
                 </TouchableWithoutFeedback>
         
-                {this.props.mode=="userProfile"||this.props.mode=="insProfile"||this.props.actions?( 
-                    <TouchableOpacity onPress={()=>this.showThreeMenu()}>
-                        <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>
-                    </TouchableOpacity>
-                ):(null)} 
+              
                 
                 {this.state.reportModalVisible?(
 
@@ -130,15 +131,15 @@ const styles = StyleSheet.create({
         },
             circleView:
             {
-                height: 50,
-                width: 50,
+                height: 40,
+                width: 40,
                 borderRadius: 25,
                 backgroundColor:theme.secondaryColor
                  
             },
             coaching:
             {
-                fontSize: 15,
+                fontSize: 13,
                 marginLeft:10,
                 fontFamily: 'Raleway_600SemiBold',
                 width:'78%',
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
             },
                 timeDateText:
                 {
-                    fontSize: 13,
+                    fontSize: 11,
                     marginLeft:10,
                     color: theme.greyColor
                 }, 

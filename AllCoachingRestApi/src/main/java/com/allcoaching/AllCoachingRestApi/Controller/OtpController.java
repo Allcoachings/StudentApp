@@ -19,7 +19,8 @@ public class OtpController {
     public Otp generateOtp(@PathVariable String mobileNumber)
     {
 
-        return otpService.generateOtp(mobileNumber);
+//        return otpService.generateOtp(mobileNumber);
+        return new Otp(mobileNumber,"123456");
     }
 
     @CrossOrigin(origins = "*")

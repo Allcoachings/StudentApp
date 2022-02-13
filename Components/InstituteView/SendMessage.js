@@ -1,14 +1,15 @@
 import { Feather } from '@expo/vector-icons';
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ActivityIndicator, FlatList, Image, Modal, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
-import { imageProvider, theme } from '../config';
+import { dataLimit, imageProvider, theme } from '../config';
 import CardView from '../Utils/CardView';
 import BackArrow from '../Utils/Icons/BackArrow'
 
 import Toast from 'react-native-simple-toast';
 import * as ImagePicker from 'expo-image-picker';
-import { addMessageImage, saveMessage } from '../Utils/DataHelper/StudentMessage';
+import { addMessageImage, getStudentChatMessagesForCourse, fetch_messages,saveMessage } from '../Utils/DataHelper/StudentMessage';
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
+import SingleStudentMessage from './SingleStudentMessage';
 
 
 const SendMessage =({isVisible,closeModal,title,forAdmin,courseId,instituteId,studentId,messageType})=> {
@@ -17,7 +18,9 @@ const SendMessage =({isVisible,closeModal,title,forAdmin,courseId,instituteId,st
     const [description,setDescription] = useState('')
     const [messageImages,setMessageImages] = useState([])
     const [loader,setLoader] = useState(false)
-
+    const [offset,setOffset] = useState(0)
+    const [messages,setMessages] = useState([])
+    const [loading,setLoading] = useState(true)
     const sendMessage = ()=>
     {
 
@@ -42,6 +45,33 @@ const SendMessage =({isVisible,closeModal,title,forAdmin,courseId,instituteId,st
 
     }
 
+    useEffect(() => {
+        if(instituteId&&studentId&&courseId&&messageType =="instituteCourseRelated")
+        {
+              
+            getStudentChatMessagesForCourse(instituteId,studentId,courseId,offset,dataLimit,(response)=>{
+                if(response.status==200)
+                {
+                    response.json().then(data=>{
+                        setMessages(data) 
+                        setLoading(false)
+                    }) 
+                }
+            })
+        }else if(messageType !="instituteCourseRelated") 
+        {
+            fetch_messages(true,messageType,studentId,offset,dataLimit,(response)=>{
+                if(response.status==200)
+                {
+                    response.json().then(data=>{
+                        setMessages(data) 
+                        setLoading(false)
+                    }) 
+                }
+            })
+        }
+        
+    },[instituteId,studentId,courseId,offset,messageType])
     const addMessageCallback=(response)=>
     {
         if(response.status==201)
@@ -190,11 +220,7 @@ const SendMessage =({isVisible,closeModal,title,forAdmin,courseId,instituteId,st
                                       style={styles.searchIcon}
                                     />
                             )} */}
-                            <Feather 
-                                name={'x'} 
-                                size={30} 
-                                color={theme.secondaryColor}  
-                            />
+                           
 
                         </View>
                     </View>,
@@ -216,41 +242,62 @@ const SendMessage =({isVisible,closeModal,title,forAdmin,courseId,instituteId,st
                 ):(
                   null
                 ))} */}
+                <View>
 
+                    <FlatList
 
-                <View style={{margin:10,marginTop:30}}>
+                        keyExtractor={(item,index)=>index.toString()}
+                        data={messages}
+                        renderItem={({item,index})=>(
+                            <SingleStudentMessage
+                                item={item}
+                            />
+                        )}
 
-                    {CardView(
-                        <View>
-                                <TextInput
-                                    style={{height:200 ,fontFamily:'Raleway_400Regular',marginHorizontal:10}}
-                                    placeholder="Type Message...."
-                                    multiline={true}  
-                                    ref={(input) => { descriptionTextInput.current = input; }}
-                                    defaultValue={description} 
-                                    onChangeText={(text)=>setDescription(text)}
-                                />
+                        ListFooterComponent={
 
-                            <View style={{}}>
-                                {renderImageSection()} 
-                            </View>
-                            <TouchableWithoutFeedback onPress={check}>
-                                <View style={{alignSelf: 'flex-end',margin:10,flexDirection: 'row',}}>
-                                    <Feather name="image" size={20} color={theme.greyColor}/>
-                                    <Text style={{color:theme.greyColor,marginLeft:5,fontFamily: 'Raleway_600SemiBold'}}>Add Image</Text>
+                            <View style={{margin:10,marginBottom:50}}>
+
+                            {CardView(
+                                <View>
+                                        <TextInput
+                                            style={{height:200 ,fontFamily:'Raleway_400Regular',marginHorizontal:10}}
+                                            placeholder="Type Message...."
+                                            multiline={true}  
+                                            ref={(input) => { descriptionTextInput.current = input; }}
+                                            defaultValue={description} 
+                                            onChangeText={(text)=>setDescription(text)}
+                                        />
+        
+                                    <View style={{}}>
+                                        {renderImageSection()} 
+                                    </View>
+                                    <TouchableWithoutFeedback onPress={check}>
+                                        <View style={{alignSelf: 'flex-end',margin:10,flexDirection: 'row',}}>
+                                            <Feather name="image" size={20} color={theme.greyColor}/>
+                                            <Text style={{color:theme.greyColor,marginLeft:5,fontFamily: 'Raleway_600SemiBold'}}>Add Image</Text>
+                                        </View>
+                                    </TouchableWithoutFeedback>
                                 </View>
-                            </TouchableWithoutFeedback>
+                            ,{width:'100%',borderRadius:5},2
+                            )}
+                                <TouchableWithoutFeedback onPress={sendMessage}>
+                                    <View style={{paddingHorizontal:15,paddingVertical:5,backgroundColor:theme.accentColor,margin:10,borderRadius:15,alignSelf: 'flex-end'}}>
+                                        {loader?
+                                            <ActivityIndicator color={theme.primaryColor} size={"large"}/>
+                                        :(<Text style={{color:theme.primaryColor,fontSize: 16}}>Send</Text>)}
+                                    </View>
+                                </TouchableWithoutFeedback>
                         </View>
-                    ,{width:'100%',borderRadius:5},2
-                    )}
-                        <TouchableWithoutFeedback onPress={sendMessage}>
-                            <View style={{paddingHorizontal:15,paddingVertical:5,backgroundColor:theme.accentColor,margin:10,borderRadius:15,alignSelf: 'flex-end'}}>
-                                {loader?
-                                    <ActivityIndicator color={theme.primaryColor} size={"large"}/>
-                                :(<Text style={{color:theme.primaryColor,fontSize: 16}}>Send</Text>)}
-                            </View>
-                        </TouchableWithoutFeedback>
+        
+                        }
+                    />
+                     
                 </View>
+
+           
+
+                
                 
                  
           </Modal>

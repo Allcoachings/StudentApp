@@ -18,6 +18,7 @@ public interface StudentMessageRepo extends PagingAndSortingRepository<StudentMe
 
 
     Page<StudentMessage> findByForAdminAndMessageType(boolean forAdmin , String messageType , Pageable pageable);
+    Page<StudentMessage> findByForAdminAndMessageTypeAndStudent(boolean forAdmin , String messageType,Student s , Pageable pageable);
     Page<StudentMessage> findByForAdminAndMessageTypeAndReplied(boolean forAdmin , String messageType ,boolean replied, Pageable pageable);
     Page<StudentMessage> findByForAdmin(boolean forAdmin , Pageable pageable);
     Page<StudentMessage> findByForAdminAndReplied(boolean forAdmin ,boolean replied, Pageable pageable);

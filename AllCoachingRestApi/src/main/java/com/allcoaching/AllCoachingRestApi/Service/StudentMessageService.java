@@ -39,6 +39,15 @@ public class StudentMessageService {
            }
            return new ArrayList<>();
     }
+    public Iterable<StudentMessage>  getStudentMessagesWithMessageTypeByStudent(boolean forAdmin,String messageType,Student s,int page,int pageSize)
+    {
+           Page<StudentMessage> pagedResult =  studentMessageRepo.findByForAdminAndMessageTypeAndStudent(forAdmin,messageType, s,PageRequest.of(page,pageSize, Sort.by(Sort.Direction.DESC,"messageInitialTime")));
+           if(pagedResult.hasContent())
+           {
+               return pagedResult.getContent();
+           }
+           return new ArrayList<>();
+    }
     public Iterable<StudentMessage>  getStudentMessagesWithMessageTypeForIns(Institute institute,boolean forAdmin,String messageType,int page,int pageSize)
     {
            Page<StudentMessage> pagedResult =  studentMessageRepo.findByInstituteAndForAdminAndMessageType(institute,forAdmin,messageType, PageRequest.of(page,pageSize, Sort.by(Sort.Direction.DESC,"messageInitialTime")));

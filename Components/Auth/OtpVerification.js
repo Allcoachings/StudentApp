@@ -96,7 +96,7 @@ class OtpVerification extends React.Component {
     otpVerificationCallback=(response)=>
     {
        
-        // console.log(response.status)
+                
             if(response.status==200)
             {
                 response.json().then(data=>{
@@ -226,7 +226,7 @@ class OtpVerification extends React.Component {
                             />
                         )}
                     </View>
-                    <View style={{alignItems: 'center',width: width,marginTop: 'auto',marginBottom:this.props.keyboardHeight?this.props.keyboardHeight+50:20}}>
+                    <View style={{alignItems: 'center',width: width,marginTop: 'auto',marginBottom:this.props.keyboardHeight?this.props.keyboardHeight+50:50}}>
 
                          
                             

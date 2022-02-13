@@ -51,7 +51,7 @@ export const paytmConfig={
 //online serverBaseUrl
 export const serverBaseUrl="http://3.110.215.40:8090/"; 
 //local server base url
-// export const serverBaseUrl="http://192.168.83.84:8080/"; 
+// export const serverBaseUrl="http://172.20.10.3:8080/"; 
 export const allcoachingAdminUrl="http://3.110.215.40:3000/"; 
 export const  shareTextInstitute="Text here";
 export const  shareTextFeed="Text here";
@@ -120,7 +120,7 @@ export const Assets = {
 
 export const imageProvider=(url) => {
 
-    if(url&&(url.startsWith('files/')))
+    if(url&&(url?.startsWith('files/')))
     {
         return serverBaseUrl+url;
     }

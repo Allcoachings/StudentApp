@@ -19,6 +19,54 @@ export   const saveMessage =(messageObj,callback,image=null)=>
     .catch((error)=>{console.log(error)})       
 }
 
+
+export const fetch_messages=(forAdmin,messageType,studentId,offset,dataLimit,callback)=>
+{
+
+    
+    let headers = new Headers(); 
+    headers.append('Content-Type', 'application/json'); 
+
+    headers.append('Access-Control-Allow-Origin', serverApiUrl);
+    headers.append('Access-Control-Allow-Credentials', 'true');
+
+    headers.append('GET', 'POST', 'OPTIONS'); 
+    let apiUrl   = serverApiUrl+`studentMessage/getStudentMessagesWithMessageTypeByStudentId?studentId=${studentId}&forAdmin=${forAdmin}&messageType=${messageType}&page=${offset}&pageSize=${dataLimit}`;
+    fetch(apiUrl,
+    {
+        method: 'GET',  
+        headers,
+        // body:JSON.stringify({title,description,fees,instId})
+    })
+    .then((response)=>callback(response)) 
+    .catch((error)=>{console.log(error)})
+}
+
+
+export const getStudentChatMessagesForCourse=(insId,studentId,courseId,offset,dataLimit,callback)=>
+{
+    let headers = new Headers(); 
+    headers.append('Content-Type', 'application/json'); 
+
+    headers.append('Access-Control-Allow-Origin', serverApiUrl);
+    headers.append('Access-Control-Allow-Credentials', 'true');
+
+    headers.append('GET', 'POST', 'OPTIONS'); 
+    let apiUrl ;
+    
+    apiUrl = serverApiUrl+`studentMessage/getStudentChatForCourse?insId=${insId}&studentId=${studentId}&courseId=${courseId}&page=${offset}&pageSize=${dataLimit}`;
+     
+    
+        
+    fetch(apiUrl,
+    {
+        method: 'GET',  
+        headers,
+        // body:JSON.stringify({title,description,fees,instId})
+    })
+    .then((response)=>callback(response)) 
+    .catch((error)=>{console.log(error)})
+}
 export const addMessageImage=(messageObj,image,callback)=>
 {
 

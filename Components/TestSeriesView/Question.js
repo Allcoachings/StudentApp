@@ -144,12 +144,15 @@ class Question extends Component {
                         </View> 
                         {optionType==1?(
                             // <Text style={styles.optionText}>{text}</Text>
-                            <RenderHtml
-                            contentWidth={width-50} 
-                            source={{html: text}}
-                            systemFonts={systemFonts} 
-                            defaultTextProps={{style: styles.quizText}}
-                            />
+                            // <View style={{marginLeft:30}}>
+                                <RenderHtml
+                                contentWidth={width-100} 
+                                source={{html: text}}
+                                systemFonts={systemFonts} 
+                                defaultTextProps={{style: styles.quizTextOption}}
+                                defaultViewProps={{marginLeft:13}}
+                                />
+                            // </View>
                         ):(
                             <Image source={{uri:imageProvider(text)}} style={{borderWidth:0.5,borderColor: theme.labelOrInactiveColor,width:'85%',height:150}}/>
                         )} 
@@ -170,7 +173,7 @@ class Question extends Component {
                     return(
                         // <Text style={styles.quizText}>{item.question}
                             <RenderHtml
-                                contentWidth={width} 
+                                contentWidth={width-50} 
                                 source={{html: item.question}}
                                 systemFonts={systemFonts} 
                                 defaultTextProps={{style: styles.quizText}}
@@ -219,10 +222,10 @@ class Question extends Component {
             <View style={styles.quesRow2}> 
                     <View style={styles.marksCol}>
                         <View style={styles.posMarksView}>
-                            <Text style={styles.tolMarksView}>+{item.correctMarks}</Text>
+                            <Text style={styles.tolMarksView}>+{this.props.correctMarks}</Text>
                         </View>
                         <View style={styles.negMarksView}>
-                            <Text style={styles.tolMarksView}>-{item.wrongMarks}</Text>
+                            <Text style={styles.tolMarksView}>-{this.props.wrongMarks}</Text>
                         </View>
                     </View> 
                 <TouchableOpacity style={styles.alertView} onPress={()=>this.handleBookmarkClick(index-1)}> 
@@ -272,7 +275,7 @@ class Question extends Component {
                             {item.explanation}
                         </Text> */}
                         <RenderHtml
-                            contentWidth={width} 
+                            contentWidth={width-100} 
                             source={{html: item.explanation}}
                             systemFonts={systemFonts} 
                             defaultTextProps={{style: { fontSize: 12, marginVertical: 5}}}
@@ -400,8 +403,14 @@ const styles = StyleSheet.create({
         marginHorizontal: 5
     },
         quizText:{
+            fontSize: 18, 
+            color: theme.secondaryColor,
+            
+        },
+        quizTextOption:{
             fontSize: 18,
-             
+            width:width-100,
+            flexWrap:'wrap',
             color: theme.secondaryColor,
             
         },

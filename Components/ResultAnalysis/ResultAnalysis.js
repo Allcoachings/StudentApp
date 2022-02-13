@@ -21,17 +21,17 @@ class ResultAnalysis extends React.Component {
            {
                id: '1',
                type: 'Correct',
-               que: this.props.testSeriesData.testData.brief.correctQues
+               que: this?.props?.testSeriesData?.testData?.brief?.correctQues
            },
            {
                id: '2',
                type: 'Wrong',
-               que: this.props.testSeriesData.testData.brief.wrongQues
+               que: this?.props?.testSeriesData?.testData?.brief?.wrongQues
            },
            {
                id: '3',
                type: 'Skipped',
-               que: this.props.testSeriesData.testData.brief.Unattempted
+               que: this?.props?.testSeriesData?.testData?.brief?.Unattempted
            },
        ]
     } 
@@ -86,23 +86,23 @@ class ResultAnalysis extends React.Component {
 
         updateCounts=()=>
         {
-            if((this.state.data[0].que!=this.props.testSeriesData.testData.brief.correctQues)||(this.state.data[1].que!=this.props.testSeriesData.testData.brief.wrongQues)||(this.state.data[2].que!=this.props.testSeriesData.testData.brief.Unattempted))
+            if((this.state.data[0].que!=this.props?.testSeriesData?.testData?.brief?.correctQues)||(this.state.data[1].que!=this?.props?.testSeriesData?.testData?.brief?.wrongQues)||(this.state.data[2].que!=this?.props?.testSeriesData?.testData?.brief?.Unattempted))
             {
                 this.setState({data:[
                     {
                         id: '1',
                         type: 'Correct',
-                        que: this.props.testSeriesData.testData.brief.correctQues
+                        que: this?.props?.testSeriesData?.testData?.brief?.correctQues
                     },
                     {
                         id: '2',
                         type: 'Wrong',
-                        que: this.props.testSeriesData.testData.brief.wrongQues
+                        que: this?.props?.testSeriesData?.testData?.brief?.wrongQues
                     },
                     {
                         id: '3',
                         type: 'Skipped',
-                        que: this.props.testSeriesData.testData.brief.Unattempted
+                        que: this?.props?.testSeriesData?.testData?.brief?.Unattempted
                     },
                 ]})
             }
@@ -184,9 +184,9 @@ class ResultAnalysis extends React.Component {
           });
         
         const{testSeriesData} = this.props;
-        let accuracy = Math.round((testSeriesData.testData.brief.score/testSeriesData.testData.series.maxMarks)*100,3)
-        let timeTaken = (testSeriesData.testData.series.timeDuration-testSeriesData.testData.brief.timeLeft)
-        let seriesData = {...testSeriesData.testData.brief,status:2,studentId:this.props.userInfo.id,accuracy,timeTaken,skippedQues:this.props.testSeriesData.testData.brief.Unattempted,userQuestionResponses:testSeriesData.testData.ques}
+        let accuracy = Math.round((testSeriesData?.testData?.brief?.score/testSeriesData?.testData?.series?.maxMarks)*100,3)
+        let timeTaken = (testSeriesData?.testData?.series?.timeDuration-testSeriesData?.testData?.brief?.timeLeft)
+        let seriesData = {...testSeriesData.testData.brief,status:2,studentId:this.props.userInfo.id,accuracy,timeTaken,skippedQues:this?.props?.testSeriesData?.testData?.brief?.Unattempted,userQuestionResponses:testSeriesData?.testData?.ques}
         saveTestResult( seriesData,(response) => {
             console.log("save result status",response.status)
             if(response.status==201)
@@ -198,7 +198,7 @@ class ResultAnalysis extends React.Component {
                 let data  = response.headers.map.location.split("*"); 
                 if(!testSeriesData.testData.brief.id)
                 {
-                    this.props.setTestResultData({...this.props.testSeriesData.testData,brief:{...testSeriesData.testData.brief,id:data[0]},})
+                    this.props.setTestResultData({...this.props?.testSeriesData?.testData,brief:{...testSeriesData?.testData?.brief,id:data[0]},})
                 } 
                 // console.log("saved result data ",data)
                 this.setState({accuracy,savedTestResult:true,savedTestResultId:data[0],percentile:data[1],rank:data[2],totalStudent:data[3]})
@@ -209,13 +209,13 @@ class ResultAnalysis extends React.Component {
     viewSolutionHandler=()=>
     {
 
-        if(this.props.testSeriesData.testData.series.practice)
+        if(this.props?.testSeriesData?.testData?.series?.practice)
         {
 
             this.setState({viewSolutions:true})
         }else
         {
-            this.props.navigation.navigate('SingleTestSeries',{viewMode:true,item:this.props.testSeriesData.testData.brief.item})
+            this.props.navigation.navigate('SingleTestSeries',{viewMode:true,item:this?.props?.testSeriesData?.testData?.brief?.item})
         }
         
     }
@@ -224,7 +224,7 @@ class ResultAnalysis extends React.Component {
         this.updateCounts()
         const{testSeriesData,userInfo} = this.props;
         // console.log(testSeriesData)
-        let timeTaken = (this.props.testSeriesData.testData.series.timeDuration*60)-this.props.testSeriesData.testData.brief.timeLeft 
+        let timeTaken = (this.props?.testSeriesData?.testData?.series?.timeDuration*60)-this?.props?.testSeriesData?.testData?.brief?.timeLeft 
         return(
             <PageStructure
                 iconName="arrow-left"
@@ -328,9 +328,9 @@ class ResultAnalysis extends React.Component {
                                 </View> 
                             </View>
                         </View> 
-                        {!this.props.testSeriesData.testData.series.practice?
+                        {!this.props?.testSeriesData?.testData?.series?.practice?
                         (
-                            <LeadersBoard testId={this.props.testSeriesData.testData.series.id} />
+                            <LeadersBoard testId={this.props?.testSeriesData?.testData?.series?.id} />
                         ):(null)}
 
                         

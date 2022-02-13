@@ -90,7 +90,7 @@ class RenderSingleSubsInstitute extends React.Component {
                                 />
                                 <Text style={styles.voteCount}>{this.props.item.totalRatingCount>0?(this.props.item.totalRating/this.props.item.totalRatingCount):(0)}</Text>
                             </View> */}
-                            <TouchableOpacity style={[styles.courseItemContainer,{backgroundColor:theme.purpleColor, borderColor:theme.darkPurpleColor}]} onPress={()=>this.handleCourseItemClick(item)}> 
+                            <TouchableOpacity style={[styles.courseItemContainer,{backgroundColor:theme.purpleColor, borderColor:theme.darkPurpleColor}]} onPress={()=>this.redirectTo(this.props.item.id)}> 
                                 <Text style={[styles.courseTitle,{color:theme.darkPurpleColor}]}>Latest Course</Text>
                             </TouchableOpacity>
                         </View>

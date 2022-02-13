@@ -3,9 +3,13 @@ import React, { Component ,useState} from 'react';
 import { View, Text,StyleSheet,TouchableOpacity,Dimensions } from 'react-native';
 import { theme } from '../config';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure';
-import {useSelector} from 'react-redux'
+import {useSelector,useDispatch} from 'react-redux'
 import SendMessage from '../InstituteView/SendMessage'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SET_INSTITUTE_DETAILS, USER_AUTH_STATUS } from '../Actions/types';
 const windowWidth = Dimensions.get('window').width
+
+ 
 
 const Settings =  ({navigation})=> {
   
@@ -14,6 +18,7 @@ const Settings =  ({navigation})=> {
   const [helpAndSupportModalVisible,setHelpAndSupportModalVisible] = useState(false)
   const [feedbackModalVisible,setFeedbackModalVisible] = useState(false)
   const userInfo = useSelector(state => state.user.userInfo)
+  const dispatch = useDispatch()
   const renderSettingItem=(label,icon,onPress)=>
   {
       return (
@@ -27,7 +32,12 @@ const Settings =  ({navigation})=> {
       )
   }
 
-
+  const logout=()=>
+  {
+    AsyncStorage.removeItem("authInfo")
+    dispatch({type:USER_AUTH_STATUS,payload:{authStatus:false}})
+    dispatch({type:SET_INSTITUTE_DETAILS,payload:{details:null}})
+  }
  
     return (
         <PageStructure
@@ -48,6 +58,7 @@ const Settings =  ({navigation})=> {
                       {renderSettingItem('Privacy Policy','lock',()=>{})}
                       {renderSettingItem('Terms and Conditions','calendar',()=>{})}
                       {renderSettingItem('FeedBack','refresh-cw',()=>{setHelpAndSupportModalVisible(false);setFeedbackModalVisible(true)})}
+                      {renderSettingItem('Logout','log-out',()=>{logout()})}
                     </View>
                     {feedbackModalVisible?(
                     <SendMessage

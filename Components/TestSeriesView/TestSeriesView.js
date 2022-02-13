@@ -75,7 +75,7 @@ class TestSeriesView extends React.Component {
     componentDidMount() 
     {  
        
-        
+        // console.log()
         this.fetch();
 
         // this.backHandlerListener() 
@@ -363,8 +363,8 @@ class TestSeriesView extends React.Component {
              let  correctQues  = this.state.correctQues;
              let wrongQues = this.state.wrongQues;
              let attempted = this.state.attempted;
-             let correctMarks  = questions[quesIndex].question.correctMarks
-             let wrongMarks = questions[quesIndex].question.wrongMarks
+             let correctMarks  = this.state.testSeries.correctMarks
+             let wrongMarks = this.state.testSeries.wrongMarks
              let user_score = this.state.score
              if(!questions[quesIndex]['status']||questions[quesIndex]['status']!=status)
              {
@@ -410,8 +410,8 @@ class TestSeriesView extends React.Component {
              let correctQues  = this.state.correctQues;
              let wrongQues = this.state.wrongQues;
              let attempted = this.state.attempted;
-             let correctMarks  = questions[quesIndex].question.correctMarks
-             let wrongMarks = questions[quesIndex].question.wrongMarks
+             let correctMarks  = this.state.testSeries.correctMarks
+             let wrongMarks = this.state.testSeries.wrongMarks
              let user_score = this.state.score
              console.log("before ",attempted)
              if(!questions[quesIndex]['status']||questions[quesIndex]['status']!=status)
@@ -529,6 +529,8 @@ class TestSeriesView extends React.Component {
                                 index={index} 
                                 testSeriesId={this.state.testSeries.id}
                                 isPractice={mode} 
+                                correctMarks={this.state.testSeries.correctMarks}
+                                wrongMarks={this.state.testSeries.wrongMarks}
                                 clearQuestionAttemptStatus={this.clearQuestionAttemptStatus} 
                                 bookmarkQuestion={this.bookmarkQuestion} 
                                 setQuestionAttemptStatus={this.setQuestionAttemptStatus}

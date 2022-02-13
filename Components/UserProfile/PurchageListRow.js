@@ -18,6 +18,12 @@ export default class PurchageListRow extends Component {
         this.setState({ isPurchageModalVisible: false});
     }
 
+ redirectTo =(id)=>
+    {
+        // console.log(id)
+        this.props.navigation.navigate('Institute',{insId:id})
+    }
+
     render() {
         return (
             <View style={styles.purchage_coursewrapper}>
@@ -38,8 +44,8 @@ export default class PurchageListRow extends Component {
                     {/* <TouchableOpacity style={styles.purchagebtn} onPress={()=>this.props.navigation.navigate('Institute',{insId:this.props.item.insId})}>
                         <Text style={styles.purchageText} >{this.props.item.courseName}</Text>
                     </TouchableOpacity> */}
-                    <TouchableOpacity style={[styles.courseItemContainer,{backgroundColor:theme.purpleColor, borderColor:theme.darkPurpleColor}]} onPress={()=>this.handleCourseItemClick(item)}> 
-                                <Text style={[styles.courseTitle,{color:theme.darkPurpleColor}]}>{this.props.item.courseName}</Text>
+                    <TouchableOpacity style={[styles.courseItemContainer,{backgroundColor:theme.purpleColor, borderColor:theme.darkPurpleColor}]} onPress={()=>this.redirectTo(this.props.item.insId)}> 
+                            <Text style={[styles.courseTitle,{color:theme.darkPurpleColor}]}>{this.props.item.courseName}</Text>
                     </TouchableOpacity>
                 </View>
             </View>

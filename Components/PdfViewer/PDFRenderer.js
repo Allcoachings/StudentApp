@@ -36,11 +36,11 @@ const PDFRenderer = ({pdf}) => {
           renderLoading:renderLoadingView,
           startInLoadingState:true, 
           scalesPageToFit:true
-        }
-        
-        }
+        }}
         withScroll
         customStyle={{
+          readerContainerDocument:{backgroundColor:"#fff"},
+          readerContainer:{backgroundColor:"#fff"},
           readerContainerZoomContainer:{height:0,width:0},
           readerContainerZoomContainerButton:{height:0}
         }}

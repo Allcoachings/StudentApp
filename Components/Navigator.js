@@ -119,7 +119,7 @@ function Navigator(props) {
       // <SafeAreaView>
         <>
         {headerProps&&isHeaderVisible&&authStatus?(
-            <View style={{height:35}}>
+            <View style={{height:40}}>
                 <HeaderMobile 
                     // iconName={this.props.iconName}
                     // titleonheader={this.props.titleonheader} 
