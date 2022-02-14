@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, TouchableWithoutFeedback, RefreshControl} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, TouchableWithoutFeedback, RefreshControl, BackHandler} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {insTestSeries} from '../../FakeDataService/FakeData'
 import { theme, dataLimit,serverBaseUrl, Assets, imageProvider } from '../config';
@@ -13,6 +13,8 @@ import { fetch_Banners } from '../Utils/DataHelper/Banners'
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import { SearchInstituteByCategory } from '../Utils/DataHelper/Search';
+
+let backHandler = null;
 class InsTestSeriesList extends React.Component {
 
     state={
@@ -52,9 +54,24 @@ class InsTestSeriesList extends React.Component {
     }
 
     componentDidMount(){
+
+        backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            ()=>{
+               this.props.navigation.navigate("TestSeries")
+              return true;
+            }
+          );
         this.initialFetch()
     }
 
+    componentWillUnmount()
+    {
+        if(backHandler)
+        {
+            backHandler.remove()
+        }
+    }
     initialFetch=() => {
         fetchTestSeriesBySubCategory(this.state.id, this.state.offset, dataLimit,this.SubCatTestSeriesCallback)
         fetch_Banners("test", this.bannerCallback)

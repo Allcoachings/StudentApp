@@ -259,14 +259,13 @@ class Home extends React.Component {
                 titleonheader={"All Coaching"}
                 singleItem={this.renderSearchIns}
                 navigation={this.props.navigation}
+                refreshControl={
+                    <RefreshControl refreshing={this.state.refreshing} 
+                    onRefresh={this.refreshing} />
+                }
+
             >
-                <ScrollView
-                    refreshControl={
-                        <RefreshControl refreshing={this.state.refreshing} 
-                        onRefresh={this.refreshing} />
-                    }
-                    style={{flex: 1}}
-                >
+                
                     <View style={styles.container}> 
                         <View style={styles.mainContent}> 
                         {this.state.loadingData?(
@@ -298,8 +297,7 @@ class Home extends React.Component {
                         
                             
                         </View>
-                    </View>
-                </ScrollView>
+                    </View> 
            </PageStructure>
         );
     }

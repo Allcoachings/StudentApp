@@ -22,6 +22,7 @@ import Comments from './Comments'
 import { Assets } from '../config'
 // import * as NavigationBar from 'expo-navigation-bar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import BackAlert from './BackAlert'
  
 export default VideoPlayerCustom=(props)=>
 {
@@ -43,6 +44,7 @@ export default VideoPlayerCustom=(props)=>
     const playbackButtonRef = useRef(null)
     const refVideo = useRef(null)
     const dispatch = useDispatch()
+    const  [backAlertVisible,setBackAlertVisible] = useState(false)
 
     const unshiftCommets=(commentObj)=>
     {
@@ -50,8 +52,7 @@ export default VideoPlayerCustom=(props)=>
         setComments([commentObj,...comments])
     }
 
-    useEffect(
-        
+    useEffect( 
         ()=>{
             (async () => {
                 const videoStatusString  = await AsyncStorage.getItem(props.route.params.videoUrl)
@@ -130,7 +131,7 @@ export default VideoPlayerCustom=(props)=>
               "hardwareBackPress",
               ()=>{
                 backPressHandler("hardwareBackPress");
-                return false;
+                return true;
               }
             );
         
@@ -143,10 +144,12 @@ export default VideoPlayerCustom=(props)=>
             setInFullsreen(false)
             setShouldPlay(false)
             dispatch({ type: SET_STATUS_BAR_HIDDEN,payload:false })
-            if(mode=="selfBackPress")
-            {
-                props.navigation.goBack();
-            }
+            setBackAlertVisible(true)
+            // if(mode=="selfBackPress")
+            // {   
+                 
+            //     props.navigation.goBack();
+            // }
           }
           const showPlaybackSpeedOptions=()=>
           {
@@ -229,6 +232,7 @@ export default VideoPlayerCustom=(props)=>
     }
        
     return(
+        <>
         <View style={{backgroundColor:theme.primaryColor,flex:1}}>
              <View style={{flexDirection: 'row',position:'absolute',top:40,left:40,zIndex:1000,elevation:1000,opacity:0.4}}>
                 <Text style={{color:theme.featureNoColor}}>{route.params.studentName}{"\n"}{route.params.studentNumber}</Text> 
@@ -389,8 +393,15 @@ export default VideoPlayerCustom=(props)=>
                        />
                     )} 
 
-            
+              
         </View>
+
+        {backAlertVisible?( <BackAlert
+                    closeModal={()=>setBackAlertVisible(false)}
+                    yesFun={()=>props.navigation.goBack()}
+                    noFun={()=>setBackAlertVisible(false)}
+                />):(null)}
+        </>
     )
     
 }

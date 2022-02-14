@@ -1,7 +1,7 @@
 import { Feather } from '@expo/vector-icons'
 import { Text } from 'native-base'
-import React,{useState} from 'react'
-import { TouchableOpacity, TouchableWithoutFeedback, View,ScrollView } from 'react-native'
+import React,{useEffect, useState} from 'react'
+import { TouchableOpacity, TouchableWithoutFeedback, View,ScrollView, BackHandler } from 'react-native'
 import PDFReader from 'rn-pdf-reader-js'
 import { theme } from '../config'
 import CardView from '../Utils/CardView'
@@ -9,10 +9,12 @@ import PDFRenderer from './PDFRenderer'
 import BackArrow from '../Utils/Icons/BackArrow'
 import { TOGGLE_HEADER } from '../Actions/types'
 import { useDispatch } from 'react-redux'
+import BackAlert from './BackAlert'
  const  PDFViewer =({route,navigation}) =>
 {
     const [headerVisible,setHeaderVisible] =useState(true);
 
+    const  [backAlertVisible,setBackAlertVisible] = useState(false)
     const dispatch = useDispatch()
     React.useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => { 
@@ -24,6 +26,22 @@ import { useDispatch } from 'react-redux'
         // Return the function to unsubscribe from the event so it gets removed on unmount
         return unsubscribe;
       }, [navigation]);
+
+
+      useEffect(() => {
+            
+            
+        const backHandler = BackHandler.addEventListener(
+          "hardwareBackPress",
+          ()=>{
+             setBackAlertVisible(true)
+            return true;
+          }
+        );
+    
+        return () => backHandler.remove();
+      }, []);
+
 
 
       const  handleScroll=(event)=>
@@ -99,6 +117,12 @@ import { useDispatch } from 'react-redux'
          <View style={{flexDirection: 'row',position:'absolute',bottom:80,left:40,zIndex:1000,elevation:1000,opacity:0.4}}>
                 <Text style={{color:theme.featureNoColor}}>{route.params.studentName}{"\n"}{route.params.studentNumber}</Text> 
          </View>  
+
+         {backAlertVisible?( <BackAlert
+                    closeModal={()=>setBackAlertVisible(false)}
+                    yesFun={()=>props.navigation.goBack()}
+                    noFun={()=>setBackAlertVisible(false)}
+                />):(null)}
        </>
     )
   

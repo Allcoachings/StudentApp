@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, Dimensions, RefreshControl} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform,BackHandler, ScrollView, Dimensions, RefreshControl} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {insTestSeries} from '../../FakeDataService/FakeData'
 import { theme, dataLimit, serverBaseUrl, Assets,imageProvider } from '../config';
@@ -17,7 +17,7 @@ import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import { saveStudentHistory } from '../Utils/DataHelper/StudentHistory';
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height;
-
+let backHandler=null;
 class SeriesList extends React.Component {
     state = {
         id: this.props.route.params.id,
@@ -59,7 +59,22 @@ class SeriesList extends React.Component {
         refreshing: false
     }
 
+    componentWillUnmount()
+    {
+        if(backHandler)
+        {
+            backHandler.remove()
+        }
+    }
     componentDidMount(){
+
+         backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            ()=>{
+               this.props.navigation.navigate("TestSeries")
+              return true;
+            }
+          );
         this.initialFetch()
     }
 

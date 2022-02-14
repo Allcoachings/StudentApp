@@ -48,7 +48,9 @@ const PageStructure =(props)=> {
             {
                 case 'scroll':    
                     return(
-                        <ScrollView>
+                        <ScrollView
+                            refreshControl={props.refreshControl}
+                        >
                             <View style={[styles.containerHeader,props.headerStyle,{flex:props.catInHeader?0.1:0}]}> 
                             
                                 <Header 
