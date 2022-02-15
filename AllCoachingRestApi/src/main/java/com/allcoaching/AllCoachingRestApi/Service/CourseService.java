@@ -51,6 +51,10 @@ public class CourseService {
     {
         return courseRepo.getInstituteCourseWiseStudentEnrolled(insId);
     }
+    public List<InstituteCourseWiseStudentEnrolledDto> getStudentEnrolledInCourse(long courseId)
+    {
+        return courseRepo.getStudentEnrolledInCourse(courseId);
+    }
     List<String> getStudentsExpoTokenEnrolledInCourse(long courseId)
     {
         return  courseRepo.getExpoTokenOfStudentsEnrolledInCourse(courseId);

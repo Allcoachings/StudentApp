@@ -190,6 +190,13 @@ public class InsTestSeriesController {
         return  ResponseEntity.ok().build();
     }
 
+    @CrossOrigin(origins="*")
+    @PutMapping("/demo/{status}/{id}")
+    public  ResponseEntity<Object> updateDemoStatus(@PathVariable boolean status,@PathVariable long id)
+    {
+        insTestSeriesService.updateDemoStatusById(status,id);
+        return ResponseEntity.ok().build();
+    }
     @CrossOrigin(origins = "*")
     @DeleteMapping("/delete/series/question/{id}")
     public ResponseEntity<Object> deleteSeriesQuestionById(@PathVariable long id)

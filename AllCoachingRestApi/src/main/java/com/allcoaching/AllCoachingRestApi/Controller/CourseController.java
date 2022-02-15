@@ -75,6 +75,13 @@ public class CourseController {
         return  courseService.getInstituteCourseWiseStudentEnrolled(insId);
     }
 
+    @CrossOrigin(origins = "*")
+    @GetMapping("getStudentEnrolledInCourse/{courseId}")
+    public List<InstituteCourseWiseStudentEnrolledDto> getStudentEnrolledInCourse(@PathVariable long courseId)
+    {
+        return  courseService.getStudentEnrolledInCourse(courseId);
+    }
+
 
     @CrossOrigin(origins = "*")
     @GetMapping("coursebyId/{courseId}")

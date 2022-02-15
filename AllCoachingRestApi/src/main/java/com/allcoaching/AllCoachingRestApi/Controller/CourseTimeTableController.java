@@ -81,4 +81,12 @@ public class CourseTimeTableController {
     {
         return  service.latestUpcomingItem(insId);
     }
+
+    //count course timetable items
+    @CrossOrigin(origins = "*")
+    @GetMapping("/count/{courseId}")
+    public long countCourseTimeTable(@PathVariable  long courseId )
+    {
+        return service.countTimeTable(courseId);
+    }
 }

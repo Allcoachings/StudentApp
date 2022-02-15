@@ -94,7 +94,7 @@ public class CourseDocumentService {
         courseDocumentRepo.updateHiddenStatus(status,id);
     }
 
-    //updating hidden Status
+    //updating demo Status
     public void updateDemoStatusById(boolean status,long id)
     {
         courseDocumentRepo.updateDemoStatus(status,id);

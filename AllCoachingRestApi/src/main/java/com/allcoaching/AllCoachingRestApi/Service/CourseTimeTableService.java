@@ -83,6 +83,10 @@ public class CourseTimeTableService {
         itemRepo.deleteById(id);
     }
 
+    public long countTimeTable(long courseId)
+    {
+        return subjectRepo.countByCourseId(courseId);
+    }
     //fetch latest upcoming scheduled item
     public CourseTimeTableItem latestUpcomingItem(long insId)
     {

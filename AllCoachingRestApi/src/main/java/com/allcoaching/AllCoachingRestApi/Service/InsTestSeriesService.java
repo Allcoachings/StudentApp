@@ -289,4 +289,11 @@ public class InsTestSeriesService {
         insTestSeriesRepo.updateQuestionCount(count,id);
     }
 
+    //updating hidden Status
+    public void updateDemoStatusById(boolean status,long id)
+    {
+        insTestSeriesRepo.updateDemoStatus(status,id);
+    }
+
+
 }

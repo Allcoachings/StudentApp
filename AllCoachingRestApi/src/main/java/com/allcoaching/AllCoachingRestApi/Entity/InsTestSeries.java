@@ -31,6 +31,7 @@ public class InsTestSeries {
     private boolean isAdmin;
     private float correctMarks;
     private float wrongMarks;
+    private boolean isDemo;
 
 
 

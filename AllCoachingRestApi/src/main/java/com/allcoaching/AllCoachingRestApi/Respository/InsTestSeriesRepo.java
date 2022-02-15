@@ -48,6 +48,10 @@ public interface InsTestSeriesRepo extends PagingAndSortingRepository<InsTestSer
     @Query("UPDATE InsTestSeries set questionCount=:count where id=:id")
     void updateQuestionCount(int count,long id);
 
+    @Modifying
+    @Query("UPDATE InsTestSeries set isDemo=:status WHERE id=:id")
+    void updateDemoStatus(boolean status,long id);
+
     @Query("Select new com.allcoaching.AllCoachingRestApi.dto.TestSeriesAndUserResponseDto(t,r) from InsTestSeries t LEFT JOIN InsTestSeriesUserResponseBrief r on r.testSeriesId=t.id and r.studentId=:userId where t.playlistId=:playlistId and t.isAdmin=:isAdmin and t.hidden=false")
     Page<TestSeriesAndUserResponseDto> getTestSeriesByPlaylistIDWithUserResponse(long userId, long playlistId, boolean isAdmin, Pageable pageable);
 
