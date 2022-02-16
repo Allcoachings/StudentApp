@@ -24,7 +24,6 @@ public class InsLeadsController {
     @Autowired
     private InsLeadService insLeadService;
 
-
     @CrossOrigin(origins = "*")
     @PostMapping("/add")
     public ResponseEntity<Object> addLead(@RequestBody InsLeads insLeads)

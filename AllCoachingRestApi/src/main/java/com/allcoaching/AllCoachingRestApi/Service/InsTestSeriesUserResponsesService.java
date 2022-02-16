@@ -34,7 +34,7 @@ public class InsTestSeriesUserResponsesService {
     {
         return  userResponseBriefRepo.countByTestSeriesIdAndScoreLessThan(testSeriesId,score);
     }
-    //count students below a particular score
+    //count students
     public int totalStudents(long testSeriesId)
     {
         return  userResponseBriefRepo.countByTestSeriesId(testSeriesId);

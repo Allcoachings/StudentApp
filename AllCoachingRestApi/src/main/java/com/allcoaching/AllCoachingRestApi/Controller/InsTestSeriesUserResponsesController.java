@@ -30,7 +30,7 @@ public class InsTestSeriesUserResponsesController {
         int belowScore = userResponsesService.belowScore(insTestSeriesUserResponseBrief.getTestSeriesId(),insTestSeriesUserResponseBrief.getScore());
         int count =userResponsesService.totalStudents(insTestSeriesUserResponseBrief.getTestSeriesId());
         long percen=0;
-        if(count!=0) {
+          if(count!=0) {
           percen = (belowScore / count) * 100;
         }
         String percentile = String.valueOf(percen);
@@ -73,6 +73,13 @@ public class InsTestSeriesUserResponsesController {
     public Optional<InsTestSeriesUserResponseBrief> getResponseByTestSeriesIdAndUserId(@PathVariable long testSeriesId,@PathVariable long userId)
     {
         return userResponsesService.getResponseByTestSeriesIdAndUserId(testSeriesId,userId);
+    }
+
+    @CrossOrigin(origins="*")
+    @GetMapping("/get-studentCount/{testSeriesId}/")
+    public long getStudentCount(@PathVariable long testSeriesId)
+    {
+        return userResponsesService.totalStudents(testSeriesId);
     }
 
 
