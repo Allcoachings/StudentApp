@@ -2,6 +2,7 @@ import * as actionTypes from "../Actions/types";
 import { combineReducers } from "redux";
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Animated } from "react-native";
  
 // create your reducers here
 
@@ -255,7 +256,9 @@ const downloadReducer=(state=initial_downloadItem_state,action) =>
 const initial_header_state=
 {
     props:{},
-    isHeaderVisible:true
+    isHeaderVisible:true,
+    showCategoriesInHeader:false,
+    headerOffset:new Animated.Value(0)
 }
 const headerReducer = (state = initial_header_state, action) =>{
 
@@ -272,6 +275,16 @@ const headerReducer = (state = initial_header_state, action) =>{
             return {
                 ...state,
                 isHeaderVisible:action.payload.status
+            }
+        case actionTypes.SHOW_CATEGORIES_IN_HEADER:
+            return {
+                ...state,
+                showCategoriesInHeader:action.payload.status
+            }
+        case actionTypes.SET_HEADER_OFFSET:
+            return {
+                ...state,
+                headerOffset: action.payload.offset
             }
         default:
             return state

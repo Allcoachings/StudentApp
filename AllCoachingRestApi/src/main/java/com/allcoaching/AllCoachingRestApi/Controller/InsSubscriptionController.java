@@ -5,6 +5,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.InsSubscription;
 import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Entity.Student;
 import com.allcoaching.AllCoachingRestApi.Service.InsSubscriptionService;
+import com.allcoaching.AllCoachingRestApi.dto.SubscriptionDto;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -56,7 +57,7 @@ public class InsSubscriptionController {
 
     @CrossOrigin(origins = "*")
     @GetMapping("/student/{id}/{offset}/{dataLimit}")
-    public  Iterable<Institute> StudentSubscriptionList(@PathVariable long id, @PathVariable int offset, @PathVariable int dataLimit)
+    public  Iterable<SubscriptionDto> StudentSubscriptionList(@PathVariable long id, @PathVariable int offset, @PathVariable int dataLimit)
     {
          return insSubscriptionService.getStudentSubscriptionList(id,offset,dataLimit);
     }

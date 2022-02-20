@@ -171,11 +171,11 @@ const SendMessage =({isVisible,closeModal,title,forAdmin,courseId,instituteId,st
 
     return (
         <Modal
-            transparent={false}
+            transparent={true}
             visible={isVisible}
             onShow={ () => { descriptionTextInput.current.focus(); }}
             onRequestClose={closeModal}>
-                
+             <View style={{backgroundColor:"#fff"}}>
                 {CardView(
                     <View style={{flex: 1,flexDirection: 'row',alignItems: 'center'}}>
                         {/* <View> */}
@@ -298,7 +298,7 @@ const SendMessage =({isVisible,closeModal,title,forAdmin,courseId,instituteId,st
            
 
                 
-                
+            </View>   
                  
           </Modal>
     )

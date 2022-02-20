@@ -8,7 +8,7 @@ import CardView from '../../Utils/CardView';
 import {fetch_categories_normalized} from '../../Utils/DataHelper/Categories';
 import {theme} from '../../config'
 import {tabListInstitute} from '../../../FakeDataService/FakeData'
-import {setCategories} from '../../Actions/'
+import {setCategories,showCategoriesInHeader} from '../../Actions/'
 class index extends React.Component {
     state = { 
         activeTab: this.props.selectedCat||-1,
@@ -16,7 +16,7 @@ class index extends React.Component {
         activeTabIndex:0
     }
     flatListRef=null
-    componentDidMount=()=>{
+    componentDidMount=()=>{ 
         if(this.props.catType)
         {
           
@@ -89,9 +89,12 @@ class index extends React.Component {
             </TouchableOpacity>
         );
     }
+    
     render() {
         return (
-            <ScrollView>
+            <ScrollView
+                onScroll={this.handleScroll}
+            >
             
                     <View style={styles.container}>
                         {/* <View style={styles.headerRow}> */}
@@ -184,4 +187,4 @@ const mapStateToProps = (state)=>
         screenWidth: state.screen.screenWidth
     }
 }
-export default connect(mapStateToProps,{setCategories})(index);
+export default connect(mapStateToProps,{setCategories,showCategoriesInHeader})(index);

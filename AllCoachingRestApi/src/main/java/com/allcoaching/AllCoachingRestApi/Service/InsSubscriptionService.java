@@ -5,6 +5,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.InsSubscription;
 import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Entity.Student;
 import com.allcoaching.AllCoachingRestApi.Respository.InsSubscriptionRepo;
+import com.allcoaching.AllCoachingRestApi.dto.SubscriptionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -47,9 +48,9 @@ public class InsSubscriptionService {
     {
         insSubscriptionRepo.updateIsNotificationsOn(studentId,insId,status);
     }
-    public Iterable<Institute> getStudentSubscriptionList(long studentId,int page,int pageSize)
+    public Iterable<SubscriptionDto> getStudentSubscriptionList(long studentId,int page,int pageSize)
     {
-        Page<Institute> pagedResult = insSubscriptionRepo.findStudentSubscriptionList(studentId, PageRequest.of(page,pageSize));
+        Page<SubscriptionDto> pagedResult = insSubscriptionRepo.findStudentSubscriptionList(studentId, PageRequest.of(page,pageSize));
         if(pagedResult.hasContent())
         {
             return pagedResult.getContent();

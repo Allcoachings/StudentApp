@@ -25,7 +25,7 @@ class ImageZoomModal extends React.Component {
     return (
         <Modal
           animationType="slide"
-          transparent={false}
+          transparent={true}
           visible={zoomModal}
           onRequestClose={closeModal}>
           <View style={styles.centeredView}>

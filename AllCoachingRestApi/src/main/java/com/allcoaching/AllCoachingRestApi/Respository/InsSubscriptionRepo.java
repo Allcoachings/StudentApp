@@ -4,6 +4,7 @@ package com.allcoaching.AllCoachingRestApi.Respository;
 import com.allcoaching.AllCoachingRestApi.Entity.InsSubscription;
 import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Entity.Student;
+import com.allcoaching.AllCoachingRestApi.dto.SubscriptionDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
@@ -19,8 +20,8 @@ import java.util.Optional;
 public interface InsSubscriptionRepo extends PagingAndSortingRepository<InsSubscription,Long> {
 
 
-   @Query("Select i from Institute i , InsSubscription s where s.insId=i.id and s.studentId=:id")
-  Page<Institute> findStudentSubscriptionList(long id, Pageable pageable);
+   @Query(value = "Select new com.allcoaching.AllCoachingRestApi.dto.SubscriptionDto(i, (Select c from Course c where c.createdAt = (select max(c1.createdAt) from Course c1  where  c1.instId=i.id))) from Institute i , InsSubscription s where s.insId=i.id and s.studentId=:id" , countQuery = "Select count(i) from Institute i , InsSubscription s where s.insId=i.id and s.studentId=:id")
+  Page<SubscriptionDto> findStudentSubscriptionList(long id, Pageable pageable);
 
    @Query("Select stu from Student stu , InsSubscription s where s.studentId=stu.id and s.insId=:id")
   Page<Student> findInsSubscriptionList(long id, Pageable pageable);

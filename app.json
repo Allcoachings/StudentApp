@@ -7,7 +7,8 @@
     "icon": "./assets/icon.png",
     "androidStatusBar": {
       "barStyle": "dark-content",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffffff00",
+      "translucent": true
     },
     "notification": {
       "icon": "./assets/noti.png",

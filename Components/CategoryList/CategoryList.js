@@ -51,13 +51,13 @@ class CategoryList extends React.Component {
                             <Text style={styles.instituteTitle} numberOfLines={2}>{item.name}</Text>
                         </View>
                         <View style={{display:'flex', flexDirection: 'row', alignItems: 'center'}}>
-                            <Text style={{alignSelf:'flex-start', color: theme.greyColor}}>{item.totalRatingCount>0?item.totalRating/item.totalRatingCount:0}</Text>  
+                            <Text style={{alignSelf:'flex-start', color: theme.greyColor}}>{item.totalRatingCount>0?(item.totalRating/item.totalRatingCount).toFixed(1):0}</Text>  
                             <AirbnbRating 
                                 starContainerStyle={styles.instituteRating} 
                                 count={5}
                                 reviews={[]} 
                                 isDisabled={true}
-                                defaultRating={item.totalRatingCount>0?(item.totalRating/item.totalRatingCount):(0)}
+                                defaultRating={item.totalRatingCount>0?((item.totalRating/item.totalRatingCount).toFixed(1)):(0)}
                                 size={12}
                                 selectedColor={theme.blueColor}
                                 showRating={false}

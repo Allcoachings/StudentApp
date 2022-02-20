@@ -1,6 +1,6 @@
 import { EvilIcons, Feather } from '@expo/vector-icons';
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,Modal,TouchableOpacity,TouchableWithoutFeedback,ActivityIndicator,ScrollView,Image,TextInput,FlatList, Platform } from 'react-native';
+import { View, Text,StyleSheet,Modal,TouchableOpacity,TouchableWithoutFeedback,ActivityIndicator,ScrollView,Image,TextInput,FlatList, Platform ,Dimensions} from 'react-native';
 import { addBannerImagePlaceholder, theme, serverBaseUrl, imageProvider } from '../config';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure';
 import CardView from '../Utils/CardView';
@@ -9,7 +9,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import Toast from 'react-native-simple-toast';
 
 import * as ImagePicker from 'expo-image-picker';
-
+const height = Dimensions.get('window').height;
 class AddFeedModal extends Component {
   state={
       stepCheck:2,//to check on which step user is in order to add a feed
@@ -98,7 +98,9 @@ class AddFeedModal extends Component {
                 
                 pollOption:''
             }
+
           ]})
+
         let feedItem = {feed:this.state.feedItem};
         feedItem['posterObject']=this.props.instituteDetails
 
@@ -122,7 +124,11 @@ class AddFeedModal extends Component {
          
             this.props.updateSingleFeed(feedItem, this.state.index)
         }
-        // this.props.closeModal()
+        if(this.props.closeModal)
+        {
+            this.props.closeModal()
+        }
+        
       }
       else
       {
@@ -494,97 +500,122 @@ setFeedTypeOption=(postType)=>
         index: '',
         showFeedTypeOptions:false})
   }
+
+
+
+
+
+   switchAddFeedMode = (mode)=>{
+       switch(mode)
+       {
+           case'modal':
+            return(<Modal 
+             
+                transparent = {true}
+                visible = {this.props.isVisible}
+                onRequestClose = {() => this.props.closeModal()}>
+                    <View style={{height:height,backgroundColor:theme.primaryColor}}> 
+                        {this.addFeedLayout()}
+                    </View>
+            </Modal>)
+         
+                break;
+            default:
+                return this.addFeedLayout();
+       }
+   }
+
+   addFeedLayout = ()=>
+   {
+       return (
+                <ScrollView>
+                    <View style={{flexDirection:'row',alignItems: 'center',backgroundColor:theme.primaryColor}} >
+                        {this.props.mode=="showImage"?(
+                            <Image source={{uri: imageProvider(this.props.posterImage)}} style={{height: 50, width: 50, borderRadius: 25, borderWidth: 0.6, borderColor:theme.greyColor,}}/>
+                        ):(null)}
+                        
+                        <View style={{borderWidth:1,flex:1,borderColor:theme.labelOrInactiveColor,margin:10,borderRadius:10}}>
+
+                            
+                                {this.state.description?(<View style={{position: 'absolute',right:15,top:5,zIndex:10}}>
+                                <TouchableOpacity onPre ss={()=>this.resetFeedState()}>
+                                    <Feather name={'x'} color={theme.featureNoColor} size={18}/>
+                                </TouchableOpacity> 
+                                </View>):(null)}
+                        
+                            <TextInput
+                                style={{height:50 ,fontFamily:'Raleway_400Regular',marginHorizontal:10}}
+                                placeholder="Create Something...."
+                                multiline={true}  
+                                ref={(input) => { this.descriptionTextInput = input; }}
+                                defaultValue={this.state.description}
+                                onFocus={ () => this.onFocus() }
+                                onChangeText={(text)=>this.setState({description:text})}
+
+                            />
+                            {this.state.postType==1?(
+                                <View style={{}}>
+                                    {this.renderAddImageSection()} 
+                                </View>
+                            ):(null)}
+                            {this.state.postType==2?(
+                                <View style={{}}>
+                                    {this.renderPollOPtionsSection()} 
+                                </View>
+                            ):(null)}
+                            
+                        {this.state.showFeedTypeOptions?( <View style={{flex:1,flexDirection:'row',justifyContent: 'flex-end'}}>
+                                <View style={[styles.feedOption]}>
+                                {this.renderButton("POLL","bar-chart-2",()=>this.setFeedTypeOption(2))} 
+                                </View>
+                                <View style={[styles.feedOption]}>
+                                {this.renderButton("IMAGE","image",this.check)} 
+                                </View>
+                                <View style={[styles.feedOption]}>
+                                    {this.state.addFeedLoading?(
+                                            <ActivityIndicator size={"large"} color={theme.accentColor}/>
+                                    ):
+                                    (
+                                        <TouchableWithoutFeedback onPress={this.checkPostData}>
+                                            <View style={[{flexDirection: 'row',padding:5,marginVertical:5,alignItems: 'center',borderRadius:3,marginTop:'auto',borderWidth: 1,borderColor:this.state.description?theme.accentColor:theme.labelOrInactiveColor},this.state.description?{backgroundColor: theme.accentColor}:{}]}>
+                                                <Text style={{color:this.state.description?theme.primaryColor:theme.greyColor,fontSize:16}}>Post</Text>
+                                                <Feather name="chevron-right" size={18} color={this.state.description?theme.primaryColor:theme.greyColor}/>
+                                            </View>
+                                        </TouchableWithoutFeedback>
+                                        // this.renderButton("Post","align-left",()=>this.handleSubmitButtonClick())
+                                    )}
+                                        
+                                </View>
+                            </View>):(null)}
+
+                        
+                        </View>
+                    </View>
+                    {/* <TouchableWithoutFeedback onPress={this.handleSubmitButtonClick}>
+                        <View style={{backgroundColor:theme.accentColor,padding:15,borderRadius:10,alignItems: 'center',width:'95%',alignSelf: 'center'}}> 
+                            <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>Continue</Text> 
+                        </View>
+                    </TouchableWithoutFeedback> */}
+                    {/* <View style={styles.btnView}>
+                        <TouchableOpacity style={styles.submitButton} onPress={this.handleNextBtnClick}>
+                            {this.state.addCourseLoading?
+                            (
+                                    <ActivityIndicator color={theme.primaryColor} size={"large"}/>
+                            ):( 
+                                    <Text style={styles.submitButtonText}>Next</Text>
+                                )}
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.addMoreButton}>
+                                <Text style={styles.addMoreButtonText}>Add More+</Text>
+                        </TouchableOpacity>
+                    </View> */}
+                </ScrollView>
+       )
+   }
   render() {
          
     return (
-        // <Modal 
-        //     animationType = {"fade"} 
-        //     transparent = {false}
-        //     visible = {this.props.isAddCourseModalVisible}
-        //     onRequestClose = {() => this.props.closeModal()}>
-    
-            <ScrollView>
-                <View style={{flexDirection:'row',alignItems: 'center'}} >
-                    {this.props.mode=="showImage"?(
-                        <Image source={{uri: imageProvider(this.props.posterImage)}} style={{height: 50, width: 50, borderRadius: 25, borderWidth: 0.6, borderColor:theme.greyColor,}}/>
-                    ):(null)}
-                    
-                    <View style={{borderWidth:1,flex:1,borderColor:theme.labelOrInactiveColor,margin:10,borderRadius:10}}>
-
-                        
-                            {this.state.description?(<View style={{position: 'absolute',right:15,top:5,zIndex:10}}>
-                            <TouchableOpacity onPre ss={()=>this.resetFeedState()}>
-                                <Feather name={'x'} color={theme.featureNoColor} size={18}/>
-                            </TouchableOpacity> 
-                            </View>):(null)}
-                      
-                        <TextInput
-                            style={{height:50 ,fontFamily:'Raleway_400Regular',marginHorizontal:10}}
-                            placeholder="Create Something...."
-                            multiline={true}  
-                            ref={(input) => { this.descriptionTextInput = input; }}
-                            defaultValue={this.state.description}
-                            onFocus={ () => this.onFocus() }
-                            onChangeText={(text)=>this.setState({description:text})}
-
-                        />
-                        {this.state.postType==1?(
-                            <View style={{}}>
-                                {this.renderAddImageSection()} 
-                            </View>
-                        ):(null)}
-                        {this.state.postType==2?(
-                            <View style={{}}>
-                                {this.renderPollOPtionsSection()} 
-                            </View>
-                        ):(null)}
-                        
-                    {this.state.showFeedTypeOptions?( <View style={{flex:1,flexDirection:'row',justifyContent: 'flex-end'}}>
-                            <View style={[styles.feedOption]}>
-                            {this.renderButton("POLL","bar-chart-2",()=>this.setFeedTypeOption(2))} 
-                            </View>
-                            <View style={[styles.feedOption]}>
-                            {this.renderButton("IMAGE","image",this.check)} 
-                            </View>
-                            <View style={[styles.feedOption]}>
-                                {this.state.addFeedLoading?(
-                                        <ActivityIndicator size={"large"} color={theme.accentColor}/>
-                                ):
-                                (
-                                    <TouchableWithoutFeedback onPress={this.checkPostData}>
-                                        <View style={[{flexDirection: 'row',padding:5,marginVertical:5,alignItems: 'center',borderRadius:3,marginTop:'auto',borderWidth: 1,borderColor:this.state.description?theme.accentColor:theme.labelOrInactiveColor},this.state.description?{backgroundColor: theme.accentColor}:{}]}>
-                                            <Text style={{color:this.state.description?theme.primaryColor:theme.greyColor,fontSize:16}}>Post</Text>
-                                            <Feather name="chevron-right" size={18} color={this.state.description?theme.primaryColor:theme.greyColor}/>
-                                        </View>
-                                    </TouchableWithoutFeedback>
-                                    // this.renderButton("Post","align-left",()=>this.handleSubmitButtonClick())
-                                )}
-                                    
-                            </View>
-                        </View>):(null)}
-
-                    
-                    </View>
-                </View>
-                {/* <TouchableWithoutFeedback onPress={this.handleSubmitButtonClick}>
-                    <View style={{backgroundColor:theme.accentColor,padding:15,borderRadius:10,alignItems: 'center',width:'95%',alignSelf: 'center'}}> 
-                        <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>Continue</Text> 
-                    </View>
-                </TouchableWithoutFeedback> */}
-                {/* <View style={styles.btnView}>
-                    <TouchableOpacity style={styles.submitButton} onPress={this.handleNextBtnClick}>
-                          {this.state.addCourseLoading?
-                          (
-                                <ActivityIndicator color={theme.primaryColor} size={"large"}/>
-                          ):( 
-                                <Text style={styles.submitButtonText}>Next</Text>
-                            )}
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.addMoreButton}>
-                            <Text style={styles.addMoreButtonText}>Add More+</Text>
-                    </TouchableOpacity>
-                </View> */}
-            </ScrollView>
+        this.switchAddFeedMode(this.props.mode)
    
 
     // </Modal>

@@ -93,7 +93,7 @@ class InstituteView extends React.Component {
          {
              response.json().then(data=>
                  {
-                     this.setState({institute:data,loadingInstitute:false, insName: data.name, insNumber: data.phone})
+                     this.setState({institute:data,loadingInstitute:false, insName: data.name, insNumber: data.phone,followersCount:data.followersCount})
                       
                  })
              
@@ -107,10 +107,20 @@ class InstituteView extends React.Component {
             {
                 if(data)
                 {
-                    this.setState({courses:data, courseId: data[0].id, activeCourse: data[0].id, activeCourseDetail: data[0]},()=>{
-                        checkUserEnrollment(this.state.courseId, this.state.studentId, this.checkEnrollCallBack)
-                        fetch_courses_banners(this.state.activeCourse,this.courseBannerCallback)
-                    })
+                    if(this.state.activeCourse)
+                    {
+                        this.setState({courses:data},()=>{
+                            checkUserEnrollment(this.state.courseId, this.state.studentId, this.checkEnrollCallBack)
+                            fetch_courses_banners(this.state.activeCourse,this.courseBannerCallback)
+                        })
+                    }else
+                    {
+                        this.setState({courses:data, courseId: data[0].id, activeCourse: data[0].id, activeCourseDetail: data[0]},()=>{
+                            checkUserEnrollment(this.state.courseId, this.state.studentId, this.checkEnrollCallBack)
+                            fetch_courses_banners(this.state.activeCourse,this.courseBannerCallback)
+                        })
+                    }
+                   
                 }else
                 {
                     Toast.show('No Course Found')
@@ -268,7 +278,7 @@ class InstituteView extends React.Component {
             courseTimeTable:[],
             courseTestSeries:[],
             pinId: '',
-            checkPinned: '' ,
+            checkPinned: '' , 
         },()=>
             {
                 fetch_instituteDetails(this.state.instituteId,this.instituteCallback)
@@ -975,7 +985,7 @@ class InstituteView extends React.Component {
 
     purchaseCourseFun = ()=>{
         this.closePurchaseCourseModal()
-        this.props.navigation.navigate('webview',{link: serverBaseUrl+"checkout/course/"+this.props.userInfo.id+"/"+this.state.activeCourse+"/"+this.state.instituteId})
+        this.props.navigation.navigate('webview',{link: serverBaseUrl+"checkout/course/"+this.props.userInfo.id+"/"+this.state.activeCourse+"/"+this.state.instituteId,title:this.state.institute.name})
     }
 
     switchTabRender=(tabtoshow)=>{
@@ -1091,7 +1101,7 @@ class InstituteView extends React.Component {
     unsubscribeCallback=(response)=>{
         if(response.status==200)
         {
-            this.setState({subscribe: false})
+            this.setState({subscribe: false,followersCount:this.state.followersCount-1})
         }
         this.setState({followLoader:false})
     }
@@ -1099,7 +1109,7 @@ class InstituteView extends React.Component {
     subscribeCallback=(response)=>{
         if(response.status==201)
         {
-            this.setState({subscribe: true})
+            this.setState({subscribe: true,followersCount:this.state.followersCount+1})
         }
         this.setState({followLoader:false})
     }
@@ -1161,6 +1171,7 @@ class InstituteView extends React.Component {
             if(event.nativeEvent.contentOffset.y>40&&(!this.state.pageTitle||this.state.pageTitle!=''))
             {
                 this.setState({pageTitle:this.state.institute.name})
+               
             }
             if(event.nativeEvent.contentOffset.y<40&&(this.state.pageTitle!=''))
             {
@@ -1217,7 +1228,7 @@ class InstituteView extends React.Component {
             ):(
             
             <ScrollView
-                // onScroll={this.handleScroll}
+                onScroll={this.handleScroll}
                 refreshControl={
                     <RefreshControl refreshing={this.state.refreshing} 
                     onRefresh={this.refreshing} />
@@ -1251,6 +1262,7 @@ class InstituteView extends React.Component {
                                                             // console.log(response.status)
                                                             if(response.status==200)
                                                             {
+                                                                
                                                                 this.setState({isNotificationOn:false})
                                                             }
                                                         })
@@ -1263,16 +1275,17 @@ class InstituteView extends React.Component {
                                                     </TouchableWithoutFeedback>
                                                 ):(
                                                     <TouchableWithoutFeedback onPress={() =>{
-                                                        // console.log('isNotification')
                                                         
-                                                        followUnFollow(this.props.userInfo.id, this.state.instituteId,true,(response)=>{console
-                                                            // console.log(response.status)
+                                                        followUnFollow(this.props.userInfo.id, this.state.instituteId,true,(response)=>{
+                                                           
                                                             if(response.status==200)
                                                             {
+
+                         
                                                                  this.setState({isNotificationOn:true})
                                                             }
                                                         })
-                                                        
+                                                         
                                                     }}>
                                                         <View>
                                                             <Bell height={24} width={24}/>
@@ -1324,7 +1337,7 @@ class InstituteView extends React.Component {
                                         <Text style={[styles.btnText,{color:this.state.tabtoshow==1?theme.primaryColor:theme.greyColor}]} onPress={()=>{this.tabtoshow(1)}}>Courses</Text>
                                     </View>
                                     <View style={[styles.btnView2,this.state.tabtoshow==2?({backgroundColor:theme.accentColor}):({backgroundColor:theme.primaryColor})]}>
-                                        <Text style={{color:theme.blueColor,fontSize:16,fontWeight: 'bold'}}>{institute.followersCount}</Text>
+                                        <Text style={{color:theme.blueColor,fontSize:16,fontWeight: 'bold'}}>{this.state.followersCount}</Text>
                                         <Text style={[styles.btnText,{color:theme.blueColor}]}> Follower</Text>
                                     </View>
                                     <TouchableOpacity style={[styles.btnView3,this.state.tabtoshow==3?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor})]} onPress={this.handleFeedTabBtnClick}>

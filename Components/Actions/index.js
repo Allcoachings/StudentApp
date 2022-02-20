@@ -130,6 +130,7 @@ export const setInstituteAuth=(status)=>
 
 export const setTestResultData=(data)=>
 {
+    console.log("reducer action ",data)
     return{
         type:actionTypes.SET_TEST_RESULT_DATA,
         payload:{
@@ -199,6 +200,16 @@ export const removeDownloadingItem=(key)=>
         type:actionTypes.REMOVE_DOWNLOADING_ITEM,
         payload:{
             key
+        }
+    }
+}
+
+export const showCategoriesInHeader=(status)=>
+{
+    return{
+        type:actionTypes.SHOW_CATEGORIES_IN_HEADER,
+        payload:{
+            status
         }
     }
 }

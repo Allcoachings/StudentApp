@@ -51,8 +51,8 @@ const TimeUpModel = ({closeModal,yesFun,noFun,isPractice,unAttemptedQues,correct
                                     {/* <TouchableOpacity onPress={()=>{closeModal();noFun?noFun():null}}>
                                         <Text style={{fontSize: 12, fontFamily: 'Raleway_700Bold',color: theme.labelOrInactiveColor}}>CANCEL</Text>
                                     </TouchableOpacity> */}
-                                    <TouchableOpacity style={{marginLeft: 10}} onPress={yesFun}> 
-                                        <Text style={{fontSize: 12, fontFamily: 'Raleway_700Bold',color: theme.darkYellowColor}}>Submit</Text>
+                                    <TouchableOpacity style={{marginLeft: 20,marginRight: 20}} onPress={yesFun}> 
+                                        <Text style={{fontSize: 15, fontFamily: 'Raleway_700Bold',color: theme.darkYellowColor}}>Submit</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>,{alignSelf: 'center', marginTop: height*0.2,paddingVertical:20, borderRadius: 10}

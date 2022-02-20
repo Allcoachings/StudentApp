@@ -6,9 +6,10 @@ import {theme, serverBaseUrl, imageProvider} from '../config'
 import {fetch_courses_banners } from '../Utils/DataHelper/Course'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 
-import RenderHtml from 'react-native-render-html';
+import RenderHTML,{defaultSystemFonts} from 'react-native-render-html';
 
 const width = Dimensions.get('window').width
+const systemFonts = ["kruti_dev_010regular", "chanakyaregular","walkman_chanakya_901bold","walkman_chanakya_902bold","kruti_dev_010bold", ...defaultSystemFonts];
 class AboutCourse extends React.Component {
     state={
         sliderImg: [],
@@ -42,10 +43,11 @@ class AboutCourse extends React.Component {
 
     render() {
         this.updateComponent()
+        console.log(this.state.activeCourseDetail.description)
         return(
             <PageStructure
                 iconName="arrow-left"
-                btnHandler={() => {this.props.navigation.toggleDrawer()}}
+                btnHandler={() => {this.props.navigation.goBack()}}
                 titleonheader={"About Course"}      
                 nosearchIcon={true}
                 navigation={this.props.navigation}
@@ -57,11 +59,13 @@ class AboutCourse extends React.Component {
                     <SliderBox images={this.state.sliderImg}  onCurrentImagePressed={index => this.setState({index: index, zoomModal: true})}/>
                     <View style={{marginTop: '6%', marginHorizontal: 10}}>
                         <Text style={styles.head}>{this.state.activeCourseDetail.title}</Text>
-                    </View>
+                    </View> 
                 
                     <View style={{marginHorizontal:10, marginTop: '5%'}}>  
-                        <RenderHtml
+                        <RenderHTML
                             contentWidth={width}
+                            systemFonts={systemFonts}
+                            defaultTextProps={{style: {fontWeight: 'normal'}}}
                             source={{html:this.state.activeCourseDetail.description}}
                         />
                     </View>
@@ -74,6 +78,7 @@ class AboutCourse extends React.Component {
 const styles = StyleSheet.create({
     head:{
         fontFamily: 'Raleway_700Bold',
+         
         fontSize: 20
     },
         body:{

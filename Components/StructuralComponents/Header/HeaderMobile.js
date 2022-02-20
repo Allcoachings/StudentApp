@@ -47,7 +47,7 @@ class HeaderMobile extends React.Component {
   }
 
   closeModal=()=> this.setState({search:false})
-  render() { 
+  render() {
     return (
       // <KeyboardAwareScrollView>
       <View style={[styles.container,!this.props.catInHeader?({marginBottom:5}):(null)]}>
@@ -83,8 +83,7 @@ class HeaderMobile extends React.Component {
                      this.props.titleWithImage?(
                        <View style={{flexDirection: 'row',alignItems: 'center'}}>
                          <Image source={appLogo} style={{resizeMode:'contain',width: 25,height: 25}} />
-                         <Text
-                         
+                         <Text 
                             numberOfLines={1}
                             style={{
                               fontSize: 20, 

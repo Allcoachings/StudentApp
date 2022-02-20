@@ -93,11 +93,11 @@ return(
         <Modal 
           animationIn="slideInLeft"
           animationOut="slideOutRight"
-          transparent={false}
+          transparent={true}
           visible={props.isModalVisible}
           onRequestClose={props.closeModal}>
               <ScrollView>
-                <View style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+                <View style={{display: 'flex',backgroundColor:"#fff", flexDirection: 'column', justifyContent: 'center'}}>
                 {/* {!loadingCategory?(
                                 
                                 CardView(

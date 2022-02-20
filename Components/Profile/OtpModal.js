@@ -61,10 +61,10 @@ function OtpModal({isVisible,closeModal,email,mobile,setMobileVerificationStatus
       <Modal
         isVisible={isVisible}
         onRequestClose={closeModal}
-        transparent={false}
+        transparent={true}
       >
           
-        <View> 
+        <View style={{backgroundColor:"#fff"}}> 
         {CardView(
                     <View style={{flex: 1,flexDirection: 'row',alignItems: 'center',}}>
                         {/* <View> */}

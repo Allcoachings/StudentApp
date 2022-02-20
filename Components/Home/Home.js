@@ -131,13 +131,13 @@ class Home extends React.Component {
                         </Text>
                     </View>
                     <View style={{display:'flex', flexDirection: 'row', alignItems: 'center'}}>
-                        <Text style={{alignSelf:'flex-start', color: theme.greyColor,fontSize:12, marginRight: 2,}}>{item.totalRatingCount>0?((item.totalRating/item.totalRatingCount).toFixed(2)):(0)}</Text> 
+                        <Text style={{alignSelf:'flex-start', color: theme.greyColor,fontSize:12, marginRight: 2,}}>{item.totalRatingCount>0?((item.totalRating/item.totalRatingCount).toFixed(1)):(0)}</Text> 
                         <AirbnbRating 
                             starContainerStyle={styles.instituteRating} 
                             count={5}
                             reviews={[]} 
                             isDisabled={true}
-                            defaultRating={item.totalRatingCount>0?(item.totalRating/item.totalRatingCount):(0)}
+                            defaultRating={item.totalRatingCount>0?((item.totalRating/item.totalRatingCount).toFixed(1)):(0)}
                             size={12}
                             selectedColor={theme.blueColor}
                             showRating={false}
@@ -172,26 +172,23 @@ class Home extends React.Component {
         }
     }
 
-    renderSearchIns=({item})=>{
+     renderSearchIns=(item,closeModal)=>{
+         
         return(
             <View>
-                <TouchableWithoutFeedback style={{marginBottom: '5%'}} onPress={()=>this.redirectTo(item.id)}>
+                <TouchableWithoutFeedback style={{marginBottom: '5%'}} onPress={()=>{closeModal();this.redirectTo(item)}}>
                     <View style={styles.instituteheader}>
                         {CardView(
                             <Image source={{uri:imageProvider(item.logo)}} style={styles.instituteheaderLogo}/>
-                            ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:100,borderRadius:15}):({width:200,height:150})])
+                            ,[styles.logoCard,{width:"15%",height:50,borderRadius:10, marginLeft: 20}])
                         } 
                         <View style={styles.instituteheaderMeta}>
-                            <View style={{alignItems: 'center',flexDirection: 'column'}}>
-                                <Text style={styles.instituteheaderText}>{item.name}</Text>                          
-                                <Text style={styles.follower}>{numFormatter(item.followersCount)} Followers</Text>
-
+                            <View style={{flexDirection: 'column'}}>
+                                <Text numberOfLines={1} style={[styles.instituteheaderText,{fontSize:12,fontFamily: 'Raleway_600SemiBold',width:"100%"}]}>{item.name}</Text>
+                                <Text numberOfLines={1} style={[styles.instituteheaderText,{color:"grey",fontSize:10,fontFamily: 'Raleway_600SemiBold',width:"100%"}]}>{item.directorName}</Text>
                             </View>
-                            <TouchableOpacity style={[styles.courseItemContainer,{backgroundColor:theme.purpleColor, borderColor:theme.darkPurpleColor}]} onPress={()=>this.redirectTo(item.id)}> 
-                                <Text style={[styles.courseTitle,{color:theme.darkPurpleColor}]}>Latest Course</Text>
-                            </TouchableOpacity>
                         </View>
-                    </View>
+                    </View>     
                 </TouchableWithoutFeedback>
             </View>  
         )
@@ -399,14 +396,13 @@ const styles = StyleSheet.create({
                             logoCard:
                             { 
                                 flexWrap:'wrap',
-                                
+                                overflow: 'hidden',
                             }, 
                                 instituteheaderLogo:
                                 {
                                     width:"100%",
                                     height:"100%",
-                                     
-                                    borderRadius:15,
+                                    resizeMode:"contain", 
                                 },  
                             instituteheaderMeta:
                             {
@@ -420,7 +416,7 @@ const styles = StyleSheet.create({
                                     flex:1,
                                     flexWrap:'wrap', 
                                     fontFamily: 'Raleway_700Bold',
-                                    fontSize:19,
+                                    fontSize:14, 
                         
                                 },  
                                 instituteDirector:

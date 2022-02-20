@@ -1,8 +1,8 @@
 import React from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView,ActivityIndicator, RefreshControl} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView,ActivityIndicator, RefreshControl, TouchableWithoutFeedback,Dimensions} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import { theme,dataLimit, Assets } from '../config';
-import { EvilIcons } from '@expo/vector-icons';
+import { EvilIcons, Feather } from '@expo/vector-icons';
 import { feedData } from '../../FakeDataService/FakeData' 
 import {connect } from 'react-redux'
 import CardView from '../Utils/CardView';
@@ -13,6 +13,9 @@ import FeedPoll from '../Feed/FeedPoll';
 import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AddFeedModal from '../InsHome/AddFeedModal';
+const width = Dimensions.get('window').width
+const height = Dimensions.get('window').height
 class Feed extends React.Component {
     state={
         offset:0,
@@ -25,11 +28,22 @@ class Feed extends React.Component {
 
     handleFeedCallBack=(response)=>
     {
+        
         if(response.status==200){
             response.json().then(data=>{
+        
                 if(data.length>0)
                 {
-                    this.setState({feeds:[...this.state.feeds,...data],loadingData:false, showLoadMore: true, loadingFooter: false})
+                    if(this.state.offset!=0)
+                    {
+                       
+                        this.setState({feeds:[...this.state.feeds,...data],loadingData:false, showLoadMore: true, loadingFooter: false})
+                    }else
+                    {
+                        
+                        this.setState({feeds:data,loadingData:false, showLoadMore: true, loadingFooter: false})
+                    }
+                    
                 }
                 else
                 {
@@ -57,7 +71,8 @@ class Feed extends React.Component {
     }
 
     initialFetch=() => {
-        fetch_feed_all(this.state.offset,dataLimit,this.handleFeedCallBack);
+         
+            fetch_feed_all(this.state.offset,dataLimit,this.handleFeedCallBack); 
     }
 
     header=() => {
@@ -73,16 +88,18 @@ class Feed extends React.Component {
     
     toggleCatMode=(mode,item)=>
     { 
+         console.log(mode," ",item)
         switch(mode)
         {
             case true:
-                this.setState({offset:0,loadingData:true,feeds:[]},()=>
+                this.setState({offset:0,mode,item,loadingData:true,feeds:[]},()=>
                 {
                     fetch_feed_by_category(item.id,this.state.offset,dataLimit,this.handleFeedCallBack)
                 })
                 break;
                 
             case false:
+            default:
 
                 this.setState({offset:0,loadingData:true,feeds:[]},()=>
                 {
@@ -101,15 +118,15 @@ class Feed extends React.Component {
         {
             case 1:
                 return (
-                    <FeedImage actions={['Share','Report','Copy Link']} item={item} type={this.state.authType} navigation={this.props.navigation} mode="all"/>
+                    <FeedImage actions={['Share','Report','Copy Link']} updateEditFeedState={this.updateEditFeedState} item={item} type={this.state.authType} navigation={this.props.navigation} mode="all"/>
                 )
             case 2:
                 return (
-                    <FeedPoll actions={['Share','Report','Copy Link']} item={item} type={this.state.authType} navigation={this.props.navigation} mode="all"/>
+                    <FeedPoll actions={['Share','Report','Copy Link']} updateEditFeedState={this.updateEditFeedState} item={item} type={this.state.authType} navigation={this.props.navigation} mode="all"/>
                 )
             case 3:
                 return (
-                    <FeedText actions={['Share','Report','Copy Link']} item={item} type={this.state.authType} navigation={this.props.navigation} mode="all"/>
+                    <FeedText actions={['Share','Report','Copy Link']} updateEditFeedState={this.updateEditFeedState} item={item} type={this.state.authType} navigation={this.props.navigation} mode="all"/>
                 )
         }
     }
@@ -128,12 +145,33 @@ class Feed extends React.Component {
     };
 
     refreshing=()=>{
-        this.setState({refreshing:true});
-        this.initialFetch();
+        
+        this.setState({refreshing:true,offset:0},()=>{ 
+         
+            this.toggleCatMode(this.state.mode,this.state.item)
+        });
+     
+        
 
     }
+    appendFeed=(feed)=>{
+        let feeds_arr =[...this.state.feeds]
+        feeds_arr.unshift(feed)
+        this.setState({feeds:feeds_arr})
+    }
+    
+    updateEditFeedState=()=>{}
+    setUpdateEditFeedState=(ref)=>{
+        this.updateEditFeedState=ref;
+    }
 
+    updateSingleFeed=(item, index)=>{
+        var obj=[...this.state.feeds] 
+        obj[index]=item; 
+        this.setState({feeds:obj})
+    }
     render() {
+        console.log(width," ",height)
         return(
             <PageStructure 
                 userIcon={() => {this.props.navigation.navigate("Profile")}}
@@ -145,15 +183,24 @@ class Feed extends React.Component {
                 searchFun={this.search}
                 titleWithImage={true}
                 titleonheader={"Community"} 
+                refreshControl={
+                    <RefreshControl
+                     refreshing={this.state.refreshing} 
+                        onRefresh={this.refreshing} />
+                }
+                absolutePositionedElement={
+
+                    <TouchableOpacity activeOpacity={0.8} style={{position: "absolute",backgroundColor:theme.accentColor,borderRadius:25,bottom: 30,right:10,padding:15}} onPress={()=>{console.log("called");this.setState({isAddFeedModalVisible:true})}}>
+                        <View>
+                            <Feather color={theme.primaryColor} name="plus" size={20}/>
+                        </View>
+                    </TouchableOpacity>
+                }
           
             >
-                <ScrollView
-                    refreshControl={
-                        <RefreshControl refreshing={this.state.refreshing} 
-                        onRefresh={this.refreshing} />
-                    }
-                    style={{flex: 1}}
-                >
+                
+               
+
                     <View style={styles.container}>
 
                     {this.state.loadingData?(
@@ -180,8 +227,24 @@ class Feed extends React.Component {
                             }}
                         />
                     )} 
-                    </View>
-                </ScrollView>
+                    </View> 
+                
+                {this.state.isAddFeedModalVisible?(
+                    <AddFeedModal
+                        isVisible={this.state.isAddFeedModalVisible}
+                        closeModal = {()=>this.setState({isAddFeedModalVisible:false})}
+                        addFeedCallBack={this.appendFeed}
+                        posterId={this.props.userInfo.id} 
+                        posterImage={this.props.userInfo.studentImage}
+                        postedBy={2}
+                        instituteDetails={this.props.userInfo}
+                        setUpdateFun={this.setUpdateEditFeedState} 
+                        updateSingleFeed={this.updateSingleFeed}
+                        mode="modal"
+
+                    /> 
+                ):(null)}
+                
             </PageStructure>
         )
     }
@@ -289,7 +352,8 @@ const styles = StyleSheet.create({
 const  mapStateToProps = (state)=>
 {
     return {
-        screenWidth: state.screen.screenWidth
+        screenWidth: state.screen.screenWidth,
+        userInfo: state.user.userInfo,
     }
 }
 export default connect(mapStateToProps)(Feed); 

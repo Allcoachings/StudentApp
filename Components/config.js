@@ -18,7 +18,7 @@ export const theme={
     correctAnsColor: '#44b97d',
     redColor: '#FF0000',
     yellowColor: '#FFFF00',
-    darkYellowColor: '#e8b370',
+    darkYellowColor: '#FFC30B',
     blueColor: '#1E90FF',
     selectedOptColor: '#2db7e1',
     violetColor: '#2c003f', 

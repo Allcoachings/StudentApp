@@ -7,6 +7,7 @@ import {useSelector,useDispatch} from 'react-redux'
 import SendMessage from '../InstituteView/SendMessage'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SET_INSTITUTE_DETAILS, USER_AUTH_STATUS } from '../Actions/types';
+import LogoutAlert from './LogoutAlert'
 const windowWidth = Dimensions.get('window').width
 
  
@@ -17,6 +18,7 @@ const Settings =  ({navigation})=> {
 
   const [helpAndSupportModalVisible,setHelpAndSupportModalVisible] = useState(false)
   const [feedbackModalVisible,setFeedbackModalVisible] = useState(false)
+  const [logoutAlertModal,setLogoutAlertModal] = useState(false)
   const userInfo = useSelector(state => state.user.userInfo)
   const dispatch = useDispatch()
   const renderSettingItem=(label,icon,onPress)=>
@@ -58,7 +60,7 @@ const Settings =  ({navigation})=> {
                       {renderSettingItem('Privacy Policy','lock',()=>{})}
                       {renderSettingItem('Terms and Conditions','calendar',()=>{})}
                       {renderSettingItem('FeedBack','refresh-cw',()=>{setHelpAndSupportModalVisible(false);setFeedbackModalVisible(true)})}
-                      {renderSettingItem('Logout','log-out',()=>{logout()})}
+                      {renderSettingItem('Logout','log-out',()=>{setLogoutAlertModal(true)})}
                     </View>
                     {feedbackModalVisible?(
                     <SendMessage
@@ -80,7 +82,14 @@ const Settings =  ({navigation})=> {
                         messageType="helpAndSupport"
                     />
                 ):(null)}
-
+              {logoutAlertModal?(
+                <LogoutAlert
+                  visible={logoutAlertModal}
+                  closeModal={()=>setLogoutAlertModal(false)}
+                  yesFun={()=>logout()}
+                
+                />
+              ):(null)}
 
       </PageStructure>
     );

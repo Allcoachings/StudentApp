@@ -131,8 +131,8 @@ class CommentModal extends Component {
     return(
   
         <Modal
-          animationType="fade"
-          transparent={false}
+         
+          transparent={true}
           visible={this.props.modalVisible}
           onRequestClose={()=>this.props.closeModal()}
         >
@@ -182,6 +182,7 @@ class CommentModal extends Component {
 const styles = StyleSheet.create({
       container: {
           flexDirection: 'column', 
+          backgroundColor: theme.primaryColor    
       }                       
                 
 });

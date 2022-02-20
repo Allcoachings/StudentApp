@@ -6,7 +6,7 @@ const width = Dimensions.get('window').width
 import ReportQuestionModal from './ReportQuestionModal'
 import RenderHtml ,{ defaultSystemFonts } from 'react-native-render-html'
 
-const systemFonts = ["kruti_dev_010regular", ...defaultSystemFonts];
+const systemFonts = ["kruti_dev_010regular", "chanakyaregular","walkman_chanakya_901bold","walkman_chanakya_902bold","kruti_dev_010bold", ...defaultSystemFonts];
 class Question extends Component {
   state={
       isPractice:this.props.isPractice,

@@ -242,7 +242,7 @@ class OtpVerification extends React.Component {
                      
 
                         <TouchableWithoutFeedback onPress={this.state.mode=="mobile"?(this.handleResendBtnClick):(this.handleContinueBtnClick)} disabled={false}>
-                            <View style={[this.state.contBtnBg?({backgroundColor:theme.btn_dark_background_color}):({backgroundColor:theme.greyColor}),{padding:15,borderRadius:10,alignItems: 'center',width:'95%',marginBottom:10}]}>
+                            <View style={[this.state.contBtnBg?({backgroundColor:theme.accentColor}):({backgroundColor:theme.greyColor}),{padding:15,borderRadius:10,alignItems: 'center',width:'95%',marginBottom:10}]}>
                                 <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>{this.state.loader?(
                                     <ActivityIndicator color={theme.primaryColor} size={"small"}/>
                                 ):(this.state.mode=="mobile"?"Continue":"Verify")}</Text>

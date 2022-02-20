@@ -190,9 +190,15 @@ class Main extends React.Component {
         //         )
         // }
         return(  
-            <SafeAreaProvider  style={[styles.safeAreaView,this.props.statusBarHidden?{paddingTop:0}:null]}>
-                {this.switchRender(this.state.mode)}
-            </SafeAreaProvider>
+            <>
+                <View style={{height:StatusBar.currentHeight,width:"100%"}}>
+                    <Text style={{color:"#000",backgroundColor: '#fff'}}></Text>
+                </View>
+                <SafeAreaProvider  style={[styles.safeAreaView,this.props.statusBarHidden?{paddingTop:0}:null]}>
+
+                    {this.switchRender(this.state.mode)}
+                </SafeAreaProvider>
+            </>
             )
     }
 }
@@ -200,7 +206,7 @@ class Main extends React.Component {
 const styles = StyleSheet.create({
     safeAreaView:
     {
-        paddingTop:Platform.OS=='android'?StatusBar.currentHeight:0
+        // paddingTop:Platform.OS=='android'?StatusBar.currentHeight:0
         // paddingTop:Platform.OS=='android'?0:0
     },
         container: 

@@ -40,8 +40,10 @@ import UserCommunityPosts from './UserProfile/UserCommunityPosts';
 import SubscriptionTabs from './SubscriptionNew/SubscriptionTabs';
 import SubCategoryList from './InsTestSeriesList/SubCategoryList';
 import HeaderMobile from './StructuralComponents/Header/HeaderMobile';
-import { View } from 'react-native';
+import Categories from './StructuralComponents/Header/';
+import { View,Animated } from 'react-native';
 import NotificationTabs from './Home/NotificationTabs';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 
 const Tab = createBottomTabNavigator();
@@ -114,36 +116,44 @@ function Navigator(props) {
     const authStatus =    useSelector(state=>state.user.userAuthStatus)
     const headerProps = useSelector(state=>state.header.props)
     const isHeaderVisible = useSelector(state=>state.header.isHeaderVisible)
+    const showCategoriesInHeader = useSelector(state=>state.header.showCategoriesInHeader)
+    const headerOffset = useSelector(state=>state.header.headerOffset)
     // console.log("isHeaderVisible ",isHeaderVisible)
+
+    const insets = useSafeAreaInsets();
+
+    const headerHeight = headerOffset.interpolate({
+      inputRange: [0, 40 + insets.top],
+      outputRange: [40 + insets.top, insets.top + 44],
+      extrapolate: 'clamp'
+    });
+    
     return (
       // <SafeAreaView>
         <>
         {headerProps&&isHeaderVisible&&authStatus?(
             <View style={{height:40}}>
-                <HeaderMobile 
-                    // iconName={this.props.iconName}
-                    // titleonheader={this.props.titleonheader} 
-                    // replaceHeader={this.props.replaceHeader} 
-                    // headerComponent={this.props.headerComponent} 
-                    // btnHandler={this.props.btnHandler} 
-                    // notificationreplaceshare={this.props.notificationreplaceshare} 
-                    // rightIconOnPress={this.props.rightIconOnPress}
-                    // nosearchIcon={this.props.nosearchIcon}
-                    // noNotificationIcon={this.props.noNotificationIcon}
-                    // searchFun={this.props.searchFun}
-                    // singleItem={this.props.singleItem}
-                    // catInHeader={this.props.catInHeader}
-                    // selectedCat={this.props.selectedCat}
-                    // titleWithImage={this.props.titleWithImage}
-                    // userIcon={this.props.userIcon}
-                    // pinIconName={this.props.pinIconName}
-                    // pinUnpinIcon={this.props.pinUnpinIcon}
-                    // searchReplace={this.props.searchReplace}
-                    // showShareIcon={this.props.showShareIcon}
-                    // pinUnpinFunction={this.props.pinUnpinFunction}
-                    // showTitle={this.props.showTitle}
-                        {...headerProps}
-                />
+                <Animated.View
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        zIndex: 10,
+                        height: headerHeight, 
+                    }}
+                > 
+                    {(!showCategoriesInHeader||!headerProps.catInHeader)?(
+                        
+                        <HeaderMobile  
+                                {...headerProps}
+                        />
+                        ):(
+                            <Categories
+                                {...headerProps}
+                            />
+                        )}
+                </Animated.View> 
             </View>
 
         ):(null)}

@@ -146,11 +146,11 @@ import { theme } from '../config';
         return (
             <PageStructure
 
-            
+            iconName="arrow-left"
             btnHandler={() => {this.props.navigation.goBack()}}
             navigation={this.props.navigation}
-            titleonheader={"All Coaching"}
-            titleWithImage={true}
+            titleonheader={this.props.route?.params?.title||"All Coaching"}
+            titleWithImage={false}
             noNotificationIcon={true}
             nosearchIcon={true}
             >

@@ -474,12 +474,9 @@ class TestSeriesView extends React.Component {
                 changeTestStatus:this.props.route.params.changeTestStatus
             }
         }
-         this.props.setTestResultData(data);
+         this.props.setTestResultData(data); 
          this.props.navigation.navigate("ResultAnalysis");
-         this.closeModalSubmit()
-        //  this.props.closeModal() 
-        // StatusBar.setHidden(false);
-        //  this.props.setStatusBarHidden(false)   
+         this.closeModalSubmit()   
          window.clearInterval(this.state.intervalRef)
       }
       scrollToQuestion=(index)=>

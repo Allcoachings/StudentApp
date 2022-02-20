@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
-import { Assets } from '../config'
+import { Assets, dataLimit } from '../config'
 import FeedImage from '../Feed/FeedImage'
 import FeedPoll from '../Feed/FeedPoll'
 import FeedText from '../Feed/FeedText'
@@ -9,6 +9,7 @@ import AddFeedModal from '../InsHome/AddFeedModal'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator'
 import EmptyList from '../Utils/EmptyList'
 
+import {fetch_student_feed} from "../Utils/DataHelper/Feed"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 
@@ -16,10 +17,12 @@ function UserCommunityPosts({navigation}) {
     
     const userInfo = useSelector(state=>state.user.userInfo)
     const [feeds,setFeeds] = useState([])
-    const [isFeedLoading,setIsFeedLoading] = useState(false)
+    const [isFeedLoading,setIsFeedLoading] = useState(true)
     const [isAddFeedModalVisible,setIsAddFeedModalVisible] = useState(false)
     const [categoryId,setCategoryId] = useState(null)
     const [loadingData,setLoadingData] = useState(false)
+    const [offset,setOffset] = useState(0)
+    const [loadingFooter,setLoadingFooter] = useState(false)
     const checkForUserCat=()=>
     {
         AsyncStorage.getItem("userCat").then((response)=>{
@@ -78,15 +81,22 @@ function UserCommunityPosts({navigation}) {
     const setUpdateEditFeedState=(ref)=>{
         updateEditFeedState=ref;
     }
+
+    useEffect(()=>{ 
+        
+        fetch_student_feed(userInfo.id,offset,dataLimit, fetchFeedCallback)
+    },[offset])
     
     const fetchFeedCallback=(response)=>{
-        setLo
+        
         if(response.status==200)
         {
             response.json().then(data=>
             {
-
-                this.setState({feeds: data, isFeedLoading: false})
+                setLoadingFooter(false)
+                 
+                setFeeds([...feeds,...data])
+                setIsFeedLoading(false)
             })
         }
         else
@@ -98,6 +108,18 @@ function UserCommunityPosts({navigation}) {
         
         checkForUserCat()
     },[])
+    const  renderFooter = () => {
+        try {
+       
+          if (loadingFooter) {
+            return <CustomActivtiyIndicator mode="skimmer"/>;
+          } else {
+            return null;
+          }
+        } catch (error) {
+          // console.log(error);
+        }
+    };
     return (
         <PageStructure
             iconName={"arrow-left"}
@@ -111,18 +133,20 @@ function UserCommunityPosts({navigation}) {
                     {/* <TouchableOpacity  onPress={()=>this.openAddFeedModal()} style={{backgroundColor: theme.textColor, justifyContent: 'center', alignItems: 'center', padding:5, borderRadius:5}}> 
                         <Text style={{color: theme.primaryColor}}>Add Feed</Text>
                     </TouchableOpacity>            */}
-                    <AddFeedModal
-                            addFeedCallBack={appendFeed}
-                            isAddFeedModalVisible={isAddFeedModalVisible} 
-                            closeModal={closeAddFeedModal}
-                            posterId={userInfo.id} 
-                            posterImage={userInfo.studentImage}
-                            postedBy={2}
-                            categoryId={categoryId}
-                            instituteDetails={userInfo}
-                            setUpdateFun={setUpdateEditFeedState}
-                            updateSingleFeed={updateSingleFeed}
-                    />
+                    <View style={{height: 110}}>
+                        <AddFeedModal
+                                addFeedCallBack={appendFeed}
+                                isAddFeedModalVisible={isAddFeedModalVisible} 
+                                closeModal={closeAddFeedModal}
+                                posterId={userInfo.id} 
+                                posterImage={userInfo.studentImage}
+                                postedBy={2}
+                                categoryId={categoryId}
+                                instituteDetails={userInfo}
+                                setUpdateFun={setUpdateEditFeedState}
+                                updateSingleFeed={updateSingleFeed}
+                        />
+                    </View>
                     {isFeedLoading?(
                             <CustomActivtiyIndicator mode="skimmer"/>
                     ):(
@@ -131,6 +155,16 @@ function UserCommunityPosts({navigation}) {
                             renderItem={({item, index}) => renderFeedItem(item, index)}
                             keyExtractor={(item,index)=>index} 
                             ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                            onEndReachedThreshold={0.1}
+                            ListFooterComponent={renderFooter}
+                            onEndReached={() => 
+                                {
+                                    
+                                    setLoadingFooter(true)
+                                     setOffset(parseInt(offset)+1)
+                                     
+                                
+                                }}
                         />
                     )}
                 </View>

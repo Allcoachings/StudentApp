@@ -13,7 +13,7 @@ import BackArrow from '../Utils/Icons/BackArrow'
 import SubmitModel from './SubmitModel';
 const width = Dimensions.get('window').width
 
-const systemFonts = ["kruti_dev_010regular", ...defaultSystemFonts];
+const systemFonts = ["kruti_dev_010regular", "chanakyaregular","walkman_chanakya_901bold","walkman_chanakya_902bold","kruti_dev_010bold", ...defaultSystemFonts];
 class SeriesModal extends React.Component {
   state = {
     modalVisible: true,

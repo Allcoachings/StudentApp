@@ -45,10 +45,10 @@ const BackAlert = ({visible,closeModal,yesFun,noFun})=> {
                                 ):(null)} */}
                                 <View style={{flexDirection: 'row', justifyContent: 'flex-end', marginTop: 20, marginRight: 10}}>
                                     <TouchableOpacity onPress={()=>{closeModal();noFun?noFun():null}}>
-                                        <Text style={{fontSize: 12, fontFamily: 'Raleway_700Bold',color: theme.labelOrInactiveColor}}>No</Text>
+                                        <Text style={{fontSize: 15, fontFamily: 'Raleway_700Bold',color: theme.greyColor}}>No</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={{marginLeft: 10}} onPress={()=>{closeModal();yesFun()}}> 
-                                        <Text style={{fontSize: 12, fontFamily: 'Raleway_700Bold',color: theme.darkYellowColor}}>Yes</Text>
+                                    <TouchableOpacity style={{marginLeft: 20,marginRight: 20}} onPress={()=>{closeModal();yesFun()}}> 
+                                        <Text style={{fontSize: 15, fontFamily: 'Raleway_700Bold',color: theme.darkYellowColor}}>Yes</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>,{alignSelf: 'center', marginTop: height*0.2,paddingVertical:20, borderRadius: 10}

@@ -16,7 +16,7 @@ class RenderSingleSubsInstitute extends React.Component {
         subscription: [],
         offset: 0,
         modalVisible: false,
-        instituteId: this.props.item.id,
+        instituteId: this.props.item?.institute?.id,
         subscribe: true,
         studentId: this.props.userInfo.id,
         hide: false,
@@ -62,36 +62,37 @@ class RenderSingleSubsInstitute extends React.Component {
     }
 
     render() {
+         
         return(
             <View style={[this.state.hide?({display: 'none'}):(null)]}>
-                <TouchableWithoutFeedback style={{marginBottom: '5%'}} onPress={()=>this.redirectTo(this.props.item.id)}>
+                <TouchableWithoutFeedback style={{marginBottom: '5%'}} onPress={()=>this.redirectTo(this.props.item.institute?.id)}>
                     <View style={styles.instituteheader}>
                         {CardView(
-                            <Image source={{uri:imageProvider(this.props.item.logo)}} style={styles.instituteheaderLogo}/>
+                            <Image source={{uri:imageProvider(this.props.item.institute?.logo)}} style={styles.instituteheaderLogo}/>
                             ,[styles.logoCard,this.props.screenWidth<=screenMobileWidth?({width:"30%",height:100,borderRadius:15}):({width:200,height:150})])
                         } 
                         <View style={styles.instituteheaderMeta}>
                             <View style={{alignItems: 'center',flexDirection: 'column'}}>
-                                <Text style={styles.instituteheaderText}>{this.props.item.name}</Text>                          
-                                <Text style={styles.follower}>{numFormatter(this.props.item.followersCount)} Followers</Text>
+                                <Text style={styles.instituteheaderText}>{this.props.item.institute?.name}</Text>                          
+                                <Text style={styles.follower}>{numFormatter(this.props.item.institute?.followersCount)} Followers</Text>
 
                             </View>
-                            {/* <Text style={styles.instituteDirector}>{this.props.item.directorName}</Text> */}
+                            {/* <Text style={styles.instituteDirector}>{this.props.item.institute?.directorName}</Text> */}
                             {/* <View style={styles.instituteRatingView}>
                                 <AirbnbRating 
                                     starContainerStyle={styles.instituteRating} 
                                     count={5}
                                     reviews={[]} 
                                     isDisabled={true}
-                                    defaultRating={this.props.item.totalRatingCount>0?(this.props.item.totalRating/this.props.item.totalRatingCount):(0)}
+                                    defaultRating={this.props.item.institute?.totalRatingCount>0?(this.props.item.institute?.totalRating/this.props.item.institute?.totalRatingCount):(0)}
                                     size={12}
                                     selectedColor={theme.blueColor}
                                     showRating={false}
                                 />
-                                <Text style={styles.voteCount}>{this.props.item.totalRatingCount>0?(this.props.item.totalRating/this.props.item.totalRatingCount):(0)}</Text>
+                                <Text style={styles.voteCount}>{this.props.item.institute?.totalRatingCount>0?(this.props.item.institute?.totalRating/this.props.item.institute?.totalRatingCount):(0)}</Text>
                             </View> */}
-                            <TouchableOpacity style={[styles.courseItemContainer,{backgroundColor:theme.purpleColor, borderColor:theme.darkPurpleColor}]} onPress={()=>this.redirectTo(this.props.item.id)}> 
-                                <Text style={[styles.courseTitle,{color:theme.darkPurpleColor}]}>Latest Course</Text>
+                            <TouchableOpacity style={[styles.courseItemContainer,{backgroundColor:theme.purpleColor, borderColor:theme.darkPurpleColor}]} onPress={()=>this.redirectTo(this.props.item.institute?.id)}> 
+                                <Text style={[styles.courseTitle,{color:theme.darkPurpleColor}]}>{this.props.item.course?.title}</Text>
                             </TouchableOpacity>
                         </View>
                         {/* <TouchableOpacity onPress={()=>{this.setState({modalVisible:true})}}>

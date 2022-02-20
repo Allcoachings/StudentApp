@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 const width = Dimensions.get('window').width
 import RenderHTML,{defaultSystemFonts} from 'react-native-render-html';
 
-const systemFonts = ["kruti_dev_010regular", ...defaultSystemFonts];
+const systemFonts = ["kruti_dev_010regular", "chanakyaregular","walkman_chanakya_901bold","walkman_chanakya_902bold","kruti_dev_010bold", ...defaultSystemFonts];
 class Solutions extends React.Component {
     state={
         type: [

@@ -13,7 +13,7 @@ import moment from 'moment'
 import VideoCommentItem from './VideoCommentItem'
 import AddComment from './AddComment'
 import { fetchVideoComments, updateVideoView } from '../Utils/DataHelper/CourseVideos'
-import BackArrow from '../Utils/Icons/BackArrow'
+import BackArrowWhite from '../Utils/Icons/BackArrowWhite'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import VideoSettingModal from './VideoSettingModal'
 import VideoPlayerSideBar from './VideoPlayerSideBar'
@@ -275,7 +275,7 @@ export default VideoPlayerCustom=(props)=>
                     }}
 
                     videoTitle={{
-                        titleIcon:inFullscreen?<MaterialCommunityIcons name="chevron-down" size={30} color={theme.primaryColor}/>:<BackArrow height={20} width={20}/>,//MaterialCommuntyIcons
+                        titleIcon:inFullscreen?<MaterialCommunityIcons name="chevron-down" size={30} color={theme.primaryColor}/>:<BackArrowWhite height={20} width={20}/>,//MaterialCommuntyIcons
                         titleIconOnPress:inFullscreen?exitFullscreen:()=>backPressHandler("selfBackPress"),
                         title:props.route.params.videoTitle,
                         

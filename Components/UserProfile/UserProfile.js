@@ -11,7 +11,6 @@ import CardView from '../Utils/CardView'
 import {connect } from 'react-redux'
 import EditModal from './EditModal'
 import PurchageListRow from './PurchageListRow';
-import {fetch_student_feed} from "../Utils/DataHelper/Feed"
 import FeedText from '../Feed/FeedText';
 import FeedImage from '../Feed/FeedImage';
 import FeedPoll from '../Feed/FeedPoll';
@@ -737,7 +736,7 @@ const styles = StyleSheet.create({
     {
         flex: 1,
         flexDirection: 'column',
-        
+        backgroundColor:theme.primaryColor        
     },
         userInfoSecView:
         {

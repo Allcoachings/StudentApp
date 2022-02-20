@@ -14,6 +14,7 @@ import EmptyList from '../Utils/EmptyList'
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import { fetch_Banners } from '../Utils/DataHelper/Banners';
 import SingleTestSeriesItem from './SingleTestSeriesItem';
+import SingleTestSeriesItemSearch from './SingleTestSeriesItemSearch';
 class TestSeriesIns extends React.Component {
     state = { 
         offset: 0,
@@ -65,6 +66,16 @@ class TestSeriesIns extends React.Component {
              />
        )
     }
+    singleItemSearch=(item,closeModal)=>{
+       return(
+            <SingleTestSeriesItemSearch
+                item={item}
+                navigation={this.props.navigation}
+                category={this.state.category}
+                closeModal={closeModal}
+             />
+       )
+    }
 
 
     singleRow=({item})=>
@@ -85,6 +96,29 @@ class TestSeriesIns extends React.Component {
                         renderItem={this.singleItem} 
                         keyExtractor={(item)=>item.id}
                         horizontal={true} 
+                        showsHorizontalScrollIndicator={false}
+                    />
+            </View>
+        </View>)
+    }
+    
+    singleRowSearch=(item,closeModal)=>
+    {
+
+        console.log(item)
+        return(
+        <View>
+            {/* <View style={styles.rowHeader}>
+               <Text style={styles.rowHeadText}>{item.categoryName}</Text> 
+               <TouchableWithoutFeedback onPress={()=>{this.props.navigation.navigate("AdminTestSubCategoryList",{type:item.categoryName,id:item.categoryId})}}>
+                <Feather name="arrow-right" size={20} />
+               </TouchableWithoutFeedback>
+            </View> */}
+            <View> 
+                    <FlatList 
+                        data={item.subCategories} 
+                        renderItem={({item})=>this.singleItemSearch(item,closeModal)} 
+                        keyExtractor={(item)=>item.id} 
                         showsHorizontalScrollIndicator={false}
                     />
             </View>
@@ -151,7 +185,7 @@ class TestSeriesIns extends React.Component {
                 navigation={this.props.navigation} 
                 titleWithImage={true}
                 searchFun={this.search}
-                singleItem={this.singleRow}
+                singleItem={this.singleRowSearch}
                 rowListing
                 titleonheader={"All Coaching"} 
                 catOnpress={this.toggleCatMode}

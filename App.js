@@ -7,6 +7,10 @@ import RootReducer from './Components/Reducers'
 import Main from './Components/Main'
 import * as Font from 'expo-font'; 
 const kruti_dev_010regular =require('./assets/fonts/kruti_dev_010regular.ttf')
+const  chanakyaregular = require('./assets/fonts/chanakyaregular.ttf')
+const  walkman_chanakya_901bold  = require('./assets/fonts/walkman_chanakya_901bold.ttf')
+const walkman_chanakya_902bold  = require('./assets/fonts/walkman_chanakya_902bold.ttf')
+const kruti_dev_010bold = require('./assets/fonts/kruti_dev_010bold.ttf')
 // import { SafeAreaProvider } from 'react-native-safe-area-context';
 // import {NativeBaseProvider } from "native-base"
 import {
@@ -62,9 +66,13 @@ let store = createStore(RootReducer)
 
      (async()=>{   
        let isLoaded = await Font.loadAsync({
-            kruti_dev_010regular
+            kruti_dev_010regular,
+            chanakyaregular,
+            walkman_chanakya_901bold,
+            walkman_chanakya_902bold,
+            kruti_dev_010bold
           })
-          console.log(isLoaded, " kruti")
+          console.log(isLoaded, " all fonts")
         })()
     },[])
 

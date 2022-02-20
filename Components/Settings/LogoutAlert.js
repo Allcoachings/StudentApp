@@ -4,31 +4,30 @@ import CardView from '../Utils/CardView';
 import {theme, Assets,defaultStudentImage} from '../config'
 const width = Dimensions.get('window').width
 const height = Dimensions.get('screen').height
-const SubmitModel = ({closeModal,yesFun,noFun,isPractice,correctQues,incorrectQues,unAttemptedQues})=> {
-     
-    const [selectedOpt,setSelectedOpt] = useState()
+const LogoutAlert = ({visible,closeModal,yesFun,noFun})=> {
+      
      
         return(
             <Modal
                 animationType="fade"
                 transparent={true}
-                visible={true}
+                visible={visible}
                 onRequestClose = {closeModal}
             >
                 <TouchableWithoutFeedback>
-                    <View style={{height:height,width:width, backgroundColor: theme.secondaryColor+'66'}}>
+                    <View style={{height:height,width:width, backgroundColor: theme.secondaryColor+'66',alignItems: 'center',justifyContent: 'center'}}>
                         {CardView(
                             <View style={{flexDirection: 'column'}}>
                                  <View style={{marginVertical: 15, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                                    <Text style={{fontFamily: 'Raleway_600SemiBold', fontSize: 18, marginBottom: 10, color: theme.greyColor}}>
-                                        Are you sure you want to Submit?
+                                    <Text style={{fontFamily: 'Raleway_600SemiBold', fontSize: 18,textAlign: 'center', marginBottom: 10, color: theme.greyColor}}>
+                                        Are you sure you Logout ?
                                     </Text>
                                 </View>
-                                <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                                {/* <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                                     <Text style={{fontFamily: 'Raleway_400Regular', fontSize: 50, color: theme.silverColor}}>{unAttemptedQues}</Text>
                                     <Text style={{fontFamily: 'Raleway_600SemiBold', fontSize: 14, color: theme.silverColor}}>Unattempted Questions</Text>
-                                </View>
-                                {isPractice?(
+                                </View> */}
+                                {/* {isPractice?(
                                     <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                                          <View style={{backgroundColor: theme.labelOrInactiveColor+'4D', flexDirection: 'row',marginVertical: 25, borderRadius: 10, padding: 10}}>
                                              <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginHorizontal: 15}}>
@@ -39,23 +38,20 @@ const SubmitModel = ({closeModal,yesFun,noFun,isPractice,correctQues,incorrectQu
                                                  <Text style={{color: theme.buttonColor, fontSize: 16}}>{incorrectQues}</Text>
                                                  <Text style={{color: theme.textColor, fontSize: 16}}>Incorrect</Text>
                                              </View>
-                                             {/* <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginHorizontal: 15}}>
-                                                 <Text style={{color: theme.darkYellowColor, fontSize: 16}}>1</Text>
-                                                 <Text style={{color: theme.textColor, fontSize: 16}}>Coin</Text>
-                                             </View> */}
+                                            
                                          </View>
                                      </View>
 
-                                ):(null)}
+                                ):(null)} */}
                                 <View style={{flexDirection: 'row', justifyContent: 'flex-end', marginTop: 20, marginRight: 10}}>
                                     <TouchableOpacity onPress={()=>{closeModal();noFun?noFun():null}}>
-                                        <Text style={{fontSize: 15, fontFamily: 'Raleway_700Bold',color: theme.greyColor}}>CANCEL</Text>
+                                        <Text style={{fontSize: 15, fontFamily: 'Raleway_700Bold',color: theme.greyColor}}>No</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={{marginLeft: 20,marginRight: 20}} onPress={yesFun}> 
-                                        <Text style={{fontSize: 15, fontFamily: 'Raleway_700Bold',color: theme.darkYellowColor}}>Submit</Text>
+                                    <TouchableOpacity style={{marginLeft: 20,marginRight: 20}} onPress={()=>{closeModal();yesFun()}}> 
+                                        <Text style={{fontSize: 15, fontFamily: 'Raleway_700Bold',color: theme.darkYellowColor}}>Yes</Text>
                                     </TouchableOpacity>
                                 </View>
-                            </View>,{alignSelf: 'center', marginTop: height*0.2,paddingVertical:20, borderRadius: 10}
+                            </View>,{alignSelf: 'center', paddingVertical:20, borderRadius: 10}
                         )}
                     </View>
                 </TouchableWithoutFeedback>
@@ -63,4 +59,4 @@ const SubmitModel = ({closeModal,yesFun,noFun,isPractice,correctQues,incorrectQu
         )
      
 }
-export default SubmitModel
+export default LogoutAlert

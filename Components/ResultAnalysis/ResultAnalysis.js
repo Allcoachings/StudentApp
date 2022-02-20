@@ -186,21 +186,21 @@ class ResultAnalysis extends React.Component {
         const{testSeriesData} = this.props;
         let accuracy = Math.round((testSeriesData?.testData?.brief?.score/testSeriesData?.testData?.series?.maxMarks)*100,3)
         let timeTaken = (testSeriesData?.testData?.series?.timeDuration-testSeriesData?.testData?.brief?.timeLeft)
-        let seriesData = {...testSeriesData.testData.brief,status:2,studentId:this.props.userInfo.id,accuracy,timeTaken,skippedQues:this?.props?.testSeriesData?.testData?.brief?.Unattempted,userQuestionResponses:testSeriesData?.testData?.ques}
+        let seriesData = {...testSeriesData?.testData?.brief,status:2,studentId:this.props.userInfo.id,accuracy,timeTaken,skippedQues:this?.props?.testSeriesData?.testData?.brief?.Unattempted,userQuestionResponses:testSeriesData?.testData?.ques}
         saveTestResult( seriesData,(response) => {
             console.log("save result status",response.status)
             if(response.status==201)
             {
                 if(this.props?.testSeriesData?.testFuncs?.changeTestStatus){
-                    this.props.testSeriesData.testFuncs.changeTestStatus(2)
+                    this.props.testSeriesData?.testFuncs.changeTestStatus(2)
                 }
                 
                 let data  = response.headers.map.location.split("*"); 
-                if(!testSeriesData.testData.brief.id)
+                if(!testSeriesData?.testData?.brief?.id)
                 {
-                    this.props.setTestResultData({...this.props?.testSeriesData?.testData,brief:{...testSeriesData?.testData?.brief,id:data[0]},})
+                    this.props.setTestResultData({...this.props?.testSeriesData,testData:{...this?.props?.testSeriesData?.testData,brief:{...testSeriesData?.testData?.brief,id:data[0]}},})
                 } 
-                // console.log("saved result data ",data)
+                
                 this.setState({accuracy,savedTestResult:true,savedTestResultId:data[0],percentile:data[1],rank:data[2],totalStudent:data[3]})
             }
         }) 
@@ -223,13 +223,14 @@ class ResultAnalysis extends React.Component {
 
         this.updateCounts()
         const{testSeriesData,userInfo} = this.props;
-        // console.log(testSeriesData)
+        console.log(testSeriesData," result anaylsis")
         let timeTaken = (this.props?.testSeriesData?.testData?.series?.timeDuration*60)-this?.props?.testSeriesData?.testData?.brief?.timeLeft 
+
         return(
             <PageStructure
                 iconName="arrow-left"
                 btnHandler={() => {this.props.navigation.navigate('Home')}}
-                titleonheader={testSeriesData.testData.series.title}
+                titleonheader={testSeriesData?.testData?.series?.title}
                 notificationreplaceshare={"share-2"}
                 noNotificationIcon={true}
                 navigation={this.props.navigation}
@@ -266,8 +267,8 @@ class ResultAnalysis extends React.Component {
                                     <View style={styles.scoreView}>
                                         <Text style={styles.scoreRankText}>Score</Text>
                                         <View style={styles.marksView}>
-                                            <Text style={styles.obtainedMarks}>{testSeriesData.testData.brief.score}</Text>
-                                            <Text> out of {testSeriesData.testData.series.maxMarks} </Text> 
+                                            <Text style={styles.obtainedMarks}>{testSeriesData?.testData?.brief?.score}</Text>
+                                            <Text> out of {testSeriesData?.testData?.series?.maxMarks} </Text> 
                                         </View>
                                     </View>
                                     <View style={styles.rankView}>

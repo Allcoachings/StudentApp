@@ -9,6 +9,11 @@ class Instructions extends React.Component {
   state = {
     modalVisible: true,
   };
+
+  componentDidMount() {
+    this.props.navigation.navigate("SingleTestSeries", {item: this.props.item,viewMode:false,testStatus:this.props.testStatus,briefId:this.props.briefId,changeTestStatus:this.props.changeTestStatus})
+    this.props.closeModal()
+  }
   //general instructions
  section1Data=[
     {
@@ -199,35 +204,37 @@ class Instructions extends React.Component {
     return (
         <Modal
           animationType="fade"
-          transparent={false}
+          transparent={true}
           visible={this.props.modalVisible}
           onRequestClose={closeModal}>
-          {CardView(<View style={styles.centeredView}>
-            <View style={{borderBottomWidth:1,borderBottomColor:theme.labelOrInactiveColor,padding:10,}}>
-                <Text style={{fontFamily:'Raleway_700Bold',fontSize:20}}>Instructions</Text>
-            </View>
-            <ScrollView>
-              <View style={{margin:10}}>
-                    <View>
-                      {this.renderHeading("Please read the following instructions carefully")}
-                  </View>
-                  {/* section one of instructions */}
-                  {this.renderInstructionSection("General Instructions:",this.section1Data)}
-                  {this.renderInstructionSection("Navigating to a question :",this.section2Data)}
-                  {this.renderInstructionSection("Answering questions :",this.section3Data)}
-                  {this.renderInstructionSection("Navigating through sections :",this.section4Data)}
-
+          <View style={{backgroundColor:"#fff"}}>
+            {CardView(<View style={styles.centeredView}>
+              <View style={{borderBottomWidth:1,borderBottomColor:theme.labelOrInactiveColor,padding:10,}}>
+                  <Text style={{fontFamily:'Raleway_700Bold',fontSize:20}}>Instructions</Text>
               </View>
-            </ScrollView>
-            <View style={{marginTop:'auto',marginBottom: 20}}>
-                <TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,alignItems: 'center'}} onPress={()=>{this.props.navigation.navigate("SingleTestSeries", {item: this.props.item,viewMode:false,testStatus:this.props.testStatus,briefId:this.props.briefId,changeTestStatus:this.props.changeTestStatus}), closeModal()}}>
-                    <Text style={{fontFamily:'Raleway_600SemiBold',fontSize:18,color:theme.primaryColor}}>Continue</Text>
-                </TouchableOpacity >
-                {/* <TouchableOpacity style={styles.btn} onPress={closeModal}>
-                    <Text style={styles.btnText}>Cancel</Text>
-                </TouchableOpacity> */}
-            </View>
-          </View>,{height: height, width: width})}
+              <ScrollView>
+                <View style={{margin:10}}>
+                      <View>
+                        {this.renderHeading("Please read the following instructions carefully")}
+                    </View>
+                    {/* section one of instructions */}
+                    {this.renderInstructionSection("General Instructions:",this.section1Data)}
+                    {this.renderInstructionSection("Navigating to a question :",this.section2Data)}
+                    {this.renderInstructionSection("Answering questions :",this.section3Data)}
+                    {this.renderInstructionSection("Navigating through sections :",this.section4Data)}
+
+                </View>
+              </ScrollView>
+              <View style={{marginTop:'auto',marginBottom: 20}}>
+                  <TouchableOpacity style={{backgroundColor:theme.accentColor,padding:10,alignItems: 'center'}} onPress={()=>{}}>
+                      <Text style={{fontFamily:'Raleway_600SemiBold',fontSize:18,color:theme.primaryColor}}>Continue</Text>
+                  </TouchableOpacity >
+                  {/* <TouchableOpacity style={styles.btn} onPress={closeModal}>
+                      <Text style={styles.btnText}>Cancel</Text>
+                  </TouchableOpacity> */}
+              </View>
+            </View>,{height: height, width: width})}
+          </View>
         </Modal>
     );
   }

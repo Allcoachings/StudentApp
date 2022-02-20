@@ -51,10 +51,10 @@ class WarningModal extends React.Component {
                                
                                 <View style={{flexDirection: 'row', justifyContent: 'flex-end', marginTop: 20, marginRight: 10}}>
                                     <TouchableOpacity onPress={()=>{this.props.closeModal();this.props.noFun?this.props.noFun():null}}>
-                                        <Text style={{fontSize: 12, fontFamily: 'Raleway_700Bold',color: theme.labelOrInactiveColor}}>CANCEL</Text>
+                                        <Text style={{fontSize: 15, fontFamily: 'Raleway_700Bold',color: theme.greyColor}}>CANCEL</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={{marginLeft: 10}} onPress={this.props.yesFun}> 
-                                        <Text style={{fontSize: 12, fontFamily: 'Raleway_700Bold',color: theme.darkYellowColor}}>PAUSE</Text>
+                                    <TouchableOpacity style={{marginLeft: 20,marginRight: 20}} onPress={this.props.yesFun}> 
+                                        <Text style={{fontSize: 15, fontFamily: 'Raleway_700Bold',color: theme.darkYellowColor}}>PAUSE</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>,{alignSelf: 'center', marginTop: height*0.2,paddingVertical:20, borderRadius: 10}

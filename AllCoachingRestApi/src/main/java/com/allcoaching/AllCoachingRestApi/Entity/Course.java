@@ -4,8 +4,10 @@ package com.allcoaching.AllCoachingRestApi.Entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 
@@ -29,6 +31,10 @@ public class Course {
     private long instId;
     private long leads=0;
     private boolean isDeleted=false;
+
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
     public Course(String title, String description, float fees, long instId) {
         this.title = title;
