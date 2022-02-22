@@ -161,7 +161,14 @@ const Timer =(props)=>
         // Return the function to unsubscribe from the event so it gets removed on unmount
         return unsubscribe;
       }, [props.navigation]);
-     
+      
+     useEffect(() => {
+      if(backhandler)
+      {
+        backhandler.remove()
+      }
+      backBtnListner()
+     },[])
     useEffect(() => {
       const unsubscribe = props.navigation.addListener('blur', () => {
         // The screen is focused

@@ -20,7 +20,7 @@ import { Assets, imageProvider } from '../config';
                     })
                     }
                 }}    
-                style={{height: 70, width: 70}}/>
+                style={{height: 70, width: 70,borderRadius:35}}/>
             </View>
             <Text style={{fontFamily: 'Raleway_600SemiBold'}}>{item?.name}</Text>
             <View style={{flexDirection: 'row', justifyContent: 'center'}}>

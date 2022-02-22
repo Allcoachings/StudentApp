@@ -212,7 +212,7 @@ class InfoModal extends React.Component {
                                 </View>
                                 </ScrollView>
                                 <View 
-                                    style={{flexDirection:'row',justifyContent:'center',marginTop:'auto',marginBottom:this.props.keyboardHeight?this.props.keyboardHeight+10:50,alignItems: 'center',width:width,paddingTop:10}}
+                                    style={{flexDirection:'row',justifyContent:'center',marginTop:'auto',marginBottom:this.props.keyboardHeight?this.props.keyboardHeight+10:100,alignItems: 'center',width:width,paddingTop:10}}
                                 >  
                                 
                                     <TouchableWithoutFeedback onPress={this.handleSubmitButtonClick}>

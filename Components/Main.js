@@ -129,14 +129,9 @@ class Main extends React.Component {
     }
     renderViewportIns=(screenWidth)=>
     {
-        if(screenWidth > screenMobileWidth && Platform.OS === 'web')
-        { 
-              return(<WebViewControllerIns  insAuth={this.props.insAuth} institute={this.props.institute}/>)
-        }
-        else  
-        {
+         
               return(<MobileViewControllerIns changeMode={this.changeMode} insAuth={this.props.insAuth} institute={this.props.institute}/>)
-        }
+        
          
     }
 

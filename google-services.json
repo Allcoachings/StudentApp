@@ -37,6 +37,35 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:81193211191:android:ca1cfe65d44de1558a76b2",
+        "android_client_info": {
+          "package_name": "com.allcoaching.institute"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "81193211191-dgj9c3u6bj89071c869eapoc1tkjm07a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3oiXOA0lkK1yxBWTsJ0NydYK6GOjC3pw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "81193211191-dgj9c3u6bj89071c869eapoc1tkjm07a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:81193211191:android:c330022fe3dc67e18a76b2",
         "android_client_info": {
           "package_name": "com.barter_app"

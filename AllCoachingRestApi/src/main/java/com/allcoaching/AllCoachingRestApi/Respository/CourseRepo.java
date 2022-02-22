@@ -16,7 +16,7 @@ import java.util.Optional;
 public interface CourseRepo extends CrudRepository<Course,Long> {
 
     long countByInstIdAndIsDeleted(long instId,boolean isDeleted);
-    Iterable<Course> findByInstIdAndIsDeleted(long id,boolean isDeleted);
+    Iterable<Course> findByInstIdAndIsDeletedOrderByCreatedAtDesc(long id,boolean isDeleted);
 
     @Modifying
     @Query("UPDATE Course set leads=leads+1 where id=:id")

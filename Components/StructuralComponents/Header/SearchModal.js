@@ -8,7 +8,7 @@ import { SearchInstitute } from '../../Utils/DataHelper/Search';
 import EmptyList from '../../Utils/EmptyList';
 import BackArrow from "../../Utils/Icons/BackArrow"
 
-function SearchModal({isVisible,closeModal,singleItem,searchFun,rowListing}) {
+function SearchModal({isVisible,closeModal,singleItem,searchFun,rowListing,navigation}) {
 
     const [searchWord,setSearchWord] = useState("")
     const [searchData,setSearchData] = useState([])
@@ -21,11 +21,15 @@ function SearchModal({isVisible,closeModal,singleItem,searchFun,rowListing}) {
    const search=(offset, search, callback)=>{
       SearchInstitute(search, offset, dataLimit, callback)
   }  
+  const redirectTo =(item)=>
+    {
+        navigation.navigate('Institute',{insId:item.id})
+    }
   const renderSearchIns=(item,closeModal)=>{
          
     return(
         <View>
-            <TouchableWithoutFeedback style={{marginBottom: '5%'}} onPress={()=>{closeModal();this.redirectTo(item)}}>
+            <TouchableWithoutFeedback style={{marginBottom: '5%'}} onPress={()=>{closeModal();redirectTo(item)}}>
                 <View style={styles.instituteheader}>
                     {CardView(
                         <Image source={{uri:imageProvider(item.logo)}} style={styles.instituteheaderLogo}/>

@@ -410,6 +410,7 @@ const styles = StyleSheet.create({
                 ansStatement:
                 {
                     fontSize: 16,
+                    fontWeight: 'normal',
                     color: theme.textColor, 
                 },
                 explanationView:
@@ -427,6 +428,7 @@ const styles = StyleSheet.create({
                     explanation:
                     { 
                         marginLeft:10,
+                        fontWeight: 'normal',
                         marginBottom:5
                     },
 

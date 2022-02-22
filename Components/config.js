@@ -37,7 +37,8 @@ export const theme={
 
     },
 
-    transparentColor:"#FFFFFF00"
+    transparentColor:"#FFFFFF00",
+    translucentColor:"#00000E5"
 }
 
 //paytm config 

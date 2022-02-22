@@ -148,9 +148,18 @@ class RenderVideo extends React.Component {
     }
 
     
-
+    navigateToVideoPlayer = ()=>
+    {
+        if(this.props.mode=="offline")
+        {
+            this.props.navigation.navigate("videoplayer",{videoUrl:this.props.item.fileAddress,videoTitle:this.props.item.name,postingTime:this.props.item.date,item:this.props.item,studentName:this.props.userInfo.email,studentNumber:this.props.userInfo.mobileNumber})
+        }else
+        {
+            this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation,videoTitle:this.props.item.name,postingTime:this.props.item.date,item:this.props.item,studentName:this.props.userInfo.email,studentNumber:this.props.userInfo.mobileNumber})
+        }
+    }
     render(){
-       
+       console.log(this.props.item)
         return( 
             <View>
                 <View style={styles.videoContainer}>
@@ -158,14 +167,15 @@ class RenderVideo extends React.Component {
                         // console.log(this.props.item)
                         this.props.mode=="student"?(this.props.studentEnrolled||this.props.item.demo?(
                             <>
-                            {this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation,videoTitle:this.props.item.name,postingTime:this.props.item.date,item:this.props.item,studentName:this.props.userInfo.email,studentNumber:this.props.userInfo.mobileNumber})}
+                            {/* {this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation,videoTitle:this.props.item.name,postingTime:this.props.item.date,item:this.props.item,studentName:this.props.userInfo.email,studentNumber:this.props.userInfo.mobileNumber})} */}
+                            {this.navigateToVideoPlayer()}
                             {this.props.addToHistory("video", this.props.item.id)}
                             </>
                         ):(
                             // Toast.show('You Have Not Enrolled For This Course.')
                             this.props.openPurchaseCourseModal?this.props.openPurchaseCourseModal():null
                             
-                        )):(this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation,videoTitle:this.props.item.name,postingTime:this.props.item.date,item:this.props.item, studentName: this.props.insName, studentNumber: this.props.insNumber}))}
+                        )):(this.navigateToVideoPlayer())}
                     } >
                         <Image source={{uri:imageProvider(this.props.item.videoThumb)}} style={styles.videoImage}/>
                         {this.props.mode!="offline"&&!this.props.studentEnrolled&&!this.props.item.demo?(

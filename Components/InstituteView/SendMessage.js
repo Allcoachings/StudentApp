@@ -1,6 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import React, { useEffect, useRef, useState } from 'react'
-import { ActivityIndicator, FlatList, Image, Modal, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import { ActivityIndicator, FlatList, Image, Modal, Dimensions,StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 import { dataLimit, imageProvider, theme } from '../config';
 import CardView from '../Utils/CardView';
 import BackArrow from '../Utils/Icons/BackArrow'
@@ -11,7 +11,7 @@ import { addMessageImage, getStudentChatMessagesForCourse, fetch_messages,saveMe
 import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import SingleStudentMessage from './SingleStudentMessage';
 
-
+const height = Dimensions.get('window').height
 const SendMessage =({isVisible,closeModal,title,forAdmin,courseId,instituteId,studentId,messageType})=> {
 
     const descriptionTextInput = useRef()
@@ -175,7 +175,7 @@ const SendMessage =({isVisible,closeModal,title,forAdmin,courseId,instituteId,st
             visible={isVisible}
             onShow={ () => { descriptionTextInput.current.focus(); }}
             onRequestClose={closeModal}>
-             <View style={{backgroundColor:"#fff"}}>
+             <View style={{backgroundColor:"#fff",height: height}}>
                 {CardView(
                     <View style={{flex: 1,flexDirection: 'row',alignItems: 'center'}}>
                         {/* <View> */}
@@ -255,41 +255,42 @@ const SendMessage =({isVisible,closeModal,title,forAdmin,courseId,instituteId,st
                         )}
 
                         ListFooterComponent={
+                            <>
+                                <View style={{margin:10,marginBottom:50}}>
 
-                            <View style={{margin:10,marginBottom:50}}>
-
-                            {CardView(
-                                <View>
-                                        <TextInput
-                                            style={{height:200 ,fontFamily:'Raleway_400Regular',marginHorizontal:10}}
-                                            placeholder="Type Message...."
-                                            multiline={true}  
-                                            ref={(input) => { descriptionTextInput.current = input; }}
-                                            defaultValue={description} 
-                                            onChangeText={(text)=>setDescription(text)}
-                                        />
-        
-                                    <View style={{}}>
-                                        {renderImageSection()} 
-                                    </View>
-                                    <TouchableWithoutFeedback onPress={check}>
-                                        <View style={{alignSelf: 'flex-end',margin:10,flexDirection: 'row',}}>
-                                            <Feather name="image" size={20} color={theme.greyColor}/>
-                                            <Text style={{color:theme.greyColor,marginLeft:5,fontFamily: 'Raleway_600SemiBold'}}>Add Image</Text>
+                                    {CardView(
+                                        <View>
+                                                <TextInput
+                                                    style={{height:200 ,fontFamily:'Raleway_400Regular',marginHorizontal:10}}
+                                                    placeholder="Type Message...."
+                                                    multiline={true}  
+                                                    ref={(input) => { descriptionTextInput.current = input; }}
+                                                    defaultValue={description} 
+                                                    onChangeText={(text)=>setDescription(text)}
+                                                />
+                
+                                            <View style={{}}>
+                                                {renderImageSection()} 
+                                            </View>
+                                            <TouchableWithoutFeedback onPress={check}>
+                                                <View style={{alignSelf: 'flex-end',margin:10,flexDirection: 'row',}}>
+                                                    <Feather name="image" size={20} color={theme.greyColor}/>
+                                                    <Text style={{color:theme.greyColor,marginLeft:5,fontFamily: 'Raleway_600SemiBold'}}>Add Image</Text>
+                                                </View>
+                                            </TouchableWithoutFeedback>
+                                        </View>
+                                    ,{width:'100%',borderRadius:5},2
+                                    )}
+                                    <TouchableWithoutFeedback onPress={sendMessage}>
+                                        <View style={{paddingHorizontal:15,paddingVertical:5,backgroundColor:theme.accentColor,margin:10,borderRadius:15,alignSelf: 'flex-end'}}>
+                                            {loader?
+                                                <ActivityIndicator color={theme.primaryColor} size={"large"}/>
+                                            :(<Text style={{color:theme.primaryColor,fontSize: 16}}>Send</Text>)}
                                         </View>
                                     </TouchableWithoutFeedback>
                                 </View>
-                            ,{width:'100%',borderRadius:5},2
-                            )}
-                                <TouchableWithoutFeedback onPress={sendMessage}>
-                                    <View style={{paddingHorizontal:15,paddingVertical:5,backgroundColor:theme.accentColor,margin:10,borderRadius:15,alignSelf: 'flex-end'}}>
-                                        {loader?
-                                            <ActivityIndicator color={theme.primaryColor} size={"large"}/>
-                                        :(<Text style={{color:theme.primaryColor,fontSize: 16}}>Send</Text>)}
-                                    </View>
-                                </TouchableWithoutFeedback>
-                        </View>
-        
+                                <View style={{height:100}}/>
+                            </>
                         }
                     />
                      

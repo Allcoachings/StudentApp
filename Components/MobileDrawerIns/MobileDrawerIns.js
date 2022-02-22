@@ -38,7 +38,9 @@ class indexIns extends React.Component {
             <>
                 <NavigationContainer>
                 
-                <Drawer.Navigator drawerContent={props => <DrawerContent {...props} institute={this.props.institute} changeNotificationType={this.changeNotificationType} showNotificationType={this.state.showNotificationType}/> } > 
+                <Drawer.Navigator 
+                     screenOptions={{ headerShown: false}}
+                drawerContent={props => <DrawerContent {...props} institute={this.props.institute} changeNotificationType={this.changeNotificationType} showNotificationType={this.state.showNotificationType}/> } > 
                        {this.props.insAuth?(
                             <>
                                 <Drawer.Screen name="Home" component={InsHome} />  

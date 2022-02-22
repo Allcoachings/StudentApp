@@ -278,7 +278,7 @@ class Question extends Component {
                             contentWidth={width-100} 
                             source={{html: item.explanation}}
                             systemFonts={systemFonts} 
-                            defaultTextProps={{style: { fontSize: 12, marginVertical: 5}}}
+                            defaultTextProps={{style: { fontSize: 12, marginVertical: 5,fontWeight: 'normal'}}}
                             />
                     </View>
                     </>
@@ -406,12 +406,14 @@ const styles = StyleSheet.create({
             fontSize: 18, 
             color: theme.secondaryColor,
             
+            
         },
         quizTextOption:{
             fontSize: 18,
             width:width-100,
             flexWrap:'wrap',
             color: theme.secondaryColor,
+            
             
         },
         questionImageStyle:{

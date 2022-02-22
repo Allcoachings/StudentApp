@@ -838,6 +838,7 @@ class InstituteView extends React.Component {
                                         navigation={this.props.navigation} 
                                         addToHistory={this.addToHistory} 
                                         mode="student" 
+                                        checkEnrollment
                                         studentEnrolled={this.state.studentEnrolled} 
                                         courseTestSeriesPlaylist={this.state.courseTestSeriesPlaylist} 
                                         checkEnrollment
@@ -1473,7 +1474,8 @@ const styles = StyleSheet.create({
         {
             flex: 1,
             flexDirection:'column',
-            paddingBottom:20
+            paddingBottom:20,
+            marginTop:-20,
         },
             headerView:
             {

@@ -103,7 +103,7 @@ export  const downloadFile= async (item,url,userId,savingDocTye,callback,downloa
                 savingItem = JSON.parse(result)        
                  
                 
-                let filtered = savingItem[userId][savingDocTye]?.filter(savedItem=>savedItem.id==item.id) 
+                let filtered = savingItem[userId]&&savingItem[userId][savingDocTye]?.filter(savedItem=>savedItem.id==item.id) 
                 if(filtered?.length > 0)
                 {
                   return true

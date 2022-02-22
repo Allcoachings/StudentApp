@@ -221,6 +221,7 @@ class HeaderMobile extends React.Component {
           searchFun={this.props.searchFun}
           singleItem={this.props.singleItem}
           rowListing={this.props.rowListing}
+          navigation={this.props.navigation}
           
         />
           ):(null)}

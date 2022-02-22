@@ -72,6 +72,14 @@ class TestSeriesView extends React.Component {
             }
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        // console.log(" ",this.props.route.params?.viewMode," && ",!this.state.scrollToTopOnce)
+        if(this.props.route.params?.viewMode&&!this.state.scrollToTopOnce)
+        {
+            this.setState({scrollToTopOnce:true})
+            this.scrollToQuestion(0)
+        }
+    }
     componentDidMount() 
     {  
        
@@ -413,7 +421,7 @@ class TestSeriesView extends React.Component {
              let correctMarks  = this.state.testSeries.correctMarks
              let wrongMarks = this.state.testSeries.wrongMarks
              let user_score = this.state.score
-             console.log("before ",attempted)
+            //  console.log("before ",attempted)
              if(!questions[quesIndex]['status']||questions[quesIndex]['status']!=status)
              {
 
@@ -437,7 +445,7 @@ class TestSeriesView extends React.Component {
                 attempted--;
                 questions[quesIndex]['isAttempted']=false;
             //  }
-            console.log("after ",attempted)
+            // console.log("after ",attempted)
              questions[quesIndex]['status'] = status;
              questions[quesIndex]['userResponse'] = null;
              this.setState({questions,correctQues,wrongQues,attempted,score:user_score})
@@ -481,9 +489,10 @@ class TestSeriesView extends React.Component {
       }
       scrollToQuestion=(index)=>
       {
+            // console.log(index)
             if(this.flatlistRef)
             {
-                this.flatlistRef.scrollTo(index)
+                this.flatlistRef.scrollToIndex({index, animated: true})
             }
             this.closeModal()
       }
@@ -515,7 +524,7 @@ class TestSeriesView extends React.Component {
 
                     <View style={styles.container}> 
                         <FlatList 
-                            ref={ref=>this.flatlistRef}
+                            ref={ref=>this.flatlistRef=ref}
                             data={Object.values(this.state.questions)}  //this.state.testSeries.isPractice
                             renderItem={({item,index}) =>(
                                 <Question 

@@ -167,22 +167,29 @@ class RenderDocument extends React.Component {
         return( 
             <View style={styles.documentContainer}> 
                 <View style={{flexDirection:'row',justifyContent: 'space-between',width:'100%'}}>
-                    <View style={{flexDirection:'row',}}>
-                        <TouchableOpacity onPress={()=>{this.documentOnClick()}}>
-                            <Image source={{uri:documentPlaceholder}} style={styles.documentImage}/>
-                            {this.props.mode!="offline"&&!this.props.studentEnrolled&&!this.props.item.demo?(
-                                <View style={{position: 'absolute',height:30,width:30,backgroundColor:theme.secondaryColor,borderRadius:15,right:5,top:5}}>
-                                    <Lock height={20} width={20}/>
-                                </View>
-                            ):(null)}
-                        </TouchableOpacity>
-                        <View style={{flexShrink: 1, justifyContent: 'center'}}>
-                            <View style={{ display: 'flex', flexDirection: 'row'}}>
-                                <Text style={styles.documentTitle}>{this.props.item.name}</Text>
-                            </View>
-
+                    {this.props.mode!="offline"&&!this.props.studentEnrolled&&!this.props.item.demo?(
+                        <View style={{position: 'absolute',height:30,width:30,backgroundColor:theme.secondaryColor,borderRadius:15,right:5,top:5}}>
+                            <Lock height={20} width={20}/>
                         </View>
+                    ):(null)}
+                    <TouchableOpacity onPress={()=>{this.documentOnClick()}}>
+                        
+                        <View style={{flexDirection:'row',}}>
+                            
+                                <View>
+                                    <Image source={{uri:documentPlaceholder}} style={styles.documentImage}/>
+                                   
+                                </View>
+                            
+                            <View style={{flexShrink: 1, justifyContent: 'center'}}>
+                                <View style={{ display: 'flex', flexDirection: 'row'}}>
+                                    <Text style={styles.documentTitle}>{this.props.item.name}</Text>
+                                </View>
+
+                            </View>
+                        
                     </View>
+                    </TouchableOpacity>
                     {this.props.downloadMode?(
                         <View style={{flexDirection: 'column',marginLeft:'auto',  marginLeft: 'auto', justifyContent: 'space-between',marginTop:'auto'}}>                  
                             {this.state.savingItem?(

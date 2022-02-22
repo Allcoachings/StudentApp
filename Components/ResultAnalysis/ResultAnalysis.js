@@ -188,7 +188,7 @@ class ResultAnalysis extends React.Component {
         let timeTaken = (testSeriesData?.testData?.series?.timeDuration-testSeriesData?.testData?.brief?.timeLeft)
         let seriesData = {...testSeriesData?.testData?.brief,status:2,studentId:this.props.userInfo.id,accuracy,timeTaken,skippedQues:this?.props?.testSeriesData?.testData?.brief?.Unattempted,userQuestionResponses:testSeriesData?.testData?.ques}
         saveTestResult( seriesData,(response) => {
-            console.log("save result status",response.status)
+            // console.log("save result status",response.status)
             if(response.status==201)
             {
                 if(this.props?.testSeriesData?.testFuncs?.changeTestStatus){
@@ -223,7 +223,7 @@ class ResultAnalysis extends React.Component {
 
         this.updateCounts()
         const{testSeriesData,userInfo} = this.props;
-        console.log(testSeriesData," result anaylsis")
+        // console.log(testSeriesData," result anaylsis")
         let timeTaken = (this.props?.testSeriesData?.testData?.series?.timeDuration*60)-this?.props?.testSeriesData?.testData?.brief?.timeLeft 
 
         return(

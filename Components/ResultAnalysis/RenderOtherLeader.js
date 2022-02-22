@@ -19,7 +19,7 @@ import { Assets, imageProvider } from '../config';
                             })
                             }
                         }}    
-                        source={{uri:imageProvider(item.studentImage)}} style={{height: 26, width: 26}}/>
+                        source={{uri:imageProvider(item.studentImage)}} style={{height: 26, width: 26,borderRadius:13}}/>
                     </View>
                     <Text style={{fontSize: 14, fontFamily: 'Raleway_700Bold'}}>{item.name}</Text>
                 </View>

@@ -8,6 +8,7 @@ import Instructions from './Instructions'
 import Toast from 'react-native-simple-toast';
 import { Picker } from 'native-base';
 import {updatePlaylist} from '../Utils/DataHelper/Course'
+import Lock from '../Utils/Icons/Lock';
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height;
 
@@ -89,7 +90,7 @@ class RenderSingleTestSeries extends React.Component {
             <TouchableWithoutFeedback onPress={()=>{
                  if(this.props.checkEnrollment)
                  {
-                     if(this.props.studentEnrolled)
+                     if(this.props.studentEnrolled||this.props.item.demo)
                      {
                          if(this.props.addToHistory)
                          {
@@ -97,7 +98,7 @@ class RenderSingleTestSeries extends React.Component {
                          }
                         
                         this.setState({modalVisible: true})
-                     }else
+                     }else 
                      {
                          this.props.openPurchaseCourseModal?this.props.openPurchaseCourseModal():null
                      }
@@ -115,6 +116,7 @@ class RenderSingleTestSeries extends React.Component {
                 
             }}>
                 <View>
+               
                     {CardView(
                         
                         <View style={styles.list}>
@@ -133,10 +135,18 @@ class RenderSingleTestSeries extends React.Component {
                                 </View>
                             </View>
                             <View  style={{marginLeft:'auto',flexDirection: 'row',justifyContent: 'flex-end'}}>
-                                <View style={styles.btnView}>
+                                {this.props.checkEnrollment&&!this.props.studentEnrolled&&!this.props.item.demo?(
+                                    <View style={{height:30,width:30,backgroundColor:theme.secondaryColor,borderRadius:15}}>
+                                        <Lock height={20} width={20}/>
+                                    </View>
+                                ):(
+                                    <View style={styles.btnView}>
                                     {/* <EvilIcons name="play" size={20} style={{color: theme.primaryColor, marginRight: 3}}/> */}
                                     <Text style={styles.btnText}>{this.state.status?this.state.status==1?'Resume':'Reattempt':'Start'}</Text>
-                                </View>
+                                    
+                                    </View>
+                                )}
+                               
                                 {this.props.actions?(
                                         <TouchableOpacity style={{marginLeft: 'auto', marginTop: 8}} onPress={()=>this.showThreeMenu()}>
                                             <Feather name="more-vertical" size={20} color={theme.secondaryColor} style={{marginRight:'2%'}} ref={this.onRef}/>

@@ -558,7 +558,8 @@ const styles = StyleSheet.create({
         {
           fontSize: 16, 
           color: theme.greyColor,
-          flexWrap:'wrap'
+          flexWrap:'wrap',
+          fontWeight: 'normal'
         },
     submitBtn:
     {

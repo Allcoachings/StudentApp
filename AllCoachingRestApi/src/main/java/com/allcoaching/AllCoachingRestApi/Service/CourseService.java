@@ -23,7 +23,7 @@ public class CourseService {
     //fetching course by institute id
     public  Iterable<Course> findByInstId(long instId,boolean isDeleted)
     {
-        return courseRepo.findByInstIdAndIsDeleted(instId,isDeleted);
+        return courseRepo.findByInstIdAndIsDeletedOrderByCreatedAtDesc(instId,isDeleted);
     }
 
     public void deleteCourseById(long id,boolean deleteCourse)
