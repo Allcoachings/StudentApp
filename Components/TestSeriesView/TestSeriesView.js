@@ -258,7 +258,8 @@ class TestSeriesView extends React.Component {
                             </View> 
                         </TouchableWithoutFeedback>
                         <View style={styles.quizNameView}>
-                            <Text numberOfLines={1} style={styles.quizName}>{this.state.testSeries.title}</Text>
+                            {/* <Text numberOfLines={1} style={styles.quizName}>{this.state.testSeries.title}</Text> */}
+                            <Text numberOfLines={1} style={styles.quizName}>Test serseie name very logn long lng long</Text>
                         </View>
                         <View style={styles.pauseBtnView}> 
                                 {(this.state.startCountDown&&!this.props.route.params?.viewMode)?(
@@ -657,6 +658,8 @@ const styles = StyleSheet.create({
                 {
                     marginRight: 5,
                     marginLeft: 10,
+                    width:"50%",
+                    
                 },
                     quizName:
                     {

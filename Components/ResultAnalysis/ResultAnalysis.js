@@ -14,7 +14,7 @@ import {setStatusBarHidden,setTestResultData} from '../Actions'
 
 const width = Dimensions.get('window').width
 
-let backhandler;
+let backhandler,unsubscribe;
 class ResultAnalysis extends React.Component {
     state={
        data:[
@@ -173,16 +173,47 @@ class ResultAnalysis extends React.Component {
             backhandler.remove()
         }
     }
-    componentDidMount(){     
+
+    hardwareBackPressHandler=()=>
+    {
+        if(backhandler)
+        {
+            backhandler.remove()
+        }
         backhandler =  BackHandler.addEventListener('hardwareBackPress',  ()=> {
-            this.props.navigation.navigate('Home'); 
+            this.props.navigation.navigate('SingleTestSeries',{viewMode:true,item:this?.props?.testSeriesData?.testData?.brief?.item})
             if(backhandler)
             {
                 backhandler.remove()
             }
             return true;
           });
+    }
+    componentDidMount(){     
         
+        this.hardwareBackPressHandler();
+
+
+        unsubscribe = this.props.navigation.addListener('focus', () => {
+            this.hardwareBackPressHandler();
+          });
+          
+         this.props.navigation.addListener('blur', () => {
+            // The screen is focused
+            // Call any action
+            console.log("blurred")
+            
+           if(backhandler)
+           {
+            
+               backhandler.remove()
+           }
+             
+              
+          });
+
+
+
         const{testSeriesData} = this.props;
         let accuracy = Math.round((testSeriesData?.testData?.brief?.score/testSeriesData?.testData?.series?.maxMarks)*100,3)
         let timeTaken = (testSeriesData?.testData?.series?.timeDuration-testSeriesData?.testData?.brief?.timeLeft)
@@ -229,7 +260,7 @@ class ResultAnalysis extends React.Component {
         return(
             <PageStructure
                 iconName="arrow-left"
-                btnHandler={() => {this.props.navigation.navigate('Home')}}
+                btnHandler={() => {this.props.navigation.navigate('SingleTestSeries',{viewMode:true,item:this?.props?.testSeriesData?.testData?.brief?.item})}}
                 titleonheader={testSeriesData?.testData?.series?.title}
                 notificationreplaceshare={"share-2"}
                 noNotificationIcon={true}

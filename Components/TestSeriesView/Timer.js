@@ -177,7 +177,7 @@ const Timer =(props)=>
         console.log("blured")
           if(backhandler)
           {
-            // console.log("removed on blur")
+            console.log("removed on blur")
             backhandler.remove()
           }
           

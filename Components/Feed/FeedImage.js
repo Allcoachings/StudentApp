@@ -113,6 +113,7 @@ addImage=(link, type)=>{
                                 <Text style={{fontFamily:'Raleway_400Regular', marginVertical: 10,fontSize:17}}>
                                     {feed.feed.description}
                                 </Text>
+                                
                             </View>
                         ):(null)}
 

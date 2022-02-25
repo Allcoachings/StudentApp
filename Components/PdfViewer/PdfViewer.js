@@ -65,10 +65,10 @@ import BackAlert from './BackAlert'
          {CardView( 
                     <View style={{flex: 1,flexDirection: 'row',alignItems: 'center',}}>
                         {/* <View> */}
-                            <TouchableOpacity onPress={()=>navigation.goBack()}>
+                            <TouchableOpacity onPress={()=> setBackAlertVisible(true)}>
                                 <View style={{marginLeft:10,marginRight:5,height:24}}>
                                     <BackArrow height={24} width={24}/>
-                                </View> 
+                                </View>
                             </TouchableOpacity>
                         {/* </View> */}
                         <View style={{marginBottom:5}}>
@@ -120,7 +120,7 @@ import BackAlert from './BackAlert'
 
          {backAlertVisible?( <BackAlert
                     closeModal={()=>setBackAlertVisible(false)}
-                    yesFun={()=>props.navigation.goBack()}
+                    yesFun={()=>navigation.goBack()}
                     noFun={()=>setBackAlertVisible(false)}
                 />):(null)}
        </>

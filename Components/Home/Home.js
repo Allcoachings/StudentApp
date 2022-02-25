@@ -120,7 +120,7 @@ class Home extends React.Component {
                 <View style={styles.instituteItemImageView}>
                     {CardView(
                         <Image source={{uri:imageProvider(item.logo)}} style={styles.instituteItemImage}/> 
-                        ,{width:'100%',borderRadius:15}
+                        ,{width:'90%',borderRadius:15}
                     )}
                     
                 </View>
@@ -339,9 +339,10 @@ const styles = StyleSheet.create({
                     instituteItemContainer:
                     {
                         flexDirection:'column',
-                        width:(windowWidth/3)-10,
+                        width:(windowWidth/3.3)-10,
                         height:160,
                         marginLeft:10,
+                        justifyContent: 'center',
                          
                         flexWrap:'wrap',
                         marginTop:10
@@ -349,19 +350,20 @@ const styles = StyleSheet.create({
                         instituteItemImage:
                         {
                             width:'100%', 
-                            height: 90,
-                            borderRadius:15
+                            height: 80,
+                            borderRadius:15,
+                            resizeMode: 'contain',
                         },
                         instituteMetaContainer:
                         {
-                            width:(windowWidth/3)-10,
+                            width:(windowWidth/3.3)-10,
                             flexDirection:'column',
                             flexWrap:'wrap'
                         },
                             instituteTitle:
                             {
                                 flexWrap:'wrap',
-                                width:(windowWidth/3)-10, 
+                                width:(windowWidth/3.3)-10, 
                                 fontSize:12,
                                 height:30,
                                 marginTop:5,

@@ -81,6 +81,7 @@ class InsTestSeriesList extends React.Component {
     {
         if(this.props.route.params.id!=this.state.id)
         {
+            console.log("updateComponent ")
             this.setState({
              id:this.props.route.params.id, 
              offset:0
@@ -97,6 +98,7 @@ class InsTestSeriesList extends React.Component {
             response.json().then(data=>
             {
                 this.setState({subCat: data, tsLoading:false})
+                console.log(data)
             })
         }
         else
@@ -144,7 +146,7 @@ class InsTestSeriesList extends React.Component {
                         </View>
                         <View style={styles.countView}>
                             {/* <Text style={styles.itemCount}>{item.count}</Text> */}
-                            <Text style={styles.itemCount}>10 Question Paper</Text>
+                            {/* <Text style={styles.itemCount}>10 Question Paper</Text> */}
                         </View>
                     </View>
                     

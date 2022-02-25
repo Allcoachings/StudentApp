@@ -23,7 +23,7 @@ export default function TabBar({authStatus,navigation}) {
     // const TabScreens = ['Home','TestSeries','Subscription','Feed','SeriesList','ViewInsTestSeriesList',]
     const [activeTab,setActiveTab] = useState('Home')
     const dispatch = useDispatch()
-
+    console.log(activeScreen," activeScreen")
 
 
     useEffect(() =>{
@@ -32,12 +32,12 @@ export default function TabBar({authStatus,navigation}) {
 
 
     //creating single generic  tab item structure
-    const renderTabItem =  (ActiveIcon,InactiveIcon, label ,fun) =>
+    const renderTabItem =  (ActiveIcon,InactiveIcon, label,key ,fun) =>
     {
         return(
                 <TouchableWithoutFeedback onPress={()=>tabItemClickHandler(label,fun)}>
                         <View style={{justifyContent: 'space-between',padding:10,alignItems: 'center'}}> 
-                            {activeTab==label?(
+                            {activeScreen==key?(
                                 ActiveIcon
                             ):(
                                 InactiveIcon
@@ -61,16 +61,16 @@ export default function TabBar({authStatus,navigation}) {
         CardView(    
             <View style={[{display:'flex',flexDirection: 'row',justifyContent: 'space-between', paddingBottom:15,margin:10}]}>
                 <View>
-                    {renderTabItem(<Home_Filled/>,<HomeIcon_Outline/>,"Home",()=>navigation.navigate("Home"))}
+                    {renderTabItem(<Home_Filled/>,<HomeIcon_Outline/>,"Home","Home",()=>navigation.navigate("Home"))}
                 </View>
                 <View>
-                    {renderTabItem(<Black_Book_Filled/>,<Black_Book_Outline/>,"TestSeries",()=>navigation.navigate("TestSeries"))}
+                    {renderTabItem(<Black_Book_Filled/>,<Black_Book_Outline/>,"TestSeries","TestSeries",()=>navigation.navigate("TestSeries"))}
                 </View>
                 <View>
-                    {renderTabItem(<Favorite_Filled/>,<Favorite_Outline/>,"Followings",()=>navigation.navigate("Subscription"))}
+                    {renderTabItem(<Favorite_Filled/>,<Favorite_Outline/>,"Followings","Subscription",()=>navigation.navigate("Subscription"))}
                 </View>
                 <View>
-                    {renderTabItem(<Supervised_person_Filled/>,<Supervised_person_Outline/>,"Feed",()=>navigation.navigate("Feed"))}
+                    {renderTabItem(<Supervised_person_Filled/>,<Supervised_person_Outline/>,"Feed","Feed",()=>navigation.navigate("Feed"))}
                 </View>
             </View>,{width:'100%'}
         )

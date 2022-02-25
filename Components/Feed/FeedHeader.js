@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
                 height: 40,
                 width: 40,
                 borderRadius: 25,
-                backgroundColor:theme.secondaryColor
+                backgroundColor:theme.primaryColor
                  
             },
             coaching:

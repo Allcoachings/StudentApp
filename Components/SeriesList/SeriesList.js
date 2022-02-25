@@ -17,7 +17,7 @@ import CustomActivtiyIndicator from '../Utils/CustomActivtiyIndicator';
 import { saveStudentHistory } from '../Utils/DataHelper/StudentHistory';
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height;
-let unsubscribeFocus=null,unsubscribeBlur=null;
+let unsubscribeFocus=null,unsubscribeBlur=null,unsubscribe;
 class SeriesList extends React.Component {
     state = {
         id: this.props.route.params.id,
@@ -68,48 +68,42 @@ class SeriesList extends React.Component {
     }
     componentDidMount(){
 
-         unsubscribe = this.props.navigation.addListener('focus', () => {
-            // The screen is focused
-            // Call any action
-           if(this.backHandler)
-           {
-               console.log('backhandler ', this.backHandler)
-              
-               console.log('backhandler ',  this.backHandler.remove())
-               console.log("back handler removed focus")
-           }
-            this.setState({shouldBeHandledHere:true})
-            this.backHandler = BackHandler.addEventListener(
-                "hardwareBackPress",
-                ()=>{   
-                    console.log(this.state.shouldBeHandledHere)
-                    if(this.state.shouldBeHandledHere)
-                    {
-                        this.props.navigation.navigate("TestSeries")
-                        return true;
-                    }else
-                    { 
-                        return false;
-                    }
-                   
-                }
-              );
-              // console.log("video focused")
-          });
+        //  unsubscribe = this.props.navigation.addListener('focus', () => {
+        //     // The screen is focused
+        //     // Call any action
+        //    if(this.backHandler)
+        //    {
+                
+        //          this.backHandler.remove()
+                
+        //    }
           
-          unsubscribe = this.props.navigation.addListener('blur', () => {
-            // The screen is focused
-            // Call any action
-            console.log("blurred")
-            this.setState({shouldBeHandledHere:false})
-           if(this.backHandler)
-           {
-            console.log("back handler removed blur")
-               this.backHandler.remove()
-           }
+        //     this.backHandler = BackHandler.addEventListener(
+        //         "hardwareBackPress",
+        //         ()=>{   
+                    
+                   
+        //                 this.props.navigation.navigate("TestSeries")
+        //                 return true;
+                     
+                   
+        //         }
+        //       );
+        //       // console.log("video focused")
+        //   });
+          
+        //    this.props.navigation.addListener('blur', () => {
+        //     // The screen is focused
+        //     // Call any action
+          
+        //    if(this.backHandler)
+        //    {
+        //     console.log("back handler removed blur")
+        //        this.backHandler.remove()
+        //    }
              
               
-          });
+        //   });
       
 
          
@@ -127,12 +121,13 @@ class SeriesList extends React.Component {
             this.setState({
              id:this.props.route.params.id, 
              offset:0
-        },fetch)
+        },this.fetch)
         }
     }
     
 
     fetch=() => {
+
         seriesListForUser(this.props.userInfo.id,this.state.id,this.state.offset,dataLimit,this.seriesListCallBack)
     }
 
@@ -150,9 +145,10 @@ class SeriesList extends React.Component {
         }
         this.setState({refreshing:false})
     }
-
+    
     seriesListCallBack=(response)=>{
         
+        console.log(response.status)
         if(response.status==200)
         {
             // console.log("success series list")
@@ -222,6 +218,8 @@ class SeriesList extends React.Component {
     }
 
     render(){
+
+        this.updateComponent()
         return(
             <PageStructure
                 iconName={"arrow-left"}

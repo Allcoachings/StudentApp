@@ -57,21 +57,22 @@ class TestSeriesIns extends React.Component {
         SearchTestSeries(search, offset, dataLimit, callback)
     }
 
-    singleItem=({item})=>{
+    singleItem=(item,category)=>{
        return(
             <SingleTestSeriesItem
                 item={item}
                 navigation={this.props.navigation}
-                category={this.state.category}
+                category={category}
              />
        )
     }
-    singleItemSearch=(item,closeModal)=>{
+    singleItemSearch=(item,category,closeModal)=>{
+        console.log(item," line 70 ", category)
        return(
             <SingleTestSeriesItemSearch
                 item={item}
                 navigation={this.props.navigation}
-                category={this.state.category}
+                category={category}
                 closeModal={closeModal}
              />
        )
@@ -93,7 +94,7 @@ class TestSeriesIns extends React.Component {
                 
                     <FlatList 
                         data={item.subCategories} 
-                        renderItem={this.singleItem} 
+                        renderItem={({item:i})=>this.singleItem(i,item.categoryName)} 
                         keyExtractor={(item)=>item.id}
                         horizontal={true} 
                         showsHorizontalScrollIndicator={false}
@@ -105,24 +106,20 @@ class TestSeriesIns extends React.Component {
     singleRowSearch=(item,closeModal)=>
     {
 
-        console.log(item)
+        let catName = item.categoryName;
+         
         return(
-        <View>
-            {/* <View style={styles.rowHeader}>
-               <Text style={styles.rowHeadText}>{item.categoryName}</Text> 
-               <TouchableWithoutFeedback onPress={()=>{this.props.navigation.navigate("AdminTestSubCategoryList",{type:item.categoryName,id:item.categoryId})}}>
-                <Feather name="arrow-right" size={20} />
-               </TouchableWithoutFeedback>
-            </View> */}
             <View> 
-                    <FlatList 
-                        data={item.subCategories} 
-                        renderItem={({item})=>this.singleItemSearch(item,closeModal)} 
-                        keyExtractor={(item)=>item.id} 
-                        showsHorizontalScrollIndicator={false}
-                    />
+                <View> 
+                        <FlatList
+                            data={item.subCategories} 
+                            renderItem={({item})=>this.singleItemSearch(item,catName,closeModal)} 
+                            keyExtractor={(item)=>item.id} 
+                            showsHorizontalScrollIndicator={false}
+                        />
+                </View>
             </View>
-        </View>)
+            )
     }
     bannerCallback=(response)=>
     {
