@@ -78,11 +78,12 @@ class HeaderMobile extends React.Component {
                 
 
                   <View style={!(this.props.titleonheader||this.props.showTitle)?{alignItems: 'center',flex: 0.9}:{marginTop:2, flex: 0.9}}>
+                    {/* {this.props.titleWithImage?():(null)} */}
                     {(this.props.titleonheader||this.props.showTitle) ? 
                     (
                      this.props.titleWithImage?(
                        <View style={{flexDirection: 'row',alignItems: 'center'}}>
-                         <Image source={appLogo} style={{resizeMode:'contain',width: 25,height: 25}} />
+                         <Image source={this.props.titleImage?({uri:imageProvider(this.props.titleImage)}):(appLogo)} style={[{resizeMode:'contain'}, this.props.titleImage?({ height: 30, width: 30, marginRight: 10}):({width: 25,height: 25})]} />
                          <Text 
                             numberOfLines={1}
                             style={{

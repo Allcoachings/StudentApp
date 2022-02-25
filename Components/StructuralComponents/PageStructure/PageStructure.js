@@ -115,6 +115,7 @@ const PageStructure =(props)=> {
                                     showShareIcon={props.showShareIcon}
                                     pinUnpinFunction={props.pinUnpinFunction}
                                     showTitle={props.showTitle}
+                                    titleImage={props.titleImage}
                                 />  
                             </View>
                             <View style={[styles.pageLayout,{marginTop:props.catInHeader?0:15}]}>  
@@ -154,6 +155,7 @@ const PageStructure =(props)=> {
                                             showShareIcon={props.showShareIcon}
                                             pinUnpinFunction={props.pinUnpinFunction}
                                             showTitle={props.showTitle}
+                                            titleImage={props.titleImage}
                                         />  
                                 </View>
                             </View>

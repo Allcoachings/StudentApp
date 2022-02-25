@@ -2,7 +2,7 @@ import React from 'react';
 import { Text,View,StyleSheet,TouchableOpacity,Dimensions,FlatList, Image, Platform, ScrollView, Modal, ActivityIndicator, TouchableWithoutFeedback} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 // import {connect} from 'react-redux'
-import { theme,dataLimit,screenMobileWidth,serverBaseUrl,documentPlaceholder, Assets,imageProvider } from '../config';
+import { theme,screenMobileWidth,serverBaseUrl,documentPlaceholder, Assets,imageProvider } from '../config';
 import AddFeedModal from '../InsHome/AddFeedModal';
 import { Entypo, EvilIcons, MaterialIcons } from '@expo/vector-icons';
 import { Rating } from 'react-native-ratings';
@@ -31,6 +31,8 @@ import BackArrow from '../Utils/Icons/BackArrow'
 import SendMessage from '../InstituteView/SendMessage'
 // import {Feed} from "../Feed/Feed"
 const width = Dimensions.get('window').width
+const height = Dimensions.get('window').height
+const dataLimit=5
 class UserProfile extends React.Component {
 
     state={
@@ -57,7 +59,8 @@ class UserProfile extends React.Component {
         loadingFooter: false,
         enrollOffset:0,
         enrollListLoading: true,
-        recentData:[]
+        recentData:[],
+        hideLoadMore: false
     }
      
     closeModal = () => {
@@ -355,25 +358,37 @@ class UserProfile extends React.Component {
             !this.state.isLoaded?(
                 <CustomActivtiyIndicator mode="video"/>
             ):( 
+                <>
                 <FlatList
                     data={this.state.recentData}
                     renderItem={({item}) => this.displayItems(item)}
                     keyExtractor={(item,index)=>index}
                     ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
-                    onEndReachedThreshold={0.1}
-                    refreshing={this.state.refreshing}
-                    ListFooterComponent={this.renderFooter}
-                    onEndReached={() => 
-                    {
-                        if(this.state.showLoadMore&&!this.state.loadingFooter)
-                        {
-                            // console.log("end test")
-                            this.setState({ refreshing: true,loadingFooter:true,tsOffset:parseInt(this.state.tsOffset)+1},()=>this.loadMoreOnPress())
+                    // onEndReachedThreshold={0.1}
+                    // refreshing={this.state.refreshing}
+                    // ListFooterComponent={this.renderFooter}
+                    // onEndReached={() => 
+                    // {
+                    //     if(this.state.showLoadMore&&!this.state.loadingFooter)
+                    //     {
+                    //         // console.log("end test")
+                    //         this.setState({ refreshing: true,loadingFooter:true,tsOffset:parseInt(this.state.tsOffset)+1},()=>this.loadMoreOnPress())
                                 
-                        }
+                    //     }
                     
-                    }}
+                    // }}
                 />
+                {this.state.showLoadMore?(
+                    <View>
+                        <TouchableOpacity  onPress={()=>this.loadMoreOnPress()} style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', margin: 10}}>
+                            <View style={{borderColor: theme.primaryColor, borderWidth: 1, backgroundColor: theme.accentColor, padding: 10, borderRadius:10}}>
+                                <Text style={{color: theme.primaryColor}}>Load More</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                ):(null)}
+                
+                </>
             )
         )
     }
@@ -395,8 +410,8 @@ class UserProfile extends React.Component {
     loadMoreOnPress=()=>{
         // if(this.state.subActiveTab=="video")
         // {
-            // console.log(this.state.tsOffset)
-            fetch_student_history(this.props.userInfo.id, this.state.tsOffset, dataLimit, this.studentHistoryCallBack)
+            console.log(this.state.tsOffset)
+            this.setState({tsOffset: this.state.tsOffset+1},()=>fetch_student_history(this.props.userInfo.id, this.state.tsOffset, dataLimit, this.studentHistoryCallBack))
         // }
         // else if(this.state.subActiveTab=="document")
         // {
@@ -520,10 +535,10 @@ class UserProfile extends React.Component {
             {
 
 
-                if(data.length>0)
+                if(data.length>0&&data.length==dataLimit)
                 {
                     this.setState({recentData: [...this.state.recentData,...data], isLoading: false, isLoaded: true, showLoadMore: true, loadingFooter: false})
-                }else
+                }else 
                 {
                     this.setState({recentData: [...this.state.recentData,...data], isLoading: false, isLoaded: true, showLoadMore: false, loadingFooter: false})
                 }
@@ -652,6 +667,7 @@ class UserProfile extends React.Component {
                                     <Image source={Assets.profile.recents} style={{width:15,height:15}} />
                                     <Text style={{fontFamily: 'Raleway_600SemiBold',marginLeft:10,fontSize:15}}>Recent Activity</Text>
                         </View>
+                        
                         {/* <View style={styles.profile_navigation}>
                                 
                                 <View style={[styles.btnView1,this.state.activeTab==1?({backgroundColor:theme.accentColor,borderColor:theme.accentColor}):({backgroundColor:theme.primaryColor,borderColor:theme.labelOrInactiveColor})]}>
@@ -736,7 +752,8 @@ const styles = StyleSheet.create({
     {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor:theme.primaryColor        
+        backgroundColor:theme.primaryColor,
+        height: height   
     },
         userInfoSecView:
         {

@@ -105,8 +105,8 @@ function TabNavigator(){
                 <Tab.Screen name="TestSeries" component={TestSeriesIns}  /> 
                 <Tab.Screen name="Subscription" component={SubscriptionTabs}  /> 
                 <Tab.Screen name="Feed" component={Feed}  /> 
-                <Tab.Screen name="SeriesList" component={SeriesList} />
-                <Tab.Screen name="ViewInsTestSeriesList" component={InsTestSeriesList} /> 
+                {/* <Tab.Screen name="SeriesList" component={SeriesList} /> */}
+                {/* <Tab.Screen name="ViewInsTestSeriesList" component={InsTestSeriesList} />  */}
             </Tab.Navigator>
         )
 }

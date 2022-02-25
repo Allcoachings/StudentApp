@@ -124,7 +124,6 @@ class InsTestSeriesList extends React.Component {
     }
     renderBannerList=({item})=>
     {
-        // console.log(imageProvider(item.bannerImageLink))
         return(
             <TouchableOpacity style={styles.bannerItemContainer}>
                     <Image source={{uri: imageProvider(item.bannerImageLink)}} style={[styles.bannerImage,{width:this.props.screenWidth-20}]}/>
@@ -171,7 +170,8 @@ class InsTestSeriesList extends React.Component {
                 notificationreplaceshare={"share-2"}
                 navigation={this.props.navigation}
                 nosearchIcon={true}
-                
+                titleWithImage={true}
+                titleImage={this.props.route.params.image} 
                 // catInHeader={false}
                 
                 noNotificationIcon={true} 

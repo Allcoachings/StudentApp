@@ -225,6 +225,8 @@ class SeriesList extends React.Component {
                 iconName={"arrow-left"}
                 btnHandler={() => {this.props.navigation.goBack()}}
                 catInHeader={false}
+                // titleWithImage={true}
+                // titleImage={this.props.route.params.image} 
                 titleonheader={this.props.route.params.catName} 
                 nosearchIcon={true}
                 navigation={this.props.navigation}

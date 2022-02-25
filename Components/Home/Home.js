@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text,View,StyleSheet,TouchableWithoutFeedback,FlatList, Image,Dimensions, ScrollView, RefreshControl, TouchableOpacity} from 'react-native';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
-import { theme, dataLimit,  Assets, imageProvider, screenMobileWidth,numFormatter} from '../config';
+import { theme, dataLimit,  Assets, imageProvider, screenMobileWidth,numFormatter, appLogo} from '../config';
 import { EvilIcons } from '@expo/vector-icons';
 import { AirbnbRating } from 'react-native-ratings';
 import { connect } from 'react-redux'
