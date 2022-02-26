@@ -70,5 +70,7 @@ public class AdminTestSeriesCategoryService {
     {
         adminTestSeriesCategoryRepo.deleteById(id);
     }
-
+    public Iterable<AdminTestSeriesCategory> findAll(){
+        return adminTestSeriesCategoryRepo.findAll();
+    }
 }

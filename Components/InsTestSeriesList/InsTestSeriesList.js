@@ -133,12 +133,13 @@ class InsTestSeriesList extends React.Component {
 
     renderSeries=({item})=>{  
         return(
+            CardView(
             <TouchableWithoutFeedback onPress={()=>this.props.navigation.navigate("SeriesList", {id: item.id, catName: item.name, image: item.image})}>
                 <View style={{flexDirection: 'row',alignItems: 'center',marginBottom: 10,marginTop: 10}}>
-                    {CardView( 
+                    {/* {CardView( 
                         <Image source={{uri: imageProvider(item.image)}} style={styles.itemImage}/>
                     ,{width:120,height:120,borderRadius:15,borderColor: theme.labelOrInactiveColor,borderWidth:1,alignItems: 'center',justifyContent: 'center'},5
-                    )}
+                    )} */}
                     <View style={{marginLeft:10,alignItems: 'center'}}>
                         <View style={styles.titleView}>
                             <Text numberOfLines={2} style={styles.itemTitle}>{item.name}</Text>
@@ -151,6 +152,7 @@ class InsTestSeriesList extends React.Component {
                     
                 </View>
             </TouchableWithoutFeedback>
+            ,{margin: 10, borderWidth: 1, borderRadius: 10, borderColor: theme.labelOrInactiveColor},3)
         )
     }
 
@@ -166,7 +168,7 @@ class InsTestSeriesList extends React.Component {
             <PageStructure
                 iconName={"arrow-left"}
                 btnHandler={() => {this.props.navigation.goBack()}} 
-                titleonheader={this.props.route.params.catName}
+                titleonheader={this.props.route.params.subCatName}
                 notificationreplaceshare={"share-2"}
                 navigation={this.props.navigation}
                 nosearchIcon={true}
@@ -206,14 +208,14 @@ class InsTestSeriesList extends React.Component {
                             />
                         </View>
                     ):(null)}
-                    <View style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'center'}}>
+                    {/* <View style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'center'}}>
                             {CardView(<Image source={{uri: imageProvider(this.props.route.params.image)}} style={{height:80,width:80,borderRadius:15}}/>,{height:80,width:80,borderRadius:15})}
                             <View style={{flexDirection: 'column',marginLeft: 10,flexWrap:'wrap',width:this.props.screenWidth-120}}> 
                                 <Text numberOfLines={1} style={{fontSize:22,fontFamily: 'Raleway_700Bold',flexWrap: 'wrap',width:this.props.screenWidth-120}}>{this.props.route.params.catName}</Text>
                                 <Text numberOfLines={1} style={{fontSize:12,fontFamily: 'Raleway_600SemiBold'}}>{this.props.route.params.subCatName}</Text>
                             </View>
                     </View>
-                    
+                     */}
                     <View style={styles.seriesView}>
                         {this.state.tsLoading?(
                             <CustomActivtiyIndicator mode="testSeries"/>

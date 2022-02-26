@@ -23,6 +23,7 @@ function UserCommunityPosts({navigation}) {
     const [loadingData,setLoadingData] = useState(false)
     const [offset,setOffset] = useState(0)
     const [loadingFooter,setLoadingFooter] = useState(false)
+    const [loadMore,setLoadMore] = useState(true)
     const checkForUserCat=()=>
     {
         AsyncStorage.getItem("userCat").then((response)=>{
@@ -94,15 +95,19 @@ function UserCommunityPosts({navigation}) {
             response.json().then(data=>
             {
                 setLoadingFooter(false)
-                 
                 setFeeds([...feeds,...data])
                 setIsFeedLoading(false)
+                if(!data.length)
+                {
+                    setLoadMore(false)
+                }
             })
         }
         else
         {
             // console.log("something went wrong")
         }
+        console.log("request running ")
     }
     useEffect(()=>{
         
@@ -159,9 +164,12 @@ function UserCommunityPosts({navigation}) {
                             ListFooterComponent={renderFooter}
                             onEndReached={() => 
                                 {
-                                    
-                                    setLoadingFooter(true)
-                                     setOffset(parseInt(offset)+1)
+                                    if(loadMore)
+                                    {
+                                        setLoadingFooter(true)
+                                        setOffset(parseInt(offset)+1)
+                                    }
+                                     
                                      
                                 
                                 }}

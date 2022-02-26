@@ -32,7 +32,7 @@ export   const fetch_categories_normalized=(type,callback)=>
 
     headers.append('GET', 'POST', 'OPTIONS'); 
 
-    fetch(type=="feed"?(serverApiUrl+'/feedcategory/'):(serverApiUrl+'/category/'),
+    fetch(type=="testseries"?(serverApiUrl+'/fetchAllTestSeriesCategories/'):(serverApiUrl+'/category/'),
     {
         method: 'GET',  
         headers

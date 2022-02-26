@@ -32,7 +32,7 @@ import SendMessage from '../InstituteView/SendMessage'
 // import {Feed} from "../Feed/Feed"
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
-const dataLimit=5
+const dataLimit=10
 class UserProfile extends React.Component {
 
     state={

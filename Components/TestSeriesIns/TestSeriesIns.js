@@ -87,7 +87,7 @@ class TestSeriesIns extends React.Component {
             <View style={styles.rowHeader}>
                <Text style={styles.rowHeadText}>{item.categoryName}</Text> 
                <TouchableWithoutFeedback onPress={()=>{this.props.navigation.navigate("AdminTestSubCategoryList",{type:item.categoryName,id:item.categoryId})}}>
-                <Feather name="arrow-right" size={20} />
+                <Feather name="arrow-right" size={20} style={{marginRight:10}}/>
                </TouchableWithoutFeedback>
             </View>
             <View style={styles.rowBody}>
@@ -176,6 +176,7 @@ class TestSeriesIns extends React.Component {
             <PageStructure 
                 userIcon={() => {this.props.navigation.navigate("Profile")}}
                 catInHeader={true} 
+                catType={"testseries"}
                 selectedCat={this.state.selectedCat}
                 rightIconOnPress={() =>this.props.navigation.navigate("Notification")}
                 scrollMode={'scroll'}

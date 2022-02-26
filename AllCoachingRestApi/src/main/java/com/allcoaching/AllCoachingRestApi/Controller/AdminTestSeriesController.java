@@ -1,10 +1,7 @@
 package com.allcoaching.AllCoachingRestApi.Controller;
 
 
-import com.allcoaching.AllCoachingRestApi.Entity.AdminTestSeriesCategory;
-import com.allcoaching.AllCoachingRestApi.Entity.AdminTestSeriesSubCategoryContent;
-import com.allcoaching.AllCoachingRestApi.Entity.AdminTestSubCategories;
-import com.allcoaching.AllCoachingRestApi.Entity.InsTestSeries;
+import com.allcoaching.AllCoachingRestApi.Entity.*;
 import com.allcoaching.AllCoachingRestApi.Service.*;
 import com.allcoaching.AllCoachingRestApi.dto.AdminTestCategoriesDto;
 import com.allcoaching.AllCoachingRestApi.dto.TestSeriesAndUserResponseDto;
@@ -37,6 +34,15 @@ public class AdminTestSeriesController {
 
     @Autowired
     private FileUploadService fileUploadService;
+
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/fetchAllTestSeriesCategories")
+    public Iterable<AdminTestSeriesCategory>  findAll()
+    {
+        return adminTestSeriesCategoryService.findAll();
+    }
+
     @CrossOrigin(origins = "*")
     @PostMapping("/addCategory")
     public @ResponseBody AdminTestSeriesCategory createTestSeriesCategory(@RequestParam String name,@RequestParam int sortOrder)
