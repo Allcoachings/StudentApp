@@ -6,6 +6,7 @@ import com.allcoaching.AllCoachingRestApi.Respository.AdminBlogRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
@@ -30,7 +31,7 @@ public class AdminBlogService {
 
     public  Iterable<AdminBlogs> findAll(int offset,int limit)
     {
-            Page<AdminBlogs>  pagedAdminBlogs =  adminBlogRepo.findAll(PageRequest.of(offset, limit));
+            Page<AdminBlogs>  pagedAdminBlogs =  adminBlogRepo.findAll(PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC,"addDate")));
             if(pagedAdminBlogs.hasContent())
             {
                 return  pagedAdminBlogs.getContent();

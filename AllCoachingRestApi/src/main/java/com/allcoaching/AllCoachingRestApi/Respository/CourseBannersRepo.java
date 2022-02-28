@@ -12,7 +12,7 @@ import javax.transaction.Transactional;
 @Transactional
 public interface CourseBannersRepo extends CrudRepository<CourseBanners,Long> {
 
-    Iterable<CourseBanners> findAllByCourseId(long id);
+    Iterable<CourseBanners> findAllByCourseIdOrderByAddDateDesc(long id);
 
     @Modifying
     @Query("UPDATE CourseBanners set published=:publishedStatus WHERE id=:id")

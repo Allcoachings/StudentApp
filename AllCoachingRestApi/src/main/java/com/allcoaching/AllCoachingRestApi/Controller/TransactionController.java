@@ -45,6 +45,21 @@ public class TransactionController {
         return transactionService.fetchAllTransaction(offset,pageLimit);
 
     }
+    @CrossOrigin(origins = "*")
+    @GetMapping("allSuccess/{offset}/{pageLimit}")
+    public Iterable<TransactionDto> findAllSuccessTransactions(@PathVariable int offset, @PathVariable int pageLimit)
+    {
+        return transactionService.fetchAllTransaction(offset,pageLimit);
+
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("allTransactionsByStudentName/{offset}/{pageLimit}")
+    public Iterable<TransactionDto> findAllTransactionsByStudentName(@RequestParam String name,@PathVariable int offset, @PathVariable int pageLimit)
+    {
+        return transactionService.findAllTransactionsByStudentName(name,offset,pageLimit);
+
+    }
 
     @CrossOrigin(origins = "*")
     @PutMapping("updateTransactionSeenStatus")
@@ -68,6 +83,14 @@ public class TransactionController {
     public Iterable<TransactionDto> fetchByInsId(@PathVariable long insId,@PathVariable int offset, @PathVariable int pageLimit)
     {
         return transactionService.fetchByInsId(insId,offset,pageLimit);
+
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("byinsIdAnsStatusSuccess/{insId}/{offset}/{pageLimit}")
+    public Iterable<TransactionDto> fetchByInsIdAnsStatusSuccess(@PathVariable long insId,@PathVariable int offset, @PathVariable int pageLimit)
+    {
+        return transactionService.fetchByInsIdAndStatusSuccess(insId,offset,pageLimit);
 
     }
 

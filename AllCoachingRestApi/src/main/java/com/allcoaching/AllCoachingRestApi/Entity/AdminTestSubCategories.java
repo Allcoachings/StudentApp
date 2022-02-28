@@ -3,10 +3,10 @@ package com.allcoaching.AllCoachingRestApi.Entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -22,6 +22,10 @@ public class AdminTestSubCategories {
     private String image;
     private int sortOrder;
     private long categoryId;
+
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date addDate;
 
     public AdminTestSubCategories(String name, String image, int sortOrder, long categoryId) {
         this.name = name;

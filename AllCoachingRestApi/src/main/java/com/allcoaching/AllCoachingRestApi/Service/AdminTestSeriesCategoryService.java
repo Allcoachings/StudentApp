@@ -8,6 +8,7 @@ import com.allcoaching.AllCoachingRestApi.dto.AdminTestCategoriesDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class AdminTestSeriesCategoryService {
 
     public  Iterable<AdminTestCategoriesDto> AdminTestSeriesData(int page,int pageSize)
     {
-                Iterable<AdminTestSeriesCategory> adminTestSeriesCategories = adminTestSeriesCategoryRepo.findAll(PageRequest.of(page,pageSize));
+                Iterable<AdminTestSeriesCategory> adminTestSeriesCategories = adminTestSeriesCategoryRepo.findAll(PageRequest.of(page,pageSize, Sort.by(Sort.Direction.ASC,"sortOrder")));
                 List<AdminTestCategoriesDto> adminTestCategoriesDtos = new ArrayList<>();
                 adminTestSeriesCategories.forEach(item->{
                     Iterable<AdminTestSubCategories> adminTestSubCategories = testSubCategoriesRepo.findByCategoryId(item.getId());

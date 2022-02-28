@@ -35,12 +35,11 @@ class index extends React.Component {
             response.json().then(data=>
             {
              
-                if(isMain)
-                {
+               
                     let obj = {icon:'',name:'All',sortOrder:1,id:-1}
                     data.unshift(obj) 
                     this.props.setCategories(data)
-                } 
+                
                 this.setState({tabListInstitute:data,activeTab:this.props.selectedCat||-1});                   
             })
         }

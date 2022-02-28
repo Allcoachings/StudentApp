@@ -28,7 +28,7 @@ public class CourseBannersService {
     //fetching all banners of a course
     public  Iterable<CourseBanners> findByCourseId(long id)
     {
-        return courseBannersRepo.findAllByCourseId(id);
+        return courseBannersRepo.findAllByCourseIdOrderByAddDateDesc(id);
     }
 
     //delete banner by id

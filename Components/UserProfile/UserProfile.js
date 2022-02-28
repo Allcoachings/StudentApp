@@ -208,9 +208,22 @@ class UserProfile extends React.Component {
        
           if (this.state.loadingFooter) {
             return <CustomActivtiyIndicator mode="skimmer"/>;
-          } else {
+          } else if(this.state.showLoadMore) 
+          {
+              return(
+                    <View>
+                        <TouchableOpacity  onPress={()=>this.loadMoreOnPress()} style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', margin: 10}}>
+                            <View style={{borderColor: theme.primaryColor, borderWidth: 1, backgroundColor: theme.accentColor, padding: 10, borderRadius:10}}>
+                                <Text style={{color: theme.primaryColor}}>Load More</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                )
+         }else {
             return <View style={{height:10}}></View>;
           }
+
+          
         } catch (error) {
           // console.log(error);
         }
@@ -366,7 +379,7 @@ class UserProfile extends React.Component {
                     ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                     // onEndReachedThreshold={0.1}
                     // refreshing={this.state.refreshing}
-                    // ListFooterComponent={this.renderFooter}
+                    ListFooterComponent={this.renderFooter}
                     // onEndReached={() => 
                     // {
                     //     if(this.state.showLoadMore&&!this.state.loadingFooter)
@@ -378,15 +391,7 @@ class UserProfile extends React.Component {
                     
                     // }}
                 />
-                {this.state.showLoadMore?(
-                    <View>
-                        <TouchableOpacity  onPress={()=>this.loadMoreOnPress()} style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', margin: 10}}>
-                            <View style={{borderColor: theme.primaryColor, borderWidth: 1, backgroundColor: theme.accentColor, padding: 10, borderRadius:10}}>
-                                <Text style={{color: theme.primaryColor}}>Load More</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                ):(null)}
+               
                 
                 </>
             )
@@ -613,15 +618,14 @@ class UserProfile extends React.Component {
             //     noNotificationIcon={true}
             // >
             <>
-                <ScrollView>
+                <ScrollView style={{ height: height}}>
                     <View style={styles.container}>
-                        <TouchableWithoutFeedback onPress={this.props.navigation.goBack}>
-                            <View style={{margin:10,alignItems: 'flex-start'}}>
+                        <TouchableOpacity onPress={()=>{console.log("called");this.props.navigation.goBack()}}>
+                            <View style={{margin:15,alignItems: 'flex-start'}}>
                                 <BackArrow height={24} width={24}/>
                             </View>
-                        </TouchableWithoutFeedback>
-                        <View style={styles.userInfoSecView}>
-                           
+                        </TouchableOpacity>
+                        <View style={styles.userInfoSecView}> 
                             <View style={styles.imageView}>
                                 <Image 
                                     source={ { uri:imageProvider(this.props.userInfo.studentImage)} } 
@@ -753,7 +757,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         backgroundColor:theme.primaryColor,
-        height: height   
+       height:"100%" 
     },
         userInfoSecView:
         {

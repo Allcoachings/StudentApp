@@ -34,8 +34,17 @@ class TestSeriesIns extends React.Component {
         fetch_Banners("test", this.bannerCallback)
     }
 
-    subCategoryByCategoryId=()=>{
-        fetch_testSeries_subcategoryByCategory()
+    subCategoryByCategoryId=(catId)=>{
+        fetch_testSeries_subcategoryByCategory(catId,this.state.offset,dataLimit,(response)=>{
+
+            if(response.status==200)
+            {
+                response.json().then(data=>{
+                    this.setState({tsLoading: false, catTestSeries: data})
+                })
+            }
+        })
+        console.log(catId," testseries id")
     }
 
     testSeriesCallBack=(response)=>{
@@ -43,7 +52,7 @@ class TestSeriesIns extends React.Component {
         {
             response.json().then(data=>
             {
-                // console.log("Success cat", data)
+                console.log("Success cat", data)
                 this.setState({tsLoading: false, testSeries: data, category: data[0]&&data[0].categoryName})
             })
         }
@@ -149,12 +158,14 @@ class TestSeriesIns extends React.Component {
 
     toggleCatMode=(mode,item)=>
     {
+        console.log(item)
         switch(mode)
         {
             case true:
-                this.setState({catMode:mode,catid:item.id,loadingData:true,},()=>
+                this.setState({catMode:mode,catid:item.id,catName:item.name,loadingData:true,offset:0},()=>
                 {
                     // fetch_coachingByCategoryAndStatus(this.state.catid,1,this.state.offset,dataLimit,this.coachingCallBack)
+                    this.subCategoryByCategoryId(this.state.catid)
                 })
                 break;
             case false:
@@ -206,7 +217,7 @@ class TestSeriesIns extends React.Component {
                                 <FlatList 
                                     data={this.state.catTestSeries}  
                                     showsVerticalScrollIndicator={false} 
-                                    renderItem={this.singleItem}
+                                    renderItem={({item})=>this.singleItem(item,this.state.catName)}
                                     numColumns={3}
                                     keyExtractor={item => item.id}
                                     ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}

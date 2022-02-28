@@ -219,6 +219,7 @@ class Home extends React.Component {
     }
     toggleCatMode=(mode,item)=>
     {
+        
         switch(mode)
         {
             case true:

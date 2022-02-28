@@ -1,10 +1,10 @@
 package com.allcoaching.AllCoachingRestApi.Entity;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Date;
 
 
 @Data
@@ -22,6 +22,11 @@ public class CourseBanners {
     private String placeHolder;
     private boolean published;
     private long courseId;
+
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date addDate;
+
 
     public CourseBanners(String bannerImageLink, String bannerLink, String placeHolder, long courseId) {
         this.bannerImageLink = bannerImageLink;

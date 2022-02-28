@@ -43,6 +43,17 @@ public class TransactionService {
         }
     }
 
+    public Iterable<TransactionDto> fetchAllSuccessTransaction(int offset, int dataLimit)
+    {
+        Page<TransactionDto> pagedResult =  transactionRepo.findAllTransactionsByStatus("TXN_SUCCESS",PageRequest.of(offset,dataLimit,Sort.by(Sort.Direction.DESC,"purchaseDate")));
+        if(pagedResult.hasContent())
+        {
+            return  pagedResult.getContent();
+        }else{
+            return  new ArrayList<>();
+        }
+    }
+
     //fetch by courseId
     public Iterable<Transaction> fetchByCourseId(long courseId,int page,int pageSize)
     {
@@ -52,6 +63,18 @@ public class TransactionService {
     public Iterable<TransactionDto> fetchByInsId(long insId,int page,int pageSize)
     {
          Page<TransactionDto> pagedResult = (transactionRepo.findByInsId(insId,PageRequest.of(page,pageSize,Sort.by(Sort.Direction.DESC,"purchaseDate"))));
+        if(pagedResult.hasContent())
+        {
+            return  pagedResult.getContent();
+        }else{
+            return  new ArrayList<>();
+        }
+    }
+
+    //fetch by insId and status=TXN_SUCCESS
+    public Iterable<TransactionDto> fetchByInsIdAndStatusSuccess(long insId,int page,int pageSize)
+    {
+         Page<TransactionDto> pagedResult = (transactionRepo.findByInsIdAnsStatus(insId,"TXN_SUCCESS",PageRequest.of(page,pageSize,Sort.by(Sort.Direction.DESC,"purchaseDate"))));
         if(pagedResult.hasContent())
         {
             return  pagedResult.getContent();
@@ -95,11 +118,11 @@ public class TransactionService {
 
     public  long getAdminUnSeenTransactionCount()
     {
-        return  transactionRepo.countByIsSeenByAdmin(false);
+        return  transactionRepo.countByIsSeenByAdminAndStatus(false,"TXN_SUCCESS");
     }
    public  long getAdminUnSeenTransactionCountForIns(long insId)
     {
-        return  transactionRepo.countByInsIdAndIsSeenByIns(insId,false);
+        return  transactionRepo.countByInsIdAndIsSeenByInsAndStatus(insId,false,"TXN_SUCCESS");
     }
 
 
@@ -128,5 +151,16 @@ public class TransactionService {
        {
            return  new ArrayList<>();
        }
+    }
+
+    public Iterable<TransactionDto> findAllTransactionsByStudentName(String name,int page,int pageSize){
+        Page<TransactionDto> paged_result =  transactionRepo.findAllTransactionsByStudentName(name,PageRequest.of(page,pageSize, Sort.by(Sort.Direction.DESC,"purchaseDate")));
+        if(paged_result.hasContent())
+        {
+            return paged_result.getContent();
+        }else
+        {
+            return  new ArrayList<>();
+        }
     }
 }
