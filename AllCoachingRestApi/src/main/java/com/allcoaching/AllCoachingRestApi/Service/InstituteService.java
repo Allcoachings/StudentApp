@@ -1,12 +1,17 @@
 package com.allcoaching.AllCoachingRestApi.Service;
 
 import com.allcoaching.AllCoachingRestApi.Entity.Institute;
+import com.allcoaching.AllCoachingRestApi.Entity.Otp;
 import com.allcoaching.AllCoachingRestApi.Entity.Student;
 import com.allcoaching.AllCoachingRestApi.Entity.StudentMessage;
 import com.allcoaching.AllCoachingRestApi.Respository.InstituteRepo;
+import com.allcoaching.AllCoachingRestApi.Utils.EmailTemplates;
+import com.allcoaching.AllCoachingRestApi.Utils.MD5;
+import com.allcoaching.AllCoachingRestApi.Utils.Mailer;
 import com.allcoaching.AllCoachingRestApi.Utils.RandomString;
 import com.allcoaching.AllCoachingRestApi.dto.InsAccountDto;
 import com.allcoaching.AllCoachingRestApi.dto.InsCredentialDto;
+import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,10 +23,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.apache.commons.codec.digest.DigestUtils.md5;
+
 @Service
 public class InstituteService {
     @Autowired
     private InstituteRepo instituteRepo;
+    @Autowired
+    private OtpService otpService;
+    @Autowired
+    private Mailer mailer;
+
+    @Autowired
+    private Environment env;
 
     public  Iterable<Institute> getAllInstitute(Integer pageNo,Integer pageSize,String sortBy)
     {
@@ -34,7 +48,7 @@ public class InstituteService {
             return new ArrayList<Institute>();
         }
     }
-public  Iterable<Institute> getAllInstituteByStatus(Integer status,Integer pageNo,Integer pageSize,String sortBy)
+    public  Iterable<Institute> getAllInstituteByStatus(Integer status,Integer pageNo,Integer pageSize,String sortBy)
     {
 
         Pageable paging  = PageRequest.of(pageNo,pageSize, Sort.by(sortBy));
@@ -44,6 +58,72 @@ public  Iterable<Institute> getAllInstituteByStatus(Integer status,Integer pageN
         } else {
             return new ArrayList<Institute>();
         }
+    }
+
+    public String forgotPassPassword(String email)
+    {
+            Optional<Institute> institute = instituteRepo.findByEmail(email);
+            if(institute.isPresent())
+            {
+                Otp otp =  otpService.generateOtp(email);
+                otp.setOtpHash(MD5.getMd5(otp.getOtpValue()));
+                otp.setMobileNumberHash(MD5.getMd5(email));
+                otpService.save(otp);
+                String passwordResetRoute = env.getProperty("allcoaching.ins.resetPasswordLink").concat("/"+otp.getOtpHash()+"/"+otp.getMobileNumberHash());
+
+                System.out.println(passwordResetRoute);
+                String res = mailer.sendMail(email,"Password Reset Link", EmailTemplates.otpTemplate(passwordResetRoute));
+                if(res.equals("ok"))
+                {
+                    return "200";
+                }else
+                {
+                    return res;
+                }
+
+            }else
+            {
+                return  "404";
+            }
+    }
+
+    public String resetPassword(String password,String mobileHash,String otpHash)
+    {
+            Otp otp = new Otp();
+            otp.setMobileNumberHash(mobileHash);
+            otp.setOtpHash(otpHash);
+            if(otpService.validateOtpHash(otp))
+            {
+
+                Optional<Otp> otp1 = otpService.findByOtpHash(otpHash);
+                if(otp1.isPresent())
+                {
+
+                    Otp otp2 = otp1.get();
+
+                    Optional<Institute> instituteOptional = instituteRepo.findByEmail(otp2.getMobileNumber());
+                    if(instituteOptional.isPresent())
+                    {
+                        Institute institute = instituteOptional.get();
+                        institute.setPassword(password);
+                        instituteRepo.save(institute);
+                        otpService.deleteOtp(otp2);
+                        return "ok";
+                    }else
+                    {
+                        return "email didn't matched";
+                    }
+
+
+                }else
+                {
+                    return "invalidOtp";
+                }
+
+            }else
+            {
+                return "invalidOtp";
+            }
     }
 
 

@@ -5,6 +5,7 @@ import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
 import com.allcoaching.AllCoachingRestApi.Service.InstituteService;
 import com.allcoaching.AllCoachingRestApi.dto.InsAccountDto;
 import com.allcoaching.AllCoachingRestApi.dto.InsCredentialDto;
+import com.allcoaching.AllCoachingRestApi.dto.ResetPasswordDTO;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -180,6 +181,36 @@ public class InstituteController {
     public InsAccountDto fetchAccountDetails(@PathVariable long insId)
     {
         return instituteService.fetchAccountDetailsByInsId(insId);
+    }
+
+    //forgot account password
+    @CrossOrigin(origins = "*")
+    @GetMapping("forgotPassword")
+    public ResponseEntity<Object> forgotPassword(@RequestParam String email)
+    {
+         String res  = instituteService.forgotPassPassword(email);
+         if(res.equals("200"))
+         {
+             return ResponseEntity.ok().build();
+         }else
+         {
+             return  ResponseEntity.notFound().build();
+         }
+    }
+
+    //reset account password
+    @CrossOrigin(origins = "*")
+    @PostMapping("resetPassword")
+    public ResponseEntity<Object> resetPassword(@RequestBody ResetPasswordDTO resetPasswordDTO)
+    {
+         String res  = instituteService.resetPassword(resetPasswordDTO.getPassword(),resetPasswordDTO.getHash2(),resetPasswordDTO.getHash1());
+         if(res.equals("ok"))
+         {
+             return ResponseEntity.ok().build();
+         }else
+         {
+             return  ResponseEntity.badRequest().build();
+         }
     }
 
 

@@ -11,5 +11,6 @@ import java.util.Optional;
 @Transactional
 public interface OtpRepo extends CrudRepository<Otp,Long> {
     Optional<Otp> findByOtpValue(String otpValue);
+    Optional<Otp> findByOtpHash(String otpHash);
     void deleteAllByMobileNumber(String MobileNumber);
 }

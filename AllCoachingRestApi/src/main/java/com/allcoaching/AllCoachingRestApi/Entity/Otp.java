@@ -13,7 +13,16 @@ public class Otp {
     private long id;
     private String mobileNumber;
     private String otpValue;
+    private String mobileNumberHash;
+    private String otpHash;
 
+    public String getMobileNumberHash() {
+        return mobileNumberHash;
+    }
+
+    public void setMobileNumberHash(String mobileNumberHash) {
+        this.mobileNumberHash = mobileNumberHash;
+    }
 
     public Otp() {
     }
@@ -30,6 +39,17 @@ public class Otp {
     public Otp(String mobileNumber, String otpValue) {
         this.mobileNumber = mobileNumber;
         this.otpValue = otpValue;
+    }
+
+
+
+
+    public String getOtpHash() {
+        return otpHash;
+    }
+
+    public void setOtpHash(String otpHash) {
+        this.otpHash = otpHash;
     }
 
     public long getId() {
