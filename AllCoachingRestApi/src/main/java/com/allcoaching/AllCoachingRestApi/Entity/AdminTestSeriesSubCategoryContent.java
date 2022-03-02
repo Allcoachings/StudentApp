@@ -29,9 +29,8 @@ public class AdminTestSeriesSubCategoryContent {
 
 
 
-    public AdminTestSeriesSubCategoryContent(String name, String image, int sortOrder, long testSeriesSubCategoryId) {
+    public AdminTestSeriesSubCategoryContent(String name, int sortOrder, long testSeriesSubCategoryId) {
         this.name = name;
-        this.image = image;
         this.sortOrder = sortOrder;
         this.testSeriesSubCategoryId = testSeriesSubCategoryId;
     }

@@ -40,7 +40,7 @@ public class InstituteService {
     public  Iterable<Institute> getAllInstitute(Integer pageNo,Integer pageSize,String sortBy)
     {
 
-        Pageable paging  = PageRequest.of(pageNo,pageSize, Sort.by(sortBy));
+        Pageable paging  = PageRequest.of(pageNo,pageSize, Sort.by(Sort.Direction.DESC,"addDate"));
         Page<Institute> pagedResult = instituteRepo.findAll(paging);
         if(pagedResult.hasContent()) {
             return pagedResult.getContent();
@@ -51,7 +51,7 @@ public class InstituteService {
     public  Iterable<Institute> getAllInstituteByStatus(Integer status,Integer pageNo,Integer pageSize,String sortBy)
     {
 
-        Pageable paging  = PageRequest.of(pageNo,pageSize, Sort.by(sortBy));
+        Pageable paging  = PageRequest.of(pageNo,pageSize, Sort.by(Sort.Direction.DESC,"addDate"));
         Page<Institute> pagedResult = instituteRepo.findByStatus(status,paging);
         if(pagedResult.hasContent()) {
             return pagedResult.getContent();
