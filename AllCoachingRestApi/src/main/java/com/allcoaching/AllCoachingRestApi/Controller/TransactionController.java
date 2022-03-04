@@ -95,6 +95,30 @@ public class TransactionController {
     }
 
     @CrossOrigin(origins = "*")
+    @GetMapping("getTodayIncomeSumIns/{insId}")
+    public long getTodayIncomeSumIns(@PathVariable long insId)
+    {
+        return transactionService.todayIncomeSumIns(insId);
+
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("getCurrentMonthIncomeIns/{insId}")
+    public long getCurrentMonthIncomeIns(@PathVariable long insId)
+    {
+        return transactionService.currentMonthIncomeSumIns(insId);
+
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("getTotalIncomeIns/{insId}")
+    public long getTotalIncomeIns(@PathVariable long insId)
+    {
+        return transactionService.totalIncomeSumIns(insId);
+
+    }
+
+    @CrossOrigin(origins = "*")
     @GetMapping("UnSeenTransactionCount/")
     public long unseenTransactionCount()
     {

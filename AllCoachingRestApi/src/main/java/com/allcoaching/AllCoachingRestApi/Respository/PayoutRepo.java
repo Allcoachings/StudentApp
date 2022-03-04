@@ -26,45 +26,45 @@ public interface PayoutRepo extends PagingAndSortingRepository<Payouts,Long> {
     @Query("Select p from Payouts p where  month(p.payoutTime)=month(CURRENT_DATE)" )
     Page<Payouts> currentMonthPayout(Pageable pageable);
 
-    @Query("Select count(p.id)  from Payouts p where p.payoutTime>=CURRENT_DATE")
+    @Query("Select COALESCE(count(p.id),0)  from Payouts p where p.payoutTime>=CURRENT_DATE")
     long todaysTotalPayouts();
 
-    @Query("Select sum(p.amount)  from Payouts p where p.payoutTime>=CURRENT_DATE")
+    @Query("Select COALESCE(sum(p.amount),0)  from Payouts p where p.payoutTime>=CURRENT_DATE")
     long todaysPayoutsSum();
 
-    @Query("Select count(p.id)  from Payouts p where month(p.payoutTime)=month(CURRENT_DATE)")
+    @Query("Select COALESCE(count(p.id),0)   from Payouts p where month(p.payoutTime)=month(CURRENT_DATE)")
     long currentMonthTotalPayouts();
 
-    @Query("Select sum(p.amount)  from Payouts p where month(p.payoutTime)=month(CURRENT_DATE)")
+    @Query("Select COALESCE(sum(p.amount),0) from Payouts p where month(p.payoutTime)=month(CURRENT_DATE)")
     long currentMonthPayoutsSum();
 
-    @Query("Select count(p.id)  from Payouts p ")
+    @Query("Select COALESCE(count(p.id),0)   from Payouts p ")
     long totalPayouts();
 
-    @Query("Select sum(p.amount)  from Payouts p ")
+    @Query("Select COALESCE(sum(p.amount),0)  from Payouts p ")
     long payoutsSum();
 
-    @Query("Select count(p.id)  from Payouts p where p.payoutTime>=CURRENT_DATE and institute=?1")
+    @Query("Select COALESCE(count(p.id),0)   from Payouts p where p.payoutTime>=CURRENT_DATE and institute=?1")
     long todaysTotalPayoutsIns(Institute institute);
 
-    @Query("Select sum(p.amount)  from Payouts p where p.payoutTime>=CURRENT_DATE and institute=?1")
+    @Query("Select COALESCE(sum(p.amount),0)  from Payouts p where p.payoutTime>=CURRENT_DATE and institute=?1")
     long todaysPayoutsSumIns(Institute institute);
 
-    @Query("Select count(p.id)  from Payouts p where month(p.payoutTime)=month(CURRENT_DATE) and institute=?1")
+    @Query("Select COALESCE(count(p.id),0)   from Payouts p where month(p.payoutTime)=month(CURRENT_DATE) and institute=?1")
     long currentMonthTotalPayouts(Institute institute);
 
-    @Query("Select sum(p.amount)  from Payouts p where month(p.payoutTime)=month(CURRENT_DATE) and institute=?1")
+    @Query("Select COALESCE(sum(p.amount),0)  from Payouts p where month(p.payoutTime)=month(CURRENT_DATE) and institute=?1")
     long currentMonthPayoutsSumIns(Institute institute);
 
-    @Query("Select count(p.id)  from Payouts p where   institute=?1")
+    @Query("Select COALESCE(count(p.id),0)   from Payouts p where   institute=?1")
     long totalPayoutsIns(Institute institute);
 
-    @Query("Select sum(p.amount)  from Payouts p where institute=?1")
+    @Query("Select COALESCE(sum(p.amount),0)  from Payouts p where institute=?1")
     long payoutsSumIns(Institute institute);
 
-    @Query("Select sum(p.amount) from Payouts p where p.institute=:ins")
+    @Query("Select COALESCE(sum(p.amount),0) from Payouts p where p.institute=:ins")
     long payoutSumForIns(Institute ins);
 
-    @Query("Select sum(p.amount) from Payouts p where p.institute=:ins and p.payoutTime>=CURRENT_DATE")
+    @Query("Select COALESCE(sum(p.amount),0) from Payouts p where p.institute=:ins and p.payoutTime>=CURRENT_DATE")
     long payoutSumForInsCurrentDate(Institute ins);
 }

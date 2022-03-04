@@ -12,6 +12,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.InsReview;
 import com.allcoaching.AllCoachingRestApi.Entity.Transaction;
 import com.allcoaching.AllCoachingRestApi.Service.CourseService;
 import com.allcoaching.AllCoachingRestApi.Service.InsReviewService;
+import com.allcoaching.AllCoachingRestApi.Service.PayoutService;
 import com.allcoaching.AllCoachingRestApi.Service.TransactionService;
 import com.allcoaching.AllCoachingRestApi.Utils.PaytmGateway.PaytmDetailPojo;
 import com.allcoaching.AllCoachingRestApi.Utils.RandomString;
@@ -40,6 +41,8 @@ public class PaymentController {
     private  TransactionService transactionService;
     @Autowired
     private InsReviewService insReviewService;
+    @Autowired
+    private PayoutService payoutService;
     @GetMapping("/checkout/course/{userId}/{courseId}/{insId}")
     public ModelAndView checkout(@PathVariable long userId,@PathVariable long courseId,@PathVariable long insId,Model model) throws  Exception
     {
@@ -110,7 +113,11 @@ public class PaymentController {
                 if (parameters.get("RESPCODE").equals("01")) {
                     result = "Payment Successful";
 
-                    transaction.ifPresent(this::processPayment);
+
+
+                        transaction.ifPresent(this::processPayment);
+
+
 
                 } else {
                     result = "Payment Failed";
@@ -137,6 +144,7 @@ public class PaymentController {
 
                     InsReview insReview  = new InsReview(transactionData.getCourseId(),transactionData.getInsId(),transactionData.getStudentId());
                     insReviewService.save(insReview);
+
                     break;
                     //more cases to be added here in future if any other kind of product is introduced
                 default:

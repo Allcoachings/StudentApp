@@ -1,5 +1,6 @@
 package com.allcoaching.AllCoachingRestApi.Respository;
 
+import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Entity.Transaction;
 import com.allcoaching.AllCoachingRestApi.dto.TransactionDto;
 import org.springframework.data.domain.Page;
@@ -54,5 +55,13 @@ public interface TransactionRepo extends PagingAndSortingRepository<Transaction,
     @Query("UPDATE Transaction t set t.isSeenByIns = :status where t.id=:id")
     void updateTransactionStatusForIns(long id,boolean status);
 
+    @Query("Select COALESCE(sum(CAST(t.amount AS float)),0)  from Transaction t where t.purchaseDate>=CURRENT_DATE and insId=?1 and status='TXN_SUCCESS'")
+    long todayIncomeSumIns(long insId);
+
+    @Query("Select COALESCE(sum(CAST(t.amount AS float)),0)  from Transaction t where month(t.purchaseDate)=month(CURRENT_DATE) and  insId=?1 and status='TXN_SUCCESS'")
+    long currentMonthIncomeSumIns(long insId);
+
+    @Query("Select COALESCE(sum(CAST(t.amount AS float)),0)  from Transaction t where  insId=?1 and status='TXN_SUCCESS'")
+    long totalIncomeSumIns(long insId);
 
 }

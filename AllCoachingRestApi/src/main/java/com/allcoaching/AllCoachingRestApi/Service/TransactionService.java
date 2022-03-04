@@ -1,5 +1,6 @@
 package com.allcoaching.AllCoachingRestApi.Service;
 
+import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.Entity.Transaction;
 import com.allcoaching.AllCoachingRestApi.Respository.TransactionRepo;
 import com.allcoaching.AllCoachingRestApi.dto.TransactionDto;
@@ -59,6 +60,19 @@ public class TransactionService {
     {
          return extractDataFromPage(transactionRepo.findByCourseId(courseId,PageRequest.of(page,pageSize,Sort.by(Sort.Direction.DESC,"purchaseDate"))));
     }
+
+    public long todayIncomeSumIns(long insId)
+    {
+            return transactionRepo.todayIncomeSumIns(insId);
+    }
+    public long currentMonthIncomeSumIns(long insId)
+    {
+            return transactionRepo.currentMonthIncomeSumIns(insId);
+    }
+    public long totalIncomeSumIns(long insId)
+    {
+            return transactionRepo.totalIncomeSumIns(insId);
+    }
     //fetch by insId
     public Iterable<TransactionDto> fetchByInsId(long insId,int page,int pageSize)
     {
@@ -113,6 +127,7 @@ public class TransactionService {
     //update status and gatewayTransactionId for completing transaction
     public void compeleteTransaction(String status,String gatewayTxnId,String responseMsg,String orderId)
     {
+
             transactionRepo.completeTransaction(status,gatewayTxnId,responseMsg,orderId);
     }
 
