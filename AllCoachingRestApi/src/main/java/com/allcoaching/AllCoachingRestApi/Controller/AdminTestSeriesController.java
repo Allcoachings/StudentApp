@@ -98,11 +98,11 @@ public class AdminTestSeriesController {
 
     @CrossOrigin(origins = "*")
     @PostMapping("/subcategory/content/add")
-    public @ResponseBody AdminTestSeriesSubCategoryContent addSubCategoryContent(@RequestParam MultipartFile file,@RequestParam String name,@RequestParam int sortOrder,@RequestParam long subcategoryId)
+    public @ResponseBody AdminTestSeriesSubCategoryContent addSubCategoryContent(@RequestParam String name,@RequestParam int sortOrder,@RequestParam long subcategoryId)
     {
-        String image="files/";
-        image += fileUploadService.storeFile(file);
-        return adminTestSeriesSubCategoryContentService.addSubCategoryItem(new AdminTestSeriesSubCategoryContent(name,image,sortOrder,subcategoryId));
+//        String image="files/";
+//        image += fileUploadService.storeFile(file);
+        return adminTestSeriesSubCategoryContentService.addSubCategoryItem(new AdminTestSeriesSubCategoryContent(name,sortOrder,subcategoryId));
     }
     @CrossOrigin(origins = "*")
     @PutMapping("/subcategory/content/edit")

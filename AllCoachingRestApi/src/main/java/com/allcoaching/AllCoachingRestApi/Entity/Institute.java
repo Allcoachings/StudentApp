@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Table;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -45,7 +47,9 @@ public class Institute {
     private int totalRating=0;
     private long leads=0;
     private long totalRevenue=0;
-
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date addDate;
     //institute account details
     private String accountNumber;
     private String ifsc;
