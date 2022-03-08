@@ -1315,13 +1315,13 @@ class InstituteView extends React.Component {
                                     </View>
                                 </View>
                                 <View style={styles.instituteRatingView}>
-                                    <Text style={{ color: theme.greyColor}}>{institute.totalRatingCount>0?institute.totalRating/institute.totalRatingCount:0+' • '}</Text>
+                                    <Text style={{ color: theme.greyColor}}>{institute.totalRatingCount>0?(institute.totalRating/institute.totalRatingCount).toFixed(2):0+' • '}</Text>
                                     <AirbnbRating 
                                         starContainerStyle={styles.instituteRating} 
                                         count={5}
                                         reviews={[]} 
                                         isDisabled={true}
-                                        defaultRating={institute.totalRatingCount>0?institute.totalRating/institute.totalRatingCount:0}
+                                        defaultRating={institute.totalRatingCount>0?(institute.totalRating/institute.totalRatingCount).toFixed(2):0}
                                         size={12}
                                         selectedColor={theme.blueColor}
                                         showRating={false}

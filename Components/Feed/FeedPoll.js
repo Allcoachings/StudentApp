@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,FlatList,Image,findNodeHandle,UIManager, TouchableOpacity } from 'react-native';
+import { View, Text,StyleSheet,FlatList,Image,Dimensions,findNodeHandle,UIManager, TouchableOpacity } from 'react-native';
 import {EvilIconsnsnsnsns, AntDesign, FontAwesome} from '@expo/vector-icons';
 import CardView from '../Utils/CardView'; 
 import {imageProvider, serverBaseUrl, theme} from '../config';
@@ -10,6 +10,10 @@ import { connect } from 'react-redux'
 import FeedBottomComponent from './FeedBottomComponent'
 import FeedHeader from './FeedHeader'
 
+import RenderHTML,{defaultSystemFonts} from 'react-native-render-html';
+
+const width = Dimensions.get('window').width
+const systemFonts = ["kruti_dev_010regular", "chanakyaregular","walkman_chanakya_901bold","walkman_chanakya_902bold","kruti_dev_010bold", ...defaultSystemFonts];
 class FeedPoll extends Component {
     state = {
         canUserVote: this.props.type==1?(this.props.item.feed.feed.pollVotedInstitutes.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.pollVotedStudents.includes(`,${this.props.userInfo.id},`)?(false):(true)):(true)),
@@ -130,7 +134,13 @@ class FeedPoll extends Component {
                     <FeedHeader actions={this.props.actions} navigation={this.props.navigation} feed={feed}  mode={this.props.mode} editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime}/>
                     <View onPress={()=>this.props.navigation.navigate("RenderSingleFeed",{id: feed.feed.id})} style={styles.innerBoxView}>
                         
-                        <Text style={{fontFamily:'Raleway_400Regular', marginVertical: 10,fontSize:17}}>{feed.feed.pollQuestion}</Text>
+                        {/* <Text style={{fontFamily:'Raleway_400Regular', marginVertical: 10,fontSize:17}}>{feed.feed.pollQuestion}</Text> */}
+                        <RenderHTML
+                            contentWidth={width}
+                            systemFonts={systemFonts}
+                            defaultTextProps={{style: {fontWeight: 'normal', marginVertical: 10,fontSize:17}}}
+                            source={{html:feed.feed.pollQuestion}}
+                        />
                         <FlatList
                             data={this.state.optionData}
                             renderItem={({item,index})=><RenderPollOption setFocusedOptionIndex={this.setFocusedOptionIndex} focusedOptionIndex={this.state.focusedOptionIndex} updateVote={this.updateVote} item={item} canUserVote={this.state.canUserVote} totalVote={this.state.totalPollVotes} userType={this.props.type} index={index}/>}

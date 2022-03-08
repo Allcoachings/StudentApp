@@ -13,6 +13,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -41,6 +42,8 @@ public interface InsSubscriptionRepo extends PagingAndSortingRepository<InsSubsc
 
    void deleteByStudentIdAndInsId(long studentId,long insId);
 
+   @Query("Select DISTINCT studentId from InsSubscription where insId=:insId")
+    List<Long> getInsFollowerStudentIds(long insId);
    Optional<InsSubscription> findByStudentIdAndInsId(long studentId,long insId);
 
 

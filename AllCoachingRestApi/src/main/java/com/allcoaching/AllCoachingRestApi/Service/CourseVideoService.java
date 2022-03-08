@@ -1,5 +1,6 @@
 package com.allcoaching.AllCoachingRestApi.Service;
 
+import com.allcoaching.AllCoachingRestApi.Entity.Course;
 import com.allcoaching.AllCoachingRestApi.Entity.CourseVideo;
 import com.allcoaching.AllCoachingRestApi.Entity.   Transaction;
 import com.allcoaching.AllCoachingRestApi.Entity.VideoPlaylist;
@@ -16,6 +17,9 @@ import java.util.Optional;
 @Service
 public class CourseVideoService {
     @Autowired
+    private CourseService courseService;
+
+    @Autowired
     private CourseVideoPLayListRepo courseVideoPLayListRepo;
     @Autowired
     private CourseVideoRepo courseVideoRepo;
@@ -29,7 +33,13 @@ public class CourseVideoService {
     //saving video to video repo
     public CourseVideo saveCourseVideo(CourseVideo courseVideo)
     {
-        return courseVideoRepo.save(courseVideo);
+        CourseVideo courseVideo_saved  = courseVideoRepo.save(courseVideo);
+        if(courseVideo.getId()!=0)
+        {
+            courseService.sendNotificationAsync(courseVideo.getCourseId(),"new Video "+courseVideo.getName());
+        }
+
+        return courseVideo_saved;
     }
     public  void updateVideoLink(long id,String link)
     {

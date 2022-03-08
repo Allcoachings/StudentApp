@@ -81,7 +81,6 @@ public class NotificationService {
                       notificationDtos.add(new NotificationDto(item,senderDto));
                   });
                   return  notificationDtos;
-
               }
               return new ArrayList<>();
     }
@@ -151,6 +150,7 @@ public class NotificationService {
             {
                 case "studentsEnrolledInCategory":
                     expoTokens = getExpoTokenForStudentsEnrolledInCategory(Long.parseLong(targetGroup));
+//                    insertNotification(expoTokens,notificationDataDto.getTitle(),notificationDataDto.getBody())
                     break;
                 case "allUsers":
                     expoTokens = getExpoTokenForAllStudent(0,1000);
@@ -182,6 +182,23 @@ public class NotificationService {
     }
 
 
+    public Iterable<Notification> insertNotification(List<Long> studentIds,String text,long senderId,String notificationFrom,String notificationType,Institute senderDetails)
+    {
+        List<Notification> notificationList = new ArrayList<>();
+        studentIds.forEach(studentId->{
+            Notification notification = new Notification();
+            notification.setSenderId(senderId);
+            notification.setReceiverId(studentId);
+            notification.setNotificationFrom(notificationFrom);
+            notification.setMessage(text);
+            notification.setNotificationFor(2);//student
+            notification.setType(notificationType);
+            notification.setNotificationImage( senderDetails.getLogo());
+
+           notificationList.add(notification);
+        });
+         return notificationRepo.saveAll(notificationList);
+    }
 
     private List<String> getExpoTokenForStudentsEnrolledInCategory(long category)
     {

@@ -1,8 +1,13 @@
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, TouchableWithoutFeedback} from 'react-native';
+import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, Dimensions,ScrollView, TouchableWithoutFeedback} from 'react-native';
 import { imageProvider, theme } from '../config';
 import { updateNotificationSeenStatus } from '../Utils/DataHelper/Notification';
+
+import RenderHTML,{defaultSystemFonts} from 'react-native-render-html';
+
+const width = Dimensions.get('window').width
+const systemFonts = ["kruti_dev_010regular", "chanakyaregular","walkman_chanakya_901bold","walkman_chanakya_902bold","kruti_dev_010bold", ...defaultSystemFonts];
 function Bull({isVisible}) {
     return (
         <Text style={{fontSize:25,color:theme.blueColor,marginRight:10}}>
@@ -45,7 +50,13 @@ function SingleNotification({item,navigation}) {
                         {/* <View style={{display: 'flex', flexDirection: 'row'}}>
                             <Text style={styles.instituteheaderText}>{item.senderObject.name}</Text>
                         </View> */}
-                        <Text numberOfLines={3} style={styles.instituteDirector}>{item.notification.message}</Text>
+                        {/* <Text numberOfLines={3} style={styles.instituteDirector}>{item.notification.message}</Text> */}
+                        <RenderHTML
+                            contentWidth={width}
+                            systemFonts={systemFonts}
+                            defaultTextProps={{style: {fontWeight: 'normal',fontSize:15}}}
+                            source={{html:item.notification.message}}
+                        />
                         <Text style={{fontSize:12,color:theme.greyColor+"99"}}> {moment(item.notification.notificationTime).fromNow()}</Text>
                     </View>
                     {item.notification.notificationImage?(

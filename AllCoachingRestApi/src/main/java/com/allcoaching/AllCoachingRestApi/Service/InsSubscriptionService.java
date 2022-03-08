@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -70,5 +71,9 @@ public class InsSubscriptionService {
         {
             return new ArrayList<>();
         }
+    }
+    public List<Long> getInsFollowerStudentIds(long id)
+    {
+        return insSubscriptionRepo.getInsFollowerStudentIds(id);
     }
 }

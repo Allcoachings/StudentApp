@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,FlatList,Image,findNodeHandle,UIManager, TouchableOpacity } from 'react-native';
+import { View, Text,StyleSheet,FlatList,Image,findNodeHandle,Dimensions,UIManager, TouchableOpacity } from 'react-native';
 import {EvilIcons, AntDesign, FontAwesome} from '@expo/vector-icons';
 import {imageProvider, serverBaseUrl, theme} from '../config';
 import CardView from '../Utils/CardView'
@@ -8,6 +8,11 @@ import {like_feed, unLike_feed} from "../Utils/DataHelper/Feed"
 import FeedBottomComponent from './FeedBottomComponent'
 import FeedHeader from './FeedHeader'
 import moment from 'moment'
+
+import RenderHTML,{defaultSystemFonts} from 'react-native-render-html';
+
+const width = Dimensions.get('window').width
+const systemFonts = ["kruti_dev_010regular", "chanakyaregular","walkman_chanakya_901bold","walkman_chanakya_902bold","kruti_dev_010bold", ...defaultSystemFonts];
 class FeedText extends Component {
   state = {
     canUserLike:this.props.type==1?(this.props.item.feed.feed.feedLikerIns&&this.props.item.feed.feed.feedLikerIns.includes(`,${this.props.institute.details.id},`)?(false):(true)):(this.props.type==2?(this.props.item.feed.feed.feedLikerStudent&&this.props.item.feed.feed.feedLikerStudent.includes(`,${this.props.userInfo.id},`)?(false):(true)):(true)),
@@ -90,7 +95,13 @@ editFeedPressHandler=()=>this.props.mode=="userProfile"||this.props.mode=="insPr
                 <View style={styles.boxView}>
                     <FeedHeader actions={this.props.actions} navigation={this.props.navigation} feed={feed} editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime} mode={this.props.mode}/>
                     <View onPress={()=>this.props.navigation.navigate("RenderSingleFeed",{id: feed.feed.id})} style={styles.innerBoxView}> 
-                        <Text style={{fontFamily:'Raleway_400Regular', marginVertical: 10,fontSize:17}}>{feed.feed.description}</Text>
+                        {/* <Text style={{fontFamily:'Raleway_400Regular', marginVertical: 10,fontSize:17}}>{feed.feed.description}</Text> */}
+                        <RenderHTML
+                            contentWidth={width}
+                            systemFonts={systemFonts}
+                            defaultTextProps={{style: {fontWeight: 'normal', marginVertical: 10,fontSize:17}}}
+                            source={{html:feed.feed.description}}
+                        />
                         <FeedBottomComponent canUserLike={this.state.canUserLike} feedId={feed.feed.id} likeFeed={this.likeFeed} navigation={this.props.navigation} changeCanUserLike={this.changeCanUserLike} unLikeFeed={this.unLikeFeed} likes={this.state.likes} comments={feed.feed.commentCount} mode={this.props.mode}/>
                     </View>
                 </View>

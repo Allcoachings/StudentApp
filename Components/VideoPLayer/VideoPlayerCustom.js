@@ -23,13 +23,13 @@ import { Assets } from '../config'
 // import * as NavigationBar from 'expo-navigation-bar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackAlert from './BackAlert'
- 
+import useStateRef from 'react-usestateref'
 export default VideoPlayerCustom=(props)=>
 {
     //   // console.log(props);
       const {route} = props
     const playbackRateOptions = [0.25,0.5,0.75,1.00,1.25,1.50,1.75,2.00]
-    const [inFullscreen, setInFullsreen] = useState(false)
+    const [inFullscreen, setInFullsreen,inFullscreenRef] = useStateRef(false)
     const [shouldPlay, setShouldPlay] = useState(true);
     const [playbackSpeed, setPlaybackSpeed] = useState(1.0) 
     const [comments,setComments] = useState([]);
@@ -41,6 +41,8 @@ export default VideoPlayerCustom=(props)=>
     const [isScreenConfigChanged,setIsScreenConfigChanged] = useState(false)
     const [ isCommentsVisible,setIsCommentsVisible] = useState(false)
     const [isSideTabsVisible,setSideTabsVisible] = useState(false)
+    const [videoHeight,setVideoHeight] = useState(Dimensions.get('window').height)
+    const [videoWidth,setVideoWidth] = useState(Dimensions.get('window').width)
     const playbackButtonRef = useRef(null)
     const refVideo = useRef(null)
     const dispatch = useDispatch()
@@ -130,7 +132,10 @@ export default VideoPlayerCustom=(props)=>
             const backHandler = BackHandler.addEventListener(
               "hardwareBackPress",
               ()=>{
-                backPressHandler("hardwareBackPress");
+              
+                    backPressHandler("hardwareBackPress");
+              
+                
                 return true;
               }
             );
@@ -141,10 +146,21 @@ export default VideoPlayerCustom=(props)=>
          const backPressHandler=(mode) => {
             ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT)
             setStatusBarHidden(false, 'fade')
-            setInFullsreen(false)
+           
             setShouldPlay(false)
             dispatch({ type: SET_STATUS_BAR_HIDDEN,payload:false })
-            setBackAlertVisible(true)
+            if(mode=="hardwareBackPress")
+            {
+                console.log("hardwareBackPress line 155", inFullscreenRef.current)
+                if(!inFullscreenRef.current)
+                {
+                    setBackAlertVisible(true)
+                }
+            }else
+            {
+                setBackAlertVisible(true)
+            }
+            setInFullsreen(false)
             // if(mode=="selfBackPress")
             // {   
                  
@@ -209,15 +225,22 @@ export default VideoPlayerCustom=(props)=>
                 setIsSideScreenVisible(false)
             }     
         },[isSideTabsVisible])
+        
+        useEffect(() =>{
+            if(!isCommentsVisible&&!isSettingModalVisible)
+            {
+                setIsSideScreenVisible(false)
+            }     
+        },[isCommentsVisible,isSettingModalVisible])
 
         useEffect(() =>{ 
-            if(!inFullscreen)
-            {
+            // if(!inFullscreen)
+            // {
                 setIsScreenConfigChanged(false)
                 setIsSideScreenVisible(false)
             
                 // await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.DEFAULT) 
-            }
+            // }
         },[inFullscreen])
         
     const onPlayBackStatusUpdate =(statusObj) => 
@@ -230,10 +253,77 @@ export default VideoPlayerCustom=(props)=>
             })
         }
     }
-       
+    const getHeight = ()=>
+    {
+        console.log("calculating height")
+        const windowScreen  = Dimensions.get("screen");
+        let height = 0;
+        // inFullscreen ? (isSideScreenVisible||isScreenConfigChanged )?Dimensions.get('window').width/2:Dimensions.get('window').width : 200
+        if(inFullscreen)
+        {
+            // console.log("fullscreen ")
+            // if(isSideScreenVisible||isScreenConfigChanged)
+            if(isSideScreenVisible||isScreenConfigChanged)
+            {
+                if(windowScreen.height<windowScreen.width)
+                {
+                    height = windowScreen.height;
+                }else
+                {
+                    height = windowScreen.width;
+                }
+                
+                console.log("height : ",windowScreen.height," width: ",windowScreen.width)
+            }
+            else
+            {
+                height = windowScreen.width
+                console.log("fullscreen isSideScreen Visible ",isSideScreenVisible," isScreenConfigChanged ",isScreenConfigChanged)
+            }
+        }else
+        {
+            console.log("not in fullscreen")
+            height  = 200
+        }
+        return height
+
+        
+    }
+    const getWidth = ()=>
+    {
+        const windowScreen =  Dimensions.get('screen')
+        // inFullscreen ? isSideScreenVisible?windowScreen.height/0.85:isScreenConfigChanged?(windowScreen.height*2):windowScreen.height :  windowScreen.width
+        let videoWidth = windowScreen.width
+        if(inFullscreen)
+        {
+            if(isSideScreenVisible)
+            {
+                videoWidth = windowScreen.width/1.8
+            }
+            else if(isScreenConfigChanged)
+            {
+                videoWidth =  windowScreen.width
+            }
+            else
+            {
+                videoWidth = windowScreen.height
+            }
+        }else
+        {
+                videoWidth = windowScreen.width
+        }
+        return videoWidth;
+    }
+
+    useEffect(() =>{
+
+        setVideoHeight(getHeight())
+        setVideoWidth(getWidth())
+        console.log( isSideScreenVisible," isSideScreenVisible")
+    },[isSideScreenVisible,isScreenConfigChanged,inFullscreen])
     return(
         <>
-        <View style={{backgroundColor:theme.primaryColor,flex:1}}>
+        <View style={{backgroundColor:isSideScreenVisible?theme.secondaryColor:theme.primaryColor,flex:1}}>
              <View style={{flexDirection: 'row',position:'absolute',top:40,left:40,zIndex:1000,elevation:1000,opacity:0.4}}>
                 <Text style={{color:theme.featureNoColor}}>{route.params.studentName}{"\n"}{route.params.studentNumber}</Text> 
             </View> 
@@ -241,7 +331,7 @@ export default VideoPlayerCustom=(props)=>
                 <VideoPlayer 
                     videoProps={{
                         shouldPlay: shouldPlay,
-                        resizeMode:inFullscreen?Video.RESIZE_MODE_COVER: Video.RESIZE_MODE_CONTAIN, 
+                        resizeMode:inFullscreen?isSideScreenVisible?Video.RESIZE_MODE_CONTAIN:Video.RESIZE_MODE_COVER: Video.RESIZE_MODE_CONTAIN, 
                         defaultControlsVisible:true,
                         ref: refVideo,
                         source: {
@@ -259,9 +349,9 @@ export default VideoPlayerCustom=(props)=>
 
                     style={{
                         videoBackgroundColor: 'black',
-                        height: inFullscreen ? (isSideScreenVisible||isScreenConfigChanged )?Dimensions.get('window').width/2:Dimensions.get('window').width : 200,
+                        height:videoHeight,
                         // height: inFullscreen ? 200 : 200,
-                        width: inFullscreen ? isSideScreenVisible?Dimensions.get('window').height/0.85:isScreenConfigChanged?(Dimensions.get('window').height*2):Dimensions.get('window').height :  Dimensions.get('window').width,
+                        width: videoWidth,
                     }}
 
 
@@ -289,7 +379,7 @@ export default VideoPlayerCustom=(props)=>
                     
                     customFunction={{
                         onVideoPlayerTouch:(status)=>{setSideTabsVisible(status);},
-                        toggleVideoSettings:(status)=>{setIsSettingModalVisible(status)},
+                        toggleVideoSettings:(status)=>{console.log(status,"status"); setIsSideScreenVisible(status);setIsSettingModalVisible(status)},
                         isSettingModalVisible,
                         fullscreenScreenConfigChanged:()=>{
                             if(inFullscreen)
@@ -301,7 +391,10 @@ export default VideoPlayerCustom=(props)=>
                         },
                         toggleChatWindow:(status)=>
                         {
-                            setIsCommentsVisible(status);
+                             
+                            setIsSideScreenVisible(status)  
+                            setIsCommentsVisible(status); 
+                        
                         },
                         isChatWindowVisible:isCommentsVisible
 
@@ -309,11 +402,22 @@ export default VideoPlayerCustom=(props)=>
                 />
                 
 
-                    <View style={{flexDirection: 'row',height: '100%' ,width: isSideScreenVisible?'30%':0}}>
+                  {isSideScreenVisible?(  
+                  <View style={{
+                      flexDirection: 'row',
+                      height: '100%' ,
+                      width: isSideScreenVisible?'44%':0,
+                      elevation:10,
+                      borderTopRightRadius:10,
+                      borderTopLeftRadius:10,
+                      marginTop:10,
+                      overflow: 'hidden',
+                      backgroundColor:theme.primaryColor
+                    }}>
                                         
                     {isSettingModalVisible&&inFullscreen?(
                         
-                        <View style={{width: '87%',height: '100%'}}> 
+                        <View style={{width: '100%',height: '100%'}}> 
                         <VideoSettingModal
                             isVisible={isSettingModalVisible}
                             closeModal={()=>{setIsSettingModalVisible(false);setIsSideScreenVisible(false)}}
@@ -334,7 +438,8 @@ export default VideoPlayerCustom=(props)=>
                         comments={comments}
                         setIsSideScreenVisible={setIsSideScreenVisible}
                         setIsCommentsVisible={setIsCommentsVisible}
-                        width={'87%'}
+                        width={getWidth()}
+                        mode="full"
                         height={'100%'}
                         showCloseIcon
                         flatlistHeight={Dimensions.get('window').width}
@@ -354,7 +459,7 @@ export default VideoPlayerCustom=(props)=>
                         />,{height:'100%',width:'100%',paddingRight:10}
                         )}
                     </View> */}
-                    </View>
+                    </View>):(null)}
                
                
             </View> 

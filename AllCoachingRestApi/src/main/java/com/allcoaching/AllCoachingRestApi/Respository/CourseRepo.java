@@ -1,6 +1,7 @@
 package com.allcoaching.AllCoachingRestApi.Respository;
 
 import com.allcoaching.AllCoachingRestApi.Entity.Course;
+import com.allcoaching.AllCoachingRestApi.Entity.Institute;
 import com.allcoaching.AllCoachingRestApi.dto.InstituteCourseWiseStudentEnrolledDto;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -29,6 +30,9 @@ public interface CourseRepo extends CrudRepository<Course,Long> {
     @Query("Select DISTINCT s.expoToken from Student s , InsReview ir where ir.courseId=:courseId and ir.studentId=s.id and s.expoToken is not null")
     List<String> getExpoTokenOfStudentsEnrolledInCourse(long courseId);
 
+    @Query("Select DISTINCT s.id from Student s , InsReview ir where ir.courseId=:courseId and ir.studentId=s.id and s.expoToken is not null")
+    List<Long> getCourseEnrolledStudent(long courseId);
+
     @Query("Select new com.allcoaching.AllCoachingRestApi.dto.InstituteCourseWiseStudentEnrolledDto( s.name,s.email,s. mobileNumber,c.title) from Student s , InsReview ir,Course c where ir.courseId= c.id and   ir.insId=:insId and ir.studentId=s.id")
     List<InstituteCourseWiseStudentEnrolledDto> getInstituteCourseWiseStudentEnrolled(long insId);
 
@@ -37,6 +41,9 @@ public interface CourseRepo extends CrudRepository<Course,Long> {
 
     @Query("Select Count(DISTINCT ir.studentId) from   InsReview ir where ir.courseId=:courseId")
     long countStudentsEnrolled(long courseId);
+
+    @Query("Select i from Institute i,Course c where i.id=c.instId")
+    Institute findInstitueByCourseid(long courseId);
 
 
 }

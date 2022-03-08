@@ -68,42 +68,42 @@ class SeriesList extends React.Component {
     }
     componentDidMount(){
 
-        //  unsubscribe = this.props.navigation.addListener('focus', () => {
-        //     // The screen is focused
-        //     // Call any action
-        //    if(this.backHandler)
-        //    {
+         unsubscribe = this.props.navigation.addListener('focus', () => {
+            // The screen is focused
+            // Call any action
+           if(this.backHandler)
+           {
                 
-        //          this.backHandler.remove()
+                 this.backHandler.remove()
                 
-        //    }
+           }
           
-        //     this.backHandler = BackHandler.addEventListener(
-        //         "hardwareBackPress",
-        //         ()=>{   
+            this.backHandler = BackHandler.addEventListener(
+                "hardwareBackPress",
+                ()=>{   
                     
                    
-        //                 this.props.navigation.navigate("TestSeries")
-        //                 return true;
+                        this.props.navigation.goBack()
+                        return true;
                      
                    
-        //         }
-        //       );
-        //       // console.log("video focused")
-        //   });
+                }
+              );
+              // console.log("video focused")
+          });
           
-        //    this.props.navigation.addListener('blur', () => {
-        //     // The screen is focused
-        //     // Call any action
+           this.props.navigation.addListener('blur', () => {
+            // The screen is focused
+            // Call any action
           
-        //    if(this.backHandler)
-        //    {
-        //     console.log("back handler removed blur")
-        //        this.backHandler.remove()
-        //    }
+           if(this.backHandler)
+           {
+            console.log("back handler removed blur")
+               this.backHandler.remove()
+           }
              
               
-        //   });
+          });
       
 
          

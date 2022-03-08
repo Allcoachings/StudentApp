@@ -186,9 +186,9 @@ class Main extends React.Component {
         // }
         return(  
             <>
-                <View style={{height:StatusBar.currentHeight,width:"100%"}}>
+                {!this.props.statusBarHidden?(<View style={{height:StatusBar.currentHeight,width:"100%"}}>
                     <Text style={{color:"#000",backgroundColor: '#fff'}}></Text>
-                </View>
+                </View>):(null)}
                 <SafeAreaProvider  style={[styles.safeAreaView,this.props.statusBarHidden?{paddingTop:0}:null]}>
 
                     {this.switchRender(this.state.mode)}

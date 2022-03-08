@@ -169,17 +169,12 @@ class TestSeriesView extends React.Component {
         }
     };
     // backHandlerListener  =()=> { 
-        
     //     let backhandler =  BackHandler.addEventListener('hardwareBackPress',  ()=> 
     //             {
     //                 this.showAlert()
-                    
     //                 return true;
     //             });
     //     this.setState({backhandler});
-
-
-
     // }
     showAlert=(okFun)=>
     {
@@ -190,7 +185,8 @@ class TestSeriesView extends React.Component {
             {
                 okFun()
             };  
-            this.props.navigation.navigate('ResultAnalysis')
+            // this.props.navigation.navigate('ResultAnalysis')
+            this.props.navigation.goBack() 
             return null
         }else
         {

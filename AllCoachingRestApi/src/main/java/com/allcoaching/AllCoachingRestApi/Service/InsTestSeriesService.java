@@ -28,6 +28,8 @@ public class InsTestSeriesService {
     private InsTestSeriesRepo insTestSeriesRepo;
 
     @Autowired
+    private  CourseService courseService;
+    @Autowired
     private InsTestSeriesQuestionsRepo insTestSeriesQuestionsRepo;
 
     @Autowired
@@ -47,7 +49,9 @@ public class InsTestSeriesService {
 
     public InsTestSeries createTestSeries(InsTestSeries insTestSeries)
     {
+
         return insTestSeriesRepo.save(insTestSeries);
+
     }
 
     public Iterable<InsTestSeriesQuestions> saveSeriesQuestions(Iterable<InsTestSeriesQuestions> insTestSeriesQuestionsList)

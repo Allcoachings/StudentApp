@@ -1,8 +1,6 @@
 package com.allcoaching.AllCoachingRestApi.Service;
 
-import com.allcoaching.AllCoachingRestApi.Entity.Feed;
-import com.allcoaching.AllCoachingRestApi.Entity.FeedImages;
-import com.allcoaching.AllCoachingRestApi.Entity.FeedPollOptions;
+import com.allcoaching.AllCoachingRestApi.Entity.*;
 import com.allcoaching.AllCoachingRestApi.Respository.*;
 import com.allcoaching.AllCoachingRestApi.dto.FeedContentDto;
 import com.allcoaching.AllCoachingRestApi.dto.FeedDto;
@@ -11,11 +9,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class FeedService {
@@ -34,6 +34,11 @@ public class FeedService {
 
     @Autowired
     private FeedImageRepo feedImageRepo;
+
+    @Autowired
+    private NotificationService notificationService;
+    @Autowired
+    private InsSubscriptionService insSubscriptionService;
 
     public FeedDto getById(long id)
     {
@@ -85,6 +90,10 @@ public class FeedService {
     {
         Feed feed = feedContentDto.getFeed();
         Feed feed_saved = feedRepo.save(feed);
+        if(feed.getId()!=0&&feed.getPostedBy()==1)
+        {
+            sendNotificationAsync(feed.getInsId(),feed.getDescription());
+        }
         if(feed.getFeedType()==2)
         {
             Iterable<FeedPollOptions> feedPollOptions = feedContentDto.getFeedPollOptions();
@@ -366,7 +375,17 @@ public class FeedService {
         }
     }
 
+    public Iterable<Notification> sendNotificationToEnrolledStudents(long insId, String message)
+    {
+        Institute institute = instituteRepo.findById(insId).get();
 
+        return notificationService.insertNotification(insSubscriptionService.getInsFollowerStudentIds(insId),institute.getName()+" shared a post "+message+" in Community ",institute.getId(),"institute","general",institute);
+    }
+    @Async
+    public CompletableFuture<Iterable<Notification>> sendNotificationAsync(long insId, String message)
+    {
+        return CompletableFuture.completedFuture(sendNotificationToEnrolledStudents(insId,message));
+    }
 
     //like feed
     public  void likeFeed(long id,int likerType,long likerId)

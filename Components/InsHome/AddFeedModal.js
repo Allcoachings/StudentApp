@@ -545,7 +545,7 @@ setFeedTypeOption=(postType)=>
                         
                             <TextInput
                                 style={{height:50 ,fontFamily:'Raleway_400Regular',marginHorizontal:10}}
-                                placeholder="Create Something...."
+                                placeholder="Create Post...."
                                 multiline={true}  
                                 ref={(input) => { this.descriptionTextInput = input; }}
                                 defaultValue={this.state.description}

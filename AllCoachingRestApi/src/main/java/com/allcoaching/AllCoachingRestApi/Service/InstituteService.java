@@ -127,6 +127,8 @@ public class InstituteService {
     }
 
 
+
+
     public Optional<Institute> validateIns(InsCredentialDto insCredentialDto)
     {
         return instituteRepo.findByEmailAndPassword(insCredentialDto.getEmail(),insCredentialDto.getPassword());

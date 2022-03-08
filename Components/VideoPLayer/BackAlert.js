@@ -15,7 +15,7 @@ const BackAlert = ({visible,closeModal,yesFun,noFun})=> {
                 onRequestClose = {closeModal}
             >
                 <TouchableWithoutFeedback>
-                    <View style={{height:height,width:width, backgroundColor: theme.secondaryColor+'66'}}>
+                    <View style={{height:height,width:width, backgroundColor: theme.secondaryColor+'66',justifyContent: 'center', alignItems: 'center'}}>
                         {CardView(
                             <View style={{flexDirection: 'column'}}>
                                  <View style={{marginVertical: 15, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
@@ -51,7 +51,7 @@ const BackAlert = ({visible,closeModal,yesFun,noFun})=> {
                                         <Text style={{fontSize: 15, fontFamily: 'Raleway_700Bold',color: theme.darkYellowColor}}>Yes</Text>
                                     </TouchableOpacity>
                                 </View>
-                            </View>,{alignSelf: 'center', marginTop: height*0.2,paddingVertical:20, borderRadius: 10}
+                            </View>,{alignSelf: 'center',paddingVertical:20, borderRadius: 10}
                         )}
                     </View>
                 </TouchableWithoutFeedback>

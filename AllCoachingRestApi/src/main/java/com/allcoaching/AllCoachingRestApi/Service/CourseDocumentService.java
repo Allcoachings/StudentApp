@@ -22,6 +22,8 @@ public class CourseDocumentService {
     private CourseDocumentRepo courseDocumentRepo;
 
     @Autowired
+    private CourseService courseService;
+    @Autowired
     private CourseDocumentPlaylistRepo courseDocumentPlaylistRepo;
 
     //creating playlist
@@ -33,7 +35,12 @@ public class CourseDocumentService {
     //saving document to document  repo
     public CourseDocument save(CourseDocument courseDocument)
     {
-        return courseDocumentRepo.save(courseDocument);
+        CourseDocument courseDocument_saved =  courseDocumentRepo.save(courseDocument);
+        if(courseDocument.getId()!=0)
+        {
+            courseService.sendNotificationToEnrolledStudents(courseDocument_saved.getCourseId(),"new document  "+courseDocument_saved.getName());
+        }
+        return courseDocument_saved;
     }
 
     //fetching documents  by course id

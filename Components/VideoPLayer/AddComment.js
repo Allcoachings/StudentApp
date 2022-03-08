@@ -1,13 +1,14 @@
 import moment from 'moment';
-import React,{useEffect,useState} from 'react';
+import React,{useEffect,useRef,useState} from 'react';
 import { Text, View,Image,TouchableOpacity,TextInput, TouchableWithoutFeedback } from 'react-native';
-import { imageProvider, serverBaseUrl, theme } from '../config';
+import { Assets, imageProvider, serverBaseUrl, theme } from '../config';
 import {addVideoComment} from '../Utils/DataHelper/CourseVideos'
-import { Feather, MaterialIcons } from '@expo/vector-icons'; 
+import { Feather, MaterialIcons,EvilIcons, Ionicons } from '@expo/vector-icons'; 
 import {useSelector} from 'react-redux'
 const AddComment = (props) => {
 const item = props.item;
- 
+const mode = props.mode;
+    let imageRef = useRef(null)
     const[comment,setComment] = useState("")
     const user = useSelector(state => state.user.userInfo) 
     const addCommentHandler =()=>
@@ -25,13 +26,25 @@ const item = props.item;
             }
     }
     return(
-        <View>
+        <View style={{width:"100%"}}>
         <View style={{ flexDirection: 'row', margin: 5, padding: 10,borderBottomWidth:1,borderBottomColor: theme.labelOrInactiveColor,alignItems: 'center'}}> 
-            <Image source={{uri: imageProvider(user.studentImage)}} style={{height: 40, width: 40, borderRadius: 20, borderWidth: 0.6, borderColor:theme.greyColor,}}/>
-            <View style={{flex: 1, flexDirection: 'column', marginLeft: 10, marginTop: 2}}>
+            <Image source={{uri: imageProvider(user.studentImage)}} style={{height: mode=="full"?20:40, width:mode=="full"?20: 40, borderRadius: 20, borderWidth: 0.6, borderColor:theme.greyColor,}}
+                 ref={(ref)=>imageRef=ref}
+                 onError={()=>
+                     {
+                         if(imageRef)
+                         {
+                             imageRef.setNativeProps({
+                                 src:[Image.resolveAssetSource(Assets.profile.profileIcon)]
+                             })
+                         }
+                     }}
+            />
+            <View style={{flex:mode=="full"?0.75:1,flexDirection: 'column', marginLeft: 10, marginTop: 2}}>
                  <TextInput 
                     onChangeText={(text)=>setComment(text)}
                     defaultValue={comment}
+                    style={{width:"100%",fontSize:mode=="full"?9:15}}
                     placeholder="Add a publi comment..."
                  />
             </View>
@@ -39,7 +52,7 @@ const item = props.item;
             <View>
                 <TouchableWithoutFeedback onPress={addCommentHandler}>
                     <View>
-                        <Feather name="chevron-right-forward" size={24} color={theme.greyColor} />
+                        <Ionicons name="send" size={20} color={theme.greyColor} />
                     </View>
                 </TouchableWithoutFeedback>
             </View>):(null)}

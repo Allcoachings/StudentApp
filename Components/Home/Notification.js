@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform, ScrollView, TouchableWithoutFeedback} from 'react-native';
+    import { Text,View,StyleSheet,TouchableOpacity,FlatList, Image,Platform,Dimensions, ScrollView, TouchableWithoutFeedback} from 'react-native';
 // import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {theme,screenMobileWidth, dataLimit,serverBaseUrl, Assets, imageProvider} from '../config'
 import { EvilIcons } from '@expo/vector-icons';

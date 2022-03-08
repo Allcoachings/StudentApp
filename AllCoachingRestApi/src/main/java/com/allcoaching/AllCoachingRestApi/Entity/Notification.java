@@ -16,19 +16,23 @@ public class Notification {
     @Id
     @GeneratedValue
     private long id;
-
     private String message;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date notificationTime;
+
     private boolean isSeen=false ;
+
     private int notificationFor;//1 for ins 2 for student
+
     private long receiverId;
-    private  String notificationFrom;
+
+    private  String notificationFrom; //institute,admin
+
     private long senderId;
     private String redirectLink;
-    private  String type;
+    private  String type;//general,course
     private String notificationImage;
 
 }

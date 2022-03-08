@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text,Image,StyleSheet,findNodeHandle,UIManager, TouchableOpacity } from 'react-native';
+import { View, Text,Image,StyleSheet,findNodeHandle,UIManager,Dimensions, TouchableOpacity } from 'react-native';
 import {imageProvider, serverBaseUrl, theme} from '../config';
 import {EvilIconsnsnsnsns, AntDesign, FontAwesome} from '@expo/vector-icons';
 import CardView from '../Utils/CardView'
@@ -11,6 +11,10 @@ import FeedBottomComponent from './FeedBottomComponent'
 import FeedHeader from './FeedHeader'
 import ImageZoomModal from '../InstituteView/ImageZoomModal'
 
+import RenderHTML,{defaultSystemFonts} from 'react-native-render-html';
+
+const width = Dimensions.get('window').width
+const systemFonts = ["kruti_dev_010regular", "chanakyaregular","walkman_chanakya_901bold","walkman_chanakya_902bold","kruti_dev_010bold", ...defaultSystemFonts];
 class FeedImage extends Component {
   state={
     zoomModal: false,
@@ -110,10 +114,15 @@ addImage=(link, type)=>{
                         
                         {feed.feed.description?( 
                             <View style={{marginVertical:10}}>
-                                <Text style={{fontFamily:'Raleway_400Regular', marginVertical: 10,fontSize:17}}>
+                                {/* <Text style={{fontFamily:'Raleway_400Regular', marginVertical: 10,fontSize:17}}>
                                     {feed.feed.description}
-                                </Text>
-                                
+                                </Text> */}
+                                <RenderHTML
+                                    contentWidth={width}
+                                    systemFonts={systemFonts}
+                                    defaultTextProps={{style: {fontWeight: 'normal', marginVertical: 10,fontSize:17}}}
+                                    source={{html:feed.feed.description}}
+                                />
                             </View>
                         ):(null)}
 

@@ -24,6 +24,8 @@ import java.util.Optional;
 public class CourseTimeTableService {
 
     @Autowired
+    private  CourseService courseService;
+    @Autowired
     private CourseTimeTableItemRepo itemRepo;
 
     @Autowired
@@ -32,7 +34,13 @@ public class CourseTimeTableService {
     //inserting timetable subject
     public CourseTimeTableSubject saveSubject(CourseTimeTableSubject courseTimeTableSubject)
     {
-        return subjectRepo.save(courseTimeTableSubject);
+       CourseTimeTableSubject courseTimeTableSubject_saved = subjectRepo.save(courseTimeTableSubject);
+       if(courseTimeTableSubject.getId()!=0)
+       {
+           courseService.sendNotificationToEnrolledStudents(courseTimeTableSubject_saved.getCourseId(),"new timetable added "+courseTimeTableSubject_saved.getName());
+       }
+
+        return courseTimeTableSubject_saved;
     }
 
     //inserting subject item

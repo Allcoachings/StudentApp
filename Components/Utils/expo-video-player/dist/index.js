@@ -225,7 +225,7 @@ const VideoPlayer = (tempProps) => {
                             {props.videoTitle.titleIcon}
                         </View>
                     </TouchableWithoutFeedback>
-                    {props.videoTitle.title?(<Text style={[{color:'white',margin:5,fontSize:15,fontFamily:'Raleway_600SemiBold'},props.videoTitle.titleStyle]}>{props.videoTitle.title}</Text>):(null)}
+                    {props.videoTitle.title?(<Text style={[{color:'white',margin:5,fontSize:15,fontFamily:'Raleway_600SemiBold',width:'85%'},props.videoTitle.titleStyle]} numberOfLines={1}>{props.videoTitle.title}</Text>):(null)}
                 </View>
             ):(null)}
             
