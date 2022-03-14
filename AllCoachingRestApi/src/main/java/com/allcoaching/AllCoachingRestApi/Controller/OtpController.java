@@ -19,22 +19,22 @@ public class OtpController {
     public Otp generateOtp(@PathVariable String mobileNumber)
     {
 
-//        return otpService.generateOtp(mobileNumber);
-        return new Otp(mobileNumber,"123456");
+        return otpService.generateOtp(mobileNumber);
+
     }
 
     @CrossOrigin(origins = "*")
     @PostMapping("/validate/")
     public boolean validateOtp(@RequestBody Otp otp)
     {
-//        boolean isValidOtp =  otpService.validateOtp(otp);
-//        if(isValidOtp)
-//        {
-//            otpService.deleteOtp(otp);
-//        }
-//        return  isValidOtp;
+        boolean isValidOtp =  otpService.validateOtp(otp);
+        if(isValidOtp)
+        {
+            otpService.deleteOtp(otp);
+        }
+        return  isValidOtp;
 
-        return true;
+ 
     }
 
 

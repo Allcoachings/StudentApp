@@ -50,10 +50,10 @@ export const paytmConfig={
 }
 
 //online serverBaseUrl
-export const serverBaseUrl="http://3.110.215.40:8090/"; 
+export const serverBaseUrl="https://api.allcoaching.in/"; 
 //local server base url
 // export const serverBaseUrl="http://192.168.1.33:8080/"; 
-export const allcoachingAdminUrl="http://3.110.215.40:3000/"; 
+// export const allcoachingAdminUrl="http://3.110.215.40:3000/"; 
 export const  shareTextInstitute="Text here";
 export const  shareTextFeed="Text here";
 export const  shareTextResult="Text here";
