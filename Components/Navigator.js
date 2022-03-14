@@ -44,7 +44,7 @@ import Categories from './StructuralComponents/Header/';
 import { View,Animated } from 'react-native';
 import NotificationTabs from './Home/NotificationTabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
+import LiveVideoPlayer from './LiveVideoPlayer/LiveVideoPlayer';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -53,16 +53,15 @@ function StackNavigation(authStatus) {
       <Stack.Navigator
       screenOptions={{ headerShown: false}}
       >
-         {authStatus?(          
+
+          {authStatus?(          
                         <>
                             
                             
                             <Stack.Screen name="Home" component={TabNavigator} />  
                             <Stack.Screen name="Institute"  component={InstituteView} />
                             <Stack.Screen name="StudentInsView"  component={InstituteView} />
-                            {/* <Stack.Screen name="TestSeries" component={TestSeriesIns}  /> 
-                            <Stack.Screen name="Subscription" component={SubscriptionTabs}  />  */}
-                            {/* <Stack.Screen name="Feed" component={Feed}  />  */}
+                          
                             <Stack.Screen name="Solution" component={Solutions}  /> 
                             <Stack.Screen name="ResultAnalysis" component={ResultAnalysis}  /> 
                             <Stack.Screen name="CategoryList" component={CategoryList} /> 
@@ -90,7 +89,7 @@ function StackNavigation(authStatus) {
                         </>
                     ):(
                         <Stack.Screen  name="Auth" component={Auth}   /> 
-                    )} 
+                    )}   
       </Stack.Navigator>
     );
   }

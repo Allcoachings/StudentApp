@@ -290,8 +290,8 @@ const headerReducer = (state = initial_header_state, action) =>{
             return state
         
     }
-}
- 
+}       
+    
 const rootReducer = combineReducers({
         user:user_reducer,
         screen:screen_reducer,

@@ -22,12 +22,14 @@ public class CourseGoLive {
     private String date;
     private String title;
     private long courseId;
+    private String videoUrlJson;
 
-    public CourseGoLive(String link, String time, String date, String title, long courseId) {
+    public CourseGoLive(String link, String time, String date, String title, long courseId,String videoUrlJson) {
         this.link = link;
         this.time = time;
         this.date = date;
         this.title = title;
+        this.videoUrlJson = videoUrlJson;
         this.courseId = courseId;
     }
 }
