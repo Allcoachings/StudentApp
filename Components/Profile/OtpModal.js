@@ -1,12 +1,12 @@
 import { Feather } from '@expo/vector-icons';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import React, { useEffect, useState } from 'react';
-import { Modal ,View,TouchableOpacity,Text, StyleSheet, ActivityIndicator, TouchableWithoutFeedback} from 'react-native';
+import { Modal ,View,TouchableOpacity,Text, StyleSheet, ActivityIndicator, TouchableWithoutFeedback,Dimensions} from 'react-native';
 import { theme } from '../config';
 import CardView from '../Utils/CardView';
 import { generateOtp,generateEmailOtp } from '../Utils/DataHelper/Otp';
 import BackArrow from '../Utils/Icons/BackArrow'
-
+const height = Dimensions.get('window').height
 function OtpModal({isVisible,closeModal,email,mobile,setMobileVerificationStatus,setEmailVerificationStatus,saveDetails,isToVerifiedMobile,isToVerifiedEmail}) {
      
         
@@ -78,7 +78,7 @@ function OtpModal({isVisible,closeModal,email,mobile,setMobileVerificationStatus
         transparent={true}
       >
           
-        <View style={{backgroundColor:"#fff"}}> 
+        <View style={{backgroundColor:"#fff",height: height}}> 
         {CardView(
                     <View style={{flex: 1,flexDirection: 'row',alignItems: 'center',}}>
                         {/* <View> */}

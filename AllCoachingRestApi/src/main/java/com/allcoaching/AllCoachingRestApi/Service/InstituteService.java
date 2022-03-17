@@ -72,7 +72,7 @@ public class InstituteService {
                 String passwordResetRoute = env.getProperty("allcoaching.ins.resetPasswordLink").concat("/"+otp.getOtpHash()+"/"+otp.getMobileNumberHash());
 
                 System.out.println(passwordResetRoute);
-                String res = mailer.sendMail(email,"Password Reset Link", EmailTemplates.otpTemplate(passwordResetRoute));
+                String res = mailer.sendMail(email,"Password Reset Link", EmailTemplates.passwordResetLinkTemplate(passwordResetRoute));
                 if(res.equals("ok"))
                 {
                     return "200";
