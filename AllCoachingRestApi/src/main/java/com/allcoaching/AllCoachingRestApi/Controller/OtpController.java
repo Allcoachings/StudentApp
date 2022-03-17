@@ -4,6 +4,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.Otp;
 import com.allcoaching.AllCoachingRestApi.Service.OtpService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController()
@@ -23,9 +24,16 @@ public class OtpController {
     }
     @CrossOrigin(origins = "*")
     @GetMapping("/generateEmailOtp/{email}")
-    public Otp generateEmailOtp(@PathVariable String email)
+    public ResponseEntity<Object> generateEmailOtp(@PathVariable String email)
     {
-        return otpService.generateOtp(email);
+        String res=  otpService.sendEmailOtp(email);
+        if(res.equals("200"))
+        {
+            return ResponseEntity.ok().build();
+        }else
+        {
+            return  ResponseEntity.notFound().build();
+        }
 
     }
 

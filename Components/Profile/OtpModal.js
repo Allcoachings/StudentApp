@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Modal ,View,TouchableOpacity,Text, StyleSheet, ActivityIndicator, TouchableWithoutFeedback} from 'react-native';
 import { theme } from '../config';
 import CardView from '../Utils/CardView';
-import { generateOtp } from '../Utils/DataHelper/Otp';
+import { generateOtp,generateEmailOtp } from '../Utils/DataHelper/Otp';
 import BackArrow from '../Utils/Icons/BackArrow'
 
 function OtpModal({isVisible,closeModal,email,mobile,setMobileVerificationStatus,setEmailVerificationStatus,saveDetails,isToVerifiedMobile,isToVerifiedEmail}) {
@@ -62,11 +62,13 @@ function OtpModal({isVisible,closeModal,email,mobile,setMobileVerificationStatus
     useEffect(()=>{
         if(isToVerifiedMobile)
         {
-            generateOtp()
+            generateOtp(mobile,(response)=>{
+                console.log(response.status," status mobile")
+            })
         }
         if(isToVerifiedEmail)
         {
-            
+            generateEmailOtp(email,(response)=>{ console.log(response.status," status")})
         }
     },[isToVerifiedEmail,isToVerifiedMobile])
   return (
