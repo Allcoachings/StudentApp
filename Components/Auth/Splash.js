@@ -27,18 +27,18 @@ const Splash = () => {
       {/* <StatusBar barStyle="dark-content" /> */}
       <SafeAreaView style={{ flex: 1 ,height: height}}>
         <ScrollView
-          style={{ flex: 1 ,}}
+          style={{ flex: 1 ,backgroundColor:"#fff"}}
           horizontal={true}
           scrollEventThrottle={16}
           pagingEnabled={true}
           showsHorizontalScrollIndicator={false}
-          style={{}}
+           
           // onScroll={(event: any) => {
           //   setSliderPage(event);
           // }}
         >
           <View style={{ width, height }}>
-            <Image source={{uri:'https://www.membroz.com/wp-content/uploads/2020/04/08_Intro.jpg'}} style={styles.imageStyle}/>
+            <Image source={require("../../assets/splash.jpg")} style={styles.imageStyle}/>
             {/* <View style={styles.wrapper}>
               <Text style={styles.header}>Daily interactive live classes</Text>
               <Text style={styles.paragraph}>chat with your educator,ask your doubts and participate in polls</Text>
@@ -46,7 +46,7 @@ const Splash = () => {
           </View>
           <View style={{ width, height }}>
             <Image
-              source={{uri:'https://www.membroz.com/wp-content/uploads/2020/04/08_Intro.jpg'}}
+              source={require("../../assets/splash.jpg")}
               style={styles.imageStyle}
             />
             {/* <View style={styles.wrapper}>
@@ -56,7 +56,7 @@ const Splash = () => {
           </View>
           <View style={{ width, height }}>
             <Image
-              source={{uri:'https://www.membroz.com/wp-content/uploads/2020/04/08_Intro.jpg'}}
+              source={require("../../assets/splash.jpg")}
               style={styles.imageStyle}
             />
             {/* <View style={styles.wrapper}>
@@ -66,7 +66,7 @@ const Splash = () => {
           </View>
           <View style={{ width, height }}>
             <Image
-              source={{uri:'https://www.membroz.com/wp-content/uploads/2020/04/08_Intro.jpg'}}
+              source={require("../../assets/splash.jpg")}
               style={styles.imageStyle}
             />
             {/* <View style={styles.wrapper}>
@@ -76,7 +76,7 @@ const Splash = () => {
           </View>
           <View style={{ width, height }}>
             <Image
-              source={{uri:'https://www.membroz.com/wp-content/uploads/2020/04/08_Intro.jpg'}}
+              source={require("../../assets/splash.jpg")}
               style={styles.imageStyle}
             />
             {/* <View style={styles.wrapper}>
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     // marginLeft:20,
     flexDirection:'row',
     justifyContent: 'center',
-    resizeMode:'cover',
+    resizeMode:'contain',
 
   },
   wrapper: {

@@ -49,7 +49,7 @@ public class OtpService {
         otp.setMobileNumberHash(MD5.getMd5(email));
         save(otp);
 
-        String res = mailer.sendMail(email,"Password Reset Link", EmailTemplates.otpTemplate(otp.getOtpValue()));
+        String res = mailer.sendMail(email,"One Time Password", EmailTemplates.otpTemplate(otp.getOtpValue()));
         if(res.equals("ok"))
         {
             return "200";

@@ -41,6 +41,8 @@ export const theme={
     translucentColor:"#00000E5"
 }
 
+
+
 //paytm config 
 export const paytmConfig={
         mid:'CyetnE81614660519794',

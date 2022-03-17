@@ -69,9 +69,11 @@ class Main extends React.Component {
         // })
         // AsyncStorage.clear()  
         AsyncStorage.getItem('authInfo').then(data => {
+
             if(data)
             {
                 data = JSON.parse(data)
+                console.log(data," ",data.authType)
                 switch(data.authType)
                 {
                     case 'ins':

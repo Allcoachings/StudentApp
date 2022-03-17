@@ -116,11 +116,7 @@ class Auth extends React.Component {
                             {/* </LinearGradient> */}
         
                         </View>
-                    {this.props.screenWidth<=screenMobileWidth?(null):(
-                        <View style={[styles.authBannerView,{flex:this.props.screenWidth<=screenMobileWidth?0:0.5}]}>
-                            <Text>Banner</Text>
-                        </View>
-                    )} 
+                   
                     </View>
                     <OtpVerification isOtpModal = {this.state.isOtpModal} navigation={this.props.navigation} closeModal = {this.closeModalOTP} openInfoModal={this.openInfoModal} />
                     <InfoModal closeModal={this.closeInfoModal} isModalVisible={this.state.isModalVisible} mobileNumber={this.state.mobile} openModalOtp={this.openModalOTP} navigation={this.props.navigation}/>

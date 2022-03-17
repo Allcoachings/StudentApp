@@ -41,7 +41,9 @@ public class FileUploadService {
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 //        fileName = fileName.replaceAll("[^A-Za-z0-9]","-");
-        fileName = fileName.replaceAll("[-+#@$%&^:,]","");
+//        fileName = fileName.replaceAll("[-+#@$%&^:,]","");
+        fileName = fileName.replaceAll("[^a-zA-Z0-9\\._]+", "_");
+
         fileName=fileName.replace(" ","-");
         fileName = timeStampMillis+fileName;
 

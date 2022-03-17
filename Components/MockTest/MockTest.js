@@ -48,7 +48,7 @@ class ResultAnalysis extends React.Component {
     {
         // console.log("test data",item)
         
-        let date  = moment(item.date, 'DD/MM/YYYY');
+        let date  = moment(item.date, 'DD-MM-YYYY');
         let month = date.format('MMM')
         let day = date.format('DD')
         var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];

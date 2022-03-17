@@ -4,19 +4,19 @@ import React, { useEffect, useState } from 'react';
 import { Modal ,View,TouchableOpacity,Text, StyleSheet, ActivityIndicator, TouchableWithoutFeedback,Dimensions} from 'react-native';
 import { theme } from '../config';
 import CardView from '../Utils/CardView';
-import { generateOtp,generateEmailOtp } from '../Utils/DataHelper/Otp';
+import { generateOtp,generateEmailOtp,validateOtp } from '../Utils/DataHelper/Otp';
 import BackArrow from '../Utils/Icons/BackArrow'
 const height = Dimensions.get('window').height
 function OtpModal({isVisible,closeModal,email,mobile,setMobileVerificationStatus,setEmailVerificationStatus,saveDetails,isToVerifiedMobile,isToVerifiedEmail}) {
      
         
     const [codeEmail,setCodeEmail] =useState('')
-    const [codeMobile,setCodeMobile] =useState('')
-    const [loaderMobile,setLoaderMobile] = useState(false)
+    const [codeMobile,setCodeMobile] =useState('') 
     const [error,setError] = useState()
     const [emailVerified,setEmailVerified] = useState(false)
     const [mobileVerified,setMobileVerified] = useState(false)
-
+    const [mobileVerifyLoading,setMobileVerifyLoading] = useState(false)
+    const [emailVerifyLoading,setEmailVerifyLoading] = useState(false)
     const getOtpEmail=(codeEmail) =>{
         // console.log(codeEmail);
         setCodeEmail(codeEmail)
@@ -30,8 +30,24 @@ function OtpModal({isVisible,closeModal,email,mobile,setMobileVerificationStatus
     {
         if(codeEmail.length==6)
         {
-            setEmailVerified(true)
-            setEmailVerificationStatus(true)
+            setEmailVerifyLoading(true)
+            validateOtp(codeEmail,email,(response)=>{
+                console.log(response.status)
+                if(response.status==200)
+                {
+                    response.json().then(data=>{
+                        console.log(data)
+                        if(data)
+                        {
+                            setEmailVerified(true)
+                            setEmailVerificationStatus(true)
+                        }
+                    })
+                    
+                }
+                setEmailVerifyLoading(false)
+            })
+           
         }else
         {
             setError("Please Enter OTP")
@@ -42,8 +58,23 @@ function OtpModal({isVisible,closeModal,email,mobile,setMobileVerificationStatus
          
         if(codeMobile.length==6)
         {
-            setMobileVerified(true)
-            setMobileVerificationStatus(true)
+            setMobileVerifyLoading(true)
+            validateOtp(codeMobile,mobile,(response)=>{
+                if(response.status==200)
+                {
+                    response.json().then(data=>{
+
+                        if(data)
+                        {
+                            setMobileVerified(true)
+                            setMobileVerificationStatus(true)
+                        }
+                    })
+                    
+                }
+                setMobileVerifyLoading(false)
+            })
+            
         }else
         {
             setError("Please Enter OTP")
@@ -71,6 +102,11 @@ function OtpModal({isVisible,closeModal,email,mobile,setMobileVerificationStatus
             generateEmailOtp(email,(response)=>{ console.log(response.status," status")})
         }
     },[isToVerifiedEmail,isToVerifiedMobile])
+    useEffect(()=>{
+
+        setEmailVerified(false)
+        setMobileVerified(false)
+    },[email,mobile])
   return (
       <Modal
         isVisible={isVisible}
@@ -135,7 +171,7 @@ function OtpModal({isVisible,closeModal,email,mobile,setMobileVerificationStatus
                             <Text style={styles.errorText}>{error}</Text>
                         ):(null)}
                 </View>
-                {isToVerifiedEmail?(
+                {isToVerifiedEmail&&!emailVerified?(
                     <View>
                         <View style={{flexDirection:'row',marginBottom:8,alignItems: 'center'}}>
                             <Text style={{fontFamily:'Raleway_400Regular',color:theme.greyColor}}>
@@ -157,7 +193,7 @@ function OtpModal({isVisible,closeModal,email,mobile,setMobileVerificationStatus
                         <TouchableWithoutFeedback onPress={()=>{handleVeriyEmail()}} >
                                 <View style={[{backgroundColor:theme.greyColor,padding:10,borderRadius:10,alignItems: 'center',width:'95%',marginBottom:10}]}>
                                     <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>
-                                        {loaderMobile?(
+                                        {emailVerifyLoading?(
                                             <ActivityIndicator color={theme.primaryColor} size={"small"}/>
                                         ):(
                                             "Verify"
@@ -167,7 +203,7 @@ function OtpModal({isVisible,closeModal,email,mobile,setMobileVerificationStatus
                         </TouchableWithoutFeedback>
                     </View>
                 ):(null)}
-                {isToVerifiedMobile?(
+                {isToVerifiedMobile&&!mobileVerified?(
                     <View>
                         <View style={{flexDirection:'row',marginBottom:8,alignItems: 'center'}}>
                             <Text style={{fontFamily:'Raleway_400Regular',color:theme.greyColor}}>
@@ -189,7 +225,7 @@ function OtpModal({isVisible,closeModal,email,mobile,setMobileVerificationStatus
                         <TouchableWithoutFeedback onPress={()=>{handleVeriyMobile()}} >
                                 <View style={[{backgroundColor:theme.greyColor,padding:10,borderRadius:10,alignItems: 'center',width:'95%',marginBottom:10}]}>
                                     <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>
-                                        {loaderMobile?(
+                                        {mobileVerifyLoading?(
                                             <ActivityIndicator color={theme.primaryColor} size={"small"}/>
                                         ):(
                                             "Verify"
