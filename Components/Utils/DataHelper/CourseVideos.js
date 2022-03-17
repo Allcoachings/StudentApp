@@ -85,7 +85,7 @@ export   const fetchVideoComments =( videoId,offset,dataLimit,callback)=>
 
 //video views
 
-export const updateVideoView =( videoId,callback)=>
+export const updateVideoView =(videoId,callback)=>
 {
     let headers = new Headers(); 
     headers.append('Content-Type', 'application/json');  

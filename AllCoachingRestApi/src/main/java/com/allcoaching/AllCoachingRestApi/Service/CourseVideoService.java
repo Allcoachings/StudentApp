@@ -53,24 +53,30 @@ public class CourseVideoService {
     //fetching videos by playlist
     public Iterable<CourseVideo> findByPlaylist(long id,int page,int pageSize)
     {
-        return extractDataFromPage(courseVideoPLayListRepo.playListContent(id,PageRequest.of(page,pageSize)));
+        return extractDataFromPage(courseVideoPLayListRepo.playListContent(id,"offline",PageRequest.of(page,pageSize)));
     }
 
     //fetching videos by playlist and hidden parameter
     public Iterable<CourseVideo> findByPlaylistAndHidden(long id,boolean hidden,int page,int pageSize)
     {
-        return extractDataFromPage(courseVideoPLayListRepo.findByPlaylistAndHidden(id,hidden,PageRequest.of(page,pageSize)));
+        return extractDataFromPage(courseVideoPLayListRepo.findByPlaylistAndHidden(id,hidden,"offline",PageRequest.of(page,pageSize)));
     }
 
     //fetching video by course Id
     public  Iterable<CourseVideo> findByCourseId(long id,int page,int pageSize)
     {
-        return extractDataFromPage(courseVideoRepo.findByCourseId(id, PageRequest.of(page,pageSize)));
+        return extractDataFromPage(courseVideoRepo.findByCourseIdAndVideoType(id,"offline", PageRequest.of(page,pageSize)));
+    }
+
+    //fetching video by course Id
+    public  Iterable<CourseVideo> findLiveVideosByCourseId(long id,int page,int pageSize)
+    {
+        return extractDataFromPage(courseVideoRepo.findByCourseIdAndVideoType(id,"live", PageRequest.of(page,pageSize)));
     }
     //fetching video by course Id and hidden
     public  Iterable<CourseVideo> findByCourseIdAndHidden(long id,boolean hidden,int page,int pageSize)
     {
-        return extractDataFromPage(courseVideoRepo.findByCourseIdAndHidden(id, hidden,PageRequest.of(page,pageSize)));
+        return extractDataFromPage(courseVideoRepo.findByCourseIdAndHiddenAndVideoType(id, hidden,"offline",PageRequest.of(page,pageSize)));
     }
 
     //fetching video by  Id

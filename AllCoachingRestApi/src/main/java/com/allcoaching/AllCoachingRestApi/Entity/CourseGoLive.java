@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -22,6 +23,7 @@ public class CourseGoLive {
     private String date;
     private String title;
     private long courseId;
+    @Column(columnDefinition = "TEXT")
     private String videoUrlJson;
 
     public CourseGoLive(String link, String time, String date, String title, long courseId,String videoUrlJson) {

@@ -82,6 +82,7 @@ public class CourseVideoController {
         courseVideoService.saveCourseVideo(courseVideo);
         return ResponseEntity.ok().build();
     }
+
 //    @GetMapping("/playlist/{id}")
 //    public Iterable<CourseVideo> findByPlalist(long id)
 //    {
@@ -94,6 +95,14 @@ public class CourseVideoController {
     public Iterable<CourseVideo> findByCourse(@PathVariable  long id,@PathVariable int offset,@PathVariable int dataLimit)
     {
         return courseVideoService.findByCourseId(id,offset,dataLimit);
+
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/liveVideosOfCourse/{id}/{offset}/{dataLimit}")
+    public Iterable<CourseVideo> findLiveVideoByCourse(@PathVariable  long id,@PathVariable int offset,@PathVariable int dataLimit)
+    {
+        return courseVideoService.findLiveVideosByCourseId(id,offset,dataLimit);
 
     }
 
