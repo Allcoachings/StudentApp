@@ -22,8 +22,8 @@ const height = Dimensions.get('window').height
 class RenderVideo extends React.Component {
     state = {
         showModal: false,
-        playlist: this.props.courseVideosPlaylist,
-        selectedPlaylist: this.props.item.playlistId,
+        playlist: this.props?.courseVideosPlaylist,
+        selectedPlaylist: this.props?.item?.playlistId,
         savingItem:this.props.savingItem?this.props.savingItem:false,
         downloadProgress:0
     }
@@ -70,8 +70,7 @@ class RenderVideo extends React.Component {
         }else if(!this.pauseDownloadRef?.current)
         {
             Toast.show('Something Went Wrong. Please Try Again Later')
-        }
-
+        } 
         this.setState({savingItem: false});
     }
 
@@ -79,7 +78,7 @@ class RenderVideo extends React.Component {
     componentDidUpdate = (prevProps, prevState) => {
       
        if(prevProps.progress!=this.props.progress)
-       {
+       { 
            this.setState({downloadProgress:this.props.progress})
        }
     };
@@ -132,7 +131,7 @@ class RenderVideo extends React.Component {
     setSelectedPlaylist=(selectedPlaylist)=>
     {
         // console.log("setSelectedPlaylist", selectedPlaylist)
-        this.setState({showModal: false, selectedPlaylist: selectedPlaylist},()=>updatePlaylist("video",selectedPlaylist,this.props.item.id,this.updateCallback))
+        this.setState({showModal: false, selectedPlaylist: selectedPlaylist},()=>updatePlaylist("video",selectedPlaylist,this.props.item?.id,this.updateCallback))
     }
 
     updateCallback=(response)=>{
@@ -152,24 +151,24 @@ class RenderVideo extends React.Component {
     {
         if(this.props.mode=="offline")
         {
-            this.props.navigation.navigate("videoplayer",{videoUrl:this.props.item.fileAddress,videoTitle:this.props.item.name,postingTime:this.props.item.date,item:this.props.item,studentName:this.props.userInfo.email,studentNumber:this.props.userInfo.mobileNumber})
+            this.props.navigation.navigate("videoplayer",{videoUrl:this.props.item?.fileAddress,videoTitle:this.props.item?.name,postingTime:this.props.item?.date,item:this.props.item,studentName:this.props.userInfo.email,studentNumber:this.props.userInfo.mobileNumber})
         }else
         {
-            this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation,videoTitle:this.props.item.name,postingTime:this.props.item.date,item:this.props.item,studentName:this.props.userInfo.email,studentNumber:this.props.userInfo.mobileNumber})
+            this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item?.videoLocation,videoTitle:this.props.item?.name,postingTime:this.props.item?.date,item:this.props.item,studentName:this.props.userInfo.email,studentNumber:this.props.userInfo.mobileNumber})
         }
     }
     render(){
-       console.log(this.props.item)
+       
         return( 
             <View>
                 <View style={styles.videoContainer}>
                     <TouchableOpacity onPress={()=>{
                         // console.log(this.props.item)
-                        this.props.mode=="student"?(this.props.studentEnrolled||this.props.item.demo?(
+                        this.props.mode=="student"?(this.props.studentEnrolled||this.props.item?.demo?(
                             <>
-                            {/* {this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item.videoLocation,videoTitle:this.props.item.name,postingTime:this.props.item.date,item:this.props.item,studentName:this.props.userInfo.email,studentNumber:this.props.userInfo.mobileNumber})} */}
+                            {/* {this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item?.videoLocation,videoTitle:this.props.item?.name,postingTime:this.props.item?.date,item:this.props.item,studentName:this.props.userInfo.email,studentNumber:this.props.userInfo.mobileNumber})} */}
                             {this.navigateToVideoPlayer()}
-                            {this.props.addToHistory("video", this.props.item.id)}
+                            {this.props.addToHistory("video", this.props.item?.id)}
                             </>
                         ):(
                             // Toast.show('You Have Not Enrolled For This Course.')
@@ -177,8 +176,8 @@ class RenderVideo extends React.Component {
                             
                         )):(this.navigateToVideoPlayer())}
                     } >
-                        <Image source={{uri:imageProvider(this.props.item.videoThumb)}} style={styles.videoImage}/>
-                        {this.props.mode!="offline"&&!this.props.studentEnrolled&&!this.props.item.demo?(
+                        <Image source={{uri:imageProvider(this.props.item?.videoThumb)}} style={styles.videoImage}/>
+                        {this.props.mode!="offline"&&!this.props.studentEnrolled&&!this.props.item?.demo?(
                             <View style={{position: 'absolute',height:30,width:30,backgroundColor:theme.secondaryColor,borderRadius:15,right:5,top:5}}>
                                 <Lock height={20} width={20}/>
                             </View>
@@ -187,13 +186,13 @@ class RenderVideo extends React.Component {
                     </TouchableOpacity>
                     <View style={styles.videoColumn}>
                         <View>
-                            <Text numberOfLines={2} style={styles.videoText}>{this.props.item.name}</Text>
+                            <Text numberOfLines={2} style={styles.videoText}>{this.props.item?.name}</Text>
                         </View>
                         <View>
-                            {/* <Text numberOfLines={2} style={styles.videoText}>{this.props.item.description}</Text> */}
+                            {/* <Text numberOfLines={2} style={styles.videoText}>{this.props.item?.description}</Text> */}
                         </View>
                         <View style={{flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center',marginTop:'auto'}}>
-                            <Text>{numFormatter(this.props.item.views)+" views • "+moment(this.props.item.date).fromNow()}</Text>
+                            <Text>{numFormatter(this.props.item?.views)+" views • "+moment(this.props.item?.date).fromNow()}</Text>
                             {this.props.downloadMode?(
                                 <View style={{flexDirection: 'column',    marginRight:10}}>                  
                                     {this.state.savingItem?(
@@ -202,14 +201,14 @@ class RenderVideo extends React.Component {
                                         >
                                             <View style={{width:30,height:30,marginBottom: 8,alignItems: 'center'}}>
                                                 <CircularProgress
-                                                value={this.state.downloadProgress}
-                                                radius={17}
-                                                inActiveStrokeColor={theme.greyColor}
-                                                inActiveStrokeOpacity={0.2}
-                                                inActiveStrokeWidth={5}
-                                                activeStrokeWidth={5}
-                                                textColor={'#000'}
-                                                valueSuffix={'%'}
+                                                    value={this.state.downloadProgress}
+                                                    radius={17}
+                                                    inActiveStrokeColor={theme.greyColor}
+                                                    inActiveStrokeOpacity={0.2}
+                                                    inActiveStrokeWidth={5}
+                                                    activeStrokeWidth={5}
+                                                    textColor={'#000'}
+                                                    valueSuffix={'%'}
                                                 />
                                             </View>
                                         </TouchableWithoutFeedback>
@@ -221,7 +220,7 @@ class RenderVideo extends React.Component {
                                             ):(
                                                 
                                                     // <TouchableOpacity onPress={()=>this.props.studentEnrolled?(this.download(this.props.item, 'video')):(Toast.show('You Have Not Enrolled For This Course.'))} style={{marginBottom: 8}}> 
-                                                   (this.props.studentEnrolled||this.props.item.demo)? <TouchableOpacity onPress={()=>this.download(this.props.item, 'video')} style={{marginBottom: 8}}>
+                                                   (this.props.studentEnrolled||this.props.item?.demo)? <TouchableOpacity onPress={()=>this.download(this.props.item, 'video')} style={{marginBottom: 8}}>
                                                         <View >
                                                             {/* <Image source={downloadIcon} style={{height: 25, width: 25}} /> */}
                                                             <Arrow_down_circle_black/>
@@ -253,7 +252,7 @@ class RenderVideo extends React.Component {
                                         <Text style={{fontSize: 16, fontFamily: 'Raleway_600SemiBold',color: theme.secondaryColor,marginBottom: 10}}> Select Playlist</Text>
                                         <View style={{display: 'flex',flexDirection: 'column', borderWidth:1, borderRadius: 6}}>
                                         
-                                            <Picker 
+                                            <Picker
                                                 style={{ height:50 }}
                                                 selectedValue={this.state.selectedPlaylist}
                                                 onValueChange={(itemValue, itemIndex) =>

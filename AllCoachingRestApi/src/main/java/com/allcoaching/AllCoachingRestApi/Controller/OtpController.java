@@ -18,8 +18,14 @@ public class OtpController {
     @GetMapping("/generate/{mobileNumber}")
     public Otp generateOtp(@PathVariable String mobileNumber)
     {
-
         return otpService.generateOtp(mobileNumber);
+
+    }
+    @CrossOrigin(origins = "*")
+    @GetMapping("/generateEmailOtp/{email}")
+    public Otp generateEmailOtp(@PathVariable String email)
+    {
+        return otpService.generateOtp(email);
 
     }
 
@@ -34,7 +40,7 @@ public class OtpController {
         }
         return  isValidOtp;
 
- 
+
     }
 
 

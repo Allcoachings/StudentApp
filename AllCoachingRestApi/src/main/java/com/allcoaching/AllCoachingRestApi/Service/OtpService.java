@@ -2,9 +2,9 @@ package com.allcoaching.AllCoachingRestApi.Service;
 
 import com.allcoaching.AllCoachingRestApi.Entity.Otp;
 import com.allcoaching.AllCoachingRestApi.Respository.OtpRepo;
-import com.allcoaching.AllCoachingRestApi.Utils.SendSms;
-import com.allcoaching.AllCoachingRestApi.Utils.Sms;
+import com.allcoaching.AllCoachingRestApi.Utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,6 +16,11 @@ public class OtpService {
     @Autowired
     private OtpRepo otpRepo;
 
+    @Autowired
+    private Mailer mailer;
+
+    @Autowired
+    private Environment env;
 
     public Otp save(Otp otp)
     {
@@ -37,7 +42,23 @@ public class OtpService {
 
         return otpRepo.save(new Otp(mobileNumber,otp));
     }
+    public String sendEmailOtp(String email)
+    {
+        Otp otp =  generateOtp(email);
+        otp.setOtpHash(MD5.getMd5(otp.getOtpValue()));
+        otp.setMobileNumberHash(MD5.getMd5(email));
+        save(otp);
 
+        String res = mailer.sendMail(email,"Password Reset Link", EmailTemplates.otpTemplate(otp.getOtpValue()));
+        if(res.equals("ok"))
+        {
+            return "200";
+        }else
+        {
+            return res;
+        }
+
+    }
     public Optional<Otp> findByOtpHash(String hash)
     {
         return otpRepo.findByOtpHash(hash);

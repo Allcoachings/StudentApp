@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Modal ,View,TouchableOpacity,Text, StyleSheet, ActivityIndicator, TouchableWithoutFeedback} from 'react-native';
 import { theme } from '../config';
 import CardView from '../Utils/CardView';
+import { generateOtp } from '../Utils/DataHelper/Otp';
 import BackArrow from '../Utils/Icons/BackArrow'
 
 function OtpModal({isVisible,closeModal,email,mobile,setMobileVerificationStatus,setEmailVerificationStatus,saveDetails,isToVerifiedMobile,isToVerifiedEmail}) {
@@ -57,6 +58,17 @@ function OtpModal({isVisible,closeModal,email,mobile,setMobileVerificationStatus
             }
 
     },[emailVerified,mobileVerified])
+
+    useEffect(()=>{
+        if(isToVerifiedMobile)
+        {
+            generateOtp()
+        }
+        if(isToVerifiedEmail)
+        {
+            
+        }
+    },[isToVerifiedEmail,isToVerifiedMobile])
   return (
       <Modal
         isVisible={isVisible}
@@ -109,9 +121,7 @@ function OtpModal({isVisible,closeModal,email,mobile,setMobileVerificationStatus
                                       color={theme.secondaryColor} 
                                       style={styles.searchIcon}
                                     />
-                            )} */}
-                             
-
+                            )} */} 
                         </View>
                     </View>,
                     {width:'100%',height:50,},2
