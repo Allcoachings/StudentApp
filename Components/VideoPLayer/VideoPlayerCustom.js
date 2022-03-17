@@ -24,6 +24,7 @@ import { Assets } from '../config'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackAlert from './BackAlert'
 import useStateRef from 'react-usestateref'
+ 
 export default VideoPlayerCustom=(props)=>
 {
     //   // console.log(props);
@@ -34,7 +35,7 @@ export default VideoPlayerCustom=(props)=>
     const [playbackSpeed, setPlaybackSpeed] = useState(1.0) 
     const [comments,setComments] = useState([]);
     const [offset, setOffset] = useState(0)
-    const[qualityValue, setQualityValue] = useState('Low')
+    const[qualityValue, setQualityValue] = useState('default')
     const [playbackSpeedValue, setPlaybackSpeedValue] =useState(1.00)
     const [isSettingModalVisible,setIsSettingModalVisible] = useState(false)
     const [isSideScreenVisible,setIsSideScreenVisible] = useState(false)
@@ -43,9 +44,11 @@ export default VideoPlayerCustom=(props)=>
     const [isSideTabsVisible,setSideTabsVisible] = useState(false)
     const [videoHeight,setVideoHeight] = useState(Dimensions.get('window').height)
     const [videoWidth,setVideoWidth] = useState(Dimensions.get('window').width)
+    const [videoObj,setVideoObj] = useState(null);
     const playbackButtonRef = useRef(null)
     const refVideo = useRef(null)
     const dispatch = useDispatch()
+    const [videoUrl,setVideoUrl] = useState(props.route?.params?.videoUrl)
     const  [backAlertVisible,setBackAlertVisible] = useState(false)
 
     const unshiftCommets=(commentObj)=>
@@ -57,7 +60,7 @@ export default VideoPlayerCustom=(props)=>
     useEffect( 
         ()=>{
             (async () => {
-                const videoStatusString  = await AsyncStorage.getItem(props.route.params.videoUrl)
+                const videoStatusString  = await AsyncStorage.getItem(videoUrl)
                 // console.log(videoStatusString,"videoStatusString")
                 if(videoStatusString)
                 {
@@ -68,7 +71,7 @@ export default VideoPlayerCustom=(props)=>
                     }
                 }
             })()
-    },[props.route.params.videoUrl])
+    },[props.route?.params?.videoUrl])
     useEffect(() => {
 
         updateVideoView(props.route.params.item.id,(response)=>{
@@ -131,11 +134,8 @@ export default VideoPlayerCustom=(props)=>
             
             const backHandler = BackHandler.addEventListener(
               "hardwareBackPress",
-              ()=>{
-              
-                    backPressHandler("hardwareBackPress");
-              
-                
+              ()=>{ 
+                    backPressHandler("hardwareBackPress"); 
                 return true;
               }
             );
@@ -151,7 +151,7 @@ export default VideoPlayerCustom=(props)=>
             dispatch({ type: SET_STATUS_BAR_HIDDEN,payload:false })
             if(mode=="hardwareBackPress")
             {
-                console.log("hardwareBackPress line 155", inFullscreenRef.current)
+                
                 if(!inFullscreenRef.current)
                 {
                     setBackAlertVisible(true)
@@ -245,11 +245,11 @@ export default VideoPlayerCustom=(props)=>
         
     const onPlayBackStatusUpdate =(statusObj) => 
     {
-        console.log(statusObj)
+        // console.log(statusObj)
         
         if(!statusObj.isPlaying)
         {
-            AsyncStorage.setItem(props.route.params.videoUrl,JSON.stringify({didJustFinished:statusObj.didJustFinished,positionMillis:statusObj.positionMillis})).then(function(){
+            AsyncStorage.setItem(videoUrl,JSON.stringify({didJustFinished:statusObj.didJustFinished,positionMillis:statusObj.positionMillis})).then(function(){
                 // console.log("saved status")
             })
         }
@@ -317,10 +317,58 @@ export default VideoPlayerCustom=(props)=>
     }
 
     useEffect(() =>{
+       if(props.route.params.item.videoType=="live"&&videoObj) 
+       {
+            if(qualityValue=="default")
+            {
+                setVideoUrl(props.route?.params?.videoUrl);
+            }else
+            {
+
+                    
+                    switch(qualityValue)
+                    {
+                        case "Low":
+                            setVideoUrl(videoObj.formats[0])
+                            console.log(videoObj.formats[0].format)
+                            break;
+                        case "Medium":
+                            setVideoUrl(videoObj.formats[Math.round((videoObj.formats.length - 1) / 2)])
+                            console.log(videoObj.formats[Math.round((videoObj.formats.length - 1) / 2)].format)
+                            break;
+                        case "High":
+                            setVideoUrl(videoObj.formats[videoObj.formats.length - 1])
+                             console.log(videoObj.formats[videoObj.formats.length - 1].format)
+                            break;
+                    }
+                    console.log(qualityValue)
+
+            }
+       } 
+    },[props.route?.params?.item,qualityValue])
+    useEffect(() =>{
+
+       if(props.route?.params?.item?.videoType=="live") 
+       {
+                var videoObj = JSON.parse(props.route?.params?.item?.videoFormatJson)
+                if(videoObj)
+                {
+                    setVideoObj(videoObj)
+                }else
+                {
+                    setVideoObj(null)  
+                }
+                
+       }else
+       {
+           setVideoObj(null)
+           setVideoUrl(props.route?.params?.videoUrl);
+       } 
+    },[props.route?.params?.item])
+    useEffect(() =>{
 
         setVideoHeight(getHeight())
-        setVideoWidth(getWidth())
-        console.log( isSideScreenVisible," isSideScreenVisible")
+        setVideoWidth(getWidth()) 
     },[isSideScreenVisible,isScreenConfigChanged,inFullscreen])
     return(
         <>
@@ -336,7 +384,7 @@ export default VideoPlayerCustom=(props)=>
                         defaultControlsVisible:true,
                         ref: refVideo,
                         source: {
-                            uri: props.route.params.videoUrl, 
+                            uri: videoUrl, 
                             // uri:"https://manifest.googlevideo.com/api/manifest/hls_playlist/expire/1647139503/ei/TgYtYpTJOo3Y4-EPsOOqsAc/ip/223.233.67.115/id/irPVaEWKSmY.1/itag/96/source/yt_live_broadcast/requiressl/yes/ratebypass/yes/live/1/sgoap/gir%3Dyes%3Bitag%3D140/sgovp/gir%3Dyes%3Bitag%3D137/hls_chunk_host/rr8---sn-ci5gup-qxae7.googlevideo.com/playlist_duration/30/manifest_duration/30/gcr/in/vprv/1/playlist_type/DVR/hcs/ir/initcwndbps/10580/mh/mn/mm/44/mn/sn-ci5gup-qxae7/ms/lva/mv/m/mvi/8/pcm2cms/yes/pl/23/rmhost/rr5---sn-ci5gup-qxae7.googlevideo.com/dover/11/pacing/0/keepalive/yes/fexp/24001373,24007246/mt/1647117413/sparams/expire,ei,ip,id,itag,source,requiressl,ratebypass,live,sgoap,sgovp,playlist_duration,manifest_duration,gcr,vprv,playlist_type/sig/AOq0QJ8wRgIhAM9brlNzObeupBvK4iWYVaumsqZIKP2cBvBtbWYSQaPPAiEA4Dz43tukDAG0Vl_NuIST1XRZzK-1NtFWwlN2U5AhCC8%3D/lsparams/hls_chunk_host,hcs,initcwndbps,mh,mm,mn,ms,mv,mvi,pcm2cms,pl,rmhost/lsig/AG3C_xAwRQIhAPgrznmOYYhkWNVsTo7X492LNIqhOQmhB3kFDxCYNOjfAiBdf8-XqXWVTOAJEljBXJGBho-5-qdbz1DQDTQMqf6tHA%3D%3D/playlist/index.m3u8", 
                         },
                         rate:playbackSpeedValue, 
@@ -427,6 +475,7 @@ export default VideoPlayerCustom=(props)=>
                             setQualityValue={setQualityValue}
                             playbackSpeedValue={playbackSpeedValue}
                             setPlaybackSpeedValue={setPlaybackSpeedValue} 
+                            // videoFormatJson={props.route.params.item.videoFormatJson}
                             
                         />
                         </View>

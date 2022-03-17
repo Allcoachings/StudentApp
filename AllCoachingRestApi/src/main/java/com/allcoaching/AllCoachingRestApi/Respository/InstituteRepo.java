@@ -39,6 +39,10 @@ public interface InstituteRepo extends PagingAndSortingRepository<Institute,Long
     @Query("UPDATE Institute set totalRevenue=totalRevenue+:amount where id=:id")
     void updateInstituteRevenue(long amount,long id);
 
+    @Modifying
+    @Query("UPDATE Institute set insStreamingSecretKey=:insStreamingSecretKey where id=:id")
+    void updateInstituteStreamingKey(String insStreamingSecretKey,long id);
+
     Page<Institute> findByNameContainingIgnoreCase(String name,Pageable pageable);
     Page<Institute> findByEmailContainingIgnoreCase(String email,Pageable pageable);
 

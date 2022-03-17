@@ -320,7 +320,7 @@ export const fetch_video_playlist=(courseId,callback)=>
 
 //video section ends here
 //live video section starts 
-export const fetch_courses_live_videos=(offset, dataLimit, courseId,callback)=>
+export const fetch_courses_live_videos=(courseId,offset, dataLimit, callback)=>
 {
     
             // var formData   = new FormData(); 
@@ -338,7 +338,8 @@ export const fetch_courses_live_videos=(offset, dataLimit, courseId,callback)=>
            
             apiUrl = serverApiUrl+'institute/course/video/liveVideosOfCourse/'+courseId+'/'+offset+'/'+dataLimit
              
-               // console.log(apiUrl) 
+               alert(apiUrl)
+
              fetch(apiUrl,
             {
                 method: 'GET',  

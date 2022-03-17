@@ -152,9 +152,17 @@ class RenderVideo extends React.Component {
         if(this.props.mode=="offline")
         {
             this.props.navigation.navigate("videoplayer",{videoUrl:this.props.item?.fileAddress,videoTitle:this.props.item?.name,postingTime:this.props.item?.date,item:this.props.item,studentName:this.props.userInfo.email,studentNumber:this.props.userInfo.mobileNumber})
-        }else
+        }
+        else
         {
-            this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item?.videoLocation,videoTitle:this.props.item?.name,postingTime:this.props.item?.date,item:this.props.item,studentName:this.props.userInfo.email,studentNumber:this.props.userInfo.mobileNumber})
+            if(this.props.videoType&&this.props.videoType=="live")
+            {
+                this.props.navigation.navigate("videoplayer",{videoUrl:this.props.item?.videoLocation,videoTitle:this.props.item?.name,postingTime:this.props.item?.date,item:this.props.item,studentName:this.props.userInfo.email,studentNumber:this.props.userInfo.mobileNumber})
+            }else
+            {
+                this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item?.videoLocation,videoTitle:this.props.item?.name,postingTime:this.props.item?.date,item:this.props.item,studentName:this.props.userInfo.email,studentNumber:this.props.userInfo.mobileNumber})
+            }
+            
         }
     }
     render(){

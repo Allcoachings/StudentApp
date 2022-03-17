@@ -4,6 +4,7 @@ import com.allcoaching.AllCoachingRestApi.Entity.*;
 import com.allcoaching.AllCoachingRestApi.Service.CourseVideoCommentsService;
 import com.allcoaching.AllCoachingRestApi.Service.CourseVideoService;
 import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
+import com.allcoaching.AllCoachingRestApi.dto.LiveVideoDto;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -28,6 +29,7 @@ public class CourseVideoController {
 
     @Autowired
     private CourseVideoCommentsService courseVideoCommentsService;
+
     @CrossOrigin(origins = "*")
     @PostMapping("/")
     public ResponseEntity<Object> saveVideo(@RequestParam("file")MultipartFile video,
@@ -46,6 +48,23 @@ public class CourseVideoController {
         videoThumb +=fileUploadService.storeFile(thumb);
         CourseVideo courseVideo =courseVideoService.saveCourseVideo( new CourseVideo(courseVideoLink,name,descriptions,isDemo,demoLength,courseId,playlistId,videoThumb));
         URI location = ServletUriComponentsBuilder.fromPath("{id}*{addr}").buildAndExpand(courseVideo.getId(),courseVideoLink).toUri();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Expose-Headers", "Location");
+        return ResponseEntity.created(location).headers(headers).build();
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/saveLiveVideo")
+    public ResponseEntity<Object> saveLiveVideo(@ModelAttribute LiveVideoDto liveVideoDto)
+
+    {
+
+        String videoThumb = "files/";
+        videoThumb +=fileUploadService.storeFile(liveVideoDto.getThumbnail());
+        CourseVideo courseVideo = liveVideoDto.getCourseVideo();
+        courseVideo.setVideoThumb(videoThumb);
+        CourseVideo courseVideo_saved =courseVideoService.saveCourseVideo(courseVideo);
+        URI location = ServletUriComponentsBuilder.fromPath("{id}*{addr}").buildAndExpand(courseVideo_saved.getId(),courseVideo_saved.getVideoLocation()).toUri();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Access-Control-Expose-Headers", "Location");
         return ResponseEntity.created(location).headers(headers).build();

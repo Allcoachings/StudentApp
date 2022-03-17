@@ -20,6 +20,8 @@ public class CourseVideo {
     @Id
     @GeneratedValue
     private long id;
+
+    @Column(columnDefinition = "TEXT")
     private String videoLocation;
     private String category;
     private String name;
@@ -32,6 +34,8 @@ public class CourseVideo {
     private boolean published;
     private boolean hidden;
     private long views;
+
+    @Column(columnDefinition = "TEXT")
     private String videoFormatJson;
     private String videoType ="offline";//live,offline
     private String videoThumb="https://i.stack.imgur.com/PtbGQ.png";

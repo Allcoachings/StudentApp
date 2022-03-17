@@ -84,7 +84,7 @@ class InstituteView extends React.Component {
         actions: ['Change Playlist'],
         pageTitle:'',
         refreshing: false,
-
+        liveVidoffset:0
      }
 
      
@@ -534,7 +534,7 @@ class InstituteView extends React.Component {
         }
     }
     courseLiveVideoCallback=(response)=>{
-         
+         console.log(response.status," live video")
         if(response.status==200)
         {
             response.json().then(data=>
@@ -544,11 +544,11 @@ class InstituteView extends React.Component {
                 {
                     if(data.length==dataLimit)
                     {
-                         this.setState({courseLiveVideos:[...this.state.courseLiveVideos,...data],courseVideoLoaded:true,isCourseVideoLoading:false, showLoadMore: true, loadingFooter: false});             
+                         this.setState({courseLiveVideos:[...this.state.courseLiveVideos,...data],courseLiveVideoLoaded:true,isCourseVideoLoading:false, showLoadMore: true, loadingFooter: false});             
                     }
                     else
                     {
-                         this.setState({courseLiveVideos:[...this.state.courseLiveVideos,...data],courseVideoLoaded:true,isCourseVideoLoading:false, showLoadMore: false, loadingFooter: false});             
+                         this.setState({courseLiveVideos:[...this.state.courseLiveVideos,...data],courseLiveVideoLoaded:true,isCourseVideoLoading:false, showLoadMore: false, loadingFooter: false});             
                     }
                 }  
                 else
@@ -801,38 +801,62 @@ class InstituteView extends React.Component {
                         fetch_video_playlist(this.state.activeCourse,this.courseVideoPlaylistCallback);
                     }
                 return(
-                                    this.state.liveData?(
-                                        <View style={styles.liveContainer}>  
-                                            <View style={styles.liveItemTextView}>
-                                                <Text style={styles.liveItemText}>{this.state.liveData.title}</Text> 
-                                            </View>
-                                            <View style={styles.liveDataTimeConatiner}>
-                                                <View style={{flexDirection: 'row'}}>
-                                                        <Text style={styles.liveInText}>LIVE IN</Text>
-                                                </View> 
-                                                <View style={{flexDirection: 'row'}}>
-                                                    <CountDown
-                                                        until={this.state.eventSeconds}
-                                                        onFinish={() => alert('finished')}
-                                                        onPress={() => alert('hello')}
-                                                        size={25}
-                                                        style={{margin:10}}
-                                                        separatorStyle={{marginHorizontal:10}}
-                                                        digitStyle={styles.timeItemContainer}
-                                                        timeToShow={['D','H','M', 'S']}
-                                                    />
-                                                </View>
+                                    // this.state.liveData?(
+                                    //     <View style={styles.liveContainer}>  
+                                    //         <View style={styles.liveItemTextView}>
+                                    //             <Text style={styles.liveItemText}>{this.state.liveData.title}</Text> 
+                                    //         </View>
+                                    //         <View style={styles.liveDataTimeConatiner}>
+                                    //             <View style={{flexDirection: 'row'}}>
+                                    //                     <Text style={styles.liveInText}>LIVE IN</Text>
+                                    //             </View> 
+                                    //             <View style={{flexDirection: 'row'}}>
+                                    //                 <CountDown
+                                    //                     until={this.state.eventSeconds}
+                                    //                     onFinish={() => alert('finished')}
+                                    //                     onPress={() => alert('hello')}
+                                    //                     size={25}
+                                    //                     style={{margin:10}}
+                                    //                     separatorStyle={{marginHorizontal:10}}
+                                    //                     digitStyle={styles.timeItemContainer}
+                                    //                     timeToShow={['D','H','M', 'S']}
+                                    //                 />
+                                    //             </View>
 
-                                            </View>
-                                            <TouchableWithoutFeedback>
-                                                <View style={{backgroundColor:theme.accentColor,padding:15,borderRadius:10,alignItems: 'center',width:'95%'}}>
-                                                    <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>
-                                                        Notify Me
-                                                    </Text>
-                                                </View>
-                                            </TouchableWithoutFeedback>
+                                    //         </View>
+                                    //         <TouchableWithoutFeedback>
+                                    //             <View style={{backgroundColor:theme.accentColor,padding:15,borderRadius:10,alignItems: 'center',width:'95%'}}>
+                                    //                 <Text style={{fontFamily:'Raleway_700Bold',fontSize:15,color:theme.primaryColor}}>
+                                    //                     Notify Me
+                                    //                 </Text>
+                                    //             </View>
+                                    //         </TouchableWithoutFeedback>
 
-                                    </View>):(<EmptyList image={Assets.noResult.noRes1}/>)                     
+                                    // </View>):(<EmptyList image={Assets.noResult.noRes1}/>)   
+                                    this.state.courseLiveVideoLoaded?(
+                                        <FlatList 
+                                            data={this.state.courseLiveVideos} 
+                                            renderItem={({item,index})=><RenderVideo
+                                                 userId={this.props.userInfo.id} 
+                                                 item={item} 
+                                                 navigation={this.props.navigation} 
+                                                 addToHistory={this.addToHistory} 
+                                                 mode="student" 
+                                                 videoType="live"
+                                                 studentEnrolled={this.state.studentEnrolled} 
+                                                 downloadMode={true} 
+                                                 courseVideosPlaylist={this.state.courseVideosPlaylist} 
+                                                action={this.state.actions}
+                                                openPurchaseCourseModal={this.openPurchaseCourseModal}
+                                            />}
+                                            keyExtractor={(item)=>item.id} 
+                                            horizontal={false}
+                                            showsHorizontalScrollIndicator={false}
+                                            ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                                        />
+                                        ):(
+                                            <CustomActivtiyIndicator mode="video"/>
+                                        )                  
                 )
             case 'videos':      
             

@@ -175,6 +175,15 @@ public class InstituteController {
         return ResponseEntity.ok().build();
     }
 
+    //update account details of institute
+    @CrossOrigin(origins = "*")
+    @PutMapping("/ins/updateStreamKey/{streamKey}/{id}")
+    public ResponseEntity<Object> updateInsStreamingKey(@PathVariable String streamKey,@PathVariable long id)
+    {
+        instituteService.updateInstituteStreamingKey(streamKey,id);
+        return ResponseEntity.ok().build();
+    }
+
     //fetch account details of institute
     @CrossOrigin(origins = "*")
     @GetMapping("ins/{insId}/account")

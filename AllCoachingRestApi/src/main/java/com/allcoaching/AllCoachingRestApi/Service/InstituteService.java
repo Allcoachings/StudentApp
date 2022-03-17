@@ -228,6 +228,11 @@ public class InstituteService {
             instituteRepo.updateStatus(status,id);
     }
 
+    public  void updateInstituteStreamingKey(String streamKey, long id)
+    {
+            instituteRepo.updateInstituteStreamingKey(streamKey,id);
+    }
+
 
     public void deleteIns(long id)
     {

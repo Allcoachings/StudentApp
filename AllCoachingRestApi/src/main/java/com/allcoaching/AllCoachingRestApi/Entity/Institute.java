@@ -34,6 +34,7 @@ public class Institute {
     private long category;
     private String about;
     private String logo;
+    private String insStreamingSecretKey;
     private int boostValue=0;
     private int status;
     //1 for approve ,0 for pending 2 for block

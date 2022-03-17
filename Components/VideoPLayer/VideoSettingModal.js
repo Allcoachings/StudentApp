@@ -3,7 +3,7 @@ import React from 'react'
 import { Modal, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { theme } from '../config'
 
-function VideoSettingModal({orientation,isVisible,closeModal,qualityValue,setQualityValue,playbackSpeedValue,setPlaybackSpeedValue,isSideScreenVisible}) {
+function VideoSettingModal({orientation,isVisible,closeModal,qualityValue,setQualityValue,playbackSpeedValue,setPlaybackSpeedValue,isSideScreenVisible,videoFormatJson}) {
 
     const renderButton =(value,activeValue,label,fun)=>
     {
@@ -16,6 +16,8 @@ function VideoSettingModal({orientation,isVisible,closeModal,qualityValue,setQua
             </TouchableWithoutFeedback>
         )
     }
+
+   
     return (
         // <Modal
         //     visible={isVisible}
