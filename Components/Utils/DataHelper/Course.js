@@ -154,6 +154,8 @@ export const fetch_courses_videos=(offset, dataLimit, courseId=-1,callback,playl
             .catch((error)=>{console.log(error)})
 }
 
+
+
 //course video  with hedden parameter
 export const fetch_courses_videos_with_hidden=(hidden,offset, dataLimit, courseId=-1,callback,playlistId=-1)=>
 {
@@ -317,7 +319,35 @@ export const fetch_video_playlist=(courseId,callback)=>
 }
 
 //video section ends here
+//live video section starts 
+export const fetch_courses_live_videos=(offset, dataLimit, courseId,callback)=>
+{
+    
+            // var formData   = new FormData(); 
+            // formData.append("fetch_banners",'true') 
+            // formData.append("offset",offset) 
+            // formData.append("data_limit",limit)  
+            let headers = new Headers(); 
+            headers.append('Content-Type', 'application/json'); 
 
+            headers.append('Access-Control-Allow-Origin', serverApiUrl);
+            headers.append('Access-Control-Allow-Credentials', 'true');
+
+            headers.append('GET', 'POST', 'OPTIONS'); 
+            let apiUrl;
+           
+            apiUrl = serverApiUrl+'institute/course/video/liveVideosOfCourse/'+courseId+'/'+offset+'/'+dataLimit
+             
+               // console.log(apiUrl) 
+             fetch(apiUrl,
+            {
+                method: 'GET',  
+                headers,
+                // body:JSON.stringify({title,description,fees,instId})
+            })
+            .then((response)=>callback(response)) 
+            .catch((error)=>{console.log(error)})
+}
 //document section starts 
 export const fetch_courses_documents=(offset, dataLimit, courseId=-1,callback,playlistId=-1)=>
 {

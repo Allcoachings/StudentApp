@@ -15,7 +15,7 @@ import Accordian from '../Utils/Accordian'
 import MockTest from '../MockTest/MockTest'
 import CountDown from 'react-native-countdown-component';
 import {fetch_instituteDetails} from '../Utils/DataHelper/Coaching'
-import {fetch_institute_courses,fetch_courses_banners,addCourseBanner,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents_with_hidden,fetch_courses_timetable, fetch_latestUpcomingSchedule, fetch_testSeriesPlaylist,fetch_courses_videos_with_hidden, fetch_testSeries} from '../Utils/DataHelper/Course'
+import {fetch_institute_courses,fetch_courses_banners,addCourseBanner,fetch_video_playlist,fetch_document_playlist,fetch_courses_documents_with_hidden,fetch_courses_timetable, fetch_latestUpcomingSchedule, fetch_testSeriesPlaylist,fetch_courses_videos_with_hidden, fetch_testSeries, fetch_courses_live_videos} from '../Utils/DataHelper/Course'
 import { checkUserEnrollment } from '../Utils/DataHelper/EnrollStudent'
 import { saveStudentHistory } from '../Utils/DataHelper/StudentHistory'
 import { SliderBox } from 'react-native-image-slider-box';
@@ -76,6 +76,7 @@ class InstituteView extends React.Component {
         showLoadMore: true,
         courseDocuments:[],
         courseVideos:[], 
+        courseLiveVideos:[], 
         courseTimeTable:[],
         courseTestSeries:[],
         pinId: '',
@@ -532,6 +533,36 @@ class InstituteView extends React.Component {
             })
         }
     }
+    courseLiveVideoCallback=(response)=>{
+         
+        if(response.status==200)
+        {
+            response.json().then(data=>
+            {
+                console.log(data)
+                if(data.length>0)
+                {
+                    if(data.length==dataLimit)
+                    {
+                         this.setState({courseLiveVideos:[...this.state.courseLiveVideos,...data],courseVideoLoaded:true,isCourseVideoLoading:false, showLoadMore: true, loadingFooter: false});             
+                    }
+                    else
+                    {
+                         this.setState({courseLiveVideos:[...this.state.courseLiveVideos,...data],courseVideoLoaded:true,isCourseVideoLoading:false, showLoadMore: false, loadingFooter: false});             
+                    }
+                }  
+                else
+                {
+                    this.setState({courseLiveVideos:this.state.courseLiveVideos,courseLiveVideoLoaded:true,isCourseLiveVideoLoading:false, showLoadMore: false, loadingFooter: false}); 
+                }
+                
+                if(data.length<4)
+                {
+                    this.setState({showLoadMore:false})
+                }
+            })
+        }
+    }
     courseDocumentPlaylistCallback=(response)=>{
             if(response.status==200)
             {
@@ -676,6 +707,7 @@ class InstituteView extends React.Component {
     showFilters=(tab)=>{
         switch(tab)
         {
+            
             case 'videos':  
                     if(!this.state.courseVideoLoaded&&!this.state.isCourseVideoLoading&&this.state.activeCourse)
                     {
@@ -756,7 +788,19 @@ class InstituteView extends React.Component {
     showContent=(tab)=>{
         switch(tab)
         {
-            case 'liveClass':   return(
+            case 'liveClass': 
+            
+                    if(!this.state.courseLiveVideoLoaded&&!this.state.isCourseLiveVideoLoading&&this.state.activeCourse)
+                    {
+                        this.setState({isCourseLiveVideoLoading:true})
+                        fetch_courses_live_videos(this.state.activeCourse,this.state.liveVidoffset, dataLimit,this.courseLiveVideoCallback);
+                    }
+                    if(!this.state.courseVideoPlaylistLoaded&&!this.state.isCourseVideoPlaylistLoading&&this.state.activeCourse)
+                    {
+                        this.setState({isCourseVideoPlaylistLoading:true})
+                        fetch_video_playlist(this.state.activeCourse,this.courseVideoPlaylistCallback);
+                    }
+                return(
                                     this.state.liveData?(
                                         <View style={styles.liveContainer}>  
                                             <View style={styles.liveItemTextView}>
