@@ -1,11 +1,15 @@
 package com.allcoaching.AllCoachingRestApi.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,6 +38,11 @@ public class CourseVideo {
     private boolean published;
     private boolean hidden;
     private long views;
+
+    private String liveClassDate;
+
+
+    private String liveClassTime;
 
     @Column(columnDefinition = "TEXT")
     private String videoFormatJson;

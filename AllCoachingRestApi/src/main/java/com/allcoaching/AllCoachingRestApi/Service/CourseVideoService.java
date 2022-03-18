@@ -45,6 +45,10 @@ public class CourseVideoService {
     {
         courseVideoRepo.updateVideoLink(id,link);
     }
+    public  void updateLiveVideoLink(long id,String link,String videoFormat)
+    {
+        courseVideoRepo.updateLiveVideoLink(id,link,videoFormat);
+    }
 
     public  void updateVideoThumbLink(long id,String link)
     {

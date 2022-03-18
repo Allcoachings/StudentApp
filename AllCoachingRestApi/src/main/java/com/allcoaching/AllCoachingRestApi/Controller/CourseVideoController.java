@@ -4,7 +4,11 @@ import com.allcoaching.AllCoachingRestApi.Entity.*;
 import com.allcoaching.AllCoachingRestApi.Service.CourseVideoCommentsService;
 import com.allcoaching.AllCoachingRestApi.Service.CourseVideoService;
 import com.allcoaching.AllCoachingRestApi.Service.FileUploadService;
+import com.allcoaching.AllCoachingRestApi.Utils.YTUrlExtractor;
 import com.allcoaching.AllCoachingRestApi.dto.LiveVideoDto;
+import com.allcoaching.AllCoachingRestApi.dto.YTExtractorDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -14,7 +18,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.websocket.server.PathParam;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 @RestController
@@ -29,6 +36,18 @@ public class CourseVideoController {
 
     @Autowired
     private CourseVideoCommentsService courseVideoCommentsService;
+
+
+
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/testYt")
+    public @ResponseBody YTExtractorDto test(@RequestBody String ytUrl)
+    {
+        return YTUrlExtractor.getYTUrlExtractor(ytUrl);
+
+    }
+
 
     @CrossOrigin(origins = "*")
     @PostMapping("/")
@@ -59,16 +78,39 @@ public class CourseVideoController {
 
     {
 
-        String videoThumb = "files/";
-        videoThumb +=fileUploadService.storeFile(liveVideoDto.getThumbnail());
-        CourseVideo courseVideo = liveVideoDto.getCourseVideo();
-        courseVideo.setVideoThumb(videoThumb);
-        CourseVideo courseVideo_saved =courseVideoService.saveCourseVideo(courseVideo);
-        URI location = ServletUriComponentsBuilder.fromPath("{id}*{addr}").buildAndExpand(courseVideo_saved.getId(),courseVideo_saved.getVideoLocation()).toUri();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Access-Control-Expose-Headers", "Location");
-        return ResponseEntity.created(location).headers(headers).build();
+        try {
+            String videoThumb = "files/";
+            if(liveVideoDto.getThumbnail()== null)
+            {
+                videoThumb = "";
+            }else
+            {
+                videoThumb +=fileUploadService.storeFile(liveVideoDto.getThumbnail());
+            }
+            YTExtractorDto ytExtractorDto = new YTExtractorDto();
+            if(!liveVideoDto.getVideoLocation().isEmpty())
+            {
+                ytExtractorDto =  YTUrlExtractor.getYTUrlExtractor(liveVideoDto.getVideoLocation());
+            }
+            CourseVideo courseVideo = new CourseVideo(ytExtractorDto.getUrl(),liveVideoDto.getName(),liveVideoDto.getDescription(),liveVideoDto.isDemo(),null,liveVideoDto.getCourseId(),0,videoThumb);
+            courseVideo.setVideoType("live");
+            courseVideo.setLiveClassDate(liveVideoDto.getLiveClassDate());
+            courseVideo.setLiveClassTime(liveVideoDto.getLiveClassTime());
+            courseVideo.setId(liveVideoDto.getId());
+            courseVideo.setVideoFormatJson(new ObjectMapper().writer().withDefaultPrettyPrinter().writeValueAsString(ytExtractorDto));
+            CourseVideo courseVideo_saved =courseVideoService.saveCourseVideo(courseVideo);
+            URI location = ServletUriComponentsBuilder.fromPath("{id}*{addr}").buildAndExpand(courseVideo_saved.getId(), URLEncoder.encode(courseVideo_saved.getVideoLocation(), StandardCharsets.UTF_8.toString())).toUri();
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Access-Control-Expose-Headers", "Location");
+            return ResponseEntity.created(location).headers(headers).build();
+        } catch (JsonProcessingException |UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+        
+
     }
+
     @CrossOrigin(origins = "*")
     @PutMapping("/updateVideo")
     public ResponseEntity<Object> updateVideo(@RequestParam("file") MultipartFile file,@RequestParam("videoId") long videoId)
@@ -80,6 +122,26 @@ public class CourseVideoController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Access-Control-Expose-Headers", "Location");
         return ResponseEntity.created(location).headers(headers).build();
+    }
+
+    @CrossOrigin(origins = "*")
+    @PutMapping("/updateLiveVideoLink/{videoId}")
+    public ResponseEntity<Object> updateLiveVideoLink(@RequestBody String videoLink,@PathVariable("videoId") long videoId)
+    {
+
+
+        try {
+            YTExtractorDto ytExtractorDto = YTUrlExtractor.getYTUrlExtractor(videoLink);
+            courseVideoService.updateLiveVideoLink(videoId,ytExtractorDto.getUrl(),new ObjectMapper().writer().withDefaultPrettyPrinter().writeValueAsString(ytExtractorDto));
+            URI location = ServletUriComponentsBuilder.fromPath("{location}").buildAndExpand(videoLink).toUri();
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Access-Control-Expose-Headers", "Location");
+            return ResponseEntity.created(location).headers(headers).build();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+
     }
 
     @CrossOrigin(origins = "*")

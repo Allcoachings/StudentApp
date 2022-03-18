@@ -12,6 +12,14 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LiveVideoDto {
-    private CourseVideo courseVideo;
+    private String liveClassDate;
+    private String liveClassTime;
+    private String name;
+    private String description;
+    private String videoLocation;
+    private long courseId;
+    private long id;
+    private boolean isDemo;
+
     private MultipartFile thumbnail;
 }

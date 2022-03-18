@@ -44,6 +44,10 @@ public interface CourseVideoRepo extends PagingAndSortingRepository<CourseVideo,
     void updateVideoLink(long id,String link);
 
     @Modifying
+    @Query("UPDATE CourseVideo set videoLocation=:link,videoFormatJson=:videoFormatJson WHERE id=:id ")
+    void updateLiveVideoLink(long id,String link,String videoFormatJson);
+
+    @Modifying
     @Query("UPDATE CourseVideo set videoThumb=:link WHERE id=:id")
     void updateVideoThumb(long id,String link);
 
