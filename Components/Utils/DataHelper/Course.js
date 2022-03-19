@@ -338,8 +338,7 @@ export const fetch_courses_live_videos=(courseId,offset, dataLimit, callback)=>
            
             apiUrl = serverApiUrl+'institute/course/video/liveVideosOfCourse/'+courseId+'/'+offset+'/'+dataLimit
              
-               alert(apiUrl)
-
+              
              fetch(apiUrl,
             {
                 method: 'GET',  

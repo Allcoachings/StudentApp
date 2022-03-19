@@ -38,7 +38,7 @@ public class CourseVideo {
     private boolean published;
     private boolean hidden;
     private long views;
-
+    private boolean isStreaming;
     private String liveClassDate;
 
 
@@ -46,6 +46,7 @@ public class CourseVideo {
 
     @Column(columnDefinition = "TEXT")
     private String videoFormatJson;
+
     private String videoType ="offline";//live,offline
     private String videoThumb="https://i.stack.imgur.com/PtbGQ.png";
 

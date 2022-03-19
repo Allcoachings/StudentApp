@@ -130,9 +130,9 @@ public class CourseVideoService {
     }
 
     //count course video
-    public  long countCourseVideo(long courseId)
+    public  long countByCourseIdAndVideoType(long courseId,String videoType)
     {
-        return courseVideoRepo.countByCourseId(courseId);
+        return courseVideoRepo.countByCourseIdAndVideoType(courseId,videoType);
     }
 
 

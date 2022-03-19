@@ -17,7 +17,7 @@ public interface CourseVideoRepo extends PagingAndSortingRepository<CourseVideo,
 
     Page<CourseVideo> findByCourseIdAndVideoType(long id, String videoType,Pageable pageable);
     Page<CourseVideo> findByCourseIdAndHiddenAndVideoType(long id, boolean hidden,String videoType,Pageable pageable);
-    long  countByCourseId(long courseId);
+    long  countByCourseIdAndVideoType(long courseId,String videoType);
 
     @Modifying
     @Query("UPDATE CourseVideo set published=:publishedStatus WHERE id=:id")

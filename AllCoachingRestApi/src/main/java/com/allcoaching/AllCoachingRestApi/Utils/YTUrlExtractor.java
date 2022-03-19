@@ -24,7 +24,7 @@ public class YTUrlExtractor {
 //            String result = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
 
 
-            URL url = new URL("http://localhost:8081/getYtjson ");
+            URL url = new URL("http://localhost:8082/getYtjson");
             HttpURLConnection http = (HttpURLConnection)url.openConnection();
             http.setRequestMethod("POST");
             http.setDoOutput(true);

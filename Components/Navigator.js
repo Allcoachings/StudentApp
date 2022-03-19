@@ -20,6 +20,7 @@ import CategoryList from './CategoryList/CategoryList'
 import Solutions from './Solutions/Solutions'
 import ResultAnalysis from './ResultAnalysis/ResultAnalysis'
 import SubscriptionNew from './SubscriptionNew/SubscriptionNew'
+import { Text } from 'react-native'
 import Feed from './Feed/Feed' 
 import MockTest from './MockTest/MockTest';
 import ExamCategory from './ExamCategory/ExamCategory'
@@ -45,13 +46,20 @@ import { View,Animated } from 'react-native';
 import NotificationTabs from './Home/NotificationTabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import LiveVideoPlayer from './LiveVideoPlayer/LiveVideoPlayer';
-
+import * as Linking from 'expo-linking';
+import {linkingPrefixes} from './config';
+const prefix = Linking.createURL('/');
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+const linking = {
+    prefixes: [Linking.createURL('/'), ...linkingPrefixes],
+  };
+
 function StackNavigation(authStatus) {
     return (
       <Stack.Navigator
-      screenOptions={{ headerShown: false}}
+        screenOptions={{ headerShown: false}}
+        
       >
 
           {authStatus?(          
@@ -60,14 +68,13 @@ function StackNavigation(authStatus) {
                             
                             <Stack.Screen name="Home" component={TabNavigator} />  
                             <Stack.Screen name="Institute"  component={InstituteView} />
-                            <Stack.Screen name="StudentInsView"  component={InstituteView} />
-                          
+                            <Stack.Screen name="StudentInsView"  component={InstituteView} /> 
                             <Stack.Screen name="Solution" component={Solutions}  /> 
                             <Stack.Screen name="ResultAnalysis" component={ResultAnalysis}  /> 
                             <Stack.Screen name="CategoryList" component={CategoryList} /> 
                             <Stack.Screen name="Category" component={CategoryList} /> 
                             <Stack.Screen name="EditProfile" component={Profile} />  
-                            <Stack.Screen name="Notification" component={NotificationTabs} />   
+                            <Stack.Screen name="Notification" path="notification" component={NotificationTabs} />   
                             <Stack.Screen name="AboutCourse" component={AboutCourse} />     
                             <Stack.Screen name="SingleTestSeries" component={TestSeriesView} />
                             <Stack.Screen name="ViewInsTestSeriesList" component={InsTestSeriesList} /> 
@@ -81,7 +88,7 @@ function StackNavigation(authStatus) {
                             <Stack.Screen name="Payment" component={Payment} />
                             <Stack.Screen name="webview" component={WebViewCustom}/>
                             <Stack.Screen name="RenderSingleFeed" component={RenderSingleFeed} />
-                            <Stack.Screen name="PinnedList" component={PinnedList}/> 
+                            <Stack.Screen name="PinnedList"  component={PinnedList}/> 
                             <Stack.Screen name="Enrollments" component={Enrollments}/> 
                             <Stack.Screen name="UserCommunityPosts" component={UserCommunityPosts}/> 
                             <Stack.Screen name="ExamCategory" component={ExamCategory} />
@@ -157,7 +164,7 @@ function Navigator(props) {
 
         ):(null)}
             
-            <NavigationContainer> 
+            <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}> 
 
 
 

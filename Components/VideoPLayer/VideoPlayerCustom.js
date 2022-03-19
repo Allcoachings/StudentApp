@@ -431,6 +431,7 @@ export default VideoPlayerCustom=(props)=>
                         onVideoPlayerTouch:(status)=>{setSideTabsVisible(status);},
                         toggleVideoSettings:(status)=>{console.log(status,"status"); setIsSideScreenVisible(status);setIsSettingModalVisible(status)},
                         isSettingModalVisible,
+                        isLive:props?.route?.params?.item?.videoType=="live",
                         fullscreenScreenConfigChanged:()=>{
                             if(inFullscreen)
                             {

@@ -254,7 +254,7 @@ const VideoPlayer = (tempProps) => {
                 
                 <TouchableButton onPress={togglePlay}>
                         <View> 
-                        {playbackInstanceInfo.state === PlaybackStates.Buffering &&
+                        {playbackInstanceInfo.state === PlaybackStates.Buffering && !props.customFunction.isLive&&
                             (props.icon.loading || <ActivityIndicator {...props.activityIndicator}/>)}
                         {playbackInstanceInfo.state === PlaybackStates.Playing && props.icon.pause}
                         {playbackInstanceInfo.state === PlaybackStates.Paused && props.icon.play}

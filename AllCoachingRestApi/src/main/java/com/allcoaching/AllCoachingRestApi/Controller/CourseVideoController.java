@@ -103,7 +103,11 @@ public class CourseVideoController {
             HttpHeaders headers = new HttpHeaders();
             headers.add("Access-Control-Expose-Headers", "Location");
             return ResponseEntity.created(location).headers(headers).build();
-        } catch (JsonProcessingException |UnsupportedEncodingException e) {
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+         catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().build();
         }
@@ -282,10 +286,10 @@ public class CourseVideoController {
 
     //count course videos
     @CrossOrigin(origins = "*")
-    @GetMapping("/count/{courseId}")
-    public long countDocumentByCourse(@PathVariable  long courseId )
+    @GetMapping("/count/{courseId}/{videoType}")
+    public long countVideoByCourse(@PathVariable  long courseId,@PathVariable String videoType )
     {
-        return courseVideoService.countCourseVideo(courseId);
+        return courseVideoService.countByCourseIdAndVideoType(courseId,videoType);
     }
 
     @CrossOrigin(origins = "*")

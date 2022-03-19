@@ -157,7 +157,15 @@ class RenderVideo extends React.Component {
         {
             if(this.props.videoType&&this.props.videoType=="live")
             {
-                this.props.navigation.navigate("videoplayer",{videoUrl:this.props.item?.videoLocation,videoTitle:this.props.item?.name,postingTime:this.props.item?.date,item:this.props.item,studentName:this.props.userInfo.email,studentNumber:this.props.userInfo.mobileNumber})
+                // if(this.props.item?.streaming&&this.props.item?.videoLocation)
+                if(this.props.item?.videoLocation)
+                {
+                    this.props.navigation.navigate("videoplayer",{videoUrl:this.props.item?.videoLocation,videoTitle:this.props.item?.name,postingTime:this.props.item?.date,item:this.props.item,studentName:this.props.userInfo.email,studentNumber:this.props.userInfo.mobileNumber})
+                }else
+                {
+                    Toast.show("Stream is not available")
+                }
+                
             }else
             {
                 this.props.navigation.navigate("videoplayer",{videoUrl:serverBaseUrl+this.props.item?.videoLocation,videoTitle:this.props.item?.name,postingTime:this.props.item?.date,item:this.props.item,studentName:this.props.userInfo.email,studentNumber:this.props.userInfo.mobileNumber})
