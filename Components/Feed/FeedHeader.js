@@ -18,7 +18,7 @@ class FeedHeader extends Component {
 
 
    
-  actions = ['Edit'];
+  actions = ['Edit','Delete'];
   showThreeMenu=()=>
   {
        
@@ -41,11 +41,14 @@ class FeedHeader extends Component {
 
 
     const actions = this.props.actions?this.props.actions:this.actions
+  
     if (eventName !== 'itemSelected') return 
     switch (actions[index])
     {
         case "Edit":
                   this.props.editFeedPressHandler()
+                  
+                    alert(eventName+""+actions[index])
             break;
         case "Share":  
                 onShare(shareTextFeed+"\n "+shareBaseUrl+"community/post/"+this.props.feed.feed.id)

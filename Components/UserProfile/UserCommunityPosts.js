@@ -77,9 +77,12 @@ function UserCommunityPosts({navigation}) {
         setIsAddFeedModalVisible(false)
     }
 
-    let updateEditFeedState=()=>{}
+    let updateEditFeedState=()=>{
+   
+    }
 
     const setUpdateEditFeedState=(ref)=>{
+        alert("ref "+ref)
         updateEditFeedState=ref;
     }
 
@@ -134,7 +137,7 @@ function UserCommunityPosts({navigation}) {
             noNotificationIcon={true}
             navigation={navigation}
         >
-        <View style={styles.container}>
+        <View style={styles.container}> 
                     {/* <TouchableOpacity  onPress={()=>this.openAddFeedModal()} style={{backgroundColor: theme.textColor, justifyContent: 'center', alignItems: 'center', padding:5, borderRadius:5}}> 
                         <Text style={{color: theme.primaryColor}}>Add Feed</Text>
                     </TouchableOpacity>            */}

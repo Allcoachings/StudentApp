@@ -279,7 +279,10 @@ class InstituteView extends React.Component {
             courseTimeTable:[],
             courseTestSeries:[],
             pinId: '',
-            checkPinned: '' , 
+            checkPinned: '' ,  
+            courseLiveVideoLoaded:false,
+            isCourseLiveVideoLoading:false,
+            courseLiveVideos:[],
         },()=>
             {
                 fetch_instituteDetails(this.state.instituteId,this.instituteCallback)
@@ -338,7 +341,8 @@ class InstituteView extends React.Component {
                 courseTestSeriesLoaded:false,isCourseTestSeriesLoading:false,courseTestSeries:[],
                 courseTestSeriesPlaylistLoaded:false,isCourseTestSeriesPlaylistLoading:false,courseTestSeriesPlaylist:[],
                 courseVideoPlaylistLoaded:false,isCourseVideoPlaylistLoading:false,courseVideosPlaylist:[],
-                courseVideoLoaded:false,isCourseVideoLoading:false,courseVideos:[], 
+                courseVideoLoaded:false,isCourseVideoLoading:false,courseVideos:[],
+                courseLiveVideoLoaded:false,isCourseLiveVideoLoading:false,courseLiveVideos:[],
                 
             },()=>{}  
             )
@@ -1289,7 +1293,7 @@ class InstituteView extends React.Component {
                 navigation={this.props.navigation}
                 pinUnpinFunction={()=>this.setState({pinAlertVisible:true})}
                 showShareIcon={true}
-                shareFun={()=>onShare(shareTextInstitute+"\n https://allcoaching.com/institute/"+this.state.instituteId+"/"+encodeURIComponent(institute.name))}
+                shareFun={()=>onShare(shareTextInstitute+"\n"+shareBaseUrl+"/institute/"+this.state.instituteId+"/"+encodeURIComponent(institute.name))}
             > 
             {loadingInstitute?
             (

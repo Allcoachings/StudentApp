@@ -32,10 +32,14 @@ class FeedText extends Component {
   }
   
   onPopupEvent = (eventName, index) => {
+      alert(eventName)
     if (eventName !== 'itemSelected') return 
+
+        alert("clg")
       switch (index)
       {
           case 0:
+
                     this.editFeedPressHandler()                                                                                                                                 
               break;
           case 1: 
@@ -67,7 +71,14 @@ class FeedText extends Component {
         }
       }
     
-editFeedPressHandler=()=>this.props.mode=="userProfile"||this.props.mode=="insProfile"?(this.props.updateEditFeedState(this.props.item.feed.feed.feedType, this.props.item.feed.feed.description, null, null, this.props.item.feed.feed.id, this.props.index,this.props.item.feed.feed.creationTime)):(null)
+editFeedPressHandler=()=>{
+
+    if(this.props.mode=="userProfile"||this.props.mode=="insProfile")
+    {
+        // alert("edit fun "+this.props.mode)
+        this.props.updateEditFeedState(this.props.item.feed.feed.feedType, this.props.item.feed.feed.description, null, null, this.props.item.feed.feed.id, this.props.index,this.props.item.feed.feed.creationTime)
+    }
+}
 
     unLikeFeedCallBack=(response)=>{
         if(response.status==200)

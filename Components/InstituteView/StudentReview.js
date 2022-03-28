@@ -116,10 +116,11 @@ class StudentReview extends React.Component {
         if(response.status==200)
         {
             response.json().then(data=>{
+                console.log(data)
                 Toast.show("Review Added successfully!!")
                 var obj={"insName": 'Cyberflow', "insReview":data, "studentImage": this.props.userInfo.studentImage, "studentName": this.props.userInfo.name}  
                 console.log("rrevie data ",data)
-                this.setState({ reviews: this.state.reviews.concat(obj), showAddReview: false })
+                this.setState({ reviews: this.state.reviews.concat(obj),studentReviewData:data, showAddReview: false })
                 this.props.increseRating(this.state.rating)
             })
             
@@ -184,7 +185,7 @@ class StudentReview extends React.Component {
                             </View>
                         ):(
                             <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
-                                <TouchableOpacity style={{backgroundColor: theme.blueColor, justifyContent: 'center', alignItems: 'center', padding: 7, borderRadius: 6}} onPress={()=>this.setState({editReviewModal: true, review: this.state.studentReviewData.review, rating: this.state.studentReviewData.rating})}>
+                                <TouchableOpacity style={{backgroundColor: theme.blueColor, justifyContent: 'center', alignItems: 'center', padding: 7, borderRadius: 6}} onPress={()=>this.setState({editReviewModal: true, review: this.state.studentReviewData?.review, rating: this.state.studentReviewData?.rating})}>
                                     <Text style={{color: theme.primaryColor}}>Edit Your Review</Text>
                                 </TouchableOpacity>
                             </View>

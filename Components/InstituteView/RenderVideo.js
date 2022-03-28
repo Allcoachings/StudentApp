@@ -15,7 +15,7 @@ import { setDownloadingItem,setDownloadingItemProgress,removeDownloadingItem } f
 import Arrow_down_circle_black from '../Utils/Icons/Arrow_down_circle_black';
 import Lock from '../Utils/Icons/Lock';
 import NotEnrolledModal from './NotEnrolledModal'
-
+import BlinkView from 'react-native-blink-view'
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
  
@@ -173,8 +173,15 @@ class RenderVideo extends React.Component {
             
         }
     }
+
     render(){
-       
+        function Bull({isVisible}) {
+            return (
+                <Text style={{fontSize:40,color:theme.redColor,marginRight:1}}>
+                    {isVisible?"•":" "}
+                </Text>
+            );
+        }
         return( 
             <View>
                 <View style={styles.videoContainer}>
@@ -193,6 +200,7 @@ class RenderVideo extends React.Component {
                         )):(this.navigateToVideoPlayer())}
                     } >
                         <Image source={{uri:imageProvider(this.props.item?.videoThumb)}} style={styles.videoImage}/>
+                       
                         {this.props.mode!="offline"&&!this.props.studentEnrolled&&!this.props.item?.demo?(
                             <View style={{position: 'absolute',height:30,width:30,backgroundColor:theme.secondaryColor,borderRadius:15,right:5,top:5}}>
                                 <Lock height={20} width={20}/>
@@ -208,8 +216,8 @@ class RenderVideo extends React.Component {
                             {/* <Text numberOfLines={2} style={styles.videoText}>{this.props.item?.description}</Text> */}
                         </View>
                         <View style={{flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center',marginTop:'auto'}}>
-                            <Text>{numFormatter(this.props.item?.views)+" views • "+moment(this.props.item?.date).fromNow()}</Text>
-                            {this.props.downloadMode?(
+                            <Text>{numFormatter(this.props.item?.views)} views • {this.props.videoType=="live"?(moment(this.props.item?.liveClassDate).format("d-M-Y")+" "+this.props.item?.liveClassTime):(moment(this.props.item?.date).fromNow())}</Text>
+                            {this.props.downloadMode&&this.props.item?.videoType!="live"?(
                                 <View style={{flexDirection: 'column',    marginRight:10}}>                  
                                     {this.state.savingItem?(
                                         <TouchableWithoutFeedback
@@ -247,6 +255,18 @@ class RenderVideo extends React.Component {
                                             )
                                     )}
                                 </View>
+                            ):(null)}
+                            {this.props.item?.videoType=="live"?(
+                               this.props.videoType&&this.props.videoType=="live"&&this.props.item?.streaming?( 
+                                <View style={{marginRight:10}}>
+                                    <BlinkView blinking={true} delay={1000}>
+                                        <View style={{flexDirection: 'row',alignItems: 'center'}}>
+                                            <Bull isVisible/> 
+                                            <Text>Live</Text>
+                                        </View>
+                                    </BlinkView>
+                                </View>
+                             ):(null)
                             ):(null)}
                         </View>
                     </View>

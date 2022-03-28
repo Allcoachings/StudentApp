@@ -16,7 +16,7 @@ function UserIcon({userIcon}) {
         <Image
             ref={(ref)=>userImageRef.current=ref}
             source={{uri:imageProvider(user.studentImage)}}
-            style={{height: 25,width:25,backgroundColor:"blue",borderRadius:13}}
+            style={{height: 25,width:25,backgroundColor:"white",borderRadius:13}}
             onError={(props)=>{
             if(userImageRef.current)
             {

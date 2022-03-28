@@ -10,6 +10,7 @@ import BackArrow from '../Utils/Icons/BackArrow'
 import { TOGGLE_HEADER } from '../Actions/types'
 import { useDispatch } from 'react-redux'
 import BackAlert from './BackAlert'
+import BlinkView from '../Utils/BlinkView'
  const  PDFViewer =({route,navigation}) =>
 {
     const [headerVisible,setHeaderVisible] =useState(true);
@@ -115,7 +116,9 @@ import BackAlert from './BackAlert'
                 )}  
           <PDFRenderer pdf={route.params.pdf}/>
          <View style={{flexDirection: 'row',position:'absolute',bottom:80,left:40,zIndex:1000,elevation:1000,opacity:0.4}}>
-                <Text style={{color:theme.featureNoColor}}>{route.params.studentName}{"\n"}{route.params.studentNumber}</Text> 
+                <BlinkView timeout={30000}>
+                  <Text style={{color:theme.featureNoColor,fontSize: 12}}>{route.params.studentName}{"\n"}{route.params.studentNumber}</Text> 
+                </BlinkView>
          </View>  
 
          {backAlertVisible?( <BackAlert

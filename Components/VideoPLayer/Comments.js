@@ -4,8 +4,11 @@ import AddComment from './AddComment'
 import VideoCommentItem from './VideoCommentItem'
 import { Entypo } from '@expo/vector-icons'
 import { theme } from '../config'
+import { useSelector } from 'react-redux'
 function Comments({videoId,unshiftCommets,mode,comments,setIsCommentsVisible,setIsSideScreenVisible,height,width,flatlistHeight,showCloseIcon}) {
     // // console.log(parseFloat(flatlistHeight),flatlistHeight)
+
+    const keyboardHeight = useSelector(state=>state.screen.keyboardHeight)
     return (
         <View style={{width,height}}> 
             <View style={{marginTop:10,flexDirection: 'row',alignItems: 'center'}}> 
@@ -26,7 +29,7 @@ function Comments({videoId,unshiftCommets,mode,comments,setIsCommentsVisible,set
                 </View> 
                 {/* <View style={{position:'absolute',bottom:300,left: 0}}>
                     <Text>dgsdgsdgsdg</Text> */}
-                <View style={{flex:mode=="full"?0.23:1.35}}>
+                <View style={[{flex:mode=="full"?0.30:1.35,marginBottom:(mode!="full"&&keyboardHeight)?keyboardHeight+70:0  },mode=='full'?{position:'absolute',bottom:10,width:'100%'}:{}]}>
                     <AddComment mode={mode} videoId={videoId} unshiftCommets={unshiftCommets}/>
                 </View>
             {/* </View> */}

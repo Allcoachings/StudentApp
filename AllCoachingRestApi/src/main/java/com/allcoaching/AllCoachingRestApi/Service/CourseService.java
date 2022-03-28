@@ -79,7 +79,7 @@ public class CourseService {
     {
         Institute institute = getInstituteByCourseId(courseId);
         Course course = findById(courseId).get();
-        return notificationService.insertNotification(getCourseEnrolledStudent(courseId),institute.getName()+" add a new "+message+" in course "+course.getTitle(),institute.getId(),"institute","course",institute);
+        return notificationService.insertNotification(getCourseEnrolledStudent(courseId),institute.getName()+" add a new "+message+" in course "+course.getTitle(),institute.getId(),"institute","course",institute,courseId);
     }
     @Async
      public CompletableFuture<Iterable<Notification>> sendNotificationAsync(long courseId,String message)

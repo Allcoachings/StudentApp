@@ -234,7 +234,7 @@ class OtpVerification extends React.Component {
                                 <View style={{flexDirection:'row', alignItems: 'center',marginBottom:20}}>
                                     <Text style={{fontFamily:'Raleway_600SemiBold',fontSize:12,color:theme.textColor}}>Having trouble? Write to us at </Text> 
                                     <TouchableWithoutFeedback onPress={()=>{}}>
-                                        <Text style={{fontFamily:'Raleway_700Bold',textDecorationLine: 'underline',fontSize:12,color:theme.greyColor}}>helo@allcoaching.com </Text> 
+                                        <Text style={{fontFamily:'Raleway_700Bold',textDecorationLine: 'underline',fontSize:12,color:theme.greyColor}}>helo@allcoaching.in </Text> 
                                     </TouchableWithoutFeedback>
                                     
                                 </View>

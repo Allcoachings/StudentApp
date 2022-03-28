@@ -241,14 +241,16 @@ const VideoPlayer = (tempProps) => {
           <View style={Object.assign(Object.assign({}, StyleSheet.absoluteFillObject), { backgroundColor: props.style.controlsBackgroundColor, opacity: 0.5 })}/>
           <View style={{width:'100%',alignItems: 'center',flexDirection: 'row',justifyContent: 'center'}} pointerEvents={controlsState === ControlStates.Visible ? 'auto' : 'none'}>
             <View style={[ {marginRight:15,width:'30%',alignSelf: 'flex-end'}]}>
-                <TouchableButton   onPress={()=>fastBackward(10)}>
+                
                     <View style={{height:'100%', width:'100%',alignItems: 'center',justifyContent: 'center'}}> 
                         {playbackInstanceInfo.state !== PlaybackStates.Ended?(
+                            <TouchableButton   onPress={()=>fastBackward(10)}>
                                 <MaterialIcons name="replay-10" style={props.icon.style} size={props.icon.size/1.3} color={props.icon.color}/>
+                            </TouchableButton>
                         ):(null)}
                         
                     </View>
-                </TouchableButton>
+                
             </View>
             <View style={[styles.iconWrapper,{flexDirection: 'row',alignItems: 'center'}]}>
                 
@@ -271,14 +273,16 @@ const VideoPlayer = (tempProps) => {
                 </TouchableButton> 
             </View>
             <View style={[{marginLeft:15,width:'30%',alignSelf: 'flex-end'}]}>
-                <TouchableButton   onPress={()=>fastForward(10)}>
+                
                     <View style={{ height:'100%', width:'100%',alignItems: 'center',justifyContent: 'center'}}>
                         {playbackInstanceInfo.state !== PlaybackStates.Ended?(
+                            <TouchableButton   onPress={()=>fastForward(10)}>
                                 <MaterialIcons name="replay-10" style={props.icon.style} size={props.icon.size/1.3} color={props.icon.color}/>
+                            </TouchableButton>
                         ):(null)}
                         
                     </View>
-                </TouchableButton>
+                
             </View>
           </View>
         </Animated.View>

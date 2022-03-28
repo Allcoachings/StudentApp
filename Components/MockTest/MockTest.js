@@ -46,9 +46,10 @@ class ResultAnalysis extends React.Component {
 
     renderTestItem=(item)=>
     {
-        // console.log("test data",item)
         
-        let date  = moment(item.date, 'DD-MM-YYYY');
+        
+        let date  = moment(item.date, 'YYYY-MM-DD');
+        
         let month = date.format('MMM')
         let day = date.format('DD')
         var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -128,7 +129,7 @@ class ResultAnalysis extends React.Component {
                 }
                 
                      <FlatList 
-                            data={this.state.data} 
+                            data={this.props.data} 
                             renderItem={({item}) =>this.renderTestItem(item)}
                             keyExtractor={(item)=>item.id} 
                             horizontal={false}
@@ -140,11 +141,11 @@ class ResultAnalysis extends React.Component {
                             <Text style={styles.enrollText}>Enroll</Text>
                         </TouchableOpacity>
                     </View> */}
-                    {this.state.isModalVisible?(
+                    {/* {this.state.isModalVisible?(
                         <AddItemModal    appendItems={this.appendItems} isModalVisible={this.state.isModalVisible} closeModal={this.closeModal} insId={this.props.insId} subjectId={this.props.subjectId}/>
                 ):(
                     null
-                )}
+                )} */}
                 </View> 
             // </PageStructure>
         )

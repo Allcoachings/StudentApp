@@ -182,8 +182,7 @@ public class NotificationService {
     }
 
 
-    public Iterable<Notification> insertNotification(List<Long> studentIds,String text,long senderId,String notificationFrom,String notificationType,Institute senderDetails)
-    {
+    public Iterable<Notification> insertNotification(List<Long> studentIds,String text,long senderId,String notificationFrom,String notificationType,Institute senderDetails,long courseId) {
         List<Notification> notificationList = new ArrayList<>();
         studentIds.forEach(studentId->{
             Notification notification = new Notification();
@@ -197,7 +196,19 @@ public class NotificationService {
 
            notificationList.add(notification);
         });
-         return notificationRepo.saveAll(notificationList);
+         NotificationDataDto notificationDto= new NotificationDataDto();
+         notificationDto.setBody(text);
+         notificationDto.setTitle("Notification");
+         notificationDto.setTargetGroup(String.valueOf(courseId));
+         notificationDto.setTargetGroupType("courseStudents");
+
+
+        try {
+            sendNotification(notificationDto);
+        } catch (PushClientException exception) {
+            exception.printStackTrace();
+        }
+        return notificationRepo.saveAll(notificationList);
     }
 
     private List<String> getExpoTokenForStudentsEnrolledInCategory(long category)

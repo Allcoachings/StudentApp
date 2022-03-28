@@ -36,6 +36,7 @@ class AddFeedModal extends Component {
 
   updateState=(type, description, feedImages, pollOptions, id, index,date)=>{
      
+    alert(type + "update ref")
     if(type==1)
     {
         this.setState({postType: type,creationTime: date, feedImageData: feedImages, description: description, mode: "edit", id: id, index: index})
@@ -57,6 +58,7 @@ class AddFeedModal extends Component {
 
   componentDidMount(){
         this.props.setUpdateFun(this.updateState)
+        alert("update ref")
   }
 
 

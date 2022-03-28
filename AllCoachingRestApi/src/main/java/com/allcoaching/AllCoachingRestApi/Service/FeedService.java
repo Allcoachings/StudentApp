@@ -379,7 +379,7 @@ public class FeedService {
     {
         Institute institute = instituteRepo.findById(insId).get();
 
-        return notificationService.insertNotification(insSubscriptionService.getInsFollowerStudentIds(insId),institute.getName()+" shared a post "+message+" in Community ",institute.getId(),"institute","general",institute);
+        return notificationService.insertNotification(insSubscriptionService.getInsFollowerStudentIds(insId),institute.getName()+" shared a post "+message+" in Community ",institute.getId(),"institute","general",institute,0);
     }
     @Async
     public CompletableFuture<Iterable<Notification>> sendNotificationAsync(long insId, String message)

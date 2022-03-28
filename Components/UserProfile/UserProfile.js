@@ -442,8 +442,7 @@ class UserProfile extends React.Component {
                     <FlatList
                         data={this.state.purchase}
                         renderItem={({item}) => this.renderPurchageCourse(item)}
-                        keyExtractor={(item,index)=>index}
-                        ListEmptyComponent={<EmptyList />}
+                        keyExtractor={(item,index)=>index} 
                         ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                         onEndReachedThreshold={0.1}
                         refreshing={this.state.refreshing}
@@ -500,8 +499,7 @@ class UserProfile extends React.Component {
                         <FlatList
                             data={this.state.feeds}
                             renderItem={({item, index}) => this.renderFeedItem(item, index)}
-                            keyExtractor={(item,index)=>index}
-                            ListEmptyComponent={<EmptyList />}
+                            keyExtractor={(item,index)=>index} 
                             ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
                         />
                     )}

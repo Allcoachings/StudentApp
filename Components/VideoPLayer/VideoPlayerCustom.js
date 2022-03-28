@@ -24,7 +24,9 @@ import { Assets } from '../config'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackAlert from './BackAlert'
 import useStateRef from 'react-usestateref'
- 
+import BlinkView from '../Utils/BlinkView'
+import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
+// import BlinkView from 'react-native-blink-view'
 export default VideoPlayerCustom=(props)=>
 {
     //   // console.log(props);
@@ -59,6 +61,7 @@ export default VideoPlayerCustom=(props)=>
 
     useEffect( 
         ()=>{
+            activateKeepAwake()
             (async () => {
                 const videoStatusString  = await AsyncStorage.getItem(videoUrl)
                 // console.log(videoStatusString,"videoStatusString")
@@ -370,11 +373,17 @@ export default VideoPlayerCustom=(props)=>
         setVideoHeight(getHeight())
         setVideoWidth(getWidth()) 
     },[isSideScreenVisible,isScreenConfigChanged,inFullscreen])
+    useEffect(() =>{
+
+    },[])
     return(
         <>
         <View style={{backgroundColor:isSideScreenVisible?theme.secondaryColor:theme.primaryColor,flex:1}}>
              <View style={{flexDirection: 'row',position:'absolute',top:40,left:40,zIndex:1000,elevation:1000,opacity:0.4}}>
-                <Text style={{color:theme.featureNoColor}}>{route.params.studentName}{"\n"}{route.params.studentNumber}</Text> 
+                <BlinkView timeout={30000}>
+                    <Text style={{color:theme.featureNoColor,fontSize: 12}}>{route.params.studentName}{"\n"}{route.params.studentNumber}</Text>                             
+                </BlinkView>
+                
             </View> 
             <View style={[{flexDirection:'row'},!inFullscreen?({height:200}):(null)]}>
                 <VideoPlayer 
@@ -555,7 +564,7 @@ export default VideoPlayerCustom=(props)=>
 
         {backAlertVisible?( <BackAlert
                     closeModal={()=>setBackAlertVisible(false)}
-                    yesFun={()=>props.navigation.goBack()}
+                    yesFun={()=>{deactivateKeepAwake();props.navigation.goBack()}}
                     noFun={()=>setBackAlertVisible(false)}
                 />):(null)}
         </>

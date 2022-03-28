@@ -9,6 +9,7 @@ import com.allcoaching.AllCoachingRestApi.Respository.CourseVideoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -75,12 +76,12 @@ public class CourseVideoService {
     //fetching video by course Id
     public  Iterable<CourseVideo> findLiveVideosByCourseId(long id,int page,int pageSize)
     {
-        return extractDataFromPage(courseVideoRepo.findByCourseIdAndVideoType(id,"live", PageRequest.of(page,pageSize)));
+        return extractDataFromPage(courseVideoRepo.findByCourseIdAndVideoType(id,"live", PageRequest.of(page,pageSize, Sort.by(Sort.Direction.DESC,"liveClassDate","liveClassTime"))));
     }
     //fetching video by course Id and hidden
     public  Iterable<CourseVideo> findByCourseIdAndHidden(long id,boolean hidden,int page,int pageSize)
     {
-        return extractDataFromPage(courseVideoRepo.findByCourseIdAndHiddenAndVideoType(id, hidden,"offline",PageRequest.of(page,pageSize)));
+        return extractDataFromPage(courseVideoRepo.findByCourseIdAndHiddenAndVideoType(id, hidden,"offline",PageRequest.of(page,pageSize,Sort.by(Sort.Direction.DESC,"date"))));
     }
 
     //fetching video by  Id
