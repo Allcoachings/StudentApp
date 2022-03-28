@@ -34,10 +34,9 @@ public class CourseVideoService {
     //saving video to video repo
     public CourseVideo saveCourseVideo(CourseVideo courseVideo)
     {
-        System.out.println(courseVideo.getId()+" video id before");
+
         long videoId = courseVideo.getId();
         CourseVideo courseVideo_saved  = courseVideoRepo.save(courseVideo);
-        System.out.println(courseVideo.getCourseId()+" video id after");
 
         if(videoId==0)
         {

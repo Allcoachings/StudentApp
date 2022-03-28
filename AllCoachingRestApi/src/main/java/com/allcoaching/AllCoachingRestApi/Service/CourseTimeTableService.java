@@ -34,8 +34,9 @@ public class CourseTimeTableService {
     //inserting timetable subject
     public CourseTimeTableSubject saveSubject(CourseTimeTableSubject courseTimeTableSubject)
     {
+        long id = courseTimeTableSubject.getId();
        CourseTimeTableSubject courseTimeTableSubject_saved = subjectRepo.save(courseTimeTableSubject);
-       if(courseTimeTableSubject.getId()!=0)
+       if(id==0)
        {
            courseService.sendNotificationToEnrolledStudents(courseTimeTableSubject_saved.getCourseId(),"new timetable added "+courseTimeTableSubject_saved.getName());
        }

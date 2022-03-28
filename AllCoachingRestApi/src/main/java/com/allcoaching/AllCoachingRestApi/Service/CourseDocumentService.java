@@ -35,8 +35,9 @@ public class CourseDocumentService {
     //saving document to document  repo
     public CourseDocument save(CourseDocument courseDocument)
     {
+        long id = courseDocument.getId();
         CourseDocument courseDocument_saved =  courseDocumentRepo.save(courseDocument);
-        if(courseDocument.getId()!=0)
+        if(id==0)
         {
             courseService.sendNotificationToEnrolledStudents(courseDocument_saved.getCourseId(),"new document  "+courseDocument_saved.getName());
         }
