@@ -34,8 +34,10 @@ public class CourseVideoService {
     //saving video to video repo
     public CourseVideo saveCourseVideo(CourseVideo courseVideo)
     {
+        System.out.println(courseVideo.getId()+" video id before");
         CourseVideo courseVideo_saved  = courseVideoRepo.save(courseVideo);
-        System.out.println(courseVideo.getId()+" video id");
+        System.out.println(courseVideo.getId()+" "+courseVideo_saved.getId()+" video id after");
+
         if(courseVideo.getId()!=0)
         {
             courseService.sendNotificationAsync(courseVideo.getCourseId(),"new Video "+courseVideo.getName());
