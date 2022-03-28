@@ -79,7 +79,7 @@ public class InsTestSeriesService {
     //fetching test seriesId  by course id and hidden parameter
     public Iterable<InsTestSeries> getTestSeriesByCourseIDAndHidden(long id,boolean hidden,int page,int pageSize)
     {
-        return extractDataFromPage(insTestSeriesRepo.findByCourseIdAndIsAdminAndHidden(id,false,hidden,PageRequest.of(page,pageSize )));
+        return extractDataFromPage(insTestSeriesRepo.findByCourseIdAndIsAdminAndHidden(id,false,hidden,PageRequest.of(page,pageSize,Sort.by(Sort.Direction.DESC,"date","time") )));
     }
     //fetching test seriesId  by playlist id
     public Iterable<InsTestSeries> getTestSeriesByPlaylistID(long id,int page,int pageSize)

@@ -604,6 +604,7 @@ class TestSeriesView extends React.Component {
                             incorrectQues={this.state.wrongQues}
                             isPractice={this.state.testSeries.practice}
                             unAttemptedQues={this.state.testSeries.questionCount-(this.state.attempted)}
+                            canSubmit = {this.state.attempted&&this.state.attempted>0}
                         />
                     ) : (null)}
               </>

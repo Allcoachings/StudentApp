@@ -42,13 +42,14 @@ const  Notification = ({route,navigation}) => {
 
     const notificationCallback=(response)=>
     {
+        
          
         if(response.status==200)
         {
             response.json().then(data=>
             {
                  
-                 
+                 console.log(data)
                      
                     setNotifications([...notifications,...data])
                     setIsNotificationLoading(false)

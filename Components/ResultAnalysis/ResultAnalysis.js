@@ -298,7 +298,7 @@ class ResultAnalysis extends React.Component {
                                     <View style={styles.scoreView}>
                                         <Text style={styles.scoreRankText}>Score</Text>
                                         <View style={styles.marksView}>
-                                            <Text style={styles.obtainedMarks}>{testSeriesData?.testData?.brief?.score}</Text>
+                                            <Text style={styles.obtainedMarks}>{parseFloat(testSeriesData?.testData?.brief?.score).toFixed(3)}</Text>
                                             <Text> out of {testSeriesData?.testData?.series?.maxMarks} </Text> 
                                         </View>
                                     </View>

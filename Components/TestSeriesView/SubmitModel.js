@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
 import { View, Text,TouchableOpacity,TouchableWithoutFeedback,Dimensions,Image, Modal, TextInput, ImageBackground } from 'react-native';
 import CardView from '../Utils/CardView';
-import {theme, Assets,defaultStudentImage} from '../config'
+import {theme, Assets,defaultStudentImage} from '../config' 
+
+import Toast from 'react-native-simple-toast';
 const width = Dimensions.get('window').width
 const height = Dimensions.get('screen').height
-const SubmitModel = ({closeModal,yesFun,noFun,isPractice,correctQues,incorrectQues,unAttemptedQues})=> {
+const SubmitModel = ({closeModal,yesFun,noFun,isPractice,canSubmit,correctQues,incorrectQues,unAttemptedQues})=> {
      
     const [selectedOpt,setSelectedOpt] = useState()
      
@@ -51,7 +53,16 @@ const SubmitModel = ({closeModal,yesFun,noFun,isPractice,correctQues,incorrectQu
                                     <TouchableOpacity onPress={()=>{closeModal();noFun?noFun():null}}>
                                         <Text style={{fontSize: 15, fontFamily: 'Raleway_700Bold',color: theme.greyColor}}>CANCEL</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={{marginLeft: 20,marginRight: 20}} onPress={yesFun}> 
+                                    <TouchableOpacity style={{marginLeft: 20,marginRight: 20}} onPress={()=>{
+                                        if(canSubmit)
+                                        {
+                                            yesFun()
+                                        }else
+                                        {
+                                            Toast.show("Please attempt atleast 1 question to submit")
+                                        }
+                                        
+                                        }}> 
                                         <Text style={{fontSize: 15, fontFamily: 'Raleway_700Bold',color: theme.darkYellowColor}}>Submit</Text>
                                     </TouchableOpacity>
                                 </View>

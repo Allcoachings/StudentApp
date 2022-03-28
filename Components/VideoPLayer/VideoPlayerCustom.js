@@ -26,6 +26,7 @@ import BackAlert from './BackAlert'
 import useStateRef from 'react-usestateref'
 import BlinkView from '../Utils/BlinkView'
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
+ 
 // import BlinkView from 'react-native-blink-view'
 export default VideoPlayerCustom=(props)=>
 {
@@ -58,10 +59,13 @@ export default VideoPlayerCustom=(props)=>
 
         setComments([commentObj,...comments])
     }
-
+    useEffect(() => {
+        activateKeepAwake()
+    },[])
+    
     useEffect( 
         ()=>{
-            activateKeepAwake()
+            
             (async () => {
                 const videoStatusString  = await AsyncStorage.getItem(videoUrl)
                 // console.log(videoStatusString,"videoStatusString")
