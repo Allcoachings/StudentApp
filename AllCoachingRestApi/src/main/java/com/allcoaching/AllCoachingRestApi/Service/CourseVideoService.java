@@ -35,10 +35,11 @@ public class CourseVideoService {
     public CourseVideo saveCourseVideo(CourseVideo courseVideo)
     {
         System.out.println(courseVideo.getId()+" video id before");
+        long videoId = courseVideo.getId();
         CourseVideo courseVideo_saved  = courseVideoRepo.save(courseVideo);
-        System.out.println(courseVideo.getId()+" "+courseVideo_saved.getId()+" video id after");
+        System.out.println(courseVideo.getCourseId()+" video id after");
 
-        if(courseVideo.getId()!=0)
+        if(videoId==0)
         {
             courseService.sendNotificationAsync(courseVideo.getCourseId(),"new Video "+courseVideo.getName());
         }
