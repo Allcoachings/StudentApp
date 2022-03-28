@@ -41,6 +41,7 @@ public class CourseVideoService {
 
         if(videoId==0)
         {
+            System.out.println(courseVideo.getCourseId()+" video id after");
             courseService.sendNotificationAsync(courseVideo.getCourseId(),"new Video "+courseVideo.getName());
         }
 
