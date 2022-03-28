@@ -42,7 +42,7 @@ public interface CourseRepo extends CrudRepository<Course,Long> {
     @Query("Select Count(DISTINCT ir.studentId) from   InsReview ir where ir.courseId=:courseId")
     long countStudentsEnrolled(long courseId);
 
-    @Query("Select i from Institute i,Course c where i.id=c.instId")
+    @Query("Select DISTINCT i from Institute i,Course c where i.id=c.instId")
     Institute findInstitueByCourseid(long courseId);
 
 
