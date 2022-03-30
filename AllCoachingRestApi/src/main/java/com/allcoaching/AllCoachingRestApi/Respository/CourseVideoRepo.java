@@ -24,6 +24,10 @@ public interface CourseVideoRepo extends PagingAndSortingRepository<CourseVideo,
     void updatePublishedStatus(boolean publishedStatus,long id);
 
     @Modifying
+    @Query("UPDATE CourseVideo set isStreaming=:isStreaming WHERE id=:id")
+    void updateStreamingStatus(boolean isStreaming,long id);
+
+    @Modifying
     @Query("UPDATE CourseVideo set views=views+1 WHERE id=:id")
     void updateCourseVideoViews(long id);
 

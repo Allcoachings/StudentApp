@@ -106,6 +106,12 @@ public class CourseVideoService {
         courseVideoRepo.updatePublishedStatus(status,id);
     }
 
+    //updating streaming Status
+    public void updateStreamingStatus(boolean status,long id)
+    {
+        courseVideoRepo.updateStreamingStatus(status,id);
+    }
+
     //updating video views
     public void updateVideoViewsById(long id)
     {
