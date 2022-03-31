@@ -50,7 +50,17 @@ public class InsTestSeriesService {
     public InsTestSeries createTestSeries(InsTestSeries insTestSeries)
     {
 
-        return insTestSeriesRepo.save(insTestSeries);
+        InsTestSeries insTestSeries_saved  =  insTestSeriesRepo.save(insTestSeries);
+        if(!insTestSeries.isHidden())
+        {
+            long courseId = insTestSeries.getCourseId();
+            if(!insTestSeries.isAdmin())
+            {
+                System.out.println("notification sent");
+                courseService.sendNotificationAsync(courseId,"Test Series  "+insTestSeries.getTitle()+" published ");
+            }
+        }
+        return insTestSeries_saved;
 
     }
 
@@ -179,24 +189,14 @@ public class InsTestSeriesService {
     public void updatePublishedStatusById(boolean status,long id)
     {
 
-         
+
         insTestSeriesRepo.updatePublishedStatus(status,id);
     }
 
     //updating hidden Status
     public void updateHiddenStatusById(boolean status,long id)
     {
-        if(!status)
-        {
-            InsTestSeries  insTestSeries= findById(id).get();
-            long courseId = insTestSeries.getCourseId();
-            if(!insTestSeries.isAdmin())
-            {
-                courseService.sendNotificationAsync(courseId,"Test Series  "+insTestSeries.getTitle()+" published ");
-            }
 
-
-        }
         insTestSeriesRepo.updateHiddenStatus(status,id);
     }
 
