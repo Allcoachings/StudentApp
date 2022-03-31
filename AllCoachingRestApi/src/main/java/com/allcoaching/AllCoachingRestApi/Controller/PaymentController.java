@@ -128,7 +128,8 @@ public class PaymentController {
         } catch (Exception e) {
             result = e.toString();
         }
-
+        
+        System.out.println(result);
         model.addAttribute("result",result);
         parameters.remove("CHECKSUMHASH");
         model.addAttribute("parameters",parameters);

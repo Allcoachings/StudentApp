@@ -24,6 +24,7 @@ function UserCommunityPosts({navigation}) {
     const [offset,setOffset] = useState(0)
     const [loadingFooter,setLoadingFooter] = useState(false)
     const [loadMore,setLoadMore] = useState(true)
+    const [editFeedObj,setEditFeedObj] = useState(null)
     const checkForUserCat=()=>
     {
         AsyncStorage.getItem("userCat").then((response)=>{
@@ -41,6 +42,12 @@ function UserCommunityPosts({navigation}) {
              }
         })
     }
+    const removeFeedFromState = (index) =>
+    {
+        let arr = [...feeds]
+        arr.splice(index,1)
+        setFeeds(arr);
+    }
     const renderFeedItem=(item, index)=>
     {
         
@@ -48,17 +55,17 @@ function UserCommunityPosts({navigation}) {
         {
             case 1:
                 return (
-                    <FeedImage item={item} type={2} navigation={navigation} mode="userProfile" updateEditFeedState={updateEditFeedState} index={index}/>
+                    <FeedImage removeFeedFromState={removeFeedFromState} item={item} type={2} navigation={navigation} mode="userProfile" updateEditFeedState={updateEditFeedState} index={index}/>
                 )
             case 2:
            
 
                 return (
-                    <FeedPoll item={item} type={2} navigation={navigation} mode="userProfile" updateEditFeedState={updateEditFeedState} index={index}/>
+                    <FeedPoll removeFeedFromState={removeFeedFromState} item={item} type={2} navigation={navigation} mode="userProfile" updateEditFeedState={updateEditFeedState} index={index}/>
                 )
             case 3:
                 return (
-                    <FeedText item={item} type={2} navigation={navigation} mode="userProfile" updateEditFeedState={updateEditFeedState} index={index}/>
+                    <FeedText removeFeedFromState={removeFeedFromState} item={item} type={2} navigation={navigation} mode="userProfile" updateEditFeedState={updateEditFeedState} index={index}/>
                 )
         }
     }
@@ -77,13 +84,13 @@ function UserCommunityPosts({navigation}) {
         setIsAddFeedModalVisible(false)
     }
 
-    let updateEditFeedState=()=>{
+    let updateEditFeedState=(feed)=>{
+        setEditFeedObj(feed)
    
     }
 
     const setUpdateEditFeedState=(ref)=>{
-        alert("ref "+ref)
-        updateEditFeedState=ref;
+         
     }
 
     useEffect(()=>{ 
@@ -151,7 +158,8 @@ function UserCommunityPosts({navigation}) {
                                 postedBy={2}
                                 categoryId={categoryId}
                                 instituteDetails={userInfo}
-                                setUpdateFun={setUpdateEditFeedState}
+                                // setUpdateFun={setUpdateEditFeedState}
+                                editFeedObj={editFeedObj}
                                 updateSingleFeed={updateSingleFeed}
                         />
                     </View>

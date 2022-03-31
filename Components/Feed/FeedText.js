@@ -32,10 +32,10 @@ class FeedText extends Component {
   }
   
   onPopupEvent = (eventName, index) => {
-      alert(eventName)
+      
     if (eventName !== 'itemSelected') return 
 
-        alert("clg")
+       
       switch (index)
       {
           case 0:
@@ -76,7 +76,7 @@ editFeedPressHandler=()=>{
     if(this.props.mode=="userProfile"||this.props.mode=="insProfile")
     {
         // alert("edit fun "+this.props.mode)
-        this.props.updateEditFeedState(this.props.item.feed.feed.feedType, this.props.item.feed.feed.description, null, null, this.props.item.feed.feed.id, this.props.index,this.props.item.feed.feed.creationTime)
+        this.props.updateEditFeedState({...this.props.item,index:this.props.index})
     }
 }
 
@@ -104,7 +104,7 @@ editFeedPressHandler=()=>{
         // CardView(
             <View style={{flexDirection: 'column', padding: 5}}>
                 <View style={styles.boxView}>
-                    <FeedHeader actions={this.props.actions} navigation={this.props.navigation} feed={feed} editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime} mode={this.props.mode}/>
+                    <FeedHeader removeFeedFromState={this.props.removeFeedFromState} index={this.props.index} actions={this.props.actions} navigation={this.props.navigation} feed={feed} editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime} mode={this.props.mode}/>
                     <View onPress={()=>this.props.navigation.navigate("RenderSingleFeed",{id: feed.feed.id})} style={styles.innerBoxView}> 
                         {/* <Text style={{fontFamily:'Raleway_400Regular', marginVertical: 10,fontSize:17}}>{feed.feed.description}</Text> */}
                         <RenderHTML

@@ -118,7 +118,7 @@ class FeedPoll extends Component {
             break;
       }
     }
-    editFeedPressHandler =()=>this.props.mode=="userProfile"||this.props.mode=="insProfile"?(this.props.updateEditFeedState(this.props.item.feed.feed.feedType, this.props.item.feed.feed.pollQuestion, null, this.state.optionData, this.props.item.feed.feed.id, this.props.index,this.props.item.feed.feed.creationTime)):(null)
+    editFeedPressHandler =()=>this.props.mode=="userProfile"||this.props.mode=="insProfile"?(this.props.updateEditFeedState({...this.props.item,index:this.props.index})):(null)
     render() {
     // // console.log("this.state.canUserLike", this.state.optionData)
     const{feed,posterObject} = this.props.item 
@@ -131,7 +131,7 @@ class FeedPoll extends Component {
         // CardView(
             <View style={{flexDirection: 'column', padding: 5}}>
                 <View style={styles.boxView}> 
-                    <FeedHeader actions={this.props.actions} navigation={this.props.navigation} feed={feed}  mode={this.props.mode} editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime}/>
+                    <FeedHeader  removeFeedFromState={this.props.removeFeedFromState} index={this.props.index} actions={this.props.actions} navigation={this.props.navigation} feed={feed}  mode={this.props.mode} editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime}/>
                     <View onPress={()=>this.props.navigation.navigate("RenderSingleFeed",{id: feed.feed.id})} style={styles.innerBoxView}>
                         
                         {/* <Text style={{fontFamily:'Raleway_400Regular', marginVertical: 10,fontSize:17}}>{feed.feed.pollQuestion}</Text> */}

@@ -4,7 +4,7 @@ import {Assets, imageProvider, serverBaseUrl, shareBaseUrl, shareTextFeed, theme
 import moment from 'moment'
 import {EvilIconsns, AntDesign, FontAwesome, Feather, MaterialIcons} from '@expo/vector-icons';
 import onShare from '../Utils/Share';
-
+import {deleteFeed} from '../Utils/DataHelper/Feed'
 import Toast from 'react-native-simple-toast';
 import * as Clipboard from 'expo-clipboard';
 import ReportFeedModal from './ReportFeedModal';
@@ -47,8 +47,18 @@ class FeedHeader extends Component {
     {
         case "Edit":
                   this.props.editFeedPressHandler()
-                  
-                    alert(eventName+""+actions[index])
+                   
+            break;
+        case "Delete":
+
+            deleteFeed(this.props.feed.feed.id,(response)=>
+            { 
+                if(response.status==200)
+                {
+                    this.props.removeFeedFromState?this.props.removeFeedFromState(this.props.index):null
+                }
+            })
+                   
             break;
         case "Share":  
                 onShare(shareTextFeed+"\n "+shareBaseUrl+"community/post/"+this.props.feed.feed.id)

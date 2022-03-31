@@ -100,7 +100,7 @@ addImage=(link, type)=>{
 }
 
 
-    editFeedPressHandler=()=>this.props.mode=="userProfile"||this.props.mode=="insProfile"?(this.props.updateEditFeedState(this.props.item.feed.feed.feedType, this.props.item.feed.feed.description, this.props.item.feed.feedImages, null, this.props.item.feed.feed.id, this.props.index,this.props.item.feed.feed.creationTime)):(null)
+    editFeedPressHandler=()=>this.props.mode=="userProfile"||this.props.mode=="insProfile"?(this.props.updateEditFeedState({...this.props.item,index:this.props.index})):(null)
 
   render() {
     const{feed,posterObject} = this.props.item 
@@ -109,7 +109,7 @@ addImage=(link, type)=>{
         // CardView(
             <View style={{flexDirection: 'column', padding: 5}}>
                 <View style={styles.boxView}>
-                    <FeedHeader actions={this.props.actions} navigation={this.props.navigation} mode={this.props.mode} editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime} feed={feed}/>
+                    <FeedHeader  removeFeedFromState={this.props.removeFeedFromState} index={this.props.index} actions={this.props.actions} navigation={this.props.navigation} mode={this.props.mode} editFeedPressHandler={this.editFeedPressHandler} posterObject={posterObject} postedBy={feed.feed.postedBy} creationTime={feed.feed.creationTime} feed={feed}/>
                     <View style={styles.innerBoxView} onPress={()=>this.props.navigation.navigate("RenderSingleFeed",{id: feed.feed.id})}>
                         
                         {feed.feed.description?( 
@@ -124,8 +124,8 @@ addImage=(link, type)=>{
                                     source={{html:feed.feed.description}}
                                 />
                             </View>
-                        ):(null)}
-
+                        ):(null)} 
+                        {console.log(imageProvider(feed.feedImages[0].feedImage,"feed image "))}
                         {feed.feedImages.length == 1?(
                             <TouchableOpacity onPress={()=>this.addImage(imageProvider(feed.feedImages[0].feedImage), "normal")}>
                                 <Image source={{uri:imageProvider(feed.feedImages[0].feedImage)}} style={styles.img}/>

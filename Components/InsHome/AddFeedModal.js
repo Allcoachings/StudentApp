@@ -34,34 +34,29 @@ class AddFeedModal extends Component {
       showFeedTypeOptions:false
   }
 
-  updateState=(type, description, feedImages, pollOptions, id, index,date)=>{
-     
-    alert(type + "update ref")
-    if(type==1)
-    {
-        this.setState({postType: type,creationTime: date, feedImageData: feedImages, description: description, mode: "edit", id: id, index: index})
-    }
-    else if(type==2)
-    {
-        this.setState({postType: type,creationTime: date, pollOptions: pollOptions, mode: "edit", id: id, description: description, pollOptionCounter: pollOptions.length, index: index})
-    }
-    else if(type==3)
-    {
-        this.setState({postType: type,creationTime: date, description: description, mode: "edit", id: id, index: index})
-    }
-    if(this.descriptionTextInput)
-    {
-        this.descriptionTextInput.focus(); 
-    }
-    
-  }
+  
 
-  componentDidMount(){
-        this.props.setUpdateFun(this.updateState)
-        alert("update ref")
-  }
-
-
+componentDidUpdate(prevProps, prevState) {
+    if(this.props.editFeedObj&&prevProps.editFeedObj!=this.props.editFeedObj)
+    {
+        if(this.props.editFeedObj.feed.feed.feedType==1)
+        {
+            this.setState({postType: this.props.editFeedObj.feed.feed.feedType,creationTime: this.props.editFeedObj.feed.feed.creationTime, feedImageData: this.props.editFeedObj.feed.feedImages?this.props.editFeedObj.feed.feedImages:[], description: this.props.editFeedObj.feed.feed.description, mode: "edit", id: this.props.editFeedObj.feed.feed.id, index: this.props.editFeedObj.index})
+        }
+        else if(this.props.editFeedObj.feed.feed.feedType==2)
+        {
+            this.setState({postType: this.props.editFeedObj.feed.feed.feedType,creationTime: this.props.editFeedObj.feed.feed.creationTime, pollOptions: this.props.editFeedObj.feed.feedPollOptions?this.props.editFeedObj.feed.feedPollOptions:[], mode: "edit", id: this.props.editFeedObj.feed.feed.id, description: this.props.editFeedObj.feed.feed.pollQuestion, pollOptionCounter: this.props.editFeedObj?.feed?.feedPollOptions?.length?this.props.editFeedObj?.feed?.feedPollOptions?.length:0, index: this.props.editFeedObj.index})
+        }
+        else if(this.props.editFeedObj.feed.feed.feedType==3)
+        {
+            this.setState({postType: this.props.editFeedObj.feed.feed.feedType,creationTime: this.props.editFeedObj.feed.feed.creationTime, description: this.props.editFeedObj.feed.feed.description, mode: "edit", id: this.props.editFeedObj.feed.feed.id, index: this.props.editFeedObj.index})
+        }
+        if(this.descriptionTextInput)
+        {
+            this.descriptionTextInput.focus(); 
+        }
+    }
+}
 
   check = async () => 
   {
@@ -103,8 +98,8 @@ class AddFeedModal extends Component {
 
           ]})
 
-        let feedItem = {feed:this.state.feedItem};
-        feedItem['posterObject']=this.props.instituteDetails
+        // let feedItem = {feed:this.state.feedItem};
+        // feedItem['posterObject']=this.props.instituteDetails
 
         // if(this.state.postType==1)
         // {
@@ -118,13 +113,19 @@ class AddFeedModal extends Component {
 
         
         if(this.state.mode!="edit"){ 
-
+            let feedItem = {feed:{...this.state.feedItem,feed:{...this.state.feedItem.feed,id:response.headers.map.location}}};
+               
+            feedItem['posterObject']=this.props.instituteDetails
             this.props.addFeedCallBack(feedItem)
+
         }
         else
         {
          
+            let feedItem = {feed: this.state.feedItem};
+                feedItem['posterObject']=this.props.instituteDetails
             this.props.updateSingleFeed(feedItem, this.state.index)
+            this.setState({mode:"add",id:null})
         }
         if(this.props.closeModal)
         {
@@ -172,7 +173,7 @@ class AddFeedModal extends Component {
             }
             this.setState({feedItem:feed}) 
             
-            saveFeed(feed,this.handleAddFeedCallback)
+            saveFeed(feed, this.handleAddFeedCallback)
           }
             
       }else
@@ -281,7 +282,7 @@ class AddFeedModal extends Component {
           //   // console.log(result);
           //   setImageLoading(true);
             // this.setState({changedImage:result,studentImagePrev:{uri:result.uri}})
-            console.log(result);
+            // console.log(result);
             let feedImageData  = [...this.state.feedImageData];
                   feedImageData.unshift(result)
                   this.setState({feedImageData})

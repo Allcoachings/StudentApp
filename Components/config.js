@@ -121,12 +121,19 @@ export const Assets = {
 }
 
 
-export const imageProvider=(url) => {
-
+export const imageProvider=(url) => { 
     if(url&&(url?.startsWith('files/')))
     {
         return serverBaseUrl+url;
+    }else
+    {
+        if( url?.uri)
+        {
+           
+            return url.uri
+        }
     }
+    
     return url;
 }
 

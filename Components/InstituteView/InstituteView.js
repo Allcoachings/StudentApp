@@ -3,7 +3,7 @@ import { Image, Text, View,StyleSheet,ScrollView,FlatList,TouchableOpacity, Moda
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure'
 import {instituteData} from '../../FakeDataService/FakeData'
 import { AirbnbRating,Rating } from 'react-native-ratings';
-import {theme,screenMobileWidth,serverBaseUrl,documentPlaceholder,dataLimit, Assets, imageProvider, shareTextInstitute} from '../config'
+import {theme,screenMobileWidth,serverBaseUrl,documentPlaceholder,dataLimit, Assets, imageProvider, shareTextInstitute,shareBaseUrl} from '../config'
 import CardView from '../Utils/CardView';
 import MarqueeText from 'react-native-marquee';
 import { EvilIcons, Feather } from '@expo/vector-icons';

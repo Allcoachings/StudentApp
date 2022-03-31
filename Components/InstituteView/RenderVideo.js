@@ -14,8 +14,8 @@ import CircularProgress from 'react-native-circular-progress-indicator';
 import { setDownloadingItem,setDownloadingItemProgress,removeDownloadingItem } from '../Actions';
 import Arrow_down_circle_black from '../Utils/Icons/Arrow_down_circle_black';
 import Lock from '../Utils/Icons/Lock';
-import NotEnrolledModal from './NotEnrolledModal'
-import BlinkView from 'react-native-blink-view'
+import NotEnrolledModal from './NotEnrolledModal' 
+import BlinkView from '../Utils/BlinkView';
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
  
@@ -215,7 +215,7 @@ class RenderVideo extends React.Component {
                         <View>
                             {/* <Text numberOfLines={2} style={styles.videoText}>{this.props.item?.description}</Text> */}
                         </View>
-                        <View style={{flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center',marginTop:'auto'}}>
+                        <View style={{flexDirection: 'row',justifyContent: 'space-between',}}>
                             <Text>{numFormatter(this.props.item?.views)} views • {this.props.videoType=="live"?(moment(this.props.item?.liveClassDate).format("d-M-Y")+" "+this.props.item?.liveClassTime):(moment(this.props.item?.date).fromNow())}</Text>
                             {this.props.downloadMode&&this.props.item?.videoType!="live"?(
                                 <View style={{flexDirection: 'column',    marginRight:10}}>                  
@@ -256,10 +256,13 @@ class RenderVideo extends React.Component {
                                     )}
                                 </View>
                             ):(null)}
-                            {this.props.item?.videoType=="live"?(
+                            
+                        </View>
+                        <View style={{height:10}}>
+                        {this.props.item?.videoType=="live"?(
                                this.props.videoType&&this.props.videoType=="live"&&this.props.item?.streaming?( 
                                 <View style={{marginRight:10}}>
-                                    <BlinkView blinking={true} delay={1000}>
+                                    <BlinkView  timeout={1000}>
                                         <View style={{flexDirection: 'row',alignItems: 'center'}}>
                                             <Bull isVisible/> 
                                             <Text>Live</Text>
