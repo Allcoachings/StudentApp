@@ -178,6 +178,14 @@ public class InsTestSeriesService {
     //updating published Status
     public void updatePublishedStatusById(boolean status,long id)
     {
+
+        if(status)
+        {
+            InsTestSeries  insTestSeries= findById(id).get();
+            long courseId = insTestSeries.getCourseId();
+            courseService.sendNotificationAsync(courseId,"Test Series  "+insTestSeries.getTitle()+" published ");
+
+        }
         insTestSeriesRepo.updatePublishedStatus(status,id);
     }
 
