@@ -10,6 +10,7 @@ import com.allcoaching.AllCoachingRestApi.Respository.CourseDocumentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class CourseDocumentService {
     //fetching documents  by course id and hidden parameter
     public Iterable<CourseDocument> findByCourseIdAndHidden(long id,boolean hidden,int page,int pageSize)
     {
-        return extractDataFromPage(courseDocumentRepo.findByCourseIdAndHidden(id, hidden,PageRequest.of(page,pageSize)));
+        return extractDataFromPage(courseDocumentRepo.findByCourseIdAndHidden(id, hidden,PageRequest.of(page,pageSize, Sort.by(Sort.Direction.DESC,"date"))));
 
     }
 
