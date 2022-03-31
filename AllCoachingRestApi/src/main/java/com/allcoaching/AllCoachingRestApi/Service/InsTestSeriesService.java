@@ -179,19 +179,24 @@ public class InsTestSeriesService {
     public void updatePublishedStatusById(boolean status,long id)
     {
 
-        if(status)
-        {
-            InsTestSeries  insTestSeries= findById(id).get();
-            long courseId = insTestSeries.getCourseId();
-            courseService.sendNotificationAsync(courseId,"Test Series  "+insTestSeries.getTitle()+" published ");
-
-        }
+         
         insTestSeriesRepo.updatePublishedStatus(status,id);
     }
 
     //updating hidden Status
     public void updateHiddenStatusById(boolean status,long id)
     {
+        if(!status)
+        {
+            InsTestSeries  insTestSeries= findById(id).get();
+            long courseId = insTestSeries.getCourseId();
+            if(!insTestSeries.isAdmin())
+            {
+                courseService.sendNotificationAsync(courseId,"Test Series  "+insTestSeries.getTitle()+" published ");
+            }
+
+
+        }
         insTestSeriesRepo.updateHiddenStatus(status,id);
     }
 
