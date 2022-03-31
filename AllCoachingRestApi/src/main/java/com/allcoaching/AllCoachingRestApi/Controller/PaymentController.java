@@ -103,7 +103,7 @@ public class PaymentController {
         String orderId = parameters.get("ORDERID");
         String gatewayResponseMsg = parameters.get("RESPMSG");
         boolean isValideChecksum = false;
-        System.out.println("RESULT : "+txnStatus+" id:"+txnId);
+        System.out.println(parameters);
 
         transactionService.compeleteTransaction(txnStatus,txnId,gatewayResponseMsg,orderId);
         Optional<Transaction> transaction = transactionService.findByOrderId(orderId);
@@ -128,7 +128,7 @@ public class PaymentController {
         } catch (Exception e) {
             result = e.toString();
         }
-        
+
         System.out.println(result);
         model.addAttribute("result",result);
         parameters.remove("CHECKSUMHASH");

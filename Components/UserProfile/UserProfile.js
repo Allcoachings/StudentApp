@@ -238,7 +238,12 @@ class UserProfile extends React.Component {
     }
 
     displayItems=(item)=>{
-         
+
+        console.log(item)
+            if(!item.data)
+            {
+                return null
+            }
             switch(item.type)
             {
                 case 'video': return (

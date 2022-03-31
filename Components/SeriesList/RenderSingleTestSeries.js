@@ -15,7 +15,7 @@ const height = Dimensions.get('window').height;
 class RenderSingleTestSeries extends React.Component {
     state = {
         modalVisible: false,
-        selectedPlaylist: this.props.item.playlistId,
+        selectedPlaylist: this.props.item?.playlistId,
         status:this.props.status
     }
 
@@ -69,7 +69,7 @@ class RenderSingleTestSeries extends React.Component {
 
     setSelectedPlaylist=(selectedPlaylist)=>
     {
-        this.setState({showModal: false, selectedPlaylist: selectedPlaylist},()=>updatePlaylist("testSeries",selectedPlaylist,this.props.item.id,this.updateCallback))
+        this.setState({showModal: false, selectedPlaylist: selectedPlaylist},()=>updatePlaylist("testSeries",selectedPlaylist,this.props.item?.id,this.updateCallback))
     }
 
     updateCallback=(response)=>{
@@ -90,11 +90,11 @@ class RenderSingleTestSeries extends React.Component {
             <TouchableWithoutFeedback onPress={()=>{
                  if(this.props.checkEnrollment)
                  {
-                     if(this.props.studentEnrolled||this.props.item.demo)
+                     if(this.props.studentEnrolled||this.props.item?.demo)
                      {
                          if(this.props.addToHistory)
                          {
-                            this.props.addToHistory("testSeries", this.props.item.id)
+                            this.props.addToHistory("testSeries", this.props.item?.id)
                          }
                         
                         this.setState({modalVisible: true})
@@ -108,7 +108,7 @@ class RenderSingleTestSeries extends React.Component {
 
                     if(this.props.addToHistory)
                     {
-                        this.props.addToHistory("testSeries", this.props.item.id)
+                        this.props.addToHistory("testSeries", this.props.item?.id)
                     }
                     
                     this.setState({modalVisible: true})
@@ -122,20 +122,20 @@ class RenderSingleTestSeries extends React.Component {
                         <View style={styles.list}>
                             <View>
                                 <View style={styles.topRow}>
-                                    <Text style={styles.titleText}>{this.props.item.title}</Text>
+                                    <Text style={styles.titleText}>{this.props.item?.title}</Text>
 
                                 </View> 
                                 <View style={styles.bottomRow}>  
                                     
                                     <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-                                        <Text style={styles.queText}>{this.props.item.questionCount} Questions</Text>
-                                        <Text style={styles.timeText}>{this.props.item.timeDuration} Minutes</Text>
-                                        <Text style={styles.timeText}>{this.props.item.maxMarks} Marks</Text>  
+                                        <Text style={styles.queText}>{this.props.item?.questionCount} Questions</Text>
+                                        <Text style={styles.timeText}>{this.props.item?.timeDuration} Minutes</Text>
+                                        <Text style={styles.timeText}>{this.props.item?.maxMarks} Marks</Text>  
                                     </View>
                                 </View>
                             </View>
                             <View  style={{marginLeft:'auto',flexDirection: 'row',justifyContent: 'flex-end'}}>
-                                {this.props.checkEnrollment&&!this.props.studentEnrolled&&!this.props.item.demo?(
+                                {this.props.checkEnrollment&&!this.props.studentEnrolled&&!this.props.item?.demo?(
                                     <View style={{height:30,width:30,backgroundColor:theme.secondaryColor,borderRadius:15}}>
                                         <Lock height={20} width={20}/>
                                     </View>

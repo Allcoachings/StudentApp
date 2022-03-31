@@ -29,7 +29,7 @@ function Comments({videoId,unshiftCommets,mode,comments,setIsCommentsVisible,set
                 </View> 
                 {/* <View style={{position:'absolute',bottom:300,left: 0}}>
                     <Text>dgsdgsdgsdg</Text> */}
-                <View style={[{flex:mode=="full"?0.30:1.35,marginBottom:(mode!="full"&&keyboardHeight)?keyboardHeight+70:0  },mode=='full'?{position:'absolute',bottom:10,width:'93% '}:{}]}>
+                <View style={[{flex:mode=="full"?0.30:1.35,marginBottom:(mode!="full"&&keyboardHeight)?keyboardHeight+70:0  },mode=='full'?{position:'absolute',bottom:10,width:'80%'}:{}]}>
                     <AddComment mode={mode} videoId={videoId} unshiftCommets={unshiftCommets}/>
                 </View>
             {/* </View> */}
