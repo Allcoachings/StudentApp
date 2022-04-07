@@ -256,13 +256,13 @@ const VideoPlayer = (tempProps) => {
                 
                 <TouchableButton onPress={togglePlay}>
                         <View> 
-                        {playbackInstanceInfo.state === PlaybackStates.Buffering && !props.customFunction.isLive&&
-                            (props.icon.loading || <ActivityIndicator {...props.activityIndicator}/>)}
+                        {playbackInstanceInfo.state === PlaybackStates.Buffering &&!props.customFunction.isLive && 
+                            ((props.icon.loading) || <ActivityIndicator {...props.activityIndicator}/>)}
                         {playbackInstanceInfo.state === PlaybackStates.Playing && props.icon.pause}
                         {playbackInstanceInfo.state === PlaybackStates.Paused && props.icon.play}
                         {playbackInstanceInfo.state === PlaybackStates.Ended && props.icon.replay}
                         {((playbackInstanceInfo.state === PlaybackStates.Ended && !props.icon.replay) ||
-                        (playbackInstanceInfo.state === PlaybackStates.Playing && !props.icon.pause) ||
+                        ((playbackInstanceInfo.state === PlaybackStates.Playing )&& !props.icon.pause) ||
                         (playbackInstanceInfo.state === PlaybackStates.Paused &&
                             !props.icon.pause)) && (<MaterialIcons name={playbackInstanceInfo.state === PlaybackStates.Playing
                             ? 'pause'
@@ -277,7 +277,7 @@ const VideoPlayer = (tempProps) => {
                     <View style={{ height:'100%', width:'100%',alignItems: 'center',justifyContent: 'center'}}>
                         {playbackInstanceInfo.state !== PlaybackStates.Ended?(
                             <TouchableButton   onPress={()=>fastForward(10)}>
-                                <MaterialIcons name="replay-10" style={props.icon.style} size={props.icon.size/1.3} color={props.icon.color}/>
+                                <MaterialIcons name="forward-10" style={props.icon.style} size={props.icon.size/1.3} color={props.icon.color}/>
                             </TouchableButton>
                         ):(null)}
                         
@@ -298,9 +298,12 @@ const VideoPlayer = (tempProps) => {
         {props.timeVisible && (<Text style={[props.textStyle, styles.timeLeft]}>
             {getMinutesSecondsFromMilliseconds(playbackInstanceInfo.position)}
           </Text>)}
-        {props.slider.visible && (<Slider {...sliderProps} style={[styles.slider, props.slider.style]} value={playbackInstanceInfo.duration
+        {props.slider.visible && (<Slider {...sliderProps} style={[styles.slider, props.slider.style]} value={
+                props.customFunction.isLive?(100):
+                playbackInstanceInfo.duration
                 ? playbackInstanceInfo.position / playbackInstanceInfo.duration
-                : 0} onSlidingStart={() => {
+                : 0
+            } onSlidingStart={() => {
                 if (playbackInstanceInfo.state === PlaybackStates.Playing) {
                     togglePlay();
                     setPlaybackInstanceInfo(Object.assign(Object.assign({}, playbackInstanceInfo), { state: PlaybackStates.Paused }));

@@ -391,6 +391,7 @@ export default VideoPlayerCustom=(props)=>
             </View> 
             <View style={[{flexDirection:'row'},!inFullscreen?({height:200}):(null)]}>
                 <VideoPlayer 
+                    timeVisible={!(props.route?.params?.item?.videoType=="live")}
                     videoProps={{
                         shouldPlay: shouldPlay,
                         resizeMode:inFullscreen?isSideScreenVisible?Video.RESIZE_MODE_CONTAIN:Video.RESIZE_MODE_COVER: Video.RESIZE_MODE_CONTAIN, 

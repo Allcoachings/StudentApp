@@ -49,7 +49,7 @@ public class TransactionController {
     @GetMapping("allSuccess/{offset}/{pageLimit}")
     public Iterable<TransactionDto> findAllSuccessTransactions(@PathVariable int offset, @PathVariable int pageLimit)
     {
-        return transactionService.fetchAllTransaction(offset,pageLimit);
+        return transactionService.fetchAllSuccessTransaction(offset,pageLimit);
 
     }
 
