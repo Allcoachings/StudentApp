@@ -8,6 +8,7 @@ import {addImgeFeed,saveFeed} from '../Utils/DataHelper/Feed'
 import * as DocumentPicker from 'expo-document-picker';
 import Toast from 'react-native-simple-toast';
 
+import BackArrow from "../Utils/Icons/BackArrow"
 import * as ImagePicker from 'expo-image-picker';
 const height = Dimensions.get('window').height;
 class AddFeedModal extends Component {
@@ -518,18 +519,63 @@ setFeedTypeOption=(postType)=>
                 visible = {this.props.isVisible}
                 onRequestClose = {() => this.props.closeModal()}>
                     <View style={{height:height,backgroundColor:theme.primaryColor}}> 
+                    {CardView(
+                        <View style={{flex: 1,flexDirection: 'row',alignItems: 'center'}}>
+                            <TouchableWithoutFeedback onPress={()=>{this.props.closeModal()}}>
+                            <View style={{marginLeft:10,marginRight:5}}>
+                                <BackArrow height={24} width={24}/>
+                            </View>
+                            </TouchableWithoutFeedback>
+                            <View>
+                                <Text style={{fontFamily:'Raleway_600SemiBold',color: theme.greyColor,fontSize:18}}>Add Feed</Text>
+                            </View>
+                            <View style={{marginLeft:'auto'}}>
+                                {/* {this.state.searchWord!=''?(
+                                    this.state.filterData?(
+                                        <TouchableOpacity onPress={() => this.setState({ searchWord: '', offset: 0, filterData: false, showResult: false, searchData: [] },() =>this.textInput.clear())}>
+                                            <EvilIcons
+                                            name="x"
+                                            size={20} 
+                                            color={theme.secondaryColor}
+                                            style={styles.searchIcon}
+                                            />
+                                        </TouchableOpacity>
+                                    ):(
+                                        <TouchableOpacity onPress={()=>this.setState({filterData: true, loadingData: true},()=>this.props.searchFun(this.state.offset, this.state.searchWord, this.searchCallback))}>
+                                            <EvilIcons 
+                                            name={'chevron-right'} 
+                                            size={15} 
+                                            color={theme.labelOrInactiveColor} 
+                                            style={styles.searchIcon}
+                                            />
+                                        </TouchableOpacity>
+                                    )):(
+                                        <Feather 
+                                        name={'x'} 
+                                        size={30} 
+                                        color={theme.secondaryColor} 
+                                        style={styles.searchIcon}
+                                        />
+                                )} */}
+                                
+
+                            </View>
+                        </View>,
+                        {width:'100%',height:50},2
+                    )}
                         {this.addFeedLayout()}
                     </View>
             </Modal>)
          
                 break;
             default:
-                return this.addFeedLayout();
+                return this.addFeedLayout(mode);
        }
    }
 
-   addFeedLayout = ()=>
+   addFeedLayout = (mode)=>
    {
+       console.log(mode)
        return (
                 <ScrollView>
                     <View style={{flexDirection:'row',alignItems: 'center',backgroundColor:theme.primaryColor}} >
@@ -545,17 +591,23 @@ setFeedTypeOption=(postType)=>
                                     <Feather name={'x'} color={theme.featureNoColor} size={18}/>
                                 </TouchableOpacity> 
                                 </View>):(null)}
-                        
-                            <TextInput
-                                style={{height:50 ,fontFamily:'Raleway_400Regular',marginHorizontal:10}}
-                                placeholder="Create Post...."
-                                multiline={true}  
-                                ref={(input) => { this.descriptionTextInput = input; }}
-                                defaultValue={this.state.description}
-                                onFocus={ () => this.onFocus() }
-                                onChangeText={(text)=>this.setState({description:text})}
+                            {mode=="embbedd"?(
 
-                            />
+                                <Text
+                                    style={{height:50 ,fontFamily:'Raleway_400Regular',marginHorizontal:10,textAlignVertical:'center'}}
+                                >Create Post ...</Text>
+                            ):(
+                                <TextInput
+                                    style={{height:50 ,fontFamily:'Raleway_400Regular',marginHorizontal:10}}
+                                    placeholder="Create Post...."
+                                    multiline={true}  
+                                    ref={(input) => { this.descriptionTextInput = input; }}
+                                    defaultValue={this.state.description}
+                                    onFocus={ () => this.onFocus() }
+                                    onChangeText={(text)=>this.setState({description:text})}
+                                   
+                                />
+                            )}
                             {this.state.postType==1?(
                                 <View style={{}}>
                                     {this.renderAddImageSection()} 

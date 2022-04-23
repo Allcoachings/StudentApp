@@ -8,6 +8,8 @@ import { defaultProps } from './props';
 import { useEffect, useRef, useState } from 'react';
 import React from 'react';
 import Slider from '@react-native-community/slider'; 
+import BlinkView from "../../BlinkView";
+import { theme } from "../../../config";
 
 
 const VideoPlayer = (tempProps) => {
@@ -175,6 +177,13 @@ const VideoPlayer = (tempProps) => {
         }
         lastPress = time;
     }
+    function Bull({isVisible}) {
+        return (
+            <Text style={{fontSize:40,color:theme.redColor,marginRight:1}}>
+                {isVisible?"•":" "}
+            </Text>
+        );
+    }
     const togglePlay = () => __awaiter(void 0, void 0, void 0, function* () {
         
         if (controlsState === ControlStates.Hidden) {
@@ -212,6 +221,7 @@ const VideoPlayer = (tempProps) => {
       </View>);
     }
      
+
     return (<View style={{
             backgroundColor: props.style.videoBackgroundColor,
             width: videoWidth,
@@ -256,19 +266,29 @@ const VideoPlayer = (tempProps) => {
                 
                 <TouchableButton onPress={togglePlay}>
                         <View> 
-                        {playbackInstanceInfo.state === PlaybackStates.Buffering &&!props.customFunction.isLive && 
-                            ((props.icon.loading) || <ActivityIndicator {...props.activityIndicator}/>)}
-                        {playbackInstanceInfo.state === PlaybackStates.Playing && props.icon.pause}
-                        {playbackInstanceInfo.state === PlaybackStates.Paused && props.icon.play}
-                        {playbackInstanceInfo.state === PlaybackStates.Ended && props.icon.replay}
-                        {((playbackInstanceInfo.state === PlaybackStates.Ended && !props.icon.replay) ||
-                        ((playbackInstanceInfo.state === PlaybackStates.Playing )&& !props.icon.pause) ||
-                        (playbackInstanceInfo.state === PlaybackStates.Paused &&
-                            !props.icon.pause)) && (<MaterialIcons name={playbackInstanceInfo.state === PlaybackStates.Playing
-                            ? 'pause'
-                            : playbackInstanceInfo.state === PlaybackStates.Paused
-                            ? 'play-arrow'
-                            : 'replay'} style={props.icon.style} size={props.icon.size/1.3} color={props.icon.color}/>)}
+                        {!props.customFunction.isLive?(
+                            <>
+                                {playbackInstanceInfo.state === PlaybackStates.Buffering &&!props.customFunction.isLive && 
+                                    ((props.icon.loading) || <ActivityIndicator {...props.activityIndicator}/>)}
+                                {playbackInstanceInfo.state === PlaybackStates.Playing && props.icon.pause}
+                                {playbackInstanceInfo.state === PlaybackStates.Paused && props.icon.play}
+                                {playbackInstanceInfo.state === PlaybackStates.Ended && props.icon.replay}
+                                {((playbackInstanceInfo.state === PlaybackStates.Ended && !props.icon.replay) ||
+                                ((playbackInstanceInfo.state === PlaybackStates.Playing )&& !props.icon.pause) ||
+                                (playbackInstanceInfo.state === PlaybackStates.Paused &&
+                                    !props.icon.pause)) && (<MaterialIcons name={playbackInstanceInfo.state === PlaybackStates.Playing
+                                    ? 'pause'
+                                    : playbackInstanceInfo.state === PlaybackStates.Paused
+                                    ? 'play-arrow'
+                                    : 'replay'} style={props.icon.style} size={props.icon.size/1.3} color={props.icon.color}/>)}
+                            </>
+                            ):(
+                                <MaterialIcons name={playbackInstanceInfo.state === PlaybackStates.Playing
+                                ? 'pause'
+                                : playbackInstanceInfo.state === PlaybackStates.Paused
+                                ? 'play-arrow'
+                                : 'replay'} style={props.icon.style} size={props.icon.size/1.3} color={props.icon.color}/>
+                            ) }
                         </View>
                 </TouchableButton> 
             </View>
@@ -298,6 +318,16 @@ const VideoPlayer = (tempProps) => {
         {props.timeVisible && (<Text style={[props.textStyle, styles.timeLeft]}>
             {getMinutesSecondsFromMilliseconds(playbackInstanceInfo.position)}
           </Text>)}
+          {props.customFunction.isLive && (
+                <View style={{marginHorizontal:5,flexDirection: 'row',alignItems: 'center'}}>
+                    
+                        <View style={{flexDirection: 'row',alignItems: 'center'}}>
+                            <Bull isVisible/> 
+                            
+                        </View> 
+                    <Text style={{color:'white'}}> Live</Text>
+                </View>
+          )}
         {props.slider.visible && (<Slider {...sliderProps} style={[styles.slider, props.slider.style]} value={
                 props.customFunction.isLive?(100):
                 playbackInstanceInfo.duration

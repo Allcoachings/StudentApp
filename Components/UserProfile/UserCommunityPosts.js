@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import { FlatList, StyleSheet, View } from 'react-native'
+import { FlatList, StyleSheet, TouchableWithoutFeedback, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import { Assets, dataLimit } from '../config'
 import FeedImage from '../Feed/FeedImage'
@@ -148,21 +148,25 @@ function UserCommunityPosts({navigation}) {
                     {/* <TouchableOpacity  onPress={()=>this.openAddFeedModal()} style={{backgroundColor: theme.textColor, justifyContent: 'center', alignItems: 'center', padding:5, borderRadius:5}}> 
                         <Text style={{color: theme.primaryColor}}>Add Feed</Text>
                     </TouchableOpacity>            */}
-                    <View style={{height: 110}}>
-                        <AddFeedModal
-                                addFeedCallBack={appendFeed}
-                                isAddFeedModalVisible={isAddFeedModalVisible} 
-                                closeModal={closeAddFeedModal}
-                                posterId={userInfo.id} 
-                                posterImage={userInfo.studentImage}
-                                postedBy={2}
-                                categoryId={categoryId}
-                                instituteDetails={userInfo}
-                                // setUpdateFun={setUpdateEditFeedState}
-                                editFeedObj={editFeedObj}
-                                updateSingleFeed={updateSingleFeed}
-                        />
-                    </View>
+                    <TouchableWithoutFeedback onPress={()=>{console.log("press");setIsAddFeedModalVisible(true)}}>
+                        <View style={{height: 110}}>
+                            <AddFeedModal
+                                    pointerEvents="none"
+                                    addFeedCallBack={appendFeed}
+                                    isAddFeedModalVisible={isAddFeedModalVisible} 
+                                    closeModal={closeAddFeedModal}
+                                    posterId={userInfo.id} 
+                                    posterImage={userInfo.studentImage}
+                                    postedBy={2}
+                                    categoryId={categoryId}
+                                    instituteDetails={userInfo}
+                                    // setUpdateFun={setUpdateEditFeedState}
+                                    editFeedObj={editFeedObj}
+                                    updateSingleFeed={updateSingleFeed}
+                                    mode={isAddFeedModalVisible?"modal":"embbedd"}
+                            />
+                        </View>
+                    </TouchableWithoutFeedback>
                     {isFeedLoading?(
                             <CustomActivtiyIndicator mode="skimmer"/>
                     ):(

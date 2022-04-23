@@ -187,7 +187,7 @@ class InstituteView extends React.Component {
         }
         else
         {
-            // // console.log("not pinned", response.status)
+            
         }
         this.setState({refreshing: false})
     }
@@ -209,22 +209,22 @@ class InstituteView extends React.Component {
         }
         else
         {
-            // // console.log("something went wrong")
+            
         }
         this.setState({refreshing: false})
     }
 
     refreshing=()=>{
         this.setState({refreshing:true});
-        this.initialFetch();
+        this.resetState(()=>{ 
+            this.initialFetch(); 
+        })
 
     }
 
-    updateComponent=()=>
+    resetState=(callback=null)=>
     {
-        if(this.props.route.params.insId!=this.state.instituteId)
-        {
-            this.setState({
+        this.setState({
             courses:[],
             courseDetails:{},
             instituteId:this.props.route.params.insId,
@@ -233,25 +233,25 @@ class InstituteView extends React.Component {
              courseId:'',
              bannerImg: [],
             courseTimetableLoaded:false,
-            isCourseTimeTableLoading:true,
+            isCourseTimeTableLoading:false,
             courseTimeTable:[],
             courseDocumentPlaylistLoaded:false,
-            isCourseDocumentPlaylistLoading:true,
+            isCourseDocumentPlaylistLoading:false,
             courseDocumentPlaylist:[],
             courseDocumentLoaded:false,
-            isCourseDocumentLoading:true,
+            isCourseDocumentLoading:false,
             courseDocuments:[],
             courseTestSeriesLoaded:false,
-            isCourseTestSeriesLoading:true,
+            isCourseTestSeriesLoading:false,
             courseTestSeries:[],
             courseTestSeriesPlaylistLoaded:false,
-            isCourseTestSeriesPlaylistLoading:true,
+            isCourseTestSeriesPlaylistLoading:false,
             courseTestSeriesPlaylist:[],
             courseVideoPlaylistLoaded:false,
-            isCourseVideoPlaylistLoading:true,
+            isCourseVideoPlaylistLoading:false,
             courseVideosPlaylist:[],
             courseVideoLoaded:false,
-            isCourseVideoLoading:true,
+            isCourseVideoLoading:false,
             courseVideos:[],
             activeTab: 'videos', 
             tabtoshow: 1,
@@ -283,13 +283,21 @@ class InstituteView extends React.Component {
             courseLiveVideoLoaded:false,
             isCourseLiveVideoLoading:false,
             courseLiveVideos:[],
-        },()=>
+        },()=>{
+            if(callback)
             {
-                fetch_instituteDetails(this.state.instituteId,this.instituteCallback)
-                fetch_institute_courses(this.state.instituteId,this.coursesCallBack)
-                fetch_latestUpcomingSchedule(this.state.instituteId,this.liveDataCallback)
+                callback()
+            }
+        })
+    }
+    updateComponent=()=>
+    {
+        if(this.props.route.params.insId!=this.state.instituteId)
+        {
+            this.resetState(()=>{ 
+                this.initialFetch(); 
             })
-        }
+        } 
     }
 
      addToHistory=(type, id)=>{
@@ -299,11 +307,11 @@ class InstituteView extends React.Component {
      addToHistoryCallBack=(response)=>{
         if(response.status==201)
         {
-            // // console.log("hello done")
+            
         }
         else
         {
-            //  // console.log("error")
+            
         }
      }
 
@@ -323,11 +331,11 @@ class InstituteView extends React.Component {
      addLeadCallback=(response)=>{
          if(response.status==201)
          {
-            //  // console.log("done")
+            
          }
          else
          {
-            //  // console.log("something went wrong")
+            
          }
      }
 
@@ -510,6 +518,7 @@ class InstituteView extends React.Component {
             }
     }
     courseVideoCallback=(response)=>{
+        // alert(response.status);
         if(response.status==200)
         {
             response.json().then(data=>
@@ -667,14 +676,16 @@ class InstituteView extends React.Component {
             //     header={this.accordianHeader(item.title, " ", "chevron-down")}
             // >
                 <View style={styles.weekView}> 
-                    {this.state.courseTimetableLoaded?(<FlatList
-                        data={item}
-                        renderItem={({item}) =>this.renderTestItem(item)}
-                        keyExtractor={(item)=>item.id}
-                        horizontal={false}
-                        showsHorizontalScrollIndicator={false}
-                        ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
-                    />):(<CustomActivtiyIndicator mode="skimmer"/>)}
+                    {this.state.courseTimetableLoaded?(
+                        <FlatList
+                            data={item}
+                            renderItem={({item}) =>this.renderTestItem(item)}
+                            keyExtractor={(item)=>item.id}
+                            horizontal={false}
+                            showsHorizontalScrollIndicator={false}
+                            ListEmptyComponent={<EmptyList image={Assets.noResult.noRes1}/>}
+                        />
+                    ):(<CustomActivtiyIndicator mode="skimmer"/>)}
                 </View>
             // </Accordian>
 
@@ -713,9 +724,11 @@ class InstituteView extends React.Component {
         {
             
             case 'videos':  
+                        // alert("loadingVideos "+(!this.state.courseVideoLoaded&&!this.state.isCourseVideoLoading&&this.state.activeCourse)+" "+this.state.courseVideoLoaded+" "+this.state.isCourseVideoLoading+" "+this.state.activeCourse)
                     if(!this.state.courseVideoLoaded&&!this.state.isCourseVideoLoading&&this.state.activeCourse)
                     {
                         this.setState({isCourseVideoLoading:true, activeFilterId: -1})
+                        
                         fetch_courses_videos_with_hidden(false,this.state.vidoffset, dataLimit,this.state.activeCourse,this.courseVideoCallback);
                     }
                     if(!this.state.courseVideoPlaylistLoaded&&!this.state.isCourseVideoPlaylistLoading&&this.state.activeCourse)
@@ -912,8 +925,7 @@ class InstituteView extends React.Component {
                                         mode="student" 
                                         checkEnrollment
                                         studentEnrolled={this.state.studentEnrolled} 
-                                        courseTestSeriesPlaylist={this.state.courseTestSeriesPlaylist} 
-                                        checkEnrollment
+                                        courseTestSeriesPlaylist={this.state.courseTestSeriesPlaylist}  
                                         openPurchaseCourseModal={this.openPurchaseCourseModal}
                                         />}
                                         keyExtractor={(item)=>item.id} 
@@ -1194,25 +1206,25 @@ class InstituteView extends React.Component {
     pinCallBack=(response)=>{
         if(response.status==201)
         {
-            // // console.log("pin success")
-            // // console.log(response.headers.map.location)
+            
+            
             this.setState({pinId: response.headers.map.location, checkPinned: true})
         }
         else
         {
-            // // console.log("pin error", response.status)
+            
         }
     }
 
     unPinCallBack=(response)=>{
         if(response.status==200)
         {
-            // // console.log("unpinned success")
+            
             this.setState({checkPinned: false})
         }
         else
         {
-            // // console.log("unpin error", response.status)
+            
         }
     }
 
@@ -1500,8 +1512,7 @@ class InstituteView extends React.Component {
                         closeModal={this.closeModal}
                         images={this.state.bannerImg}
                         index={this.state.index}
-                        type="normal"
-                        index={this.state.index}
+                        type="normal" 
                     />
                 ):(null)}
                 {this.state.showSendMessageModal?(

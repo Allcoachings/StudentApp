@@ -19,4 +19,5 @@ public class StudentMessageImages {
     private long id;
 
     private  String imageLink;
+    private boolean isReplyImage;
 }
