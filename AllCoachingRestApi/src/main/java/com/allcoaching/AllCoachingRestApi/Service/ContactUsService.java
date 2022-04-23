@@ -27,7 +27,7 @@ public class ContactUsService {
 
     public Iterable<ContactUs> fetch(int page,int pageSize)
     {
-       Page<ContactUs> pagedResult =  contactUsRepo.findAll(PageRequest.of(page,pageSize, Sort.by(Sort.Direction.DESC,"createdAt"));
+       Page<ContactUs> pagedResult =  contactUsRepo.findAll(PageRequest.of(page,pageSize, Sort.by(Sort.Direction.DESC,"createdAt")));
        if(pagedResult.hasContent())
        {
            return  pagedResult.getContent();
