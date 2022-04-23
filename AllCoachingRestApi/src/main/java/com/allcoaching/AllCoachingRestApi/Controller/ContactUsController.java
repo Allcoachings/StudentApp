@@ -38,4 +38,12 @@ public class ContactUsController {
          contactUsService.delete(id);
         return ResponseEntity.ok().build();
     }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/{offset}/{dataLimit}")
+    public Iterable<ContactUs> fetch(@PathVariable int offset,@PathVariable int dataLimit)
+    {
+         return  contactUsService.fetch(offset,dataLimit);
+
+    }
 }
