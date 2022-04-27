@@ -95,7 +95,7 @@ const user_reducer=(state=initial_user_state,action)=>
                 userAuthStatus: action.payload.authStatus
             }
         case actionTypes.SET_USER_INFO:
-            AsyncStorage.setItem("authInfo", JSON.stringify(action.payload.info))
+            AsyncStorage.setItem("authInfo", JSON.stringify({...action.payload.info,authType:"user"}))
             return{
                 ...state,
                 userInfo: action.payload.info 

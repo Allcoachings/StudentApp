@@ -78,7 +78,7 @@ class InfoModal extends React.Component {
              
             if(response.status === 201)
             {
-                  AsyncStorage.setItem('authInfo', JSON.stringify({id:response.headers.map.location,email:this.state.email,name:this.state.name,state:this.state.state,mobileNumber:this.props.mobileNumber,userId:this.props.mobileNumber,studentImage:this.state.studentImage,authType:'user'}))
+                //   AsyncStorage.setItem('authInfo', JSON.stringify({id:response.headers.map.location,email:this.state.email,name:this.state.name,state:this.state.state,mobileNumber:this.props.mobileNumber,userId:this.props.mobileNumber,studentImage:this.state.studentImage,authType:'user'}))
                   this.props.setUserInfo({id:response.headers.map.location,email:this.state.email,name:this.state.name,state:this.state.state,mobileNumber:this.props.mobileNumber,userId:this.props.mobileNumber,studentImage:this.state.studentImage,authType:'user'})
                   this.props.userAuthStatus(true);
                 //   this.props.navigation.navigate("Home")

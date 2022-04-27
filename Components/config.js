@@ -4,6 +4,7 @@ export const appName_Caps = "ALL COACHINGS";
 export const logoName = require('../assets/logoName.png')
 export const appLogo = require("../assets/Slide_icons/logo.png");
 export const downloadIcon = require("../assets/downloadIcon.png");
+export const appLogoName = require("../assets/logo_for_app.png");
 export const theme={
     primaryColor: "#fff",
     secondaryColor: "#000000",

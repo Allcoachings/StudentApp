@@ -104,16 +104,23 @@ class OtpVerification extends React.Component {
                     if(data)
                     {
                         findStudentByMobile(this.state.phoneNumber,this.findStudentByMobileCallBack)
+                    }else
+                    {
+                        this.setState({error:"Invalid OTP",laoder:true})
                     }
-                    this.setState({optVerificationLoading:false})
+                    this.setState({optVerificationLoading:false,loader:false})
                 })
+            }else
+            {
+                this.setState({error:"Invalid OTP",laoder:true})
             } 
     }
     handleContinueBtnClick=()=>
     {
-        if(!this.state.optVerificationLoading)
+        if(!this.state.optVerificationLoading||!this.state.loader)
         {
-            this.setState({optVerificationLoading:true})
+
+            this.setState({optVerificationLoading:true,loader:true})
             validateOtp(this.state.otp,this.state.phoneNumber,this.otpVerificationCallback)
         }
     }
@@ -217,12 +224,13 @@ class OtpVerification extends React.Component {
                             <OTPInputView
                                 style={{width: '100%', height: 80,color: theme.btn_dark_background_color, marginLeft:20,borderRadius:10}}
                                 pinCount={6}
-                                code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
+                                // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
                                 onCodeChanged = {code => { this.checkNumber(code)}}
                                 autoFocusOnLoad
                                 codeInputFieldStyle={styles.underlineStyleBase}
                                 codeInputHighlightStyle={styles.underlineStyleHighLighted}
                                 onCodeFilled = {this.getOtp}
+                                editable
                             />
                         )}
                     </View>
@@ -354,6 +362,8 @@ const styles = StyleSheet.create({
         {
             fontFamily: 'Raleway_600SemiBold',
             textAlign: 'center',
+            textAlign: 'center',
+            width: width,
             marginTop:10,
             color:theme.featureNoColor 
         },

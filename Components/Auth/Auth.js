@@ -82,9 +82,9 @@ class Auth extends React.Component {
                                 // Button Linear Gradient
                                 colors={[theme.primaryColor, '#AFeeee']}
                                 style={styles.button}> */}
-                                {/* <View>
+                                <View style={{backgroundColor: theme.primaryColor,paddingTop:10}}>
                                     <AuthHeader/>
-                                </View> */}
+                                </View>
                                 {/* <View style={styles.authSection}>
                                     <View style={styles.authModes}> 
                                             {this.authModeButton("Login",0)}

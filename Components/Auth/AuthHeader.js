@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet,View,Text,Image} from 'react-native';
-import {appName,appLogo,logoName} from '../config'
+import { StyleSheet,View,Text,Image,Dimensions} from 'react-native';
+import {appName,appLogo,appLogoName} from '../config'
 import CardView from '../Utils/CardView'
+const width = Dimensions.get('window').width
 class AuthHeader extends React.Component {
     state = {  }
     render() {
@@ -11,7 +12,7 @@ class AuthHeader extends React.Component {
             {/* {CardView
             ( */}
                 <View style={styles.headerBranding}>
-                    <Image source={logoName} style={styles.brandingImage} />
+                    <Image source={appLogoName} style={styles.brandingImage} />
                 </View>
             {/* ,{borderRadius:40,width:220,height:60}
             )} */}
@@ -27,6 +28,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         margin:20, 
+        backgroundColor:'#fff',
     },
         headerBranding:
         {
@@ -38,16 +40,19 @@ const styles = StyleSheet.create({
             alignSelf: 'center',
             width:'100%',
             marginLeft:'auto',
+            backgroundColor:'#fff'
         },
             brandingImage: 
             {
                
-                width:150,
-                height:50
+                width:200,
+                backgroundColor:'#fff',
+                height:40
             },
             brandingText:
             {
                 fontSize:20,
+                backgroundColor:'#fff',
                 fontWeight: '600'
             }
 })

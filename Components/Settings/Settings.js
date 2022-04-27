@@ -1,6 +1,6 @@
 import { EvilIcons ,Feather} from '@expo/vector-icons';
 import React, { Component ,useState} from 'react';
-import { View, Text,StyleSheet,TouchableOpacity,Dimensions } from 'react-native';
+import { View, Text,StyleSheet,TouchableOpacity,Dimensions,Linking } from 'react-native';
 import { theme } from '../config';
 import PageStructure from '../StructuralComponents/PageStructure/PageStructure';
 import {useSelector,useDispatch} from 'react-redux'
@@ -55,10 +55,10 @@ const Settings =  ({navigation})=> {
                     <View style={styles.container}>
                       {renderSettingItem('Account','user',()=>{(navigation.navigate("EditProfile"))})}
                       {renderSettingItem('Help & Support','help-circle',()=>{setFeedbackModalVisible(false);setHelpAndSupportModalVisible(true);})}
-                      {renderSettingItem('Rate us on Play Store','disc',()=>{})}
+                      {renderSettingItem('Rate us on Play Store','disc',()=>{Linking.openURL("https://play.google.com/store/apps/details?id=com.allcoaching");})}
                       {/* {renderSettingItem('Refer n earn','gift',()=>{})} */}
-                      {renderSettingItem('Privacy Policy','lock',()=>{})}
-                      {renderSettingItem('Terms and Conditions','calendar',()=>{})}
+                      {renderSettingItem('Privacy Policy','lock',()=>{Linking.openURL("https://allcoaching.in/PrivacyPolicy.html");})}
+                      {renderSettingItem('Terms and Conditions','calendar',()=>{Linking.openURL("https://allcoaching.in/Termsofservice.html");})}
                       {renderSettingItem('FeedBack','refresh-cw',()=>{setHelpAndSupportModalVisible(false);setFeedbackModalVisible(true)})}
                       {renderSettingItem('Logout','log-out',()=>{setLogoutAlertModal(true)})}
                     </View>
