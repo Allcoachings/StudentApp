@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class SendSms {
     final String DLT_ROUTE ="dlt";
     final String SENDERID_ALLCOG="AllCOG";
-    final String OTP_MESSAGE_TEMPLATE_ID="111443";
+    final String OTP_MESSAGE_TEMPLATE_ID="1507164234019601854";
 
 
     public String sendOptOverMessage(String number,String otp)
