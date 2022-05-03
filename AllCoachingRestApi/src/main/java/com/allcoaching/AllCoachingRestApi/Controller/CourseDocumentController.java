@@ -57,8 +57,10 @@ public class CourseDocumentController {
         documentAddr += fileUploadService.storeFile(document);
         CourseDocument courseDocument = courseDocumentService.save(new CourseDocument(documentAddr,name,courseId,playlistId));
         URI location = ServletUriComponentsBuilder.fromPath("{id}*{fileAddr}").buildAndExpand(courseDocument.getId(),documentAddr).toUri();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Expose-Headers", "Location");
 
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.created(location).headers(headers).build();
     }
 
     @CrossOrigin(origins = "*")
