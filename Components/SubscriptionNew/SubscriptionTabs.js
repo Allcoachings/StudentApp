@@ -35,8 +35,7 @@ export default function SubscriptionTabs(props) {
             // iconName={"arrow-left"}
             // btnHandler={() => {props.navigation.goBack()}}
             // titleonheader={"Subscription"}
-            nosearchIcon={false}
-            noNotificationIcon={true}  
+            nosearchIcon={false} 
             userIcon={() => {props.navigation.navigate("Profile")}}
             // catInHeader={true}
             // catOnpress={toggleCatMode}

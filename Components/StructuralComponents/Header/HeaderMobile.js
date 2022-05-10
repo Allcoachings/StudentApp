@@ -94,7 +94,8 @@ class HeaderMobile extends React.Component {
                               paddingBottom:5
                             }}
                         >
-                            {this.props.titleonheader}
+                            {/* {this.props.titleonheader} */}
+                            Allcoaching
                         </Text>
                        </View>
                      )

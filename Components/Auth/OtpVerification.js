@@ -326,7 +326,9 @@ class OtpVerification extends React.Component {
             // style={{height:500,width:5001}}
             visible={this.props.isOtpModal}
             >
-                <ScrollView>
+                <ScrollView
+                    keyboardShouldPersistTaps='always'
+                >
                     <View>
                     {CardView(
                         <View style={styles.container}>
