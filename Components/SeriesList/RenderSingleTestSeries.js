@@ -90,18 +90,18 @@ class RenderSingleTestSeries extends React.Component {
             <TouchableWithoutFeedback onPress={()=>{
                  if(this.props.checkEnrollment)
                  {
-                     if(this.props.studentEnrolled||this.props.item?.demo)
-                     {
+                    //  if(this.props.studentEnrolled||this.props.item?.demo)
+                    //  {
                          if(this.props.addToHistory)
                          {
                             this.props.addToHistory("testSeries", this.props.item?.id)
                          }
                         
                         this.setState({modalVisible: true})
-                     }else 
-                     {
-                         this.props.openPurchaseCourseModal?this.props.openPurchaseCourseModal():null
-                     }
+                    //  }else 
+                    //  {
+                    //      this.props.openPurchaseCourseModal?this.props.openPurchaseCourseModal():null
+                    //  }
                     
                  }else
                  {

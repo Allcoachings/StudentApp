@@ -53,6 +53,13 @@ public class CourseController {
         courseService.deleteCourseById(id,deleteCourse);
         return ResponseEntity.ok().build();
     }
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("/deleteCoursePermanently/{id}")
+    public ResponseEntity<Object> deleteCoursePermanentlyById(@PathVariable long id)
+    {
+        courseService.deleteCoursePermanentlyById(id);
+        return ResponseEntity.ok().build();
+    }
 
     @CrossOrigin(origins = "*")
     @GetMapping("countcourse/{insId}")

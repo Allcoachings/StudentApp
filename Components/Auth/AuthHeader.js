@@ -35,8 +35,7 @@ const styles = StyleSheet.create({
             flex: 1,
             flexDirection: 'row',
             justifyContent: 'center',
-            alignItems: 'center',
-            height:70,
+            alignItems: 'center' ,
             alignSelf: 'center',
             width:'100%',
             marginLeft:'auto',
@@ -47,7 +46,10 @@ const styles = StyleSheet.create({
                
                 width:200,
                 backgroundColor:'#fff',
-                height:40
+                height:40,
+                marginTop:10,
+                resizeMode:'contain'
+
             },
             brandingText:
             {

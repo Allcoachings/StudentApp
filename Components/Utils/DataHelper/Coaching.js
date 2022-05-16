@@ -31,7 +31,7 @@ export   const registerCoaching=(name,directorName,email,phone,password,address,
 
             headers.append('GET', 'POST', 'OPTIONS'); 
             
-             fetch(serverApiUrl+'/institute/',
+             fetch(serverApiUrl+'institute/',
             {
                 method: 'POST',  
                 headers,
@@ -66,7 +66,7 @@ export   const fetch_instituteDetails=(instId,callback)=>
 
             headers.append('GET', 'POST', 'OPTIONS'); 
 
-             fetch(serverApiUrl+'/institute/'+instId,
+             fetch(serverApiUrl+'institute/'+instId,
             {
                 method: 'GET',  
                 headers,
@@ -90,7 +90,7 @@ export   const validateLogin=(email,password,callback,passMode='hashed')=>
 
             headers.append('GET', 'POST', 'OPTIONS'); 
                 // console.log(serverApiUrl+'institute/validate/',JSON.stringify({email,password}))
-             fetch(serverApiUrl+'/institute/validate/',
+             fetch(serverApiUrl+'institute/validate/',
             {
                 method: 'POST',  
                 headers,

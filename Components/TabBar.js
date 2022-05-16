@@ -59,7 +59,7 @@ export default function TabBar({authStatus,navigation}) {
         // authStatus&&TabScreens.includes(activeScreen)?(
 
         CardView(    
-            <View style={[{display:'flex',flexDirection: 'row',justifyContent: 'space-between', paddingBottom:15,margin:10}]}>
+            <View style={[{display:'flex',flexDirection: 'row',justifyContent: 'space-between', paddingBottom:7,paddingTop:7,margin:10}]}>
                 <View>
                     {renderTabItem(<Home_Filled/>,<HomeIcon_Outline/>,"Home","Home",()=>navigation.navigate("Home"))}
                 </View>

@@ -40,6 +40,11 @@ public class CourseService {
           courseRepo.updateCourseIsDeletedStatus(id,deleteCourse );
     }
 
+    public void deleteCoursePermanentlyById(long id)
+    {
+          courseRepo.deleteById(id);
+    }
+
     //fetch course bu its id
     public Optional<Course> findById(long id)
     {
