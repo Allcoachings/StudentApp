@@ -32,14 +32,14 @@
       "supportsTablet": true
     },
     "android": {
-      "versionCode": 2,
+      "versionCode": 5,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
       "useNextNotificationsApi": true,
       "googleServicesFile": "./google-services.json",
-      "package": "com.allcoaching",
+      "package": "com.xyz.allcoaching",
       "intentFilters": [
         {
           "action": "VIEW",
@@ -66,7 +66,6 @@
       "favicon": "./assets/favicon.png"
     },
     "description": "",
-    "sdkVersion": "42.0.0",
     "plugins": [
       "expo-file-system",
       "expo-navigation-bar",

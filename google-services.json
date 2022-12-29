@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:81193211191:android:be7a834a1dd623198a76b2",
         "android_client_info": {
-          "package_name": "com.allcoaching"
+          "package_name": "com.xyz.allcoaching"
         }
       },
       "oauth_client": [
@@ -39,7 +39,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:81193211191:android:ca1cfe65d44de1558a76b2",
         "android_client_info": {
-          "package_name": "com.allcoaching.institute"
+          "package_name": "com.xyz.allcoaching.institute"
         }
       },
       "oauth_client": [
